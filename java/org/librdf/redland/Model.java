@@ -75,7 +75,7 @@ public class Model
 
   public void sync() 
   {
-    return core.librdf_model_sync(this.object);
+    core.librdf_model_sync(this.object);
   }
 
   public int add(Node subject, Node predicate, Node object) 
