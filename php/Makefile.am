@@ -34,7 +34,7 @@ phpdir=@PHP_EXTENSION_DIR@
 php_DATA=$(PHP_PACKAGE).so
 
 EXTRA_DIST=test.php example.php php.ini \
-redland-decl.i redland-init.i redland-post.i redland-pre.i $(SWIG_OUTPUTS)
+redland-decl.i redland-init.i redland-post.i $(SWIG_OUTPUTS)
 
 CLEANFILES=dmalloc.log *.db test-out.rdf \
 $(PHP_PACKAGE)_wrap.so $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
@@ -43,9 +43,9 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 RUN=@REDLAND_RUN@
 
-SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_POST_I -DREDLAND_DECL_I -DREDLAND_DECL_I
+SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_DECL_I -DREDLAND_DECL_I
 
-$(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i redland-pre.i
+$(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i
 	swig -v -php4 $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ $<
 	cp $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.tmp
 	patch $(PHP_PACKAGE)_wrap.c < redland_wrap.c.patch
