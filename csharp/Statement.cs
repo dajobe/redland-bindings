@@ -49,11 +49,11 @@ namespace Rdf {
 
  			// Console.WriteLine ("Making Statement from {0} {1} {2}", subject.ToString(), predicate.ToString(), obj.ToString());
 			
-			if(subject != null)
+			if((Object)subject != null)
 				subj=new Node(subject).Handle;
-			if(predicate != null)
+			if((Object)predicate != null)
 				pred=new Node(predicate).Handle;
-			if(obj != null)
+			if((Object)obj != null)
 				o=new Node(obj).Handle;
 			stm = librdf_new_statement_from_nodes (world.Handle, subj, pred, o);
  			// Console.WriteLine ("New Statement is {0}", stm.ToString());
