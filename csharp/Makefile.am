@@ -32,7 +32,8 @@ CSHARP_PACKAGE=Redland
 CSHARP_SHARED_LIB=lib$(CSHARP_C_SHLIB).so
 
 SWIG_OUTPUTS=$(CSHARP_PACKAGE)_wrap.c $(CSHARP_PACKAGE).cs $(CSHARP_PACKAGE)PINVOKE.cs
-CSHARP_CRUFT=$(CSHARP_PACKAGE)_wrap.o $(CSHARP_PACKAGE).dll
+CSHARP_CRUFT=$(CSHARP_PACKAGE)_wrap.o $(CSHARP_PACKAGE).dll \
+$(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE).so
 
 EXTRA_DIST=README test.cs \
 $(SWIG_OUTPUTS)
@@ -66,14 +67,9 @@ check-csharp: test-csharp
 test-csharp: build-csharp test.exe
 	$(CLRRUN) test.cs
 
-clean-csharp realclean-csharp:
-	rm -f $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE).so
-
 install-csharp: $(CSHARP_SHARED_LIB) build-csharp
 	$(INSTALL_PROGRAM) $(CSHARP_SHARED_LIB) @libdir@
 	$(INSTALL_PROGRAM) $(CSHARP_PACKAGE)PINVOKE.dll @libdir@
 
 dist-csharp:
 	@echo make csharp dist somehow
-
-clean-local: clean-csharp
