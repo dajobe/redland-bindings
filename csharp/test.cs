@@ -1,5 +1,10 @@
 //
-// tester.cs: play with new Redland's C# objects. Based on Redland's redland/example/example1.c
+// test.cs: test program for Redland C#
+//
+// $Id$
+//
+// Based on Redland's redland/examples/example1.c
+//
 //
 
 using Redland;
@@ -41,38 +46,27 @@ public class Test {
 		partial_stm.Subject = subject;
 		partial_stm.Predicate = predicate;
 
-		Stream stream = model.FindStatements (partial_stm);
-                while(!stream.End) {
-			Statement statement = (Statement) stream.Current;
+		foreach (Statement statement in model.FindStatements (partial_stm)) {
 			Console.Write ("Matched statement: ");
 			Console.WriteLine (statement.ToString ());
-                        stream.MoveNext();
-                }
+		}
 
-		Iterator iterator = model.GetTargets (subject, predicate);
-                
-                while(!iterator.End) {
- 			Node target = (Node) iterator.Current;
+		foreach (Node target in model.GetTargets (subject, predicate)) {
 			Console.Write ("Matched target: ");
 			Console.WriteLine (target.ToString ());
-                        iterator.MoveNext ();
-                }
-
+		}
 
 		Query query = new Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>");
-                Console.Write ("Querying for dc:titles:");
+		Console.Write ("Querying for dc:titles:");
 		QueryResults qr = model.Execute (query);
-                while(!qr.End) {
+		while (! qr.End) {
 			Hashtable result = (Hashtable) qr.Current;
 			Console.WriteLine("Result:");
-
-                        IDictionaryEnumerator enumerator = result.GetEnumerator();
-                        while ( enumerator.MoveNext() )
-                          Console.WriteLine("  {0} = {1}", enumerator.Key, enumerator.Value);
-
-                        qr.MoveNext();
-                }
-
-
+			
+			IDictionaryEnumerator enumerator = result.GetEnumerator ();
+			while (enumerator.MoveNext ())
+				Console.WriteLine("  {0} = {1}", enumerator.Key, enumerator.Value);
+			qr.MoveNext();
+		}
 	}
 }
