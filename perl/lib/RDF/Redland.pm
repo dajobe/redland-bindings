@@ -74,8 +74,6 @@
 #      under either the MPL or the LGPL License.
 #
 
-use Redland;
-
 use RDF::Iterator;
 use RDF::Model;
 use RDF::Node;
@@ -84,6 +82,8 @@ use RDF::Statement;
 use RDF::Storage;
 use RDF::Stream;
 use RDF::URI;
+
+use Redland;
 
 package RDF::World;
 
@@ -100,7 +100,7 @@ sub new ($) {
 }
 
 sub DESTROY ($) {
-  warn "RDF::World DESTROY\n" if $RDF::Debug;
+  warn "RDF::World DESTROY" if $RDF::Debug;
   &Redland::librdf_destroy_world;
 }
 
