@@ -73,6 +73,11 @@ public class Model
     return core.librdf_model_size(this.object);
   }
 
+  public void sync() 
+  {
+    return core.librdf_model_sync(this.object);
+  }
+
   public int add(Node subject, Node predicate, Node object) 
   {
     long subject_copy=core.librdf_new_node_from_node(subject.__get_object());

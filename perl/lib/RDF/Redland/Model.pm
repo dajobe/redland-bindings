@@ -154,6 +154,17 @@ sub size ($) {
 }
 
 
+=item sync
+
+Synchronise the model to the underlying storage.
+
+=cut
+
+sub sync ($) {
+  &RDF::Redland::CORE::librdf_model_sync(shift->{MODEL});
+}
+
+
 =item add SUBJECT PREDICATE OBJECT
 
 Add a new statement to the model with I<SUBJECT>,
