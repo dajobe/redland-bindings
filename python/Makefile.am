@@ -65,7 +65,7 @@ install-pythonDATA: $(python_DATA)
 	$(INSTALL_PROGRAM) $(PYTHON_PACKAGE).so $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so
 
 uninstall-pythonDATA: $(python_DATA)
-	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so; \
+	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so
 
 check-local: unittest-python test-python
 
