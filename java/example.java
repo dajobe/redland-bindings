@@ -32,5 +32,7 @@ class example {
     System.out.println("Redland version: " + world.versionString());
     System.out.println("Redland Copyright: " + world.copyrightString());
 
+    world.finished();
+    world=null;
   }
 }
