@@ -88,7 +88,12 @@ sub new ($$$) {
   my($proto,$storage,$options_string)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
+
+  warn qq{RDF::Model->new(storage, "$options_string")\n} if $RDF::Debug;
+  
   $self->{MODEL}=&Redland::librdf_new_model($storage->{STORAGE},$options_string);
+  return undef if !$self->{MODEL};
+
   # keep a reference around so storage object is destroyed after this
   $self->{STORAGE}=$storage;
   bless ($self, $class);
@@ -101,6 +106,8 @@ sub new_with_options ($$$) {
   my $self  = {};
   my $options_hash=RDF::Hash->new_from_perl_hash($options);
   $self->{MODEL}=&Redland::librdf_new_model_with_options($storage->{STORAGE},$options_hash->{HASH});
+  return undef if !$self->{MODEL};
+
   # keep a reference around so storage object is destroyed after this
   $self->{STORAGE}=$storage;
   bless ($self, $class);
@@ -112,6 +119,8 @@ sub new_from_model ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{MODEL}=&Redland::librdf_new_model_from_model($storage->{STORAGE},$model->{MODEL});
+  return undef if !$self->{MODEL};
+
   # keep a reference around so storage object is destroyed after this
   $self->{STORAGE}=$storage;
   bless ($self, $class);
@@ -120,6 +129,7 @@ sub new_from_model ($$) {
 
 # DESTRUCTOR
 sub DESTROY ($) {
+  warn "RDF::Model DESTROY\n" if $RDF::Debug;
   &Redland::librdf_free_model(shift->{MODEL});
 }
 
@@ -143,12 +153,7 @@ sub add_statement ($$) {
   my($self,$statement)=@_;
   &Redland::librdf_model_add_statement($self->{MODEL},$statement->{STATEMENT});
 
-  # Tell node objects that they no longer own the node
-  $self->{SUBJECT}->{NODE}=undef;
-  $self->{PREDICATE}->{NODE}=undef;
-  $self->{OBJECT}->{NODE}=undef;
-
-  # Tell statement object that it no longer owns the statement
+  # Remove librdf_statement reference from RDF::Statement object
   $statement->{STATEMENT}=undef;
 }
 
