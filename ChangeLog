@@ -1,5 +1,12 @@
 2005-02-24  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* python/RDF.py (Storage.__init__): More documentation.
+
+	* python/RDF.py (Storage.__init__): Fix documentation confusion
+	between storage_name and options.
+
+	* perl/example.pl: handle optionals in query results when testing.
+
 	* perl/lib/RDF/Redland/Model.pm (load):
 	Make ruri and rsyntax_uri from perl objects.
 
