@@ -30,6 +30,8 @@ PYTHON=@PYTHON@
 
 PYTHON_PACKAGE=Redland
 
+PYTHON_LDFLAGS=@PYTHON_LDFLAGS@
+
 SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c
 
 pythondir=@PYTHON_LIB@
@@ -58,13 +60,7 @@ $(PYTHON_PACKAGE)_wrap.so: $(srcdir)/$(PYTHON_PACKAGE)_wrap.c
 
 $(PYTHON_PACKAGE).so: $(PYTHON_PACKAGE)-stamp
 $(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so
-	@if test `uname` = Darwin; then \
-	  args="  -Wl,-F. -Wl,-F. -bundle -framework Python"; \
-	else \
-	  args=" -shared"; \
-	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so `@REDLAND_CONFIG@ --libs` -o $(PYTHON_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so `@REDLAND_CONFIG@ --libs` -o $(PYTHON_PACKAGE).so
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $(PYTHON_LDFLAGS) $(PYTHON_PACKAGE)_wrap.so `@REDLAND_CONFIG@ --libs` -o $(PYTHON_PACKAGE).so
 	touch $(PYTHON_PACKAGE)-stamp
 
 install-pythonDATA: $(python_DATA)
