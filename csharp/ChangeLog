@@ -1,5 +1,11 @@
 2004-07-14  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* Uri.cs (Equals, operator ==, operator !=, GetHashCode): Added.
+
+	* Statement.cs:
+	(Statement (World world, Node subject, Node predicate, Node obj)):
+	Removed casts to Object and allow calls to Node.operator!=
+
 	* Node.cs (operator ==, operator !=):
 	Added tests for null using Object.Equals
 	written by Edd Dumbill.
