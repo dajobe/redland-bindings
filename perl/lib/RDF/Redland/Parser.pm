@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2005 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -123,18 +123,32 @@ sub parse_as_stream ($$$) {
   return new RDF::Redland::Stream($stream,$self);
 }
 
-=item parse_into_model SOURCE_URI BASE_URI MODEL
+=item parse_into_model SOURCE_URI BASE_URI MODEL [HANDLER]
 
 Parse the syntax at the RDF::Redland::URI I<SOURCE_URI> with optional base
 RDF::Redland::URI I<BASE_URI> into RDF::Redland::Model I<MODEL>.  If the base URI is
 given then the content is parsed as if it was at the base URI rather
 than the source URI.
 
+If the optional I<HANDLER> is given, it is a reference to a sub with the signature
+  sub handler($$$$$$$$$) {
+    my($code, $level, $facility, $message, $line, $column, $byte, $file, $uri)=@_;
+    ...
+  }
+that receives errors in parsing.
+
 =cut
 
-sub parse_into_model ($$$$) {
-  my($self,$uri,$base_uri,$model)=@_;
-  return &RDF::Redland::CORE::librdf_parser_parse_into_model($self->{PARSER},$uri->{URI},$base_uri->{URI},$model->{MODEL});
+sub parse_into_model ($$$$;$) {
+  my($self,$uri,$base_uri,$model,$handler)=@_;
+  if($handler) {
+    &RDF::Redland::set_log_handler($handler);
+  }
+  my $rc=&RDF::Redland::CORE::librdf_parser_parse_into_model($self->{PARSER},$uri->{URI},$base_uri->{URI},$model->{MODEL});
+  if($handler) {
+    &RDF::Redland::reset_log_handler();
+  }
+  return $rc;
 }
 
 =item parse_string_as_stream STRING BASE_URI
@@ -154,16 +168,30 @@ sub parse_string_as_stream ($$$) {
   return new RDF::Redland::Stream($stream,$self);
 }
 
-=item parse_string_into_model STRING BASE_URI MODEL
+=item parse_string_into_model STRING BASE_URI MODEL [HANDLER]
 
 Parse the syntax in I<STRING> with required base
 RDF::Redland::URI I<BASE_URI> into RDF::Redfland::Model I<MODEL>.
 
+If the optional I<HANDLER> is given, it is a reference to a sub with the signature
+  sub handler($$$$$$$$$) {
+    my($code, $level, $facility, $message, $line, $column, $byte, $file, $uri)=@_;
+    ...
+  }
+that receives errors in parsing.
+
 =cut
 
-sub parse_string_into_model ($$$$) {
-  my($self,$string,$base_uri,$model)=@_;
-  return &RDF::Redland::CORE::librdf_parser_parse_string_into_model($self->{PARSER},$string,$base_uri->{URI},$model->{MODEL});
+sub parse_string_into_model ($$$$;$) {
+  my($self,$string,$base_uri,$model,$handler)=@_;
+  if($handler) {
+    &RDF::Redland::set_log_handler($handler);
+  }
+  my $rc=&RDF::Redland::CORE::librdf_parser_parse_string_into_model($self->{PARSER},$string,$base_uri->{URI},$model->{MODEL});
+  if($handler) {
+    &RDF::Redland::reset_log_handler();
+  }
+  return $rc;
 }
 
 =item feature URI [VALUE]
