@@ -56,9 +56,13 @@ sub DESTROY ($) {
   &RDF::Redland::CORE::librdf_perl_world_finish();
 }
 
-sub message ($$) {
-  my($type,$message)=@_;
-  if($type == 0) {
+sub message ($$$$$$$$$) {
+  if(ref $RDF::Redland::Log_Sub) {
+    return $RDF::Redland::Log_Sub->(@_);
+  }
+
+  my($code, $level, $facility, $message, $line, $column, $byte, $file, $uri)=@_;
+  if($level > 3) {
     if(ref $RDF::Redland::Error_Sub) {
       return $RDF::Redland::Error_Sub->($message);
     } else {
@@ -86,12 +90,18 @@ $Error_Sub=undef;
 
 $Warning_Sub=undef;
 
+$Log_Sub=undef;
+
 sub set_error_handler ($) {
   $Error_Sub=shift;
 }
 
 sub set_warning_handler ($) {
   $Warning_Sub=shift;
+}
+
+sub set_log_handler ($) {
+  $Log_Sub=shift;
 }
 
 
@@ -116,6 +126,19 @@ This class initialises the Redland RDF classes.
 =head1 STATIC METHODS
 
 =over
+
+=item set_log_handler SUB
+
+Set I<SUB> as the subroutine to be called on a Redland log message with
+the following as the arguments.  For example:
+
+  RDF::Redland::set_log_handler(sub {
+    my($code, $level, $facility, $message, $line, $column, $byte, $file, $uri)=@_;
+
+    # Do something with the log info
+  });
+
+The default if this is not set, is to run the error or warning handlers.
 
 =item set_error_handler SUB
 
