@@ -107,7 +107,7 @@ skeleton.class: skeleton.java $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).j
 $(JAVA_CLASS_FILES): skeleton.class
 $(JAVA_JAR): $(JAVA_CLASS_FILES)
 	rm -f $@
-	jar cf $@ $<
+	jar cf $@ $(JAVA_CLASS_FILES)
 
 test-java: test1 test2
 
