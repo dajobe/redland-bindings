@@ -46,6 +46,17 @@ warn "\nAdding statement to model\n";
 $model->add_statement($statement);
 $statement=undef;
 
+my $n=new RDF::Redland::URI('http://example.org/foo');
+my $statementn=new RDF::Redland::Statement($n, $n, $n);
+
+warn "\nAdding statement (new Statement(n, n, n)) to model\n";
+$model->add_statement($statementn);
+$statement=undef;
+
+warn "\nAdding statement (n,n,n) to model\n";
+$model->add_statement($n, $n, $n);
+$statement=undef;
+
 warn "\nParsing URI (file) $test_file\n";
 my $uri=new RDF::Redland::URI("file:$test_file");
 
