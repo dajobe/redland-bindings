@@ -6,3 +6,4 @@ Makefile.in
 not-used
 *.db
 *_wrap.c
+core.java
