@@ -97,15 +97,15 @@ sub DESTROY ($) {
   &Redland::librdf_free_parser(shift->{PARSER});
 }
 
-sub parse_as_stream ($$) {
-  my($self,$uri)=@_;
-  my $stream=&Redland::librdf_parser_parse_as_stream($self->{PARSER},$uri->{URI});
-  return new RDF::Stream($stream);
+sub parse_as_stream ($$$) {
+  my($self,$uri,$base_uri)=@_;
+  my $stream=&Redland::librdf_parser_parse_as_stream($self->{PARSER},$uri->{URI}, $base_uri->{URI});
+  return new RDF::Stream($stream,$self,1);
 }
 
-sub parse_into_model ($$$) {
-  my($self,$uri,$model)=@_;
-  return &Redland::librdf_parser_parse_into_model($self->{PARSER},$uri->{URI},$model->{MODEL});
+sub parse_into_model ($$$$) {
+  my($self,$uri,$base_uri,$model)=@_;
+  return &Redland::librdf_parser_parse_into_model($self->{PARSER},$uri->{URI},$base_uri->{URI},$model->{MODEL});
 }
 
 1;
