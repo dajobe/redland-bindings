@@ -172,13 +172,25 @@ class RedlandStreamsCase(unittest.TestCase):
         self.model = Model(self.storage)
         self.parser = Parser()
 
+    def testParseNTriplesIntoModel(self):
+        a = "file:../data/dc.nt"
+        p = NTriplesParser()
+        p.parse_into_model(self.model,a)
+        self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
+
+    def testParseTurtleIntoModel(self):
+        a = "file:../data/dc.turtle"
+        p = TurtleParser()
+        p.parse_into_model(self.model,a)
+        self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
+
     def testParseIntoModel(self):
-        a = "file:../perl/dc.rdf"
+        a = "file:../data/dc.rdf"
         self.parser.parse_into_model(self.model,a)
         self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
 
     def testIterateModel(self):
-        a = "file:../perl/dc.rdf"
+        a = "file:../data/dc.rdf"
         self.parser.parse_into_model(self.model,a)
         counter = 0
         for s in self.model:
@@ -186,13 +198,13 @@ class RedlandStreamsCase(unittest.TestCase):
         self.assert_(counter == 3,"dc.rdf should have 3 statements")
 
     def testParseAsStream(self):
-        a = "file:../perl/dc.rdf"
+        a = "file:../data/dc.rdf"
         for s in self.parser.parse_as_stream(a):
             self.model.append(s)
         self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
 
     def testFindStatements1(self):
-        self.parser.parse_into_model(self.model,"file:../perl/dc.rdf")
+        self.parser.parse_into_model(self.model,"file:../data/dc.rdf")
         statement = Statement(
                 Uri("http://purl.org/net/dajobe/"),
                 None, None)
@@ -204,7 +216,7 @@ class RedlandStreamsCase(unittest.TestCase):
         self.assert_(count == 3, "Should have found_stmts 3 statements")
 
     def testContains(self):
-        self.parser.parse_into_model(self.model,"file:../perl/dc.rdf")
+        self.parser.parse_into_model(self.model,"file:../data/dc.rdf")
         statement = Statement(
                 Uri("http://purl.org/net/dajobe/"),
                 Uri("http://purl.org/dc/elements/1.1/creator"), 
@@ -218,7 +230,7 @@ class RedlandStreamsCase(unittest.TestCase):
         self.assert_(statement in self.model, "Should have found a statement via __contains__")
 
     def testFindStatementsWithContext(self):
-        a = "file:../perl/dc.rdf"
+        a = "file:../data/dc.rdf"
         intended_context = Node(Uri("http://example.org/"))
         for s in self.parser.parse_as_stream(a):
             self.model.append (s, intended_context)
@@ -255,8 +267,80 @@ class RedlandModelGeneral (unittest.TestCase):
     def testSync(self):
         self.model.sync()
         
+class RasqalQueryTestCase (unittest.TestCase):
+    def setUp(self):
+        self.model = Model()
+        self.parser = Parser()
+        a = "file:../data/dc.rdf"
+        self.parser.parse_into_model(self.model,a)
+
+    def testCreate(self):
+        q = Query("SELECT ?a ?b ?c WHERE (?a ?b ?c)")
+        self.assert_(q is not None)
+        q = Query("- - -",query_language="triples")
+        self.assert_(q is not None)
+
+    def testRDQLQueryCount(self):
+        q = Query("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
+        bindings = q.run_as_bindings(self.model)
+        for result in bindings:
+            pass
+        self.assert_(len(q) == 3, "Query count should be 3 after query finished running")
+
+    def testRDQLQueryRun(self):
+        q = Query("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
+        bindings = q.run_as_bindings(self.model)
+        self.assert_(bindings is not None,"Query eval not OK")
+
+        count = 0
+        for result in bindings:
+            count += 1
+        self.assert_(count == 3, "Should have found three results in query")
+
+    def testTripleQueryAsBindingsDontWork(self):
+        q = Query("- - -",query_language="triples")
+        results = q.run_as_bindings(self.model)
+        self.assert_(results is None,"Triples queries shouldn't work as bindings - None should be returned from run_as_bindings")
+
+    def testRDQLQueryAsStreamDontWork(self):
+        q = Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
+        results = q.run_as_statements(self.model)
+        self.assert_(results is None,"RDQL queries shouldn't work as streams - None should be returned from run_as_statements")
+
+    #def testRDQLParseError(self):
+        #q = Query("SELECT WHERE")
+        #results = q.run_as_bindings(self.model)
+        # TODO: This needs to fail somehow
+
+    def testTripleQuery(self):
+        q = Query("- - -",query_language="triples")
+        results = q.run_as_statements(self.model)
+        self.assert_(results is not None,"Query eval not OK")
+
+        count = 0
+        for result in results:
+            count += 1
+        self.assert_(count == 3, "Should have found three results in query")
+
+    def testRDQLQueryRunOnModel(self):
+        q = Query("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
+        bindings = self.model.run_as_bindings(q)
+        self.assert_(bindings is not None,"Query eval not OK")
+
+        count = 0
+        for result in bindings:
+            count += 1
+        self.assert_(count == 3, "Should have found three results in query")
+
+    def testTripleQueryOnModel(self):
+        q = Query("- - -",query_language="triples")
+        results = self.model.run_as_statements(q)
+        self.assert_(results is not None,"Query eval not OK")
+
+        count = 0
+        for result in results:
+            count += 1
+        self.assert_(count == 3, "Should have found three results in query")
 
 if __name__ == '__main__':
     unittest.main()
-
-
