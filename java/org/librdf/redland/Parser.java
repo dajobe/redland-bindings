@@ -61,6 +61,20 @@ public class Parser
     }
 
   
+  public Stream parse(String s, URI base_uri) 
+    {
+      long stream_object=core.librdf_parser_parse_string_as_stream(this.object, s, base_uri.__get_object());
+      return new Stream(this.world, stream_object, this);
+    }
+
+  
+  public boolean parse(String s, URI base_uri, Model model) 
+    {
+      int result=core.librdf_parser_parse_string_into_model(this.object, s, base_uri.__get_object(), model.__get_object());
+      return (result != 0);
+    }
+
+  
   public String getFeature(URI feature) 
     {
       return core.librdf_parser_get_feature(this.object, feature.__get_object());
