@@ -187,16 +187,24 @@ sub add_typed_literal_statement ($$$$$;$$) {
   return &RDF::Redland::CORE::librdf_model_add_typed_literal_statement($self->{MODEL},$subject,$predicate,$string,$xml_language,$uri);
 }
 
-=item add_statement STATEMENT [CONTEXT]
+=item add_statement STATEMENT [CONTEXT] | NODE NODE NODE [CONTEXT]
 
-Add RDF::Redland::Statement I<STATEMENT> to the model.
+Add RDF::Redland::Statement I<STATEMENT>
+or the statement formed by I<NODE NODE NODE> to the model.
 If the optional RDF:Redland::Node I<CONTEXT> is given,
 associate it with that context.
 
 =cut
 
-sub add_statement ($$;$) {
-  my($self,$statement,$node)=@_;
+sub add_statement ($;$$$$) {
+  my($self,@rest)=@_;
+  my $statement=undef;
+  if(scalar(@rest)>2) {
+    $statement=new RDF::Redland::Statement(splice(@rest, 0, 3));
+  } else {
+    $statement=shift(@rest);
+  }
+  my $node=shift(@rest);
   if($node) {
     return &RDF::Redland::CORE::librdf_model_context_add_statement($self->{MODEL},$node->{NODE},$statement->{STATEMENT});
   } else {
