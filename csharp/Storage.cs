@@ -1,6 +1,8 @@
 //
 // Storage.cs: Redland Statement Storage class
 //
+// $Id$
+//
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)
 //
@@ -12,9 +14,11 @@ using System.Runtime.InteropServices;
 
 namespace Redland {
 
-	public class Storage : IWrapper {
+	public class Storage : IWrapper, IDisposable {
 
-		IntPtr storage;
+		IntPtr storage = IntPtr.Zero;
+
+		bool disposed = false;
 
 		public IntPtr Handle {
 			get { return storage; }
@@ -29,9 +33,9 @@ namespace Redland {
 			IntPtr iname = Marshal.StringToHGlobalAuto (name);
 			IntPtr ioptions = Marshal.StringToHGlobalAuto (options);
 			storage = librdf_new_storage (world.Handle, istorage_name, iname, ioptions);
-                        Marshal.FreeHGlobal (istorage_name);
-                        Marshal.FreeHGlobal (iname);
-                        Marshal.FreeHGlobal (ioptions);
+			Marshal.FreeHGlobal (istorage_name);
+			Marshal.FreeHGlobal (iname);
+			Marshal.FreeHGlobal (ioptions);
 		}
 
 		public Storage (string storage_name, string name, string options)
@@ -42,11 +46,30 @@ namespace Redland {
 		[DllImport ("librdf")]
 		static extern void librdf_free_storage (IntPtr storage);
 
-		~Storage ()
+		protected void Dispose (bool disposing)
 		{
-			librdf_free_storage (storage);
+			if (! disposed) {
+				// if disposing is true, then dispose of
+				// managed resources
+
+				if (storage != IntPtr.Zero) {
+					librdf_free_storage (storage);
+					storage = IntPtr.Zero;
+				}
+
+				disposed = true;
+			}
 		}
 
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
 
+		~Storage ()
+		{
+			Dispose (false);
+		}
 	}
 }
