@@ -33,6 +33,8 @@ module Redland
       ObjectSpace.define_finalizer(self,Node.create_finalizer(@node))
     end
 
+    # sets this node's value using a blank or URI extracted from a Hash
+    # (?? confirm)
     def node_from_hash(hash)
       h = {:blank,:uri_string}
       if hash.key?(:blank)
@@ -55,6 +57,8 @@ module Redland
       return node
     end
 
+    # sets this node's value using a literal value extracted from a Hash
+    # (?? confirm)
     def node_from_literal(hash)
       xml_language = hash.key?(:xml_language) ? hash[:xml_language] : ""
       wf_xml = hash.key?(:wf_xml?) ? 1 : 0
@@ -67,14 +71,17 @@ module Redland
       return node
     end
 
+    # Sets this node's value to a blank node with the specified ID (?? confirm)
     def Node.bnode(id=nil)
       @node = Redland.librdf_new_node_from_blank_identifier($world.world,id)
     end
 
+    # You shouldn't use this. Used internally for cleanup.
     def Node.create_finalizer(node)
       proc {|id| Redland::librdf_free_node(node) }
     end
 
+    # Creates a new blank node with the specified ID (?? confirm)
     def Node.anon(id)
       self.initialize()
       super(id)
@@ -96,14 +103,17 @@ module Redland
       return (Redland.librdf_node_is_blank(self.node) !=0)
     end
 
+    # Equivalency. Only works for comparing two Nodes
     def ==(other)
       return (Redland.librdf_node_equals(self.node,other.node) != 0)
     end
 
+    # Convert this to a string
     def to_s
       return Redland.librdf_node_to_string(self.node)
     end
 
+    # Get the type of this node as a string (Node.node_types)
     def node_type()
       return @@node_types[Redland.librdf_node_get_type(self.node)]
     end
@@ -135,6 +145,8 @@ module Redland
       end
     end
 
+    # Ensures that the argument is a node by constructing one or returning nil
+    # (?? confirm)
     def Node.ensure(node)
       case node
       when Node
@@ -222,6 +234,7 @@ module Redland
       ObjectSpace.define_finalizer(self,Node.create_finalizer(@node))
     end
 
+    # create a literal from another Node
     def Literal.from_node(node)
       lang = Redland.librdf_node_get_literal_value_language(node) if Redland.librdf_node_get_literal_value_language(node)
       str = Redland.librdf_node_get_literal_value(node)

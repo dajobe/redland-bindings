@@ -6,11 +6,12 @@ module Redland
     attr_accessor :uri
 
     # Initialize a Uri
-    # uri = RDF::Redland::Uri.new('kris')
-    # uri2 = RDF::Redland::Uri.new(uri)
-    # require 'uri'
-    # uri = Uri.parse('http://www.xmlns.com')
-    # uri_from_Uri = RDF::Redland::Uri.new(uri)
+    #
+    #  uri = RDF::Redland::Uri.new('kris')
+    #  uri2 = RDF::Redland::Uri.new(uri)
+    #  require 'uri'
+    #  uri = Uri.parse('http://www.xmlns.com')
+    #  uri_from_Uri = RDF::Redland::Uri.new(uri)
     def initialize(uri_string)
       case uri_string
       when String
@@ -24,17 +25,18 @@ module Redland
       ObjectSpace.define_finalizer(self,Uri.create_finalizer(@uri))
     end
 
-    
+    # You shouldn't use this. Used internally for cleanup.
     def Uri.create_finalizer(uri)
       proc {|id| 
         Redland::librdf_free_uri uri if $world }
     end
 
-
+    # Returns a string for this URI
     def to_s
       return Redland.librdf_uri_to_string(@uri)
     end
 
+    # Equivalence. Only works with other URI objects
     def == (other)
       return (Redland.librdf_uri_equals(self.uri,other.uri) != 0)
     end

@@ -192,8 +192,11 @@ module Redland
 
   end
 
+  # Class for parsing a file
   class ContextParser
     require 'uri'
+
+    # Create a new ContextParser for a file
     def initialize(file)
       case file
       when String
@@ -208,6 +211,7 @@ module Redland
       
     end
 
+    # Parse a file into a model (?? confirm - why doesn't it use most of it's args)
     def parse_into_model(model,string,base_uri)
       super(model,@uri,nil,@uri)
     end

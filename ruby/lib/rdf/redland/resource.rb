@@ -71,6 +71,8 @@ module Redland
       end
     end
     
+    # Finds all objects of a given predicate. Takes an optional block,
+    # yielding each statement if given.
     def object_of_predicate(pred = nil)
       # statements = @model.find(nil,pred,self)
       if pred
@@ -106,11 +108,13 @@ module Redland
     def delete_properties()
       self.get_properties().each{|st| @model.delete_statement(st)}
     end
-    
+
+    # Determine if this resource is of a given type
     def type?(type)
       self.model.find(self,TYPE,type) != nil
     end
 
+    # Change the value of the given property
     def update_property(prop,value,context=nil)
       self.delete_property(prop)
       self.add_property(prop,value,context)
@@ -131,12 +135,14 @@ module Redland
       self.get_property(TYPE)
     end   
 
+    # Set the type of this Resource
     def set_type(type,context=@context)
       self.delete_property(TYPE)
       self.add_property(TYPE,type,context)
       return self
     end
 
+    # Defines a context for this resource
     def set_context(context)
       @context = context
     end

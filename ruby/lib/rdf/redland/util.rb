@@ -1,6 +1,7 @@
 module Redland
 
   module Util
+    # Return true if node is a literal
     def is_literal?(node)
       return (Redland.librdf_node_is_literal(node) !=0)
     end
@@ -16,6 +17,8 @@ module Redland
 
     end
 
+    # Given an Iterator, returns an array of all Nodes beyond it
+    # including this one
     def get_node_array(node_iterator)
       node_array = []
       while not node_iterator.end?
@@ -25,6 +28,8 @@ module Redland
       return node_array
     end
 
+    # Given an Stream, returns an array of all Statements beyond it
+    # including this one
     def get_statement_array(stream)
       statement_array = []
       while not stream.end?

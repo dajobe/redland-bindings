@@ -12,6 +12,8 @@ module Redland
     
     attr_reader :model
     
+    # Constructor - takes an optional argument store, which should 
+    # be one of the storage classes (all derived from TripleStore)
     def initialize(store=nil)
       @statements = []
       store = MemoryStore.new() if not store
@@ -21,6 +23,7 @@ module Redland
       ObjectSpace.define_finalizer(self,Model.create_finalizer(@model))
     end
 
+    # You shouldn't use this. Used internally for cleanup.
     def Model.create_finalizer(model)
       proc {|id| "Finalizer on #{id}"
         $log_final.info "closing model"
@@ -39,7 +42,7 @@ module Redland
     end
 
     # get a resource given by str.  If arg is a string it will create a
-    #Resource from it.
+    # Resource from it.
     def get_resource(arg)
       return self.find(Resource.new(arg),nil,nil)[0].subject
     end
@@ -81,6 +84,8 @@ module Redland
       end
     end
 
+    # Effectively removes a Predicate from the Model by replacing all
+    # occurrences with a blank node (?? confirm)
     def smush(pred)
       identifying_hash = {}
       canonical = {}
@@ -171,6 +176,7 @@ module Redland
       self.include_statement?(statement)
     end
 
+    # list the model contents as a stream of statements
     def as_stream(context=nil)
       if context
         context = Node.ensure(context)
@@ -356,6 +362,7 @@ module Redland
     end
     
 
+    # saves this model to the specified filename
     def save(filename)
       serializer = Serializer.new(filename)
       puts serializer
@@ -388,12 +395,14 @@ module Redland
         #self.rewrite(temp_model.global_rewrites)
       end
     end
-
+    
+    # clears the transactions (?? confirm)
     def rewrite(change_hash)
       transactions = []
       #puts change_hash
     end
 
+    # Get the number of statements in the model    
     def get_size()
       return Redland.librdf_model_size(@model)
     end
@@ -408,6 +417,7 @@ module Redland
 
     attr_reader :global_rewrites,:canonical
 
+    # Constructor - needs a master model to use
     def initialize(master_model)
       @hooks = {}
       @count = {}
@@ -422,15 +432,20 @@ module Redland
       
     end
     
+    # Return one Node in the Model matching (?,predicate,target)
+    # The source and predicate can be a Node or Uri
     def find_subject_in_master(pred,obj)
       return @master.subject(pred,obj)
     end
     
+    # Effectively removes the listes Predicates from the Model by replacing all
+    # occurrences with a blank node (?? confirm)
     def smush(predlist)
       self.find_canonical(predlist)
       self.rewrite()
     end
 
+    # Locate predicates for smushing
     def find_canonical(predlist)
       predlist.each do |pred|
         identifier = {}
@@ -470,6 +485,7 @@ module Redland
       end #predlist.each
     end
 
+    # actually do the smush
     def rewrite(context=nil)
       self.triples() do |sub,pred,obj|
         sub = @canonical[sub.to_s] if @canonical.key?(sub.to_s)

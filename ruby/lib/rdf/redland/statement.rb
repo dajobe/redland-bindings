@@ -1,5 +1,7 @@
 require 'rdf/redland'
 
+module Redland
+
 # Redland Statement (triple class).  The main means of manipulating
 # statements is by the subject,predicate,and object properties
 #
@@ -11,7 +13,6 @@ require 'rdf/redland'
 #   if statement2.resource?
 #     puts "statement2.subject has uri #{statement2.subject.uri}"
 #
-module Redland
   class Statement
     include Util
 
@@ -65,6 +66,7 @@ module Redland
 
     end
 
+    # You shouldn't use this. Used internally for cleanup.
     def Statement.create_finalizer(statement)
       proc {|id| Redland::librdf_free_statement(statement) }
     end
@@ -125,6 +127,7 @@ module Redland
       end
     end
 
+    # Convert this Statement to a string
     def to_s()
       unless self.statement
         raise RedlandError.new("Statement is invalid")

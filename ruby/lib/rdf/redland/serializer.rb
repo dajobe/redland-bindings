@@ -1,8 +1,14 @@
 require 'rdf/redland'
 
 module Redland
+  # This module provides RDF graph to syntax serialization support via 
+  # factory classes providing one or more particular target syntaxes.
   class Serializer
-    
+
+    # Constructor - create a new Serializer object
+    # name -  the serializer factory name
+    # mime_type -  the MIME type of the syntax
+    # uri -  URI of syntax
     def initialize(name="",mime_type="application/rdf+xml",uri=nil)
       if uri
         uri = uri.uri
@@ -11,11 +17,13 @@ module Redland
       ObjectSpace.define_finalizer(self,Serializer.create_finalizer(@serializer))
     end
 
+    # Create a NTriples serializer
+    # uri -  URI of syntax
     def Serializer.ntriples(uri=nil)
       return Serializer.new('ntriples','text/plain',uri)
     end
 
-
+    # You shouldn't use this. Used internally for cleanup.
     def Serializer.create_finalizer(serializer)
       proc {|id| "Finalizer on #{id}"
         log_final.info "closing serializer"
@@ -23,6 +31,10 @@ module Redland
       }
     end
 
+    # Serializes a model and stores it in a file
+    # name -  the serializer factory name
+    # mime_type -  the MIME type of the syntax
+    # base_uri -  URI of syntax
     def to_file(name,model,base_uri=nil)
       if base_uri
         base_uri = base_uri.uri

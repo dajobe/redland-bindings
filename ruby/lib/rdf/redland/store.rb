@@ -2,9 +2,11 @@ require 'rdf/redland'
 
 module Redland
 
+  # A class for storing RDF triples
   class TripleStore
     attr_accessor :store_type, :store
 
+    # Creates a store with the given type, name, and options
     def initialize(store_type='memory',name='',options='')
       case store_type
       when "memory";
@@ -23,7 +25,7 @@ module Redland
       ObjectSpace.define_finalizer(self,TripleStore.create_finalizer(@store))
     end
 
-
+    # You shouldn't use this. Used internally for cleanup.
     def TripleStore.create_finalizer(store)
       proc {|id| "Finalizer on #{id}"
         $log_final.info "closing store"
@@ -34,17 +36,19 @@ module Redland
 
   end
 
+  # Store the triples in memory
   class MemoryStore < TripleStore
     def initialize(mem_name="",options_string="")
       super('memory',mem_name,options_string)
     end
   end
 
+  # Store the triples in a hash. Can use memory or bdb
   class HashStore < TripleStore
 
     attr_accessor :hash_type
 
-    # hash_type either memory or bdb
+    # hash_type either memory or bdb. If it's bdb, you must specify a name
     def initialize(hash_type='memory',name='',dir='.', want_new=true,write=true,contexts=true)
       @hash_type = hash_type
       @dir = dir
@@ -88,6 +92,7 @@ module Redland
 
   end
 
+  # Store the triples in a hash using bdb in the current directory
   class HashOpen < TripleStore
 
     def initialize(name)
@@ -96,6 +101,7 @@ module Redland
 
   end
 
+  # Store the triples in a file
   class FileStore < TripleStore
 
     def initialize(mem_name,options)
