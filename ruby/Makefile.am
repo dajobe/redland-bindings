@@ -98,3 +98,9 @@ test-simple: $(RUBY_PACKAGE).so $(srcdir)/example.rb
 test-example: $(RUBY_PACKAGE).so $(srcdir)/example.rb
 	$(RUN)$(RUBY) -I. -Ilib \
 	  $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
+
+rdoc:
+	outdir=html; \
+	rm -rf $$outdir; \
+	rdoc --fmt html --image-format png --op $$outdir --main index.html --title "Redland Ruby API" $(srcdir)/lib
+
