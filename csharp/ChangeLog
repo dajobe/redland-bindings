@@ -1,20 +1,19 @@
-2004-07-09  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+2004-07-09  Edd Dumbill  <edd@usefulinc.com>
 
 	* World.cs:
-	Move logging to use the new librdf logging API. (Edd Dumbill)
+	Move logging to use the new librdf logging API.
 	(Messages property): Added, an array of LogMessages accumulated since
 	the last ClearLog call.
 	(LogLevel method): Added, for getting and setting the logging level.
 
 	* Parser.cs: Use World.Messages as the basis of exceptions. 
-	(Edd Dumbill)
 
 	* Errors.cs: Added enums LogLevel and Facility.
 	Added class Locator to encapsulate locator part of a log message.
 	Added class LogMessage to encapsulate a returned log message from
 	librdf.
 	Changed RedlandFault and RedlandError to store an array of
-	LogMessages instead of strings. (Edd Dumbill)
+	LogMessages instead of strings.
 
 2004-07-08  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
