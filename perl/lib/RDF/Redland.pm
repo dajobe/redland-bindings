@@ -75,6 +75,7 @@
 #
 
 use Redland;
+
 use RDF::Iterator;
 use RDF::Model;
 use RDF::Node;
@@ -84,11 +85,34 @@ use RDF::Storage;
 use RDF::Stream;
 use RDF::URI;
 
+package RDF::World;
+
+sub new ($) {
+  my($proto)=@_;
+  my $class = ref($proto) || $proto;
+  my $self  = {};
+
+  &Redland::librdf_init_world("", undef);
+
+  bless ($self, $class);
+  $self->{ME}=$self;
+  return $self;
+}
+
+sub DESTROY ($) {
+  warn "RDF::World DESTROY\n" if $RDF::Debug;
+  &Redland::librdf_destroy_world;
+}
+
+
 package RDF;
 
-use vars qw($Debug);
+use vars qw($Debug $World);
 
 $Debug=0;
+
+$World=new RDF::World;
+
 
 =pod
 
@@ -96,23 +120,17 @@ $Debug=0;
 
 RDF - Redland RDF Class
 
+=head1 SYNOPSIS
+
+  use RDF;
+  my $storage=new RDF::Storage("hashes", "test", "new='yes',hash-type='memory'");
+  my $model=new RDF::Model($storage, "");
+
+  ...
+
 =head1 DESCRIPTION
 
 This class initialises the Redland RDF classes.
-
-=cut
-
-# 'Class' Constructor
-
-&Redland::librdf_init_world("", undef);
-
-# 'Class' Destructor
-sub END ($) {
-  warn "RDF:: DESTROY\n" if $RDF::Debug;
-  &Redland::librdf_destroy_world;
-}
-
-=pod
 
 =head1 SEE ALSO
 
