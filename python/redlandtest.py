@@ -227,6 +227,14 @@ class RedlandStreamsCase(unittest.TestCase):
 
         self.assert_(count == 3, "Should have found 3 statements")
 
+    def testParseStringAsStream(self):
+        content = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description rdf:about="http://www.redland.opensource.ac.uk/"><dc:title>Redland RDF</dc:title></rdf:Description></rdf:RDF>"""
+        base_uri = Uri("http://example.org/base#")
+        s=self.parser.parse_string_as_stream(content, base_uri)
+        self.assert_(s is not None, "parse_string_as_stream should have succeeded")
+        rc=self.model.add_statements(s)
+        self.assert_(rc == 0, "add statements should have succeeded")
+
 class RedlandModelGeneral (unittest.TestCase):
     def setUp (self):
         self.storage = HashStorage("test", options="hash-type='bdb'")
