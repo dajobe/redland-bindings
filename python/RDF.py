@@ -90,6 +90,7 @@ __all__ = [ "Node",
             "HashStorage",
             "Uri",
             "Parser",
+            "NS",
             "debug"]
 
 __version__ = "0.9"
@@ -1454,6 +1455,7 @@ optional.  When any are given, they must all match.
               currently only "http://www.w3.org/TR/rdf-testcases/#ntriples"
 
     """
+    #"
     global _world
     global _debug    
     if _debug:
@@ -1496,6 +1498,8 @@ optional.  When any are given, they must all match.
           for statement in parser.parse_string_as_stream(rdfstring):
               print statement
     """
+    if type(base_uri) is str:
+      base_uri = Uri(string=base_uri)
     if base_uri is None:
       raise RedlandError("A base URI is required when parsing a string")
     my_stream=Redland.librdf_parser_parse_string_as_stream(self._parser,
