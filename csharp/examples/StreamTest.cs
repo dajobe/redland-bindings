@@ -82,18 +82,13 @@ namespace Redland {
 		[Test]
 		public void Contains ()
 		{
-			int i = 0;
+			bool b=false;
 			parser.ParseIntoModel (model, "file:../../data/dc.rdf");
 			Statement stm = new Statement (new Node (new Uri ("http://purl.org/net/dajobe/")),
 						       new Node (new Uri ("http://purl.org/dc/elements/1.1/creator")),
 						       new Node ("Dave Beckett"));
-			Stream found_stms = model.FindStatements (stm);
-		       			
-			while (!found_stms.End) {
-				i++;
-				found_stms.MoveNext ();
-			}
-			NUnit.Framework.Assert.IsTrue (i == 1, "Should have found_stmts 1 statement");
+			b=model.Contains(stm);
+			NUnit.Framework.Assert.IsTrue (b, "Should have found_stmts 1 statement");
 		}
 
 		[Test]
