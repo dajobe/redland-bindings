@@ -56,8 +56,9 @@ set statement [librdf_new_statement_from_nodes $world NULL NULL NULL]
 set stream [librdf_model_find_statements $model $statement]
 
 while {! [librdf_stream_end $stream]} {
-  set statement2 [librdf_stream_next $stream]
+  set statement2 [librdf_stream_get_object $stream]
   puts [concat "found statement:" [librdf_statement_to_string $statement2]]
+  librdf_stream_next $stream
 }
 librdf_free_stream $stream
 librdf_free_statement $statement

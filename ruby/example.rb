@@ -54,10 +54,11 @@ stream=Redland::librdf_parser_parse_as_stream parser, uri, uri
 
 count=0
 while Redland::librdf_stream_end(stream) == 0
-  statement=Redland::librdf_stream_next stream
+  statement=Redland::librdf_stream_get_object stream
   Redland::librdf_model_add_statement model, statement
   puts "found statement: #{Redland::librdf_statement_to_string statement}"
   count=count+1
+  Redland::librdf_stream_next stream
 end
 
 Redland::librdf_free_stream stream
@@ -70,8 +71,9 @@ Redland::librdf_free_parser parser
 puts "Printing all statements"
 stream=Redland::librdf_model_serialise model
 while Redland::librdf_stream_end(stream) == 0
-  statement=Redland::librdf_stream_next stream
+  statement=Redland::librdf_stream_get_object stream
   puts "Statement: #{Redland::librdf_statement_to_string statement}"
+  Redland::librdf_stream_next stream
 end
 
 Redland::librdf_free_stream stream

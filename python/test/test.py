@@ -24,6 +24,7 @@ import RDF
 storage=RDF.Storage(storage_name="memory",
                     name="test",
                     options_string="")
+#                    options_string="new='yes',hash-type='bdb',dir='.'")
 if not storage:
   raise "new RDF.storage failed"
 
@@ -46,8 +47,8 @@ statement=RDF.Statement(subject=None, predicate=None, object=None);
 stream=model.find_statements(statement);
 
 while not stream.end():
-  statement2=stream.next();
-  print "  found statement:",statement2
+  print "  found statement:",stream.current()
+  stream.next();
 
 
 # Use any rdf/xml parser that is available
@@ -61,9 +62,10 @@ print "made uri", uri
 stream=parser.parse_as_stream(uri, uri)
 
 while not stream.end():
-  statement2=stream.next();
+  statement2=stream.current();
   print "found parsed statement:",statement2
   model.add_statement(statement2)
+  stream.next();
 
 # add it again just to get some more statements
 parser.parse_into_model(model, uri, uri)
@@ -74,8 +76,8 @@ print "printing model"
 stream=model.serialise()
 
 while not stream.end():
-  statement2=stream.next();
-  print "found statement:",statement2
+  print "found statement:",stream.current()
+  stream.next();
 
 print "searching model by statement"
 search_statement=RDF.Statement(subject=None, predicate=RDF.Node(uri_string="http://purl.org/dc/elements/1.1/title"), object=None)
@@ -83,8 +85,8 @@ search_statement=RDF.Statement(subject=None, predicate=RDF.Node(uri_string="http
 
 stream=model.find_statements(statement=search_statement)
 while not stream.end():
-  statement2=stream.next();
-  print "  found statement:",statement2
+  print "  found statement:",stream.current()
+  stream.next();
 
 print "searching model for node targets"
 n1=RDF.Node(uri_string="http://purl.org/net/dajobe/")

@@ -39,8 +39,9 @@ RDF::Redland::Stream - Redland RDF Stream of RDF::Redland::Statement objects Cla
   ...
   my $stream=$model->serialise;
   while($stream && !$stream->end) {
-    my $statement=$stream->next;
+    my $statement=$stream->current;
     ...
+    $stream->next;
   }
 
 =head1 DESCRIPTION
@@ -100,22 +101,40 @@ sub end ($) {
   &RDF::Redland::CORE::librdf_stream_end($self->{STREAM});
 }
 
+=item current
+
+Returns the current RDF::Redland::Statement object in the stream or undef if
+the stream is finished.
+
+=cut
+
+sub current ($) {
+  # return a new statement wrappaing a shared statement managed
+  # by the librdf library, which should not be freed.
+  my $self=shift;
+  return undef if !$self->{STREAM};
+  
+  my $statement=&RDF::Redland::CORE::librdf_stream_get_object($self->{STREAM});
+  return undef if !$statement;
+
+  # return a new statement created by the librdf stream object
+  RDF::Redland::Statement->_new_from_object($statement, 0);
+}
+
+=pod
+
 =item next
 
-Returns the next RDF::Redland::Statement object from the stream or undef if
-the stream is finished.
+Moves to the next RDF::Redland::Statement object in the stream.
+Returns non-zero if the stream is finished.
 
 =cut
 
 sub next ($) {
   my $self=shift;
-  return undef if !$self->{STREAM};
+  return 1 if !$self->{STREAM};
   
-  my $statement=&RDF::Redland::CORE::librdf_stream_next($self->{STREAM});
-  return undef if !$statement;
-
-  # return a new statement created by the librdf stream object
-  RDF::Redland::Statement->_new_from_object($statement, 1);
+  return &RDF::Redland::CORE::librdf_stream_next($self->{STREAM});
 }
 
 =pod

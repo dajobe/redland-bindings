@@ -59,10 +59,11 @@ set stream [librdf_parser_parse_as_stream $parser $uri $uri]
 
 set count 0
 while {! [librdf_stream_end $stream]} {
-  set statement [librdf_stream_next $stream]
+  set statement [librdf_stream_get_current $stream]
   librdf_model_add_statement $model $statement
   puts [concat "found statement:" [librdf_statement_to_string $statement]]
   incr count
+  librdf_stream_next $stream
 }
 librdf_free_stream $stream
 
@@ -74,8 +75,9 @@ librdf_free_parser $parser
 puts "Printing all statements"
 set stream [librdf_model_serialise $model]
 while {! [librdf_stream_end $stream]} {
-  set statement [librdf_stream_next $stream]
+  set statement [librdf_stream_get_object $stream]
   puts [concat "Statement:" [librdf_statement_to_string $statement]]
+  librdf_stream_next $stream
 }
 librdf_free_stream $stream
 

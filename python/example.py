@@ -48,8 +48,8 @@ statement=RDF.Statement(subject=None, predicate=None, object=None);
 stream=model.find_statements(statement);
 
 while not stream.end():
-  statement2=stream.next();
-  print "found statement:",statement2
+  print "found statement:",stream.current()
+  stream.next();
 
 test_file='../perl/dc.rdf'
 
@@ -63,8 +63,9 @@ if not parser:
 stream=parser.parse_as_stream(uri,uri)
 count=0
 while not stream.end() :
-  model.add_statement(stream.next())
+  model.add_statement(stream.current())
   count=count+1
+  stream.next();
 
 print "Parsing added",count,"statements"
 

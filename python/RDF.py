@@ -484,7 +484,7 @@ class Model:
 
     results=[]
     while not user_iterator.end():
-      results.append(user_iterator.get())
+      results.append(user_iterator.current())
       user_iterator.next()
 
     user_iterator=None
@@ -502,7 +502,7 @@ class Model:
 
     results=[]
     while not user_iterator.end():
-      results.append(user_iterator.get())
+      results.append(user_iterator.current())
       user_iterator.next()
 
     user_iterator=None
@@ -520,7 +520,7 @@ class Model:
 
     results=[]
     while not user_iterator.end():
-      results.append(user_iterator.get())
+      results.append(user_iterator.current())
       user_iterator.next()
 
     user_iterator=None
@@ -596,7 +596,7 @@ class Iterator:
 please use 'not iterator.end' instead."""
     return Redland.librdf_iterator_have_elements(self._iterator)
 
-  def get (self):
+  def current (self):
     my_node=Redland.librdf_iterator_get_object(self._iterator)
     if my_node == "NULL" or my_node == None:
       return None
@@ -642,16 +642,21 @@ class Stream:
       return 1
     return Redland.librdf_stream_end(self.stream)
 
-  def next (self):
+  def current (self):
     if not self.stream:
       return None
 
-    # return a new statement created by the librdf stream object
-    my_statement=Redland.librdf_stream_next(self.stream)
+    # return a statement wrapping a shared librdf_statement
+    my_statement=Redland.librdf_stream_get_object(self.stream)
     if my_statement == "NULL" or my_statement == None:
       return None
-    return Statement(from_object=my_statement,
-                     free_statements=self.free_statements)
+    return Statement(from_object=my_statement, free_statements=0)
+
+  def next (self):
+    if not self.stream:
+      return 1
+
+    return Redland.librdf_stream_next(self.stream)
 
 # end class Stream
 

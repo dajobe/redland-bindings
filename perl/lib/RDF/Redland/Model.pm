@@ -261,7 +261,8 @@ sub find_statements ($$) {
   
   my(@results)=();
   while(!$user_stream->end) {
-    push(@results, $user_stream->next);
+    push(@results, $user_stream->current);
+    $user_stream->next;
   }
   $user_stream=undef;
 
@@ -284,7 +285,7 @@ sub sources ($$$) {
 
   my(@results)=();
   while(!$user_iterator->end) {
-    push(@results, $user_iterator->get);
+    push(@results, $user_iterator->current);
     $user_iterator->next;
   }
   $user_iterator=undef;
@@ -308,7 +309,7 @@ sub arcs ($$$) {
   
   my(@results)=();
   while(!$user_iterator->end) {
-    push(@results, $user_iterator->get);
+    push(@results, $user_iterator->current);
     $user_iterator->next;
   }
   $user_iterator=undef;
@@ -332,7 +333,7 @@ sub targets ($$$) {
   
   my(@results)=();
   while(!$user_iterator->end) {
-    push(@results, $user_iterator->get);
+    push(@results, $user_iterator->current);
     $user_iterator->next;
   }
   $user_iterator=undef;

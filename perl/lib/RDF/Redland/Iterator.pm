@@ -37,7 +37,7 @@ RDF::Redland::Iterator - Redland RDF Iterator Class
   ...
   my $iterator=$model->targets_iterator($source_node, $arc_node);
   while($iterator && !$iterator->end) {
-    my $node=$iterator->get;
+    my $node=$iterator->current;
     ...
     $iterator->next;
   }
@@ -111,14 +111,14 @@ sub end ($) {
 }
 
 
-=item get
+=item current
 
 Returns the current RDF::Redland::Node object from the iteration
 or undef if the iteration is finished.
 
 =cut
 
-sub get ($) {
+sub current ($) {
   # return a new (1) node (2)owned by the librdf iterator object
   # Reasons: (1) at the user API level the iterator only returns nodes
   #          (2) the node returned is shared with the iterator
