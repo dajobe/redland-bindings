@@ -72,7 +72,8 @@ for s in parser.parse_string_as_stream(rdfxml_string, uri):
   model.add_statement(s)
 
 # add it again just to get some more statements
-parser.parse_into_model(model, uri, uri)
+print "adding statements again with model.load"
+model.load(uri)
 
 
 
