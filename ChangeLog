@@ -2,6 +2,16 @@
 
 	* Snapshotted redland-bindings_0_9_19_1 for 0.9.19.1 release
 
+	* perl/example.pl: Added to_string tests
+
+	* perl/lib/RDF/Redland/Serializer.pm (serialize_model_to_string):
+	Added.
+
+	* perl/example.pl: Added model->to_string check
+
+	* perl/lib/RDF/Redland/Model.pm (to_string):
+	Added to serialize to a string.
+
 	* Makefile.am, LICENSE.html, NOTICE, README.html,
 	redland-bindings.spec.in, LICENSE-2.0.txt, MPL.html: LGPL / Apache
 	2.0 license - remove MPL MPL.html add Apache2 LICENSE-2.0.txt NOTICE
