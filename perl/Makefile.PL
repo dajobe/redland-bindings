@@ -100,6 +100,14 @@ Redland_wrap.c: Redland.i
 EOT
 }
 
+# Ensure only .pm files are installed (since lib tree has CVS and
+# automake Makefile.am files too)
+sub MY::libscan {
+  my($self,$name)=@_;
+  return $name if $name =~ /\.pm$/;
+  undef;
+}
+
 WriteMakefile(
     'NAME'	=> $PACKAGE,
     'AUTHOR'    => 'Dave Beckett <Dave.Beckett@bristol.ac.uk>',
@@ -109,6 +117,7 @@ WriteMakefile(
     'CCFLAGS'   => "-I$SRCDIR",
     'LIBS'      => ["-L$SRCDIR $redland_libs"],
     'OBJECT'    => 'Redland_wrap.o',
+    'MAKEFILE'  => 'Makefile.perl',
     'clean'     => { FILES => "test*.db" },
     'realclean' => { FILES => "Redland_wrap.c Redland_wrap.o Redland.pm" },
 );
