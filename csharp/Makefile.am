@@ -46,7 +46,8 @@ fake_DATA=build-csharp-stamp
 
 SUBDIRS=examples
 
-EXTRA_DIST=README test.cs $(CSHARP_DLL_SRCS)
+EXTRA_DIST=README test.cs $(CSHARP_DLL_SRCS) \
+redland.snk
 
 CLEANFILES=test*db *.exe *.dll test-out.rdf $(CSHARP_CRUFT)
 #MAINTAINERCLEANFILES=
@@ -95,12 +96,22 @@ PNET_GACUTL=ilgac
 #MONO_SN=$(CLIRUN) $(CLI_PREFIX)/sn.exe
 MONO_SN=sn
 
+if MAINTAINER_MODE
 redland.snk:
-	@$(ECHO) "WARNING: making new redland.snk to sign assembly"
-	$(MONO_SN) -k redland.snk
+	@if test ! -r redland.pub; then \
+	  $(ECHO) "ERROR: redland.snk and redland.pub missing"; \
+	  $(ECHO) "NOT creating a new redland.snk"; \
+	  $(ECHO) "Rule to do this is: $(MONO_SN) -k redland.snk"; \
+	  $(ECHO) "ABORTING"; \
+	  exit 1; \
+	fi
 
-sign-mono: Redland.dll redland.snk
-	$(MONO_SN) -q -R Redland.dll redland.snk
+redland.pub: redland.snk
+	$(MONO_SN) -p $? $@
+endif
+
+sign-mono: Redland.dll redland.pub
+	$(MONO_SN) -q -R Redland.dll redland.pub
 
 install-mono: Redland.dll sign-mono
 	$(MONO_GACUTIL) -i Redland.dll -f -package 1.0 -gacdir $(CLI_PREFIX)/lib -root $(CLI_PREFIX)/lib
