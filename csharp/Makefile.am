@@ -61,7 +61,7 @@ SUFFIXES=.cs .dll .exe
 	$(CSHARP_LINK) 
 
 $(CSHARP_DLL): $(CSHARP_DLL_SRCS)
-	$(CSHARP_COMPILE) /target:library $(CSHARP_DLL_SRCS) -out:$@
+	$(CSHARP_COMPILE) -target:library $(CSHARP_DLL_SRCS) -out:$@
 
 build-csharp: build-csharp-stamp
 
@@ -74,7 +74,7 @@ test-csharp: build-csharp-stamp test.exe
 	$(top_builddir)/redland-src-config --run $(CLIRUN) test.exe
 
 test.exe: test.cs Redland.dll
-	$(CSHARP_LINK) test.cs /target:exe /r:Redland.dll /out:$@
+	$(CSHARP_LINK) test.cs -target:exe -r:Redland.dll -out:$@
 
 install-csharp: build-csharp-stamp
 	$(INSTALL_PROGRAM) $(CSHARP_DLL) @libdir@
@@ -83,4 +83,14 @@ clean-local:
 	rm -f build-csharp-stamp $(CSHARP_DLL)
 
 # See this is the fake bit
-install-fakeDATA: install-csharp
+install-fakeDATA: install-csharpM
+
+
+MONO_PREFIX=$(shell $(PKG_CONFIG) mono --variable=prefix)
+
+#GACUTIL=$(CLIRUN) $(MONO_PREFIX)/gacutil.exe
+GACUTIL=gacutil
+
+install-mono: Redland.dll
+	$(GACUTIL) -i Redland.dll -f -package 1.0 -gacdir $(MONO_PREFIX)/lib -root $(MONO_PREFIX)/lib
+ 
