@@ -95,7 +95,7 @@ ModelTest.dll: ModelTest.cs
 
 
 clean-local:
-	rm -rf *.exe *.dll *~ *.xml *.db
+	rm -rf $(CSHARP_TESTS) *~ *.xml *.db
 
 ../Redland.dll:
 	@cd .. && $(MAKE) Redland.dll
