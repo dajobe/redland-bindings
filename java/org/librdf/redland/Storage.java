@@ -32,13 +32,13 @@ public class Storage
   public Storage(World world, String storage_name, String name, 
                  String options_string) 
     {
-      core.librdf_new_storage(world.__get_object(), 
-                              storage_name, name, options_string);
+      this.object=core.librdf_new_storage(world.__get_object(), 
+                                          storage_name, name, options_string);
     }
   
   public Storage(Storage old_storage) 
     {
-      object=core.librdf_new_storage_from_storage(old_storage.object);
+      this.object=core.librdf_new_storage_from_storage(old_storage.object);
     }
 
   protected void finalize() 
