@@ -404,6 +404,21 @@ class Statement:
 
     if statement2.subject.is_resource:
       print "statement2 subject is URI ",statement2.subject.uri
+
+    Statements can also be used as if they are Python lists:
+
+    for statement in parser.parse_as_stream(source):
+      model.add_statement(statement)
+
+    for statement in model.find_statements(s):
+      print statement
+
+    If you need the context, use the context_iter() method which
+    returns a 2-tuple of (statement, context node):
+
+    for s,c in m.find_statements(s):
+      print c
+
     
   """
 
@@ -547,6 +562,11 @@ class Model:
   statements and serializing them to/from syntaxes using the Serializer
   or Parser classes.
 
+  Models can also be used as Python lists to give every triple in the
+  model (via the serialise() method):
+
+  for statement in model:
+    print statement
 
   """
 
