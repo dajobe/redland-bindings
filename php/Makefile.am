@@ -17,21 +17,6 @@
 # See LICENSE.html or LICENSE.txt at the top of this package for the
 # full license terms.
 #
-#
-# There is a lot of fakery going on here in order that libtool deals
-# with building the shared object and dynamically loaded library.
-# libtool is fooled into building a dynamically loaded library called
-# libfake.la which is installed into the working directory.  [Note:
-# Unlike ruby that needs -module]
-#
-# This libfake.so is then suitable for loading dynamically and
-# is copied to redland.so to match the PHP naming scheme.  (Note
-# I do not know what Darwin/OSX requires so there is no special
-# actions here like for Tcl and Ruby)
-#
-# To stop recompiles when either of the above are built, a
-# stamp file $(PHP_PACKAGE)-stamp is used to control this.
-#
 
 RELEASE=@VERSION_RELEASE@
 
@@ -51,26 +36,29 @@ EXTRA_DIST=test.php example.php php.ini \
 $(SWIG_OUTPUTS)
 
 CLEANFILES=*.db core* \
-$(PHP_PACKAGE)_wrap.lo $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
-redland.so \
-libfake*
+$(PHP_PACKAGE)_wrap.so $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
+$(PHP_PACKAGE).so $(PHP_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(PHP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -php4 -noproxy -module $(PHP_PACKAGE) -o $@ $<
 	rm -f $(PHP_PACKAGE).php
 
-$(PHP_PACKAGE)_wrap.lo: $(PHP_PACKAGE)_wrap.c
-	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf `php-config --includes` -prefer-pic -c $(INCLUDES) $< -o $@
+$(PHP_PACKAGE)_wrap.so: $(PHP_PACKAGE)_wrap.c
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf `php-config --includes` $(PHP_PACKAGE)_wrap.c -c -o $@
 
-#	$(LIBTOOL) --mode=link $(CC) $(PHP_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la -o $@
 $(PHP_PACKAGE).so: $(PHP_PACKAGE)-stamp
-$(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la
-	destdir=`pwd`; \
-	$(LIBTOOL) --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o libfake.la -module -rpath $$destdir $(PHP_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la; \
-	$(LIBTOOL) --mode=install install libfake.la $(DESTDIR)$$destdir/libfake.la
-	$(INSTALL_PROGRAM) libfake.so $(PHP_PACKAGE).so
-	rm -rf .libs libfake*
+$(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.so
+	@if test `uname` = Darwin; then \
+	  args=" -bundle -flat_namespace -undefined suppress"; \
+	else \
+	  args=" -shared"; \
+	fi; \
+	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PHP_PACKAGE)_wrap.so `$(top_srcdir)/redland-src-config --libs` -o $(PHP_PACKAGE).so; \
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PHP_PACKAGE)_wrap.so `$(top_srcdir)/redland-src-config --libs` -o $(PHP_PACKAGE).so
+	if test `uname` = Darwin; then \
+	  $(INSTALL_PROGRAM) $(PHP_PACKAGE).so $(PHP_PACKAGE).bundle; \
+	fi
 	touch $(PHP_PACKAGE)-stamp
 
 check-local: test-php
@@ -78,8 +66,4 @@ check-local: test-php
 test-php: $(PHP_PACKAGE).so $(srcdir)/test.php
 # I do not know why this is needed. PHP seems to ignore the global
 # libraries when not installed
-	l=.libs; here=`pwd`; \
-	rm -rf $$l && mkdir $$l; \
-	ln -s $(phpdir)/* $$here/$(PHP_PACKAGE).so $$l
-# The PHP command might not even be installed, so ignore errors
 	-$(PHP) $(srcdir)/test.php
