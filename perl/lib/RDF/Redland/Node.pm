@@ -443,6 +443,25 @@ sub equals ($$) {
   &RDF::Redland::CORE::librdf_node_equals($self->{NODE}, $node->{NODE});
 }
 
+
+# Ensure the thing given is a Redland node, promoting it if possible
+# from other perl objects.
+sub _ensure ($) {
+  my $node=shift;
+  my $class=ref($node);
+  if(UNIVERSAL::isa($class, 'RDF::Redland::Node')) {
+    $node=&RDF::Redland::CORE::librdf_new_node_from_node($node->{NODE});
+  } elsif(UNIVERSAL::isa($class, 'RDF::Redland::URI')) {
+    $node=&RDF::Redland::CORE::librdf_new_node_from_uri($RDF::Redland::World->{WORLD},$node->{URI});
+  } elsif (UNIVERSAL::isa($class, 'URI')) {
+    $node=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$node->as_string);	
+  } else {
+    $node=undef;
+  }
+  return $node;
+}
+
+
 =pod
 
 =back
