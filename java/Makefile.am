@@ -114,20 +114,20 @@ test-java: test1 test2
 test1: test1.class $(JAVA_JAR)
 	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) test1
 
-test1.class: test1.java compiled-java-classes
-	$(JAVAC) -classpath $(CLASSPATH) test1.java
+test1.class: test1.java $(JAVA_JAR)
+	$(JAVAC) -classpath $(JAVA_JAR) test1.java
 
 test2: test2.class $(JAVA_JAR)
 	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) test2
 
-test2.class: test2.java compiled-java-classes
-	$(JAVAC) -classpath $(CLASSPATH) test2.java
+test2.class: test2.java $(JAVA_JAR)
+	$(JAVAC) -classpath $(JAVA_JAR) test2.java
 
 example: example.class $(JAVA_JAR)
 	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) example
 
 example.class: example.java $(JAVA_JAR)
-	$(JAVAC) -jar $(JAVA_JAR) example.java
+	$(JAVAC) -classpath $(JAVA_JAR) example.java
 
 $(JAVA_SHARED_LIB): $(JAVA_MODULE)_wrap.c
 	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. -I/usr/local/include/linux $? -static `../redland-src-config --cflags` `../redland-src-config --libs` -o $@
