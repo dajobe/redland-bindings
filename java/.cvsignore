@@ -1,9 +1,10 @@
+*.class
+*.db
+*.so
+*_wrap.c
 .cvsignore
+.deps
 Makefile
 Makefile.in
-*.class
-*.so
-not-used
-*.db
-*_wrap.c
 core.java
+not-used
