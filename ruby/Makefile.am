@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2004 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2005 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.bris.ac.uk/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -99,8 +99,15 @@ test-example: $(RUBY_PACKAGE).so $(srcdir)/example.rb
 	$(RUN)$(RUBY) -I. -Ilib \
 	  $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
 
-rdoc:
-	outdir=html; \
-	rm -rf $$outdir; \
-	rdoc --fmt html --image-format png --op $$outdir --main index.html --title "Redland Ruby API" $(srcdir)/lib
+docs: rdoc
 
+rdoc: rdoc.stamp
+rdoc.stamp:
+	mkdir -p html; \
+	outdir=`cd html; pwd`; \
+	rm -rf $$outdir; \
+	cd $(srcdir)/lib; \
+	rdoc --quiet --fmt html --charset utf8 --inline-source --image-format png --op $$outdir --main index.html --title "Redland Ruby API RDoc" --exclude convert_owl.rb --exclude constants.rb --exclude convertfoaf.rb
+
+clean-local:
+	rm -rf html rdoc.stamp
