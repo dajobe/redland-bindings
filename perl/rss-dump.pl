@@ -134,6 +134,21 @@ for my $channel ($rss->channels) {
   print "  link is ",($channel->link ? $channel->link->as_string : 'MISSING'),"\n";
   print "  desc is ",$channel->description->as_string,"\n" if $channel->description;
 
+  while(my($ns_label,$ns_prefix)=each %namespaces) {
+    my(@props)=$channel->properties_with_ns_prefix($ns_prefix);
+    if(@props) {
+      print "  $ns_label properties from $ns_prefix found:\n";
+      for my $property (@props) {
+	my $value=$channel->property($property);
+	if($value->type == $RDF::Node::Type_Resource) {
+	  print "    ",$property->uri->as_string," : URI ",$value->uri->as_string,"\n";
+	} else {
+	  print "    ",$property->uri->as_string," : ",$value->as_string,"\n";
+	}
+      }
+    }
+  }
+
   my(@items)=$channel->items;
   print "  Found ",scalar(@items)," items in channel\n";
 
