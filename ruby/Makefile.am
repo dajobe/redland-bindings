@@ -31,6 +31,8 @@ RUBY_PACKAGE=Redland
 SWIG_OUTPUTS=$(RUBY_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
+rubylib=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']")
+
 rubydir=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']")
 ruby_DATA=Redland.so
 
@@ -47,8 +49,7 @@ $(RUBY_PACKAGE)_wrap.o: $(RUBY_PACKAGE)_wrap.c
 	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -prefer-pic -I$(top_srcdir)/librdf -I$(rubydir) $< -o $@
 
 $(RUBY_PACKAGE).so: $(RUBY_PACKAGE)_wrap.o
-	rubylib=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']"`; \
-	$(LIBTOOL) --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -shared $< $$rubylib $(top_builddir)/librdf/librdf.la -o $@
+	$(LIBTOOL) --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -shared $< $(rubylib) $(top_builddir)/librdf/librdf.la -o $@
 
 check-local: test-ruby
 
