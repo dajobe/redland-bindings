@@ -91,6 +91,7 @@ sub new ($$) {
 
 # DESTRUCTOR
 sub DESTROY ($) {
+  warn "RDF::Iterator DESTROY\n" if $RDF::Debug;
   &Redland::librdf_free_iterator($shift->{ITERATOR});
 }
 
@@ -98,8 +99,10 @@ sub have_elements ($) {
   &Redland::librdf_iterator_have_elements(shift->{ITERATOR});
 }
 
-sub get_next ($$) {
-  &Redland::librdf_iterator_get_next(shift->{ITERATOR});
+sub next ($$) {
+  # return a new node owned by the librdf iterator object
+  # Reason - at the user API level the iterator only returns nodes
+  RDF::Node->_new_from_object(&Redland::librdf_iterator_get_next(shift->{ITERATOR}));
 }
 
 1;
