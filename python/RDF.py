@@ -801,6 +801,47 @@ class Parser:
 
 # end class Parser
 
+class Serializer:
+
+  def __init__(self, name="", mime_type="application/rdf+xml", uri=None):
+    """Create an RDF Serializer (constructor)."""
+    global _world
+    global _debug    
+    if _debug:
+      print "Creating RDF.Serializer name=",name,"mime_type=",mime_type, \
+        "uri=",uri
+
+    if uri!=None:
+        uri=uri._reduri
+
+    self._serializer=Redland.librdf_new_serializer(_world._world, name,
+        mime_type, uri)
+
+  def __del__(self):
+    global _debug    
+    if _debug:
+      print "Destroying RDF.Serializer"
+    if self._serializer:
+      Redland.librdf_free_serializer(self._serializer)
+
+  def serialize_model_to_file (self, name, base_uri=None, model):
+    if base_uri==None:
+        base_uri=uri
+    return Redland.librdf_serializer_serialize_model_to_file(self._serializer,
+      name, base_uri._reduri, model._model)
+
+  def get_feature(self, uri):
+    if not isinstance(uri, Uri):
+      uri=Uri(string=uri)
+    return Redland.librdf_serializer_get_feature(self._serializer,uri._reduri)
+
+  def set_feature(self, uri, value):
+    if not isinstance(uri, Uri):
+      uri=Uri(string=uri)
+    Redland.librdf_serializer_set_feature(self._serializer,uri._reduri,value)
+
+# end class Serializer
+
 # global init, create our world.
 
 _world=World()
