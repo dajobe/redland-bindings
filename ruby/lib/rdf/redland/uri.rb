@@ -1,5 +1,5 @@
-require 'redland'
-require 'uri'
+require 'rdf/redland'
+
 module Redland
   class Uri
     
