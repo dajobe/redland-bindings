@@ -229,7 +229,6 @@ Creates a new RDF Node using the following fields:
     if _debug:
       print "Creating RDF.Node args=",args
     self._node=None
-    self._free_me=1
 
     if args.has_key('uri_string'):
       self._node=Redland.librdf_new_node_from_uri_string(_world._world,
@@ -264,11 +263,10 @@ Creates a new RDF Node using the following fields:
       self._node=Redland.librdf_new_node_from_blank_identifier(_world._world, args['blank'])
 
     elif args.has_key('from_object'):
-      # internal constructor to build an object from a node created
-      # by librdf e.g. from the result of a iterator.next() operation
-      # this is always shared (at present) so should not be freed
-      self._node=args['from_object']
-      self._free_me=args['free_node']
+      if args.has_key('do_not_copy'):
+        self._node=args['from_object']
+      else:
+        self._node=Redland.librdf_new_node_from_node(args['from_object'])
     else:
       self._node=Redland.librdf_new_node(_world._world)
 
@@ -277,7 +275,7 @@ Creates a new RDF Node using the following fields:
     global _debug    
     if _debug:
       print "Destroying RDF.Node"
-    if self._node and self._free_me:
+    if self._node:
       if _debug:
         print "Deleting Redland node object"
       Redland.librdf_free_node(self._node)
@@ -407,7 +405,6 @@ Copy an existing Statement s1.
     if _debug:
       print "Creating RDF.Statement object args",args
     self._statement=None
-    self._free_me=1
 
     if args.has_key('statement'):
         self._statement=Redland.librdf_new_statement_from_statement(
@@ -436,12 +433,8 @@ Copy an existing Statement s1.
         self._statement=Redland.librdf_new_statement_from_nodes(
             _world._world, s, p, o)
 
-    elif args.has_key('from_object') and args.has_key('free_statements'): 
-      # internal constructor to build an object from a statement created
-      # by librdf e.g. from the result of a stream.next operation
-      self._statement=args['from_object']
-      self._free_me=args['free_statements']
-      
+    elif args.has_key('from_object'):
+      self._statement=Redland.librdf_new_statement_from_statement(args['from_object'])
     else:
       self._statement=Redland.librdf_new_statement(_world._world)
 
@@ -449,7 +442,7 @@ Copy an existing Statement s1.
     global _debug    
     if _debug:
       print "Destroying RDF.Statement"
-    if self._statement and self._free_me:
+    if self._statement:
       if _debug:
         print "Deleting Redland statement object"
       Redland.librdf_free_statement(self._statement)
@@ -475,12 +468,11 @@ Copy an existing Statement s1.
         self.__dict__[name]=value
 
   def _wrap_node(self, rednode):
-    return Node(free_node=1, from_object=
-        Redland.librdf_new_node_from_node(rednode))
+    return Node(from_object=rednode)
 
   def _get_subject(self):
-    return self._wrap_node(
-        Redland.librdf_statement_get_subject(self._statement))
+    return Node(from_object=self._wrap_node(
+        Redland.librdf_statement_get_subject(self._statement)))
 
   def _get_object(self):
     return self._wrap_node(
@@ -502,7 +494,7 @@ Copy an existing Statement s1.
         Redland.librdf_statement_set_object(self._statement, None)
     else:
         Redland.librdf_statement_set_object(self._statement,
-             Redland.librdf_new_node_from_node(value._node))
+            Redland.librdf_new_node_from_node(value._node))
 
   def _set_predicate(self, value):
     if value==None:
@@ -669,7 +661,7 @@ Create a model using an in memory storage.
         my_stream=Redland.librdf_model_serialise(self._model)
     else:
         my_stream=Redland.librdf_model_context_serialize(self._model,context._node)
-    return Stream(my_stream,self,1)
+    return Stream(my_stream,self)
 
   def find_statements (self,statement):
     """Return a Stream of Statements matching the given
@@ -677,7 +669,7 @@ Create a model using an in memory storage.
        partial statement match any node in the Model."""
     my_stream=Redland.librdf_model_find_statements(self._model,
         statement._statement)
-    return Stream(my_stream,self,0)
+    return Stream(my_stream,self)
 
   def sources (self,arc,target):
     """Return a sequence of Node s that are the source
@@ -693,7 +685,7 @@ Create a model using an in memory storage.
 
     results=[]
     while not user_iterator.end():
-      results.append(Node(node=user_iterator.current()))
+      results.append(user_iterator.current())
       user_iterator.next()
 
     user_iterator=None
@@ -713,7 +705,7 @@ Create a model using an in memory storage.
 
     results=[]
     while not user_iterator.end():
-      results.append(Node(node=user_iterator.current()))
+      results.append(user_iterator.current())
       user_iterator.next()
 
     user_iterator=None
@@ -733,7 +725,7 @@ Create a model using an in memory storage.
 
     results=[]
     while not user_iterator.end():
-      results.append(Node(node=user_iterator.current()))
+      results.append(user_iterator.current())
       user_iterator.next()
 
     user_iterator=None
@@ -770,7 +762,7 @@ Create a model using an in memory storage.
     if not my_node:
       return None
     else:
-      return Node(from_object=my_node, free_node=1)
+      return Node(from_object=my_node, do_not_copy=1)
 
   def get_arc (self,source,target):
     """Return one Node in the Model matching (source, ?, target)."""
@@ -779,7 +771,7 @@ Create a model using an in memory storage.
     if not my_node:
       return None
     else:
-      return Node(from_object=my_node, free_node=1)
+      return Node(from_object=my_node, do_not_copy=1)
 
   def get_target (self,source,arc):
     """Return one Node in the Model matching (source, arc, ?)."""
@@ -788,7 +780,7 @@ Create a model using an in memory storage.
     if not my_node:
       return None
     else:
-      return Node(from_object=my_node, free_node=1)
+      return Node(from_object=my_node, do_not_copy=1)
 
 # end class Model
 
@@ -841,30 +833,24 @@ please use 'not iterator.end' instead."""
     return Redland.librdf_iterator_have_elements(self._iterator)
 
   def current (self):
-    """Return a SHARED copy of the current object on the Iterator"""
+    """Return the current object on the Iterator"""
     my_node=Redland.librdf_iterator_get_object(self._iterator)
     if my_node == "NULL" or my_node == None:
       return None
 
-    # return a new (1) node (2)owned by the librdf iterator object
-    # Reasons: (1) at the user API level the iterator only returns nodes
-    #          (2) the node returned is shared with the iterator
-    node=Node(from_object=my_node, free_node=0)
-    return node
+    return Node(from_object=my_node)
 
   def next (self):
     """Move to the next object on the Iterator"""
     Redland.librdf_iterator_next(self._iterator)
 
   def context (self):
-    """Return a SHARED copy of the context Node of the current object on the Iterator"""
+    """Return the context Node of the current object on the Iterator"""
     my_node=Redland.librdf_iterator_get_context(self._iterator)
     if my_node == "NULL" or my_node == None:
       return None
 
-    # return a new shared node owned by the librdf iterator object
-    node=Node(from_object=my_node, free_node=0)
-    return node
+    return Node(from_object=my_node)
 
 # end class Iterator
 
@@ -971,21 +957,18 @@ class Stream:
 
      """
 
-  def __init__(self, object, creator, free_statements):
+  def __init__(self, object, creator):
     """Create an RDF Stream (constructor)."""
     global _debug    
     if _debug:
       print "Creating RDF.Stream for object",object, \
-        "creator",creator,"free_statements",free_statements
+        "creator",creator
 
-    self.stream=object;
+    self._stream=object;
 
     # Keep around a reference to the object that created the stream
     # so that Python does not destroy them before us.
     self.creator=creator;
-
-    # should the resulting statements be freed?
-    self.free_statements=free_statements;
 
   def context_iter(self):
     """Return an iterator over this tstream that
@@ -999,47 +982,45 @@ class Stream:
     global _debug    
     if _debug:
       print "Destroying RDF.Stream"
-    if self.stream:
-      Redland.librdf_free_stream(self.stream)
+    if self._stream:
+      Redland.librdf_free_stream(self._stream)
 
   def end (self):
     """Return true if the stream is exhausted"""
-    if not self.stream:
+    if not self._stream:
       return 1
-    return Redland.librdf_stream_end(self.stream)
+    return Redland.librdf_stream_end(self._stream)
 
   def current (self):
-    """Return a SHARED copy of the current Statement on the Stream"""
-    if not self.stream:
+    """Return the current Statement on the Stream"""
+    if not self._stream:
       return None
 
-    # return a statement wrapping a shared librdf_statement
-    my_statement=Redland.librdf_stream_get_object(self.stream)
+    my_statement=Redland.librdf_stream_get_object(self._stream)
     if my_statement == "NULL" or my_statement == None:
       return None
-    return Statement(from_object=my_statement, free_statements=0)
+    return Statement(from_object=my_statement)
 
   def next (self):
     """Move to the next Statement on the Stream"""
-    if not self.stream:
+    if not self._stream:
       return 1
 
-    return Redland.librdf_stream_next(self.stream)
+    return Redland.librdf_stream_next(self._stream)
 
   def context (self):
-    """Return a SHARED copy of the context Node of the current object on the Stream"""
-    if not self.stream:
+    """Return the context Node of the current object on the Stream"""
+    if not self._stream:
       return 1
 
-    my_node=Redland.librdf_stream_get_context(self.stream)
+    my_node=Redland.librdf_stream_get_context(self._stream)
     if my_node == "NULL" or my_node == None:
       return None
 
-    # return a new shared node owned by the librdf iterator object
-    node=Node(from_object=my_node, free_node=0)
-    return node
+    return Node(from_object=my_node)
 
 # end class Stream
+
 
 class Storage:
 
@@ -1270,7 +1251,7 @@ optional.  When any are given, they must all match.
         uri._reduri, base_uri._reduri)
     if my_stream==None:
       return None
-    return Stream(my_stream, self, 1)
+    return Stream(my_stream, self)
 
   def parse_into_model (self, model, uri, base_uri=None):
     """"Parse into the Model model from the content at
@@ -1295,6 +1276,7 @@ optional.  When any are given, they must all match.
     Redland.librdf_parser_set_feature(self._parser,uri._reduri,value)
 
 # end class Parser
+
 
 class Serializer:
   """ Redland Syntax Serializer Class
