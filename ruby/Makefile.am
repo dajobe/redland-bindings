@@ -54,7 +54,7 @@ $(RUBY_PACKAGE).so: $(RUBY_PACKAGE)_wrap.o
 check-local: test-ruby
 
 test-ruby: $(RUBY_PACKAGE).so
-	$(RUBY) example.rb file:../perl/dc.rdf raptor
+	$(RUBY) -I.libs example.rb file:../perl/dc.rdf raptor
 
 clean-local:
 	rm -f $(RUBY_PACKAGE).so
