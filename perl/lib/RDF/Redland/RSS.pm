@@ -301,8 +301,10 @@ sub as_xhtml ($%) {
   my $url=$opts{url};
 
   sub format_literal ($) {
+    my $string=shift;
+    return 'UNDEFINED' if !$string;
     use HTML::Entities;
-    my $string=shift->literal_value_as_latin1;
+    $string=$string->literal_value_as_latin1;
     encode_entities($string, "\200-\377");
     $string;
   }
