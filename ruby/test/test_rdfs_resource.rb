@@ -1,7 +1,7 @@
 require 'test/unit'
-require 'rdf'
-require 'rdf/constants'
-require 'rdfs/rdfs_resource.rb'
+require 'rdf/redland'
+require 'rdf/redland/constants'
+require 'rdf/redland/schemas/rdfs'
 
 class TestRDFResource < Test::Unit::TestCase
   include Redland::RDFS
@@ -13,7 +13,8 @@ class TestRDFResource < Test::Unit::TestCase
 
   def test_comment()
     model = Model.new()
-    resource = RDFSResource.new("http://www.faa.gov/DominicSisneros",model)
+    resource = model.create_resource("http://www.faa.gov/DominicSisneros")
+    	resource.extend RDFS
     	resource.comment = "This is a new comment"
     assert_equal("This is a new comment",resource.get_property(RDFS_COMMENT).value)
     assert_equal("This is a new comment",resource.comment)	
@@ -23,7 +24,8 @@ class TestRDFResource < Test::Unit::TestCase
   
   def test_label()
   	model = Model.new()
-  	resource = RDFSResource.new("http://class")
+  	resource = model.create_resource("http://class")
+  	resource.extend RDFS
   	resource.add_label('First label')
   	assert_equal('First label',resource.label.value)
   	resource.add_label('A new label')
@@ -35,7 +37,8 @@ class TestRDFResource < Test::Unit::TestCase
   
   	def test_get_label_language()
   		model = Model.new()
-  		resource = RDFSResource.new('http://class')
+  		resource = model.create_resource('http://class')
+  		resource.extend RDFS
   		resource.add_label('Hello','en')
   		resource.add_label('Hola','sp')
   		assert_equal('Hello',resource.label('en').value)
@@ -45,7 +48,8 @@ class TestRDFResource < Test::Unit::TestCase
     
     	def test_type
       model = Model.new()
-      resource = RDFSResource.new('http://class')
+      resource = model.create_resource('http://class')
+      resource.extend RDFS
       resource.type = Resource.new('http://faa.gov/#Project')
       assert(resource.type?( Resource.new('http://faa.gov/#Project') ))
       #assert_equal(Resource.new('http://faa.gov/#Project'),resource.type)

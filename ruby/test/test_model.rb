@@ -1,12 +1,12 @@
 require 'test/unit'
-require 'rdf'
-require 'rdf/constants'
-require 'rdf/model'
-require 'rdf/foaf'
+require 'rdf/redland'
+require 'rdf/redland/constants'
+require 'rdf/redland/model'
+require 'rdf/redland/schemas/foaf'
 
 class TestModel < Test::Unit::TestCase
   include Redland
-  include FOAF
+ 
   def setup
     @foaf = Namespace.new('http://xmlns.com/foaf/0.1/')
     @faa = Namespace.new("http://www.faa.gov/faa#")

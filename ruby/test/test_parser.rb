@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'rdf'
+require 'rdf/redland'
 
 class TestParser < Test::Unit::TestCase
   include Redland

@@ -1,7 +1,7 @@
 require 'test/unit'
-require 'rdf'
-require 'rdf/constants'
-require 'rdf/resource'
+require 'rdf/redland'
+require 'rdf/redland/constants'
+require 'rdf/redland/resource'
 
 class TestResource < Test::Unit::TestCase
   include Redland
@@ -42,7 +42,7 @@ class TestResource < Test::Unit::TestCase
     assert_equal("801-320-2377",resource.get_property(@foaf['phone']).to_s)
   end
 
-  def create_resource(model)
+  def load_resource(model)
     resource = model.create_resource("http://www.faa.gov/DominicSisneros")
     resource.add_property(@foaf['name'],'Dominic').
              add_property(@foaf['phone'],'801-320-2377').
@@ -54,7 +54,7 @@ class TestResource < Test::Unit::TestCase
 
   def test_remove_predicate()
     model = Model.new
-    resource = create_resource(model)
+    resource = load_resource(model)
     assert_equal(5,resource.get_properties.size)
     assert_equal('Dominic',resource.get_property(@foaf['name']).to_s)
     resource.delete_property(@foaf['name'])

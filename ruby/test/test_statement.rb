@@ -1,6 +1,6 @@
 require 'test/unit'
-require 'rdf'
-require 'rdf/node'
+require 'rdf/redland'
+require 'rdf/redland/node'
 
 
 class TestStatement < Test::Unit::TestCase

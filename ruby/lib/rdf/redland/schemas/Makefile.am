@@ -1,6 +1,6 @@
 # -*- Mode: Makefile -*-
 #
-# Makefile.am - automake file for Ruby RDF for Redland
+# Makefile.am - automake file for Ruby RDF classes for Redland
 #
 # $Id$
 #
@@ -18,6 +18,4 @@
 # full license terms.
 #
 
-SUBDIRS=rdf
-
-EXTRA_DIST=redland.rb
+EXTRA_DIST=foaf.rb owl.rb rdfs.rb

@@ -1,4 +1,4 @@
-require 'rdf'
+require 'rdf/redland'
 require 'test/unit'
 
 class TestStore < Test::Unit::TestCase

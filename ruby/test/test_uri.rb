@@ -1,6 +1,6 @@
 require 'test/unit'
-require 'rdf'
-require 'rdf/uri'
+require 'rdf/redland'
+require 'rdf/redland/uri'
 
 
 class TestUri < Test::Unit::TestCase

@@ -18,6 +18,5 @@
 # full license terms.
 #
 
-EXTRA_DIST= constants.rb convert_owl.rb convertfoaf.rb dc.rb foaf.rb	\
-model.rb node.rb parser.rb resource.rb serializer.rb statement.rb	\
-store.rb stream.rb uri.rb util.rb
+EXTRA_DIST= redland.rb
+SUBDIRS=redland

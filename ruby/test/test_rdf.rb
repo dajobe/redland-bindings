@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'rdf'
+require 'rdf/redland'
 
 include Redland
 
