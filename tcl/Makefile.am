@@ -51,5 +51,7 @@ $(TCL_PACKAGE).so: $(TCL_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la
 pkgIndex.tcl: $(TCL_PACKAGE).so
 	echo "pkg_mkIndex . $(TCL_PACKAGE).so" | $(TCL)
 
-check-local: $(TCL_PACKAGE).so
+check-local: test-tcl
+
+test-tcl: $(TCL_PACKAGE).so
 	$(TCL) test.tcl
