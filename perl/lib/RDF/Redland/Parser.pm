@@ -86,6 +86,8 @@ sub new ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{PARSER}=&Redland::librdf_new_parser($name);
+  return undef if !$self->{PARSER};
+
   bless ($self, $class);
   return $self;
 }
@@ -103,7 +105,7 @@ sub parse_as_stream ($$) {
 
 sub parse_into_model ($$$) {
   my($self,$uri,$model)=@_;
-  return &Redland::librdf_parser_parse_into_model($self->{MODEL},$uri->{URI},$model->{MODEL});
+  return &Redland::librdf_parser_parse_into_model($self->{PARSER},$uri->{URI},$model->{MODEL});
 }
 
 1;
