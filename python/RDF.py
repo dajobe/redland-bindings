@@ -27,8 +27,13 @@ See the perl API documentation for inspiration :)
 
 """
 
+import sys
+import string
 
-__version__ = "0.4"
+
+__all__ = ["world", "node",  "statement",  "model",  "iterator",  "stream",  "storage",  "uri",  "parser"]
+
+__version__ = "0.5"
 
 # Package variables [globals]
 #   Python style says to use _ to prevent exporting
@@ -40,9 +45,6 @@ __version__ = "0.4"
 _debug = 0
 _world = None
 
-
-import sys
-import string
 
 import Redland;
 
@@ -171,9 +173,13 @@ class node:
     """Get a string representation of an RDF Node."""
     return Redland.librdf_node_to_string(self.node)
 
-  def equals(self,node):
-    """Compare RDF Node to another RDF Node."""
-    return Redland.librdf_node_equals(self.node, node.node)
+  def __eq__ (self,other):
+    """Equality of an RDF Node compared to another RDF Node."""
+    return (Redland.librdf_node_equals(self.node, other.node) != 0)
+
+  def __ne__ (self,other):
+    """Inequality of an RDF Node compared to another RDF Node."""
+    return (Redland.librdf_node_equals(self.node, other.node) == 0)
 
 # end class node
 
@@ -223,13 +229,13 @@ class statement:
 	predicate.node=None
       if object:
 	object.node=None
-
+ 
     elif args.has_key('from_object') and args.has_key('free_statements'): 
       # internal constructor to build an object from a statement created
       # by librdf e.g. from the result of a stream.next operation
       self.statement=args['from_object']
       self.free_me=args['free_statements']
-
+      
     else:
       self.statement=Redland.librdf_new_statement(_world.world)
 
@@ -342,20 +348,65 @@ class model:
     my_stream=Redland.librdf_model_find_statements(self.model, statement.statement)
     return stream(my_stream,self,0)
 
-  # FIXME: Must add versions of get_sources/arcs/targets
-  # returning python lists of node objects
+  def sources (self,arc,target):
+    my_iterator=Redland.librdf_model_get_sources(self.model, arc.node, target.node)
+    if my_iterator is None:
+      return []
+
+    user_iterator=iterator(my_iterator,self,arc,target)
+    if user_iterator is None:
+      return []
+
+    results=[]
+    while not user_iterator.end():
+      results.append(user_iterator.next())
+
+    user_iterator=None
+    return results
+
+  def arcs (self,source,target):
+    my_iterator=Redland.librdf_model_get_arcs(self.model, source.node, target.node)
+    if my_iterator is None:
+      return []
+
+    user_iterator=iterator(my_iterator,self,source,target)
+    if user_iterator is None:
+      return []
+
+    results=[]
+    while not user_iterator.end():
+      results.append(user_iterator.next())
+
+    user_iterator=None
+    return results
+
+  def targets (self,source,arc):
+    my_iterator=Redland.librdf_model_get_targets(self.model, source.node, arc.node)
+    if my_iterator is None:
+      return []
+
+    user_iterator=iterator(my_iterator,self,source,arc)
+    if user_iterator is None:
+      return []
+
+    results=[]
+    while not user_iterator.end():
+      results.append(user_iterator.next())
+
+    user_iterator=None
+    return results
 
   def get_sources_iterator (self,arc,target):
     my_iterator=Redland.librdf_model_get_sources(self.model, arc.node, target.node)
-    return iterator(my_iterator,self)
+    return iterator(my_iterator,self,arc,target)
 
   def get_arcs_iterator (self,source,target):
     my_iterator=Redland.librdf_model_get_arcs(self.model, source.node, target.node)
-    return iterator(my_iterator,self)
+    return iterator(my_iterator,self,source,target)
 
   def get_targets_iterator (self,source,arc):
     my_iterator=Redland.librdf_model_get_targets(self.model, source.node, arc.node)
-    return iterator(my_iterator,self)
+    return iterator(my_iterator,self,source,arc)
 
   def get_source (self,arc,target):
     my_node=Redland.librdf_model_get_source(self.model, arc.node, target.node)
@@ -384,7 +435,7 @@ class model:
 class iterator:
 
   # CONSTRUCTOR
-  def __init__(self,object,creator):
+  def __init__(self,object,creator1=None,creator2=None,creator3=None):
     """Create an RDF Iterator (constructor)."""
     global _debug    
     if _debug:
@@ -392,7 +443,9 @@ class iterator:
     self.iterator=object;
     # Keep around a reference to the object that created the iterator
     # so that python does not destroy us before them.
-    self.creator=creator;
+    self.creator=creator1;
+    self.creator2=creator2;
+    self.creator3=creator3;
 
   # DESTRUCTOR
   def __del__(self):
@@ -405,7 +458,7 @@ class iterator:
     return Redland.librdf_iterator_end(self.iterator)
 
   def have_elements (self):
-    print "RDF.iterator method have_elements is deprecated, please use !iterator.end instead"
+    print "RDF.iterator method have_elements is deprecated, please use 'not iterator.end' instead"
     return Redland.librdf_iterator_have_elements(self.iterator)
 
   def next (self):
@@ -415,7 +468,7 @@ class iterator:
     # return a new (1) node (2)owned by the librdf iterator object
     # Reasons: (1) at the user API level the iterator only returns nodes
     #          (2) the node returned is shared with the iterator
-    return node(from_object=my_node)
+    return node(from_object=my_node, free_node=0)
 
 #end class iterator
 
@@ -508,9 +561,6 @@ class uri:
     if args.has_key('string'):
      self.uri=Redland.librdf_new_uri(_world.world, args['string'])
     elif args.has_key('uri'):
-      # FIXME: If the URI is a python URI ... need to use the above constructor
-      # if isa(uri, <python uri object>):
-      #   self.uri=Redland.librdf_new_uri(_world.world, uri.as_string)
       self.uri=Redland.librdf_new_uri_from_uri(args['uri'].uri)
 
   # DESTRUCTOR
@@ -527,9 +577,13 @@ class uri:
     """Get a string representation of an RDF URI."""
     return Redland.librdf_uri_to_string(self.uri)
 
-  def equals(self,uri):
-    """Compare RDF URI to another RDF URI."""
-    return Redland.librdf_uri_equals(self.uri, uri.uri)
+  def __eq__(self,other):
+    """Equality of RDF URI to another RDF URI."""
+    return (Redland.librdf_uri_equals(self.uri, other.uri) != 0)
+
+  def __ne__(self,other):
+    """Inequality of RDF URI to another RDF URI."""
+    return (Redland.librdf_uri_equals(self.uri, other.uri) == 0)
 
 # end class uri
 
@@ -565,8 +619,8 @@ class parser:
     return Redland.librdf_parser_parse_into_model(self.parser,uri.uri,base_uri.uri,model.model)
 
   def feature (self,uri,value=None):
-    # FIXME: if uri not <an RDF.uri object>:
-    #uri=RDF.uri(string=uri)  
+    if uri is not RDF.uri:
+      uri=RDF.uri(string=uri)
 
     if not value:
       return Redland.librdf_parser_get_feature(self.parser,uri.uri)
