@@ -485,7 +485,7 @@ class Model:
   """Redland Graph class
 
     import RDF
-    model1=RDF.model(storage=s)
+    m1=RDF.Model(storage=s)
 
   The main interface to the Redland RDF graph (formed from triples, or
   RDF statements).  There are many methods for adding, removing, querying
@@ -846,6 +846,17 @@ class Stream:
 
 class Storage:
 
+  """Redland triple storage class
+
+     import RDF
+     storage=RDF.Storage(storage_name="memory")
+
+  The Redland abstraction for storing RDF graphs as Statement s.
+
+  There are no user methods (can only be constructed).
+
+  """
+
   def __init__(self, **args):
     """Create an RDF Storage (constructor).
 
@@ -909,7 +920,8 @@ class Uri:
   uri1=RDF.Uri(string="http://example.com/")
   uri2=RDF.Uri(uri=uri1)
 
-"""
+  """
+  
   def __init__(self, **args):
     """Create an RDF URI (constructor).
 
