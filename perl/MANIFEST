@@ -1,16 +1,29 @@
-MANIFEST		This file
-Makefile.PL		The Makefile generator (via MakeMaker)
-Redland.pm		Redland Interface module
-Redland_wrap.c		Generated SWIG C file
-lib/RDF.pm		RDF Module
-lib/RDF/Iterator.pm	RDF::Iterator Module
-lib/RDF/Model.pm	RDF::Model Module
-lib/RDF/Node.pm		RDF::Node Module
-lib/RDF/Parser.pm	RDF::Parser Module
-lib/RDF/RSS.pm		RDF::RSS Module
-lib/RDF/Statement.pm	RDF::Statement Module
-lib/RDF/Storage.pm	RDF::Storage Module
-lib/RDF/Stream.pm	RDF::Stream Module
-lib/RDF/URI.pm		RDF::URI Module
-test.pl			Test suite
-rss-dump.pl		RSS 1.0 test program
+MANIFEST			This file
+Makefile.PL			The Makefile generator (via MakeMaker)
+CORE_wrap.c			Generated SWIG C file
+lib/RDF/Redland/CORE.pm		Generated SWIG perl interface to librdf
+lib/RDF/Redland.pm		RDF::Redland Module
+lib/RDF/Redland/Iterator.pm	RDF::Redland::Iterator Module
+lib/RDF/Redland/Model.pm	RDF::Redland::Model Module
+lib/RDF/Redland/Node.pm		RDF::Redland::Node Module
+lib/RDF/Redland/Parser.pm	RDF::Redland::Parser Module
+lib/RDF/Redland/RSS.pm		RDF::Redland::RSS Module
+lib/RDF/Redland/Statement.pm	RDF::Redland::Statement Module
+lib/RDF/Redland/Storage.pm	RDF::Redland::Storage Module
+lib/RDF/Redland/Stream.pm	RDF::Redland::Stream Module
+lib/RDF/Redland/URI.pm		RDF::Redland::URI Module
+lib/RDF.pm			RDF Module (OLD API)
+lib/RDF/Iterator.pm		RDF::Iterator Module (OLD API)
+lib/RDF/Model.pm		RDF::Model Module (OLD API)
+lib/RDF/Node.pm			RDF::Node Module (OLD API)
+lib/RDF/Parser.pm		RDF::Parser Module (OLD API)
+lib/RDF/RSS.pm			RDF::RSS Module (OLD API)
+lib/RDF/Statement.pm		RDF::Statement Module (OLD API)
+lib/RDF/Storage.pm		RDF::Storage Module (OLD API)
+lib/RDF/Stream.pm		RDF::Stream Module (OLD API)
+lib/RDF/URI.pm			RDF::URI Module (OLD API)
+test.pl				Test suite
+rss-dump.pl			RSS 1.0 test program
+example.pl			Example program
+rss-dump.pl			RSS 1.0 test program
+dc.rdf				RDF/XML example source

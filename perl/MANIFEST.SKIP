@@ -8,7 +8,7 @@ ChangeLog
 ^blib/
 ^ChangeLog
 \.tar\.gz$
-Redland.bs
+CORE.bs
 \.o$
 \.*db$
 pm_to_blib
