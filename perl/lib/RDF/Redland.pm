@@ -25,6 +25,7 @@ use RDF::Redland::Model;
 use RDF::Redland::Node;
 use RDF::Redland::Parser;
 use RDF::Redland::Query;
+use RDF::Redland::QueryResults;
 use RDF::Redland::Serializer;
 use RDF::Redland::Statement;
 use RDF::Redland::Storage;
