@@ -25,17 +25,17 @@ storage=RDF.Storage(storage_name="memory",
                     name="test",
                     options_string="")
 #                    options_string="new='yes',hash-type='bdb',dir='.'")
-if not storage:
+if storage is None:
   raise "new RDF.storage failed"
 
 model=RDF.Model(storage)
-if not model:
+if model is None:
   raise "new RDF.model failed"
 
 statement=RDF.Statement(subject=RDF.Node(uri_string="http://purl.org/net/dajobe/"),
                         predicate=RDF.Node(uri_string="http://purl.org/dc/elements/1.1/creator"),
                         object=RDF.Node(literal="Dave Beckett"))
-if not statement:
+if statement is None:
   raise "new RDF.statement failed"
 
 model.add_statement(statement)
