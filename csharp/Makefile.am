@@ -106,9 +106,11 @@ redland.snk:
 	  exit 1; \
 	fi
 
-redland.pub: redland.snk
-	@$(ECHO) "WARNING: Creating a new redland.pub from redland.snk WARNING"
-	$(MONO_SN) -p $< $@
+redland.pub:
+	@if test -r redland.snk; then \
+	  $(ECHO) "WARNING: Creating a new redland.pub from redland.snk WARNING"; \
+	  $(MONO_SN) -p $< $@; \
+	fi
 endif
 
 install-mono: Redland.dll
