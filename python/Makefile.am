@@ -89,7 +89,7 @@ sdist-python: $(srcdir)/setup.py
 rpmdist-python: $(srcdir)/setup.py
 	$(PYTHON_SETUP) bdist_rpm --release=$(RELEASE)
 
-check-local: test-python
+check-local: unittest-python test-python
 
 clean-local: clean-python
 	rm -rf dist build-python-stamp
