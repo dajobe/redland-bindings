@@ -1668,7 +1668,7 @@ class Query(object):
   import RDF
 
   q1 = RDF.Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
-  q2 = RDF.Query("- - -",name="triples")
+  q2 = RDF.Query("- - -", name="triples")
 
   results=q1.execute(model)
   for result in results:
@@ -1679,7 +1679,11 @@ class Query(object):
     print statement
 
   """
-  def __init__(self, querystring, base_uri=None, query_language="rdql"):
+  def __init__(self, querystring, base_uri=None, query_language="rdql", query_uri=None):
+    if query_uri is not None:
+      ruri = query_uri._reduri
+    else:
+      ruri = None
     if base_uri is not None:
       rbase_uri = base_uri._reduri
     else:
@@ -1689,7 +1693,7 @@ class Query(object):
     if _debug:
       print "Creating query for language '"+query_language+"', base '"+str(rbase_uri)+"': "+querystring
 
-    self._query = Redland.librdf_new_query(_world._world, query_language, rbase_uri, querystring)
+    self._query = Redland.librdf_new_query(_world._world, query_language, ruri, querystring, rbase_uri)
     self.result_stream = None
     self.been_run = False
 
