@@ -4,4 +4,5 @@ Makefile.in
 *.dll
 *.so
 *.db
-test-example.xml
+test-example4.xml
+example2.xml

@@ -5,4 +5,5 @@ Makefile.in
 *.so
 *.db
 *_wrap.c
-
+build-csharp-stamp
+not-used
