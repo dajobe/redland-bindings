@@ -34,7 +34,7 @@ use strict;
 
 my $test=2;
 
-# Test using Redland module only
+# Test using RDF::Redland::CORE module only
 
 my $debug=defined $ENV{'TEST_VERBOSE'};
 
@@ -74,11 +74,15 @@ print "ok $test\n";
 $test++;
 
 &RDF::Redland::CORE::librdf_model_add_statement($model, $statement);
+&RDF::Redland::CORE::librdf_free_statement($statement);
+$statement=undef;
+
 
 $statement=&RDF::Redland::CORE::librdf_new_statement($world);
 my $stream=&RDF::Redland::CORE::librdf_model_find_statements($model,$statement);
 &RDF::Redland::CORE::librdf_free_statement($statement);
 $statement=undef;
+
 my $failed=0;
 while(!&RDF::Redland::CORE::librdf_stream_end($stream)) {
   $statement=&RDF::Redland::CORE::librdf_stream_get_object($stream);
@@ -117,20 +121,22 @@ while(!&RDF::Redland::CORE::librdf_iterator_end($iterator)) {
   &RDF::Redland::CORE::librdf_iterator_next($iterator);
 }
 &RDF::Redland::CORE::librdf_free_iterator($iterator);
-&RDF::Redland::CORE::librdf_free_node($source_node);
-&RDF::Redland::CORE::librdf_free_node($target_node);
 $iterator=undef;
+&RDF::Redland::CORE::librdf_free_node($source_node);
 $source_node=undef;
+&RDF::Redland::CORE::librdf_free_node($target_node);
 $target_node=undef;
-last if $failed;
+
+unless($failed)  {
+  print "ok $test\n";
+}
+
+$test++;
 
 &RDF::Redland::CORE::librdf_free_model($model);
 $model=undef;
 &RDF::Redland::CORE::librdf_free_storage($storage);
 $storage=undef;
-
-print "ok $test\n";
-$test++;
 
 &RDF::Redland::CORE::librdf_perl_world_finish();
 $world=undef;
