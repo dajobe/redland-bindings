@@ -70,7 +70,7 @@ sub new ($$) {
   if(my $arg_class=ref($arg)) {
     if(UNIVERSAL::isa($arg, 'RDF::Redland::URI')) {
       return $arg->clone;
-    } elsif (UNIVERSAL::isa($arg, 'URI')) {
+    } elsif (UNIVERSAL::isa($arg, 'URI::URL')) {
       $arg=$arg->as_string;
     } else {
       die "RDF::Redland::URI::new - Cannot make a URI from an object of class $arg_class\n";

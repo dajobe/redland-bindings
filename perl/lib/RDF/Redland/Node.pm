@@ -98,7 +98,7 @@ sub new ($;$) {
         return $arg->clone;
       } elsif(UNIVERSAL::isa($arg, 'RDF::Redland::URI')) {
         $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
-      } elsif (UNIVERSAL::isa($arg, 'URI')) {
+      } elsif (UNIVERSAL::isa($arg, 'URI::URL')) {
 	$self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
       } else {
 	die "RDF::Redland::Node::new - Cannot make a node from an object of class $arg_class\n";
@@ -144,7 +144,7 @@ sub new_from_uri ($$) {
   if(my $class=ref $arg) {
     if(UNIVERSAL::isa($arg, 'RDF::Redland::URI')) {
       $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri($RDF::Redland::World->{WORLD},$arg->{URI});
-    } elsif (UNIVERSAL::isa($arg, 'URI')) {
+    } elsif (UNIVERSAL::isa($arg, 'URI::URL')) {
       $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
     } else {
       die "RDF::Redland::Node::new_from_uri - Cannot make a Node from an object of class $class\n";
@@ -187,7 +187,7 @@ sub new_literal ($$;$$) {
   if(defined $dt) {
     if(UNIVERSAL::isa($dt, 'RDF::Redland::URI')) {
       $dt_uri=$dt;
-    } elsif (UNIVERSAL::isa($dt, 'URI')) {
+    } elsif (UNIVERSAL::isa($dt, 'URI::URL')) {
       $dt_uri=new RDF::Redland::URI($dt->as_string);
     } else {
       $dt_uri=new RDF::Redland::URI($dt);
@@ -453,7 +453,7 @@ sub _ensure ($) {
     $node=&RDF::Redland::CORE::librdf_new_node_from_node($node->{NODE});
   } elsif(UNIVERSAL::isa($node, 'RDF::Redland::URI')) {
     $node=&RDF::Redland::CORE::librdf_new_node_from_uri($RDF::Redland::World->{WORLD},$node->{URI});
-  } elsif (UNIVERSAL::isa($node, 'URI')) {
+  } elsif (UNIVERSAL::isa($node, 'URI::URL')) {
     $node=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$node->as_string);	
   } else {
     $node=undef;
