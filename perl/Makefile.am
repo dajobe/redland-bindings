@@ -29,8 +29,13 @@ PERL_MAKEFILE=Makefile.perl
 
 SWIG_OUTPUTS=$(PERL_CORE_PACKAGE)_wrap.c \
 	lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
-PERL_CRUFT=blib pm_to_blib $(PERL_CORE_PACKAGE).bs $(PERL_CORE_PACKAGE)_wrap.o \
+PERL_CRUFT=pm_to_blib \
+$(PERL_CORE_PACKAGE).bs $(PERL_CORE_PACKAGE)_wrap.o \
 $(PERL_MAKEFILE).old
+
+
+fakedir=$(prefix)
+fake_DATA=build-perl-stamp
 
 EXTRA_DIST=README.txt \
 MANIFEST MANIFEST.SKIP Makefile.PL example.pl \
@@ -44,6 +49,9 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
 MEM_LIBS=@MEM_LIBS@
 #MEM_LIBS=-ldmalloc
+
+$(perlshareRDFdir)/Redland.pm: build-perl
+
 
 $(PERL_CORE_PACKAGE)_wrap.c lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm : $(srcdir)/../Redland.i
 	swig -v -perl5 -module $(PERL_FULL_CORE_PACKAGE) -o $(PERL_CORE_PACKAGE)_wrap.c $< && mv $(PERL_CORE_PACKAGE).pm lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
@@ -64,9 +72,15 @@ clean-perl realclean-perl:
 	fi
 
 build-perl: -perl
-install-perl: build-perl
-check-perl: build-perl test-perl
+
+build-perl-stamp: $(srcdir)/../Redland.i
+	$(MAKE) build-perl && touch build-perl-stamp
+
+check-local: build-perl-stamp test-perl
 
 # Perl make clean leaves the old makefile around
-clean-local: clean-perl
-	rm -f $(PERL_MAKEFILE) $(PERL_MAKEFILE).old
+clean-local: 
+	rm -rf blib $(PERL_MAKEFILE) $(PERL_MAKEFILE).old build-perl-stamp
+
+# See this is the fake bit
+install-fakeDATA: install-perl
