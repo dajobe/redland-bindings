@@ -24,7 +24,7 @@ RELEASE=@VERSION_RELEASE@
 INCLUDES=-I$(top_srcdir)
 
 PYTHON=@PYTHON@
-PYTHON_INCLUDE=@PYTHON_INCLUDE@
+PYTHON_INCLUDES=@PYTHON_INCLUDES@
 
 PYTHON_PACKAGE=Redland
 
@@ -48,7 +48,7 @@ $(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -python $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ $<
 
 $(PYTHON_PACKAGE)_wrap.so: $(srcdir)/$(PYTHON_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_builddir)/librdf -I$(top_srcdir)/librdf/ -I$(PYTHON_INCLUDE) $(srcdir)/$(PYTHON_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_builddir)/librdf -I$(top_srcdir)/librdf/ $(PYTHON_INCLUDES) $(srcdir)/$(PYTHON_PACKAGE)_wrap.c -c -o $@
 
 $(PYTHON_PACKAGE).so: $(PYTHON_PACKAGE)-stamp
 $(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so
