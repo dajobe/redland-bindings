@@ -102,6 +102,7 @@ Redland/Storage.pm
 Redland/Statement.pm
 Redland/Stream.pm
 Redland/Parser.pm
+Redland/Query.pm
 Redland/Serializer.pm
 Redland/CORE.pm
 Redland/Node.pm)

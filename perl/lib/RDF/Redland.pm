@@ -4,8 +4,8 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
-# Institute for Learning and Research Technology - http://www.ilrt.org/
+# Copyright (C) 2000-2004 David Beckett - http://purl.org/net/dajobe/
+# Institute for Learning and Research Technology - http://www.ilrt.bris.ac.uk/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -24,6 +24,7 @@ use RDF::Redland::Iterator;
 use RDF::Redland::Model;
 use RDF::Redland::Node;
 use RDF::Redland::Parser;
+use RDF::Redland::Query;
 use RDF::Redland::Serializer;
 use RDF::Redland::Statement;
 use RDF::Redland::Storage;
