@@ -246,43 +246,33 @@ sub DESTROY ($) {
 
 =over
 
-=item uri [URI]
+=item uri
 
-Get/set the URI of the node.  With no arguments, returns the current
-URI as an RDF::Redland::URI object otherwise sets it to RDF::Redland::URI object I<URI>.
-
-=cut
-
-sub uri ($;$) {
-  my($self,$uri)=@_;
-
-  return RDF::Redland::URI->_new_from_object(&RDF::Redland::CORE::librdf_node_get_uri(shift->{NODE}))
-    unless $uri;
-
-  return &RDF::Redland::CORE::librdf_node_set_uri($self->{NODE},$uri->{URI});
-}
-
-=item blank_identifier [ID]
-
-Get/set the blank identifier of the node.  With no arguments,
-returns the current blank identifier, otherwise sets it to the I<ID>.
+Get the current URI of the node as an RDF::Redland::URI object.
 
 =cut
 
-sub blank_identifier ($;$) {
-  my($self,$id)=@_;
-
-  return &RDF::Redland::CORE::librdf_node_get_blank_identifier(shift->{NODE})
-    unless $id;
-
-  return &RDF::Redland::CORE::librdf_node_set_blank_identifier($self->{NODE},$id);
+sub uri ($) {
+  my $obj=&RDF::Redland::CORE::librdf_node_get_uri(shift->{NODE});
+  return $obj ?  RDF::Redland::URI->_new_from_object($obj) : undef;
 }
 
-=item type [TYPE]
+=item blank_identifier
 
-Get/set the node type.  With no arguments, returns the current
-type, otherwise sets it to I<TYPE>.  The current list of types
-that are supported are:
+Get the current blank identifier of the node
+
+=cut
+
+sub blank_identifier ($) {
+  return &RDF::Redland::CORE::librdf_node_get_blank_identifier(shift->{NODE});
+}
+
+=item type
+
+Get the node type.  It is recommended to use the is_resource, is_literal
+or is_blank methods in preference to this (both simpler and quicker).
+
+The current list of types that are supported are:
 
   $RDF::Redland::Node::Type_Resource
   $RDF::Redland::Node::Type_Literal
@@ -298,13 +288,8 @@ Example:
 
 =cut
 
-sub type ($;$) {
-  my($self,$type)=@_;
-
-  return &RDF::Redland::CORE::librdf_node_get_type(shift->{NODE})
-    unless $type;
-
-  return &RDF::Redland::CORE::librdf_node_set_type($self->{NODE},$type);
+sub type ($) {
+  return &RDF::Redland::CORE::librdf_node_get_type(shift->{NODE});
 }
 
 =item is_resource
@@ -377,21 +362,6 @@ is of type $RDF::Redland::Node::Type_Literal).
 sub literal_value_is_wf_xml ($) {
   &RDF::Redland::CORE::librdf_node_get_literal_value_is_wf_xml(shift->{NODE});
 }
-
-=item set_literal_value STRING XML_LANGUAGE IS_WF
-
-Set the node literal value to STRING with XML language (xml:lang
-attribute) XML_LANGUAGE and if
-content is well formed XML, when IS_WF is non 0.  XML_LANGUAGE
-is optional and can be set to undef.
-
-=cut
-
-sub set_literal_value ($$$$) {
-  my($self,$value,$xml_language,$is_wf_xml)=@_;
-  return &RDF::Redland::CORE::librdf_node_set_literal_value($self->{NODE},$value,$xml_language,$is_wf_xml);
-}
-
 
 =item literal_datatype
 
