@@ -164,6 +164,14 @@ class RedlandStreamsCase(unittest.TestCase):
         self.parser.parse_into_model(self.model,a)
         self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
 
+    def testIterateModel(self):
+        a = "file:../perl/dc.rdf"
+        self.parser.parse_into_model(self.model,a)
+        counter = 0
+        for s in self.model:
+            counter += 1
+        self.assert_(counter == 3,"dc.rdf should have 3 statements")
+
     def testParseAsStream(self):
         a = "file:../perl/dc.rdf"
         for s in self.parser.parse_as_stream(a):
@@ -181,6 +189,20 @@ class RedlandStreamsCase(unittest.TestCase):
         for i in found_stmts:
             count += 1
         self.assert_(count == 3, "Should have found_stmts 3 statements")
+
+    def testContains(self):
+        self.parser.parse_into_model(self.model,"file:../perl/dc.rdf")
+        statement = Statement(
+                Uri("http://purl.org/net/dajobe/"),
+                Uri("http://purl.org/dc/elements/1.1/creator"), 
+                "Dave Beckett")
+
+        count = 0
+        found_stmts = self.model.find_statements(statement)
+        for i in found_stmts:
+            count += 1
+        self.assert_(count == 1, "Should have found_stmts 1 statement") # test we can find it at all, for comparison
+        self.assert_(statement in self.model, "Should have found a statement via __contains__")
 
     def testFindStatementsWithContext(self):
         a = "file:../perl/dc.rdf"
