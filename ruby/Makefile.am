@@ -24,44 +24,34 @@ RELEASE=@VERSION_RELEASE@
 
 INCLUDES=-I$(top_srcdir) @RUBY_INCLUDES@
 
-RUBY=ruby
+RUBY=@RUBY@
 
 RUBY_PACKAGE=Redland
 
 SWIG_OUTPUTS=$(RUBY_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
+rubydir=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']")
+ruby_DATA=Redland.so
 
 EXTRA_DIST=test.rb example.rb \
 $(SWIG_OUTPUTS)
 
-CLEANFILES=test*db $(RUBY_PACKAGE)_wrap.o 
+CLEANFILES=test*db test-out.rdf core* $(RUBY_PACKAGE)_wrap.o 
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(RUBY_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -ruby -module $(RUBY_PACKAGE) -o $@ $<
 
 $(RUBY_PACKAGE)_wrap.o: $(RUBY_PACKAGE)_wrap.c
-	$(CC) $(CFLAGS) `$(top_srcdir)/redland-src-config --cflags` -c -fpic $(INCLUDES)  $< -o $@
+	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf -c -I$(rubydir) -c $< -o $@
 
 $(RUBY_PACKAGE).so: $(RUBY_PACKAGE)_wrap.o
-	$(CC) -shared $< -o $@ `$(top_srcdir)/redland-src-config --libs`
+	rubylib=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']"`; \
+	$(LIBTOOL) --mode=link $(CC) $(RUBY_PACKAGE)_wrap.o $$rubylib $(top_builddir)/librdf/librdf.la -o $@
 
-build-ruby: $(RUBY_PACKAGE).so 
-
-check-ruby: test-ruby
-test-ruby: build-ruby
+check-local: build-ruby
 	$(RUBY) example.rb file:../perl/dc.rdf raptor
 
-clean-ruby realclean-ruby:
+clean-local:
 	rm -f $(RUBY_PACKAGE).so
-
-install-ruby: $(RUBY_PACKAGE).so build-ruby
-	rubydir=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']"`; \
-	mkdir -p $$rubydir; \
-	cp -p $(RUBY_PACKAGE).so $$rubydir
-
-dist-ruby:
-	@echo make ruby dist somehow
-
-clean-local: clean-ruby
