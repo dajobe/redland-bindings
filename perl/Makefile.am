@@ -30,7 +30,7 @@ PERL_MAKEFILE=Makefile.perl
 SWIG_OUTPUTS=$(PERL_CORE_PACKAGE)_wrap.c \
 	lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
 PERL_CRUFT=blib pm_to_blib $(PERL_CORE_PACKAGE).bs $(PERL_CORE_PACKAGE)_wrap.o \
-$(PERL_MAKEFILE) $(PERL_MAKEFILE).old
+$(PERL_MAKEFILE).old
 
 EXTRA_DIST=README.txt \
 MANIFEST MANIFEST.SKIP Makefile.PL example.pl \
@@ -51,10 +51,17 @@ $(PERL_CORE_PACKAGE)_wrap.c lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm : $(srcdir)/
 $(PERL_MAKEFILE): $(srcdir)/Makefile.PL lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
 	PACKAGE=$(PERL_REDLAND_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) $(PERL) $(srcdir)/Makefile.PL
 
--perl test-perl install-perl clean-perl realclean-perl: $(PERL_MAKEFILE)
+-perl test-perl install-perl: $(PERL_MAKEFILE)
 	@target=`echo $@ | sed -e 's/-perl//'`; \
 	echo $(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix) SITEPREFIX=$(prefix); \
 	$(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix) SITEPREFIX=$(prefix)
+
+clean-perl realclean-perl:
+	@target=`echo $@ | sed -e 's/-perl//'`; \
+	if test -r $(PERL_MAKEFILE); then \
+	  echo $(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix) SITEPREFIX=$(prefix); \
+	  $(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix) SITEPREFIX=$(prefix); \
+	fi
 
 build-perl: -perl
 install-perl: build-perl
@@ -62,4 +69,4 @@ check-perl: build-perl test-perl
 
 # Perl make clean leaves the old makefile around
 clean-local: clean-perl
-	rm -f $(PERL_MAKEFILE).old
+	rm -f $(PERL_MAKEFILE) $(PERL_MAKEFILE).old
