@@ -32,7 +32,9 @@ README.html NEWS.html LICENSE.html TODO.html \
 RELEASE.html INSTALL.html \
 MPL.html \
 autogen.sh \
-Makefile.PL
+Makefile.PL \
+redland-bindings.spec redland-bindings.spec.in \
+redland-bindings.pc.in
 
 if MAINTAINER_MODE
 # Create some text files from HTML sources
