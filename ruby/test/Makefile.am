@@ -30,7 +30,7 @@ CLEANFILES=*.db out_namespace.rdf
 
 check-local: check-ruby
 
-check-ruby: $(RUBY_TEST_FILES)
+check-ruby: ../ruby-redland-stamp $(RUBY_TEST_FILES)
 	@result=0; fails=; \
 	$(ECHO) "Testing Ruby"; \
 	for test in $(RUBY_TEST_FILES); do \
@@ -49,3 +49,6 @@ check-ruby: $(RUBY_TEST_FILES)
 	  echo "FAILED tests:$$fails"; \
 	fi; \
 	exit $$result
+
+../ruby-redland-stamp:
+	cd .. && $(MAKE) ruby-redland-stamp
