@@ -75,7 +75,7 @@ WriteMakefile(
 
     'DEFINE'    => "-DHAVE_CONFIG_H $CFLAGS",
     'INC'       => "$includes",
-    'OBJECT'    => "$objects $MEM_LIBS",
+    'OBJECT'    => "$objects",
     'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS"},
 
     'PM' => { map { ("lib/RDF/$_", "\$(INST_LIBDIR)/$_") }
