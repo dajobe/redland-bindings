@@ -119,7 +119,7 @@ namespace Redland {
 		public void ParserStringAsStream ()
 		{
 			int rc;
-			string content = "\"\"<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><rdf:Description rdf:about=\"http://www.redland.opensource.ac.uk/\"><dc:title>Redland RDF</dc:title></rdf:Description></rdf:RDF>\"\"";
+			string content = "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\"><rdf:Description rdf:about=\"http://www.redland.opensource.ac.uk/\"><dc:title>Redland RDF</dc:title></rdf:Description></rdf:RDF>";
 
 			Uri base_uri = new Uri ("http://example.org/base#");
 			Stream s = parser.ParseStringAsStream (content, base_uri);
