@@ -200,8 +200,8 @@ class Node:
   ...
 
     print node2
-    if node7->is_resource:
-      print "Resource with URI", node7->uri
+    if node7.is_resource():
+      print "Resource with URI", node7.uri()
 
   """
 
@@ -260,7 +260,7 @@ Creates a new RDF Node using the following fields:
 
     elif args.has_key('from_object'):
       # internal constructor to build an object from a node created
-      # by librdf e.g. from the result of a iterator->next operation
+      # by librdf e.g. from the result of a iterator.next() operation
       # this is always shared (at present) so should not be freed
       self._node=args['from_object']
       self._free_me=args['free_node']
