@@ -90,7 +90,10 @@ __all__ = [ "Node",
             "HashStorage",
             "Uri",
             "Parser",
+            "TurtleParser",
+            "NTriplesParser",
             "NS",
+            "Query",
             "debug"]
 
 __version__ = "0.9"
@@ -1030,6 +1033,22 @@ Create a model using an in-memory storage.
       type_uri = type_uri._reduri
     Redland.librdf_model_load(self._model, uri, name, mime_type, type_uri)
     
+  def run_as_bindings(self,query):
+    success = (Redland.librdf_model_query_as_bindings(self._model,query._query) == 0)
+    if success:
+      self.been_run = True
+      return QueryResultIterator(query)
+    else:
+      return None
+
+  def run_as_statements(self,query):
+    s = Redland.librdf_model_query_as_stream(self._model,query._query)
+    if s is not None:
+      self.been_run = True
+      return Stream(s,self)
+    else:
+      return None
+
 
 # end class Model
 
@@ -1357,7 +1376,7 @@ class HashStorage(Storage):
   Class of hashed Storage for a particular type of hash (typically
   hash-type is "memory" or "bdb") and any other options.
   """
-  def __init__(self, hash_name, options):
+  def __init__(self, hash_name, options=""):
     return Storage.__init__(self, name = hash_name, storage_name = "hashes",
             options_string = options)
 
@@ -1475,7 +1494,6 @@ Copy an existing URI uri1.
     return (Redland.librdf_uri_equals(self._reduri, other._reduri) == 0)
 
 # end class Uri
-
 
 class Parser(object):
   """Redland Syntax Parser Class
@@ -1606,6 +1624,102 @@ optional.  When any are given, they must all match.
 
 # end class Parser
 
+class NTriplesParser(Parser):
+  def __init__(self, uri = None):
+    return Parser.__init__(self, name = "ntriples", mime_type="text/plain", uri=uri)
+
+class TurtleParser(Parser):
+  def __init__(self, uri = None):
+    return Parser.__init__(self, name = "turtle", mime_type="application/x-turtle", uri=uri)
+
+class Query(object):
+  """Redland Query interface class
+
+  import RDF
+
+  q1 = RDF.Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
+  q2 = RDF.Query("- - -",name="triples")
+
+  for result in q1.run_as_bindings(model):
+    print result['a']
+    print result['c']
+
+  for statement in q2.run_as_statements(model):
+    print statement
+
+  """
+  def __init__(self,querystring,base_uri=None,query_language="rdql"):
+    if base_uri is not None:
+      base_uri = base_uri._reduri
+    global _world
+    global _debug    
+    if _debug:
+      print "Creating query for language '"+query_language+"', base '"+str(base_uri)+"': "+querystring
+
+    self._query = Redland.librdf_new_query(_world._world, query_language, base_uri, querystring)
+    self.result_stream = None
+    self.been_run = False
+
+  def __del__(self):
+    global _debug    
+    if _debug:
+      print "Destroying RDF.Query"
+    if self._query:
+      Redland.librdf_free_query(self._query)
+
+  def __len__(self):
+    return Redland.librdf_query_get_result_count(self._query)
+
+  def run_as_bindings(self,model):
+    success = (Redland.librdf_query_run_as_bindings(self._query,model._model) == 0)
+    if success:
+      self.been_run = True
+      return QueryResultIterator(self)
+    else:
+      return None
+
+  def run_as_statements(self,model):
+    s = Redland.librdf_query_run_as_stream(self._query,model._model)
+    if s is not None:
+      self.been_run = True
+      return Stream(s,self)
+    else:
+      return None
+
+# end class Query
+
+class QueryResultIterator(object):
+  def __init__(self,query):
+    global _debug
+    if _debug:
+      print "Creating QueryResultIterator"
+    self.query = query
+    self.first = True
+
+  def __iter__(self):
+    return self
+
+  def next(self):
+    if self.first:
+      self.first = False
+    else:
+      Redland.librdf_query_next_result(self.query._query)
+    if Redland.librdf_query_results_finished(self.query._query):
+      raise StopIteration
+    return self.make_results_hash()
+
+  def make_results_hash(self):
+    _query = self.query._query
+    results = {}
+    c = Redland.librdf_query_get_bindings_count(_query)
+    for i in range(c):
+      n = Redland.librdf_query_get_result_binding_name(_query,i)
+      v = Redland.librdf_query_get_result_binding_value(_query,i)
+      results[n] = Node(from_object=v)
+
+    return results
+
+# end class QueryIterator
 
 class Serializer(object):
   """ Redland Syntax Serializer Class
