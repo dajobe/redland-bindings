@@ -117,7 +117,8 @@ object or undef on failure.
 
 sub execute ($$) {
   my($self,$model)=@_;
-  return &RDF::Redland::CORE::librdf_query_run_as_bindings($self->{QUERY},$model->{MODEL});
+  my $results = &RDF::Redland::CORE::librdf_query_execute($self->{QUERY},$model->{MODEL});
+  return $results ? RDF::Redland::QueryResults->new($results) : undef;
 }
 
 
