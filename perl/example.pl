@@ -42,12 +42,13 @@ die "Failed to create RDF::Redland::Statement\n" unless $statement;
 
 warn "\nAdding statement to model\n";
 $model->add_statement($statement);
+$statement=undef;
 
 warn "\nParsing URI (file) $test_file\n";
 my $uri=new RDF::Redland::URI("file:$test_file");
 
 # Use any rdf/xml parser that is available
-my $parser=new RDF::Redland::Parser(undef, "application/rdf+xml");
+my $parser=new RDF::Redland::Parser("raptor", "application/rdf+xml");
 die "Failed to find parser\n" if !$parser;
 
 $stream=$parser->parse_as_stream($uri,$uri);
@@ -82,14 +83,19 @@ while(!$stream->end) {
 }
 $stream=undef;
 
-## Use any rdf/xml parser that is available
-#my $serializer=new RDF::Redland::Serializer("ntriples");
-#die "Failed to find serializer\n" if !$serializer;
-#
-#use IO::Handle;
-#my $handle=new IO::Handle;
-#$handle->fdopen(fileno(STDOUT), "w");
-#$serializer->serialize_model($handle, $uri, $model);
+$statement=undef;
+
+warn "\nWriting model to test-out.rdf as rdf/xml\n";
+
+# Use any rdf/xml parser that is available
+my $serializer=new RDF::Redland::Serializer("rdfxml");
+die "Failed to find serializer\n" if !$serializer;
+
+$serializer->serialize_model_to_file("test-out.rdf", $uri, $model);
+$serializer=undef;
+
+
+warn "\nDone\n";
 
 # Required in order to ensure storage is correctly flushed to disk
 $storage=undef;
