@@ -1,3 +1,17 @@
+2004-07-23  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/test/test.py, python/RDF.py,
+	perl/lib/RDF/Redland/Parser.pm, perl/serialize.pl,
+	perl/example.pl, java/test2.java, java/test1.java,
+	java/skeleton.java, csharp/examples/example4.cs,
+	csharp/examples/example2.cs, csharp/examples/example1.cs,
+	csharp/test.cs, csharp/Parser.cs: Replace parser name "raptor"
+	with "rdfxml"
+
+2004-07-20  Edd Dumbill  <edd@hoth.ilrt.bris.ac.uk>
+
+	* csharp/Node.cs: Added my name to header.
+
 2004-07-20  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* php/Makefile.am:
@@ -870,9 +884,14 @@
 
 	* configure.ac: Bumped version to 0.9.17
 
+	* Snapshotted redland_0_9_16 for 0.9.16 release (on branch
+	redland_0_9_15-patches)
+
 2004-02-23  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* configure.ac: Bumped version to 0.9.16
+
+	* Snapshotted redland_0_9_15 for 0.9.15 release
 
 2004-02-16  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
