@@ -22,10 +22,11 @@
 use ExtUtils::MakeMaker;
 
 $TOP_SRCDIR=$ENV{TOP_SRCDIR} || '..';
-$PACKAGE=$ENV{PACKAGE} || "Redland";
+$PACKAGE=$ENV{PACKAGE} || "RDF::Redland";
 $MEM_LIBS=$ENV{MEM_LIBS} || "";
+$CORE_PACKAGE=$ENV{CORE_PACKAGE} || "CORE";
 
-my $objects="Redland_wrap.o $TOP_SRCDIR/librdf.a ";
+my $objects="${CORE_PACKAGE}_wrap.o $TOP_SRCDIR/librdf.a ";
 
 my $redland_libs=`$TOP_SRCDIR/redland-config --libs`;
 chomp $redland_libs;
@@ -51,8 +52,8 @@ if(!$version) {
 
 sub MY::postamble {
   return <<"EOT";
-Redland_wrap.c: $TOP_SRCDIR/Redland.i
-	swig -v -perl5 -package $PACKAGE -o \$\@ \$\?
+${CORE_PACKAGE}_wrap.c: $TOP_SRCDIR/Redland.i
+	\$(MAKE) ${CORE_PACKAGE}_wrap.c
 EOT
 }
 
@@ -64,7 +65,21 @@ sub MY::libscan {
   undef;
 }
 
+# I'm forced to do this since BASEEXT is defined in a non-overridable method.
+push(@ExtUtils::MakeMaker::Overridable, "init_main");
+
+# Ensure that the dynamic module gets compiled as CORE not Redland
+sub MY::init_main {
+  my($self)=@_;
+  package MY; # so that "SUPER" works right
+  $self->SUPER::init_main();
+  $self->{FULLEXT}.="/".$::CORE_PACKAGE;
+  $self->{BASEEXT}=$::CORE_PACKAGE;
+}
+
+
 WriteMakefile(
+    'DISTNAME'	=> "Redland",
     'NAME'	=> $PACKAGE,
     'AUTHOR'    => 'Dave Beckett <Dave.Beckett@bristol.ac.uk>',
     'ABSTRACT'  => "Redland RDF library",
@@ -77,5 +92,5 @@ WriteMakefile(
 
     'MAKEFILE'  => 'Makefile.perl',
     'clean'     => { FILES => "test*.db" },
-    'realclean' => { FILES => "Redland_wrap.c Redland_wrap.o Redland.pm" },
+    'realclean' => { FILES => "${CORE_PACKAGE}_wrap.c ${CORE_PACKAGE}_wrap.o lib/RDF/Redland/CORE.pm" },
 );
