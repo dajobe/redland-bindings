@@ -1,6 +1,17 @@
 2004-07-19  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
-	* autogen.sh: redland-bindings
+	* Makefile.am: zap man_MANS
+
+	* php/Makefile.am, python/Makefile.am: backticks
+
+	* python/Makefile.am, ruby/Makefile.am, ruby/test/Makefile.am,
+	tcl/Makefile.am, csharp/Makefile.am, csharp/examples/Makefile.am,
+	docs/Makefile.am, java/Makefile.am, perl/Makefile.PL,
+	perl/Makefile.am, php/Makefile.am, ChangeLog, INSTALL.html,
+	LICENSE.html, Makefile.am, NEWS.html, README.html, RELEASE.html,
+	TODO.html, configure.ac: redland-bindings fixes
+
+	* AUTHORS, autogen.sh: redland-bindings
 
 	* java/run-java: run java test programs in source tree
 
