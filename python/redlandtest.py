@@ -305,8 +305,12 @@ class RasqalQueryTestCase (unittest.TestCase):
 
     def testRDQLQueryAsStreamDontWork(self):
         q = Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
-        stream = q.execute(self.model).as_stream()
-        self.assert_(stream is None,"RDQL queries shouldn't work as streams - None should be returned from as_stream")
+	failed = False
+	try:
+          stream = q.execute(self.model).as_stream()
+	except:
+          failed = True
+        self.assert_(failed is True,"RDQL queries shouldn't work as streams - None should be returned from as_stream")
 
     #def testRDQLParseError(self):
         #q = Query("SELECT WHERE")
@@ -344,6 +348,18 @@ class RasqalQueryTestCase (unittest.TestCase):
         for result in stream:
             count += 1
         self.assert_(count == 3, "Should have found three results in query")
+
+    def testSPARQLQueryAsStream(self):
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT * WHERE (?a dc:title ?c)")
+        s = q.execute(self.model).as_stream()
+        self.assert_(s is not None, "execute as_stream should have succeeded")
+        rc=self.model.add_statements(s)
+        self.assert_(rc == 0, "add statements should have succeeded")
+
+    def testSPARQLQueryAsk(self):
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> ASK WHERE (?x ?y ?z)")
+        rc = q.execute(self.model).get_boolean()
+        self.assert_(rc is True, "execute get_boolean should have returned True")
 
 if __name__ == '__main__':
     unittest.main()
