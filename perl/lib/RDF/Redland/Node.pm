@@ -445,6 +445,8 @@ sub equals ($$) {
 
 =pod
 
+=back
+
 =head1 OLDER METHODS
 
 =over
@@ -459,15 +461,9 @@ and if content is well formed XML, when I<IS_WF> is non
 This method remains but using new_literal is prefered.
 For plain literals $node=new RDF::Redland::Node("blah") is simplest.
 
-
 =item new_from_typed_literal STRING [DATATYPE [XML_LANGUAGE]]
 
 Renamed to new_literal with same arguments.
-
-=back
-
-=cut
-
 
 =item new_from_uri_string URI_STRING
 
@@ -483,11 +479,6 @@ It is equivalent to use $new_node=$old_node->clone
 
 =back
 
-
-=cut
-
-
-=back
 
 =head1 SEE ALSO
 
