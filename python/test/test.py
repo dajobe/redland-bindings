@@ -108,7 +108,7 @@ model.add_typed_literal_statement(subject=RDF.Node(uri_string="http://example.or
                                   datatype=RDF.Uri(string="http://example.org/datatype"))
 
 print "writing model as RDF/XML to test-out.rdf"
-ser=RDF.Serializer()
+ser=RDF.RDFXMLSerializer()
 ser.serialize_model_to_file("test-out.rdf", model)
 
 print "done"
