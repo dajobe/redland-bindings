@@ -4,7 +4,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2001 David Beckett - http://purl.org/net/dajobe/
+// Copyright (C) 2001-2003 David Beckett - http://purl.org/net/dajobe/
 // Institute for Learning and Research Technology - http://www.ilrt.org/
 // University of Bristol - http://www.bristol.ac.uk/
 // 
@@ -38,7 +38,6 @@ public class Node
 {
   private long object;
   private World world;
-  private boolean dont_free_me=false;
   
   /**
    * Construct a new resource node
@@ -107,20 +106,24 @@ public class Node
 
   // internal constructor to build an object from a node created
   // by librdf e.g. from the result of a iterator.next() operation
-  // this may be shared in which case it should not be freed
-  protected Node(World world, long object, boolean free_me)
+  protected Node(World world, long object, boolean do_not_copy)
     {
       this.world=world;
       this.object=object;
-      this.dont_free_me=!free_me;
+    }
+
+
+  protected Node(World world, long object)
+    {
+      this.world=world;
+      this.object=core.librdf_new_node_from_node(object);
     }
 
 
   public void finished()
     {
       if(this.object != 0) {
-        if(!dont_free_me)
-          core.librdf_free_node(this.object);
+        core.librdf_free_node(this.object);
         this.object=0;
         this.world=null;
       }
@@ -136,6 +139,21 @@ public class Node
   public int getType() 
     {
       return core.librdf_node_get_type(this.object);
+    }
+
+  public boolean isResource() 
+    {
+      return (core.librdf_node_is_resource(this.object) != 0);
+    }
+
+  public boolean isLiteral() 
+    {
+      return (core.librdf_node_is_literal(this.object) != 0);
+    }
+
+  public boolean isBlank() 
+    {
+      return (core.librdf_node_is_blank(this.object) != 0);
     }
 
   public String getLiteralValue() 
@@ -176,11 +194,6 @@ public class Node
   protected long __get_object() 
     {
       return this.object;
-    }
-
-  protected void __zap_object() 
-    {
-      this.dont_free_me=true;
     }
 
 }
