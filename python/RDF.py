@@ -471,8 +471,8 @@ Copy an existing Statement s1.
     return Node(from_object=rednode)
 
   def _get_subject(self):
-    return Node(from_object=self._wrap_node(
-        Redland.librdf_statement_get_subject(self._statement)))
+    return self._wrap_node(
+        Redland.librdf_statement_get_subject(self._statement))
 
   def _get_object(self):
     return self._wrap_node(
