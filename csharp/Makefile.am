@@ -110,10 +110,7 @@ redland.pub: redland.snk
 	$(MONO_SN) -p $? $@
 endif
 
-sign-mono: Redland.dll redland.pub
-	$(MONO_SN) -q -R Redland.dll redland.pub
-
-install-mono: Redland.dll sign-mono
+install-mono: Redland.dll
 	$(MONO_GACUTIL) -i Redland.dll -f -package 1.0 -gacdir $(CLI_PREFIX)/lib -root $(CLI_PREFIX)/lib
 
 install-pnet: Redland.dll
