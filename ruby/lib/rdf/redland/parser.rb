@@ -1,9 +1,8 @@
-require 'rdf/redland/uri'
 require 'rdf/redland'
+require 'rdf/redland/uri'
 require 'rdf/redland/stream'
 
 
-#module RDF
 module Redland
 
   # The Parser class for rdf.  There are currently three types of parsers
