@@ -1,6 +1,6 @@
 2004-08-11  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
-	* configure.ac: Look for $JAVA_HOME for the JDK.  Duh!
+	* configure.ac: Look in $JAVA_HOME for the JDK.  Duh!
 
 	* configure.ac: Don't muck about with the PATH (for OSX fink in
 	this case). This might make things fail to build later when
@@ -9,9 +9,8 @@
 
 2004-08-10  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
-	* configure.ac:
-	--with-jdk with an ARG now looks for the includes/headers subdir
-	using the existing search code.
+	* configure.ac: --with-jdk with an ARG now looks for the
+	includes/headers subdir using the existing search code.
 	Use head -n 1
 
 2004-08-05  Edd Dumbill  <edd@usefulinc.com>
