@@ -1,0 +1,8 @@
+.cvsignore
+Makefile
+Makefile.in
+*.class
+NativeName*
+*.so
+not-used
+UK_ac_bristol_ilrt_redland_redland.h
