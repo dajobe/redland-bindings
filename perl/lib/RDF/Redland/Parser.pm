@@ -109,13 +109,15 @@ Parse the syntax at the RDF::Redland::URI I<SOURCE_URI> with optional base
 RDF::Redland::URI I<BASE_URI>.  If the base URI is given then the content is
 parsed as if it was at the base URI rather than the source URI.
 
-Returns an RDF::Redland::Stream of RDF::Redland::Statement objects or undef on failure.
+Returns an RDF::Redland::Stream of RDF::Redland::Statement objects or
+undef on failure.
 
 =cut
 
 sub parse_as_stream ($$$) {
   my($self,$uri,$base_uri)=@_;
   my $stream=&RDF::Redland::CORE::librdf_parser_parse_as_stream($self->{PARSER},$uri->{URI}, $base_uri->{URI});
+  return undef if !$stream;
   return new RDF::Redland::Stream($stream,$self);
 }
 
