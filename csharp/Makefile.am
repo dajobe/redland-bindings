@@ -23,7 +23,7 @@ RELEASE=@VERSION_RELEASE@
 
 INCLUDES=-I$(top_srcdir)
 
-CSHARPCC=@CSHARPCC@
+CSHARPC=@CSHARPC@
 CLRRUN=@CLRRUN@
 
 CSHARP_C_SHLIB=redland-csharp
@@ -37,12 +37,18 @@ CSHARP_CRUFT=$(CSHARP_PACKAGE)_wrap.o $(CSHARP_PACKAGE).dll
 EXTRA_DIST=README test.cs \
 $(SWIG_OUTPUTS)
 
-CLEANFILES=test*db *.dll test-out.rdf $(CSHARP_CRUFT)
+CLEANFILES=test*db *.exe *.dll test-out.rdf $(CSHARP_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
-SUFFIXES=.cs .dll
+# These work for Mono and dotGNU
+CSHARP_COMPILE='$(CSHARPC) $(CSHARPCFLAGS) $< -target:library -out:$@'
+CSHARP_LINK='$(CSHARPC) $(CSHARPLDFLAGS) $< -target:exe -out:$@'
+
+SUFFIXES=.cs .dll .exe
 .cs.dll:
 	$(CSHARP_COMPILE) 
+.cs.exe:
+	$(CSHARP_LINK) 
 
 $(CSHARP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -csharp -package $(CSHARP_PACKAGE) -o $@ $<
@@ -57,7 +63,7 @@ $(CSHARP_SHARED_LIB): $(CSHARP_PACKAGE)_wrap.o
 build-csharp: $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE)PINVOKE.dll
 
 check-csharp: test-csharp
-test-csharp: build-csharp
+test-csharp: build-csharp test.exe
 	$(CLRRUN) test.cs
 
 clean-csharp realclean-csharp:
