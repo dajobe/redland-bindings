@@ -10,5 +10,9 @@ namespace Rdf {
 
 		[DllImport ("libc", EntryPoint="fputs")]
 		public static extern IntPtr fputs (string path, IntPtr fh);
+
+		[DllImport ("libc", EntryPoint="fclose")]
+		public static extern IntPtr fclose (IntPtr fh);
+
 	}
 }
