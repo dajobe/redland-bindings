@@ -284,7 +284,8 @@ sub sources ($$$) {
 
   my(@results)=();
   while(!$user_iterator->end) {
-    push(@results, $user_iterator->next);
+    push(@results, $user_iterator->get);
+    $user_iterator->next;
   }
   $user_iterator=undef;
 
@@ -307,7 +308,8 @@ sub arcs ($$$) {
   
   my(@results)=();
   while(!$user_iterator->end) {
-    push(@results, $user_iterator->next);
+    push(@results, $user_iterator->get);
+    $user_iterator->next;
   }
   $user_iterator=undef;
 
@@ -330,7 +332,8 @@ sub targets ($$$) {
   
   my(@results)=();
   while(!$user_iterator->end) {
-    push(@results, $user_iterator->next);
+    push(@results, $user_iterator->get);
+    $user_iterator->next;
   }
   $user_iterator=undef;
 
