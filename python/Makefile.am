@@ -42,7 +42,7 @@ SUBDIRS=test
 CLEANFILES=dmalloc.log *.db core* test-out.rdf $(PYTHON_PACKAGE)_wrap.o
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
-PYTHON_SETUP=PACKAGE=$(PYTHON_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) MEM=$(MEM) $(PYTHON) $(srcdir)/setup.py
+PYTHON_SETUP=PACKAGE=$(PYTHON_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) CFLAGS="$(CFLAGS) $(MEM)" $(PYTHON) $(srcdir)/setup.py
 
 $(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -python $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ $<
