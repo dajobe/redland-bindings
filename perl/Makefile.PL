@@ -78,7 +78,7 @@ WriteMakefile(
     'ABSTRACT'  => "Redland RDF library",
     'VERSION'   => $version,
 
-    'DEFINE'    => '-Dbool=int -DHAVE_CONFIG_H',
+    'DEFINE'    => '-DHAVE_CONFIG_H',
     'INC'       => "$includes",
     'OBJECT'    => "$objects $MEM_LIBS",
     'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS"},
