@@ -27,7 +27,7 @@ PHP=php
 
 PHP_PACKAGE=redland
 
-SWIG_OUTPUTS=$(PHP_PACKAGE)_wrap.c php-$(PHP_PACKAGE).h
+SWIG_OUTPUTS=$(PHP_PACKAGE)_wrap.c php_$(PHP_PACKAGE).h
 SWIG_CRUFT=$(PHP_PACKAGE).php
 
 
