@@ -23,6 +23,8 @@ __version__ = "0.2"
 
 __debug__ = 0
 
+__world__ = None
+
 import sys
 import string
 
@@ -34,10 +36,14 @@ class world:
 
   def __init__(self,digest_name="",uri_hash=None):
     """Create new RDF World object (constructor)"""
+    self.world=Redland.librdf_new_world()
+    Redland.librdf_world_open(self.world)
+
     # Keep a circular reference to this object so it is deleted last
     self.me=self
 
-    Redland.librdf_init_world(digest_name, uri_hash)
+    global __world__
+    __world__=self
 
   # __init__ ()
 
@@ -46,7 +52,7 @@ class world:
     if __debug__:
       print "Destroying RDF.world"
     self.me=None
-    Redland.librdf_destroy_world()
+    Redland.librdf_free_world(self.world)
 
   def debug(self,value=0):
     global __debug__
@@ -70,7 +76,7 @@ class node:
     self.free_me=1
 
     if args.has_key('uri_string'):
-      self.node=Redland.librdf_new_node_from_uri_string(args['uri_string'])
+      self.node=Redland.librdf_new_node_from_uri_string(__world__.world, args['uri_string'])
     elif args.has_key('uri'):
       self.node=Redland.librdf_new_node_from_uri(args['uri'].uri)
     elif args.has_key('literal'):
@@ -86,7 +92,7 @@ class node:
         is_wf_xml=args['is_wf_xml']
       else:
         is_wf_xml=0
-      self.node=Redland.librdf_new_node_from_literal(args['literal'],xml_language,xml_space,is_wf_xml)
+      self.node=Redland.librdf_new_node_from_literal(__world__.world, args['literal'],xml_language,xml_space,is_wf_xml)
     elif args.has_key('node'):
       self.node=Redland.librdf_new_node_from_node(args['node'].node)
     elif args.has_key('from_object'):
@@ -96,7 +102,7 @@ class node:
       self.node=args['from_object']
       self.free_me=args['free_node']
     else:
-      self.node=Redland.librdf_new_node()
+      self.node=Redland.librdf_new_node(__world__.world)
 
   # DESTRUCTOR
   def __del__(self):
@@ -182,7 +188,7 @@ class statement:
       else:
 	o=object.node
 
-      self.statement=Redland.librdf_new_statement_from_nodes(s, p, o)
+      self.statement=Redland.librdf_new_statement_from_nodes(__world__.world, s, p, o)
 
       # Zap the incoming librdf node objects since they are now owned by the
       # librdf statement object self.statement
@@ -200,7 +206,7 @@ class statement:
       self.free_me=args['free_statements']
 
     else:
-      self.statement=Redland.librdf_new_statement()
+      self.statement=Redland.librdf_new_statement(__world__.world)
 
   # DESTRUCTOR
   def __del__(self):
@@ -255,14 +261,14 @@ class model:
     self.storage=None
 
     if args.has_key('options_string'):
-      self.model=Redland.librdf_new_model(storage.storage, args['options_string'])
+      self.model=Redland.librdf_new_model(__world__.world, storage.storage, args['options_string'])
     elif args.has_key('options_hash'):
-      self.model=Redland.librdf_new_model_with_options(storage.storage, args['options_hash'].hash)
+      self.model=Redland.librdf_new_model_with_options(__world__.world, storage.storage, args['options_hash'].hash)
     elif args.has_key('model'):
       self.model=Redland.librdf_new_model_from_model(storage.storage,
       args['model'].model)
     else:
-      self.model=Redland.librdf_new_model(storage.storage, "")
+      self.model=Redland.librdf_new_model(__world__.world, storage.storage, "")
 
     if self.model == "NULL":
       self.model=None
@@ -427,7 +433,7 @@ class storage:
     self.storage=None
 
     if args.has_key('storage_name') and args.has_key('name') and args.has_key('options_string'):
-      self.storage=Redland.librdf_new_storage(args['storage_name'] ,args['name'], args['options_string']);
+      self.storage=Redland.librdf_new_storage(__world__.world, args['storage_name'] ,args['name'], args['options_string']);
     elif args.has_key('storage'):
       self.storage=Redland.librdf_new_storage_from_storage(args['storage'].storage);
     else:
@@ -458,11 +464,11 @@ class uri:
     self.uri=None
 
     if args.has_key('string'):
-     self.uri=Redland.librdf_new_uri(string)
+     self.uri=Redland.librdf_new_uri(__world__.world, string)
     elif args.has_key('uri'):
       # FIXME: If the URI is a python URI ... need to use the above constructor
       # if isa(uri, <python uri object>):
-      #   self.uri=Redland.librdf_new_uri(uri.as_string)
+      #   self.uri=Redland.librdf_new_uri(__world__.world, uri.as_string)
       self.uri=Redland.librdf_new_uri_from_uri(uri.uri)
 
   # DESTRUCTOR
@@ -490,7 +496,7 @@ class parser:
     if uri:
       uri=uri.uri
   
-    self.parser=Redland.librdf_new_parser(name,mime_type,uri)
+    self.parser=Redland.librdf_new_parser(__world__.world, name,mime_type,uri)
 
   # DESTRUCTOR
   def __del__(self):
