@@ -130,9 +130,9 @@ die "Failed to create RDF::RSS for URI $uri\n" unless $rss;
 
 for my $channel ($rss->channels) {
   print "Found channel with URI ",$channel->uri->as_string,"\n";
-  print "  title is ",($channel->title ? $channel->title->as_string : 'MISSING'),"\n";
+  print "  title is ",($channel->title ? $channel->title->literal_value_as_latin1 : 'MISSING'),"\n";
   print "  link is ",($channel->link ? $channel->link->as_string : 'MISSING'),"\n";
-  print "  desc is ",$channel->description->as_string,"\n" if $channel->description;
+  print "  desc is ",$channel->description->literal_value_as_latin1,"\n" if $channel->description;
 
   while(my($ns_label,$ns_prefix)=each %namespaces) {
     my(@props)=$channel->properties_with_ns_prefix($ns_prefix);
@@ -143,7 +143,7 @@ for my $channel ($rss->channels) {
 	if($value->type == $RDF::Node::Type_Resource) {
 	  print "    ",$property->uri->as_string," : URI ",$value->uri->as_string,"\n";
 	} else {
-	  print "    ",$property->uri->as_string," : ",$value->as_string,"\n";
+	  print "    ",$property->uri->as_string," : ",$value->literal_value_as_latin1,"\n";
 	}
       }
     }
@@ -154,10 +154,10 @@ for my $channel ($rss->channels) {
 
   for my $item (@items) {
     print "  Item with URI ",$item->uri->as_string,"\n";
-    print "    title is ",($item->title ? $item->title->as_string : 'MISSING'),"\n";
+    print "    title is ",($item->title ? $item->title->literal_value_as_latin1 : 'MISSING'),"\n";
     print "    link is ",($item->link ? $item->link->as_string : 'MISSING'),"\n";
     # RSS 1.0 section 5.5 <item> - description is optional
-    print "    desc is ",$item->description->as_string,"\n" if $item->description;
+    print "    desc is ",$item->description->literal_value_as_latin1,"\n" if $item->description;
     
     my(@props)=$item->properties;
     print "    All properties: ",join(' ', map {$_->uri->as_string} @props),"\n";
@@ -171,7 +171,7 @@ for my $channel ($rss->channels) {
 	  if($value->type == $RDF::Node::Type_Resource) {
 	    print "      ",$property->uri->as_string," : URI ",$value->uri->as_string,"\n";
 	  } else {
-	    print "      ",$property->uri->as_string," : ",$value->as_string,"\n";
+	    print "      ",$property->uri->as_string," : ",$value->literal_value_as_latin1,"\n";
 	  }
 	}
       }
@@ -184,7 +184,7 @@ for my $channel ($rss->channels) {
     print "  Image with URI ",$image->uri->as_string,"\n";
     
     # RSS 1.0 section 5.4 <image> - If present, nothing optional
-    print "    title is ",($image->title ? $image->title->as_string : 'MISSING'),"\n";
+    print "    title is ",($image->title ? $image->title->literal_value_as_latin1 : 'MISSING'),"\n";
     print "    link is ",($image->link ? $image->link->as_string : 'MISSING'),"\n";
     print "    url is ",$image->image_url->as_string,"\n" if $image->image_url;
   }
@@ -194,9 +194,9 @@ for my $channel ($rss->channels) {
     print "  Textinput with URI ",$textinput->uri->as_string,"\n";
 
     # RSS 1.0 section 5.6 <textinput> - If present, nothing optional
-    print "    title is ",($textinput->title ? $textinput->title->as_string : 'MISSING'),"\n";
+    print "    title is ",($textinput->title ? $textinput->title->literal_value_as_latin1 : 'MISSING'),"\n";
     print "    link is ",($textinput->link ? $textinput->link->as_string : 'MISSING'),"\n";
-    print "    desc is ",($textinput->description ? $textinput->description->as_string : 'MISSING'),"\n";
+    print "    desc is ",($textinput->description ? $textinput->description->literal_value_as_latin1 : 'MISSING'),"\n";
     print "    name is ",($textinput->name ? $textinput->name->as_string : 'MISSING'),"\n";
   }
 
