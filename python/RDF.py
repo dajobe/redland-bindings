@@ -101,6 +101,8 @@ __all__ = [ "Node",
             "NTriplesParser",
             "NS",
             "Query",
+            "RDQLQuery",
+            "SPARQLQuery",
             "debug"]
 
 __version__ = "1.0"
@@ -1748,6 +1750,7 @@ class TurtleParser(Parser):
   def __init__(self, uri = None):
     return Parser.__init__(self, name = "turtle", mime_type="application/x-turtle", uri=uri)
 
+
 class Query(object):
   """Redland Query interface class
 
@@ -1801,6 +1804,19 @@ class Query(object):
 # end class Query
 
 
+class RDQLQuery(Query):
+  """Redland RDQL Query class"""
+  def __init__(self, querystring, base_uri=None):
+    return Query.__init__(self, querystring = querystring, base_uri = base_uri,
+            query_language = "rdql")
+
+class SPARQLQuery(Query):
+  """Redland SPARQL Query class"""
+  def __init__(self, querystring, base_uri=None):
+    return Query.__init__(self, querystring = querystring, base_uri = base_uri,
+            query_language = "sparql")
+
+
 class QueryResults(object):
   """Redland Query results class
 
@@ -1814,14 +1830,30 @@ class QueryResults(object):
     self._results = results
     self.first = True
 
+  def is_bindings(self):
+    """Test if the query results format is variable bindings"""
+    return (Redland.librdf_query_results_is_bindings(self._results) != 0)
+
+  def is_boolean(self):
+    """Test if the query results format is a boolean"""
+    return (Redland.librdf_query_results_is_boolean(self._results) != 0)
+
+  def is_graph(self):
+    """Test if the query results format is an RDF graph"""
+    return (Redland.librdf_query_results_is_graph(self._results) != 0)
+
   def __iter__(self):
     return self
 
   def __len__(self):
+    """Get the number of query results returned so far"""
     return Redland.librdf_query_results_get_count(self._results)
 
   # Iterator method
   def next(self):
+    """Get the next variable binding result"""
+    if not self.is_bindings():
+      raise RedlandError("Query result is not in variable bindings format")
     if self.first:
       self.first = False
     else:
@@ -1840,34 +1872,58 @@ class QueryResults(object):
 
     return results
 
+  def finished(self):
+    """Test if reached the last variable binding result"""
+    if not self.is_bindings():
+      raise RedlandError("Query result is not in variable bindings format")
+    return (Redland.librdf_query_results_finished(self._results) != 0)
+
   def as_stream(self):
+    """Return the query results as a stream of triples (RDF.Statement)"""
+    if not self.is_graph():
+      raise RedlandError("Query result is not in RDF graph format")
     s=Redland.librdf_query_results_as_stream(self._results)
     if s is not None:
       return Stream(s, self)
     else:
       return None
 
-  def finished(self):
-    return Redland.librdf_query_results_finished(self._results)
+  def get_boolean(self):
+    """Get the boolean query result"""
+    if not self.is_boolean():
+      raise RedlandError("Query result is not in boolean format")
+    return (Redland.librdf_query_results_get_boolean(self._results) != 0)
 
   def get_binding_value(self, offset):
+    """Get the value of a variable binding by offset"""
+    if not self.is_bindings():
+      raise RedlandError("Query result is not in variable bindings format")
     n=Redland.librdf_query_results_get_binding_value(self._results, offset)
     return Node(from_object=n, do_not_copy=1)
 
   def get_binding_name(self, offset):
+    """Get the name of a variable binding by offset"""
+    if not self.is_bindings():
+      raise RedlandError("Query result is not in variable bindings format")
     return Redland.librdf_query_results_get_binding_name(self._results, offset)
 
   def get_binding_value_by_name(self, name):
+    """Get the value of a variable binding by variable name"""
+    if not self.is_bindings():
+      raise RedlandError("Query result is not in variable bindings format")
     n=Redland.librdf_query_results_get_binding_value_by_name(self._results, name)
     return Node(from_object=n, do_not_copy=1)
 
   def get_bindings_count(self):
+    """Get the number of variable bindings in the query result"""
+    if not self.is_bindings():
+      raise RedlandError("Query result is not in variable bindings format")
     return Redland.librdf_query_results_get_bindings_count(self._results)
 
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.QueryResults"
+      print "Destroying RDF.QueryResults"""
     if self._results:
       Redland.librdf_free_query_results(self._results)
 
