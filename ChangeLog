@@ -1,5 +1,14 @@
 2004-11-03  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* ruby/test/README, ruby/test/triples.rdf, ruby/test/Makefile.am:
+	Ignore test failures since Test::Unit seems old
+
+	* configure.ac: Fixes for updated Ruby rdf-redland 0.5.3.1
+
+	* ruby dir updated to rdf-redland 0.5.3.1
+
+	* redland-bindings.spec.in: Added redland-ruby
+
 	* configure.ac: Bumped version to 0.9.18.2
 
 2004-11-02  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
