@@ -78,8 +78,6 @@ package RDF::Stream;
 
 use strict;
 
-use Redland;
-
 use RDF::Statement;
 
 =pod
@@ -117,16 +115,16 @@ of classes including RDF::Model and RDF::Parser
 
 =cut
 
-sub new ($$$$) {
-  my($proto,$object,$creator,$free_statements)=@_;
+sub new ($$$) {
+  my($proto,$object,$creator)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{STREAM}=$object;
-  # Keep around a reference to the object that created the stream
-  # so that perl does not destroy us before them.
+
+  # Keep around a reference to the object that created the stream so
+  # that perl destroys us before it.
   $self->{CREATOR}=$creator;
-  # should the resulting statements be freed?
-  $self->{FREE_STATEMENTS}=$free_statements;
+
   bless ($self, $class);
   return $self;
 }
@@ -134,8 +132,9 @@ sub new ($$$$) {
 # DESTRUCTOR
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::Stream DESTROY $self\n" if $RDF::Debug;
+  warn "RDF::Stream DESTROY $self" if $RDF::Debug;
   &Redland::librdf_free_stream($self->{STREAM});
+  $self->{CREATOR}=undef;
   warn "RDF::Stream DESTROY done\n" if $RDF::Debug;
 }
 
@@ -165,8 +164,12 @@ the stream is finished.
 sub next ($) {
   my $self=shift;
   return undef if !$self->{STREAM};
+  
+  my $statement=&Redland::librdf_stream_next($self->{STREAM});
+  return undef if !$statement;
+
   # return a new statement created by the librdf stream object
-  RDF::Statement->_new_from_object(&Redland::librdf_stream_next($self->{STREAM}), $self->{FREE_STATEMENTS});
+  RDF::Statement->_new_from_object($statement, 1);
 }
 
 =pod
