@@ -228,7 +228,7 @@ Creates a new RDF Node using the following fields:
       self._node=Redland.librdf_new_node_from_node(args['node']._node)
 
     elif args.has_key('blank'):
-      self._node=Redland.librdf_new_node_from_blank_identifier(args['blank'])
+      self._node=Redland.librdf_new_node_from_blank_identifier(_world._world, args['blank'])
 
     elif args.has_key('from_object'):
       # internal constructor to build an object from a node created
