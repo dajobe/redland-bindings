@@ -41,12 +41,12 @@ public class Storage
       this.object=core.librdf_new_storage_from_storage(old_storage.object);
     }
 
-  protected void finalize() throws Throwable
+  public void finished()
     {
-      core.librdf_free_storage(this.object);
-      this.object=0;
-
-      super.finalize();
+      if(this.object != 0) {
+        core.librdf_free_storage(this.object);
+        this.object=0;
+      }
     }
 
 

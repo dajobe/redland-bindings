@@ -71,13 +71,14 @@ public class Statement
     }
   
 
-  protected void finalize() throws Throwable
+  public void finished()
     {
-      if(!this.dont_free_me)
-        core.librdf_free_statement(this.object);
-      this.object=0;
-
-      super.finalize();
+      if(this.object != 0) {
+        if(!this.dont_free_me)
+          core.librdf_free_statement(this.object);
+        this.object=0;
+        this.world=null;
+      }
     }
   
 

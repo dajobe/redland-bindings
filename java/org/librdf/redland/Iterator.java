@@ -46,15 +46,16 @@ public class Iterator implements java.util.Iterator
       this.creator3=creator3;
     }
 
-  protected void finalize() throws Throwable
+  public void finished()
     {
-      core.librdf_free_iterator(this.object);
-      this.object=0;
-      this.creator1=null;
-      this.creator2=null;
-      this.creator3=null;
-
-      super.finalize();
+      if(this.object != 0) {
+        core.librdf_free_iterator(this.object);
+        this.object=0;
+        this.world=null;
+        this.creator1=null;
+        this.creator2=null;
+        this.creator3=null;
+      }
     }
 
 

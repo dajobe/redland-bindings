@@ -28,27 +28,29 @@ import org.librdf.redland.URI;
 
 public class Serializer
 {
-  private SWIGTYPE_p_librdf_serializer_s object;
+  private long object;
   private World world;
 
   public Serializer (World world, String name, String mime_type, URI type_uri) 
     {
       this.world=world;
-      SWIGTYPE_p_librdf_uri_s uri_object=(type_uri == null) ? null : type_uri.__get_object();
+      long uri_object=(type_uri == null) ? 0 : type_uri.__get_object();
       this.object=core.librdf_new_serializer(world.__get_object(), name, mime_type, uri_object);
     }
   
-  protected void finalize() throws Throwable
+  public void finished()
     {
-      core.librdf_free_serializer(this.object);
-
-      super.finalize();
+      if(this.object != 0) {
+        core.librdf_free_serializer(this.object);
+        this.object=0;
+        this.world=null;
+      }
     }
 
 
-  public boolean serialize_to_file(const String filename, URI base_uri, Model model) 
+  public boolean serialize_to_file(String filename, URI base_uri, Model model) 
     {
-      int result=core.librdf_serializer_serialize_to_file(this.object, filename, base_uri.__get_object(), model.__get_object());
+      int result=core.librdf_serializer_serialize_model_to_file(this.object, filename, base_uri.__get_object(), model.__get_object());
       return (result != 0);
     }
 

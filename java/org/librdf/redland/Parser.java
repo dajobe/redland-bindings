@@ -38,11 +38,12 @@ public class Parser
       this.object=core.librdf_new_parser(world.__get_object(), name, mime_type, uri_object);
     }
   
-  protected void finalize() throws Throwable
+  public void finished()
     {
-      core.librdf_free_parser(this.object);
-
-      super.finalize();
+      if(this.object != 0) {
+        core.librdf_free_parser(this.object);
+        this.object=0;
+      }
     }
 
 

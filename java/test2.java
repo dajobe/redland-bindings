@@ -58,13 +58,23 @@ class test2 {
 
     Node node=new Node(world, uri);
 
+    // The finished() methods are required to release Redland resources
+    uri.finished();
+    uri=null;
+
+    node.finished();
     node=null;
-    
-    // These need not be done in Java if garbage collection
-    // works in the right order
+
+    parser.finished();
     parser=null;
+    model.finished();
     model=null;
+    storage.finished();
     storage=null;
+
+    // after all Redland resources are tidied, the world can be
+    // closed and the Redland library made unavailable
+    world.finished();
     world=null;
 
     System.out.println("Test finished");

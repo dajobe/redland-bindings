@@ -40,13 +40,14 @@ public class Stream implements java.util.Iterator
     }
 
 
-  protected void finalize() throws Throwable
+  public void finished()
     {
-      core.librdf_free_stream(this.object);
-      this.object=0;
-      this.creator=null;
-
-      super.finalize();
+      if(this.object != 0) {
+        core.librdf_free_stream(this.object);
+        this.object=0;
+        this.creator=null;
+        this.world=null;
+      }
     }
 
 

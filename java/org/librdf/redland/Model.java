@@ -57,12 +57,14 @@ public class Model
   }
 
 
-  protected void finalize() throws Throwable
+  public void finished()
   {
-    core.librdf_free_model(this.object);
-    this.object=0;
-
-    super.finalize();
+    if(this.object != 0) {
+      core.librdf_free_model(this.object);
+      this.object=0;
+      world=null;
+      storage=null;
+    }
   }
 
 

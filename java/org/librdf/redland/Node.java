@@ -116,13 +116,14 @@ public class Node
     }
 
 
-  protected void finalize()  throws Throwable
+  public void finished()
     {
-      if(!dont_free_me)
-        core.librdf_free_node(this.object);
-      this.object=0;
-
-      super.finalize();
+      if(this.object != 0) {
+        if(!dont_free_me)
+          core.librdf_free_node(this.object);
+        this.object=0;
+        this.world=null;
+      }
     }
 
   
