@@ -96,7 +96,7 @@ __all__ = [ "Node",
             "Query",
             "debug"]
 
-__version__ = "0.9"
+__version__ = "1.0"
 
 # For pydoc
 __date__ = '$Date$'
