@@ -389,35 +389,33 @@ if test "$with_ecma_cli" != no; then
 fi
 
 
-
-AC_ARG_WITH(jdk, [  --with-jdk=DIR          Java JDK location (default=auto)], jdk="$withval", jdk="")
+jdk=
+jdkinc=
+AC_ARG_WITH(jdk, [  --with-jdk=DIR          Java JDK location (default=auto)], user_jdk="$withval", user_jdk="")
 AC_MSG_CHECKING(Java JDK includes)
 if test "X$JAVA_VERSION" != X; then
-  if test "X$jdk" = X ; then
-    for jdkdir in `ls -1dr /usr/local/jdk* 2>/dev/null` /usr/j2se `ls -1dr /usr/lib/java* 2>/dev/null` /System/Library/Frameworks/JavaVM.framework /usr/local/packages/j2sdk; do
-      if test ! -d $jdkdir; then
-        continue
-      fi
-      for idir in include Headers; do
-        if test -r $jdkdir/$idir/jni.h ; then
-          jdk=$jdkdir
-          jdkinc=$jdkdir/$idir
-          break 2
-        fi
-      done
-    done
-  else
-    jdkinc=$jdkdir/include
-  fi
-
-  if test "X$jdk" != X -a -r $jdkinc/jni.h; then
-    inc2=`find $jdkinc -type d | grep -v "$jdkinc\$" | head -1`
-    JDK_INCLUDES="-I$jdkinc"
-    if test -r $inc2/jni_md.h; then
-      JDK_INCLUDES="$JDK_INCLUDES -I$inc2"
+  for jdkdir in $user_jdk `ls -1dr /usr/local/jdk* 2>/dev/null` /usr/j2se `ls -1dr /usr/lib/java* 2>/dev/null` /System/Library/Frameworks/JavaVM.framework /usr/local/packages/j2sdk /opt/blackdown-jdk-*; do
+    if test ! -d $jdkdir; then
+      continue
     fi
+    for idir in include Headers; do
+      if test -r $jdkdir/$idir/jni.h ; then
+        jdk=$jdkdir
+        jdkinc=$jdkdir/$idir
+        break 2
+      fi
+    done
+  done
+fi
+
+if test "X$jdk" != X -a -r $jdkinc/jni.h; then
+  inc2=`find $jdkinc -type d | grep -v "$jdkinc\$" | head -n 1`
+  JDK_INCLUDES="-I$jdkinc"
+  if test -r $inc2/jni_md.h; then
+    JDK_INCLUDES="$JDK_INCLUDES -I$inc2"
   fi
 fi
+
 AC_SUBST(JDK_INCLUDES)
 AC_MSG_RESULT($JDK_INCLUDES)
 
