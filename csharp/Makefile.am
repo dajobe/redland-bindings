@@ -78,7 +78,7 @@ install-csharp: $(CSHARP_SHARED_LIB) build-csharp
 	$(INSTALL_PROGRAM) $(CSHARP_PACKAGE)PINVOKE.dll @libdir@
 
 clean-local:
-	rm -f build-python-stamp
+	rm -f build-csharp-stamp
 
 # See this is the fake bit
 install-fakeDATA: install-csharp
