@@ -74,7 +74,7 @@ librdf_free_parser $parser
 
 
 puts "Printing all statements"
-set stream [librdf_model_serialise $model]
+set stream [librdf_model_as_stream $model]
 while {! [librdf_stream_end $stream]} {
   set statement [librdf_stream_get_object $stream]
   puts [concat "Statement:" [librdf_statement_to_string $statement]]

@@ -69,7 +69,7 @@ Redland::librdf_free_parser parser
 
 
 puts "Printing all statements"
-stream=Redland::librdf_model_serialise model
+stream=Redland::librdf_model_as_stream model
 while Redland::librdf_stream_end(stream) == 0
   statement=Redland::librdf_stream_get_object stream
   puts "Statement: #{Redland::librdf_statement_to_string statement}"
