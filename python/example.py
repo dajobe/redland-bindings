@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2002 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -25,28 +25,26 @@ import RDF
 storage=RDF.Storage(storage_name="hashes",
                     name="test",
                     options_string="new='yes',hash-type='memory',dir='.'")
-if not storage:
+if storage is None:
   raise "new RDF.Storage failed"
 
 #RDF.debug(1)
 
 model=RDF.Model(storage)
-if not model:
+if model is None:
   raise "new RDF.model failed"
 
 statement=RDF.Statement(subject=RDF.Node(uri_string="http://purl.org/net/dajobe/"),
                         predicate=RDF.Node(uri_string="http://purl.org/dc/elements/1.1/creator"),
                         object=RDF.Node(literal="Dave Beckett"))
-if not statement:
+if statement is None:
   raise "new RDF.Statement failed"
 
 # after this statement is owned by model and should not be used
 model.add_statement(statement)
 
 # Match against an empty statement - find everything
-statement=RDF.Statement(subject=None, predicate=None, object=None);
-# after this statement should not be touched since find_statements is using it
-stream=model.find_statements(statement);
+stream=model.find_statements(RDF.Statement(subject=None, predicate=None, object=None));
 
 while not stream.end():
   print "found statement:",stream.current()
@@ -58,7 +56,7 @@ print "Parsing URI (file)", test_file
 uri=RDF.Uri(string="file:"+test_file)
 
 parser=RDF.Parser('raptor')
-if not parser:
+if parser is None:
   raise "Failed to create RDF.Parser raptor"
 
 stream=parser.parse_as_stream(uri,uri)
