@@ -1,6 +1,8 @@
 //
 // Node.cs: Redland Node class.
 //
+// $Id$
+//
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)
 //
@@ -12,9 +14,11 @@ using System.Runtime.InteropServices;
 
 namespace Redland {
 
-	public class Node : IWrapper {
+	public class Node : IWrapper, IDisposable {
 		
-		IntPtr node;
+		IntPtr node = IntPtr.Zero;
+
+		bool disposed = false;
 
 		public IntPtr Handle {
 			get { return node; }
@@ -55,10 +59,29 @@ namespace Redland {
 		[DllImport ("librdf")]
 		static extern void librdf_free_node (IntPtr node);
 
+		protected void Dispose (bool disposing)
+		{
+			if (! disposed) {
+				// only dispose of managed objects if
+				// disposing is true.
+
+				if (node != IntPtr.Zero) {
+					librdf_free_node (node);
+					node = IntPtr.Zero;
+				}
+				disposed = true;
+			}
+		}
+
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
 		~Node ()
 		{
-                	if((Object)node != null)
-				librdf_free_node (node);
+			Dispose (false);
 		}
 
 		[DllImport ("librdf")]
@@ -66,7 +89,7 @@ namespace Redland {
 		
 		public override bool Equals (object o)
 		{
-			if(o == null)
+			if (o == null)
  				return false;
 
 			int i = librdf_node_equals (node, ((Node) o).Handle);
@@ -108,10 +131,10 @@ namespace Redland {
 		{
 			IntPtr istr = Marshal.StringToHGlobalAuto (s);
 			IntPtr ilang = Marshal.StringToHGlobalAuto (xml_language);
-			int is_xml=is_wf_xml ? 1: 0;
+			int is_xml = is_wf_xml ? 1: 0;
 			node = librdf_new_node_from_literal (world.Handle, istr, ilang, is_xml);
-                        Marshal.FreeHGlobal (istr);
-                        Marshal.FreeHGlobal (ilang);
+			Marshal.FreeHGlobal (istr);
+			Marshal.FreeHGlobal (ilang);
 		}
 		
 		[DllImport ("librdf")]
@@ -119,12 +142,12 @@ namespace Redland {
 
 		public Node (Node node)
 		{
-			this.node = librdf_new_node_from_node(node.node);
+			this.node = librdf_new_node_from_node (node.node);
 		}
 
 		internal Node (IntPtr node)
 		{
-			this.node = node;
+			this.node = librdf_new_node_from_node (node);
 		}
 
 		[DllImport ("librdf")]
@@ -132,9 +155,9 @@ namespace Redland {
 
 		public void Print (IntPtr fh)
 		{
-			if(node == IntPtr.Zero)
-				Util.fputs("null", fh);
-                        else
+			if (node == IntPtr.Zero)
+				Util.fputs ("null", fh);
+			else
 				librdf_node_print (node, fh);
 		}
 
@@ -143,8 +166,8 @@ namespace Redland {
 
 		public override string ToString ()
 		{
-			IntPtr istr=librdf_node_to_string (node);
-                        return Marshal.PtrToStringAuto(istr);
+			IntPtr istr = librdf_node_to_string (node);
+			return Marshal.PtrToStringAuto (istr);
 		}
 	}
 }
