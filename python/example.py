@@ -80,4 +80,6 @@ print "Writing model to test-out.rdf as rdf/xml"
 serializer=RDF.Serializer()
 serializer.serialize_model_to_file("test-out.rdf", model)
 
+print "Serialized to ntriples as a string size",len(model.to_string(name="ntriples", base_uri="http://example.org/base#")),"bytes"
+
 print "Done"
