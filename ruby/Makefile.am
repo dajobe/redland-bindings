@@ -44,11 +44,11 @@ $(RUBY_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -ruby -module $(RUBY_PACKAGE) -o $@ $<
 
 $(RUBY_PACKAGE)_wrap.o: $(RUBY_PACKAGE)_wrap.c
-	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf -c -I$(rubydir) -c $< -o $@
+	$(LIBTOOL) --mode=compile $(CC) -c -prefer-pic $(CFLAGS) -I$(top_srcdir)/librdf -I$(rubydir) $< -o $@
 
 $(RUBY_PACKAGE).so: $(RUBY_PACKAGE)_wrap.o
 	rubylib=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']"`; \
-	$(LIBTOOL) --mode=link $(CC) $(RUBY_PACKAGE)_wrap.o $$rubylib $(top_builddir)/librdf/librdf.la -o $@
+	$(LIBTOOL) --mode=link $(CC) -shared $< $$rubylib $(top_builddir)/librdf/librdf.la -o $@
 
 check-local: test-ruby
 
