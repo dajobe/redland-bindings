@@ -229,7 +229,6 @@ sub emit($$) {
   my $unit=$state->{feature_indenting_size};
   print ' ' x ($state->{depth} * $unit);
   print $string;
-  print "\n";
 }
 
 
@@ -289,13 +288,43 @@ sub emit_empty_element($$@) {
     $str.=qq{ $name="$value"};
   }
 
-  $str.=" />";
+  $str.=" />\n";
+  emit($state, $str);
+}
+
+sub emit_literal_element($$$@) {
+  my($state,$name,$literal,@attrs)=@_;
+
+  my $str="<".$name;
+
+  if(my $namespaces=$state->{inscope_namespaces}) {
+    for my $ns (@$namespaces) {
+      my($prefix, $uri, $depth)=@$ns;
+      $str.=qq{ xmlns:$prefix="$uri"}
+        if $depth == $state->{depth};
+    }
+  }
+
+  if(my $lang=$state->{xml_lang}) {
+    $str.=qq{ xml:lang="$lang"};
+  }
+
+  if(my $base=$state->{xml_base}) {
+    $str.=qq{ xml:base="$base"};
+  }
+
+  for my $attr (@attrs) {
+    my($name,$value)=@$attr;
+    $str.=qq{ $name="$value"};
+  }
+
+  $str.=">$literal</$name>\n";
   emit($state, $str);
 }
 
 sub emit_end_element($$) {
   my($state, $name)=@_;
-  emit($state, qq{</$name>});
+  emit($state, qq{</$name>\n});
 }
 
 
@@ -318,6 +347,7 @@ sub format_statement ($$$) {
   } elsif($otype == $RDF::Redland::Node::Type_Literal) {
     my $literal=$object->literal_value; # FIXME or literal_value_as_latin1
     my $literal_lang=$object->literal_value_language;
+    my $dt_uri=$object->literal_datatype;
     my(@attrs);
     if($literal_lang) {
       my $attr=make_xml_qname($state, $XML_NS, "lang", 1);
@@ -326,13 +356,14 @@ sub format_statement ($$$) {
     if ($object->literal_value_is_wf_xml) {
       my $attr=make_xml_qname($state, $RDF_NS, "parseType", 1);
       push(@attrs, [$attr, "Literal"]);
+    } elsif ($dt_uri) {
+      my $attr=make_xml_qname($state, $RDF_NS, "datatype", 1);
+      push(@attrs, [$attr, $dt_uri->as_string]);
     }
-    emit_start_element($state, $qname, @attrs);
-    emit($state, $literal);
-    emit_end_element($state, $qname);
+    emit_literal_element($state, $qname, $literal, @attrs);
   } elsif($otype == $RDF::Redland::Node::Type_Blank) {
     my $attr=make_xml_qname($state, $RDF_NS, "nodeID");
-    my $object_value=$object->blank_identifer;
+    my $object_value=$object->blank_identifier;
     emit_empty_element($state, $qname, [$attr, $object_value]);
   } else {
     die "Unknown object type $otype\n";
@@ -344,20 +375,19 @@ sub start_format_subject($$) {
   my($state,$subject_node)=@_;
 
   my $element=make_xml_qname($state, $RDF_NS, "Description");
-  my $about='';
+  my($attr, $value);
   my $stype=$subject_node->type;
   if($stype eq $RDF::Redland::Node::Type_Resource) {
-    my $attr=make_xml_qname($state, $RDF_NS, "about", 1);
-    my $url=$subject_node->uri->as_string;
-    $about=qq{ $attr="$url"};
+    $attr=make_xml_qname($state, $RDF_NS, "about", 1);
+    $value=$subject_node->uri->as_string;
   } elsif($stype eq $RDF::Redland::Node::Type_Blank) {
-    my $attr=make_xml_qname($state, $RDF_NS, "nodeID", 1);
-    my $id=$subject_node->blank_identifier;
-    $about=qq{ $attr="$id"};
+    $attr=make_xml_qname($state, $RDF_NS, "nodeID", 1);
+    $value=$subject_node->blank_identifier;
   } else {
     die "Unknown subject type $stype\n";
   }
-  emit($state, qq{<$element$about>});
+  emit_start_element($state, $element, [$attr, $value]);
+  print "\n";
 }
 
 
@@ -365,8 +395,8 @@ sub end_format_subject($$) {
   my($state,$subject_node)=@_;
 
   my $element=make_xml_qname($state, $RDF_NS, "Description");
-  my $about='';
-  emit($state, qq{</$element>});
+  emit_end_element($state, $element);
+  print "\n";
 }
 
 
@@ -375,11 +405,14 @@ sub dump_nodes ($@) {
 
   for my $subject_key (@order) {
     my $subject_node=$state->{subject_key_to_node}->{$subject_key};
-    #print "key $subject_key - node ",$subject_node->as_string,"\n";
+    # print "<!-- key $subject_key -->\n";
     
     start_format_subject($state, $subject_node);
 
     indent($state);
+    for my $type (@{$state->{node_types}->{$subject_key}}) {
+      format_statement($state, $RDF_type_predicate, $type);
+    }
     for my $statement (@{$state->{nodes}->{$subject_key}}) {
       format_statement($state, $statement->predicate, $statement->object);
     }
@@ -418,12 +451,13 @@ ensure_declared_namespace($state, $RDF_NS);
 my $element=make_xml_qname($state, $RDF_NS, "RDF");
 
 emit_start_element($state, $element);
-
+print "\n";
   indent($state);
   dump_nodes($state, @order);
   outdent($state);
 
 emit_end_element($state, $element);
+print "\n";
 
 exit 0;
 
