@@ -20,9 +20,7 @@ version/program.  The standard 'make' at the top level will build it.</p>
   cd python
   make
 
-  # optional, but it may require a top-level 'make install
-  # first depending on the operating system and how it
-  # handles shared libraries
+  # optional - runs the pyunit tests
   make check
 </pre>
 
@@ -38,10 +36,10 @@ sudo make install):</p>
 It has been tested with the following versions:</p>
 
 <blockquote>
-2.2 on Linux/x86<br />
-2.3 on OSX/PPC<br />
+2.3.3 on Linux/x86<br />
 2.3.3 on FreeBSD/x86<br />
-2.3.3 on Linux/x86
+2.3 on OSX/PPC<br />
+2.2 on Linux/x86
 </blockquote>
 
 
@@ -79,8 +77,9 @@ directory such as <em>build/lib.linux-i686-2.2</em> and run it with:</p>
 
 <h2>Redland Python API Introduction</h2>
 
-<p>The pydoc <a href="pydoc/RDF.html">Redland Python API</a>
-contains full details of the classes and methods provided.</p>
+<p>Read the pydoc <a href="pydoc/RDF.html">Redland Python API</a>
+for full details of the classes and methods provided along with
+examples of use.</p>
 
 <p>The Python API is an object-based API reflecting the same structure
 of the Redland objects with simple mappings between them:</p>
