@@ -1,6 +1,5 @@
 require 'rdf/redland'
-require 'rdf/redland/resource'
-require 'rdf/redland/util'
+
 module Redland
 
   class Stream
