@@ -122,13 +122,16 @@ AC_CHECK_PROG(PHP_CONFIG, php-config, php-config)
 if test "X$PHP_CONFIG" != X ; then
 
   PHP_INCLUDES=`$PHP_CONFIG --includes`
-
-  AC_SUBST(PHP_INCLUDES)
+  PHP_EXTENSION_DIR=`$PHP_CONFIG --extension-dir`
 else
   # This allows 'make clean' in the python directory to work when
   # python isn't available
   PHP=:
+  PHP_INCLUDES=
+  PHP_EXTENSION_DIR=
 fi
+AC_SUBST(PHP_INCLUDES)
+AC_SUBST(PHP_EXTENSION_DIR)
 
 AC_ARG_WITH(perl, [  --with-perl(=PERL)      Enable the Perl interface], with_perl="$withval", with_perl="no")
 AC_MSG_CHECKING(Enable Perl API)
