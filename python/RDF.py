@@ -1409,9 +1409,9 @@ Create a Storage of the given type.  Currently the built in storage
 names that are always present are 'memory', 'hashes', 'file' and
 'uri'.  'bdb' is available when Sleepycat / BerkeleyDB is compiled
 in, 'mysql' when MySQL is compiled in, and 'sqlite' when SQLite is
-compiled in
+compiled in.  If storage_name is omitted, it defaults to 'memory'.
 
-An optional argument 'name' is used when the storage needs a name
+The argument 'name' can be used when the storage needs a name
 to operate, such as used for a filename or URI:
 
   s1=RDF.Storage(storage_name="file", name='/filename')
@@ -1419,14 +1419,15 @@ to operate, such as used for a filename or URI:
   s2=RDF.Storage(storage_name="uri", name='http://rdf.example.org/')
 
 
-Extra options can be passed with the options_string, some of which
-are required.  This uses the following form:
+The argument options_string allows additional store-specific options
+to be given, some of which are required by certain stores.  This uses
+the following form:
 
   s3=RDF.Storage(storage_name="name", name='abc',
                  options_string="key1='value1', key2='value2', ...")
 
-for multiple key/value pairs, key value are always surrounded by
-single quotes.
+for multiple key/value option pairs, option values are always
+surrounded by single quotes.
 
 The common options are:
   new - optional and takes a boolean value (default false)
@@ -1438,17 +1439,19 @@ The common options are:
     if false the storage is opened read-only and for file-based
     Storages or those with locks, may be opened with shared-readers.
 
-Some storage types have additional options in the options_string.
+Some storage types have additional options:
 
 storage_name 'hashes' has options:
   hash-type -  the name of any hash type supported.
     'memory' (default), 'file' hash types are always present. 'bdb' is
     available when BerkeleyDB is compiled in,
+  dir - the directory name to create the files in (default '.')
+  mode - the file creation mode (default 0644 octal)
 
 storage_name 'mysql' has options:
   host - required MySQL database hostname
   port - optional MySQL database port (defaults to 3306)
-  database - required MySQL database name;
+  database - required MySQL database name
   user - required MySQL database user
   password - required MySQL database password
       
