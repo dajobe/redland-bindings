@@ -516,6 +516,30 @@ sub target ($$$) {
   return $node ? RDF::Redland::Node->_new_from_object($node,1) : undef;
 }
 
+=item feature URI [VALUE]
+
+Get/set a model feature.  The feature is named via RDF::Redland::URI
+I<URI> and the value is a RDF::Redland::Node.  If I<VALUE> is given,
+the feature is set to that value, otherwise the current value is
+returned.
+
+=cut
+
+sub feature ($$;$) {
+  my($self,$uri,$value)=@_;
+
+  warn "RDF::Redland::Model->feature('$uri', '$value')\n" if $RDF::Redland::Debug;
+  $uri=RDF::Redland::URI->new($uri)
+    unless ref $uri;
+
+  return &RDF::Redland::CORE::librdf_model_set_feature($self->{MODEL},$uri->{URI},$value->{NODE})
+      if $value;
+
+  $value=&RDF::Redland::CORE::librdf_model_get_feature($self->{MODEL},$uri->{URI});
+  return $value ? RDF::Redland::Node->_new_from_object($value,1) : undef;
+}
+
+
 =pod
 
 =back
