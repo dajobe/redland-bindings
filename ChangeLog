@@ -1,3 +1,9 @@
+2005-02-06  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Snapshotted redland-bindings_1_0_0_1 for 1.0.0.1 release
+
+	* configure.ac: 1.0.0.1
+
 2005-02-04  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* python/redlandtest.py (testSPARQLQueryAsString): Added.
