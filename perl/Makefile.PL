@@ -78,19 +78,19 @@ WriteMakefile(
     'OBJECT'    => "$objects $MEM_LIBS",
     'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS"},
 
-     'PM' => { map { ("lib/$_", "\$(INST_LIBDIR)/$_") }
- qw(RDF/Redland.pm
- RDF/Redland/Model.pm
- RDF/Redland/RSS.pm
- RDF/Redland/URI.pm
- RDF/Redland/Iterator.pm
- RDF/Redland/Storage.pm
- RDF/Redland/Statement.pm
- RDF/Redland/Stream.pm
- RDF/Redland/Parser.pm
- RDF/Redland/Serializer.pm
- RDF/Redland/CORE.pm
- RDF/Redland/Node.pm)
+    'PM' => { map { ("lib/RDF/$_", "\$(INST_LIBDIR)/$_") }
+ qw(Redland.pm
+Redland/Model.pm
+Redland/RSS.pm
+Redland/URI.pm
+Redland/Iterator.pm
+Redland/Storage.pm
+Redland/Statement.pm
+Redland/Stream.pm
+Redland/Parser.pm
+Redland/Serializer.pm
+Redland/CORE.pm
+Redland/Node.pm)
       },
 
 
