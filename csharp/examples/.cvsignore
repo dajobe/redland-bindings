@@ -4,5 +4,7 @@ Makefile.in
 *.dll
 *.so
 *.db
-test-example4.xml
-example2.xml
+example1.xml
+example2.out
+example3.out
+example4.xml
