@@ -162,7 +162,7 @@ RDF::Redland::URI I<BASE_URI> into RDF::Redfland::Model I<MODEL>.
 
 sub parse_string_into_model ($$$$) {
   my($self,$string,$base_uri,$model)=@_;
-  return &RDF::Redland::CORE::librdf_parser_parse_into_model($self->{PARSER},$string,$base_uri->{URI},$model->{MODEL});
+  return &RDF::Redland::CORE::librdf_parser_parse_string_into_model($self->{PARSER},$string,$base_uri->{URI},$model->{MODEL});
 }
 
 =item feature URI [VALUE]
