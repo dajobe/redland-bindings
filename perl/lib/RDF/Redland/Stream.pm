@@ -82,14 +82,16 @@ use Redland;
 
 # CONSTRUCTOR
 # (main)
-sub new ($$) {
-  my($proto,$object,$creator)=@_;
+sub new ($$$$) {
+  my($proto,$object,$creator,$free_statements)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{STREAM}=$object;
   # Keep around a reference to the object that created the stream
   # so that perl does not destroy us before them.
   $self->{CREATOR}=$creator;
+  # should the resulting statements be freed?
+  $self->{FREE_STATEMENTS}=$free_statements;
   bless ($self, $class);
   return $self;
 }
@@ -111,7 +113,7 @@ sub next ($) {
   my $self=shift;
   return undef if !$self->{STREAM};
   # return a new statement created by the librdf stream object
-  RDF::Statement->_new_from_object(&Redland::librdf_stream_next($self->{STREAM}));
+  RDF::Statement->_new_from_object(&Redland::librdf_stream_next($self->{STREAM}), $stream->{FREE_STATEMENTS});
 }
 
 1;
