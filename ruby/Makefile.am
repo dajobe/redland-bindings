@@ -81,5 +81,6 @@ uninstall-rubyDATA: $(ruby_DATA)
 check-local: test-ruby
 
 test-ruby: $(RUBY_PACKAGE).so $(srcdir)/example.rb
-	$(RUBY) -I. $(srcdir)/example.rb file:$(srcdir)/../perl/dc.rdf raptor
+	$(top_builddir)/redland-src-config --run \
+	  $(RUBY) -I. $(srcdir)/example.rb file:$(srcdir)/../perl/dc.rdf raptor
 

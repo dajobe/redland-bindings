@@ -77,4 +77,5 @@ check-local: test-php
 test-php: $(PHP_PACKAGE).so $(srcdir)/test.php
 # I do not know why this is needed. PHP seems to ignore the global
 # libraries when not installed
-	-$(PHP) -d extension_dir=. $(srcdir)/test.php
+	-$(top_builddir)/redland-src-config --run \
+	  $(PHP) -d extension_dir=. $(srcdir)/test.php

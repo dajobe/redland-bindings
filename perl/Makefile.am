@@ -64,6 +64,10 @@ $(PERL_MAKEFILE): $(srcdir)/Makefile.PL lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
 	echo $(MAKE) -f $(PERL_MAKEFILE) $$target; \
 	$(MAKE) -f $(PERL_MAKEFILE) $$target
 
+test-perl: $(PERL_MAKEFILE)
+	$(top_builddir)/redland-src-config --run \
+	  $(MAKE) -f $(PERL_MAKEFILE) $$target
+
 clean-perl realclean-perl:
 	@target=`echo $@ | sed -e 's/-perl//'`; \
 	if test -r $(PERL_MAKEFILE); then \

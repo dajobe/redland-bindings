@@ -72,7 +72,7 @@ build-csharp-stamp: $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE)PINVOKE.dll
 check-local: build-csharp-stamp test-csharp
 
 test-csharp: build-csharp-stamp test.exe
-	$(CLIRUN) test.exe
+	$(top_builddir)/redland-src-config --run $(CLIRUN) test.exe
 
 install-csharp: $(CSHARP_SHARED_LIB) build-csharp
 	$(INSTALL_PROGRAM) $(CSHARP_SHARED_LIB) @libdir@

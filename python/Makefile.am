@@ -72,10 +72,13 @@ uninstall-pythonDATA: $(python_DATA)
 check-local: unittest-python test-python
 
 test-python: $(PYTHON_PACKAGE).so
-	PYTHONPATH=. $(PYTHON)  $(srcdir)/test/test.py
+	PYTHONPATH=. $(top_builddir)/redland-src-config --run \
+	  $(PYTHON) $(srcdir)/test/test.py
 
 unittest-python: $(PYTHON_PACKAGE).so
-	PYTHONPATH=. $(PYTHON)  $(srcdir)/redlandtest.py
+	PYTHONPATH=. $(top_builddir)/redland-src-config --run \
+	  $(PYTHON) $(srcdir)/redlandtest.py
 
 RDF.html: RDF.py $(PYTHON_PACKAGE).so
-	PYTHONPATH=. $(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF
+	PYTHONPATH=. $(top_builddir)/redland-src-config --run \
+	  $(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF
