@@ -1836,8 +1836,8 @@ class NS(object):
 
   def node(self,localName):
     if localName not in self.nodecache:
-      self.nodecache[localName] = Node(uri_string=self.prefix+localName)
-    return self.nodecache[localName]
+      self.nodecache[localName] = Redland.librdf_new_node_from_uri_string(_world._world, self.prefix+localName)
+    return Node(from_object=self.nodecache[localName])
 
   def __getitem__(self,localName):
     return self.node(localName)
