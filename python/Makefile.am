@@ -21,10 +21,10 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ @PYTHON_INCLUDES@
-AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @PYTHON_INCLUDES@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
-AM_LDFLAGS=@LIBRDF_LDFLAGS@ @LIBRDF_EXTERNAL_LIBS@ $(MEM_LIBS)
+AM_LDFLAGS=@LIBRDF_LDFLAGS@ $(MEM_LIBS)
 
 PYTHON=@PYTHON@
 
@@ -48,7 +48,7 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_DECL_I
 
-$(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i redland-post.i redland-decl.i
+$(PYTHON_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-post.i redland-decl.i
 	swig -v -python $(SWIG_OPTS) $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ $<
 
 $(PYTHON_PACKAGE)_wrap.so: $(srcdir)/$(PYTHON_PACKAGE)_wrap.c
@@ -61,8 +61,8 @@ $(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so
 	else \
 	  args=" -shared"; \
 	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so `$(top_builddir)/redland-src-config --libs` -o $(PYTHON_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so `$(top_builddir)/redland-src-config --libs` -o $(PYTHON_PACKAGE).so
+	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so @REDLAND_CONFIG@ --libs` -o $(PYTHON_PACKAGE).so; \
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so @REDLAND_CONFIG@ --libs` -o $(PYTHON_PACKAGE).so
 	touch $(PYTHON_PACKAGE)-stamp
 
 install-pythonDATA: $(python_DATA)
@@ -76,13 +76,13 @@ uninstall-pythonDATA: $(python_DATA)
 check-local: unittest-python test-python
 
 test-python: $(PYTHON_PACKAGE).so
-	PYTHONPATH=. $(top_builddir)/redland-src-config --run \
+	PYTHONPATH=. \
 	  $(PYTHON) $(srcdir)/test/test.py
 
 unittest-python: $(PYTHON_PACKAGE).so
-	PYTHONPATH=. $(top_builddir)/redland-src-config --run \
+	PYTHONPATH=. \
 	  $(PYTHON) $(srcdir)/redlandtest.py
 
 RDF.html: RDF.py $(PYTHON_PACKAGE).so
-	PYTHONPATH=. $(top_builddir)/redland-src-config --run \
+	PYTHONPATH=. \
 	  $(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF

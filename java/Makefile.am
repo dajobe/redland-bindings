@@ -23,8 +23,10 @@ JAVA=@JAVA@
 JAVAC=@JAVAC@
 SWIG=@SWIG@
 
-AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ @JDK_INCLUDES@
-AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @JDK_INCLUDES@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
+
+noinst_SCRIPTS=run-java
 
 JAVA_MODULE=core
 JAVA_PACKAGE=org.librdf.redland
@@ -37,7 +39,7 @@ javasharedir=$(prefix)/share/java
 javalib_LTLIBRARIES=librdf-java.la
 
 librdf_java_la_SOURCES=core_wrap.c
-librdf_java_la_LDFLAGS=--rpath $(javalibdir) $(top_srcdir)/librdf/librdf.la
+librdf_java_la_LDFLAGS=--rpath $(javalibdir) @LIBRDF_LIBTOOLLIBS@
 
 javashare_DATA=librdf-java.jar
 
@@ -75,10 +77,10 @@ CLEANFILES=test*db $(JAVA_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
 
-$(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java.in: $(srcdir)/../Redland.i
+$(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java.in: @REDLAND_SWIG@
 	here=`pwd`; \
 	cd $(JAVA_PATH); \
-	$(SWIG) -v -java -noproxy -module $(JAVA_MODULE) -package $(JAVA_PACKAGE) -o $(JAVA_MODULE)_wrap.c $$here/$<; \
+	$(SWIG) -v -java -noproxy -module $(JAVA_MODULE) -package $(JAVA_PACKAGE) -o $(JAVA_MODULE)_wrap.c $<; \
 	if test -r $(JAVA_MODULE)JNI.java; then \
 	  echo "Fixing SWIG 1.3.15+ broken Java API"; \
 	  rm -f $(JAVA_MODULE).java SWIGTYPE_*; \
@@ -115,19 +117,19 @@ check-local: test-java
 test-java: test1 test2
 
 test1: test1.class $(JAVA_JAR)
-	$(top_builddir)/redland-src-config --run $(JAVA) test1
+	$(srcdir)/run-java $(JAVA) test1
 
 test1.class: test1.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH) test1.java
 
 test2: test2.class $(JAVA_JAR)
-	$(top_builddir)/redland-src-config --run $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) test2
+	$(srcdir)/run-java $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) test2
 
 test2.class: test2.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH) test2.java
 
 example: example.class $(JAVA_JAR)
-	$(top_builddir)/redland-src-config --run $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) example
+	$(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) example
 
 example.class: example.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH):$(JAVA_JAR) example.java

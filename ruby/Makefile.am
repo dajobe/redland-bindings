@@ -20,8 +20,8 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@  @RUBY_INCLUDES@
-AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@  @RUBY_INCLUDES@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
 RUBY=@RUBY@
 
@@ -47,7 +47,7 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_TYPES_I
 
-$(srcdir)/$(RUBY_PACKAGE)_wrap.c: $(srcdir)/../Redland.i redland-pre.i redland-types.i
+$(srcdir)/$(RUBY_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-pre.i redland-types.i
 	swig -v -ruby $(SWIG_OPTS) -module $(RUBY_PACKAGE) -o $@ $<
 
 
@@ -62,8 +62,8 @@ ruby-redland-stamp: $(RUBY_PACKAGE)_wrap.so
 	else \
 	  args=" -shared"; \
 	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so -l$(rubylib) `$(top_srcdir)/redland-src-config --libs` -o $(RUBY_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so -l$(rubylib) `$(top_srcdir)/redland-src-config --libs` -o $(RUBY_PACKAGE).so
+	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so -l$(rubylib) `@REDLAND_CONFIG@ --libs` -o $(RUBY_PACKAGE).so; \
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so -l$(rubylib) `@REDLAND_CONFIG@ --libs` -o $(RUBY_PACKAGE).so
 	if test `uname` = Darwin; then \
 	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle; \
 	fi
@@ -86,5 +86,4 @@ uninstall-rubyDATA: $(ruby_DATA)
 check-local: test-ruby
 
 test-ruby: $(RUBY_PACKAGE).so $(srcdir)/example.rb
-	$(top_builddir)/redland-src-config --run \
-	  $(RUBY) -I. $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
+	$(RUBY) -I. $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor

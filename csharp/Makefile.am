@@ -21,8 +21,8 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@
-AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
 CSHARPC=@CSHARPC@
 CSHARPCFLAGS=@CSHARPCFLAGS@
@@ -78,7 +78,7 @@ build-csharp-stamp: $(CSHARP_DLL)
 check-local: build-csharp-stamp test-csharp
 
 test-csharp: build-csharp-stamp test.exe
-	MONO_PATH=. $(top_builddir)/redland-src-config --run $(CLIRUN) test.exe
+	MONO_PATH=. $(CLIRUN) test.exe
 
 test.exe: test.cs Redland.dll
 	$(CSHARP_LINK) test.cs -target:exe -r:Redland.dll -out:$@

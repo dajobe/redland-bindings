@@ -20,8 +20,8 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ @PHP_INCLUDES@
-AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @PHP_INCLUDES@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
 PHP=php
 
@@ -43,7 +43,7 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_POST_I -DREDLAND_DECL_I -DREDLAND_DECL_I
 
-$(PHP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i redland-decl.i redland-init.i redland-post.i redland-pre.i
+$(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i redland-pre.i
 	swig -v -php4 $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ $<
 	cp $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.tmp
 	patch $(PHP_PACKAGE)_wrap.c < redland_wrap.c.patch
@@ -67,7 +67,7 @@ $(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.so
 	else \
 	  args=" -shared"; \
 	fi; \
-	cmd="$(CC) $(AM_CFLAGS) $(CFLAGS) `$(top_srcdir)/redland-src-config --libs` $(AM_LDFLAGS) $(LDFLAGS) $$args $(PHP_PACKAGE)_wrap.so -o $(PHP_PACKAGE).so"; \
+	cmd="$(CC) $(AM_CFLAGS) $(CFLAGS) @REDLAND_CONFIG@ --libs` $(AM_LDFLAGS) $(LDFLAGS) $$args $(PHP_PACKAGE)_wrap.so -o $(PHP_PACKAGE).so"; \
 	echo $$cmd; \
 	$$cmd
 	if test `uname` = Darwin; then \
@@ -86,5 +86,4 @@ check-local: test-php
 # See the manual for the php command:
 #  http://www.php.net/manual/en/features.commandline.php
 test-php: $(PHP_PACKAGE).so $(srcdir)/test.php
-	-$(top_builddir)/redland-src-config --run \
-	  $(PHP) -c $(srcdir) $(srcdir)/test.php
+	$(PHP) -c $(srcdir) $(srcdir)/test.php

@@ -20,8 +20,8 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ @TCL_INCLUDES@
-AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @TCL_INCLUDES@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
 TCL=@TCL@
 
@@ -47,7 +47,7 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_INIT_I
 
-$(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i redland-init.i redland-pre.i
+$(TCL_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-init.i redland-pre.i
 	swig -v -tcl8 $(SWIG_OPTS) -module $(TCL_PACKAGE) -o $@ $<
 
 $(TCL_PACKAGE)_wrap.so: $(TCL_PACKAGE)_wrap.c
@@ -61,8 +61,8 @@ $(TCL_PACKAGE)-stamp: $(TCL_PACKAGE)_wrap.so
 	else \
 	  args=" -shared"; \
 	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(TCL_PACKAGE)_wrap.so $(tcllib) `$(top_srcdir)/redland-src-config --libs` -o $(TCL_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(TCL_PACKAGE)_wrap.so $(tcllib) `$(top_srcdir)/redland-src-config --libs` -o $(TCL_PACKAGE).so
+	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(TCL_PACKAGE)_wrap.so $(tcllib) `@REDLAND_CONFIG@ --libs` -o $(TCL_PACKAGE).so; \
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(TCL_PACKAGE)_wrap.so $(tcllib) `@REDLAND_CONFIG@ --libs` -o $(TCL_PACKAGE).so
 	if test `uname` = Darwin; then \
 	  $(INSTALL_PROGRAM) $(TCL_PACKAGE).so $(TCL_PACKAGE).dylib; \
 	fi
@@ -92,5 +92,4 @@ pkgIndex.tcl: $(TCL_PACKAGE).so
 check-local: test-tcl
 
 test-tcl: $(TCL_PACKAGE).so pkgIndex.tcl $(srcdir)/test.tcl
-	$(top_builddir)/redland-src-config --run \
-	  $(TCL) $(srcdir)/test.tcl
+	$(TCL) $(srcdir)/test.tcl

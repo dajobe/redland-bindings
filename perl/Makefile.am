@@ -19,9 +19,9 @@
 # 
 # 
 
-AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@
-AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
-AM_STANDARD_CFLAGS=@STANDARD_CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
+AM_STANDARD_CFLAGS=@STANDARD_CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
 PERL=@PERL@
 
@@ -59,11 +59,11 @@ $(perlshareRDFdir)/Redland.pm: build-perl
 
 SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_POST_I -DREDLAND_DECL_I
 
-$(PERL_CORE_PACKAGE)_wrap.c lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm : $(srcdir)/../Redland.i redland-pre.i redland-post.i redland-decl.i
+$(PERL_CORE_PACKAGE)_wrap.c lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm : @REDLAND_SWIG@ redland-pre.i redland-post.i redland-decl.i
 	swig -v -perl5 $(SWIG_OPTS) -module $(PERL_FULL_CORE_PACKAGE) -o $(PERL_CORE_PACKAGE)_wrap.c $< && mv $(PERL_CORE_PACKAGE).pm lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
 
 $(PERL_MAKEFILE): $(srcdir)/Makefile.PL lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
-	VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) CFLAGS="$(AM_CPPFLAGS) $(SWIG_OPTS) $(CPPFLAGS) $(AM_STANDARD_CFLAGS)" $(PERL) $(srcdir)/Makefile.PL $(MAKE_PL_OPTS)
+	VERSION=$(VERSION) REDLAND_CONFIG=@REDLAND_CONFIG@ CFLAGS="$(AM_CPPFLAGS) $(SWIG_OPTS) $(CPPFLAGS) $(AM_STANDARD_CFLAGS)" $(PERL) $(srcdir)/Makefile.PL $(MAKE_PL_OPTS)
 
 -perl install-perl: $(PERL_MAKEFILE)
 	@target=`echo $@ | sed -e 's/-perl//'`; \
@@ -71,8 +71,7 @@ $(PERL_MAKEFILE): $(srcdir)/Makefile.PL lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
 	$(MAKE) -f $(PERL_MAKEFILE) $$target
 
 test-perl: $(PERL_MAKEFILE)
-	$(top_builddir)/redland-src-config --run \
-	  $(MAKE) -f $(PERL_MAKEFILE) test
+	$(MAKE) -f $(PERL_MAKEFILE) test
 
 clean-perl realclean-perl:
 	@target=`echo $@ | sed -e 's/-perl//'`; \
@@ -83,7 +82,7 @@ clean-perl realclean-perl:
 
 build-perl: -perl
 
-build-perl-stamp: $(srcdir)/../Redland.i
+build-perl-stamp: @REDLAND_SWIG@
 	$(MAKE) build-perl && touch build-perl-stamp
 
 check-local: build-perl-stamp test-perl

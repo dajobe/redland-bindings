@@ -21,7 +21,7 @@
 
 use ExtUtils::MakeMaker;
 
-$TOP_SRCDIR=$ENV{TOP_SRCDIR} || '..';
+$REDLAND_CONFIG=$ENV{REDLAND_CONFIG} || 'redland-config';
 $CFLAGS=$ENV{CFLAGS} || "";
 $MEM_LIBS=$ENV{MEM_LIBS} || "";
 
@@ -29,26 +29,25 @@ $CORE_PACKAGE="CORE";
 
 my $objects="${CORE_PACKAGE}_wrap.o ";
 
-if(-r '../redland-src-config') {
-  my $redland_libs=`../redland-src-config --libs`;
+my $redland_libs=`$REDLAND_CONFIG --libs 2>/dev/null`;
+if ($redland_libs ne "") {
   chomp $redland_libs;
   $objects .= $redland_libs;
 }
 
-my $includes="-I$TOP_SRCDIR/librdf";
-
 my $version=$ENV{VERSION};
 
 if(!$version) {
-  $version=`../redland-src-config --version`;
+  $version=`$REDLAND_CONFIG --version`;
   chomp $version;
-  die "Cannot find Redland version via ../redland-src-config\n"
+  die "Cannot find Redland version via $REDLAND_CONFIG\n"
     unless $version;
 }
 
 sub MY::postamble {
+  my $swig_path=`$REDLAND_CONFIG --swig`;
   return <<"EOT";
-${CORE_PACKAGE}_wrap.c: $TOP_SRCDIR/Redland.i
+${CORE_PACKAGE}_wrap.c: $swig_path
 	\$(MAKE) ${CORE_PACKAGE}_wrap.c
 EOT
 }
@@ -88,7 +87,6 @@ WriteMakefile(
     'VERSION'   => $version,
 
     'DEFINE'    => "-DHAVE_CONFIG_H $CFLAGS",
-    'INC'       => "$includes",
     'OBJECT'    => "$objects",
     'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS $CFLAGS"},
 

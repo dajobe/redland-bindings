@@ -57,7 +57,7 @@ check-local: $(CSHARP_TESTS)
 	@MONO_PATH=..; export MONO_PATH; \
 	for prog in $(CSHARP_TESTS); do \
 	  $(ECHO) Running $$prog; \
-	  $(top_builddir)/redland-src-config --run $(CLIRUN) $$prog; \
+	  $(CLIRUN) $$prog; \
 	done
 
 example4.exe: example4.cs ../Redland.dll
@@ -76,7 +76,7 @@ example1.exe: example1.cs ../Redland.dll
 unittests: $(NUNIT_TESTS) ../Redland.dll nunit-console.exe
 	@MONO_PATH=..; export MONO_PATH; \
 	$(ECHO) Running $(NUNIT_CONSOLE) $(NUNIT_TESTS); \
-	$(top_builddir)/redland-src-config --run $(CLIRUN) $(NUNIT_CONSOLE) $(NUNIT_TESTS)
+	$(CLIRUN) $(NUNIT_CONSOLE) $(NUNIT_TESTS)
 
 ModelGeneralTest.dll: ModelGeneralTest.cs
 	$(CSHARP_LINK) $(NUNIT_FLAGS) ModelGeneralTest.cs -out:$@

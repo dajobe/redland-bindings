@@ -2,14 +2,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-  <title>Redland RDF Application Framework - Installation Instructions</title>
+  <title>Redland RDF Application Framework Bindings - Installation Instructions</title>
 </head>
 <body>
 
-<h1>Redland RDF Application Framework - Installation Instructions</h1>
+<h1>Redland RDF Application Framework Bindings - Installation Instructions</h1>
 
 
-<h2>1. Getting the sources</h2>
+<h2>1. Get pre-requisites</h2>
+
+<p>The Redland bindings depends on an installed Redland package
+already existing (0.9.17 or newer) so that the library, headers and
+SWIG interface files are available.  Alternatively, Redland can
+be in a parent directory or a sibling directory called 'librdf'.</p>
+
+
+<h2>2. Getting the sources</h2>
 
 <p>There are several ways to get the sources.  The most stable and
 tested versions are the sources shipped with each release and these
@@ -24,7 +32,7 @@ the snapshot releases.</p>
 documentation provided on the web site.</p>
 
 
-<h3>1.1. Getting released sources</h3>
+<h3>2.1. Getting released sources</h3>
 
 <p>Every release comes with full sources and these are available from
 <a href="http://www.redland.opensource.ac.uk/dist/source/">http://www.redland.opensource.ac.uk/dist/source/</a> master site as well as the
@@ -32,7 +40,7 @@ documentation provided on the web site.</p>
 </p>
 
 
-<h3>1.2. Getting nightly source snapshots</h3>
+<h3>2.2. Getting nightly source snapshots</h3>
 
 <p>Each night a snapshot distribution is attempted using the current
 development sources (that may not even be in the CVS), using the
@@ -43,7 +51,7 @@ completes, these snapshots are then made available from:
 same sources).
 </p>
 
-<h3>1.3. Getting the sources from CVS</h3>
+<h3>2.3. Getting the sources from CVS</h3>
 
 <pre>
   # sh, bash, ...
@@ -57,9 +65,9 @@ Logging in to :pserver:anonymous@cvs.ilrt.org:2401/cvsroot
 CVS password: 
   [return]
 
-  cvs checkout redland
+  cvs checkout bindings
 
-  cd redland
+  cd bindings
 </pre>
 
 <p>At this stage, or after a <code>cvs update</code> you will
@@ -67,20 +75,17 @@ need to create the automake and autoconf derived files, as described
 below in <a href="#sec-create-configure">Create the configure program</a>
 by using the <code>autogen.sh</code> script.</p>
 
-<p>Building Redland in this way requires some particular development
-tools not needed when building from snapshot releases - automake,
-autoconf, swig and those also required by Raptor if it is built
-See the
-<a href="http://www.redland.opensource.ac.uk/raptor/INSTALL.html">Raptor install document</a>
-for the details.
+<p>Building the Redland bindings in this way requires some particular
+development tools not needed when building from snapshot releases -
+automake, autoconf and swig.
 The <code>autogen.sh</code> script looks for the newest versions
 of the auto* tools and checks that they meet the minimum versions.</p>
 
 
 
-<h2>2. Configuring and building</h2>
+<h2>3. Configuring and building</h2>
 
-<p>Redland uses the GNU automake and autoconf to handle system
+<p>Redland bindings uses the GNU automake and autoconf to handle system
 dependency checking.  It is developed and built on x86 Linux (Redhat),
 but is also used extensively locally on various versions of
 sparc Sun Solaris 2.x.  I also test it via
@@ -90,16 +95,15 @@ Sparc, IA64), FreeBSD (x86) and Apple OSX.</p>
 
 
 <p>Configure tries very hard to find several programs and libraries
-that Redland might need.  These include the language APIs (perl,
-python, etc.), the storage modules (Berkeley/Sleepycat DB, MySQL,
-3store), the XML parsers -- via Raptor's configure -- and various
-others.  A summary of the modular parts found is given at the end of
-the configure run.  Several options to configure given below can be
-used to point to locations or names of dependencies that cannot
-be automatically determined.</p>
+that the Redland bindings need.  These include the binding binaries:
+perl, python, etc., headers for the bindings such as the JDK, Python etc.
+and various others.  A summary of the parts found is given at
+the end of the configure run.  Several options to configure given
+below can be used to point to locations or names of dependencies that
+cannot be automatically determined.</p>
 
 
-<h3><a id="sec-create-configure" name="sec-create-configure"></a>2.1. Create <code>configure</code> program</h3>
+<h3><a id="sec-create-configure" name="sec-create-configure"></a>3.1. Create <code>configure</code> program</h3>
 
 <p>If there is no <code>configure</code> program, you can create it 
 by running the <code>autogen.sh</code> script, as long as you have the
@@ -130,110 +134,13 @@ development will move to require automake 1.8, autoconf 2.58 and
 libtool 1.5.</p>
 
 
-<h3>2.2. Options for <code>configure</code></h3>
+<h3>3.2. Options for <code>configure</code></h3>
 
 <p>See also the generic GNU installation instructions in 
 <a href="INSTALL">INSTALL</a> for information about general options
 such as <code>--prefix</code> etc.</p>
 
 <dl>
-<dt><code>--disable-assert</code><br /></dt>
-<dd><p>Disable compiling run-time assertions.  In maintainer
-mode, assertion failures are fatal.</p>
-</dd>
-
-<dt><code>--disable-assert-messages</code><br /></dt>
-<dd><p>Disable compiling run-time assertion failure messages.
-In maintainer mode, assertion failures are fatal after the assertion
-failure is reported.</p>
-</dd>
-
-<dt><code>--enable-digests=LIST</code><br /></dt>
-<dd><p>Select the list of content digests to be included if the are
-availble.  The valid list of digests are: <code>md5 sha1
-ripem160</code> (the default).  The digest functions can be provided
-by external libraries such as the
-<a href="http://www.openssl.org/">OpenSSL</a> libcrypto library or by
-provided portable versions (only MD5 supported in this
-release).</p></dd>
-
-<dt><code>--enable-parsers=LIST</code><br /></dt>
-<dd><p>Select the list of RDF parsers to be included if the are availble.  The
-valid list of RDF parsers is currently only <code>raptor</code> (the default)
-since the older repat parser has been removed.  Raptor uses either of
-libxml2 (prefered) or expat.  Redland requires the Raptor parser for
-other functionality, so it cannot be disabled.
-</p></dd>
-
-<dt><code>--with-bdb=ROOT</code><br /></dt>
-<dd><p>Enable use of the Berkeley / Sleepycat DB library installed at
-<em>ROOT</em>.  That means <em>ROOT</em><code>/include</code> must
-contain the BDB header <code>db.h</code> and <em>ROOT</em><code>/lib</code>
-must contain the library <code>libdb.a</code> (or whatever shared library
-version/name your system uses).</p>
-
-<p>Berkeley DB is now known as Sleepycat DB (after version 2) and
-distributed and supported by
-<a href="http://www.sleepycat.com/">SleepyCat Software</a>.
-Versions 4.1.25, 4.1.24, 4.0.14, 3.3.11, 3.2.9, 3.1.17, 3.1.14, 2.7.7
-and 2.4.14 have been tested and work.  Some systems do not come
-installed with a working Berkeley/Sleepycat DB so on those systems,
-Redland will have no persistent storage unless BDB is built
-separately and enabled via this option.</p>
-
-<p><b>Note</b>: If you change installed versions of BDB then you will
-need to re-configure Redland carefully to let it discover the
-features of the newer BDB as follows:</p>
-<pre>
-  rm -f config.cache
-  make clean
-  ./configure ... # any configure arguments here
-</pre>
-<p>(plus you might need to use the
-<code>db</code><em>X</em><code>_upgrade</code>
-utility to update the BDB database files to the formats supported by
-the newer version <em>X</em> - see the BDB documentation to find out
-if this is required.)</p>
-
-<p>If the BerkeleyDB is installed in different places from
-<em>ROOT</em><code>/lib</code> (library) and
-<em>ROOT</em><code>/include</code> (header) or
-the library name is something that can't be worked out automatically,
-then you can use the next set of options to specify them.</p>
-
-<p>If all of the BDB options are omitted, Redland will do
-a best efforts guess to find the newest BDB installation but
-this may not work for all configurations.</p>
-</dd>
-
-<dt><code>--with-bdb-lib=</code><em>LIBDIR</em><br /></dt>
-<dt><code>--with-bdb-include=</code><em>INCDIR</em><br /></dt>
-<dt><code>--with-bdb-name=</code><em>NAME</em><br /></dt>
-<dd><p>Use Berkeley DB with the installed library in <em>LIBDIR</em>
-and the <code>db.h</code> header in <em>INCDIR</em> and
-the installed library called <em>NAME</em>
-like <code>-l</code><em>NAME</em>.  This is relative to <em>LIBDIR</em>.
-All of these options can be omitted and <code>configure</code> will
-try to find or guess the values from the system.</p>
-
-<p>For example, to compile redland on OSX with
-<a href="http://fink.sourceforge.net/">fink</a>
-might require a configure line something like this:</p>
-<pre>
-  ./configure --with-bdb-lib=/sw/lib \
-              --with-bdb-include=/sw/include/db3
-</pre>
-<p>The name of the BDB library was correctly discovered for this
-configuration, as <code>db-3.3</code>.</p>
-
-<p>If all of the BDB options are omitted, Redland will do
-a best efforts guess to find the newest BDB installation but
-this may not work for all configurations.</p>
-
-<p>(At present, Redland knows of the default <code>/sw</code> Fink
-installation directory and will look there for BDB installs)</p>
-
-</dd>
 
 <dt><code>--with-java</code>(=<em>JAVA-COMMAND</em>)<br /></dt>
 <dt><code>--with-perl</code>(=<em>PERL-COMMAND</em>)<br /></dt>
@@ -263,144 +170,56 @@ locations but this is not guaranteed to work.
 </p></dd>
 
 
-<dt><code>--with-libwww</code><br /></dt>
-<dd><p>Enable use of the W3C <a href="http://www.w3.org/Library/">libwww</a>,
-if available.  configure will automatically enable this if
-the <code>libwww-config</code> program can be found in the path unless
-disabled by setting this option to <em>no</em>.  libwww is not used
-at present.
-</p>
-</dd>
-
-<dt><code>--with-mysql</code>(<code>=</code><em>CONFIG</em>|<code>yes</code>|<code>no</code>)<br /></dt>
-
-<dd><p>Enable use of the Redland MySQL 3.x, 4.x triple store backend
-using <em>CONFIG</em> for the <em>mysql_config</em> program. The
-default when either no argument is given, or
-<code>--with-mysql</code> alone, is to search for
-<em>mysql_config</em> on the search PATH.  With
-<code>--with-mysql=no</code>, this store is disabled.</p>
-
-<p>Versions 3.23.58 and 4.0.4 have been tested and work.</p>
-
-</dd>
-
-<dt><code>--with-openssl-digests</code><br /></dt>
-<dd><p>Enable the content digests provided by the
-<a href="http://www.openssl.org/">OpenSSL</a>
-libcrypto library (MD5, SHA1 and RIPEMD160) if the library is
-available. configure will automatically enable this unless disabled
-by setting this option to <em>no</em>.</p></dd>
-
-<dt><code>--with-raptor=</code> <code>system</code> or <code>internal</code><br /></dt>
+<dt><code>--with-redland=</code> <code>system</code> or <code>internal</code><br /></dt>
 <dd><p>
-This option tells redland to use either the system installed version
-of <a href="http://www.redland.opensource.ac.uk/raptor/">raptor</a>
-or the internal version.  If the option is omittted,
-redland will guess and choose either the system one, if new enough or
-the internal one (always present).  If <code>--with-raptor=system</code>
-is used and redland discovers that the system raptor is too old,
-a warning will be given but the configuration will continue.
+This option tells the bindings to use either the system installed version
+of <a href="http://www.redland.opensource.ac.uk/">redland</a>
+or an internal version, in a parent or sibling directory as
+described above.  If the option is omittted, the system one is
+prefered, and if none is available, configure will stop.
 </p></dd>
-
-<dt><code>--with-rasqal=</code> <code>system</code> or <code>internal</code><br /></dt>
-<dd><p>
-This option tells redland to use either the system installed version
-of <a href="http://www.redland.opensource.ac.uk/rasqal/">rasqal</a>
-or the internal version.  If the option is omittted,
-redland will guess and choose either the system one, if new enough or
-the internal one (always present).  If <code>--with-rasqal=system</code>
-is used and redland discovers that the system rasqal is too old,
-a warning will be given but the configuration will continue.
-</p></dd>
-
-<dt><code>--with-threestore</code>(<code>=</code><em>CONFIG</em>|<code>yes</code>|<code>no</code>)<br /></dt>
-<dd><p>Enable use of the AKT project
-<a href="http://www.aktors.org/technologies/3store/">3store triple store</a>
-backend using <em>CONFIG</em>
-for the <em>3store-config</em> program. The default when either
-no argument is given, or <code>--with-threestore</code> alone, is to search for
-the 3store-config on the search PATH.  With
-<code>--with-threestore=no</code>, this store is disabled.</p></dd>
-
-<dt><code>--with-xml-parser=NAME</code><br /></dt>
-<dd><p>Pick an XML parser to use for Raptor - either <code>libxml</code>
-(default) or <code>expat</code>.  If this option is not given,
-either will be used, with libxml preferred if both are present.
-One of these much be available for Raptor to parse XML syntaxes.</p>
-
-<p>Raptor has been tested with various combinations of these libraries
-that are described further in the Raptor
-<a href="http://www.redland.opensource.ac.uk/raptor/INSTALL.html">install</a>
-documentation.
-</p>
-</dd>
 
 </dl>
 
 
-<p><b>WARNING</b> If the libwww or Sleepycat/Berkeley DB libraries
-are installed in a non-default directory, when the final linking
-occurs, the libraries may not be found at run time.  To fix this you
-will need to use a system-specific method of passing this information
-to the run-time loader.  On most systems you can set the
-LD_LIBRARY_PATH environment variable to include the directory where
-the libwww libraries are found. (On OSX this is DYLD_LIBRARY_PATH)
-You can also configure it via a
-system wide file - see the <code>ld</code>, <code>ld.so</code>
-or<code>ld.so.1</code> manual pages for details.  The alternative, to
-link libwww statically, works but is difficult to enable.</p>
-
-
-<h3>2.3 Configuring</h3>
+<h3>3.3 Configuring</h3>
 
 <p>If everything is in the default place, do:</p>
 <pre>
    ./configure
 </pre>
 
-<p>More commonly you will be doing something like this, when
-giving the installation location of Berkeley/Sleeypcat DB:</p>
+<p>More commonly you will be doing something like this, indicating
+which binding or bindings are wanted:</p>
 <pre>
-   ./configure --with-bdb=/usr/local/berkeleydb
+   ./configure --with-python
 </pre>
 
 <p>If you are having problems with configuring several times when
-adding or removing options, you may have to tidy up first with either of these:</p>
+adding or removing options, you may have to tidy up first with either
+of these:</p>
 <pre>
    make clean
    rm -f config.cache
 </pre>
 
-<h3>2.4 Compiling</h3>
+<h3>3.4 Compiling</h3>
 
 <pre>
    make
 </pre>
 
 
-<h2 id="sec-testing">2.5. Testing</h2>
+<h2 id="sec-testing">3.5. Testing</h2>
 
 <p>You can build and run the built-in tests for Redland with:</p>
 <pre>
     make check
 </pre>
-<p>which should emit lots of exciting test messages to the screen but
-conclude with something like:<br />
-  <code>All </code><em>n</em><code> tests passed</code><br />
-if everything works correctly.</p>
-
-<p>If the language-specific <code>--with-perl</code> etc. arguments
-have been given to <code>configure</code>, the top-level
-<code>make check</code> will run these tests for the enabled languages
-in addition to the core tests.  These <em>may fail</em> if
-the main redland libraries (librdf and libraptor) are not
-installed. So in this case you should do:</p>
-<pre>
-   make install
-</pre>
-<p>before trying to run the language-specific tests.
-</p>
+<p>which will run these tests for the enabled languages.  These
+<em>may fail</em> if the main redland libraries (librdf and
+raptor, rasqal) are not installed but are used in nearby source trees.
+So in this case you should install redland, raptor and rasqal first</p>
 
 <p>The language-specific tests can also be built and run with:</p>
 <pre>
@@ -408,25 +227,15 @@ installed. So in this case you should do:</p>
    make check
 </pre>
 
-<p>(If you have got all the required subsidiary development tools,
-you can also do <code>make distcheck</code> which does a longer
-check that the distribution installation, configuring and building
-works.  This does not perform any additional core testing).</p>
 
 
+<h3 id="sec-install">3.6 Installing the bindings</h3>
 
-<h3 id="sec-install">2.6 Installing the library</h3>
-
-<p>To install the C library (static and shared typically) plus the
-interface header (.h) files do:</p>
+<p>To install the bindings, do:</p>
 
 <pre>
    make install
 </pre>
-
-<p>The language-specific interfaces are installed in this step when
-they are enabled with the <code>--with-perl</code> etc. arguments of
-<code>configure</code></p>
 
 <p>Otherwise, the language-specific installations can be made with:</p>
 <pre>
@@ -436,109 +245,55 @@ they are enabled with the <code>--with-perl</code> etc. arguments of
 
 
 
-<h2>3. Using the library</h2>
-
-<p>Once the library has been configured and built, there are 
-several C example programs that can be used.  They are 
-in the <code>examples</code> sub-directory and can be built with:</p>
-<pre>
-   cd examples
-   make
-</pre>
-<p>(This may be done by the initial 'make' automatically).</p>
+<h2>4. Using the library</h2>
 
 <p>There are many examples for all of the language interfaces in the
 corresponding sub-directories such as <code>perl/example.pl</code>
 which may be easier to modify.</p>
 
-<p>If no Berkeley DB was found by configure, some of the examples will fail
-since there is no on-disk storage system available.  To change them
-to use the in-memory hashes, edit the lines reading something like</p>
-<pre>
-  storage=librdf_new_storage("hashes",
-                             "test", 
-                             "hash_type='bdb',dir='.'");
-</pre>
-<p>to read</p>
-<pre>
-  storage=librdf_new_storage("hashes", 
-                             "test",
-                             "hash_type='memory',dir='.'");
-</pre>
 
 
-
-<h3>3.1 rdfproc</h3>
-
-<p>The <code>rdfproc</code> utility in the utils directory exercises
-the majority of the useful parts of the Redland API and can
-demonstrate many ways to store, search and manipulate the graph from C.
-</p>
-
-<h3>3.2. <a href="example1.c">example1.c</a></h3>
-
-<p><code>example1</code> uses a RDF parser, if you have one available, to
-parse a URI of RDF/XML content, store it in multple Berkeley DB
-hashes on the disk and run queries against them.  It takes two
-arguments, the first the URI of the RDF/XML content (or
-<code>file:</code><em>filename</em>) and the second, optional one, is the
-name of the RDF parser to use.  At present these can be
-<code>sirpac</code> or <code>libwww</code></p>
-
-<h3>3.3. <a href="example2.c">example2.c</a></h3>
-
-<p><code>example2</code> does not use a RDF parser, but reads from a
-simple triple dump format and again stores the data on disk in
-multiple Berkeley DB hashes.</p>
-
-<h3>3.4. <a href="example3.c">example3.c</a></h3>
-
-<p><code>example3</code> contains a 10 line main program that creates
-an RDF model, a statement, adds it to the model and stores it on
-disk.</p>
-
-<h3>3.5. <a href="example4.c">example4.c</a></h3>
-
-<p><code>example4</code> contains an example of how to
-serialize an RDF model to a syntax.</p>
-
-
-
-<h2>3. Using the Perl interface</h2>
+<h2>5. Using the Perl interface</h2>
 
 <p>See the <a href="docs/perl.html">Redland Perl Interface</a> document for
 full information on installing and using Redland from Perl.</p>
 
-<h2>4. Using the Python interface</h2>
+<h2>6. Using the Python interface</h2>
 
 <p>See the <a href="docs/python.html">Redland Python Interface</a> document for
 full information on installing and using Redland from Python.</p>
 
-<h2>5. Using the Tcl interface</h2>
+<h2>7. Using the Tcl interface</h2>
 
 <p>See the <a href="docs/tcl.html">Redland Tcl Interface</a> document for
 full information on installing and using Redland from Tcl, and/or Tcl/Tk.</p>
 
-<h2>6. Using the Java interface</h2>
+<h2>8. Using the Java interface</h2>
 
 <p>See the <a href="docs/java.html">Redland Java Interface</a> document for
 full information on installing and using Redland from Java.</p>
 
-<h2>7. Using the Ruby interface</h2>
+<h2>9. Using the Ruby interface</h2>
 
 <p>See the <a href="docs/ruby.html">Redland Ruby Interface</a> document for
 full information on installing and using Redland from Ruby.</p>
 
-<h2>8. Using the PHP interface</h2>
+<h2>10. Using the PHP interface</h2>
 
 <p>See the <a href="docs/php.html">Redland PHP Interface</a> document for
 full information on installing and using Redland from PHP.</p>
+
+<h2>11. Using the C# interface</h2>
+
+<p>See the <a href="docs/csharp.html">Redland C# Interface</a> document for
+full information on installing and using Redland from C# or an ECMA CLI
+language.</p>
 
 
 
 <hr />
 
-<p>Copyright 2000-2004 <a href="http://purl.org/net/dajobe/">Dave Beckett</a>, <a href="http://www.ilrt.bris.ac.uk/">Institute for Learning and Research Technology</a>, <a href="http://www.bristol.ac.uk/">University of Bristol</a></p>
+<p>Copyright 2004 <a href="http://purl.org/net/dajobe/">Dave Beckett</a>, <a href="http://www.ilrt.bris.ac.uk/">Institute for Learning and Research Technology</a>, <a href="http://www.bristol.ac.uk/">University of Bristol</a></p>
 
 </body>
 </html>

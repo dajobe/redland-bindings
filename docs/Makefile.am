@@ -1,6 +1,6 @@
 # -*- Mode: Makefile -*-
 #
-# Makefile.am - docs automake file for Redland
+# Makefile.am - docs automake file for Redland Bindings
 #
 # $Id$
 #
@@ -19,32 +19,20 @@
 # 
 # 
 
-man_MANS=redland.3
-
-EXTRA_DIST=api.sgml.in api.sgml README.html README \
+EXTRA_DIST=README.html README \
 csharp.html perl.html python.html tcl.html java.html ruby.html php.html \
-storage.html \
-build-docs fix-pod-xhtml fix-python-xhtml \
-api pod pydoc \
-redland.pod kernel-doc \
-$(man_MANS)
-
-DOC_CLASSES=init node statement model \
-storage stream parser query query_results serializer concepts uri \
-digest hash heuristics iterator utf8
+fix-pod-xhtml fix-python-xhtml \
+pod pydoc
 
 POD_MODULES=RDF/Redland RDF/Redland/Iterator RDF/Redland/Model RDF/Redland/Node RDF/Redland/Parser RDF/Redland/Query RDF/Redland/QueryResults RDF/Redland/RSS RDF/Redland/Serializer RDF/Redland/Statement RDF/Redland/Storage RDF/Redland/Stream RDF/Redland/URI
 
 DOC_C_FILES=$(DOC_CLASSES:%=$(srcdir)/../librdf/rdf_%.c)
-API_DOCBOOK_FILES=$(DOC_CLASSES:%=%.sgml)
-API_HTML_FILES=$(DOC_CLASSES:%=api_%.html)
 
 PERL_HTML_POD_FILES=$(POD_MODULES:%=pod/%.html)
 PYTHON_HTML_PYDOC_FILES=pydoc/RDF.html
 
 CLEANFILES=README
-MAINTAINERCLEANFILES=api.sgml api pod pydoc $(API_DOCBOOK_FILES) \
-$(API_HTML_FILES)
+MAINTAINERCLEANFILES=pod pydoc
 
 PERL=perl
 
@@ -54,46 +42,13 @@ LYNXARGS=-dump -nolist
 
 SUFFIXES = .html .txt .sgml .ps .pdf .pm .pod .3
 
-api: api/index.html
-
 pod: $(PERL_HTML_POD_FILES)
 
 pydoc: $(PYTHON_HTML_PYDOC_FILES)
 
-# Generates a tree of HTML files, not 1 file
-api/index.html: api.sgml
-	rm -rf api.junk DBTOHTML*
-	db2html $<
-	rm -rf api.junk
-
 .html.txt:
 	$(LYNX) $(LYNXARGS) $< > $@
 
-# These don't work for me
-.sgml.ps:
-	db2ps $<
-
-.sgml.pdf:
-	db2pdf $<
-
-@MAINT@$(API_DOCBOOK_FILES): %.sgml: $(srcdir)/../librdf/rdf_%.c $(srcdir)/kernel-doc
-@MAINT@	$(PERL) $(srcdir)/kernel-doc -docbook $< > $@
-@MAINT@
-@MAINT@api.sgml: $(srcdir)/build-docs api.sgml.in $(API_DOCBOOK_FILES)
-@MAINT@	$(PERL) $(srcdir)/build-docs api.sgml.in > api.sgml
-@MAINT@
-@MAINT@$(API_HTML_FILES): api_%.html: $(srcdir)/../librdf/rdf_%.c $(srcdir)/kernel-doc
-@MAINT@	$(PERL) $(srcdir)/kernel-doc -html $< > $@
-@MAINT@
-@MAINT@api.html: $(srcdir)/build-docs api.html.in $(API_HTML_FILES)
-@MAINT@	$(PERL) $(srcdir)/build-docs api.html.in > api.html
-@MAINT@
-@MAINT@overview.ps: overview.xfig
-@MAINT@	fig2dev -L ps -l dummy -z A4 overview.xfig overview.pdf
-@MAINT@
-@MAINT@overview.pdf: overview.ps
-@MAINT@	ps2pdf overview.ps overview.pdf
-@MAINT@
 @MAINT@$(PERL_HTML_POD_FILES): pod/%.html: $(srcdir)/../perl/lib/%.pm $(srcdir)/fix-pod-xhtml
 @MAINT@	mkdir -p pod/RDF/Redland
 @MAINT@	-pod2html --noindex --htmlroot /docs/pod --infile=$< | tidy -asxml -wrap 1000 2>/dev/null | perl $(srcdir)/fix-pod-xhtml $@
@@ -109,23 +64,8 @@ api/index.html: api.sgml
 @MAINT@	rm -f pod2htm*
 
 
-if MAINTAINER_MODE
-redland.3: redland.pod
-	pod2man --section=3 --center="Redland RDF Application Framework" \
-	--release="`date +%d-%b-%Y`" --date="@PACKAGE@ @PACKAGE_VERSION@" $< | \
-	sed -e "s;REDLAND_VERSION_STRING;@PACKAGE_VERSION@;" > $@
-	rm -f pod2htm*
-
 clean-local:
-	rm -rf api.junk DBTOHTML* pod2htm*
-
-distclean-local:
-	rm -rf $(API_DOCBOOK_FILES)
-
-else
-clean-local:
-	rm -rf $(API_DOCBOOK_FILES) api.junk DBTOHTML* pod2htm*
-endif
+	rm -rf pod2htm*
 
 README: README.html
 	$(LYNX) $(LYNXARGS) $< > $@

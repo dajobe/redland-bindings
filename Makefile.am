@@ -1,6 +1,6 @@
 # -*- Mode: Makefile -*-
 #
-# Makefile.am - top level automake file for Redland
+# Makefile.am - top level automake file for Redland Bindings
 #
 # $Id$
 #
@@ -19,31 +19,20 @@
 # 
 # 
 
-bin_SCRIPTS = redland-config
-noinst_SCRIPTS = redland-src-config
-
-man_MANS = redland-config.1
-
-dist_pkgdata_DATA = Redland.i
-
 # Subdirectories to build/install etc.
-SUBDIRS=@SD_PRE@ librdf examples utils @SD_POST@ demos docs data
-CONFIG_SUBDIRS=raptor rasqal
+SUBDIRS=@SD@ demos data
 # Subdirectories to use for distribution
-DIST_SUBDIRS=librdf docs data examples \
+DIST_SUBDIRS=data docs \
 perl php python tcl java ruby csharp \
-raptor rasqal \
-utils demos
+demos
 
-EXTRA_DIST=ChangeLog ChangeLog.1 ChangeLog.2 ChangeLog.3 ChangeLog.4 \
+EXTRA_DIST=ChangeLog \
 README      NEWS      LICENSE.txt  TODO \
 README.html NEWS.html LICENSE.html TODO.html \
-RELEASE.html INSTALL.html FAQS.html \
+RELEASE.html INSTALL.html \
 MPL.html \
 autogen.sh \
 Makefile.PL \
-redland-config.in \
-redland-src-config.in \
 $(man_MANS)
 
 if MAINTAINER_MODE
