@@ -45,8 +45,8 @@ TCL_PACKAGE=Redland
 SWIG_OUTPUTS=$(TCL_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
-tclversion=$(shell echo 'puts [info tclversion]' | $(TCL))
-tclincdir=/usr/include/tcl$(tclversion)
+tclversion=@TCL_VERSION@
+tclincdir=-I@TCL_INCLUDE@
 tcllib=-ltcl$(tclversion)
 
 tcldir=$(shell echo 'puts $$tcl_library' | $(TCL))
