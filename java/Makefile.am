@@ -37,17 +37,19 @@ $(JAVA_PATH)$(JAVA_MODULE)JNI.java
 JAVA_CRUFT=$(JAVA_PATH)$(JAVA_MODULE).class $(JAVA_MODULE)_wrap.o \
 $(JAVA_SHARED_LIB) $(JAVA_JAR) skeleton.class
 
-JAVA_SOURCE_FILES=$(JAVA_PATH)/Iterator.java $(JAVA_PATH)Hash.java \
-$(JAVA_PATH)Parser.java $(JAVA_PATH)URI.java $(JAVA_PATH)Node.java \
-$(JAVA_PATH)World.java $(JAVA_PATH)Statement.java \
-$(JAVA_PATH)Model.java $(JAVA_PATH)Storage.java $(JAVA_PATH)core.java \
+JAVA_SOURCE_FILES=$(JAVA_PATH)/Iterator.java $(JAVA_PATH)Hash.java	\
+$(JAVA_PATH)Parser.java $(JAVA_PATH)URI.java $(JAVA_PATH)Node.java	\
+$(JAVA_PATH)World.java $(JAVA_PATH)Serializer.java			\
+$(JAVA_PATH)Statement.java $(JAVA_PATH)Model.java			\
+$(JAVA_PATH)Storage.java $(JAVA_PATH)core.java				\
 $(JAVA_PATH)Stream.java
 
-JAVA_CLASS_FILES=$(JAVA_PATH)/Iterator.class $(JAVA_PATH)Hash.class \
-$(JAVA_PATH)Parser.class $(JAVA_PATH)URI.class $(JAVA_PATH)Node.class \
-$(JAVA_PATH)World.class $(JAVA_PATH)Statement.class \
-$(JAVA_PATH)Model.class $(JAVA_PATH)Storage.class \
-$(JAVA_PATH)core.class $(JAVA_PATH)Stream.class
+JAVA_CLASS_FILES=$(JAVA_PATH)/Iterator.class $(JAVA_PATH)Hash.class	\
+$(JAVA_PATH)Parser.class $(JAVA_PATH)URI.class $(JAVA_PATH)Node.class	\
+$(JAVA_PATH)World.class $(JAVA_PATH)Serializer.class			\
+$(JAVA_PATH)Statement.class $(JAVA_PATH)Model.class			\
+$(JAVA_PATH)Storage.class $(JAVA_PATH)core.class			\
+$(JAVA_PATH)Stream.class
 
 
 SUBDIRS=org
@@ -96,36 +98,36 @@ clean-java:
 	cd org && $(MAKE) $$target
 	rm -f *.class
 
-# A fake target to get all the class files compiled down the tree
+
 compiled-java-classes: skeleton.class
 
 skeleton.class: skeleton.java $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java $(JAVA_SHARED_LIB)
-	env CLASSPATH=$(CLASSPATH) $(JAVAC) skeleton.java
+	$(JAVAC) -classpath $(CLASSPATH) skeleton.java
 
-test-java: test1 test2
-
-test1: test1.class compiled-java-classes
-	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) test1
-
-test1.class: test1.java compiled-java-classes
-	env CLASSPATH=$(CLASSPATH) $(JAVAC) test1.java
-
-test2: test2.class compiled-java-classes
-	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) test2
-
-test2.class: test2.java compiled-java-classes
-	env CLASSPATH=$(CLASSPATH) $(JAVAC) test2.java
-
-example: example.class compiled-java-classes
-	env CLASSPATH=$(CLASSPATH) LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) example
-
-example.class: example.java compiled-java-classes
-	$(JAVAC) -classpath . example.java
-
-
-$(JAVA_SHARED_LIB): $(JAVA_MODULE)_wrap.c
-	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. -I/usr/local/include/linux $? -static `../redland-src-config --cflags` `../redland-src-config --libs` -o $@
-
+$(JAVA_CLASS_FILES): skeleton.class
 $(JAVA_JAR): $(JAVA_CLASS_FILES)
 	rm -f $@
 	jar cf $@ $?
+
+test-java: test1 test2
+
+test1: test1.class $(JAVA_JAR)
+	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) test1
+
+test1.class: test1.java compiled-java-classes
+	$(JAVAC) -classpath $(CLASSPATH) test1.java
+
+test2: test2.class $(JAVA_JAR)
+	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) test2
+
+test2.class: test2.java compiled-java-classes
+	$(JAVAC) -classpath $(CLASSPATH) test2.java
+
+example: example.class $(JAVA_JAR)
+	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) example
+
+example.class: example.java $(JAVA_JAR)
+	$(JAVAC) -jar $(JAVA_JAR) example.java
+
+$(JAVA_SHARED_LIB): $(JAVA_MODULE)_wrap.c
+	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. -I/usr/local/include/linux $? -static `../redland-src-config --cflags` `../redland-src-config --libs` -o $@
