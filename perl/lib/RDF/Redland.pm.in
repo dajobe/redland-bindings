@@ -100,8 +100,13 @@ sub set_warning_handler ($) {
   $Warning_Sub=shift;
 }
 
+# Internal
 sub set_log_handler ($) {
   $Log_Sub=shift;
+}
+
+sub reset_log_handler () {
+  $Log_Sub=undef;
 }
 
 
@@ -126,19 +131,6 @@ This class initialises the Redland RDF classes.
 =head1 STATIC METHODS
 
 =over
-
-=item set_log_handler SUB
-
-Set I<SUB> as the subroutine to be called on a Redland log message with
-the following as the arguments.  For example:
-
-  RDF::Redland::set_log_handler(sub {
-    my($code, $level, $facility, $message, $line, $column, $byte, $file, $uri)=@_;
-
-    # Do something with the log info
-  });
-
-The default if this is not set, is to run the error or warning handlers.
 
 =item set_error_handler SUB
 
