@@ -53,14 +53,6 @@ ${CORE_PACKAGE}_wrap.c: $TOP_SRCDIR/Redland.i
 EOT
 }
 
-# Ensure only .pm files are installed (since lib tree has CVS and
-# automake Makefile.am files too)
-sub MY::libscan {
-  my($self,$name)=@_;
-  return $name if $name =~ /\.pm$/;
-  undef;
-}
-
 # I'm forced to do this since BASEEXT is defined in a non-overridable method.
 push(@ExtUtils::MakeMaker::Overridable, "init_main");
 
@@ -85,6 +77,22 @@ WriteMakefile(
     'INC'       => "$includes",
     'OBJECT'    => "$objects $MEM_LIBS",
     'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS"},
+
+     'PM' => { map { ("lib/$_", "\$(INST_LIBDIR)/$_") }
+ qw(RDF/Redland.pm
+ RDF/Redland/Model.pm
+ RDF/Redland/RSS.pm
+ RDF/Redland/URI.pm
+ RDF/Redland/Iterator.pm
+ RDF/Redland/Storage.pm
+ RDF/Redland/Statement.pm
+ RDF/Redland/Stream.pm
+ RDF/Redland/Parser.pm
+ RDF/Redland/Serializer.pm
+ RDF/Redland/CORE.pm
+ RDF/Redland/Node.pm)
+      },
+
 
     'MAKEFILE'  => 'Makefile.perl',
     'clean'     => { FILES => "test*.db" },
