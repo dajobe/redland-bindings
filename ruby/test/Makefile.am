@@ -32,7 +32,7 @@ check-ruby: $(RUBY_TEST_FILES)
 	$(ECHO) "Testing Ruby"; \
 	for test in $(RUBY_TEST_FILES); do \
 	  $(ECHO) $(ECHO_N) "Checking $$test $(ECHO_C)"; \
-	  $(top_builddir)/redland-src-config --run $(RUBY) -I../lib $(srcdir)/$$test; \
+	  $(top_builddir)/redland-src-config --run $(RUBY) -I .. -I ../lib $(srcdir)/$$test; \
 	  status=$$?; \
 	  if test $$status != 0 -a $$status != 2 ; then \
 	    $(ECHO) FAILED returned status $$status; result=1; \
