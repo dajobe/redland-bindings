@@ -79,6 +79,15 @@ while(!$stream->end) {
 }
 $stream=undef;
 
+## Use any rdf/xml parser that is available
+#my $serializer=new RDF::Redland::Serializer("ntriples");
+#die "Failed to find serializer\n" if !$serializer;
+#
+#use IO::Handle;
+#my $handle=new IO::Handle;
+#$handle->fdopen(fileno(STDOUT), "w");
+#$serializer->serialize_model($handle, $uri, $model);
+
 # Required in order to ensure storage is correctly flushed to disk
 $storage=undef;
 $model=undef;
