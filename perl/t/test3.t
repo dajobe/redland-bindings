@@ -45,8 +45,8 @@ my $world=&RDF::Redland::CORE::librdf_new_world();
 package RDF::Redland::World;
 
 sub message ($$) {
-  my($type,$message)=@_;
-  if($type == 0) {
+  my($code, $level, $facility, $message, $line, $column, $byte, $file, $uri)=@_;
+  if($level > 3) {
     if(ref $RDF::Redland::Error_Sub) {
       return $RDF::Redland::Error_Sub->($message);
     } else {
