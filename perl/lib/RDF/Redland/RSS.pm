@@ -108,7 +108,7 @@ sub new ($$;$) {
   my $self=new RDF::Model($storage, "");
   return undef if !$self;
 
-  my $parser=new RDF::Parser('repat');
+  my $parser=new RDF::Parser('raptor');
   return undef if !$parser;
 
   $parser->parse_into_model($source_uri, $base_uri, $self);
@@ -307,10 +307,10 @@ sub as_xhtml ($%) {
     $string=$string->literal_value;
     return '' if !defined $string || !length $string;
     # No need for HTML::Entities here for four things
-    $string =~ s/</\&lt;/g;
-    $string =~ s/</\&gt;/g;
-    $string =~ s/"/\&quot;/g;
     $string =~ s/\&/\&amp;/g;
+    $string =~ s/</\&lt;/g;
+    $string =~ s/>/\&gt;/g;
+    $string =~ s/"/\&quot;/g;
     $string;
   }
 
@@ -350,7 +350,7 @@ sub as_xhtml ($%) {
 
   my $ch_uri=$channel->uri ? format_url($channel->uri) : 'No URI';
   my $ch_link=$channel->link ? format_url($channel->link) : 'No Link';
-  my $ch_desc=$channel->description ? format_literal($channel->description) : undef;
+  my $ch_desc=$channel->description ? $channel->description->literal_value : undef;
 
   my $ch_desc_fmt=$ch_desc ? qq{<p>$ch_desc</p>\n\n} : '';
 
@@ -447,7 +447,7 @@ EOT
   for my $item (@items) {
     my $item_title=$item->title ? format_literal($item->title) : undef;
     my $item_link=$item->link ? format_url($item->link) : undef;
-    my $item_desc=$item->description ? format_literal($item->description) : '';
+    my $item_desc=$item->description ? $item->description->literal_value : '';
 
     if(my $date=$item->property($dc_date)) {
       $item_desc.="<br />" if $item_desc;
@@ -496,7 +496,7 @@ EOT
     if($t_uri && $t_title && $t_link && $t_desc && $t_name) {
       my $t_uri_string=format_url($t_uri);
       my $t_name_string=format_literal($t_name);
-      my $t_desc_string=format_literal($t_desc);
+      my $t_desc_string=$t_desc ? $t_desc->literal_value : '';
       my $t_title_string=format_literal($t_title);
 
       $output.= <<"EOT";
