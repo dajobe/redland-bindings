@@ -98,5 +98,9 @@ $statement=new RDF::Statement;
 my $stream=$model->find_statements($statement);
 while(!$stream->end) {
   $statement=$stream->next;
-  print $statement->as_string,"\n";
+  print "Statement: ",$statement->as_string,"\n";
+  my $subject=$statement->subject;
+  print "Subject: ",$subject->as_string,"\n";
+  print "Predicate: ",$statement->predicate->as_string,"\n";
+  print "Object: ",$statement->object->as_string,"\n";
 }
