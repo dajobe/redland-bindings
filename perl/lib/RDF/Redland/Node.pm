@@ -25,13 +25,12 @@ package RDF::Redland::Node;
 use strict;
 
 use vars qw($Type_Resource $Type_Property $Type_Literal
-	    $Type_Statement $Type_Li $Type_Blank);
+	    $Type_Statement $Type_Blank);
 
 # FIXME: Should be the same as values of librdf_node_type enum in rdf_node.h
 # and mechanically kept in sync.
 $Type_Resource  = 1;
 $Type_Literal   = 2;
-$Type_Li        = 3;
 $Type_Blank     = 4;
 # FIXME: Needs to also match documentation near sub type
 
@@ -306,6 +305,33 @@ sub type ($;$) {
     unless $type;
 
   return &RDF::Redland::CORE::librdf_node_set_type($self->{NODE},$type);
+}
+
+=item is_resource
+
+Return true if node is a resource (with a URI)
+
+=cut
+sub is_resource($) {
+  return &RDF::Redland::CORE::librdf_node_is_resource(shift->{NODE}) != 0;
+}
+
+=item is_literal
+
+Return true if node is a literal
+
+=cut
+sub is_literal($) {
+  return &RDF::Redland::CORE::librdf_node_is_literal(shift->{NODE}) != 0;
+}
+
+=item is_blank
+
+Return true if node is a blank nodeID
+
+=cut
+sub is_blank($) {
+  return &RDF::Redland::CORE::librdf_node_is_blank(shift->{NODE}) != 0;
 }
 
 =item literal_value
