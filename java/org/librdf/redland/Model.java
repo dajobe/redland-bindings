@@ -75,13 +75,18 @@ public class Model
 
   public int add(Node subject, Node predicate, Node object) 
   {
-    return core.librdf_model_add(this.object, subject.__get_object(), predicate.__get_object(), object.__get_object());
+    long subject_copy=core.librdf_new_node_from_node(subject.__get_object());
+    long predicate_copy=core.librdf_new_node_from_node(predicate.__get_object());
+    long object_copy=core.librdf_new_node_from_node(predicate.__get_object());
+    return core.librdf_model_add(this.object, subject_copy, predicate_copy, object_copy);
   }
 
   public int add(Node subject, Node predicate, String string, String xml_language, URI uri)
   {
     long u=(uri != null) ? uri.__get_object() : 0;
-    return core.librdf_model_add_typed_literal_statement(this.object, subject.__get_object(), predicate.__get_object(), string, xml_language, u);
+    long subject_copy=core.librdf_new_node_from_node(subject.__get_object());
+    long predicate_copy=core.librdf_new_node_from_node(predicate.__get_object());
+    return core.librdf_model_add_typed_literal_statement(this.object, subject_copy, predicate_copy, string, xml_language, u);
   }
 
   public int add(Statement statement) 
