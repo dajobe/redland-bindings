@@ -229,6 +229,103 @@ sub next_result ($) {
 }
 
 
+=item to_string [FORMAT-URI [BASE-URI]]
+
+Serialize to a string syntax in format I<FORMAT-URI> using the optional
+I<BASE-URI>.
+
+=cut
+
+sub to_string($;$$) {
+  my($self, $format_uri, $base_uri)=@_;
+  $format_uri ||= undef;
+  $base_uri ||= undef;
+
+  if($self->is_graph) {
+    my $tmpstorage=RDF::Redland::Storage->new("memory");
+    my $tmpmodel=RDF::Redland::Model->new($tmpstorage, "");
+    $tmpmodel->add_statements($self->as_stream);
+    my $serializer=RDF::Redland::Serializer->new();
+    return $serializer->serialize_model_to_string($tmpmodel, $base_uri)
+  }
+
+  if($self->is_boolean) {
+    return $self->get_boolean;
+  }
+
+  if(!$self->is_bindings) {
+    die "Unknown query result format cannot be written as a string";
+  }
+  
+  if($format_uri && !ref($format_uri)) {
+    $format_uri = RDF::Redland::URI->new($format_uri);
+  }
+  $format_uri ||= RDF::Redland::URI->new("http://www.w3.org/TR/2004/WD-rdf-sparql-XMLres-20041221/");
+
+  my $rformat_uri=$format_uri ? $format_uri->{URI} : undef;
+
+  if($base_uri && !ref($base_uri)) {
+    $base_uri = RDF::Redland::URI->new($base_uri);
+  }
+  my $rbase_uri=$base_uri ? $base_uri->{URI} : undef;
+
+  warn "RDF::Redland::QueryResults format URI ".$format_uri->as_string." base URI ".($base_uri ? $base_uri->as_string : "undef")."\n"
+    if $RDF::Redland::Debug;
+
+  return &RDF::Redland::CORE::librdf_query_results_to_string($self->{QUERYRESULTS}, $rformat_uri, $rbase_uri);
+}
+
+
+=item is_bindings
+
+Return non-0 if the query results format is variable bindings
+
+=cut
+
+sub is_bindings($) {
+  my($self)=shift;
+  return &RDF::Redland::CORE::librdf_query_results_is_bindings($self->{QUERYRESULTS});
+}
+
+
+=item is_boolean
+
+Return non-0 if the query results format is a boolean
+
+=cut
+
+sub is_boolean($) {
+  my($self)=shift;
+  return &RDF::Redland::CORE::librdf_query_results_is_boolean($self->{QUERYRESULTS});
+}
+
+
+=item is_graph
+
+Return non-0 if the query results format is an RDF graph
+
+=cut
+
+sub is_graph($) {
+  my($self)=shift;
+  return &RDF::Redland::CORE::librdf_query_results_is_graph($self->{QUERYRESULTS});
+}
+
+
+=item get_boolean
+
+Get the boolean query result; non-0 is true.
+
+=cut
+
+sub get_boolean($) {
+  my($self)=shift;
+  die "Query result is not in boolean format"
+    unless $self->is_boolean;
+
+  return &RDF::Redland::CORE::librdf_query_results_get_boolean($self->{QUERYRESULTS});
+}
+
 =pod
 
 =back
