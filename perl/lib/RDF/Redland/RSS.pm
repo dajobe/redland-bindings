@@ -519,9 +519,8 @@ EOT
     }
 
     if($item_link && $item_title) {
-      $output.=qq{        <li><a href="$item_link">$item_title</a>: };
-      $output.=$item_desc
-	if $item_desc;
+      $output.=qq{        <li><a href="$item_link">$item_title</a>};
+      $output.=": $item_desc" if $item_desc;
       $output.=qq{</li>\n};
     } else {
       $output.=qq{        <-- item missing some fields -->\n};
