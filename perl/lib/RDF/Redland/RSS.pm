@@ -304,10 +304,13 @@ sub as_xhtml ($%) {
   sub format_literal ($) {
     my $string=shift;
     return 'UNDEFINED' if !$string;
-    use HTML::Entities;
-    $string=$string->literal_value_as_latin1;
+    $string=$string->literal_value;
     return '' if !defined $string || !length $string;
-    encode_entities($string, "\200-\377");
+    # No need for HTML::Entities here for four things
+    $string =~ s/</\&lt;/g;
+    $string =~ s/</\&gt;/g;
+    $string =~ s/"/\&quot;/g;
+    $string =~ s/\&/\&amp;/g;
     $string;
   }
 
