@@ -56,7 +56,8 @@ namespace Redland {
 				return (librdf_stream_next (stream) == 0);
 			} else {
 				started = true;
-				return true;
+				IntPtr cur = librdf_stream_get_object (stream);
+				return (cur != IntPtr.Zero);
 			}
 		}
 
