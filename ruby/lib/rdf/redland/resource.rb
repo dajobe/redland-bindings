@@ -1,7 +1,8 @@
 require 'rdf/redland'
-require 'rdf/redland/node'
 
 module Redland
+
+  include Redland
 
   class Resource < Node
     # The internal librdf_node
