@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -40,20 +40,24 @@ tcl_DATA=Redland.so
 EXTRA_DIST=README test.tcl example.tcl \
 $(SWIG_OUTPUTS)
 
-CLEANFILES=test*db test-out.rdf core* $(TCL_PACKAGE)_wrap.o pkgIndex.tcl
+CLEANFILES=*.db test-out.rdf core* $(TCL_PACKAGE)_wrap.o Redland.so \
+pkgIndex.tcl
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -tcl8 -module $(TCL_PACKAGE) -o $@ $<
 
 $(TCL_PACKAGE)_wrap.o: $(TCL_PACKAGE)_wrap.c
-	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -prefer-pic -I$(top_srcdir)/librdf -I$(tclincdir) $< -o $@
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf -I$(tclincdir) $(TCL_PACKAGE)_wrap.c -c -o $@
 
 $(TCL_PACKAGE).so: $(TCL_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la
-	$(LIBTOOL) --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -shared $(TCL_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la $(tcllib) -o $@
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -shared $(TCL_PACKAGE)_wrap.o $(tcllib) `$(top_srcdir)/redland-src-config --libs` -o $@ 
+
+# Convince automake to install this as a program
+tclDATA_INSTALL = $(INSTALL_PROGRAM)
 
 pkgIndex.tcl: $(TCL_PACKAGE).so
-	echo "pkg_mkIndex .libs $(TCL_PACKAGE).so" | $(TCL)
+	echo "pkg_mkIndex . $(TCL_PACKAGE).so" | $(TCL)
 
 check-local: test-tcl
 

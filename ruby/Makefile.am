@@ -39,22 +39,26 @@ ruby_DATA=Redland.so
 EXTRA_DIST=test.rb example.rb \
 $(SWIG_OUTPUTS)
 
-CLEANFILES=test*db test-out.rdf core* $(RUBY_PACKAGE)_wrap.o 
+CLEANFILES=*.db test-out.rdf core* $(RUBY_PACKAGE)_wrap.o Redland.so
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(RUBY_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -ruby -module $(RUBY_PACKAGE) -o $@ $<
 
 $(RUBY_PACKAGE)_wrap.o: $(RUBY_PACKAGE)_wrap.c
-	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -prefer-pic -I$(top_srcdir)/librdf -I$(rubydir) $< -o $@
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf -I$(rubydir) $(RUBY_PACKAGE)_wrap.c -c -o $@
 
-$(RUBY_PACKAGE).so: $(RUBY_PACKAGE)_wrap.o
-	$(LIBTOOL) --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -shared $< $(rubylib) $(top_builddir)/librdf/librdf.la -o $@
+$(RUBY_PACKAGE).so: $(RUBY_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -shared $(RUBY_PACKAGE)_wrap.o $(rubylib) `$(top_srcdir)/redland-src-config --libs` -o $@ 
+
+
+# Convince automake to install this as a program
+rubyDATA_INSTALL = $(INSTALL_PROGRAM)
 
 check-local: test-ruby
 
 test-ruby: $(RUBY_PACKAGE).so
-	$(RUBY) -I.libs example.rb file:../perl/dc.rdf raptor
+	$(RUBY) -I. example.rb file:../perl/dc.rdf raptor
 
 clean-local:
 	rm -f $(RUBY_PACKAGE).so
