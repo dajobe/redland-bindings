@@ -1343,6 +1343,19 @@ class MemoryStorage(Storage):
             options_string = options_string)
 
 
+class FileStorage(Storage):
+  """Redland file Storage class
+
+     import RDF
+     s=RDF.FileStorage("abc")
+
+  Class of file Storage with required name, additional options.
+  """
+  def __init__(self, mem_name, options_string = ""):
+    return Storage.__init__(self, name = mem_name, storage_name = "file",
+            options_string = options_string)
+
+
 class Uri(object):
   """Redland URI Class
 
