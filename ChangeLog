@@ -1,3 +1,29 @@
+2005-03-16  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* docs/Makefile.am: Added fix-rdoc-xhtml and added rdoc output
+
+	* docs/fix-rdoc-xhtml: Fix RDoc xhtml output
+
+	* ruby/Makefile.am: Tidy rdoc generation, cleanup
+
+	* ruby/Makefile.am: rdoc-stamp
+
+	* ruby/Makefile.am: More rdoc fixes, added docs target
+
+2005-03-15  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* ruby/Makefile.am: rdoc rule attempt
+
+	* ruby/lib/rdf/redland.rb, ruby/lib/rdf/redland/resource.rb,
+	ruby/lib/rdf/redland/serializer.rb,
+	ruby/lib/rdf/redland/statement.rb, ruby/lib/rdf/redland/store.rb,
+	ruby/lib/rdf/redland/stream.rb, ruby/lib/rdf/redland/uri.rb,
+	ruby/lib/rdf/redland/util.rb, ruby/lib/rdf/redland/model.rb,
+	ruby/lib/rdf/redland/node.rb, ruby/lib/rdf/redland/parser.rb,
+	ruby/lib/rdf/redland/query.rb: Ruby comment fixes for helping rdoc
+	plus query.pl syntax fix (Patch from Nikolas Coukouma)
+
+
 2005-03-14  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* perl/example.pl: Use serializer->set_namespace
