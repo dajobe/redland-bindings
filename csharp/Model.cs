@@ -46,7 +46,8 @@ namespace Redland {
 
 		~Model ()
 		{
-			librdf_free_model (model);
+			if(model != (IntPtr)null)
+				librdf_free_model (model);
 		}
 
 		[DllImport ("librdf")]
@@ -258,11 +259,11 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_execute (IntPtr model, IntPtr query);
+		static extern IntPtr librdf_model_query_execute (IntPtr model, IntPtr query);
 
 		public QueryResults Execute (Query query)
 		{
-			IntPtr raw_ret = librdf_model_execute (model, query.Handle);
+			IntPtr raw_ret = librdf_model_query_execute (model, query.Handle);
 			QueryResults qr = new QueryResults (query, raw_ret);
 			return qr;
 		}
