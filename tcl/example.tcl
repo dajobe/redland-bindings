@@ -54,7 +54,6 @@ if {"$parser" == "NULL"} then {
 
 set uri [librdf_new_uri $uri_string]
 
-# after this statement should not be touched since find_statements is using it
 set stream [librdf_parser_parse_as_stream $parser $uri $uri]
 
 set count 0
