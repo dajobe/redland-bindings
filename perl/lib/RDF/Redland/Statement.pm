@@ -180,7 +180,7 @@ sub DESTROY ($) {
 
 Get/set the statement subject.  When RDF::Redland::Node I<SUBJECT> is given, sets
 the subject of the statement, otherwise returns a reference to the
-statement RDF::Redland::Node subject which must be copied if used elsewhere.
+statement RDF::Redland::Node subject.
 
 =cut
 
@@ -196,16 +196,16 @@ sub subject ($;$) {
 
 =item predicate [PREDICATE]
 
-Get/set the statement predicate.  When RDF::Redland::Node I<PREDICATE> is given, sets
-the predicate of the statement, otherwise returns a reference to the
-statement RDF::Redland::Node predicate which must be copied if used elsewhere.
+Get/set the statement predicate.  When RDF::Redland::Node
+I<PREDICATE> is given, sets the predicate of the statement, otherwise
+returns a reference to the statement RDF::Redland::Node predicate.
 
 =cut
 
 sub predicate ($;$) {
   my($self,$predicate)=@_;
   
-  return RDF::Redland::Node->_new_from_object(&RDF::Redland::CORE::librdf_statement_get_predicate(shift->{STATEMENT}), 0)
+  return RDF::Redland::Node->_new_from_object(&RDF::Redland::CORE::librdf_statement_get_predicate(shift->{STATEMENT}))
     unless $predicate;
 
   my $p=&RDF::Redland::Node->_new_from_object($predicate->{NODE});
@@ -216,7 +216,7 @@ sub predicate ($;$) {
 
 Get/set the statement object.  When RDF::Redland::Node I<OBJECT> is given, sets
 the object of the statement, otherwise returns a reference to the
-statement RDF::Redland::Node object which must be copied if used elsewhere.
+statement RDF::Redland::Node object.
 
 =cut
 
