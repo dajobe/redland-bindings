@@ -110,6 +110,20 @@ sub serialize_model_to_file ($$$$) {
   return &RDF::Redland::CORE::librdf_serializer_serialize_model_to_file($self->{SERIALIZER},$name, $base_uri->{URI},$model->{MODEL});
 }
 
+=item serialize_model_to_string BASE-URI MODEL
+
+Serialize the RDF Graph I<MODEL> to a syntax.  If no serializer name is given,
+the default serializer RDF/XML is used.
+
+=cut
+
+sub serialize_model_to_string($$$) {
+  my($self,$uri,$model)=@_;
+
+  return &RDF::Redland::CORE::librdf_serializer_serialize_model_to_string($self->{SERIALIZER}, $uri->{URI}, $model->{MODEL});
+}
+
+
 =item feature URI [VALUE]
 
 Get/set a serializer feature.  The feature is named via
