@@ -343,7 +343,7 @@ class Node(object):
             (node_type_name(self.type), self.type))
     dt_uri=Redland.librdf_node_get_literal_value_datatype_uri(self._node)
     if dt_uri:
-      dt_uri=Uri(uri_string=Redland.librdf_uri_to_string(dt_uri))
+      dt_uri=Uri(string=Redland.librdf_uri_to_string(dt_uri))
     val={
         'string': Redland.librdf_node_get_literal_value(self._node),
         'language': Redland.librdf_node_get_literal_value_language(self._node),
