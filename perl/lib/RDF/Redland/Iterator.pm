@@ -106,7 +106,7 @@ Return non 0 if the iterator has finished
 =cut
 
 sub end ($) {
-  &Redland::librdf_iterator_have_elements(shift->{ITERATOR});
+  &Redland::librdf_iterator_end(shift->{ITERATOR});
 }
 
 =item have_elements
