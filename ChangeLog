@@ -1,4 +1,29 @@
+2005-02-10  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/Makefile.am: Added redland-typemap.i
+
+	* python/RDF.py (message_handler, set_message_handler):
+	Obsolete; Use SWIG to throw exceptions.
+
+	* python/redland-post.i: Change the error/warning handling code.
+	Warnings are emited immediately.  1 error is stored and used with
+	%exception later; later errors are not handled and passed back.
+
+	* python/redland-typemap.i: Declare %exception
+
 2005-02-08  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* php/Makefile.am: Define REDLAND_BINDINGS_VERSION for use in
+	module info.  Change patch rules so only maintainer makes them on
+	demand.
+
+	* php/redland_wrap.c.patch: Fix call to
+	zend_rsrc_list_get_rsrc_type to use TSRMLS_CC Change
+	PHP_MINFO_FUNCTION to report Redland loaded, redland librdf
+	version and redland php bindings version
+
+	* perl/lib/RDF/Redland/QueryResults.pm,
+	perl/lib/RDF/Redland/Query.pm: docs
 
 	* java/Makefile.am, perl/Makefile.am, php/Makefile.am,
 	python/Makefile.am, ruby/Makefile.am, tcl/Makefile.am,
