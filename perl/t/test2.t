@@ -22,7 +22,7 @@
 
 ######################### We start with some black magic to print on failure.
 
-BEGIN { $| = 1; print "1..5\n"; }
+BEGIN { $| = 1; print "1..7\n"; }
 END {print "not ok 1\n" unless $loaded;}
 use RDF::Redland;
 $loaded = 1;
@@ -107,6 +107,26 @@ $iterator=undef;
 $source_node=undef;
 $target_node=undef;
 last if $failed;
+
+
+my $sub=RDF::Redland::Node->new_from_uri_string("http://example.org/subject");
+my $pred=RDF::Redland::Node->new_from_uri_string("http://example.org/predicate");
+my $dt_uri=new RDF::Redland::URI("http://example.org/datatype");
+$model->add_typed_literal_statement($sub, $pred,
+				    "Literal content", "en-GB", $dt_uri);
+$sub=undef;
+$pred=undef;
+
+print "ok $test\n";
+$test++;
+
+
+my $serializer=new RDF::Redland::Serializer();
+$serializer->serialize_model_to_file("test-out.rdf", undef, $model);
+
+print "ok $test\n";
+$test++;
+
 
 # This happens automatically at the end of scope, but can be forced.
 # However the stream must be closed  before the object that generated
