@@ -307,23 +307,15 @@ sub contains_statement ($$) {
   return &RDF::Redland::CORE::librdf_model_contains_statement($self->{MODEL},$statement->{STATEMENT});
 }
 
-=item serialise
-
-Return a new RDF::Redland::Stream object seralising the model as RDF::Redland::Statement
-objects.
-
-=cut
-
-sub serialise ($) {
+sub as_stream ($) {
   my $self=shift;
-  my $stream=&RDF::Redland::CORE::librdf_model_serialise($self->{MODEL});
+  my $stream=&RDF::Redland::CORE::librdf_model_as_stream($self->{MODEL});
   return new RDF::Redland::Stream($stream,$self);
 }
 
-# for alternate spelling
-sub serialize ($) {
-  shift->serialise;
-}
+# Older names
+sub serialise ($) { shift->as_stream; }
+sub serialize ($) { shift->as_stream; }
 
 =item find_statements STATEMENT
 
@@ -506,6 +498,20 @@ sub target ($$$) {
 }
 
 =pod
+
+=back
+
+=head1 OLDER METHODS
+
+=over
+
+=item serialise
+
+=item serialize
+
+Return a new RDF::Redland::Stream object seralising the model as
+RDF::Redland::Statement objects.  Replaced by as_stream to
+reduce confusion with the RDF::Redland::Serializer class.
 
 =back
 
