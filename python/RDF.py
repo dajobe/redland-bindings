@@ -216,6 +216,9 @@ class Node:
             return 1
     return (Redland.librdf_node_equals(self._node, other._node) == 0)
 
+  def __hash__(self):
+    return hash(str(self))
+  
 # end class Node
 
 
@@ -660,6 +663,9 @@ class Uri:
     """Get a string representation of an RDF URI."""
     return Redland.librdf_uri_to_string(self._reduri)
 
+  def __hash__(self):
+    return hash(self._reduri)
+  
   def __eq__(self,other):
     """Equality of RDF URI to another RDF URI."""
     if type(other)==type(None):
