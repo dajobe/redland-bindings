@@ -1508,7 +1508,7 @@ optional.  When any are given, they must all match.
     """"Return a Stream of Statements from parsing the content in
         string with the required base URI or None if the parsing fails.
 
-          for statement in parser.parse_string_as_stream(rdfstring):
+          for statement in parser.parse_string_as_stream(rdfstring, base_uri):
               print statement
     """
     if type(base_uri) is str:
