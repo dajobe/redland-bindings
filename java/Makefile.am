@@ -32,7 +32,8 @@ CLASSPATH=.
 JAVA_SHARED_LIB=lib$(JAVA_C_SHLIB).so
 JAVA_JAR=$(JAVA_C_SHLIB).jar
 
-SWIG_OUTPUTS=$(JAVA_PATH)$(JAVA_MODULE).java $(JAVA_MODULE)_wrap.c
+SWIG_OUTPUTS=$(JAVA_PATH)$(JAVA_MODULE).java $(JAVA_MODULE)_wrap.c \
+$(JAVA_PATH)$(JAVA_MODULE)JNI.java 
 JAVA_CRUFT=$(JAVA_PATH)$(JAVA_MODULE).class $(JAVA_MODULE)_wrap.o \
 $(JAVA_SHARED_LIB) $(JAVA_JAR) skeleton.class
 
@@ -62,12 +63,23 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
 
 $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java.in: $(srcdir)/../Redland.i
-	$(SWIG) -v -java -jnic -module $(JAVA_MODULE) -package $(JAVA_PACKAGE) -o $(JAVA_MODULE)_wrap.c $? && cp $(JAVA_MODULE).java $(JAVA_PATH)$(JAVA_MODULE).java.in
-
+	here=`pwd`; \
+	cd $(JAVA_PATH); \
+	$(SWIG) -v -java -noproxy -module $(JAVA_MODULE) -package $(JAVA_PACKAGE) -o $(JAVA_MODULE)_wrap.c $$here/$?; \
+	if test -r $(JAVA_MODULE)JNI.java; then \
+	  echo "Fixing SWIG 1.3.15+ broken Java API"; \
+	  rm -f $(JAVA_MODULE).java SWIGTYPE_*; \
+	  sed -e 's/class $(JAVA_MODULE)JNI/public class $(JAVA_MODULE)/' $(JAVA_MODULE)JNI.java > $(JAVA_MODULE).java; \
+	  sed -e 's/$(JAVA_MODULE)JNI/$(JAVA_MODULE)/g' $(JAVA_MODULE)_wrap.c > $(JAVA_MODULE)_wrap.c.new; \
+	  rm -f $(JAVA_MODULE)_wrap.c; $(JAVA_MODULE)JNI.java; \
+	  mv $(JAVA_MODULE)_wrap.c.new $(JAVA_MODULE)_wrap.c; \
+	fi; \
+	mv $(JAVA_MODULE)_wrap.c $$here; \
+	mv $(JAVA_MODULE).java $(JAVA_MODULE).java.in
 
 # FIXME There must be a better way to do this with SWIG
 $(JAVA_PATH)$(JAVA_MODULE).java: $(JAVA_PATH)$(JAVA_MODULE).java.in redland-fragment.java
-	sed -e 's/}//' $(JAVA_PATH)$(JAVA_MODULE).java.in > $(JAVA_PATH)$(JAVA_MODULE).java.tmp
+	sed -e 's/^}//' $(JAVA_PATH)$(JAVA_MODULE).java.in > $(JAVA_PATH)$(JAVA_MODULE).java.tmp
 	cat $(JAVA_PATH)$(JAVA_MODULE).java.tmp redland-fragment.java > $@
 	echo "}" >> $@
 	rm -f $(JAVA_PATH)$(JAVA_MODULE).java.tmp
