@@ -78,8 +78,6 @@ package RDF::Statement;
 
 use strict;
 
-use Redland;
-
 use RDF::Node;
 
 =pod
@@ -186,9 +184,9 @@ sub _new_from_object ($$$) {
   return undef if !$object;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  warn "RDF::Statement::_new_from_object from object $object\n" if $RDF::Debug;
+  warn "RDF::Statement::_new_from_object from object $object free_me=$free_me\n" if $RDF::Debug;
   $self->{STATEMENT}=$object;
-  $self->{DONT_FREE_ME}=1 if !$free_me;
+  $self->{DONT_FREE_ME}=!$free_me;
   bless ($self, $class);
   return $self;
 }
