@@ -135,9 +135,14 @@ public class Model
     return (contains_int != 0);
   }
 
-  public Stream serialise() 
+  public Stream as_stream() 
   {
-    return new Stream(this.world, core.librdf_model_serialise(this.object), this);
+    return new Stream(this.world, core.librdf_model_as_stream(this.object), this);
+  }
+
+  public Stream as_stream(Node context) 
+  {
+    return new Stream(this.world, core.librdf_model_context_as_stream(this.object, context.__get_object()), this);
   }
 
   public Stream findStatements(Statement statement) 
