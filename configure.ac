@@ -30,11 +30,6 @@ AC_REVISION($Revision$)dnl
 AM_INIT_AUTOMAKE([1.7 check-news])
 AM_MAINTAINER_MODE
 
-# OSX Fink
-if test -d /sw/bin ; then
-  PATH=$PATH:/sw/bin
-fi
-
 dnl Checks for programs.
 AM_PROG_CC_STDC
 AM_SANITY_CHECK
