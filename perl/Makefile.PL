@@ -25,7 +25,7 @@ $TOP_SRCDIR=$ENV{TOP_SRCDIR} || '..';
 $CFLAGS=$ENV{CFLAGS} || "";
 $MEM_LIBS=$ENV{MEM_LIBS} || "";
 
-my $CORE_PACKAGE="CORE";
+$CORE_PACKAGE="CORE";
 
 my $objects="${CORE_PACKAGE}_wrap.o ";
 
