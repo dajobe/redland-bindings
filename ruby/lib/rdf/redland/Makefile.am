@@ -18,7 +18,7 @@
 # full license terms.
 #
 
-rubydir=/usr/lib/ruby/@RUBY_VERSION@/rdf/redland
+rubydir=@RUBY_LIBDIR@/rdf/redland
 
 ruby_DATA=$(EXTRA_DIST)
 

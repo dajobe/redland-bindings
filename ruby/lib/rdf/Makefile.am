@@ -18,7 +18,7 @@
 # full license terms.
 #
 
-rubydir=/usr/lib/ruby/@RUBY_VERSION@/rdf
+rubydir=@RUBY_LIBDIR@/rdf
 
 ruby_DATA=redland.rb
 
