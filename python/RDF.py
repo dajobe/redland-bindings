@@ -484,7 +484,7 @@ class Model:
 
     results=[]
     while not user_iterator.end():
-      results.append(user_iterator.current())
+      results.append(Node(node=user_iterator.current()))
       user_iterator.next()
 
     user_iterator=None
@@ -502,7 +502,7 @@ class Model:
 
     results=[]
     while not user_iterator.end():
-      results.append(user_iterator.current())
+      results.append(Node(node=user_iterator.current()))
       user_iterator.next()
 
     user_iterator=None
@@ -520,7 +520,7 @@ class Model:
 
     results=[]
     while not user_iterator.end():
-      results.append(user_iterator.current())
+      results.append(Node(node=user_iterator.current()))
       user_iterator.next()
 
     user_iterator=None
