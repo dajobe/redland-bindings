@@ -41,8 +41,8 @@ CLEANFILES=test*db *.exe *.dll test-out.rdf $(CSHARP_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
 # These work for Mono and dotGNU
-CSHARP_COMPILE='$(CSHARPC) $(CSHARPCFLAGS) $< -target:library -out:$@'
-CSHARP_LINK='$(CSHARPC) $(CSHARPLDFLAGS) $< -target:exe -out:$@'
+CSHARP_COMPILE=$(CSHARPC) $(CSHARPCFLAGS) $< -target:library -out:$@
+CSHARP_LINK=$(CSHARPC) $(CSHARPLDFLAGS) $< -target:exe -out:$@
 
 SUFFIXES=.cs .dll .exe
 .cs.dll:
