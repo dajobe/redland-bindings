@@ -50,7 +50,9 @@ $(RUBY_PACKAGE).so: $(RUBY_PACKAGE)_wrap.o
 	rubylib=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']"`; \
 	$(LIBTOOL) --mode=link $(CC) $(RUBY_PACKAGE)_wrap.o $$rubylib $(top_builddir)/librdf/librdf.la -o $@
 
-check-local: build-ruby
+check-local: test-ruby
+
+test-ruby: build-ruby
 	$(RUBY) example.rb file:../perl/dc.rdf raptor
 
 clean-local:
