@@ -179,7 +179,7 @@ class RedlandStreamsCase(unittest.TestCase):
         self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
 
     def testParseTurtleIntoModel(self):
-        a = "file:../data/dc.turtle"
+        a = "file:../data/dc.ttl"
         p = TurtleParser()
         p.parse_into_model(self.model,a)
         self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
