@@ -226,6 +226,15 @@ class RedlandStreamsCase(unittest.TestCase):
 
         self.assert_(count == 3, "Should have found 3 statements")
 
+class RedlandModelGeneral (unittest.TestCase):
+    def setUp (self):
+        self.storage = HashStorage("test", options="hash-type='bdb'")
+        self.model = Model(self.storage)
+
+    def testSync(self):
+        self.model.sync()
+        
+
 if __name__ == '__main__':
     unittest.main()
 
