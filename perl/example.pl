@@ -134,6 +134,8 @@ die "Failed to find serializer\n" if !$serializer;
 $serializer->serialize_model_to_file("test-out.rdf", $uri, $model);
 $serializer=undef;
 
+my $str=$model->to_string(new RDF::Redland::URI("http://example.org/base#"), "ntriples");
+warn "\nSerialized to ntriples as a string size ",length($str)," bytes\n";
 
 warn "\nDone\n";
 
