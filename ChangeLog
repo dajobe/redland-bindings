@@ -1,3 +1,26 @@
+2005-03-14  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/example.pl: Use serializer->set_namespace
+
+	* perl/lib/RDF/Redland/Serializer.pm (set_namespace):
+	Added to set a prefix/namespace for output
+
+	* python/example.py: Added serializer.set_namespace
+
+	* python/RDF.py (Serializer.set_namespace):
+	Added to set a namespace for output
+
+2005-03-10  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/Serializer.pm:
+	(Serializer) Add set_namespace (Michael Nachbaur)
+
+2005-03-07  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* demos/Makefile.am: Added query.pl
+
+	* demos/query.pl: RDF query demo
+
 2005-02-27  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* configure.ac: Bumped version to 1.0.0.3
