@@ -81,11 +81,17 @@ use Redland;
 
 # CONSTRUCTOR
 # (main)
-sub new ($$) {
-  my($proto,$name)=@_;
+sub new ($$$$) {
+  my($proto,$name,$mime_type,$uri)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{PARSER}=&Redland::librdf_new_parser($name);
+  $mime_type ||="";
+
+  if(defined $uri) {
+    $uri=$uri->{URI};
+  }
+
+  $self->{PARSER}=&Redland::librdf_new_parser($name,$mime_type,$uri);
   return undef if !$self->{PARSER};
 
   bless ($self, $class);
@@ -107,5 +113,18 @@ sub parse_into_model ($$$$) {
   my($self,$uri,$base_uri,$model)=@_;
   return &Redland::librdf_parser_parse_into_model($self->{PARSER},$uri->{URI},$base_uri->{URI},$model->{MODEL});
 }
+
+sub feature ($$;$) {
+  my($self,$uri_string,$value)=@_;
+
+  $uri=RDF::URI->new($uri)  
+    unless ref $uri;
+
+  return &Redland::librdf_parser_get_feature($self->{PARSER},$uri->{URI})
+    unless $value;
+
+  return &Redland::librdf_parser_set_feature($self->{PARSER},$uri->{URI},$value);
+}
+
 
 1;
