@@ -21,9 +21,66 @@ pre
 
 <h1>Redland RDF Application Framework Bindings</h1>
 
+<h2 id="rel0_9_19_1"><a name="rel0_9_19_1">Redland Bindings 0.9.19-1 Changes</a></h2>
+
+<p>Redland binding's License was changed from LGPL 2.1/MPL 1.1 to
+LGPL 2.1/Apache 2 (except for the C# binding).</p>
+
+<p>Rebuild for Redland 0.9.19</p>
+
+
+<h3>General Changes</h3>
+
+<p>Fixes to lose Makefile use of <code>$&lt;</code> syntax for better
+<strong>make(1)</strong> portability.</p>
+
+<p>configure was updated to try harder to find Java JNI headers,
+looking in $JAVA_HOME, or using <code>--with-jdk</code> argument.</p>
+
+
+<h3>C# binding changes</h3>
+
+<p>Assign the logging delegate to a private member to
+stop it being prematurely garbage collected. (Edd Dumbill)</p>
+
+
+<h3>Perl binding changes</h3>
+
+<p>Rewrote <code>$uri=$uri->{URI}</code> style code to prevent
+premature object destruction.</p>
+
+<p>Class Model: Added to_string() method.</p>
+
+<p>Classes Query, QueryResults: Made
+documentation and examples to match the code.</p>
+
+
+
+<h3>PHP binding changes</h3>
+
+<p>Added a typemap to provide a proper PHP ZVAL_NULL
+value when returning a NULL <code>librdf_stream*</code> or
+<code>librdf_iterator*</code> object pointer, rather than a
+swig-typed NULL pointer.</p>
+
+
+<h3>Python binding changes</h3>
+
+<p>Rewrote <code>uri=uri._reduri</code> style code to prevent
+premature object destruction.</p>
+
+<p>Class Model: Added method to_string.</p>
+
+<p>Class Node: Documented literal language and other literal_language
+method dictionary keys.</p>
+
+
+
+
 <h2 id="rel0_9_18_1"><a name="rel0_9_18_1">Redland Bindings 0.9.18-1 Changes</a></h2>
 
 <p>Rebuild for Redland 0.9.18 - no API changes</p>
+
 
 <h2 id="rel0_9_17_1"><a name="rel0_9_17_1">Redland Bindings 0.9.17-1 Changes</a></h2>
 
