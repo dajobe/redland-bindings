@@ -146,10 +146,9 @@ while(!$stream->end) {
   }
 
   if($statement->predicate->equals($RDF_type_predicate)) {
-    print "found type statement ",$statement->as_string,"\n";
-    push(@{$state->{node_types}->{$subject_key}}, $statement->object);
+    push(@{$state->{node_types}->{$subject_key}}, RDF::Redland::Node->new_from_node($statement->object));
   } else {
-    push(@{$state->{nodes}->{$subject_key}}, $statement);
+    push(@{$state->{nodes}->{$subject_key}}, RDF::Redland::Statement->new_from_statement($statement));
   }
   $state->{subject_key_to_node}->{$subject_key}=$subject;
   $stream->next;
@@ -474,10 +473,11 @@ sub emit ($) {
 
   my $str='';
   $str.= "<".$self->{prefix}.":".$self->{name};
-  if(my $namespaces=$self->{xml_namespaces}) {
+  if(my $namespaces=$self->{inscope_namespaces}) {
     for my $ns (@$namespaces) {
-      my($uri,$prefix)=@$ns;
-      $str.=qq{ xmlns:$prefix="$uri"};
+      my($prefix, $uri, $depth)=@$ns;
+      $str.=qq{ xmlns:$prefix="$uri"}
+        if $depth == $self->{depth};
     }
   }
 
