@@ -31,20 +31,21 @@ set parser [lindex $argv 1]
 
 
 
-librdf_init_world "" NULL
+set world [librdf_new_world]
+librdf_world_open $world
 
-set storage [librdf_new_storage "hashes" "test" {new='yes',hash-type='bdb',dir='.'}]
+set storage [librdf_new_storage $world "hashes" "test" {new='yes',hash-type='bdb',dir='.'}]
 if {"$storage" == "NULL"} then {
   error "Failed to create RDF storage"
 }
 
-set model [librdf_new_model $storage ""]
+set model [librdf_new_model $world $storage ""]
 if {"$model" == "NULL"} then {
   librdf_free_storage $storage
   error "Failed to create RDF model"
 }
 
-set parser [librdf_new_parser $parser "" NULL]
+set parser [librdf_new_parser $world $parser "" NULL]
 if {"$parser" == "NULL"} then {
   librdf_free_model $model
   librdf_free_storage $storage
@@ -52,7 +53,7 @@ if {"$parser" == "NULL"} then {
 }
 
 
-set uri [librdf_new_uri $uri_string]
+set uri [librdf_new_uri $world $uri_string]
 
 set stream [librdf_parser_parse_as_stream $parser $uri $uri]
 
@@ -82,4 +83,4 @@ librdf_free_stream $stream
 librdf_free_model $model
 librdf_free_storage $storage
 
-librdf_destroy_world
+librdf_free_world $world

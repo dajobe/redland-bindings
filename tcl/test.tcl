@@ -24,21 +24,22 @@ lappend auto_path .
 
 package require redland
 
-librdf_init_world "" NULL
+set world [librdf_new_world]
+librdf_world_open $world
 
-set storage [librdf_new_storage "hashes" "test" {new='yes',hash-type='bdb',dir='.'}]
+set storage [librdf_new_storage $world "hashes" "test" {new='yes',hash-type='bdb',dir='.'}]
 if {"$storage" == "NULL"} then {
   error "Failed to create RDF storage"
 }
 
-set model [librdf_new_model $storage ""]
+set model [librdf_new_model $world $storage ""]
 if {"$model" == "NULL"} then {
   librdf_free_storage $storage
   error "Failed to create RDF model"
 }
 
 
-set statement [librdf_new_statement_from_nodes [librdf_new_node_from_uri_string "http://purl.org/net/dajobe/"] [librdf_new_node_from_uri_string "http://purl.org/dc/elements/1.1/creator"] [librdf_new_node_from_literal "Dave Beckett" "" 0 0]]
+set statement [librdf_new_statement_from_nodes $world [librdf_new_node_from_uri_string $world "http://purl.org/net/dajobe/"] [librdf_new_node_from_uri_string $world "http://purl.org/dc/elements/1.1/creator"] [librdf_new_node_from_literal $world "Dave Beckett" "" 0 0]]
 if {"$statement" == "NULL"} then {
   librdf_free_model $model
   librdf_free_storage $storage
@@ -49,7 +50,7 @@ librdf_model_add_statement $model $statement
 
 
 # Match against an empty statement - find everything
-set statement [librdf_new_statement_from_nodes NULL NULL NULL]
+set statement [librdf_new_statement_from_nodes $world NULL NULL NULL]
 
 # after this statement should not be touched since find_statements is using it
 set stream [librdf_model_find_statements $model $statement]
@@ -65,4 +66,4 @@ librdf_free_statement $statement
 librdf_free_model $model
 librdf_free_storage $storage
 
-librdf_destroy_world
+librdf_free_world $world
