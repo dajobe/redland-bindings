@@ -81,7 +81,7 @@ sub new ($$$$) {
     $uri=$uri->{URI};
   }
 
-  $self->{PARSER}=&Redland::librdf_new_parser($name,$mime_type,$uri);
+  $self->{PARSER}=&Redland::librdf_new_parser($RDF::World->{WORLD},$name,$mime_type,$uri);
   return undef if !$self->{PARSER};
 
   bless ($self, $class);

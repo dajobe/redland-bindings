@@ -67,7 +67,7 @@ sub new ($$$$) {
 
   warn qq{RDF::Storage->new("$storage_name", "$name", "$options_string")\n} if $RDF::Debug;
 
-  $self->{STORAGE}=&Redland::librdf_new_storage($storage_name,$name,$options_string);
+  $self->{STORAGE}=&Redland::librdf_new_storage($RDF::World->{WORLD},$storage_name,$name,$options_string);
   return undef if !$self->{STORAGE};
 
   bless ($self, $class);

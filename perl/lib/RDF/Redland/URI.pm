@@ -69,7 +69,7 @@ sub new ($$) {
 
   warn "RDF::URI->new('$string')\n" if $RDF::Debug;
 
-  $self->{URI}=&Redland::librdf_new_uri($string);
+  $self->{URI}=&Redland::librdf_new_uri($RDF::World->{WORLD},$string);
   return undef if !$self->{URI};
 
   bless ($self, $class);

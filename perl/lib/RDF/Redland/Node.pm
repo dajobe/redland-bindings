@@ -92,7 +92,7 @@ sub new ($) {
   my($proto)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{NODE}=&Redland::librdf_new_node;
+  $self->{NODE}=&Redland::librdf_new_node($RDF::World->{WORLD});
   return undef if !$self->{NODE};
 
   bless ($self, $class);
@@ -111,7 +111,7 @@ sub new_from_uri_string ($$) {
   my $self  = {};
   die "RDF::Node::new_from_uri_string - Cannot create node from empty URI\n"
     unless $uri_string;
-  $self->{NODE}=&Redland::librdf_new_node_from_uri_string($uri_string);
+  $self->{NODE}=&Redland::librdf_new_node_from_uri_string($RDF::World->{WORLD},$uri_string);
   return undef if !$self->{NODE};
 
   bless ($self, $class);
@@ -150,7 +150,7 @@ sub new_from_literal ($$$$$) {
   my($proto,$string,$xml_language,$xml_space,$is_wf_xml)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{NODE}=&Redland::librdf_new_node_from_literal($string,$xml_language,$xml_space,$is_wf_xml);
+  $self->{NODE}=&Redland::librdf_new_node_from_literal($RDF::World->{WORLD},$string,$xml_language,$xml_space,$is_wf_xml);
   return undef if !$self->{NODE};
 
   bless ($self, $class);

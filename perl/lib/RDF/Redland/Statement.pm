@@ -109,7 +109,7 @@ sub new_from_nodes ($$$$) {
   my $p=($predicate ? $predicate->{NODE} : undef);
   my $o=($object ? $object->{NODE} : undef);
 
-  $self->{STATEMENT}=&Redland::librdf_new_statement_from_nodes($s, $p, $o);
+  $self->{STATEMENT}=&Redland::librdf_new_statement_from_nodes($RDF::World->{WORLD}, $s, $p, $o);
 
   # Zap the incoming librdf node objects since they are now owned by the
   # librdf statement object $self->{STATEMENT}

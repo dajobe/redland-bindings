@@ -78,7 +78,7 @@ sub new ($$$) {
 
   warn qq{RDF::Model->new(storage, "$options_string")\n} if $RDF::Debug;
   
-  $self->{MODEL}=&Redland::librdf_new_model($storage->{STORAGE},$options_string);
+  $self->{MODEL}=&Redland::librdf_new_model($RDF::World->{WORLD},$storage->{STORAGE},$options_string);
   return undef if !$self->{MODEL};
 
   # keep a reference to storage so model is always destroyed before storage

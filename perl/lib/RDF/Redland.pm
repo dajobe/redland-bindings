@@ -38,7 +38,8 @@ sub new ($) {
   my $class = ref($proto) || $proto;
   my $self  = {};
 
-  &Redland::librdf_init_world("", undef);
+  $self->{WORLD}=&Redland::librdf_new_world();
+  &Redland::librdf_world_open($self->{WORLD});
 
   bless ($self, $class);
   $self->{ME}=$self;
@@ -47,7 +48,7 @@ sub new ($) {
 
 sub DESTROY ($) {
   warn "RDF::World DESTROY" if $RDF::Debug;
-  &Redland::librdf_destroy_world();
+  &Redland::librdf_free_world($self->{WORLD}) if $self->{WORLD};
 }
 
 
