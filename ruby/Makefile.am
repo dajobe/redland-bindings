@@ -38,6 +38,8 @@ ruby_DATA=redland.so
 EXTRA_DIST=test.rb example.rb \
 $(SWIG_OUTPUTS)
 
+SUBDIRS=lib test
+
 CLEANFILES=*.db test-out.rdf core* \
 $(RUBY_PACKAGE)_wrap.so $(RUBY_PACKAGE)_wrap.o $(RUBY_PACKAGE)-stamp \
 $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle
@@ -84,4 +86,3 @@ check-local: test-ruby
 test-ruby: $(RUBY_PACKAGE).so $(srcdir)/example.rb
 	$(top_builddir)/redland-src-config --run \
 	  $(RUBY) -I. $(srcdir)/example.rb file:$(srcdir)/../perl/dc.rdf raptor
-
