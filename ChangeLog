@@ -1,3 +1,9 @@
+2004-08-03  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Snapshotted redland-bindings_0_9_17_1 for 0.9.17.1 release
+
+	* java/Makefile.am: Add run-java to dist
+
 2004-07-28  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* autogen.sh: move 'rm's inside configure.ac loop
