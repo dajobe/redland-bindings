@@ -38,7 +38,7 @@ $(SWIG_OUTPUTS)
 
 SUBDIRS=test
 
-CLEANFILES=test*db core* test-out.rdf $(PYTHON_PACKAGE)_wrap.o
+CLEANFILES=dmalloc.log *.db core* test-out.rdf $(PYTHON_PACKAGE)_wrap.o
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 PYTHON_SETUP=PACKAGE=$(PYTHON_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) MEM=$(MEM) $(PYTHON) $(srcdir)/setup.py

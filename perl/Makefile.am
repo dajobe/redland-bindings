@@ -39,7 +39,7 @@ $(SWIG_OUTPUTS)
 
 SUBDIRS=lib t
 
-CLEANFILES=test*db test-out.rdf core* $(PERL_CRUFT)
+CLEANFILES=dmalloc.log *.db test-out.rdf core* $(PERL_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
 MEM_LIBS=@MEM_LIBS@
