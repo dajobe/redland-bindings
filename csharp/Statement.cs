@@ -55,11 +55,11 @@ namespace Redland {
 
  			// Console.WriteLine ("Making Statement from {0} {1} {2}", subject.ToString(), predicate.ToString(), obj.ToString());
 			
-			if ((Object) subject != null)
+			if (subject != null)
 				subj = new Node (subject).Handle;
-			if ((Object) predicate != null)
+			if (predicate != null)
 				pred = new Node (predicate).Handle;
-			if ((Object) obj != null)
+			if (obj != null)
 				o = new Node (obj).Handle;
 			stm = librdf_new_statement_from_nodes (world.Handle, subj, pred, o);
  			// Console.WriteLine ("New Statement is {0}", stm.ToString());
