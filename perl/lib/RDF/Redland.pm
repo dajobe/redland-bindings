@@ -42,6 +42,8 @@ sub new ($) {
   $self->{WORLD}=&RDF::Redland::CORE::librdf_new_world();
   &RDF::Redland::CORE::librdf_world_open($self->{WORLD});
 
+  &RDF::Redland::CORE::librdf_perl_world_init($self->{WORLD});
+
   bless ($self, $class);
   $self->{ME}=$self;
   return $self;
@@ -52,6 +54,34 @@ sub DESTROY ($) {
   &RDF::Redland::CORE::librdf_free_world($self->{WORLD}) if $self->{WORLD};
 }
 
+use vars qw($Error_Sub $Warning_Sub);
+$Error_Sub=undef;
+$Warning_Sub=undef;
+
+sub message ($$) {
+  my($type,$message)=@_;
+  if($type == 0) {
+    if(ref $Error_Sub) {
+      $Error_Sub->($message);
+    } else {
+      die "Redland error: $message\n";
+    }
+  } else {
+    if(ref $Warning_Sub) {
+      $Warning_Sub->($message);
+    } else {
+      warn "Redland warning: $message\n";
+    }
+  }
+}
+
+sub set_error_handler ($) {
+  $Error_Sub=shift;
+}
+
+sub set_warning_handler ($) {
+  $Warning_Sub=shift;
+}
 
 package RDF::Redland;
 
@@ -61,6 +91,9 @@ $Debug=0;
 
 $World=new RDF::Redland::World;
 
+$Error_Sub=undef;
+
+$Warning_Sub=undef;
 
 =pod
 
@@ -79,6 +112,36 @@ RDF::Redland - Redland RDF Class
 =head1 DESCRIPTION
 
 This class initialises the Redland RDF classes.
+
+=head1 STATIC METHODS
+
+=over
+
+=item set_error_handler SUB
+
+Set I<SUB> as the subroutine to be called on a Redland error with
+the error message as the single argument.  For example:
+
+  RDF::Redland::World::set_error_handler(sub {
+    my $msg=shift;
+    # Do something with $msg
+  });
+
+The default if this is not set, is to run die $msg
+
+=item set_warning_handler SUB
+
+Set I<SUB> as the subroutine to be called on a Redland warning with
+the warning message as the single argument.  For example:
+
+  RDF::Redland::World::set_warning_handler(sub {
+    my $msg=shift;
+    # Do something with $msg
+  });
+
+The default if this is not set, is to run warn $msg
+
+=back
 
 =head1 SEE ALSO
 
