@@ -175,13 +175,13 @@ sub contains_statement ($$) {
 sub serialise ($) {
   my $self=shift;
   my $stream=&Redland::librdf_model_serialise($self->{MODEL});
-  return new RDF::Stream($stream,$self);
+  return new RDF::Stream($stream,$self,1);
 }
 
 sub find_statements ($$) {
   my($self,$statement)=@_;
   my $stream=&Redland::librdf_model_find_statements($self->{MODEL},$statement->{STATEMENT});
-  return new RDF::Stream($stream,$self);
+  return new RDF::Stream($stream,$self,0);
 }
 
 sub get_sources ($$) {
