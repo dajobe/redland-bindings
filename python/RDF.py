@@ -694,9 +694,12 @@ Create a model using an in memory storage.
     return Redland.librdf_model_contains_statement(self._model,
         statement._statement)
 
-  def serialise (self):
+  def serialise (self,context=None):
     """Return the Model as a Stream of Statements"""
-    my_stream=Redland.librdf_model_serialise(self._model)
+    if context is None:
+        my_stream=Redland.librdf_model_serialise(self._model)
+    else:
+        my_stream=Redland.librdf_model_context_serialize(self._model,context._node)
     return Stream(my_stream,self,1)
 
   def find_statements (self,statement):
@@ -1376,6 +1379,41 @@ class Serializer:
     Redland.librdf_serializer_set_feature(self._serializer,uri._reduri,value)
 
 # end class Serializer
+
+
+class NS:
+  """ Redland Namespace Utility Class
+
+  import RDF
+  nspace = RDF.NS("http://example.com/foo#")
+
+  # creates an RDF Node for http://example.com/foo#blah   
+  node1 = nspace.blah
+
+  # creates an RDF Node for http://example.com/foo#blah   
+  node2 = nspace['blah']
+
+  A class for generating RDF Nodes with URIs from the same vocabulary
+  (such as XML Namespace) varying only in the appended name in
+  the vocabulary.  Each node returned is a pointer to a shared copy.
+
+  """
+
+  def __init__(self,prefix):
+    self.prefix = prefix
+    self.nodecache = {}
+
+  def node(self,localName):
+    if localName not in self.nodecache:
+      self.nodecache[localName] = Node(uri_string=self.prefix+localName)
+    return self.nodecache[localName]
+
+  def __getitem__(self,localName):
+    return self.node(localName)
+
+  def __getattr__(self,localName):
+    return self.node(localName)
+
 
 # global init, create our world.
 
