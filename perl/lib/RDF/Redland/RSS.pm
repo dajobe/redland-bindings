@@ -662,19 +662,6 @@ sub description ($) {
   return wantarray ? @r : $r[0];
 }
 
-=item inchannel
-
-Get the RSS inchannel for image, item or textinput.
-Returns either a list or first one found depending on calling context.
-
-=cut
-
-# for image, item, textinput resources
-sub inchannel ($) {
-  my(@r)=shift->_find_targets_by_predicate($RDF::Redland::RSS::NS_URL.'inchannel');
-  return wantarray ? @r : $r[0];
-}
-
 =item image_url
 
 Get the RSS image URL string for an image.
