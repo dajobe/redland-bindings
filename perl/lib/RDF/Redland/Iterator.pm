@@ -119,14 +119,8 @@ or undef if the iteration is finished.
 =cut
 
 sub current ($) {
-  # return a new (1) node (2)owned by the librdf iterator object
-  # Reasons: (1) at the user API level the iterator only returns nodes
-  #          (2) the node returned is shared with the iterator
   my $object=&RDF::Redland::CORE::librdf_iterator_get_object(shift->{ITERATOR});
-  return undef if !$object;
-
-  warn "RDF::Redland::Iterator::current object is $object\n" if $RDF::Redland::Debug;
-  RDF::Redland::Node->_new_from_object($object,0);
+  RDF::Redland::Node->_new_from_object($object);
 }
 
 
@@ -150,14 +144,8 @@ or undef if the iteration is finished.
 =cut
 
 sub context ($) {
-  # return a new (1) node (2)owned by the librdf iterator object
-  # Reasons: (1) at the user API level the iterator only returns nodes
-  #          (2) the node returned is shared with the iterator
   my $object=&RDF::Redland::CORE::librdf_iterator_get_context(shift->{ITERATOR});
-  return undef if !$object;
-
-  warn "RDF::Redland::Iterator::context object is $object\n" if $RDF::Redland::Debug;
-  RDF::Redland::Node->_new_from_object($object,0);
+  RDF::Redland::Node->_new_from_object($object);
 }
 
 =pod
