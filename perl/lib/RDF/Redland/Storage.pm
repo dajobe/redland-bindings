@@ -51,7 +51,7 @@ or in memory.
 
 =over
 
-=item new STORAGE_NAME NAME OPTIONS_STRING
+=item new STORAGE_NAME [NAME [OPTIONS_STRING]]
 
 Create a new RDF::Redland::Storage object for the storage factory named
 I<STORAGE_NAME> with storage named I<NAME> and storage options
@@ -114,7 +114,7 @@ in the current directory.
 
 =cut
 
-sub new ($$$$) {
+sub new ($$;$$) {
   my($proto,$storage_name,$name,$options_string)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
