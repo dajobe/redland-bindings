@@ -153,6 +153,7 @@ warn "\nWriting model to test-out.rdf as rdf/xml\n";
 my $serializer=new RDF::Redland::Serializer("rdfxml");
 die "Failed to find serializer\n" if !$serializer;
 
+$serializer->set_namespace("dc", new RDF::Redland::URI("http://purl.org/dc/elements/1.1/"));
 $serializer->serialize_model_to_file("test-out.rdf", $uri, $model);
 
 my $str1=$serializer->serialize_model_to_string($uri, $model);
