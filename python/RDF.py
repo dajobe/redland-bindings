@@ -112,7 +112,7 @@ def node_type_name(num):
     raise NodeTypeError('Unknown node type number %d' % num)
 
 def message_handler (type, message):
- """Internal message dispatcher from Redland to python"""
+  """Internal message dispatcher from Redland to python"""
   if type == 0:
     raise "Redland error - ",message
   else:
@@ -120,7 +120,7 @@ def message_handler (type, message):
 
 def set_message_handler(handler):
   """Set the Redland message handler for Python.  It takes
-     a single function that takes (integer, string) arguments.""""
+     a single function that takes (integer, string) arguments."""
   import Redland_python;
   Redland_python.set_callback(handler)
 
