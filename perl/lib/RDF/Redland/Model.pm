@@ -79,8 +79,6 @@ package RDF::Model;
 
 use strict;
 
-use Redland;
-
 use RDF::Iterator;
 use RDF::Stream;
 
@@ -137,7 +135,7 @@ sub new ($$$) {
   $self->{MODEL}=&Redland::librdf_new_model($storage->{STORAGE},$options_string);
   return undef if !$self->{MODEL};
 
-  # keep a reference around so storage object is destroyed after this
+  # keep a reference to storage so model is always destroyed before storage
   $self->{STORAGE}=$storage;
   bless ($self, $class);
   return $self;
@@ -152,7 +150,7 @@ sub new_with_options ($$$) {
   $self->{MODEL}=&Redland::librdf_new_model_with_options($storage->{STORAGE},$options_hash->{HASH});
   return undef if !$self->{MODEL};
 
-  # keep a reference around so storage object is destroyed after this
+  # keep a reference to storage so model is always destroyed before storage
   $self->{STORAGE}=$storage;
   bless ($self, $class);
   return $self;
@@ -185,8 +183,13 @@ sub new_from_model ($$) {
 # DESTRUCTOR
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::Model DESTROY $self\n" if $RDF::Debug;
-  &Redland::librdf_free_model($self->{MODEL});
+  warn "RDF::Model DESTROY $self" if $RDF::Debug;
+  if(!$self->{MODEL}) {
+    warn "RDF::Model DESTROY - librdf object gone - FIXME!\n" if $RDF::Debug;
+  } else {
+    &Redland::librdf_free_model($self->{MODEL});
+  }
+  warn "RDF::Model DESTROY done\n" if $RDF::Debug;
 }
 
 
@@ -295,22 +298,22 @@ Find all matching statements in the model matching partial RDF::Statement
 I<STATEMENT> (any of the subject, predicate, object RDF::Node can be undef).
 
 In an array context, returns an array of the matching RDF::Statement
-objects.  In a scalar context, returns the RDF::Stream of results.
+objects.  In a scalar context, returns the RDF::Stream object
+representing the results.
 
 =cut
 
 sub find_statements ($$) {
   my($self,$statement)=@_;
   my $stream=&Redland::librdf_model_find_statements($self->{MODEL},$statement->{STATEMENT});
-  my $user_stream=new RDF::Stream($stream,$self,0);
+  my $user_stream=new RDF::Stream($stream,$self);
   return $user_stream if !wantarray;
   
   my(@results)=();
   while(!$user_stream->end) {
-    my $statement2=$user_stream->next;
-    last if !$statement2;
-    push(@results, RDF::Statement->new_from_statement($statement2));
+    push(@results, $user_stream->next);
   }
+  $user_stream=undef;
 
   @results;
 }
@@ -331,10 +334,9 @@ sub sources ($$) {
 
   my(@results)=();
   while($user_iterator->have_elements) {
-    my $node2=$user_iterator->next;
-    last if !$node2;
-    push(@results, RDF::Node->new_from_node($node2));
+    push(@results, $user_iterator->next);
   }
+  $user_iterator=undef;
 
   @results;
 }
@@ -355,10 +357,9 @@ sub arcs ($$) {
   
   my(@results)=();
   while($user_iterator->have_elements) {
-    my $node2=$user_iterator->next;
-    last if !$node2;
-    push(@results, RDF::Node->new_from_node($node2));
+    push(@results, $user_iterator->next);
   }
+  $user_iterator=undef;
 
   @results;
 }
@@ -379,10 +380,9 @@ sub targets ($$$) {
   
   my(@results)=();
   while($user_iterator->have_elements) {
-    my $node2=$user_iterator->next;
-    last if !$node2;
-    push(@results, RDF::Node->new_from_node($node2));
+    push(@results, $user_iterator->next);
   }
+  $user_iterator=undef;
 
   @results;
 }
@@ -397,7 +397,9 @@ I<TARGET> RDF::Node objects as an RDF::Iterator or undef on failure.
 sub sources_iterator ($$$) {
   my($self,$arc,$target)=@_;
   my $iterator=&Redland::librdf_model_get_sources($self->{MODEL},$arc->{NODE},$target->{NODE});
-  return new RDF::Iterator($iterator,$self,$arc,$target);
+  my $user_iterator=new RDF::Iterator($iterator,$self,$arc,$target);
+
+  $user_iterator;
 }
 
 =item arcs_iterator SOURCE TARGET
