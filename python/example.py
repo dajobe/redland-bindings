@@ -46,7 +46,7 @@ model.add_statement(statement)
 for s in model.find_statements(RDF.Statement()):
   print "found statement:",s
 
-test_file='../perl/dc.rdf'
+test_file='../data/dc.rdf'
 
 print "Parsing URI (file)", test_file
 uri=RDF.Uri(string="file:"+test_file)
@@ -66,6 +66,13 @@ print "Printing all statements"
 for s in model.as_stream():
   print "Statement:",s
 
+q = RDF.Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
+print "Querying for dc:titles:"
+for result in q.run_as_bindings(model):
+  print "{"
+  for k in result:
+    print "  "+k+" = "+str(result[k])
+  print "}"
 
 print "Writing model to test-out.rdf as rdf/xml"
 
