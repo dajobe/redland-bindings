@@ -47,7 +47,7 @@ fake_DATA=build-csharp-stamp
 SUBDIRS=examples
 
 EXTRA_DIST=README test.cs $(CSHARP_DLL_SRCS) \
-redland.snk
+redland.pub
 
 CLEANFILES=test*db *.exe *.dll test-out.rdf $(CSHARP_CRUFT)
 #MAINTAINERCLEANFILES=
