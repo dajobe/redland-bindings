@@ -103,8 +103,9 @@ sub have_elements ($) {
 }
 
 sub next ($$) {
-  # return a new node owned by the librdf iterator object
-  # Reason - at the user API level the iterator only returns nodes
+  # return a new (1) node (2)owned by the librdf iterator object
+  # Reasons: (1) at the user API level the iterator only returns nodes
+  #          (2) the node returned is shared with the iterator
   RDF::Node->_new_from_object(&Redland::librdf_iterator_get_next(shift->{ITERATOR}));
 }
 
