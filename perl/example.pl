@@ -117,7 +117,9 @@ my $count=1;
 while(!$results->finished) {
   print "result $count: {\n";
   for(my $i=0; $i < $results->bindings_count; $i++) {
-    print "  ",$results->binding_name($i),"=",$results->binding_value($i)->as_string,"\n";
+    my $val=$results->binding_value($i);
+    next unless defined $val; # optionals
+    print "  ",$results->binding_name($i),"=",$val->as_string,"\n";
   }
   print "}\n";
   $results->next_result;
