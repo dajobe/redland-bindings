@@ -52,7 +52,7 @@ $(RUBY_PACKAGE).so: $(RUBY_PACKAGE)_wrap.o
 
 check-local: test-ruby
 
-test-ruby: build-ruby
+test-ruby: $(RUBY_PACKAGE).so
 	$(RUBY) example.rb file:../perl/dc.rdf raptor
 
 clean-local:
