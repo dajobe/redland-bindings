@@ -488,13 +488,16 @@ if test $with_redland = system; then
   REDLAND_VERSION="system $REDLAND_VERSION"
 else
   if test -x ../librdf/redland-src-config; then
+    dir=../librdf
     REDLAND_CONFIG=../librdf/redland-src-config
   elif test -x ../redland-src-config; then
+    dir=..
     REDLAND_CONFIG=../redland-src-config
   else
     AC_MSG_ERROR(Redland sources missing in .. or ../librdf directory - cannot use internal)
   fi
-  REDLAND_VERSION=internal
+  REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
+  REDLAND_VERSION="internal $REDLAND_VERSION in $dir"
 fi
 AC_MSG_RESULT($REDLAND_VERSION)
 
@@ -567,6 +570,7 @@ csharp/examples/Makefile
 demos/Makefile
 data/Makefile
 ])
+AC_CONFIG_FILES([redland-bindings.spec])
 
 AC_OUTPUT
 
