@@ -482,26 +482,28 @@ LIBRDF_LIBS=$LIBS
 AC_CHECK_PROG(REDLAND_CONFIG, redland-config, redland-config)
 AC_ARG_WITH(redland, [  --with-redland=SOURCE   Pick redland source - system/internal (default auto)], with_redland="$withval", with_redland="auto")
 
-REDLAND_MIN_VERSION=0.9.17
+changequote(<<, >>)dnl
+OUR_REDLAND_VERSION=`echo $PACKAGE_VERSION | sed -e 's,\.[0-9]$,,'`
+changequote([, ])dnl
+
 AC_SUBST(REDLAND_MIN_VERSION)
 if test "X$REDLAND_CONFIG" = X; then
   with_redland=internal
 else
   REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
-  REDLAND_VERSION_DEC=`$REDLAND_CONFIG --version-decimal`
-
-  REDLAND_MIN_VERSION_DEC=`echo $REDLAND_MIN_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
 
   if test "X$with_redland" = Xauto; then
-    if test "X$REDLAND_VERSION" -a $REDLAND_VERSION_DEC -ge $REDLAND_MIN_VERSION_DEC; then
+    if test "X$REDLAND_VERSION" = X; then
+      with_redland=internal
+    elif test $REDLAND_VERSION = $OUR_REDLAND_VERSION; then
       with_redland=system
     else
-      AC_MSG_WARN(System redland $REDLAND_VERSION is too old - need $REDLAND_MIN_VERSION)
+      AC_MSG_WARN(System redland $REDLAND_VERSION does not match - need $OUR_REDLAND_VERSION)
       with_redland=internal
     fi
   elif test $with_redland = system; then
-    if test $REDLAND_VERSION_DEC -lt $REDLAND_MIN_VERSION_DEC; then
-      AC_MSG_WARN(System redland $REDLAND_VERSION is too old - need $REDLAND_MIN_VERSION)
+    if test $REDLAND_VERSION != $OUR_REDLAND_VERSION; then
+      AC_MSG_WARN(System redland $REDLAND_VERSION does not match - need $OUR_REDLAND_VERSION)
       AC_MSG_WARN(Proceeding anyway since --with-redland=system was given)
       AC_MSG_WARN(To use the internal redland use --with-redland=internal)
       AC_MSG_WARN(or omit any --with-redland argument.)
