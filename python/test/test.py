@@ -3,8 +3,8 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
-# Institute for Learning and Research Technology - http://www.ilrt.org/
+# Copyright (C) 2000-2004 David Beckett - http://purl.org/net/dajobe/
+# Institute for Learning and Research Technology - http://www.ilrt.bris.ac.uk/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -92,6 +92,13 @@ n1=RDF.Uri("http://purl.org/net/dajobe/")
 n2=RDF.Uri("http://purl.org/dc/elements/1.1/title")
 for node in model.targets(n1,n2):
   print "  found node:",node
+
+print "matching statements"
+if not RDF.Statement(None,None,None).matches(RDF.Statement(n1,n2,"Title")):
+  print "Failed"
+
+print "Testing for None"
+print RDF.Statement(None,None,None).subject
 
 print "Adding datatyped literal statement to model"
 model.add_typed_literal_statement(subject=RDF.Node(uri_string="http://example.org/subject"),
