@@ -94,5 +94,8 @@ n2=RDF.Node(uri_string="http://purl.org/dc/elements/1.1/title")
 for node in model.targets(n1,n2):
   print "  found node:",node
 
+print "writing model as RDF/XML to test-out.rdf"
 ser=RDF.Serializer()
 ser.serialize_model_to_file("test-out.rdf", model)
+
+print "done"
