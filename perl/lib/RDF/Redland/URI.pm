@@ -84,7 +84,12 @@ sub new ($$) {
   my($proto,$string)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
+
+  warn "RDF::URI->new('$string')\n" if $RDF::Debug;
+
   $self->{URI}=&Redland::librdf_new_uri($string);
+  return undef if !$self->{URI};
+
   bless ($self, $class);
   return $self;
 }
@@ -94,19 +99,26 @@ sub new_from_uri ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
 
+  warn "RDF::URI->new_from_uri($uri)\n" if $RDF::Debug;
+
   # If the URI is a perl URI, use the above constructor
   if (UNIVERSAL::isa($uri, 'URI::http')) {
     return new($proto, $uri->as_string);
   }
 
   $self->{URI}=&Redland::librdf_new_uri_from_uri($uri->{URI});
+  return undef if !$self->{URI};
+
   bless ($self, $class);
   return $self;
 }
 
 sub DESTROY ($) {
+  my $self=shift;
   warn "RDF::URI DESTROY\n" if $RDF::Debug;
-  &Redland::librdf_free_uri(shift->{URI});
+  if($self->{URI}) {
+    &Redland::librdf_free_uri($self->{URI});
+  }
 }
 
 sub as_string ($) {
