@@ -336,10 +336,11 @@ sub as_stream ($;$) {
 sub serialise ($) { shift->as_stream; }
 sub serialize ($) { shift->as_stream; }
 
-=item find_statements STATEMENT
+=item find_statements STATEMENT [CONTEXT]
 
 Find all matching statements in the model matching partial RDF::Redland::Statement
 I<STATEMENT> (any of the subject, predicate, object RDF::Redland::Node can be undef).
+If I<CONTEXT> is given, finds statements only in that context.
 
 In an array context, returns an array of the matching RDF::Redland::Statement
 objects.  In a scalar context, returns the RDF::Redland::Stream object
@@ -347,9 +348,19 @@ representing the results.
 
 =cut
 
-sub find_statements ($$) {
-  my($self,$statement)=@_;
-  my $stream=&RDF::Redland::CORE::librdf_model_find_statements($self->{MODEL},$statement->{STATEMENT});
+sub find_statements ($$;$) {
+  my($self,$statement,$node)=@_;
+  my $stream;
+  if($node) {
+    my $class=ref($node);
+    $node=&RDF::Redland::Node::_ensure($node);
+    die "Cannot make a Node from an object of class $class\n"
+      unless $node;
+    $stream=&RDF::Redland::CORE::librdf_model_find_statements_in_context($self->{MODEL},$statement->{STATEMENT}, $node);
+  } else {
+    $stream=&RDF::Redland::CORE::librdf_model_find_statements($self->{MODEL},$statement->{STATEMENT});
+  }
+
   my $user_stream=new RDF::Redland::Stream($stream,$self);
   return $user_stream if !wantarray;
   
