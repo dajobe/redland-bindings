@@ -33,6 +33,21 @@ while(<IN>) {
     s%<title>(.*?)</title>%<title>$main_title - $1</title>%;
   }
 
+  if(m%<body>%) {
+    print OUT;
+    print OUT <<"EOT";
+<div class="outerBlock">
+
+<div class="outerHeader">
+Go to <a href="/" target="_parent">Redland Home</a> - 
+<a href="/bindings/" target="_parent">Language Bindings Home</a> - 
+<a href="/docs/ruby.html" target="_parent">Ruby API Home</a>
+</div>
+
+EOT
+   next;
+  }
+ 
   next if /^<meta/i;
 
   if(m%<link%) {
@@ -50,9 +65,18 @@ while(<IN>) {
   print OUT <<"EOT" if m%^</body>%;
 <hr />
 
-<p>Copyright 2004-$year <a href="http://purl.org/net/dajobe/">Dave Beckett</a>, <a href="http://www.ilrt.bris.ac.uk/">Institute for Learning and Research Technology</a>, <a href="http://www.bristol.ac.uk/">University of Bristol</a></p>
+<div class="outerHeader">
+Go to <a href="/" target="_parent">Redland Home</a> - 
+<a href="/bindings/" target="_parent">Language Bindings Home</a> - 
+<a href="/docs/ruby.html" target="_parent">Ruby API Home</a>
+</div>
+
+<p>Copyright 2004-$year <a href="http://purl.org/net/dajobe/" target="_parent">Dave Beckett</a>, <a href="http://www.ilrt.bris.ac.uk/" target="_parent">Institute for Learning and Research Technology</a>, <a href="http://www.bristol.ac.uk/" target="_parent">University of Bristol</a></p>
+
+</div> <!-- end outerBlock -->
 
 EOT
+
   print OUT;
 }
 close(IN);
