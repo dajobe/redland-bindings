@@ -57,8 +57,7 @@ namespace Redland {
 
 		~Node ()
 		{
-                // FIXME
-                // if((Object)node != null)
+                	if((Object)node != null)
 				librdf_free_node (node);
 		}
 
