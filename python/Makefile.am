@@ -24,82 +24,63 @@ RELEASE=@VERSION_RELEASE@
 INCLUDES=-I$(top_srcdir)
 
 PYTHON=@PYTHON@
-PYTHON_INCLUDES=@PYTHON_INCLUDES@
+PYTHON_INCLUDE=@PYTHON_INCLUDE@
 
 PYTHON_PACKAGE=Redland
 
 SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c
 
-fakedir=$(prefix)
-fake_DATA=build-python-stamp
+pythondir=@PYTHON_LIB@
+python_DATA=RDF.py Redland.so
 
-EXTRA_DIST=MANIFEST.in README setup.cfg setup.py RDF.py \
+EXTRA_DIST=MANIFEST.in README RDF.py \
 example.py redlandtest.py \
 $(SWIG_OUTPUTS)
 
 SUBDIRS=test
 
-CLEANFILES=dmalloc.log *.db core* test-out.rdf $(PYTHON_PACKAGE)_wrap.o
+CLEANFILES=dmalloc.log *.db *.pyc test-out.rdf \
+$(PYTHON_PACKAGE)_wrap.so $(PYTHON_PACKAGE)_wrap.o $(PYTHON_PACKAGE)-stamp \
+$(PYTHON_PACKAGE).so $(PYTHON_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
-
-# python's distutils pass on LDFLAGS and CFLAGS when they compile the C
-PYTHON_SETUP=VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) LDFLAGS=$(MEM_LIBS) CFLAGS="$(CFLAGS) $(MEM)" $(PYTHON) $(srcdir)/setup.py
 
 $(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -python $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ $<
 
-build-python: $(PYTHON_PACKAGE)_wrap.c
-	$(PYTHON_SETUP) build
+$(PYTHON_PACKAGE)_wrap.so: $(srcdir)/$(PYTHON_PACKAGE)_wrap.c
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf -I$(PYTHON_INCLUDE) $(PYTHON_PACKAGE)_wrap.c -c -o $@
 
-build-python-stamp: $(srcdir)/../Redland.i
-	$(MAKE) build-python && touch build-python-stamp
+$(PYTHON_PACKAGE).so: $(PYTHON_PACKAGE)-stamp
+$(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so
+	@if test `uname` = Darwin; then \
+	  args="  -Wl,-F. -Wl,-F. -bundle -framework Python"; \
+	else \
+	  args=" -shared"; \
+	fi; \
+	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so `$(top_srcdir)/redland-src-config --libs` -o $(PYTHON_PACKAGE).so; \
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so `$(top_srcdir)/redland-src-config --libs` -o $(PYTHON_PACKAGE).so
+	touch $(PYTHON_PACKAGE)-stamp
 
-test-python: build-python-stamp
-	@bdir=`ls -1d build/lib.*`; \
-	echo Using python build dir $$bdir; \
-	echo PYTHONPATH=$$bdir $(PYTHON) test/test.py; \
-	PYTHONPATH=$$bdir $(PYTHON) test/test.py
+install-pythonDATA: $(python_DATA)
+	$(INSTALL_PROGRAM) $(PYTHON_PACKAGE).so $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so
 
-unittest-python: build-python-stamp
-	@bdir=`ls -1d build/lib.*`; \
-	echo Using python build dir $$bdir; \
-	echo PYTHONPATH=$$bdir $(PYTHON) redlandtest.py; \
-	PYTHONPATH=$$bdir $(PYTHON) redlandtest.py
+uninstall-pythonDATA: $(python_DATA)
+	if test -r $(PYTHON_PACKAGE).bundle; then \
+	  rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).bundle; \
+	else \
+	  rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so; \
+	fi
 
-clean-python:
-	rm -rf build
-	$(PYTHON_SETUP) clean
+check-local: test-python
 
-realclean-python:
-	$(PYTHON_SETUP) clean --all
+test-python: $(PYTHON_PACKAGE).so $(srcdir)/test/test.py
+	PYTHONPATH=. $(PYTHON) test/test.py
 
-install-python: $(srcdir)/setup.py build-python
-	$(PYTHON_SETUP) install
-
-dist-python: sdist-python
-
-# Built distribution (may be binary) for module
-bdist-python: $(srcdir)/setup.py
-	$(PYTHON_SETUP) bdist
-
-# Source distributionn for module
-sdist-python: $(srcdir)/setup.py
-	$(PYTHON_SETUP) sdist
-
-# RPM distribution for module
-rpmdist-python: $(srcdir)/setup.py
-	$(PYTHON_SETUP) bdist_rpm --release=$(RELEASE)
-
-check-local: unittest-python test-python
-
-clean-local: clean-python
-	rm -rf dist build-python-stamp
+unittest-python: $(PYTHON_PACKAGE).so build-python-stamp
+	PYTHONPATH=. $(PYTHON) redlandtest.py
 
 RDF.html: RDF.py build-python-stamp
 	@bdir=`ls -1d build/lib.*`; \
 	echo Using python build dir $$bdir; \
 	echo PYTHONPATH=$$bdir $(PYTHON); \
 	PYTHONPATH=$$bdir $(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF
-
-# See this is the fake bit
-install-fakeDATA: install-python
