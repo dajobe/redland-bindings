@@ -565,22 +565,42 @@ Copy an existing model m1, copying the underlying Storage of m1
         subject._node, predicate._node, string,
         xml_language, 0, is_wf_xml)
 
-  def add_statement (self,statement):
-    """Add the Statement to the Model"""
+  def add_statement (self,statement,context=None):
+    """Add the Statement to the Model with optional context Node"""
     # adding a statement means it gets *copied* into the model
-    # we arex free to re-use the statement after adding it
-    Redland.librdf_model_add_statement(self._model, 
-        statement._statement)
+    # we are free to re-use the statement after adding it
+    if context != None:
+      return Redland.librdf_model_context_add_statement(self._model,
+                                                        context._node,
+                                                        statement._statement)
+    else:
+      return Redland.librdf_model_add_statement(self._model,
+                                                statement._statement)
 
-  def add_statements (self,statement_stream):
-    """Add the Stream of Statements to the Model"""
-    return Redland.librdf_model_add_statements(self._model,
-        statement_stream.stream)
+  def add_statements (self,statement_stream,context=None):
+    """Add the Stream of Statements to the Model with the optional context Node"""
+    if context != None:
+      return Redland.librdf_model_context_add_statements(self._model,
+                                                         context._node,
+                                                         statement_stream._stream)
+    else:
+      return Redland.librdf_model_add_statements(self._model,
+                                                 statement_stream.stream)
 
-  def remove_statement (self,statement):
-    """Add the Statement from the Model"""
-    return Redland.librdf_model_remove_statement(self._model,
-        statement._statement)
+  def remove_statement (self,statement,context=None):
+    """Remove the Statement from the Model with the optional context Node"""
+    if context != None:
+      return Redland.librdf_model_context_remove_statement(self._model,
+                                                           context._node,
+                                                           statement._statement)
+    else:
+      return Redland.librdf_model_remove_statement(self._model,
+                                                   statement._statement)
+
+  def context_remove_statements (self,context):
+    """Remove all Statement s from the Model with the given context Node"""
+    return Redland.librdf_model_context_remove_statements(self._model,
+                                                          context._node),
 
   def contains_statement (self,statement):
     """Return true if the Statement is in the Model"""
