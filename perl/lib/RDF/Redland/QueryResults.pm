@@ -60,9 +60,9 @@ variable names to RDF::Redland::Node values.
 
 =pod
 
-=head1 CONSTRUCTORS
+=head1 CONSTRUCTOR
 
-No public constructors.
+There are no public constructors.
 
 =cut
 
@@ -79,6 +79,16 @@ sub new ($$) {
   return $self;
 }
 
+# DESTRUCTOR
+sub DESTROY ($) {
+  warn "RDF::Redland::QueryResults DESTROY\n" if $RDF::Redland::Debug;
+  &RDF::Redland::CORE::librdf_free_query_results(shift->{QUERYRESULTS});
+}
+
+
+=head1 METHODS
+
+=over
 
 =item count
 
@@ -144,7 +154,7 @@ variable bindings.
 
 sub binding_value ($$) {
   my($self,$index)=@_;
-  my $node=&RDF::Redland::CORE::librdf_query_result_get_binding_value($self->{QUERYRESULTS},$index);
+  my $node=&RDF::Redland::CORE::librdf_query_results_get_binding_value($self->{QUERYRESULTS},$index);
   RDF::Redland::Node->_new_from_object($node);
 }
 
@@ -207,7 +217,7 @@ Return the size of the sequence of variable bindings.
 
 sub bindings_count ($) {
   my($self)=@_;
-  return &RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERYRESULTS});
+  return &RDF::Redland::CORE::librdf_query_results_get_bindings_count($self->{QUERYRESULTS});
 }
 
 
