@@ -102,6 +102,11 @@ namespace Rdf {
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_new_node_from_node (IntPtr node);
 
+		public Node (Node node)
+		{
+			this.node = librdf_new_node_from_node(node.node);
+		}
+
 		internal Node (IntPtr node)
 		{
 			this.node = node;
