@@ -203,6 +203,9 @@ class Node:
     if node7.is_resource():
       print "Resource with URI", node7.uri()
 
+    if node5.is_blank():
+      print "Resource with blank node name ", node5.get_blank_identifier()
+
   """
 
   def __init__(self, **args):
@@ -289,7 +292,7 @@ Creates a new RDF Node using the following fields:
     if name=='uri':
         self._set_uri(value)
     elif name=='type':
-        return self._set_type()
+        return self._set_type(value)
     else:
         self.__dict__[name]=value
 
@@ -334,6 +337,17 @@ Creates a new RDF Node using the following fields:
         datatype=datatype._reduri
     Redland.librdf_node_set_typed_literal_value(self._node, string,
         xml_language, datatype)
+
+  def get_blank_identifier(self):
+    """Get the blank node identifier of the Node"""
+    if self.type != _node_types['NODE_TYPE_BLANK']:
+      return ""
+    else:
+      return Redland.librdf_node_get_blank_identifier(self._node)
+
+  def set_blank_identifier(self, identifier):
+    """Get the blank node identifier of the Node"""
+    return Redland.librdf_node_set_blank_identifier(self._node, identifier)
 
   def __str__(self):
     """Get a string representation of an RDF Node."""
