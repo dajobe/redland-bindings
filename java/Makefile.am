@@ -112,6 +112,8 @@ $(JAVA_JAR): $(JAVA_CLASS_FILES)
 
 TESTS=test1 test2
 
+test-java: check
+
 test1: test1.class $(JAVA_JAR)
 	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH $(JAVA) test1
 
