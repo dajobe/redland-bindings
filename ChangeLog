@@ -1,5 +1,10 @@
 2004-07-20  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* php/Makefile.am:
+	redland-pre.i wasn't helping remove multiple defines warnings
+
+	* php/redland-pre.i: undef things via command line
+
 	* tcl/Makefile.am: Use TCL_DIR to remove use of backticks
 
 	* configure.ac: Added TCL_DIR to remove use of backticks in a makefile
