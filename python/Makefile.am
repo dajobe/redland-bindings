@@ -35,7 +35,7 @@ SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c
 pythondir=@PYTHON_LIB@
 python_DATA=RDF.py Redland.so
 
-EXTRA_DIST=MANIFEST.in README RDF.py \
+EXTRA_DIST=README RDF.py \
 example.py redlandtest.py \
 $(SWIG_OUTPUTS)
 
