@@ -31,8 +31,9 @@ SWIG_OUTPUTS=$(PERL_CORE_PACKAGE)_wrap.c
 PERL_CRUFT=blib pm_to_blib $(PERL_CORE_PACKAGE).bs $(PERL_CORE_PACKAGE)_wrap.o \
 $(PERL_MAKEFILE) $(PERL_MAKEFILE).old
 
-EXTRA_DIST=MANIFEST MANIFEST.SKIP Makefile.PL test.pl example.pl \
-dc.rdf rss-dump.pl \
+EXTRA_DIST=README.txt \
+MANIFEST MANIFEST.SKIP Makefile.PL test.pl example.pl \
+dc.rdf rss-dump.pl update-perl-api.pl \
 $(SWIG_OUTPUTS)
 
 SUBDIRS=lib
