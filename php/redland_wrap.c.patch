@@ -1,6 +1,15 @@
---- redland_wrap.c.orig	2004-11-02 19:24:48.496789437 +0000
-+++ redland_wrap.c	2004-11-02 19:24:48.525785630 +0000
-@@ -1727,7 +1727,8 @@
+--- redland_wrap.c.orig	2005-02-08 20:19:58.000000000 +0000
++++ redland_wrap.c	2005-02-08 21:16:05.000000000 +0000
+@@ -529,7 +529,7 @@
+   p = value->ptr;
+   if (type==-1) return -1;
+ 
+-  type_name=zend_rsrc_list_get_rsrc_type(z->value.lval);
++  type_name=zend_rsrc_list_get_rsrc_type(z->value.lval TSRMLS_CC);
+ 
+   return SWIG_ZTS_ConvertResourceData(p,type,type_name,ptr,ty TSRMLS_CC);
+ }
+@@ -1856,7 +1856,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value(arg1);
@@ -8,9 +17,9 @@
 +    if(!result)
 +      result="";
      
-     ZVAL_STRING(return_value,result, 1);
-     
-@@ -1754,6 +1755,8 @@
+     if(!result) {
+         ZVAL_NULL(return_value);
+@@ -1887,6 +1888,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value_as_latin1(arg1);
@@ -18,8 +27,8 @@
 +      result="";
      
      
-     ZVAL_STRING(return_value,result, 1);
-@@ -1781,6 +1784,8 @@
+     if(!result) {
+@@ -1918,6 +1921,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value_language(arg1);
@@ -27,8 +36,8 @@
 +      result="";
      
      
-     ZVAL_STRING(return_value,result, 1);
-@@ -5327,6 +5332,7 @@
+     if(!result) {
+@@ -5738,6 +5743,7 @@
  
  PHP_MSHUTDOWN_FUNCTION(redland)
  {
@@ -36,3 +45,14 @@
      return SUCCESS;
  }
  PHP_MINIT_FUNCTION(redland)
+@@ -5802,5 +5808,10 @@
+ }
+ PHP_MINFO_FUNCTION(redland)
+ {
++    php_info_print_table_start();
++    php_info_print_table_header(2, "Redland RDF Support", "enabled");
++    php_info_print_table_row(2, "redland librdf version", librdf_version_string);
++    php_info_print_table_row(2, "redland php bindings version", REDLAND_BINDINGS_VERSION);
++    php_info_print_table_end();
+ }
+ /* end init section */
