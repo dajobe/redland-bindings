@@ -145,7 +145,7 @@ Return the current number of results from the query.
 
 sub get_result_count ($) {
   my($self)=@_;
-  return &RDF::Redland::CORE::librdf_query_get_result_count_feature($self->{QUERY})
+  return &RDF::Redland::CORE::librdf_query_get_result_count_feature($self->{QUERY});
 }
 
 
@@ -157,7 +157,7 @@ Return non-0 if the results have been exhausted.
 
 sub finished ($) {
   my($self)=@_;
-  return &RDF::Redland::CORE::librdf_query_query_results_finished($self->{QUERY})
+  return &RDF::Redland::CORE::librdf_query_query_results_finished($self->{QUERY});
 }
 
 
@@ -170,7 +170,7 @@ variable bindings.
 
 sub result_binding_name ($$) {
   my($self,$index)=@_;
-  return &RDF::Redland::CORE::librdf_query_get_result_binding_name($self->{QUERY},$index)
+  return &RDF::Redland::CORE::librdf_query_get_result_binding_name($self->{QUERY},$index);
 }
 
 
@@ -186,7 +186,7 @@ sub result_binding_names ($) {
   my(@names);
   my $count=&RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY});
   for (my $i=0; $i < $count; $i++) {
-    push(@names, $query->result_binding_name($i));
+    push(@names, $self->result_binding_name($i));
   }
   return @names;
 }
@@ -201,7 +201,7 @@ variable bindings.
 
 sub result_binding_value ($$) {
   my($self,$index)=@_;
-  my $node=&RDF::Redland::CORE::librdf_query_get_result_binding_value($self->{QUERY},$index)
+  my $node=&RDF::Redland::CORE::librdf_query_get_result_binding_value($self->{QUERY},$index);
   RDF::Redland::Node->_new_from_object($node);
 }
 
@@ -218,7 +218,7 @@ sub result_binding_values ($) {
   my(@values);
   my $count=&RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY});
   for (my $i=0; $i < $count; $i++) {
-    push(@values, $query->result_binding_value($i));
+    push(@values, $self->result_binding_value($i));
   }
   return @values;
 }
@@ -250,7 +250,7 @@ sub result_bindings ($) {
   my(%results);
   my $count=&RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY});
   for (my $i=0; $i < $count; $i++) {
-    $results{$query->result_binding_name($i)}=$query->result_binding_value($i);
+    $results{$self->result_binding_name($i)}=$self->result_binding_value($i);
   }
   return %results;
 }
