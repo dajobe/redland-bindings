@@ -30,11 +30,9 @@ use vars qw($Type_Resource $Type_Property $Type_Literal
 # FIXME: Should be the same as values of librdf_node_type enum in rdf_node.h
 # and mechanically kept in sync.
 $Type_Resource  = 1;
-$Type_Property  = $Type_Resource;
 $Type_Literal   = 2;
-$Type_Statement = 3;
-$Type_Li        = 4;
-$Type_Blank     = 5;
+$Type_Li        = 3;
+$Type_Blank     = 4;
 # FIXME: Needs to also match documentation near sub type
 
 
