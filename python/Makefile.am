@@ -91,10 +91,6 @@ $(SWIG_OUTPUTS)
 
 SUBDIRS=test
 
-# Need this so automake includes C support
-noinst_LIBRARIES = libfake.a
-libfake_a_SOURCES = $(PYTHON_PACKAGE)_wrap.c
-
 CLEANFILES=test*db $(PYTHON_PACKAGE)_wrap.o
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
