@@ -39,7 +39,6 @@ example1.xml example2.xml test-example3.xml test-example4.xml \
 $(CSHARP_TESTS) $(NUNIT_TESTS) TestResult.xml
 
 # These should work for Mono and pnet
-CSHARPCFLAGS= $(CSHARPCFLAGS)
 CSHARPLDFLAGS= $(CSHARPCFLAGS)
 CSHARP_COMPILE=$(CSHARPC) $(CSHARPCFLAGS)
 CSHARP_LINK=$(CSHARPC) $(CSHARPLDFLAGS)
