@@ -71,11 +71,10 @@ required field.
 
 # CONSTRUCTOR
 # (main)
-sub new ($$$$) {
+sub new ($$;$$) {
   my($proto,$name,$mime_type,$uri)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $mime_type ||="";
 
   if(defined $uri) {
     $uri=$uri->{URI};
