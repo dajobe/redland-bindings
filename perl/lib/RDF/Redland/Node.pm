@@ -76,6 +76,23 @@
 
 package RDF::Node;
 
+use vars qw($Type_Resource $Type_Property $Type_Literal
+	    $Type_Statement $Type_Bag $Type_Seq $Type_Alt $Type_Li
+	    $Type_Model);
+
+# FIXME:Should be the same as values of librdf_node_type enum in rdf_node.h
+# and mechanically kept in sync.
+$Type_Resource  = 1;
+$Type_Property  = $Type_Resource;
+$Type_Literal   = 2;
+$Type_Statement = 3;
+$Type_Bag       = 4;
+$Type_Seq       = 5;
+$Type_Alt       = 6;
+$Type_Li        = 7;
+$Type_Model     = 8;
+
+
 use Redland;
 
 # CONSTRUCTOR
