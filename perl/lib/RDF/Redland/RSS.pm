@@ -142,6 +142,7 @@ sub new_from_model ($$) {
 # DESTRUCTOR
 sub DESTROY ($) {
   my $self=shift;
+  $self->SUPER::DESTROY();
   warn "RDF::Redland::RSS DESTROY\n" if $RDF::Redland::Debug;
 }
 
@@ -581,9 +582,9 @@ sub new ($$$) {
   my($proto,$model,$node)=@_;
   my $class = ref($proto) || $proto;
 
-  warn "RDF::Redland::RSS::Node::new in model $model with node $node\n" if $RDF::Redland::Debug;
-
   return undef if !$model || !$node;
+
+  warn "RDF::Redland::RSS::Node::new in model $model with node $node\n" if $RDF::Redland::Debug;
 
   my $self=$node;
 
@@ -595,6 +596,7 @@ sub new ($$$) {
 
 sub DESTROY ($) {
   my $self=shift;
+  $self->SUPER::DESTROY();
   warn "RDF::Redland::RSS::Node DESTROY\n" if $RDF::Redland::Debug;
 }
 
@@ -797,19 +799,14 @@ RDF::Redland::RSS::Node objects.
 sub properties ($) {
   my($self)=@_;
 
-  my $prop= RDF::Redland::Node->new_from_node($self);
-  my $statement=RDF::Redland::Statement->new_from_nodes($prop, undef, undef);
+  my $statement=new RDF::Redland::Statement($self, undef, undef);
   my(@arcs_out_statements)=$self->{MODEL}->find_statements($statement);
 
-  # Convert list of RDF::Redland::Statement-s into list of RDF::Redland::RSS:Node-s predicates.
-  # 
-  # Note: Here the node has to be copied since the predicate method
-  # returns a pointer to a *shared* copy of the node inside the
-  # statement object and this node is going to be reconsecrated as an
-  # RDF::Redland::RSS::Node.
-  return map { RDF::Redland::RSS::Node->new($self->{MODEL}, 
-				   RDF::Redland::Node->new_from_node($_->predicate)) }
-         @arcs_out_statements;
+  # Convert list of RDF::Redland::Statement-s into a list of
+  # RDF::Redland::RSS:Node-s predicates.
+
+  return map { new RDF::Redland::RSS::Node($self->{MODEL}, $_->predicate) }
+           @arcs_out_statements;
 }
 
 =item properties_with_ns_prefix NS_PREFIX
