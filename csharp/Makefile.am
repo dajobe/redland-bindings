@@ -25,7 +25,9 @@ AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_C
 AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
 
 CSHARPC=@CSHARPC@
+CSHARPCFLAGS=@CSHARPCFLAGS@
 CLIRUN=@CLIRUN@
+CLI_PREFIX=@CLI_PREFIX@
 
 CSHARP_C_SHLIB=redland-csharp
 CSHARP_PACKAGE=Redland
@@ -48,9 +50,9 @@ EXTRA_DIST=README test.cs $(CSHARP_DLL_SRCS)
 CLEANFILES=test*db *.exe *.dll test-out.rdf $(CSHARP_CRUFT)
 #MAINTAINERCLEANFILES=
 
-# These work for Mono and dotGNU
-CSHARPCFLAGS=/debug+
-CSHARPLDFLAGS=/debug+
+# These should work for Mono and pnet
+CSHARPCFLAGS= @CSHARPCFLAGS@
+CSHARPLDFLAGS= @CSHARPCFLAGS@
 CSHARP_COMPILE=$(CSHARPC) $(CSHARPCFLAGS)
 CSHARP_LINK=$(CSHARPC) $(CSHARPLDFLAGS)
 
@@ -83,14 +85,15 @@ clean-local:
 	rm -f build-csharp-stamp $(CSHARP_DLL)
 
 # See this is the fake bit
-install-fakeDATA: install-csharpM
+install-fakeDATA: install-csharp
 
 
-MONO_PREFIX=$(shell $(PKG_CONFIG) mono --variable=prefix)
-
-#GACUTIL=$(CLIRUN) $(MONO_PREFIX)/gacutil.exe
-GACUTIL=gacutil
+#MONO_GACUTIL=$(CLIRUN) $(CLI_PREFIX)/gacutil.exe
+MONO_GACUTIL=gacutil
+PNET_GACUTL=ilgac
 
 install-mono: Redland.dll
-	$(GACUTIL) -i Redland.dll -f -package 1.0 -gacdir $(MONO_PREFIX)/lib -root $(MONO_PREFIX)/lib
- 
+	$(MONO_GACUTIL) -i Redland.dll -f -package 1.0 -gacdir $(CLI_PREFIX)/lib -root $(CLI_PREFIX)/lib
+
+install-pnet: Redland.dll
+	$(PNET_GACUTIL) --install --default Redland.dll 1.0
