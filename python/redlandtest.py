@@ -102,6 +102,7 @@ class RedlandGetsCase(unittest.TestCase):
         self.node4 = Node(Uri("http://node4/"))
         self.node5 = Node(Uri("http://node5/"))
         self.node6 = Node(Uri("http://node6/"))
+        self.nodeb = Node()
         self.model.append(Statement(self.node1, self.node2, self.node3))
         self.model.append(Statement(self.node1, self.node2, self.node4))
         self.model.append(Statement(self.node6, self.node2, self.node4))
