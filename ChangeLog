@@ -1,3 +1,52 @@
+2004-11-02  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Snapshotted redland-bindings_0_9_19_1 for 0.9.19.1 release
+
+	* Makefile.am, LICENSE.html, NOTICE, README.html,
+	redland-bindings.spec.in, LICENSE-2.0.txt, MPL.html: LGPL / Apache
+	2.0 license - remove MPL MPL.html add Apache2 LICENSE-2.0.txt NOTICE
+
+	* Switched to LGPL / Apache 2.0 license in the sources
+	CVS tags before: redland_bindings_license_lgpl_mpl,
+	and after: redland_bindings_license_lgpl_apache2
+
+	* php/redland_wrap.c.patch: update patch
+
+	* perl/lib/RDF/Redland/Query.pm: docs
+
+	* csharp/AssemblyInfo.cs: Less boilerplate
+
+2004-10-26  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/Query.pm, perl/lib/RDF/Redland/Parser.pm:
+	Don't do $uri=$uri->{URI} to ensure object ref lives.
+
+2004-10-22  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* redland-bindings.spec.in: based on redland 0.9.19
+
+2004-10-21  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/RDF.py:
+	General python fix.  Do not do uri = uri._reduri where uri is an
+	RDF.Uri() since that causes Python to delete the RDF.Uri object,
+	making the redland uri object useless.
+
+	* python/example.py: Added serialize example
+
+	* configure.ac: 0.9.19.1
+
+2004-10-20  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/RDF.py (Model.to_string): Added.
+	(Model.__str__): Added.
+
+2004-10-09  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* ruby/Makefile.am, python/Makefile.am, php/Makefile.am,
+	perl/Makefile.am, java/Makefile.am: Remove use of $< with
+	@REDLAND_SWIG@ since BSD make sucks^w doesn't support it.
+
 2004-10-01  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* perl/lib/RDF/Redland/Model.pm: (load) Added using librdf_model_load
