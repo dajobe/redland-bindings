@@ -67,13 +67,13 @@ sub new ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
 
-  if(ref($arg)) {
-    if(UNIVERSAL::isa($class, 'RDF::Redland::URI')) {
+  if(my $arg_class=ref($arg)) {
+    if(UNIVERSAL::isa($arg_class, 'RDF::Redland::URI')) {
       return $arg->clone;
-    } elsif($class =~ '^URI') {
+    } elsif (UNIVERSAL::isa($arg_class, 'URI')) {
       $arg=$arg->as_string;
     } else {
-      die "RDF::Redland::URI::new - Cannot make a URI from an object of class $class\n";
+      die "RDF::Redland::URI::new - Cannot make a URI from an object of class $arg_class\n";
     }
   }
   
