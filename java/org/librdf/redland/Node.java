@@ -75,12 +75,15 @@ public class Node
     }
 
 
-  protected void finalize() 
+  protected void finalize()  throws Throwable
     {
       if(!dont_free_me)
         core.librdf_free_node(this.object);
       this.object=0;
+
+      super.finalize();
     }
+
   
   public URI getURI() 
     {

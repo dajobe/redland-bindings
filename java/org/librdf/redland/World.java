@@ -31,12 +31,14 @@ public class World
   public World() {
   }
 
-  protected void finalized() 
+  protected void finalize() throws Throwable
     {
       if(this.object != 0) {
         core.librdf_free_world(this.object);
         this.object=0;
       }
+
+      super.finalize();
     }
 
   public void open() 
