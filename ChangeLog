@@ -1,5 +1,22 @@
 2004-07-20  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* tcl/Makefile.am: Use TCL_DIR to remove use of backticks
+
+	* configure.ac: Added TCL_DIR to remove use of backticks in a makefile
+
+	* ruby/Makefile.am: Use RUBY_LIB, RUBY_DIR to remove use of backticks
+
+	* configure.ac:
+	Added RUBY_LIB, RUBY_DIR to remove use of backticks in a makefile
+	Tidy
+
+	* php/Makefile.am:
+	Use PHP_EXTENSION_DIR to remove use of backticks in a makefile
+
+	* configure.ac:
+	Added PHP_EXTENSION_DIR to remove use of backticks in a makefile
+	Tidy
+
 	* ruby/Makefile.am, python/Makefile.am, php/Makefile.am,
 	perl/Makefile.am, java/Makefile.am, csharp/examples/Makefile.am,
 	csharp/Makefile.am: Re-added REDLAND_RUN for running tests when
