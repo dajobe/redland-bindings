@@ -64,7 +64,10 @@ sub MY::init_main {
 
   # Perl 5.8 just made this harder
   if ($] < 5.800) {
-    # Nop
+    # OSX too
+    if ($^O eq 'darwin') {
+      $self->{FULLEXT}.="/".$::CORE_PACKAGE;
+    }
   } else {
     $self->{FULLEXT}.="/".$::CORE_PACKAGE;
   }
