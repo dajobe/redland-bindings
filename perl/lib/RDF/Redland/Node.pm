@@ -244,6 +244,22 @@ sub uri ($;$) {
   return &RDF::Redland::CORE::librdf_node_set_uri($self->{NODE},$uri->{URI});
 }
 
+=item blank_identifier [ID]
+
+Get/set the blank identifier of the node.  With no arguments,
+returns the current blank identifier, otherwise sets it to the I<ID>.
+
+=cut
+
+sub blank_identifier ($;$) {
+  my($self,$id)=@_;
+
+  return &RDF::Redland::CORE::librdf_node_get_blank_identifier(shift->{NODE})
+    unless $id;
+
+  return &RDF::Redland::CORE::librdf_node_set_blank_identifier($self->{NODE},$id);
+}
+
 =item type [TYPE]
 
 Get/set the node type.  With no arguments, returns the current
