@@ -45,7 +45,7 @@ $(RUBY_PACKAGE)_wrap.o: $(RUBY_PACKAGE)_wrap.c
 	$(CC) $(CFLAGS) -c -fpic $(INCLUDES)  $? -o $@
 
 $(RUBY_PACKAGE).so: $(RUBY_PACKAGE)_wrap.o
-	$(CC) -shared $? -o $@ `$(top_srcdir)/redland-config --libs` -L$(top_srcdir) -lrdf
+	$(CC) -shared $? -o $@ `$(top_srcdir)/redland-src-config --libs`
 
 build-ruby: $(RUBY_PACKAGE).so 
 

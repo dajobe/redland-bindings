@@ -112,7 +112,7 @@ example.class: example.java compiled-java-classes
 
 
 $(JAVA_SHARED_LIB): $(JAVA_MODULE)_wrap.c
-	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. -I/usr/local/include/linux $? -static -L.. `../redland-config --libs` -o $@
+	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. -I/usr/local/include/linux $? -static `../redland-src-config --cflags` `../redland-src-config --libs` -o $@
 
 $(JAVA_JAR): $(JAVA_CLASS_FILES)
 	rm -f $@

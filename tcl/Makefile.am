@@ -44,7 +44,7 @@ $(TCL_PACKAGE)_wrap.o: $(TCL_PACKAGE)_wrap.c
 	$(CC) $(CFLAGS) -c -fpic -I$(top_srcdir)  $? -o $@
 
 $(TCL_PACKAGE).so: $(TCL_PACKAGE)_wrap.o
-	$(CC) -shared $? -o $@ `$(top_srcdir)/redland-config --libs` -L$(top_srcdir) -lrdf
+	$(CC) -shared $? -o $@ `$(top_srcdir)/redland-src-config --libs` -L$(top_srcdir) -lrdf
 
 pkgIndex.tcl: $(TCL_PACKAGE).so
 	$(TCL) -c "pkg_mkIndex . $(TCL_PACKAGE).so"

@@ -26,12 +26,15 @@ $PACKAGE=$ENV{PACKAGE} || "RDF::Redland";
 $MEM_LIBS=$ENV{MEM_LIBS} || "";
 $CORE_PACKAGE=$ENV{CORE_PACKAGE} || "CORE";
 
-my $objects="${CORE_PACKAGE}_wrap.o $TOP_SRCDIR/librdf.a ";
+my $objects="${CORE_PACKAGE}_wrap.o ";
 
-my $redland_libs=`$TOP_SRCDIR/redland-config --libs`;
+my $redland_libs=`$TOP_SRCDIR/redland-src-config --libs`;
 chomp $redland_libs;
-$redland_libs =~ s/^-L\S+ -lrdf\s*//;
+# Turn -Ldir -lfoo into static library dir/libfoo.a
+$redland_libs =~ s%-L(\S+) -l(rdf|raptor)\s*%$1/lib$2.a %g;
 $objects .= $redland_libs;
+
+my $includes="-I$TOP_SRCDIR/librdf";
 
 my $version=$ENV{VERSION};
 
@@ -86,7 +89,7 @@ WriteMakefile(
     'VERSION'   => $version,
 
     'DEFINE'    => '-Dbool=int -DHAVE_CONFIG_H',
-    'INC'       => "-I$TOP_SRCDIR",
+    'INC'       => "$includes",
     'OBJECT'    => "$objects $MEM_LIBS",
     'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS"},
 
