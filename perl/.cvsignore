@@ -1,3 +1,6 @@
+*.db
+core*
+dmalloc.log
 Makefile
 Makefile.in
 Makefile.perl
@@ -5,5 +8,6 @@ Redland.bs
 Redland.pm
 Redland_wrap*
 blib
+bugs
+old
 pm_to_blib
-test*db
