@@ -4,8 +4,8 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
-# Institute for Learning and Research Technology - http://www.ilrt.org/
+# Copyright (C) 2000-2004 David Beckett - http://purl.org/net/dajobe/
+# Institute for Learning and Research Technology - http://www.ilrt.bris.ac.uk/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -21,10 +21,10 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=-I$(top_srcdir)
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ @PYTHON_INCLUDES@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
 
 PYTHON=@PYTHON@
-PYTHON_INCLUDES=@PYTHON_INCLUDES@
 
 PYTHON_PACKAGE=Redland
 
@@ -48,7 +48,7 @@ $(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -python $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ $<
 
 $(PYTHON_PACKAGE)_wrap.so: $(srcdir)/$(PYTHON_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_builddir)/librdf -I$(top_srcdir)/librdf/ @LIBRDF_EXTERNAL_CPPFLAGS@ $(PYTHON_INCLUDES) $(srcdir)/$(PYTHON_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(srcdir)/$(PYTHON_PACKAGE)_wrap.c -c -o $@
 
 $(PYTHON_PACKAGE).so: $(PYTHON_PACKAGE)-stamp
 $(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so

@@ -4,8 +4,8 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
-# Institute for Learning and Research Technology - http://www.ilrt.org/
+# Copyright (C) 2000-2004 David Beckett - http://purl.org/net/dajobe/
+# Institute for Learning and Research Technology - http://www.ilrt.bris.ac.uk/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -20,7 +20,8 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=-I$(top_srcdir) @RUBY_INCLUDES@
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@  @RUBY_INCLUDES@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
 
 RUBY=@RUBY@
 
@@ -47,7 +48,7 @@ $(srcdir)/$(RUBY_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 
 
 $(RUBY_PACKAGE)_wrap.so: $(srcdir)/$(RUBY_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf -I$(rubydir) $(RUBY_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(rubydir) $(RUBY_PACKAGE)_wrap.c -c -o $@
 
 
 $(RUBY_PACKAGE).so: $(RUBY_PACKAGE)-stamp

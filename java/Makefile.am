@@ -4,8 +4,8 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
-# Institute for Learning and Research Technology - http://www.ilrt.org/
+# Copyright (C) 2000-2004 David Beckett - http://purl.org/net/dajobe/
+# Institute for Learning and Research Technology - http://www.ilrt.bris.ac.uk/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -23,7 +23,8 @@ JAVA=@JAVA@
 JAVAC=@JAVAC@
 SWIG=@SWIG@
 
-JDK_INCLUDES=@JDK_INCLUDES@
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ @JDK_INCLUDES@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
 
 JAVA_MODULE=core
 JAVA_PACKAGE=org.librdf.redland
@@ -36,7 +37,6 @@ javasharedir=$(prefix)/share/java
 javalib_LTLIBRARIES=librdf-java.la
 
 librdf_java_la_SOURCES=core_wrap.c
-librdf_java_la_CFLAGS=$(JDK_INCLUDES)
 librdf_java_la_LDFLAGS=--rpath $(javalibdir) $(top_srcdir)/librdf/librdf.la
 
 javashare_DATA=librdf-java.jar

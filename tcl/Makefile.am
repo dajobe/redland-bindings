@@ -4,8 +4,8 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
-# Institute for Learning and Research Technology - http://www.ilrt.org/
+# Copyright (C) 2000-2004 David Beckett - http://purl.org/net/dajobe/
+# Institute for Learning and Research Technology - http://www.ilrt.bris.ac.uk/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -20,7 +20,8 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=-I$(top_srcdir)
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ @TCL_INCLUDES@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
 
 TCL=@TCL@
 
@@ -30,7 +31,6 @@ SWIG_OUTPUTS=$(TCL_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
 tclversion=@TCL_VERSION@
-tclincs=@TCL_INCLUDES@
 tcllib=-ltcl$(tclversion)
 
 tcldir=`echo 'puts $$tcl_library' | $(TCL)`
@@ -49,7 +49,7 @@ $(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -tcl8 -module $(TCL_PACKAGE) -o $@ $<
 
 $(TCL_PACKAGE)_wrap.so: $(TCL_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf $(tclincs) $(TCL_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(TCL_PACKAGE)_wrap.c -c -o $@
 
 
 $(TCL_PACKAGE).so: $(TCL_PACKAGE)-stamp

@@ -4,8 +4,8 @@
 #
 # $Id$
 #
-# Copyright (C) 2002-2003 David Beckett - http://purl.org/net/dajobe/
-# Institute for Learning and Research Technology - http://www.ilrt.org/
+# Copyright (C) 2002-2004 David Beckett - http://purl.org/net/dajobe/
+# Institute for Learning and Research Technology - http://www.ilrt.bris.ac.uk/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -20,7 +20,8 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=-I$(top_srcdir) @PHP_INCLUDES@
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ @PHP_INCLUDES@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
 
 PHP=php
 
@@ -55,7 +56,7 @@ endif
 # -UHAVE_CONFIG_H to stop PHP trying to include config.h which
 # quite often just doesn't exist
 $(PHP_PACKAGE)_wrap.so: $(PHP_PACKAGE)_wrap.c
-	$(CC) $(DEFS) -UHAVE_CONFIG_H $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf `php-config --includes` $(PHP_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) -UHAVE_CONFIG_H $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(PHP_PACKAGE)_wrap.c -c -o $@
 
 $(PHP_PACKAGE).so: $(PHP_PACKAGE)-stamp
 $(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.so

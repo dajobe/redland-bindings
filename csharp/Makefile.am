@@ -4,8 +4,8 @@
 #
 # $Id$
 #
-# Copyright (C) 2003 David Beckett - http://purl.org/net/dajobe/
-# Institute for Learning and Research Technology - http://www.ilrt.org/
+# Copyright (C) 2003-2004 David Beckett - http://purl.org/net/dajobe/
+# Institute for Learning and Research Technology - http://www.ilrt.bris.ac.uk/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -21,7 +21,8 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=-I$(top_srcdir)
+AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@
+AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ @LIBRDF_INTERNAL_CPPFLAGS@ @LIBRDF_EXTERNAL_CPPFLAGS@ $(MEM)
 
 CSHARPC=@CSHARPC@
 CLIRUN=@CLIRUN@
@@ -59,10 +60,10 @@ $(CSHARP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	rm -f SWIGTYPE_*
 
 $(CSHARP_PACKAGE)_wrap.o: $(CSHARP_PACKAGE)_wrap.c
-	$(CC) $(CFLAGS) `$(top_srcdir)/redland-src-config --cflags` -c -fpic -I$(top_srcdir)  $< -o $@
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $< -c -o $@
 
 $(CSHARP_SHARED_LIB): $(CSHARP_PACKAGE)_wrap.o
-	$(CC) -shared $< -o $@ `$(top_srcdir)/redland-src-config --libs`
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -shared $< `$(top_builddir)/redland-src-config --libs` -o $@
 
 build-csharp: build-csharp-stamp
 
