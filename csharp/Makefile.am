@@ -37,7 +37,8 @@ CSHARP_DLL=$(CSHARP_PACKAGE).dll
 CSHARP_DLL_SRCS=AssemblyInfo.cs \
 IWrapper.cs World.cs Uri.cs Storage.cs Model.cs		\
 Parser.cs Node.cs Statement.cs Stream.cs Iterator.cs Serializer.cs	\
-Redland.cs MemoryStorage.cs HashStorage.cs Util.cs
+Redland.cs MemoryStorage.cs HashStorage.cs Util.cs \
+Query.cs QueryResults.cs
 
 CSHARP_CRUFT=$(CSHARP_PACKAGE).dll
 
