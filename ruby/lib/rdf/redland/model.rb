@@ -32,7 +32,9 @@ module Redland
     # Redland::Uri
     def create_resource(str=nil,context=nil)
       resource = Resource.new(str,self,context)
-      resource.set_context(Resource.new(context))
+      if context
+        resource.set_context(Resource.new(context))
+      end
       return resource
     end
 
