@@ -22,7 +22,7 @@
 
 lappend auto_path .
 
-package require redland
+package require Redland
 
 set world [librdf_new_world]
 librdf_world_open $world
