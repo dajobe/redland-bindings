@@ -698,7 +698,7 @@ Create a model using an in-memory storage.
               context._node, statement_stream._stream)
     else:
       return Redland.librdf_model_add_statements(self._model,
-                                                 statement_stream.stream)
+                                                 statement_stream._stream)
 
   def append(self, statement, context = None):
       """Append a Statement to the Model, with optional context Node.
