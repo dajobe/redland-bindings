@@ -1065,7 +1065,7 @@ Create a new RDF Parser for a particular syntax.  The parser is
 chosen by the fields given to the constructor, all of which are
 optional.  When any are given, they must all match.
 
-  name      - parser name (currently "raptor", "repat" and "ntriples")
+  name      - parser name (currently "raptor" and "ntriples")
   mime_type - currently "application/rdf+xml" (default) or "text/plain" (ntriples)
   uri       - URI identifying the syntax
               currently only "http://www.w3.org/TR/rdf-testcases/#ntriples"
