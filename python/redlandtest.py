@@ -361,5 +361,13 @@ class RasqalQueryTestCase (unittest.TestCase):
         rc = q.execute(self.model).get_boolean()
         self.assert_(rc is True, "execute get_boolean should have returned True")
 
+    def testSPARQLQueryAsString(self):
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT * WHERE (?a dc:title ?c)")
+        r = q.execute(self.model)
+        self.assert_(r is not None, "execute to_string should have succeeded")
+        s = r.to_string()
+        self.assert_(len(s) == 301, "to_string should have returned 2 bytes not")
+
+
 if __name__ == '__main__':
     unittest.main()
