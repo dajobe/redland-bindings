@@ -30,7 +30,7 @@ SWIG_OUTPUTS=$(TCL_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
 tclversion=@TCL_VERSION@
-tclincdir=@TCL_INCLUDE@
+tclincs=@TCL_INCLUDES@
 tcllib=-ltcl$(tclversion)
 
 tcldir=$(shell echo 'puts $$tcl_library' | $(TCL))
@@ -49,7 +49,7 @@ $(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -tcl8 -module $(TCL_PACKAGE) -o $@ $<
 
 $(TCL_PACKAGE)_wrap.so: $(TCL_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf -I$(tclincdir) $(TCL_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf $(tclincs) $(TCL_PACKAGE)_wrap.c -c -o $@
 
 
 $(TCL_PACKAGE).so: $(TCL_PACKAGE)-stamp
