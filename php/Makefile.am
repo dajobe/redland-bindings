@@ -44,7 +44,7 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 RUN=@REDLAND_RUN@
 
-SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_DECL_I -DREDLAND_DECL_I
+SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_INIT_I -DREDLAND_DECL_I
 
 $(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i
 	swig -v -php4 $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ $<
