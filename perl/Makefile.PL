@@ -72,6 +72,11 @@ sub MY::init_main {
     $self->{FULLEXT}.="/".$::CORE_PACKAGE;
   }
   $self->{BASEEXT}=$::CORE_PACKAGE;
+
+  # Stop perl linking with anything in the destination dir, it might
+  # be entirely the wrong library such as a previous version.
+  $self->{LDFLAGS} =~ s/-L\S+//;
+  $self->{LDDLFLAGS} =~ s/-L\S+//;
 }
 
 
