@@ -65,7 +65,7 @@ build-csharp: $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE)PINVOKE.dll
 
 check-csharp: test-csharp
 test-csharp: build-csharp test.exe
-	$(CLRRUN) test.cs
+	$(CLRRUN) test.exe
 
 install-csharp: $(CSHARP_SHARED_LIB) build-csharp
 	$(INSTALL_PROGRAM) $(CSHARP_SHARED_LIB) @libdir@
