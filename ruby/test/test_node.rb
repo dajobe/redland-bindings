@@ -1,5 +1,5 @@
 require 'test/unit'
-require 'rdf/redland/node.rb'
+require 'rdf/redland'
 
 class TestNode < Test::Unit::TestCase
   include Redland
