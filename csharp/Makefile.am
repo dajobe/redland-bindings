@@ -34,7 +34,8 @@ CSHARP_PACKAGE=Redland
 
 CSHARP_DLL=$(CSHARP_PACKAGE).dll
 
-CSHARP_DLL_SRCS=IWrapper.cs World.cs Uri.cs Storage.cs Model.cs		\
+CSHARP_DLL_SRCS=AssemblyInfo.cs \
+IWrapper.cs World.cs Uri.cs Storage.cs Model.cs		\
 Parser.cs Node.cs Statement.cs Stream.cs Iterator.cs Serializer.cs	\
 Redland.cs MemoryStorage.cs HashStorage.cs Util.cs
 
@@ -91,7 +92,17 @@ install-fakeDATA: install-csharp
 MONO_GACUTIL=gacutil
 PNET_GACUTL=ilgac
 
-install-mono: Redland.dll
+#MONO_SN=$(CLIRUN) $(CLI_PREFIX)/sn.exe
+MONO_SN=sn
+
+redland.snk:
+	@$(ECHO) "WARNING: making new redland.snk to sign assembly"
+	$(MONO_SN) -k redland.snk
+
+sign-mono: Redland.dll redland.snk
+	$(MONO_SN) -q -R Redland.dll redland.snk
+
+install-mono: Redland.dll sign-mono
 	$(MONO_GACUTIL) -i Redland.dll -f -package 1.0 -gacdir $(CLI_PREFIX)/lib -root $(CLI_PREFIX)/lib
 
 install-pnet: Redland.dll
