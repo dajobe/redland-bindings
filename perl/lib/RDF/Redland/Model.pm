@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -298,7 +298,7 @@ sub find_statements ($$) {
   
   my(@results)=();
   while(!$user_stream->end) {
-    push(@results, RDF::Redland::Statement->new_from_statement($user_stream->current));
+    push(@results, $user_stream->current);
     $user_stream->next;
   }
   $user_stream=undef;
@@ -322,7 +322,7 @@ sub sources ($$$) {
 
   my(@results)=();
   while(!$user_iterator->end) {
-    push(@results, RDF::Redland::Node->new_from_node($user_iterator->current));
+    push(@results, $user_iterator->current);
     $user_iterator->next;
   }
   $user_iterator=undef;
@@ -346,7 +346,7 @@ sub arcs ($$$) {
   
   my(@results)=();
   while(!$user_iterator->end) {
-    push(@results, RDF::Redland::Node->new_from_node($user_iterator->current));
+    push(@results, $user_iterator->current);
     $user_iterator->next;
   }
   $user_iterator=undef;
@@ -370,7 +370,7 @@ sub targets ($$$) {
   
   my(@results)=();
   while(!$user_iterator->end) {
-    push(@results, RDF::Redland::Node->new_from_node($user_iterator->current));
+    push(@results, $user_iterator->current);
     $user_iterator->next;
   }
   $user_iterator=undef;
