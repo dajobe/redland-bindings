@@ -97,6 +97,13 @@ sub new_from_statement ($$) {
 Create a new RDF::Statement with the given RDF::Node objects as parts
 (or undef when empty for a I<partial> statement).
 
+NOTE: After construction, the RDF::Node objects become owned by the
+new RDF::Statement object and I<must not> be used elsewhere.
+Existing nodes can be copied to use in this method with the RDF::Node
+copy constructor new_from_node like this:
+
+  $new_node = RDF::Node->new_from_node($node);
+
 =cut
 
 sub new_from_nodes ($$$$) {
