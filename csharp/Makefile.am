@@ -67,6 +67,7 @@ $(CSHARP_SHARED_LIB): $(CSHARP_PACKAGE)_wrap.o
 build-csharp: build-csharp-stamp
 
 build-csharp-stamp: $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE)PINVOKE.dll
+	touch build-csharp-stamp
 
 check-local: build-csharp-stamp test-csharp
 
