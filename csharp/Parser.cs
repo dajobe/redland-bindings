@@ -97,6 +97,8 @@ namespace Rdf {
 
 		public Stream ParseStringAsStream (string s, Uri base_uri)
 		{
+			Console.WriteLine ("Parsing string '{0}' URI {1}", s, base_uri.ToString());
+
 			IntPtr istr = Marshal.StringToHGlobalAuto (s);
 			IntPtr raw_ret = librdf_parser_parse_string_as_stream (parser, istr, base_uri.Handle);
 			Stream stream;
