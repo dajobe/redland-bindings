@@ -290,10 +290,13 @@ Creates a new RDF Node using the following fields:
 
   def get_literal_value (self):
     """Get a dictionary containing the value of the Node literal"""
+    dt_uri=Redland.librdf_node_get_literal_value_datatype_uri(self._node)
+    if dt_uri:
+      dt_uri=Uri(uri_string=Redland.librdf_uri_to_string(dt_uri))
     val={
         'string': Redland.librdf_node_get_literal_value(self._node),
         'language': Redland.librdf_node_get_literal_value_language(self._node),
-        'datatype': Redland.librdf_node_get_literal_value_datatype(self._node)
+        'datatype': dt_uri
         }
     return val
 
@@ -858,7 +861,8 @@ class Stream:
     global _debug    
     if _debug:
       print "Destroying RDF.Stream"
-    Redland.librdf_free_stream(self.stream)
+    if self.stream:
+      Redland.librdf_free_stream(self.stream)
 
   def end (self):
     """Return true if the stream is exhausted"""
@@ -1088,11 +1092,14 @@ optional.  When any are given, they must all match.
 
   def parse_as_stream (self, uri, base_uri=None):
     """"Return a Stream of Statements from parsing the content at
-        (file: only at present) URI, for the optional base URI"""
+        (file: only at present) URI, for the optional base URI
+        or None if the parsing fails."""
     if base_uri==None:
         base_uri=uri
     my_stream=Redland.librdf_parser_parse_as_stream(self._parser,
         uri._reduri, base_uri._reduri)
+    if my_stream==None:
+      return None
     return Stream(my_stream, self, 1)
 
   def parse_into_model (self, model, uri, base_uri=None):
