@@ -39,6 +39,7 @@ check-ruby: $(RUBY_TEST_FILES)
 	  status=$$?; \
 	  if test $$status != 0 -a $$status != 2 ; then \
 	    $(ECHO) FAILED returned status $$status; result=1; \
+	    echo $(top_builddir)/redland-src-config --run $(RUBY) -I .. -I ../lib $(srcdir)/$$test; \
 	    fails="$$fails $$test"; \
 	  else \
 	    $(ECHO) "ok"; \
