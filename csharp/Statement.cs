@@ -90,7 +90,8 @@ namespace Redland {
 
 		~Statement ()
 		{
-			librdf_free_statement (stm);
+			if(stm != (IntPtr)null)
+				librdf_free_statement (stm);
 		}
 
 		[DllImport ("librdf")]

@@ -78,7 +78,8 @@ namespace Redland {
 
 		~Iterator ()
 		{
-			librdf_free_iterator (iterator);
+			if(iterator != (IntPtr)null)
+				librdf_free_iterator (iterator);
 		}
 
 	}

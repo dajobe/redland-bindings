@@ -62,7 +62,8 @@ namespace Redland {
 
 		~Parser ()
 		{
-			librdf_free_parser (parser);
+			if(parser != (IntPtr)null)
+				librdf_free_parser (parser);
 		}
 
 
