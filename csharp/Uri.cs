@@ -41,6 +41,44 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
+		static extern int librdf_uri_equals (IntPtr first_uri, IntPtr second_uri);
+		
+		public override bool Equals (object o)
+		{
+			if (o == null)
+ 				return false;
+
+			int i = librdf_uri_equals (uri, ((Uri) o).Handle);
+			if (i == 0)
+				return false;
+			else
+				return true;
+		}
+
+		public static bool operator == (Uri u1, Uri u2)
+		{
+
+			if (Object.Equals (u1, null))
+				if (Object.Equals (u2, null))
+					return true;
+				else
+					return false;
+
+			return u1.Equals (u2);
+		}
+
+		public static bool operator != (Uri u1, Uri u2)
+		{
+			if (Object.Equals (u1, null))
+				if (Object.Equals (u2, null))
+					return false;
+				else
+					return true;
+
+			return !u1.Equals (u2);
+		}
+
+		[DllImport ("librdf")]
 		static extern void librdf_free_uri (IntPtr uri);
 
 		protected void Dispose (bool disposing)
@@ -57,6 +95,11 @@ namespace Redland {
 			}
 		}
 
+		public override int GetHashCode ()
+		{
+			return this.ToString ().GetHashCode ();
+		}
+		
 		public void Dispose ()
 		{
 			Dispose (true);
