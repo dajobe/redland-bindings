@@ -39,7 +39,7 @@ python_DATA=RDF.py Redland.so
 
 EXTRA_DIST=README RDF.py \
 example.py redlandtest.py \
-redland-post.i redland-decl.i $(SWIG_OUTPUTS)
+redland-post.i redland-decl.i redland-typemap.i $(SWIG_OUTPUTS)
 
 SUBDIRS=test
 
@@ -50,9 +50,9 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 RUN=@REDLAND_RUN@
 
-SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_DECL_I
+SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_DECL_I -DREDLAND_TYPEMAP_I
 
-$(PYTHON_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-post.i redland-decl.i
+$(PYTHON_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-post.i redland-decl.i redland-typemap.i
 	swig -v -python $(SWIG_OPTS) $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ @REDLAND_SWIG@
 
 $(PYTHON_PACKAGE)_wrap.so: $(srcdir)/$(PYTHON_PACKAGE)_wrap.c
