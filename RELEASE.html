@@ -21,10 +21,63 @@ pre
 
 <h1>Redland RDF Application Framework Bindings</h1>
 
-<h2 id="rel0_9_20_1"><a name="rel0_9_20_1">Redland Bindings 0.9.20.1 Changes</a></h2>
+<h2 id="rel1_0_0_1"><a name="rel1_0_0_1">Redland Bindings 1.0.0.1 Changes</a></h2>
 
-<p>&nbsp;
+<p>The main changes for this release are to provide additional
+query results formats, in Python only at present and
+to synchronise with Redland 1.0.0</p>
+
+
+<h3>C# bindings changes</h3>
+
+<p>Correct marshalling .NET strings to and from UTF-8 inside Redland
+correctly. (Edd Dumbill)</p>
+
+<p>Improve and correct the destruction of internal iterator objects
+(Edd Dumbill)</p>
+
+<p>Use HandleRef to improve the references to redland World to
+prevent premature destruction of redland objects. (Edd Dumbill)</p>
+
+<p>See the csharp/ChangeLog in the source tree for more details
+of these changes.</p.
+
+
+<h3>Objective-C / Cocoa bindings changes</h3>
+
+<p>This binding is for the Objective-C (Obj-C) language with the
+Cocoa Framework on the Apple OSX platform.  It was created and
+is developed by René Puls who provides it at the
+<a href="http://kianga.kcore.de/latest/redland-objc">Cocoa Bindings for Redland</a> site
 </p>
+
+
+<h3>Perl bindings changes</h3>
+
+<p>No changes.</p>
+
+
+<h3>Python bindings changes</h3>
+
+<p>Added convienience classes for making RDQL and SPARQL queries.
+Added methods for returning query results as RDF graphs and boolean
+results.  Added unittests for those.
+</p>
+
+
+<h3>Ruby bindings changes</h3>
+
+<p>Updated to rdf-redland 0.5.3.1 and made the installation work
+standalone from ruby gem.  Removed dependency on log4r, not part of
+standard ruby 1.8.x.  Fixed some test cases so the testsuite passes
+now.
+</p>
+
+
+<h3>Tcl bindings changes</h3>
+
+<p>No changes.</p>
+
 
 
 <h2 id="rel0_9_19_1"><a name="rel0_9_19_1">Redland Bindings 0.9.19.1 Changes</a></h2>
