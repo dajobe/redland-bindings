@@ -1,3 +1,15 @@
+2004-07-20  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* ruby/Makefile.am, python/Makefile.am, php/Makefile.am,
+	perl/Makefile.am, java/Makefile.am, csharp/examples/Makefile.am,
+	csharp/Makefile.am: Re-added REDLAND_RUN for running tests when
+	compiling against librdf in source (not installed) form.
+
+	* configure.ac: Added REDLAND_RUN with a space
+
+	* configure.ac: convert an internal REDLAND_CONFIG into an
+	absolute path
+
 2004-07-20  Edd Dumbill  <edd@usefulinc.com>
 
 	* Stream.cs: (GetEnumerator ()): Implement IEnumerable.
