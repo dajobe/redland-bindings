@@ -68,7 +68,7 @@ for s in model.as_stream():
 
 q = RDF.Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
 print "Querying for dc:titles:"
-for result in q.run_as_bindings(model):
+for result in q.execute(model):
   print "{"
   for k in result:
     print "  "+k+" = "+str(result[k])
