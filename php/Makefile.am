@@ -34,7 +34,7 @@ SWIG_CRUFT=$(PHP_PACKAGE).php
 EXTRA_DIST=test.php example.php php.ini \
 $(SWIG_OUTPUTS)
 
-CLEANFILES=test*db $(PHP_PACKAGE)_wrap.o 
+CLEANFILES=test*db core* $(PHP_PACKAGE)_wrap.o 
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(PHP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
