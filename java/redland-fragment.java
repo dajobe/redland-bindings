@@ -25,11 +25,11 @@
 
   static
     {
-      // Load a library whose "core" name is 'java-redland'
+      // Load a library whose "core" name is 'redland-java'
       // Operating system specific stuff will be added to make from this an
-      // actual filename: Under Unix this will become libjava-redland.s
+      // actual filename: Under Unix this will become libredland-java.so
       // while under Windows it will likely become something like
-      // java-redland.dll
+      // redland-java.dll
       System.loadLibrary("redland-java");
     }
 
