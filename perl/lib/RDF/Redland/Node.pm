@@ -366,6 +366,20 @@ sub set_literal_value ($$$$) {
   return &RDF::Redland::CORE::librdf_node_set_literal_value($self->{NODE},$value,$xml_language,$is_wf_xml);
 }
 
+
+=item literal_datatype
+
+Return the RDF::Redland::URI of the literal datatype or undef if it
+is not a datatype.
+
+=cut
+
+sub literal_datatype($) {
+  my $self=shift;
+  my $uri=&RDF::Redland::CORE::librdf_node_get_literal_value_datatype_uri($self->{NODE});
+  return $uri ? RDF::Redland::URI->new(&RDF::Redland::CORE::librdf_uri_to_string($uri)) : undef;
+}
+
 =item as_string
 
 Return the RDF::Redland::Node formatted as a string (UTF-8 encoded).
