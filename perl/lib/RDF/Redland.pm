@@ -86,12 +86,17 @@ use RDF::URI;
 
 package RDF;
 
+use vars qw($Debug);
+
+$Debug=0;
+
 # 'Class' Constructor
 
 &Redland::librdf_init_world(undef, undef);
 
 # 'Class' Destructor
 sub END ($) {
+  warn "RDF:: DESTROY\n" if $RDF::Debug;
   &Redland::librdf_destroy_world;
 }
 
