@@ -152,7 +152,7 @@ sub DESTROY ($) {
 sub subject ($;$) {
   my($self,$subject)=@_;
 
-  return &Redland::librdf_statement_get_subject(shift->{STATEMENT})
+  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_subject(shift->{STATEMENT}))
     unless $subject;
 
   # Zap the incoming librdf node object since it is now owned by the
@@ -164,7 +164,7 @@ sub subject ($;$) {
 sub predicate ($;$) {
   my($self,$predicate)=@_;
   
-  return &Redland::librdf_statement_get_predicate(shift->{STATEMENT}) 
+  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_predicate(shift->{STATEMENT}))
     unless $predicate;
 
   # Zap the incoming librdf node object since it is now owned by the
@@ -176,7 +176,7 @@ sub predicate ($;$) {
 sub object ($;$) {
   my($self,$object)=@_;
 
-  return &Redland::librdf_statement_get_object(shift->{STATEMENT})
+  return RDF::Node->_new_from_object(return &Redland::librdf_statement_get_object(shift->{STATEMENT}))
     unless $object;
 
   # Zap the incoming librdf node object since it is now owned by the
