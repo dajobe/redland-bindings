@@ -130,6 +130,7 @@ sub _new_from_object ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{STATEMENT}=$object;
+  $self->{DONT_FREE_ME}=1;
   bless ($self, $class);
   return $self;
 }
@@ -138,8 +139,12 @@ sub DESTROY ($) {
   warn "RDF::Statement DESTROY\n" if $RDF::Debug;
   my $self=shift;
   if($self->{STATEMENT}) {
-    warn "RDF::Statement doing librdf_free_statement on librdf statement\n" if $RDF::Debug;
-    &Redland::librdf_free_statement($self->{STATEMENT});
+    if($self->{DONT_FREE_ME}) {
+      warn "RDF::Statement NOT doing librdf_free_statement on librdf statement\n" if $RDF::Debug;
+    } else {
+      warn "RDF::Statement doing librdf_free_statement on librdf statement\n" if $RDF::Debug;
+      &Redland::librdf_free_statement($self->{STATEMENT});
+    }
   }
   warn "RDF::Statement DESTROY done\n" if $RDF::Debug;
 }
