@@ -5,4 +5,4 @@ Makefile.in
 *.so
 not-used
 *.db
-redland_wrap.c
+*_wrap.c
