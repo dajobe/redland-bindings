@@ -69,9 +69,12 @@ WriteMakefile(
     'AUTHOR'    => 'Dave Beckett <Dave.Beckett@bristol.ac.uk>',
     'ABSTRACT'  => "Redland RDF library",
     'VERSION'   => $version,
-    'DEFINE'    => '-Dbool=char -DHAVE_CONFIG_H',
-    'CCFLAGS'   => "-I$TOP_SRCDIR",
+
+    'DEFINE'    => '-Dbool=int -DHAVE_CONFIG_H',
+    'INC'       => "-I$TOP_SRCDIR",
     'OBJECT'    => "$objects $MEM_LIBS",
+    'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS"},
+
     'MAKEFILE'  => 'Makefile.perl',
     'clean'     => { FILES => "test*.db" },
     'realclean' => { FILES => "Redland_wrap.c Redland_wrap.o Redland.pm" },
