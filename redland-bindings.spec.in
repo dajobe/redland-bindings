@@ -39,7 +39,7 @@ Summary: Perl modules for the Redland RDF library
 Group: Development/Libraries
 Requires: redland = %{redland_version}
 
-%description perl
+%description -n redland-perl
 The redland-perl package contains the parts of Redland that provide
 an interface to Perl.
 
@@ -48,7 +48,7 @@ Summary: Python modules for the Redland RDF library
 Group: Development/Libraries
 Requires: redland = %{redland_version}
 
-%description python
+%description -n redland-python
 The redland-python package contains the parts of Redland that provide
 an interface to Python.
 
@@ -109,7 +109,7 @@ cd ..
 %clean
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
-%files perl
+%files -n redland-perl
 %defattr(-, bin, bin)
 
 %{perlinstallsitearch}/auto
@@ -119,7 +119,7 @@ cd ..
 %doc %{perlman3dir}/RDF::Redland*.3pm*
 %doc perl/example.pl
 
-%files python
+%files -n redland-python
 %defattr(-, bin, bin)
 
 %{_libdir}/python*/site-packages/RDF.py
