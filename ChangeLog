@@ -1,3 +1,8 @@
+2005-02-16  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/QueryResults.pm (to_string):
+	Correct serialize_model_to_string args order.
+
 2005-02-10  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* python/Makefile.am: Added redland-typemap.i
