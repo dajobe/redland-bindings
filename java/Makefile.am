@@ -23,11 +23,12 @@ JAVA=@JAVA@
 JAVAC=@JAVAC@
 SWIG=@SWIG@
 
-JAVA_MODULE=redland
-JAVA_PACKAGE=org.librdf
-JAVA_PATH=org/librdf/
+JAVA_C_SHLIB=redland-java
+JAVA_MODULE=core
+JAVA_PACKAGE=org.librdf.redland
+JAVA_PATH=org/librdf/redland/
 
-JAVA_SHARED_LIB=lib$(JAVA_MODULE)-java.so
+JAVA_SHARED_LIB=lib$(JAVA_C_SHLIB).so
 
 SWIG_OUTPUTS=$(JAVA_PATH)$(JAVA_MODULE).java $(JAVA_MODULE)_wrap.c
 JAVA_CRUFT=$(JAVA_PATH)$(JAVA_MODULE).class $(JAVA_MODULE)_wrap.o \
@@ -44,7 +45,7 @@ CLEANFILES=test*db $(JAVA_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
 
-$(JAVA_PATH)$(JAVA_MODULE).java.in: $(srcdir)/../Redland.i
+$(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java.in: $(srcdir)/../Redland.i
 	$(SWIG) -v -java -jnic -module $(JAVA_MODULE) -package $(JAVA_PACKAGE) -o $(JAVA_MODULE)_wrap.c $? && cp $(JAVA_MODULE).java $(JAVA_PATH)$(JAVA_MODULE).java.in
 
 
@@ -74,7 +75,7 @@ skeleton.class: skeleton.java $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).j
 	$(JAVAC) -classpath . skeleton.java
 
 test-java: test.class compiled-java-classes
-	$(JAVA) -classpath . test
+	env LD_LIBRARY_PATH=. $(JAVA) -classpath . test
 
 test.class: test.java compiled-java-classes
 	$(JAVAC) -classpath . test.java
