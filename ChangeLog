@@ -1,5 +1,12 @@
 2004-11-03  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* redland-bindings.spec.in: more ruby fixes
+
+	* ruby/lib/rdf/Makefile.am, ruby/lib/rdf/redland/Makefile.am,
+	ruby/lib/rdf/redland/schemas/Makefile.am: update rubydir
+
+	* configure.ac: Get RUBY_LIBDIR
+
 	* ruby/test/README, ruby/test/triples.rdf, ruby/test/Makefile.am:
 	Ignore test failures since Test::Unit seems old
 
