@@ -110,6 +110,9 @@ cd ..
 %{perlinstallsitearch}/RDF/Redland
 %{perlinstallsitearch}/RDF/Redland.pm
 
+%doc AUTHORS COPYING COPYING.LIB
+%doc README NEWS LICENSE.txt
+
 %doc %{perlman3dir}/RDF::Redland*.3pm*
 %doc perl/example.pl
 
@@ -119,7 +122,7 @@ cd ..
 %{_libdir}/python*/site-packages/RDF.py
 %{_libdir}/python*/site-packages/Redland.so*
 
-%doc AUTHORS COPYING COPYING.LIB ChangeLog
+%doc AUTHORS COPYING COPYING.LIB
 %doc README NEWS LICENSE.txt
 
 %doc docs/pydoc/RDF.html python/example.py
