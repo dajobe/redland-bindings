@@ -35,6 +35,9 @@ SWIG_OUTPUTS=$(CSHARP_PACKAGE)_wrap.c $(CSHARP_PACKAGE).cs $(CSHARP_PACKAGE)PINV
 CSHARP_CRUFT=$(CSHARP_PACKAGE)_wrap.o $(CSHARP_PACKAGE).dll \
 $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE).so
 
+fakedir=$(prefix)
+fake_DATA=build-csharp-stamp
+
 EXTRA_DIST=README test.cs \
 $(SWIG_OUTPUTS)
 
@@ -61,15 +64,21 @@ $(CSHARP_PACKAGE)_wrap.o: $(CSHARP_PACKAGE)_wrap.c
 $(CSHARP_SHARED_LIB): $(CSHARP_PACKAGE)_wrap.o
 	$(CC) -shared $< -o $@ `$(top_srcdir)/redland-src-config --libs`
 
-build-csharp: $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE)PINVOKE.dll
+build-csharp: build-csharp-stamp
 
-check-csharp: test-csharp
-test-csharp: build-csharp test.exe
+build-csharp-stamp: $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE)PINVOKE.dll
+
+check-local: build-csharp-stamp test-csharp
+
+test-csharp: build-csharp-stamp test.exe
 	$(CLIRUN) test.exe
 
 install-csharp: $(CSHARP_SHARED_LIB) build-csharp
 	$(INSTALL_PROGRAM) $(CSHARP_SHARED_LIB) @libdir@
 	$(INSTALL_PROGRAM) $(CSHARP_PACKAGE)PINVOKE.dll @libdir@
 
-dist-csharp:
-	@echo make csharp dist somehow
+clean-local:
+	rm -f build-python-stamp
+
+# See this is the fake bit
+install-fakeDATA: install-csharp
