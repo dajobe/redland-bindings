@@ -34,6 +34,30 @@
 
 2004-07-20  Edd Dumbill  <edd@usefulinc.com>
 
+	* examples/StreamTest.cs: (ParseAsStream ()): fix for streams.
+	(IterateModel ()): fix for iterators.
+	(FindStatements1 ()): fix for iterators.
+	(FindStatementsWithContext ()): fix for iterators.
+
+	* Iterator.cs: (MoveNext ()): handle case where iterator is empty.
+
+	* Stream.cs: (MoveNext ()): handle case where stream is empty.
+
+	* Uri.cs: (Uri (IntPtr)): add internal constructor to build Uri
+	from a Redland URI.
+
+	* Node.cs: (Uri): add property to get underlying Redland URI.
+
+	* Errors.cs: (RedlandError): new constructor with no log messages.
+
+	* Node.cs: Add NodeType enumeration.
+	(Type): add new property to get type
+	(IsResource ()): return true if resource.
+	(IsLiteral ()): return true if literal.
+	(IsBlank ()): return true if blank.
+
+2004-07-20  Edd Dumbill  <edd@usefulinc.com>
+
 	* Stream.cs: (GetEnumerator ()): Implement IEnumerable.
 	(MoveNext ()): Properly implement: at start, position should be
 	before the first element, not on it.
