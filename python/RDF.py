@@ -141,16 +141,12 @@ class Node:
         xml_language=args['xml_language']
       else:
         xml_language=""
-      if args.has_key('xml_space'):
-        xml_space=args['xml_space']
-      else:
-        xml_space=0
       if args.has_key('is_wf_xml'):
         is_wf_xml=args['is_wf_xml']
       else:
         is_wf_xml=0
       self._node=Redland.librdf_new_node_from_literal(_world._world,
-        args['literal'], xml_language, xml_space, is_wf_xml)
+        args['literal'], xml_language, 0, is_wf_xml)
 
     elif args.has_key('node'):
       self._node=Redland.librdf_new_node_from_node(args['node']._node)
@@ -218,15 +214,14 @@ class Node:
     val={
         'string': Redland.librdf_node_get_literal_value(self._node),
         'language': Redland.librdf_node_get_literal_value_language(self._node),
-        'xml_space': Redland.librdf_node_get_literal_value_xml_space(self._node),
         'is_wf_xml': Redland.librdf_node_get_literal_value_is_wf_xml(self._node)
         }
     return val
 
-  def set_literal_value (self,string,xml_language,xml_space,is_wf_xml):
+  def set_literal_value (self,string,xml_language,unused1,is_wf_xml):
     """Set a literal node string value."""
     Redland.librdf_node_set_literal_value(self._node, string,
-        xml_language, xml_space, is_wf_xml)
+        xml_language, 0, is_wf_xml)
 
   def __str__(self):
     """Get a string representation of an RDF Node."""
@@ -427,10 +422,10 @@ class Model:
         Redland.librdf_new_node_from_node(object._node));
 
   def add_string_literal_statement (self,subject,predicate,
-                                    string,xml_language,xml_space,is_wf_xml):
+                                    string,xml_language,unused1,is_wf_xml):
     return Redland.librdf_model_add_string_literal_statement( self._model,
         subject._node, predicate._node, string,
-        xml_language, xml_space, is_wf_xml)
+        xml_language, 0, is_wf_xml)
 
   def add_statement (self,statement):
     # adding a statement means it gets *copied* into the model
