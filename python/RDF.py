@@ -292,7 +292,7 @@ class Node(object):
       if args.has_key('datatype'):
         datatype=args['datatype']
         self._node=Redland.librdf_new_node_from_typed_literal(_world._world,
-          args['literal'], xml_language, datatype._uri)
+          args['literal'], xml_language, datatype._reduri)
       else:
         self._node=Redland.librdf_new_node_from_literal(_world._world,
           args['literal'], xml_language, is_wf_xml)
