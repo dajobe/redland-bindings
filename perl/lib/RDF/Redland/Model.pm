@@ -131,7 +131,7 @@ sub DESTROY ($) {
   my $self=shift;
   warn "RDF::Redland::Model DESTROY $self" if $RDF::Redland::Debug;
   if(!$self->{MODEL}) {
-    warn "RDF::Redland::Model DESTROY - librdf object gone - FIXME!\n" if $RDF::Redland::Debug;
+    warn "RDF::Redland::Model DESTROY - librdf model object gone\n" if $RDF::Redland::Debug;
   } else {
     &RDF::Redland::CORE::librdf_free_model($self->{MODEL});
   }

@@ -157,7 +157,7 @@ sub DESTROY ($) {
   my $self=shift;
   warn "RDF::Redland::Storage DESTROY $self" if $RDF::Redland::Debug;
   if(!$self->{STORAGE}) {
-    warn "RDF::Redland::Storage DESTROY - librdf object gone - FIXME!\n" if $RDF::Redland::Debug;
+    warn "RDF::Redland::Storage DESTROY - librdf storage object gone\n" if $RDF::Redland::Debug;
   } else {
     &RDF::Redland::CORE::librdf_free_storage($self->{STORAGE});
   }
