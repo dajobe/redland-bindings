@@ -42,7 +42,7 @@ $(RUBY_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -ruby -module $(RUBY_PACKAGE) -o $@ $?
 
 $(RUBY_PACKAGE)_wrap.o: $(RUBY_PACKAGE)_wrap.c
-	$(CC) $(CFLAGS) -c -fpic $(INCLUDES)  $? -o $@
+	$(CC) $(CFLAGS) `$(top_srcdir)/redland-src-config --cflags` -c -fpic $(INCLUDES)  $? -o $@
 
 $(RUBY_PACKAGE).so: $(RUBY_PACKAGE)_wrap.o
 	$(CC) -shared $? -o $@ `$(top_srcdir)/redland-src-config --libs`

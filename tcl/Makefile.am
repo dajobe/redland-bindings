@@ -41,7 +41,7 @@ $(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -tcl8 -module $(TCL_PACKAGE) -o $@ $?
 
 $(TCL_PACKAGE)_wrap.o: $(TCL_PACKAGE)_wrap.c
-	$(CC) $(CFLAGS) -c -fpic -I$(top_srcdir)  $? -o $@
+	$(CC) $(CFLAGS) `$(top_srcdir)/redland-src-config --cflags` -c -fpic -I$(top_srcdir)  $? -o $@
 
 $(TCL_PACKAGE).so: $(TCL_PACKAGE)_wrap.o
 	$(CC) -shared $? -o $@ `$(top_srcdir)/redland-src-config --libs` -L$(top_srcdir) -lrdf
