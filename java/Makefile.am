@@ -131,3 +131,13 @@ example: example.class $(JAVA_JAR)
 
 example.class: example.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH):$(JAVA_JAR) example.java
+
+install-exec-local:
+	if test `uname` = Darwin; then \
+	  (cd $(DESTDIR)$(javalibdir) && rm -f librdf-java.jnilib && ln -s librdf-java.dylib librdf-java.jnilib); \
+	fi
+
+all-local:
+	if test `uname` = Darwin; then \
+	  (cd .libs && rm -f librdf-java.jnilib && ln -s librdf-java.dylib librdf-java.jnilib); \
+	fi
