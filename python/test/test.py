@@ -52,7 +52,7 @@ parser=RDF.Parser(name="raptor",mime_type="application/rdf+xml")
 if parser is None:
   raise "Could not find any rdf/xml parser"
 
-uri=RDF.Uri(string="file:../perl/dc.rdf")
+uri=RDF.Uri(string="file:../data/dc.rdf")
 print "made uri", uri
 
 for s in parser.parse_as_stream(uri, uri):
