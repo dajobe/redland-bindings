@@ -997,8 +997,21 @@ Create a model using an in-memory storage.
       value=Node(literal=value)
     Redland.librdf_model_set_feature(self._model,uri._reduri,value._node)
 
-# end class Parser
+  def load(self, uri, name="", mime_type="", type_uri=None):
+    """Load triples into the Model from a URI in a syntax.
 
+       If no parser name is given, the parser to use is guessed.
+   """
+    if type(uri) is str:
+      uri = Uri(string=uri)
+    if uri is not None:
+      uri = uri._reduri
+    if type(type_uri) is str:
+      type_uri = Uri(string=type_uri)
+    if type_uri is not None:
+      type_uri = type_uri._reduri
+    Redland.librdf_model_load(self._model, uri, name, mime_type, type_uri)
+    
 
 # end class Model
 
