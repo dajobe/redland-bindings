@@ -33,7 +33,7 @@ CLASSPATH=.
 javalibdir=$(prefix)/lib/java
 javalib_LTLIBRARIES=librdf-java.la
 
-librdf_java_la_SOURCES=$(JAVA_MODULE)_wrap.c
+librdf_java_la_SOURCES=core_wrap.c
 librdf_java_la_CFLAGS=$(JDK_INCLUDES)
 librdf_java_la_LDFLAGS=--rpath $(javalibdir) $(top_srcdir)/librdf/librdf.la
 
