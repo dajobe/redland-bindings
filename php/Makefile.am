@@ -34,7 +34,8 @@ phpdir=@PHP_EXTENSION_DIR@
 php_DATA=$(PHP_PACKAGE).so
 
 EXTRA_DIST=test.php example.php php.ini \
-redland-decl.i redland-init.i redland-post.i $(SWIG_OUTPUTS)
+redland-decl.i redland-init.i redland-post.i $(SWIG_OUTPUTS) \
+redland_wrap.c.patch
 
 CLEANFILES=dmalloc.log *.db test-out.rdf \
 $(PHP_PACKAGE)_wrap.so $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
