@@ -597,12 +597,13 @@ Load content from I<URI> into the model, guessing the parser.
 
 sub load ($$;$$$$) {
   my($self,$uri,$name,$type,$syntax_uri,$handler)=@_;
-  $syntax_uri=$syntax_uri ? $syntax_uri->{URI} : undef;
+  my $ruri=$uri ? $uri->{URI} : undef;
+  my $rsyntax_uri=$syntax_uri ? $syntax_uri->{URI} : undef;
 
   if($handler) {
     &RDF::Redland::set_log_handler($handler);
   }
-  my $rc=&RDF::Redland::CORE::librdf_model_load($self->{MODEL},$uri->{URI}, $name, $type, $uri);
+  my $rc=&RDF::Redland::CORE::librdf_model_load($self->{MODEL},$ruri, $name, $type, $rsyntax_uri);
   if($handler) {
     &RDF::Redland::reset_log_handler();
   }
