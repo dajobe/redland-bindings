@@ -15,7 +15,7 @@
 # Try 'locate autogen.sh' on your system and see what you get.
 #
 
-PACKAGE=redland
+PACKAGE=redland-bindings
 
 SRCDIR=.
 
