@@ -33,13 +33,13 @@ PERL_CRUFT=blib pm_to_blib $(PERL_CORE_PACKAGE).bs $(PERL_CORE_PACKAGE)_wrap.o \
 $(PERL_MAKEFILE) $(PERL_MAKEFILE).old
 
 EXTRA_DIST=README.txt \
-MANIFEST MANIFEST.SKIP Makefile.PL test.pl example.pl \
+MANIFEST MANIFEST.SKIP Makefile.PL example.pl \
 dc.rdf rss-dump.pl update-perl-api.pl \
 $(SWIG_OUTPUTS)
 
-SUBDIRS=lib
+SUBDIRS=lib t
 
-CLEANFILES=test*db $(PERL_CRUFT)
+CLEANFILES=test*db core* $(PERL_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
 MEM_LIBS=@MEM_LIBS@
