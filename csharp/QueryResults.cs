@@ -14,10 +14,11 @@ using System.Runtime.InteropServices;
 
 namespace Redland {
 
-	public class QueryResults : IWrapper, IEnumerator {
-		Query query;
-		IntPtr query_results;
-        	Hashtable results;
+	public class QueryResults : IWrapper, IEnumerator, IEnumerable, IDisposable {
+		IntPtr query_results = IntPtr.Zero;
+
+		Hashtable results;
+		bool disposed = false;
 
 		public IntPtr Handle {
 			get { return query_results; }
@@ -40,17 +41,17 @@ namespace Redland {
 
 		private Hashtable MakeResultsHash ()
 		{
-			Hashtable h = new Hashtable();
-                        int c= librdf_query_results_get_bindings_count(query_results);
-                        for (int i = 0; i < c; i++) {
-                        	IntPtr iname = librdf_query_results_get_binding_name(query_results,i);
-                        	String name=Marshal.PtrToStringAuto(iname);
-                                IntPtr v = librdf_query_results_get_binding_value(query_results,i);
-                                h.Add(name, new Node(v));
-                        }
+			Hashtable h = new Hashtable ();
+			int c = librdf_query_results_get_bindings_count (query_results);
+			for (int i = 0; i < c; i++) {
+				IntPtr iname = librdf_query_results_get_binding_name (query_results, i);
+				String name = Marshal.PtrToStringAuto (iname);
+				IntPtr v = librdf_query_results_get_binding_value (query_results, i);
+				h.Add (name, new Node (v));
+			}
 
-                        return h;
-                }
+			return h;
+		}
 
 		[DllImport ("librdf")]
 		static extern int libdf_query_results_finished (IntPtr query_results);
@@ -58,8 +59,8 @@ namespace Redland {
 		// IEnumerator implementation
 		public object Current {
 			get { 
-				if(results == null)
-					results=MakeResultsHash();
+				if (results == null)
+					results = MakeResultsHash ();
 				return results;
 			}
 		}
@@ -67,11 +68,8 @@ namespace Redland {
 		public bool MoveNext ()
 		{
 			librdf_query_results_next (query_results);
-                        results=null;
-
-                        int r =	librdf_query_results_finished (query_results);
-
-                        return (r != 0);
+			results = null;
+			return (librdf_query_results_finished (query_results) != 0);
 		}
 
 		public void Reset ()
@@ -81,58 +79,96 @@ namespace Redland {
 
 		public bool End {
 			get {
-				int r = librdf_query_results_finished (query_results);
-				return (r != 0);
+				return (librdf_query_results_finished (query_results) != 0);
 			}
 		}
 
-		public QueryResults (Query query, IntPtr query_results)
+		internal QueryResults (IntPtr query_results)
 		{
-			this.query = query;
 			this.query_results = query_results;
 		}
 
-        	// methods only for this class
+		// methods only for this class
 
 		[DllImport ("librdf")]
-                static extern IntPtr librdf_query_results_as_stream(IntPtr query_results);
+		static extern IntPtr librdf_query_results_as_stream(IntPtr query_results);
 
-        	public Stream AsStream () {
-                	IntPtr raw_ret = librdf_query_results_as_stream(query_results);
-			Stream stream = new Stream (raw_ret);
-			return stream;
-                }
-
-
-		public Node BindingValue (int offset) {
- 			IntPtr v = librdf_query_results_get_binding_value(query_results,offset);
-			Node n = new Node(v); // do_not_copy=1 FIXME
-                        return n;
+		public Stream AsStream ()
+		{
+			IntPtr raw_ret = librdf_query_results_as_stream (query_results);
+			// FIXME: throw exception if zero?
+			return new Stream (raw_ret);
 		}
 
-		public string BindingName (int offset) {
- 			IntPtr iname = librdf_query_results_get_binding_name(query_results,offset);
-			String name=Marshal.PtrToStringAuto(iname);
-			return name;
+		// These Binding* methods apply to the current position in the
+		// result set.
+
+		public Node BindingValue (int offset)
+		{
+ 			IntPtr v = librdf_query_results_get_binding_value (query_results, offset);
+			return new Node (v); // do_not_copy=1 FIXME
+		}
+
+		public string BindingName (int offset) 
+		{
+ 			IntPtr iname = librdf_query_results_get_binding_name (query_results, offset);
+			return Marshal.PtrToStringAuto (iname);
 		}
 
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_query_results_get_binding_value_by_name (IntPtr query_results, IntPtr name);
 
-		public Node BindingValueByName (string name) {
+		public Node BindingValueByName (string name)
+		{
 			IntPtr iname = Marshal.StringToHGlobalAuto (name.ToString());
  			IntPtr v = librdf_query_results_get_binding_value_by_name(query_results,iname);
-			Node n = new Node(v); // do_not_copy=1 FIXME
-                        Marshal.FreeHGlobal (iname);
-                        return n;
+			Marshal.FreeHGlobal (iname);
+			return new Node (v); // do_not_copy=1 FIXME
 		}
 
-		public int BindingsCount () {
-			return librdf_query_results_get_bindings_count(query_results);
+		public int BindingsCount ()
+		{
+			return librdf_query_results_get_bindings_count (query_results);
 		}
 
+		public IEnumerator GetEnumerator ()
+		{
+			return this;
+		}
 
+		[DllImport ("librdf")]
+		static extern void librdf_free_query_results (IntPtr query_results);
 
+		protected void Dispose (bool disposing)
+		{
+			if (! disposed) {
+				// if disposing is true, dispose of any
+				// managed resources
+				
+				if (disposing) {
+					if (results != null) 
+						results = null;
+				}
+
+				if (query_results != IntPtr.Zero) {
+					librdf_free_query_results (query_results);
+					query_results = IntPtr.Zero;
+				}
+
+				disposed = true;
+			}
+		}
+
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		~QueryResults ()
+		{
+			Dispose (false);
+		}
 	}
 }
 
