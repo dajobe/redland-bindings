@@ -69,7 +69,8 @@ SUBDIRS=org
 # required to use the Java interface
 EXTRA_DIST=redland-fragment.java test1.java test2.java \
 example.java skeleton.java \
-$(SWIG_OUTPUTS)
+$(SWIG_OUTPUTS) \
+run-java
 
 CLEANFILES=test*db $(JAVA_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
