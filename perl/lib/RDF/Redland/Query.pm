@@ -64,10 +64,11 @@ bind variable names to RDF::Redland::Node values.
 
 =over
 
-=item new QUERY-STRING [URI [NAME]]
+=item new QUERY-STRING [BASE-URI [URI [NAME]]]
 
 Create a new RDF::Redland::Query object for a query string I<QUERY-STRING>
-IN QUERY language I<NAME> with base URI I<URI> (can be undef).
+with optional base URI I<BASE-URI>
+IN QUERY language I<NAME> or query language URI I<URI> (can be undef).
 If I<URI> is omitted, the current directory is used as the base URI.
 If I<NAME> is undef, the default query language "rdql" is used. 
 
@@ -75,18 +76,22 @@ If I<NAME> is undef, the default query language "rdql" is used.
 
 # CONSTRUCTOR
 # (main)
-sub new ($;$$$) {
-  my($proto,$query_string,$uri,$language)=@_;
+sub new ($;$$$$) {
+  my($proto,$query_string,$base_uri,$uri,$language)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
+  my $redbaseuri = undef;
   my $reduri = undef;
   $language ||= "rdql";
 
+  if(defined $base_uri) {
+    $redbaseuri=$base_uri->{URI};
+  }
   if(defined $uri) {
     $reduri=$uri->{URI};
   }
 
-  $self->{QUERY}=&RDF::Redland::CORE::librdf_new_query($RDF::Redland::World->{WORLD},$language,$reduri,$query_string);
+  $self->{QUERY}=&RDF::Redland::CORE::librdf_new_query($RDF::Redland::World->{WORLD},$language,$reduri,$query_string,$redbaseuri);
   return undef if !$self->{QUERY};
 
   bless ($self, $class);
