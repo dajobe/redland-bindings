@@ -1333,6 +1333,9 @@ class HashStorage(Storage):
      import RDF
      h1=RDF.HashStorage("abc", options="hash-type='memory'")
 
+     # Creating a storage with contexts enabled
+     s=RDF.HashStorage("def", options="contexts='yes'")
+
   Class of hashed Storage for a particular type of hash (typically
   hash-type is "memory" or "bdb") and any other options.
   """
@@ -1348,6 +1351,9 @@ class MemoryStorage(Storage):
      h1=RDF.MemoryStorage()
      h1=RDF.MemoryStorage("abc")
      h2=RDF.MemoryStorage("abc", "write='no'")
+
+     # Creating a storage with contexts enabled
+     s = RDF.MemoryStorage(options_string="contexts='yes'")
 
   Class of memory Storage with optional name, additional options.
   """
