@@ -28,10 +28,8 @@ $CORE_PACKAGE=$ENV{CORE_PACKAGE} || "CORE";
 
 my $objects="${CORE_PACKAGE}_wrap.o ";
 
-my $redland_libs=`$TOP_SRCDIR/redland-src-config --libs`;
+my $redland_libs=`$TOP_SRCDIR/redland-src-config --static-libs`;
 chomp $redland_libs;
-# Turn -Ldir -lfoo into static library dir/libfoo.a
-$redland_libs =~ s%-L(\S+) -l(rdf|raptor)\s*%$1/lib$2.a %g;
 $objects .= $redland_libs;
 
 my $includes="-I$TOP_SRCDIR/librdf";
