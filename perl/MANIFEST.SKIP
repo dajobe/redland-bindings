@@ -1,0 +1,15 @@
+.cvsignore
+\bCCS\b
+ChangeLog
+^MANIFEST\.
+(?i)^makefile$
+~$
+\.old$
+^blib/
+^ChangeLog
+\.tar\.gz$
+Redland.bs
+\.o$
+\.*db$
+pm_to_blib
+
