@@ -35,7 +35,7 @@ if(-r '../redland-src-config') {
   $objects .= $redland_libs;
 }
 
-my $includes="-I$TOP_SRCDIR/librdf";
+my $includes="-I$TOP_SRCDIR/librdf -I$TOP_SRCDIR/librdf/perl";
 
 my $version=$ENV{VERSION};
 
@@ -49,7 +49,7 @@ if(!$version) {
 sub MY::postamble {
   return <<"EOT";
 ${CORE_PACKAGE}_wrap.c: $TOP_SRCDIR/Redland.i
-	\$(MAKE) ${CORE_PACKAGE}_wrap.c
+	cp $TOP_SRCDIR/perl/${CORE_PACKAGE}_wrap.c .
 EOT
 }
 
