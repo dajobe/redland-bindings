@@ -1,3 +1,14 @@
+2005-02-08  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/QueryResults.pm (as_stream):
+	Added to return graph results.
+
+	* perl/lib/RDF/Redland/QueryResults.pm (to_string):
+	Added to write query results in a syntax.
+	(is_bindings, is_boolean, is_graph): Added boolean tests
+	of query results format.
+	(get_boolean): Added to get boolean query result.
+
 2005-02-07  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* python/RDF.py (Storage.__init__): docs fix.
