@@ -4,3 +4,4 @@ Makefile
 Makefile.in
 redland-stamp
 redland_wrap*
+redland.bundle
