@@ -3,6 +3,8 @@ require 'rdf/redland/store'
 require 'rdf/redland/statement'
 require 'rdf/redland/node'
 require 'rdf/redland/parser'
+#require 'rdf/redland/query'
+require 'rdf/redland/resource'
 require 'rdf/redland/serializer'
 require 'rdf/redland/uri'
 require 'rdf/redland/resource'
@@ -23,11 +25,10 @@ module Redland
 
   class World
      #include Singleton
-    attr_accessor :world,:uri_hash
+    attr_accessor :world
 
     # Create new RDF World object (constructor)
-    def initialize(digest_name="",uri_hash=nil)
-      @uri_hash = uri_hash
+    def initialize()
       @world = Redland::librdf_new_world()
       Redland::librdf_world_open(@world)
       ObjectSpace.define_finalizer(self,World.create_finalizer(@world))
@@ -53,8 +54,8 @@ end
 
 if $0 == __FILE__
   
-  world = Redland::World.new()
-  world = nil
+#  world = Redland::World.new()
+#  world = nil
   puts "listing instances of World: "
   ObjectSpace.each_object(Redland::World){|obj|
     p obj
