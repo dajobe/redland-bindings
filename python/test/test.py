@@ -93,9 +93,7 @@ statement=RDF.statement({'subject' : RDF.node({"uri_string" : "http://purl.org/n
 if not statement:
   raise "new RDF.statement failed"
 
-# after this statement is owned by model and should not be used
 model.add_statement(statement)
-del statement
 
 # Match against an empty statement - find everything
 statement=RDF.statement({"subject" : None, "predicate" : None, "object": None});
