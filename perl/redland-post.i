@@ -1,3 +1,30 @@
+/* -*- Mode: c; c-basic-offset: 2 -*-
+ *
+ * redland-post.i - Perl SWIG helper routines
+ *
+ * $Id$
+ *
+ * Copyright (C) 2000-2005, David Beckett http://purl.org/net/dajobe/
+ * Institute for Learning and Research Technology http://www.ilrt.bristol.ac.uk/
+ * University of Bristol, UK http://www.bristol.ac.uk/
+ * 
+ * This package is Free Software and part of Redland http://librdf.org/
+ * 
+ * It is licensed under the following three licenses as alternatives:
+ *   1. GNU Lesser General Public License (LGPL) V2.1 or any newer version
+ *   2. GNU General Public License (GPL) V2 or any newer version
+ *   3. Apache License, V2.0 or any newer version
+ * 
+ * You may not use this file except in compliance with at least one of
+ * the above three licenses.
+ * 
+ * See LICENSE.html or LICENSE.txt at the top of this package for the
+ * complete terms and further detail along with the license texts for
+ * the licenses in COPYING.LIB, COPYING and LICENSE-2.0.txt respectively.
+ * 
+ * 
+ */
+
 void librdf_perl_world_init(librdf_world *world);
 void librdf_perl_world_finish(void);
 
@@ -8,73 +35,80 @@ void librdf_perl_world_finish(void);
  * where first argument is an integer, second is a (scalar) string
  */
 static int
-librdf_call_perl_message(int type, const char *message, va_list arguments)
+librdf_call_perl_message(int code, int level, int facility,
+                         const char *message,
+                         int line, int column, int byte,
+                         const char *file, const char *uri)
 {
-  char empty_buffer[1];
   dSP;
-  char *buffer;
-  int len;
-  va_list args_copy;
+  int count;
   int rc=0;
   
   SAVETMPS;
 
-  /* ask vsnprintf size of buffer required */
-  va_copy(args_copy, arguments);
-  len=vsnprintf(empty_buffer, 1, message, args_copy)+1;
-  va_end(args_copy);
-  buffer=(char*)malloc(len);
-  if(!buffer)
-    fprintf(stderr, "librdf_call_perl_message: Out of memory\n");
-  else {
-    int count;
-    
-    va_copy(args_copy, arguments);
-    vsnprintf(buffer, len, message, args_copy);
-    va_end(args_copy);
-
-    PUSHMARK(SP) ;
-    XPUSHs(sv_2mortal(newSViv(type)));
-    XPUSHs(sv_2mortal(newSVpv(buffer, 0)));
-    PUTBACK;
+  PUSHMARK(SP) ;
+  XPUSHs(sv_2mortal(newSViv(code)));
+  XPUSHs(sv_2mortal(newSViv(level)));
+  XPUSHs(sv_2mortal(newSViv(facility)));
+  if(message != NULL)
+    XPUSHs(sv_2mortal(newSVpv(message, 0)));
+  else
+    XPUSHs((void*)0);
+  XPUSHs(sv_2mortal(newSViv(line)));
+  XPUSHs(sv_2mortal(newSViv(column)));
+  XPUSHs(sv_2mortal(newSViv(byte)));
+  if(file != NULL)
+    XPUSHs(sv_2mortal(newSVpv(file, 0)));
+  else
+    XPUSHs((void*)0);
+  if(uri != NULL)
+    XPUSHs(sv_2mortal(newSVpv(uri, 0)));
+  else
+    XPUSHs((void*)0);
+  PUTBACK;
   
-    count=call_pv("RDF::Redland::World::message", G_SCALAR);
+  count=call_pv("RDF::Redland::World::message", G_SCALAR);
 
-    SPAGAIN;
-    if(count == 1)
-      rc=POPi;
-    PUTBACK;
+  SPAGAIN;
+  if(count == 1)
+    rc=POPi;
+  PUTBACK;
     
-    free(buffer);
-  }
-  
   FREETMPS;
   
   return rc;
 }
 
 static int
-librdf_perl_error_handler(void *user_data, 
-                          const char *message, va_list arguments)
+librdf_perl_logger_handler(void *user_data, librdf_log_message *log)
 {
-  return librdf_call_perl_message(0, message, arguments);
+  raptor_locator* locator = log->locator;
+  int line= -1;
+  int column= -1;
+  int byte= -1;
+  const char *uri=NULL;
+  const char *file=NULL;
+    
+  if(locator) {
+    line=raptor_locator_line(locator);
+    column=raptor_locator_column(locator);
+    byte=raptor_locator_byte(locator);
+    file=raptor_locator_file(locator);
+    uri=raptor_locator_uri(locator);
+  }
+  
+  return librdf_call_perl_message(log->code, log->level, log->facility,
+                                  log->message,
+                                  line, column, byte, file, uri);
 }
 
-
-static int
-librdf_perl_warning_handler(void *user_data,
-                            const char *message, va_list arguments)
-{
-  return librdf_call_perl_message(1, message, arguments);
-}
 
 static librdf_world* librdf_perl_world=NULL;
 
 void
 librdf_perl_world_init(librdf_world *world)
 {
-  librdf_world_set_error(world, NULL, librdf_perl_error_handler);
-  librdf_world_set_warning(world,  NULL, librdf_perl_warning_handler);
+  librdf_world_set_logger(world, NULL, librdf_perl_logger_handler);
 
   librdf_perl_world=world;
 }
