@@ -218,10 +218,10 @@ class Node:
         }
     return val
 
-  def set_literal_value (self,string,xml_language,unused1,is_wf_xml):
+  def set_literal_value (self,string,xml_language,is_wf_xml):
     """Set a literal node string value."""
     Redland.librdf_node_set_literal_value(self._node, string,
-        xml_language, 0, is_wf_xml)
+        xml_language, is_wf_xml)
 
   def __str__(self):
     """Get a string representation of an RDF Node."""
@@ -422,7 +422,7 @@ class Model:
         Redland.librdf_new_node_from_node(object._node));
 
   def add_string_literal_statement (self,subject,predicate,
-                                    string,xml_language,unused1,is_wf_xml):
+                                    string,xml_language,is_wf_xml):
     return Redland.librdf_model_add_string_literal_statement( self._model,
         subject._node, predicate._node, string,
         xml_language, 0, is_wf_xml)

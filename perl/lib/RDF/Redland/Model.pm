@@ -166,19 +166,18 @@ sub add ($$$$) {
   return &RDF::Redland::CORE::librdf_model_add($self->{MODEL},$subject->{NODE},$predicate->{NODE},$object->{NODE});
 }
 
-=item add_string_literal_statement SUBJECT PREDICATE STRING XML_LANGUAGE XML_SPACE IS_WF
+=item add_string_literal_statement SUBJECT PREDICATE STRING XML_LANGUAGE IS_WF
 
 Add a new statement to the model containing a literal string object
-I<STRING> with XML language (xml:lang attribute) I<XML_LANGUAGE>, XML
-space (xml:space) I<XML_SPACE> and if content is well formed XML,
-when I<IS_WF> is non 0.  I<XML_LANGUAGE> and I<XML_SPACE> are
-optional can can be set to undef.
+I<STRING> with XML language (xml:lang attribute) I<XML_LANGUAGE>
+and if content is well formed XML, when I<IS_WF> is non 0.  I<XML_LANGUAGE>
+is optional can can be set to undef.
 
 =cut
 
-sub add_string_literal_statement ($$$$$$$$) {
-  my($self,$subject,$predicate,$string,$xml_language,$xml_space,$is_wf_xml)=@_;
-  return &RDF::Redland::CORE::librdf_model_add_string_literal_statement($self->{MODEL},$subject->{NODE},$predicate->{NODE},$string,$xml_language,$xml_space,$is_wf_xml);
+sub add_string_literal_statement ($$$$$$$) {
+  my($self,$subject,$predicate,$string,$xml_language,$is_wf_xml)=@_;
+  return &RDF::Redland::CORE::librdf_model_add_string_literal_statement($self->{MODEL},$subject->{NODE},$predicate->{NODE},$string,$xml_language,$is_wf_xml);
 }
 
 =item add_statement STATEMENT

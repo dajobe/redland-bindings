@@ -76,10 +76,10 @@ public class Model
     return core.librdf_model_add(this.object, subject.__get_object(), predicate.__get_object(), object.__get_object());
   }
 
-  public int add(Node subject, Node predicate, String string, String xml_language, int xml_space, boolean is_wf_xml) 
+  public int add(Node subject, Node predicate, String string, String xml_language, boolean is_wf_xml) 
   {
     int is_wf_xml_int=is_wf_xml ? 1 : 0;
-    return core.librdf_model_add_string_literal_statement(this.object, subject.__get_object(), predicate.__get_object(), string, xml_language, xml_space, is_wf_xml_int);
+    return core.librdf_model_add_string_literal_statement(this.object, subject.__get_object(), predicate.__get_object(), string, xml_language, is_wf_xml_int);
   }
 
   public int add(Statement statement) 

@@ -86,11 +86,11 @@ public class Node
    * @param uri         The Redland URI object or null
    */
   public Node(World world, String literal_string, String xml_language,
-       int xml_space, boolean is_wf_xml)
+              boolean is_wf_xml)
     {
       int is_wf_xml_int=is_wf_xml ? 1 : 0;
       this.world=world;
-      this.object=core.librdf_new_node_from_literal(world.__get_object(), literal_string, xml_language, xml_space, is_wf_xml_int);
+      this.object=core.librdf_new_node_from_literal(world.__get_object(), literal_string, xml_language, is_wf_xml_int);
     }
 
   /**
@@ -164,11 +164,6 @@ public class Node
       return core.librdf_node_get_literal_value_language(this.object);
     }
   
-  public int getLiteralValueXMLSpace() 
-    {
-      return core.librdf_node_get_literal_value_xml_space(this.object);
-    }
-  
   public boolean getLiteralValueIsWfXML() 
     {
       int is_wf_xml_int=core.librdf_node_get_literal_value_is_wf_xml(this.object);
@@ -176,10 +171,10 @@ public class Node
     }
   
 
-  public int setLiteralValue(String value, String xml_language, int xml_space, boolean is_wf_xml) 
+  public int setLiteralValue(String value, String xml_language, boolean is_wf_xml) 
     {
       int is_wf_xml_int=is_wf_xml ? 1 : 0;
-      return core.librdf_node_set_literal_value(this.object, value, xml_language, xml_space, is_wf_xml_int);
+      return core.librdf_node_set_literal_value(this.object, value, xml_language, is_wf_xml_int);
     }
 
   public String toString() 

@@ -132,21 +132,20 @@ sub new_from_uri ($$) {
   return $self;
 }
 
-=item new_from_literal STRING XML_LANGUAGE XML_SPACE IS_WF
+=item new_from_literal STRING XML_LANGUAGE IS_WF
 
 Create a new RDF::Redland::Node object for a literal value I<STRING> with XML
-language (xml:lang attribute) I<XML_LANGUAGE>, XML space (xml:space)
-I<XML_SPACE> and if content is well formed XML, when I<IS_WF> is non
-0.  I<XML_LANGUAGE> and I<XML_SPACE> are optional can can be set to
-undef.
+language (xml:lang attribute) I<XML_LANGUAGE>
+and if content is well formed XML, when I<IS_WF> is non
+0.  I<XML_LANGUAGE> is optional can can be set to undef.
 
 =cut
 
-sub new_from_literal ($$$$$) {
-  my($proto,$string,$xml_language,$xml_space,$is_wf_xml)=@_;
+sub new_from_literal ($$$$) {
+  my($proto,$string,$xml_language,$is_wf_xml)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_literal($RDF::Redland::World->{WORLD},$string,$xml_language,$xml_space,$is_wf_xml);
+  $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_literal($RDF::Redland::World->{WORLD},$string,$xml_language,$is_wf_xml);
   return undef if !$self->{NODE};
 
   bless ($self, $class);
@@ -307,17 +306,6 @@ sub literal_value_language ($) {
   &RDF::Redland::CORE::librdf_node_get_literal_value_language(shift->{NODE});
 }
 
-=item literal_value_xml_space
-
-Get the node literal XML Space property (when the node is of type
-$RDF::Redland::Node::Type_Literal) or 0 if not present.
-
-=cut
-
-sub literal_value_xml_space ($) {
-  &RDF::Redland::CORE::librdf_node_get_literal_value_xml_space(shift->{NODE});
-}
-
 =item literal_value_is_wf_xml
 
 Return non 0 if the literal string is well formed XML (when the node
@@ -329,18 +317,18 @@ sub literal_value_is_wf_xml ($) {
   &RDF::Redland::CORE::librdf_node_get_literal_value_is_wf_xml(shift->{NODE});
 }
 
-=item set_literal_value STRING XML_LANGUAGE XML_SPACE IS_WF
+=item set_literal_value STRING XML_LANGUAGE IS_WF
 
 Set the node literal value to STRING with XML language (xml:lang
-attribute) XML_LANGUAGE, XML space (xml:space) XML_SPACE and if
-content is well formed XML, when IS_WF is non 0.  XML_LANGUAGE and
-XML_SPACE are optional can can be set to undef.
+attribute) XML_LANGUAGE and if
+content is well formed XML, when IS_WF is non 0.  XML_LANGUAGE
+is optional and can be set to undef.
 
 =cut
 
-sub set_literal_value ($$$$$) {
-  my($self,$value,$xml_language,$xml_space,$is_wf_xml)=@_;
-  return &RDF::Redland::CORE::librdf_node_set_literal_value($self->{NODE},$value,$xml_language,$xml_space,$is_wf_xml);
+sub set_literal_value ($$$$) {
+  my($self,$value,$xml_language,$is_wf_xml)=@_;
+  return &RDF::Redland::CORE::librdf_node_set_literal_value($self->{NODE},$value,$xml_language,$is_wf_xml);
 }
 
 =item as_string
