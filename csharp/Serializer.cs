@@ -53,5 +53,17 @@ namespace Rdf {
 		{
 			return librdf_serializer_serialize_model (serializer, file, base_uri.Handle, model.Handle);
 		}
+
+
+		[DllImport ("librdf")]
+		static extern int librdf_serializer_serialize_model_to_file (IntPtr serializer, IntPtr name, IntPtr base_uri, IntPtr model);
+
+		public int SerializeModel (string name, Uri base_uri, Model model)
+		{
+			IntPtr iname = Marshal.StringToHGlobalAuto (name);
+			int ret=librdf_serializer_serialize_model_to_file (serializer, iname, base_uri.Handle, model.Handle);
+                        Marshal.FreeHGlobal (iname);
+                        return ret;
+		}
 	}
 }
