@@ -76,6 +76,8 @@
 
 package RDF::Statement;
 
+use RDF::Node;
+
 use Redland;
 
 # CONSTRUCTOR
@@ -84,7 +86,7 @@ sub new ($) {
   my($proto)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{STATEMENT}=&Redland::librdf_new_statement;
+  $self->{STATEMENT}=&Redland::librdf_new_statement();
   bless ($self, $class);
   return $self;
 }
@@ -102,21 +104,44 @@ sub new_from_nodes ($$$$) {
   my($proto,$subject,$predicate,$object)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{STATEMENT}=&Redland::librdf_new_statement_from_nodes($subject->{NODE},$predicate->{NODE},$object->{NODE});
+
+  # Replace perl-land 'undef' with C-land 'NULL' pointers to librdf_node
+  my $s=$subject ? $subject->{NODE} : &Redland::redland_perl_get_empty_node();
+  my $p=$predicate ? $predicate->{NODE} : &Redland::redland_perl_get_empty_node();
+  my $o=$object ? $object->{NODE} : &Redland::redland_perl_get_empty_node();
+
+
+  $self->{STATEMENT}=&Redland::librdf_new_statement_from_nodes($s, $p, $o);
+
   # Zap the incoming librdf node objects since they are now owned by the
   # librdf statement object $self->{STATEMENT}
-  $subject->{NODE}=undef;
-  $predicate->{NODE}=undef;
-  $object->{NODE}=undef;
+  $subject->{NODE}=undef if $subject;
+  $predicate->{NODE}=undef if $predicate;
+  $object->{NODE}=undef if $object;
+
+  bless ($self, $class);
+  return $self;
+}
+
+# internal constructor to build an object from a statement created
+# by librdf e.g. from the result of a stream->next operation
+sub _new_from_object ($$) {
+  my($proto,$object)=@_;
+  my $class = ref($proto) || $proto;
+  my $self  = {};
+  $self->{STATEMENT}=$object;
   bless ($self, $class);
   return $self;
 }
 
 sub DESTROY ($) {
+  warn "RDF::Statement DESTROY\n" if $RDF::Debug;
   my $self=shift;
   if($self->{STATEMENT}) {
+    warn "RDF::Statement doing librdf_free_statement on librdf statement\n" if $RDF::Debug;
     &Redland::librdf_free_statement($self->{STATEMENT});
   }
+  warn "RDF::Statement DESTROY done\n" if $RDF::Debug;
 }
 
 sub subject ($;$) {
