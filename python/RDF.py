@@ -695,11 +695,13 @@ Create a model using an in-memory storage.
     # C methods is a recipe for unexplained core dumps if any of the
     # nodes are null or invalid.
     if datatype is not None:
-      datatype = datatype._reduri
+      rdatatype = datatype._reduri
+    else:
+      rdatatype = None
     subject_copy = Redland.librdf_new_node_from_node(subject._node)
     predicate_copy = Redland.librdf_new_node_from_node(predicate._node)
     return Redland.librdf_model_add_typed_literal_statement(self._model,
-        subject_copy, predicate_copy, string, xml_language, datatype)
+        subject_copy, predicate_copy, string, xml_language, rdatatype)
 
   def add_statement(self,statement,context=None):
     """Add the Statement to the Model with optional context Node.
@@ -1028,13 +1030,18 @@ Create a model using an in-memory storage.
    """
     if type(uri) is str:
       uri = Uri(string=uri)
-    if uri is not None:
-      uri = uri._reduri
+    if uri is None:
+      raise TypeError("uri must be a string or RDF.Uri")
+    ruri = uri._reduri
+
     if type(type_uri) is str:
       type_uri = Uri(string=type_uri)
     if type_uri is not None:
-      type_uri = type_uri._reduri
-    Redland.librdf_model_load(self._model, uri, name, mime_type, type_uri)
+      rtype_uri = type_uri._reduri
+    else:
+      rtype_uri = None
+
+    Redland.librdf_model_load(self._model, ruri, name, mime_type, rtype_uri)
     
   def to_string(self, base_uri=None, name="", mime_type="", type_uri=None):
     """Serialize the Model to a syntax.
@@ -1046,12 +1053,16 @@ Create a model using an in-memory storage.
     if type(base_uri) is str:
       base_uri = Uri(string=base_uri)
     if base_uri is not None:
-      base_uri = base_uri._reduri
+      rbase_uri = base_uri._reduri
+    else:
+      rbase_uri = None
     if type(type_uri) is str:
       type_uri = Uri(string=type_uri)
     if type_uri is not None:
-      type_uri = type_uri._reduri
-    return Redland.librdf_model_to_string(self._model, base_uri, name, mime_type, type_uri)
+      rtype_uri = type_uri._reduri
+    else:
+      rtype_uri = None
+    return Redland.librdf_model_to_string(self._model, rbase_uri, name, mime_type, rtype_uri)
 
   def __str__(self):
     return self.to_string()
@@ -1547,9 +1558,11 @@ optional.  When any are given, they must all match.
       print "Creating RDF.Parser name=",name,"mime_type=",mime_type, "uri=",uri
 
     if uri is not None:
-      uri=uri._reduri
+      ruri=uri._reduri
+    else:
+      ruri=None
 
-    self._parser=Redland.librdf_new_parser(_world._world, name, mime_type, uri)
+    self._parser=Redland.librdf_new_parser(_world._world, name, mime_type, ruri)
 
   def __del__(self):
     global _debug    
@@ -1666,15 +1679,17 @@ class Query(object):
     print statement
 
   """
-  def __init__(self,querystring,base_uri=None,query_language="rdql"):
+  def __init__(self, querystring, base_uri=None, query_language="rdql"):
     if base_uri is not None:
-      base_uri = base_uri._reduri
+      rbase_uri = base_uri._reduri
+    else:
+      rbase_uri = None
     global _world
     global _debug    
     if _debug:
-      print "Creating query for language '"+query_language+"', base '"+str(base_uri)+"': "+querystring
+      print "Creating query for language '"+query_language+"', base '"+str(rbase_uri)+"': "+querystring
 
-    self._query = Redland.librdf_new_query(_world._world, query_language, base_uri, querystring)
+    self._query = Redland.librdf_new_query(_world._world, query_language, rbase_uri, querystring)
     self.result_stream = None
     self.been_run = False
 
@@ -1789,10 +1804,12 @@ class Serializer(object):
         "uri=",uri
 
     if uri is not None:
-      uri = uri._reduri
+      ruri = uri._reduri
+    else:
+      ruri = None
 
     self._serializer=Redland.librdf_new_serializer(_world._world, name,
-      mime_type, uri)
+      mime_type, ruri)
 
   def __del__(self):
     global _debug    
@@ -1805,9 +1822,11 @@ class Serializer(object):
     """Serialize to filename name the Model model using the
        optional base URI."""
     if base_uri is not None:
-      base_uri = base_uri._reduri
+      rbase_uri = base_uri._reduri
+    else:
+      rbase_uri = None
     return Redland.librdf_serializer_serialize_model_to_file(self._serializer,
-      name, base_uri, model._model)
+      name, rbase_uri, model._model)
 
   # TODO: features could usefully be implemented as a collection
 
