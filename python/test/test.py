@@ -32,9 +32,9 @@ model=RDF.Model(storage)
 if model is None:
   raise "new RDF.model failed"
 
-statement=RDF.Statement(subject=RDF.Node(uri_string="http://purl.org/net/dajobe/"),
-                        predicate=RDF.Node(uri_string="http://purl.org/dc/elements/1.1/creator"),
-                        object=RDF.Node(literal="Dave Beckett"))
+statement=RDF.Statement(RDF.Uri("http://purl.org/net/dajobe/"),
+                        RDF.Uri("http://purl.org/dc/elements/1.1/creator"),
+                        RDF.Node("Dave Beckett"))
 if statement is None:
   raise "new RDF.statement failed"
 
@@ -43,13 +43,9 @@ model.add_statement(statement)
 print "printing all model statements"
 # Match against an empty statement - find everything
 statement=RDF.Statement(subject=None, predicate=None, object=None);
-# after this statement should not be touched since find_statements is using it
-stream=model.find_statements(statement);
 
-while not stream.end():
-  print "  found statement:",stream.current()
-  stream.next();
-
+for s in model.find_statements(statement):
+  print "  found statement:",s
 
 # Use any rdf/xml parser that is available
 parser=RDF.Parser(name="raptor",mime_type="application/rdf+xml")
@@ -59,12 +55,9 @@ if parser is None:
 uri=RDF.Uri(string="file:../perl/dc.rdf")
 print "made uri", uri
 
-stream=parser.parse_as_stream(uri, uri)
-while not stream.end():
-  statement2=stream.current();
-  print "found parsed statement:",statement2
-  model.add_statement(statement2)
-  stream.next();
+for s in parser.parse_as_stream(uri, uri):
+  print "found parsed statement:",s
+  model.add_statement(s)
 
 
 rdfxml_string="""<?xml version='1.0'?>
@@ -74,12 +67,9 @@ rdfxml_string="""<?xml version='1.0'?>
                dc:title='Home Page of David Beckett' />
 </rdf:RDF>"""
 
-stream=parser.parse_string_as_stream(rdfxml_string, uri)
-while not stream.end():
-  statement2=stream.current();
-  print "found parsed statement from string:",statement2
-  model.add_statement(statement2)
-  stream.next();
+for s in parser.parse_string_as_stream(rdfxml_string, uri):
+  print "found parsed statement from string:",s
+  model.add_statement(s)
 
 # add it again just to get some more statements
 parser.parse_into_model(model, uri, uri)
@@ -87,24 +77,18 @@ parser.parse_into_model(model, uri, uri)
 
 
 print "printing model"
-stream=model.serialise()
-
-while not stream.end():
-  print "found statement:",stream.current()
-  stream.next();
+for s in model.as_stream():
+  print "found statement:",s
 
 print "searching model by statement"
-search_statement=RDF.Statement(subject=None, predicate=RDF.Node(uri_string="http://purl.org/dc/elements/1.1/title"), object=None)
 
+for s in model.find_statements(RDF.Statement(None, RDF.Uri("http://purl.org/dc/elements/1.1/title"), None)):
+  print "  found statement:",s
 
-stream=model.find_statements(statement=search_statement)
-while not stream.end():
-  print "  found statement:",stream.current()
-  stream.next();
 
 print "searching model for node targets"
-n1=RDF.Node(uri_string="http://purl.org/net/dajobe/")
-n2=RDF.Node(uri_string="http://purl.org/dc/elements/1.1/title")
+n1=RDF.Uri("http://purl.org/net/dajobe/")
+n2=RDF.Uri("http://purl.org/dc/elements/1.1/title")
 for node in model.targets(n1,n2):
   print "  found node:",node
 
