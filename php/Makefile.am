@@ -38,14 +38,14 @@ CLEANFILES=test*db core* $(PHP_PACKAGE)_wrap.o
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(PHP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
-	swig -v -php -module $(PHP_PACKAGE) -o $@ $?
+	swig -v -php -module $(PHP_PACKAGE) -o $@ $<
 	rm -f $(PHP_PACKAGE).php
 
 $(PHP_PACKAGE)_wrap.lo: $(PHP_PACKAGE)_wrap.c
-	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf -prefer-pic -c $(INCLUDES)  $?
+	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf -prefer-pic -c $(INCLUDES)  $<
 
 $(PHP_PACKAGE).so: $(PHP_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la $(top_builddir)/raptor/libraptor.la
-	$(LIBTOOL) --mode=link $(CC) -shared $? -o $@
+	$(LIBTOOL) --mode=link $(CC) -shared $(PHP_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la $(top_builddir)/raptor/libraptor.la -o $@
 
 build-php: $(PHP_PACKAGE).so 
 

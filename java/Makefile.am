@@ -67,7 +67,7 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java.in: $(srcdir)/../Redland.i
 	here=`pwd`; \
 	cd $(JAVA_PATH); \
-	$(SWIG) -v -java -noproxy -module $(JAVA_MODULE) -package $(JAVA_PACKAGE) -o $(JAVA_MODULE)_wrap.c $$here/$?; \
+	$(SWIG) -v -java -noproxy -module $(JAVA_MODULE) -package $(JAVA_PACKAGE) -o $(JAVA_MODULE)_wrap.c $$here/$<; \
 	if test -r $(JAVA_MODULE)JNI.java; then \
 	  echo "Fixing SWIG 1.3.15+ broken Java API"; \
 	  rm -f $(JAVA_MODULE).java SWIGTYPE_*; \
@@ -107,7 +107,7 @@ skeleton.class: skeleton.java $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).j
 $(JAVA_CLASS_FILES): skeleton.class
 $(JAVA_JAR): $(JAVA_CLASS_FILES)
 	rm -f $@
-	jar cf $@ $?
+	jar cf $@ $<
 
 test-java: test1 test2
 
@@ -130,4 +130,4 @@ example.class: example.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(JAVA_JAR) example.java
 
 $(JAVA_SHARED_LIB): $(JAVA_MODULE)_wrap.c
-	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. -I/usr/local/include/linux $? -static `../redland-src-config --cflags` `../redland-src-config --libs` -o $@
+	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. -I/usr/local/include/linux $< -static `../redland-src-config --cflags` `../redland-src-config --libs` -o $@

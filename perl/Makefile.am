@@ -46,10 +46,10 @@ MEM_LIBS=@MEM_LIBS@
 #MEM_LIBS=-ldmalloc
 
 $(PERL_CORE_PACKAGE)_wrap.c lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm : $(srcdir)/../Redland.i
-	swig -v -perl5 -module $(PERL_FULL_CORE_PACKAGE) -o $(PERL_CORE_PACKAGE)_wrap.c $? && mv $(PERL_CORE_PACKAGE).pm lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
+	swig -v -perl5 -module $(PERL_FULL_CORE_PACKAGE) -o $(PERL_CORE_PACKAGE)_wrap.c $< && mv $(PERL_CORE_PACKAGE).pm lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
 
 $(PERL_MAKEFILE): Makefile.PL lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
-	PACKAGE=$(PERL_REDLAND_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) $(PERL) $?
+	PACKAGE=$(PERL_REDLAND_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) $(PERL) $<
 
 -perl test-perl install-perl clean-perl realclean-perl: $(PERL_MAKEFILE)
 	@target=`echo $@ | sed -e 's/-perl//'`; \
