@@ -108,6 +108,7 @@ sub new_from_storage ($$$) {
 sub DESTROY ($) {
   warn "RDF::Storage DESTROY\n" if $RDF::Debug;
   &Redland::librdf_free_storage(shift->{STORAGE});
+  warn "RDF::Storage DESTROY done\n" if $RDF::Debug;
 }
 
 1;
