@@ -37,8 +37,9 @@ RDF::Redland::Iterator - Redland RDF Iterator Class
   ...
   my $iterator=$model->targets_iterator($source_node, $arc_node);
   while($iterator && !$iterator->end) {
-    my $node=$iterator->next;
+    my $node=$iterator->get;
     ...
+    $iterator->next;
   }
 
 =head1 DESCRIPTION
@@ -109,22 +110,35 @@ sub end ($) {
   &RDF::Redland::CORE::librdf_iterator_end(shift->{ITERATOR});
 }
 
+
+=item get
+
+Returns the current RDF::Redland::Node object from the iteration
+or undef if the iteration is finished.
+
+=cut
+
+sub get ($) {
+  # return a new (1) node (2)owned by the librdf iterator object
+  # Reasons: (1) at the user API level the iterator only returns nodes
+  #          (2) the node returned is shared with the iterator
+  my $object=&RDF::Redland::CORE::librdf_iterator_get_object(shift->{ITERATOR});
+  return undef if !$object;
+
+  warn "RDF::Redland::Iterator::next object is $object\n" if $RDF::Redland::Debug;
+  RDF::Redland::Node->_new_from_object($object,0);
+}
+
+
 =item next
 
-Returns the next RDF::Redland::Node object from iteration or undef if
+Moves the iterator to the next item, returns undef if
 the iteration is finished.
 
 =cut
 
 sub next ($) {
-  # return a new (1) node (2)owned by the librdf iterator object
-  # Reasons: (1) at the user API level the iterator only returns nodes
-  #          (2) the node returned is shared with the iterator
-  my $object=&RDF::Redland::CORE::librdf_iterator_get_next(shift->{ITERATOR});
-  return undef if !$object;
-
-  warn "RDF::Redland::Iterator::next object is $object\n" if $RDF::Redland::Debug;
-  RDF::Redland::Node->_new_from_object($object,0);
+  return &RDF::Redland::CORE::librdf_iterator_next(shift->{ITERATOR});
 }
 
 =pod
