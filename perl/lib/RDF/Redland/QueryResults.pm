@@ -37,8 +37,9 @@ RDF::Redland::QueryResults - Redland RDF Syntax Query Results Class
   use RDF::Redland;
 
   ...
-  my $query=new RDF::Redland::Query("rdql", undef, $query_string);
-  my $results=$model->execute($query);
+  my $query=new RDF::Redland::Query("query string", undef, undef, "sparql");
+  my $results=$model->query_execute($query);
+  # or my $results=$query->execute($model);
   while(!$results->finished) {
     for (my $i=0; $i < $results->bindings_count(); $i++) {
       my $name=$results->binding_name($i);

@@ -39,6 +39,7 @@ RDF::Redland::Query - Redland RDF Syntax Query Class
   ...
   my $query=new RDF::Redland::Query($query_string); # default query language
   my $results=$query->execute($model);
+  # or my $results=$model->query_execute($query);
   while(!$results->finished) {
     for (my $i=0; $i < $results->bindings_count(); $i++) {
       my $name=$results->binding_name($i);
