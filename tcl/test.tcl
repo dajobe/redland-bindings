@@ -64,6 +64,22 @@ librdf_free_stream $stream
 librdf_free_statement $statement
 
 
+# This doesn't seem to work for Tcl
+
+#puts "Writing model to test-out.rdf as rdf/xml";
+#
+#set serializer [librdf_new_serializer $world NULL NULL NULL]
+#if {"$serializer" == "NULL"} then {
+#  librdf_free_model $model
+#  librdf_free_storage $storage
+#  error "failed to create serializer for application/rdfxml"
+#}
+#
+#librdf_serializer_serialize_model_to_file $serializer "test-out.rdf" NULL $model
+#librdf_free_serializer $serializer
+
+puts "Done";
+
 librdf_free_model $model
 librdf_free_storage $storage
 
