@@ -5,7 +5,7 @@
 %define release SNAP
 %define prefix  /usr
 
-%define redland_version 0.9.19
+%define redland_version @REDLAND_VERSION@
 
 %define perlinstallsitearch @PERLINSTALLSITEARCH@
 %define perlman3dir @PERLMAN3DIR@
