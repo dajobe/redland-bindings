@@ -5,8 +5,9 @@
 //
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)
+//  Edd Dumbill (edd@usefulinc.com)
 //
-// (C) 2004, Cesar Lopez Nataren
+// (C) 2004, Cesar Lopez Nataren, Edd Dumbill
 //
 
 using System;
