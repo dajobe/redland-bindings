@@ -1,5 +1,7 @@
 //
-// Model.cs:
+// Model.cs: Redland Model
+//
+// $Id$
 //
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)
@@ -13,9 +15,12 @@ using System.Collections;
 
 namespace Redland {
 
-	public class Model : IWrapper {
+	public class Model : IWrapper, IDisposable {
 
-		IntPtr model;
+		IntPtr model = IntPtr.Zero;
+		Storage storage;
+
+		bool disposed = false;
 
 		public IntPtr Handle {
 			get { return model; }
@@ -39,15 +44,40 @@ namespace Redland {
 			IntPtr ioptions = Marshal.StringToHGlobalAuto (options);
 			model = librdf_new_model (world.Handle, storage.Handle, ioptions);
                         Marshal.FreeHGlobal (ioptions);
+			// keep a reference around to storage so it doesn't
+			// get destroyed before us
+			this.storage = storage;
 		}
 
 		[DllImport ("librdf")]
 		static extern void librdf_free_model (IntPtr model);
 
+		protected void Dispose (bool disposing)
+		{
+			// Console.WriteLine ("Dispose ({0})", disposing);
+			if (! disposed) {
+				// if 'disposing' is true, then any managed
+				// objects should be disposed here.
+
+				if (model != IntPtr.Zero) {
+					librdf_free_model (model);
+					model = IntPtr.Zero;
+				}
+				disposed = true;
+			}
+		}
+
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
 		~Model ()
 		{
-			if(model != (IntPtr)null)
-				librdf_free_model (model);
+			//Console.WriteLine ("Destructor");
+			Dispose (false);
+			//Console.WriteLine ("Destructor done");
 		}
 
 		[DllImport ("librdf")]
@@ -80,8 +110,7 @@ namespace Redland {
 		public Stream FindStatements (Statement stm)
 		{
 			IntPtr raw_ret = librdf_model_find_statements (model, stm.Handle);
-			Stream stream = new Stream (raw_ret);
-			return stream;
+			return new Stream (raw_ret);
 		}
 		
 		[DllImport ("librdf")]
@@ -104,6 +133,7 @@ namespace Redland {
 		public Iterator GetSources (Node arc, Node target)
 		{
 			IntPtr raw_ret = librdf_model_get_sources (model, arc.Handle, target.Handle);
+			// FIXME: throw exception if raw_ret == IntPtr.Zero?
 			Iterator it = new Iterator (raw_ret);
 			return it;
 		}
@@ -128,11 +158,11 @@ namespace Redland {
 		public Node GetTarget (Node source, Node arc)
 		{
 			IntPtr raw_ret = librdf_model_get_target (model, source.Handle, arc.Handle);
-			Node r = null;
+			Node r;
 			if (raw_ret != IntPtr.Zero)
 				r = new Node (raw_ret);
 			else
-				throw new Exception ("Model.GetTarget failed");
+				r = null;
 			return r;
 		}
 
@@ -142,9 +172,8 @@ namespace Redland {
 		public Iterator GetTargets (Node source, Node arc)
 		{
 			IntPtr raw_ret = librdf_model_get_targets (model, source.Handle, arc.Handle);
-			Iterator it = null;
-			if (raw_ret != IntPtr.Zero)
-				it = new Iterator (raw_ret);
+			// FIXME: throw exception if raw_ret is zero?
+			Iterator it = new Iterator (raw_ret);
 			return it;
 		}
 
@@ -154,6 +183,7 @@ namespace Redland {
 		public Iterator GetPredicates (Node source, Node target)
 		{
 			IntPtr raw_ret = librdf_model_get_arcs (model, source.Handle, target.Handle);
+			// FIXME: throw exception if raw_ret is zero?
 			Iterator it = new Iterator (raw_ret);
 			return it;
 		}
@@ -196,6 +226,7 @@ namespace Redland {
 		public Stream ToStream ()
 		{
 			IntPtr raw_ret = librdf_model_as_stream (model);
+			// FIXME: throw exception if raw_ret == zero?
 			Stream stream = new Stream (raw_ret);
 			return stream;
 		}
@@ -222,6 +253,7 @@ namespace Redland {
 		public Iterator GetContexts ()
 		{
 			IntPtr raw_ret = librdf_model_get_contexts (model);
+			// FIXME: throw exception if raw_ret == zero?
 			Iterator it = new Iterator (raw_ret);
 			return it;
 		}
@@ -232,11 +264,11 @@ namespace Redland {
 		public Node GetFeature (Uri uri)
 		{
 			IntPtr raw_ret = librdf_model_get_feature (model, uri.Handle);
-			Node r = null;
+			Node r;
 			if (raw_ret != IntPtr.Zero)
 				r = new Node (raw_ret);
 			else
-				throw new Exception ("Model.GetFeature failed");
+				r = null;
 			return r;
 		}
 
@@ -264,7 +296,8 @@ namespace Redland {
 		public QueryResults Execute (Query query)
 		{
 			IntPtr raw_ret = librdf_model_query_execute (model, query.Handle);
-			QueryResults qr = new QueryResults (query, raw_ret);
+			// FIXME: throw exception if raw_ret == zero?
+			QueryResults qr = new QueryResults (raw_ret);
 			return qr;
 		}
 
