@@ -64,6 +64,7 @@ $(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so
 	touch $(PYTHON_PACKAGE)-stamp
 
 install-pythonDATA: $(python_DATA)
+	$(mkinstalldirs) $(DESTDIR)$(pythondir)
 	$(INSTALL_PROGRAM) $(PYTHON_PACKAGE).so $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so
 	$(INSTALL_DATA) RDF.py $(DESTDIR)$(pythondir)/RDF.py
 
