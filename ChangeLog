@@ -1,10 +1,11 @@
 2004-08-11  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
-	* configure.ac:
-	Don't muck about with the PATH (for OSX fink in this case). This
-	might make things fail to build later when programs found on the
-	customised path aren't available.  Users should edit the PATH
-	before calling configure.
+	* configure.ac: Look for $JAVA_HOME for the JDK.  Duh!
+
+	* configure.ac: Don't muck about with the PATH (for OSX fink in
+	this case). This might make things fail to build later when
+	programs found on the customised path aren't available.  Users
+	should edit the PATH before calling configure.
 
 2004-08-10  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
