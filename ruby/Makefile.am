@@ -29,7 +29,7 @@ RUBY_PACKAGE=redland
 SWIG_OUTPUTS=$(RUBY_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
-rubylib=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG']")
+rubylib=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['ruby_install_name']")
 
 rubydir=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']")
 ruby_DATA=redland.so
@@ -57,8 +57,8 @@ $(RUBY_PACKAGE)-stamp: $(RUBY_PACKAGE)_wrap.so
 	else \
 	  args=" -shared"; \
 	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so $(rubylib) `$(top_srcdir)/redland-src-config --libs` -o $(RUBY_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so $(rubylib) `$(top_srcdir)/redland-src-config --libs` -o $(RUBY_PACKAGE).so
+	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so -l$(rubylib) `$(top_srcdir)/redland-src-config --libs` -o $(RUBY_PACKAGE).so; \
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so -l$(rubylib) `$(top_srcdir)/redland-src-config --libs` -o $(RUBY_PACKAGE).so
 	if test `uname` = Darwin; then \
 	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle; \
 	fi
