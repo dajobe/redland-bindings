@@ -33,11 +33,7 @@ RELEASE.html INSTALL.html \
 MPL.html \
 autogen.sh \
 Makefile.PL \
-redland-bindings.spec redland-bindings.spec.in \
-redland-bindings.pc.in
-
-pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = redland-bindings.pc
+redland-bindings.spec redland-bindings.spec.in
 
 
 if MAINTAINER_MODE

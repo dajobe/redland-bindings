@@ -1,9 +1,0 @@
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-libdir=@libdir@
-includedir=@includedir@
-
-Name: Redland Bindings
-Description: Redland RDF Application Framework API Bindings
-Requires: redland >= @REDLAND_MIN_VERSION@
-Version: @VERSION@

@@ -569,7 +569,6 @@ csharp/Makefile
 csharp/examples/Makefile
 demos/Makefile
 data/Makefile
-redland-bindings.pc
 ])
 AC_CONFIG_FILES([redland-bindings.spec])
 
