@@ -1,3 +1,41 @@
+2004-10-01  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/Model.pm: (load) Added using librdf_model_load
+
+2004-10-01 Edd Dumbill  <edd@usefulinc.com>
+
+	* csharp/World.cs: (World ()): assign logging delegate to private
+	member to stop it being prematurely GC'd
+
+2004-09-29  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* php/redland_wrap.c.patch: updated
+
+	* php/redland-typemap.i: typemaps for php
+
+	* php/Makefile.am: Added redland-typemap.i
+	Use REDLAND_TYPEMAP_I
+
+	* php/test.php: url typo
+
+2004-09-24  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/Makefile.am:
+	Use PYTHON_LDFLAGS for OSX/rest of world shared library flags
+
+	* configure.ac: Make PYTHON_LDFLAGS
+
+	* python/RDF.py (Node.__init__):
+	document 'language' for literal language, while
+	allowing xml_language to continue working.
+	(Node.literal_value): document keys of the dictionary.
+
+2004-08-25  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* demos/rss-show.pl: Made 'box' param a checkbox.
+	Added 'hide' into a checkbox param to not print out the content.
+	Tidy messages to be more strident.
+
 2004-08-13  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* perl/lib/RDF/Redland/Query.pm (execute):
