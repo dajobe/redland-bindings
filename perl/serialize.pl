@@ -124,7 +124,7 @@ my $state={
 sub predicate_split($) {
   my $predicate=shift;
   my $uri=$predicate->uri->as_string;
-  if($uri =~ m%^(.*)[#/](.*)$%) {
+  if($uri =~ m%^(.*[#/])(.*)$%) {
     return($1,$2);
   }
   return($uri,undef);
@@ -263,6 +263,36 @@ sub emit_start_element($$@) {
   emit($state, $str);
 }
 
+sub emit_empty_element($$@) {
+  my($state,$name,@attrs)=@_;
+
+  my $str="<".$name;
+
+  if(my $namespaces=$state->{inscope_namespaces}) {
+    for my $ns (@$namespaces) {
+      my($prefix, $uri, $depth)=@$ns;
+      $str.=qq{ xmlns:$prefix="$uri"}
+        if $depth == $state->{depth};
+    }
+  }
+
+  if(my $lang=$state->{xml_lang}) {
+    $str.=qq{ xml:lang="$lang"};
+  }
+
+  if(my $base=$state->{xml_base}) {
+    $str.=qq{ xml:base="$base"};
+  }
+
+  for my $attr (@attrs) {
+    my($name,$value)=@$attr;
+    $str.=qq{ $name="$value"};
+  }
+
+  $str.=" />";
+  emit($state, $str);
+}
+
 sub emit_end_element($$) {
   my($state, $name)=@_;
   emit($state, qq{</$name>});
@@ -284,24 +314,26 @@ sub format_statement ($$$) {
   if($otype == $RDF::Redland::Node::Type_Resource) {
     my $attr=make_xml_qname($state, $RDF_NS, "resource", 1);
     my $object_value=$object->uri->as_string;
-    emit($state, qq{<$qname $attr="$object_value"/>});
+    emit_empty_element($state, $qname, [$attr, $object_value]);
   } elsif($otype == $RDF::Redland::Node::Type_Literal) {
     my $literal=$object->literal_value; # FIXME or literal_value_as_latin1
     my $literal_lang=$object->literal_value_language;
-    my $attrs='';
+    my(@attrs);
     if($literal_lang) {
-      $attrs.=qq{ xml:lang="$literal_lang"};
+      my $attr=make_xml_qname($state, $XML_NS, "lang", 1);
+      push(@attrs, [$attr, "$literal_lang"]);
     }
     if ($object->literal_value_is_wf_xml) {
       my $attr=make_xml_qname($state, $RDF_NS, "parseType", 1);
-      $attrs.=" " if $attrs;
-      $attrs.=qq{$attr="Literal"};
+      push(@attrs, [$attr, "Literal"]);
     }
-    emit($state, qq{<$qname${attrs}>$literal</$qname>});
+    emit_start_element($state, $qname, @attrs);
+    emit($state, $literal);
+    emit_end_element($state, $qname);
   } elsif($otype == $RDF::Redland::Node::Type_Blank) {
     my $attr=make_xml_qname($state, $RDF_NS, "nodeID");
     my $object_value=$object->blank_identifer;
-    emit($state, qq{<$qname $attr="$object_value"/>});
+    emit_empty_element($state, $qname, [$attr, $object_value]);
   } else {
     die "Unknown object type $otype\n";
   }
@@ -377,6 +409,10 @@ my(@order)=(@nodes_with_types, @other_nodes);
 
 print qq{<?xml version='1.0' encoding='}; #'
 print $state->{feature_content_encoding}, "'?>\n"; #'
+
+my $OWL_NS='http://owl.mindswap.org/2003/ont/owlweb.rdf#';
+$state->{favourite_prefixes}->{$OWL_NS}='owl';
+ensure_declared_namespace($state, $OWL_NS);
 
 ensure_declared_namespace($state, $RDF_NS);
 my $element=make_xml_qname($state, $RDF_NS, "RDF");
