@@ -111,6 +111,20 @@ def node_type_name(num):
             return n
     raise NodeTypeError('Unknown node type number %d' % num)
 
+def message_handler (type, message):
+ """Internal message dispatcher from Redland to python"""
+  if type == 0:
+    raise "Redland error - ",message
+  else:
+    raise "Redland warning - ",message
+
+def set_message_handler(handler):
+  """Set the Redland message handler for Python.  It takes
+     a single function that takes (integer, string) arguments.""""
+  import Redland_python;
+  Redland_python.set_callback(handler)
+
+
 class World:
   """Redland Initialisation class.
 
@@ -124,14 +138,7 @@ class World:
     Redland.librdf_world_open(self._world)
     Redland.librdf_python_world_init(self._world)
     import Redland_python;
-    Redland_python.set_callback(World.message)
-
-  def message (type, message):
-    """Internal message dispatcher from Redland to python"""
-    if type == 0:
-      raise "Redland error - ",message
-    else:
-      raise "Redland warning - ",message
+    Redland_python.set_callback(message_handler)
 
   def __del__(self):
     """Destroy RDF World object (destructor)."""
@@ -818,7 +825,7 @@ class Stream:
      Statement s or Python sequences.  If this is used, it works
      as follows:
 
-       stream=model.serialize()
+       stream=model.serialise()
        while not stream.end():
          # get the current Statement
          statement=stream.current()
