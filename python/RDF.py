@@ -99,6 +99,15 @@ class World:
     """Create new RDF World object (constructor)"""
     self._world=Redland.librdf_new_world()
     Redland.librdf_world_open(self._world)
+    Redland.librdf_python_world_init(self._world)
+    import Redland_python;
+    Redland_python.set_callback(World.message)
+
+  def message (type, message):
+    if type == 0:
+      raise "Redland error - ",message
+    else:
+      raise "Redland warning - ",message
 
   def __del__(self):
     """Destroy RDF World object (destructor)."""
