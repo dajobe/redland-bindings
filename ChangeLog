@@ -1,3 +1,18 @@
+2005-02-02  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/redlandtest.py (testRDQLQueryAsStreamDontWork):
+	Handle catching a bad format exception.
+	(testSPARQLQueryAsStream): Added, testing SPARQL CONSTRUCT.
+	(testSPARQLQueryAsk): Added, testing SPARQL ASK.
+
+	* python/RDF.py (class RDQLQuery): Added
+	(class SPARQLQuery): Added
+	(QueryResult.is_bindings, QueryResult.is_boolean,
+	QueryResult.is_graph): Added, testing type of query result
+	(QueryResult): Document more methods and raise errors when wrong
+	format result is asked for.
+	(QueryResult.get_boolean): Added, returning a boolean result.
+
 2005-01-18  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* python/RDF.py: Update license to Apache style and for 2005
