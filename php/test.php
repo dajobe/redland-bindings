@@ -70,7 +70,7 @@ librdf_free_parser($parser);
 $serializer=librdf_new_serializer($world,'rdfxml','application/rdf+xml',librdf_new_uri($world,''));
 print "Redland serializer created\n";
 
-$base=librdf_new_uri($world,'http://exampe.org/base.rdf');
+$base=librdf_new_uri($world,'http://example.org/base.rdf');
 
 print "Serializing...\n";
 librdf_serializer_serialize_model_to_file($serializer,'./test-out.rdf',$base,$model);
