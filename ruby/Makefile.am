@@ -35,7 +35,7 @@ rubylib=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['ruby_install_name']"`
 rubydir=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']"`
 ruby_DATA=redland.so
 
-EXTRA_DIST=test.rb example.rb \
+EXTRA_DIST=example.rb \
 $(SWIG_OUTPUTS)
 
 SUBDIRS=lib test
