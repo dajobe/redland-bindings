@@ -117,8 +117,10 @@ namespace Rdf {
 
 		public void Print (IntPtr fh)
 		{
-			Console.WriteLine (node == IntPtr.Zero);
-			librdf_node_print (node, fh);
+			if(node == IntPtr.Zero)
+				Util.fputs("null", fh);
+                        else
+				librdf_node_print (node, fh);
 		}
 
 		[DllImport ("librdf")]
