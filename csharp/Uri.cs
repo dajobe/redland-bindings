@@ -40,6 +40,15 @@ namespace Redland {
 		{
 		}
 
+
+		[DllImport ("librdf")]
+		static extern IntPtr librdf_new_uri_from_uri (IntPtr uri);
+	
+		internal Uri (IntPtr iuri)
+		{
+			uri = librdf_new_uri_from_uri (iuri);
+		}
+
 		[DllImport ("librdf")]
 		static extern int librdf_uri_equals (IntPtr first_uri, IntPtr second_uri);
 		
