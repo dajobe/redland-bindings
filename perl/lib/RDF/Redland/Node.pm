@@ -120,18 +120,21 @@ sub new_from_node ($$) {
   my($proto,$node)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{NODE}=&Redland::librdf_new_node_from_node($node);
+  $self->{NODE}=&Redland::librdf_new_node_from_node($node->{NODE});
   bless ($self, $class);
   return $self;
 }
 
 # internal constructor to build an object from a node created
 # by librdf e.g. from the result of a iterator->next operation
+# this is always shared (at present) so should not be freed
 sub _new_from_object ($$) {
   my($proto,$object)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
+  warn "RDF::Node::_new_from_object from object $object\n" if $RDF::Debug;
   $self->{NODE}=$object;
+  $self->{DONT_FREE_ME}=1;
   bless ($self, $class);
   return $self;
 }
@@ -141,8 +144,10 @@ sub DESTROY ($) {
   warn "RDF::Node DESTROY\n" if $RDF::Debug;
   my $self=shift;
   if($self->{NODE}) {
-    warn "RDF::Node doing librdf_free_node on librdf node\n" if $RDF::Debug;
-    &Redland::librdf_free_node($self->{NODE});
+    if(!$self->{DONT_FREE_ME}) {
+      warn "RDF::Node doing librdf_free_node on librdf node\n" if $RDF::Debug;
+      &Redland::librdf_free_node($self->{NODE});
+    }
   }
   warn "RDF::Node DESTROY done\n" if $RDF::Debug;
 }
