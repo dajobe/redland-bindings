@@ -60,10 +60,24 @@ uri=RDF.Uri(string="file:../perl/dc.rdf")
 print "made uri", uri
 
 stream=parser.parse_as_stream(uri, uri)
-
 while not stream.end():
   statement2=stream.current();
   print "found parsed statement:",statement2
+  model.add_statement(statement2)
+  stream.next();
+
+
+rdfxml_string="""<?xml version='1.0'?>
+<rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
+     xmlns:dc='http://purl.org/dc/elements/1.1/'>
+  <rdf:Description rdf:about='http://purl.org/net/dajobe/'
+               dc:title='Home Page of David Beckett' />
+</rdf:RDF>"""
+
+stream=parser.parse_string_as_stream(rdfxml_string, uri)
+while not stream.end():
+  statement2=stream.current();
+  print "found parsed statement from string:",statement2
   model.add_statement(statement2)
   stream.next();
 
