@@ -977,7 +977,7 @@ Create a model using an in-memory storage.
     if my_iterator is None:
       raise RedlandError("Unable to create iterator")
 
-    return Iterator(my_iterator,self,source,predicate)
+    return Iterator(my_iterator,self)
 
   def get_feature(self, uri):
     """Return the Node value of Model feature URI uri"""
