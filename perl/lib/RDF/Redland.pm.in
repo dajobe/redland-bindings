@@ -59,17 +59,18 @@ sub message ($$) {
   my($type,$message)=@_;
   if($type == 0) {
     if(ref $RDF::Redland::Error_Sub) {
-      $RDF::Redland::Error_Sub->($message);
+      return $RDF::Redland::Error_Sub->($message);
     } else {
       die "Redland error: $message\n";
     }
   } else {
     if(ref $RDF::Redland::Warning_Sub) {
-      $RDF::Redland::Warning_Sub->($message);
+      return $RDF::Redland::Warning_Sub->($message);
     } else {
       warn "Redland warning: $message\n";
     }
   }
+  1;
 }
 
 package RDF::Redland;
