@@ -413,7 +413,7 @@ class Model:
     else:
       self._model=Redland.librdf_new_model(_world._world, storage._storage, "")
 
-    if self._model == "NULL":
+    if self._model == "NULL" or self._model == None:
       self._model=None
       raise "new RDF.Model failed"
     else:
@@ -598,8 +598,9 @@ please use 'not iterator.end' instead."""
 
   def get (self):
     my_node=Redland.librdf_iterator_get_object(self._iterator)
-    if my_node == "NULL":
+    if my_node == "NULL" or my_node == None:
       return None
+
     # return a new (1) node (2)owned by the librdf iterator object
     # Reasons: (1) at the user API level the iterator only returns nodes
     #          (2) the node returned is shared with the iterator
@@ -647,7 +648,7 @@ class Stream:
 
     # return a new statement created by the librdf stream object
     my_statement=Redland.librdf_stream_next(self.stream)
-    if my_statement == "NULL":
+    if my_statement == "NULL" or my_statement == None:
       return None
     return Statement(from_object=my_statement,
                      free_statements=self.free_statements)
@@ -676,7 +677,7 @@ class Storage:
     else:
       raise "new RDF.Storage failed - illegal arguments"
 
-    if self._storage == "NULL":
+    if self._storage == "NULL" or self._storage == None:
       self._storage=None
       raise "new RDF.Storage failed"
 
