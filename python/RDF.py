@@ -234,7 +234,10 @@ class Node:
 
   def __str__(self):
     """Get a string representation of an RDF Node."""
-    return Redland.librdf_node_to_string(self._node)
+    if self._node == None:
+        return ""
+    else:
+        return Redland.librdf_node_to_string(self._node)
 
   def __eq__ (self,other):
     """Equality of an RDF Node compared to another RDF Node."""
@@ -380,7 +383,10 @@ class Statement:
             Redland.librdf_new_node_from_node(value._node))
 
   def __str__ (self):
-    return Redland.librdf_statement_to_string(self._statement)
+    if self._statement == None:
+        return ""
+    else:
+        return Redland.librdf_statement_to_string(self._statement)
 
 # end class Statement
 
