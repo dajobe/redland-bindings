@@ -88,7 +88,7 @@ module Redland
     # Adds a statement to the model with the subject as the 
     # resource and p as the predicate and o as the object
     # same as Model.add(this,p,o)
-    def add_property(p,o,context=@context)
+    def add_property(p,o,context=nil)
       @model.add(self,p,o,context)
       return self
     end
