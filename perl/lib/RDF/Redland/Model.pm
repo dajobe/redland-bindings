@@ -419,31 +419,6 @@ sub target ($$$) {
   return $node ? RDF::Redland::Node->_new_from_object($node,1) : undef;
 }
 
-
-# FIXME - remove these functions in future release
-use vars qw($get_sources_warning $get_arcs_warning $get_targets_warning);
-sub get_sources ($$$) {
-  my($self,$arc,$target)=@_;
-  warn "RDF::Redland::Model::get_sources is deprecated, please use RDF::Redland::Model::sources_iterator\n" 
-    if $get_sources_warning++ == 0;
-  $self->sources_iterator($arc,$target);
-}
-
-sub get_arcs ($$$) {
-  my($self,$source,$target)=@_;
-  warn "RDF::Redland::Model::get_arcs is deprecated, please use RDF::Redland::Model::arcs_iterator\n" 
-    if $get_arcs_warning++ == 0;
-  $self->arcs_iterator($source,$target);
-}
-
-sub get_targets ($$$) {
-  my($self,$source,$arc)=@_;
-  warn "RDF::Redland::Model::get_targets is deprecated, please use RDF::Redland::Model::targets_iterator\n" 
-    if $get_targets_warning++ == 0;
-  $self->targets_iterator($source,$arc);
-}
-
-
 =pod
 
 =back

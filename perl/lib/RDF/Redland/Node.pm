@@ -25,8 +25,7 @@ package RDF::Redland::Node;
 use strict;
 
 use vars qw($Type_Resource $Type_Property $Type_Literal
-	    $Type_Statement $Type_Bag $Type_Seq $Type_Alt $Type_Li
-	    $Type_Model);
+	    $Type_Statement $Type_Li $Type_Blank);
 
 # FIXME: Should be the same as values of librdf_node_type enum in rdf_node.h
 # and mechanically kept in sync.

@@ -109,21 +109,6 @@ sub end ($) {
   &RDF::Redland::CORE::librdf_iterator_end(shift->{ITERATOR});
 }
 
-=item have_elements
-
-Return non 0 if the iterator has more RDF::Redland::Node objects - deprecated,
-please use !$iterator->end instead.
-
-=cut
-
-# FIXME - remove this function in future release
-use vars qw($have_elements_warning);
-sub have_elements ($) {
-  warn "RDF::Redland::Iterator::have_elements is deprecated, please use \!RDF::Redland::Iterator::end\n" 
-    if $have_elements_warning++ == 0;
-  return !shift->end;
-}
-
 =item next
 
 Returns the next RDF::Redland::Node object from iteration or undef if
