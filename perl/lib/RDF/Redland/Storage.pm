@@ -78,8 +78,6 @@ package RDF::Storage;
 
 use strict;
 
-use Redland;
-
 =pod
 
 =head1 NAME
@@ -156,8 +154,12 @@ sub new_from_storage ($$$) {
 
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::Storage DESTROY $self\n" if $RDF::Debug;
-  &Redland::librdf_free_storage($self->{STORAGE}) if $self->{STORAGE};
+  warn "RDF::Storage DESTROY $self" if $RDF::Debug;
+  if(!$self->{STORAGE}) {
+    warn "RDF::Storage DESTROY - librdf object gone - FIXME!\n" if $RDF::Debug;
+  } else {
+    &Redland::librdf_free_storage($self->{STORAGE});
+  }
   warn "RDF::Storage DESTROY done\n" if $RDF::Debug;
 }
 
