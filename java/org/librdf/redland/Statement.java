@@ -117,6 +117,12 @@ public class Statement
     }
   
 
+  public boolean equals(Statement first_statement, Statement second_statement) 
+    {
+      int equals=core.librdf_statement_equals(first_statement.object, second_statement.object);
+      return (equals != 0);
+    }
+
 
   protected long __get_object() 
     {

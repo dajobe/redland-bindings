@@ -235,6 +235,17 @@ sub as_string ($) {
   &RDF::Redland::CORE::librdf_statement_to_string(shift->{STATEMENT});
 }
 
+=item equals STATEMENT
+
+Return non zero if this statement is equal to STATEMENT
+
+=cut
+
+sub equals ($$) {
+  my($self,$statement)=@_;
+  &RDF::Redland::CORE::librdf_statement_equals($self->{STATEMENT}, $statement->{STATEMENT});
+}
+
 =pod
 
 =back
