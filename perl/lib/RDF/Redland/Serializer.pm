@@ -124,17 +124,21 @@ sub serialize_model_to_string($$$) {
 }
 
 
-=item set_namespace URI PREFIX
+=item set_namespace PREFIX URI
 
 Define a namespace I<URI> with the supplied I<PREFIX> for use in serializing
 an RDF Graph.
 
 =cut
 
-sub set_namespace($$$) {
-  my($self,$uri,$prefix)=@_;
+sub set_namespace ($$$) {
+  my($self,$prefix, $uri)=@_;
 
-  return &RDF::Redland::CORE::librdf_serializer_set_namespace($self->{SERIALIZER}, $uri->{URI}, $prefix);
+  warn "RDF::Redland::Serializer->namespace('$prefix', '$uri')\n" if $RDF::Redland::Debug;
+  $uri=RDF::Redland::URI->new($uri)
+    unless ref $uri;
+
+  return &RDF::Redland::CORE::librdf_serializer_set_namespace($self->{SERIALIZER},$uri->{URI}, $prefix);
 }
 
 
@@ -158,23 +162,6 @@ sub feature ($$;$) {
     unless $value;
 
   return &RDF::Redland::CORE::librdf_serializer_set_feature($self->{SERIALIZER},$uri->{URI},$value);
-}
-
-
-=item set_namespace PREFIX URI
-
-Set a namespace I<PREFIX> and I<URI> for the serializer to use.
-
-=cut
-
-sub set_namespace ($$$) {
-  my($self,$prefix, $uri)=@_;
-
-  warn "RDF::Redland::Serializer->namespace('$prefix', '$uri')\n" if $RDF::Redland::Debug;
-  $uri=RDF::Redland::URI->new($uri)
-    unless ref $uri;
-
-  return &RDF::Redland::CORE::librdf_serializer_set_namespace($self->{SERIALIZER},$uri->{URI}, $prefix);
 }
 
 
