@@ -91,7 +91,7 @@ install-fakeDATA: install-csharp
 
 #MONO_GACUTIL=$(CLIRUN) $(CLI_PREFIX)/gacutil.exe
 MONO_GACUTIL=gacutil
-PNET_GACUTL=ilgac
+PNET_GACUTIL=ilgac
 
 #MONO_SN=$(CLIRUN) $(CLI_PREFIX)/sn.exe
 MONO_SN=sn
