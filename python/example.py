@@ -72,4 +72,5 @@ print "Parsing added",count,"statements"
 print "Printing all statements"
 stream=model.serialise()
 while not stream.end():
-  print "Statement:",stream.next()
+  print "Statement:",stream.current()
+  stream.next()
