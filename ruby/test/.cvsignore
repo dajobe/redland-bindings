@@ -1,4 +1,4 @@
 *.db
-out_namespace.rdf
+out*.rdf
 Makefile
 Makefile.in

@@ -1,0 +1,7 @@
+These tests need Ruby's Test::Unit
+  http://raa.ruby-lang.org/list.rhtml?name=testunit
+which points to a download URL that doesn't work at 2004-11-03
+
+So, the tests are run but the results ignored.
+
+-- Dave
