@@ -1,5 +1,9 @@
 2004-07-14  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* Serializer.cs:
+	(Serializer (World world, string name, string mime_type, Uri
+	type_uri)): Replace cast to Object with use of Uri.operator==
+
 	* Uri.cs (Equals, operator ==, operator !=, GetHashCode): Added.
 
 	* Statement.cs:
