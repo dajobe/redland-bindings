@@ -23,7 +23,7 @@ import RDF
 
 world=RDF.world()
 
-storage=RDF.storage({'storage_name' : "hashes", 'name' : "test", "options_string" : "new='yes',hash-type='bdb',dir='.'"})
+storage=RDF.storage({'storage_name' : "memory", 'name' : "test", "options_string" : ""})
 if not storage:
   raise "new RDF.storage failed"
 
