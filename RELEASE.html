@@ -40,6 +40,14 @@ boolean results and as a syntax format such as RDF/XML for graphs,
 <a href="http://www.w3.org/TR/2004/WD-rdf-sparql-XMLres-20041221/">SPARQL Variable Binding Results XML Format</a> for bindings.
 .</p>
 
+<p>The error handling was altered for parsing methods
+class RDF::Redland::Model method <code>load</code>, class
+RDF::Redland::Parser methods <code>parse_into_model</code> and
+<code>parse_string_into_model</code> which now take an optional
+<em>handler</em> parameter that is a subroutine handler providing
+detailed log information.  This can be used to capture or store
+detailed info on possibly multiple problems in parsing.</p>
+
 
 <h3>PHP bindings changes</h3>
 
@@ -51,12 +59,19 @@ loaded, the version of redland and the PHP bindings.</p>
 <h3>Python bindings changes</h3>
 
 <p>Change the way that redland errors and warnings are reported.
-Warnings are now generated immediately as a Python
-<code>PyRedland_Warning</code> warning.  The first error generated is
-saved and thrown as an <code>PyRedland_Error</code> exception after
-the redland function returns.  If multiple errors are generated, the
-remaining ones are left to the default redland error handler, which
-prints them to stderr.</p>
+There are now two choices.  By default warnings are now generated
+immediately as a Python <code>PyRedland_Warning</code> warning.  The
+first error generated is saved and thrown as an
+<code>PyRedland_Error</code> exception after the redland function
+returns.  If multiple errors are generated, the remaining ones are
+left to the default redland error handler, which prints them to
+stderr.</p>
+
+<p>The alternative is in parsing methods <code>model.load</code>,
+<code>parser.parse_into_model</code> and
+<code>parser.parse_string_into_model</code> which now take an
+optional <em>handler</em> parameter that is a subroutine handler
+providing detailed log information.</p>
 
 <p>This change has a disadvantage in no longer allowing
 user-registration of callbacks but it does seem to work better with
