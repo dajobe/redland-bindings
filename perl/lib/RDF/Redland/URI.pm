@@ -110,7 +110,7 @@ sub DESTROY ($) {
 }
 
 sub as_string ($) {
-  &Redland::librdf_uri_as_string(shift->{URI});
+  &Redland::librdf_uri_to_string(shift->{URI});
 }
 
 1;
