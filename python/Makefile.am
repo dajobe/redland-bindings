@@ -48,7 +48,7 @@ $(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -python $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ $<
 
 $(PYTHON_PACKAGE)_wrap.so: $(srcdir)/$(PYTHON_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_builddir)/librdf -I$(top_srcdir)/librdf -I$(PYTHON_INCLUDE) $(srcdir)/$(PYTHON_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC `$(top_buildddir)/redland-src-config --cflags` -I$(top_srcdir)/librdf -I$(PYTHON_INCLUDE) $(srcdir)/$(PYTHON_PACKAGE)_wrap.c -c -o $@
 
 $(PYTHON_PACKAGE).so: $(PYTHON_PACKAGE)-stamp
 $(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so
@@ -57,8 +57,8 @@ $(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so
 	else \
 	  args=" -shared"; \
 	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so `$(top_srcdir)/redland-src-config --libs` -o $(PYTHON_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so `$(top_srcdir)/redland-src-config --libs` -o $(PYTHON_PACKAGE).so
+	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so `$(top_buildddir)/redland-src-config --libs` -o $(PYTHON_PACKAGE).so; \
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PYTHON_PACKAGE)_wrap.so `$(top_builddir)/redland-src-config --libs` -o $(PYTHON_PACKAGE).so
 	touch $(PYTHON_PACKAGE)-stamp
 
 install-pythonDATA: $(python_DATA)
