@@ -486,6 +486,7 @@ fi
 AC_MSG_CHECKING(redland library source)
 if test $with_redland = system; then
   REDLAND_VERSION="system $REDLAND_VERSION"
+  REDLAND_RUN=
 else
   if test -x ../librdf/redland-src-config; then
     dir=`cd ../librdf; pwd`
@@ -497,10 +498,12 @@ else
   REDLAND_CONFIG=$dir/redland-src-config
   REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
   REDLAND_VERSION="internal $REDLAND_VERSION in $dir"
+  REDLAND_RUN="$REDLAND_CONFIG --run"
 fi
 AC_MSG_RESULT($REDLAND_VERSION)
 
 AC_SUBST(REDLAND_CONFIG)
+AC_SUBST(REDLAND_RUN)
 
 REDLAND_SWIG=`$REDLAND_CONFIG --swig`
 AC_SUBST(REDLAND_SWIG)
