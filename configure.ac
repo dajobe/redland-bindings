@@ -1,4 +1,4 @@
-dnl -*- Mode: sh -*-
+dnl -*- Mode: autoconf -*-
 dnl
 dnl configure.in - top level autoconf file for Redland API bindings
 dnl (Process this file with autoconf to produce a configure script.)
@@ -21,7 +21,7 @@ dnl
 dnl 
 
 
-AC_INIT([Redland RDF Application Framework bindings], 0.9.18.2, redland-dev@lists.librdf.org, redland-bindings)
+AC_INIT([Redland RDF Application Framework bindings], 0.9.19.1, redland-dev@lists.librdf.org, redland-bindings)
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(perl/example.pl)
 AC_REVISION($Revision$)dnl
