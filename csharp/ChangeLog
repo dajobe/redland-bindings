@@ -87,7 +87,7 @@
 	we really need Model and Storage to be separate classes?
 	(Execute): adjust to new form of QueryResults ctor (see ChangeLog)
 
-	* Node.cs: dd Dumbill <edd@usefulinc.com>
+	* Node.cs:
 	general indenting fixes.
 	node: initialise to IntPtr.Zero
 	(~Node): test for IntPtr.Zero, not == null
