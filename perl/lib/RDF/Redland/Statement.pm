@@ -67,7 +67,7 @@ sub new ($) {
   my($proto)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{STATEMENT}=&Redland::librdf_new_statement();
+  $self->{STATEMENT}=&Redland::librdf_new_statement($RDF::World->{WORLD});
   return undef if !$self->{STATEMENT};
 
   bless ($self, $class);
