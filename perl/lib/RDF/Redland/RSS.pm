@@ -324,7 +324,7 @@ sub as_xhtml ($%) {
   my $titleBarTextColor=$opts{titleBarTextColor} || '#000000';
   my $titleBarColor=$opts{titleBarColor} || '#ADD8E6';
   my $boxFillColor=$opts{boxFillColor} || '#FFFFFF';
-  my $time=$opts{time} || '';
+  my $time=$opts{'time'} || '';
   my $hspace=$opts{hspace} || 0;
   my $vspace=$opts{vspace} || 0;
   my $full=$opts{full};
