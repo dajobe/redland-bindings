@@ -3,7 +3,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2002 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -19,11 +19,27 @@
 # 
 #
 
-__version__ = "0.3"
+"""Redland Python API
 
-__debug__ = 0
+More documentation needed here.
 
-__world__ = None
+See the perl API documentation for inspiration :)
+
+"""
+
+
+__version__ = "0.4"
+
+# Package variables [globals]
+#   Python style says to use _ to prevent exporting
+#   Use two underscores "(class-private names,
+#     enforced by Python 1.4) in those cases where it is important
+#     that only the current class accesses an attribute"
+#      -- http://python.sourceforge.net/peps/pep-0008.html
+
+_debug = 0
+_world = None
+
 
 import sys
 import string
@@ -36,30 +52,30 @@ class world:
 
   def __init__(self,digest_name="",uri_hash=None):
     """Create new RDF World object (constructor)"""
+    global _world
     self.world=Redland.librdf_new_world()
     Redland.librdf_world_open(self.world)
 
     # Keep a circular reference to this object so it is deleted last
     self.me=self
 
-    global __world__
-    __world__=self
+    _world=self
 
   # __init__ ()
 
   def close(self):
     """Destroy RDF World object (destructor)."""
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Destroying RDF.world"
     self.me=None
     Redland.librdf_free_world(self.world)
 
-  def debug(self,value=0):
-    global __debug__
-    if value:
-      __debug__=value
+  def debug(self,value= -1):
+    if value >= 0:
+      _debug=value
     else:
-      return __debug__
+      return _debug
 
 
 # end class world
@@ -70,13 +86,15 @@ class node:
   # CONSTRUCTOR
   def __init__(self, **args):
     """Create an RDF Node (constructor)."""
-    if __debug__:
+    global _world
+    global _debug
+    if _debug:
       print "Creating RDF.node args=",args
     self.node=None
     self.free_me=1
 
     if args.has_key('uri_string'):
-      self.node=Redland.librdf_new_node_from_uri_string(__world__.world, args['uri_string'])
+      self.node=Redland.librdf_new_node_from_uri_string(_world.world, args['uri_string'])
     elif args.has_key('uri'):
       self.node=Redland.librdf_new_node_from_uri(args['uri'].uri)
     elif args.has_key('literal'):
@@ -92,7 +110,7 @@ class node:
         is_wf_xml=args['is_wf_xml']
       else:
         is_wf_xml=0
-      self.node=Redland.librdf_new_node_from_literal(__world__.world, args['literal'],xml_language,xml_space,is_wf_xml)
+      self.node=Redland.librdf_new_node_from_literal(_world.world, args['literal'],xml_language,xml_space,is_wf_xml)
     elif args.has_key('node'):
       self.node=Redland.librdf_new_node_from_node(args['node'].node)
     elif args.has_key('from_object'):
@@ -102,15 +120,16 @@ class node:
       self.node=args['from_object']
       self.free_me=args['free_node']
     else:
-      self.node=Redland.librdf_new_node(__world__.world)
+      self.node=Redland.librdf_new_node(_world.world)
 
   # DESTRUCTOR
   def __del__(self):
     """Free an RDF Node (destructor)."""
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Destroying RDF.node"
     if self.node and self.free_me:
-      if __debug__:
+      if _debug:
         print "Deleting Redland node object"
       Redland.librdf_free_node(self.node)
 
@@ -164,7 +183,9 @@ class statement:
   # CONSTRUCTOR
   def __init__(self, **args):
     """Create an RDF Statement (constructor)."""
-    if __debug__:
+    global _world
+    global _debug    
+    if _debug:
       print "Creating RDF.statement object args",args
     self.statement=None
     self.free_me=1
@@ -192,7 +213,7 @@ class statement:
       else:
 	o=object.node
 
-      self.statement=Redland.librdf_new_statement_from_nodes(__world__.world, s, p, o)
+      self.statement=Redland.librdf_new_statement_from_nodes(_world.world, s, p, o)
 
       # Zap the incoming librdf node objects since they are now owned by the
       # librdf statement object self.statement
@@ -210,14 +231,15 @@ class statement:
       self.free_me=args['free_statements']
 
     else:
-      self.statement=Redland.librdf_new_statement(__world__.world)
+      self.statement=Redland.librdf_new_statement(_world.world)
 
   # DESTRUCTOR
   def __del__(self):
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Destroying RDF.statement"
     if self.statement and self.free_me:
-      if __debug__:
+      if _debug:
         print "Deleting Redland statement object"
       Redland.librdf_free_statement(self.statement)
 
@@ -259,20 +281,22 @@ class model:
   # CONSTRUCTOR
   def __init__(self, storage, **args):
     """Create an RDF Model (constructor)."""
-    if __debug__:
+    global _world
+    global _debug    
+    if _debug:
       print "Creating RDF.model args=",args
     self.model=None
     self.storage=None
 
     if args.has_key('options_string'):
-      self.model=Redland.librdf_new_model(__world__.world, storage.storage, args['options_string'])
+      self.model=Redland.librdf_new_model(_world.world, storage.storage, args['options_string'])
     elif args.has_key('options_hash'):
-      self.model=Redland.librdf_new_model_with_options(__world__.world, storage.storage, args['options_hash'].hash)
+      self.model=Redland.librdf_new_model_with_options(_world.world, storage.storage, args['options_hash'].hash)
     elif args.has_key('model'):
       self.model=Redland.librdf_new_model_from_model(storage.storage,
       args['model'].model)
     else:
-      self.model=Redland.librdf_new_model(__world__.world, storage.storage, "")
+      self.model=Redland.librdf_new_model(_world.world, storage.storage, "")
 
     if self.model == "NULL":
       self.model=None
@@ -283,7 +307,8 @@ class model:
 
   # DESTRUCTOR
   def __del__(self):
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Destroying RDF.model "
     if self.model:
       Redland.librdf_free_model(self.model)
@@ -361,7 +386,8 @@ class iterator:
   # CONSTRUCTOR
   def __init__(self,object,creator):
     """Create an RDF Iterator (constructor)."""
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Creating RDF.iterator object=",object,"creator=",creator
     self.iterator=object;
     # Keep around a reference to the object that created the iterator
@@ -370,7 +396,8 @@ class iterator:
 
   # DESTRUCTOR
   def __del__(self):
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Destroying RDF.iterator"
     Redland.librdf_free_iterator(self.iterator)
 
@@ -398,7 +425,8 @@ class stream:
   # CONSTRUCTOR
   def __init__(self, object, creator, free_statements):
     """Create an RDF Stream (constructor)."""
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Creating RDF.stream for object",object,"creator",creator,"free_statements",free_statements
 
     self.stream=object;
@@ -410,7 +438,8 @@ class stream:
 
   # DESTRUCTOR
   def __del__(self):
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Destroying RDF.stream"
     Redland.librdf_free_stream(self.stream)
 
@@ -436,12 +465,14 @@ class storage:
   # CONSTRUCTOR
   def __init__(self, **args):
     """Create an RDF Storage (constructor)."""
-    if __debug__:
+    global _world
+    global _debug    
+    if _debug:
       print "Creating RDF.storage args=",args
     self.storage=None
 
     if args.has_key('storage_name') and args.has_key('name') and args.has_key('options_string'):
-      self.storage=Redland.librdf_new_storage(__world__.world, args['storage_name'] ,args['name'], args['options_string']);
+      self.storage=Redland.librdf_new_storage(_world.world, args['storage_name'] ,args['name'], args['options_string']);
     elif args.has_key('storage'):
       self.storage=Redland.librdf_new_storage_from_storage(args['storage'].storage);
     else:
@@ -454,7 +485,8 @@ class storage:
 
   # DESTRUCTOR
   def __del__(self):
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Destroying RDF.storage"
     if self.storage:
       Redland.librdf_free_storage(self.storage)
@@ -467,24 +499,27 @@ class uri:
   # CONSTRUCTOR
   def __init__(self, **args):
     """Create an RDF URI (constructor)."""
-    if __debug__:
+    global _world
+    global _debug    
+    if _debug:
       print "Creating RDF.uri args=",args
     self.uri=None
 
     if args.has_key('string'):
-     self.uri=Redland.librdf_new_uri(__world__.world, args['string'])
+     self.uri=Redland.librdf_new_uri(_world.world, args['string'])
     elif args.has_key('uri'):
       # FIXME: If the URI is a python URI ... need to use the above constructor
       # if isa(uri, <python uri object>):
-      #   self.uri=Redland.librdf_new_uri(__world__.world, uri.as_string)
+      #   self.uri=Redland.librdf_new_uri(_world.world, uri.as_string)
       self.uri=Redland.librdf_new_uri_from_uri(args['uri'].uri)
 
   # DESTRUCTOR
   def __del__(self):
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Destroying RDF.uri"
     if self.uri:
-      if __debug__:
+      if _debug:
         print "Deleting Redland uri object"
       Redland.librdf_free_uri(self.uri)
 
@@ -504,17 +539,20 @@ class parser:
   # CONSTRUCTOR
   def __init__(self, name, mime_type="", uri=None):
     """Create an RDF Parser (constructor)."""
-    if __debug__:
+    global _world
+    global _debug    
+    if _debug:
       print "Creating RDF.parser name=",name,"mime_type=",mime_type,"uri=",uri
 
     if uri:
       uri=uri.uri
   
-    self.parser=Redland.librdf_new_parser(__world__.world, name, mime_type, uri)
+    self.parser=Redland.librdf_new_parser(_world.world, name, mime_type, uri)
 
   # DESTRUCTOR
   def __del__(self):
-    if __debug__:
+    global _debug    
+    if _debug:
       print "Destroying RDF.parser"
     if self.parser:
       Redland.librdf_free_parser(self.parser)
