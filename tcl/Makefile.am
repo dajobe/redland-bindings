@@ -34,7 +34,7 @@ SWIG_CRUFT=
 EXTRA_DIST=README test.tcl example.tcl \
 $(SWIG_OUTPUTS)
 
-CLEANFILES=test*db $(TCL_PACKAGE)_wrap.o
+CLEANFILES=test*db $(TCL_PACKAGE)_wrap.o pkgIndex.tcl
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
