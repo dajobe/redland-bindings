@@ -36,7 +36,7 @@ RDF::Iterator - Redland RDF Iterator Class
 
   ...
   my $iterator=$model->targets_iterator($source_node, $arc_node);
-  while($iterator && $iterator->have_elements) {
+  while($iterator && !$iterator->end) {
     my $node=$iterator->next;
     ...
   }
@@ -99,14 +99,29 @@ sub DESTROY ($) {
 
 =over
 
-=item have_elements
+=item end
 
-Return non 0 if the iterator has more RDF::Node objects.
+Return non 0 if the iterator has finished
 
 =cut
 
-sub have_elements ($) {
+sub end ($) {
   &Redland::librdf_iterator_have_elements(shift->{ITERATOR});
+}
+
+=item have_elements
+
+Return non 0 if the iterator has more RDF::Node objects - deprecated,
+please use !$iterator->end instead.
+
+=cut
+
+# FIXME - remove this function in future release
+use vars qw($have_elements_warning);
+sub have_elements ($) {
+  warn "RDF::Iterator::have_elements is deprecated, please use \!RDF::Iterator::end\n" 
+    if $have_elements_warning++ == 0;
+  return !shift->end;
 }
 
 =item next

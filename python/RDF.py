@@ -374,7 +374,11 @@ class iterator:
       print "Destroying RDF.iterator"
     Redland.librdf_free_iterator(self.iterator)
 
+  def end (self):
+    return Redland.librdf_iterator_end(self.iterator)
+
   def have_elements (self):
+    print "RDF.iterator method have_elements is deprecated, please use !iterator.end instead"
     return Redland.librdf_iterator_have_elements(self.iterator)
 
   def next (self):
