@@ -343,9 +343,9 @@ returning an HTML fragment.
 
 =item imageAlign
 
-A string, has three possible values, left, right or the empty
-string. The channel image is either left-aligned or
-right-aligned. It defaults to right aligned.
+A string, has two possible values, left or right. The channel image
+is either left-aligned or right-aligned. It defaults to right
+aligned.
 
 
 =back
