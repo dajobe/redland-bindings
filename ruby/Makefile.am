@@ -58,7 +58,7 @@ clean-ruby realclean-ruby:
 
 install-ruby: $(RUBY_PACKAGE).so build-ruby
 	rubydir=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']"`; \
-	mkdir $$rubydir; \
+	mkdir -p $$rubydir; \
 	cp -p $(RUBY_PACKAGE).so $$rubydir
 
 dist-ruby:
