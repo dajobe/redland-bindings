@@ -84,7 +84,12 @@ sub new ($$$$) {
   my($proto,$storage_name,$name,$options_string)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
+
+  warn qq{RDF::Storage->new("$storage_name", "$name", "$options_string")\n} if $RDF::Debug;
+
   $self->{STORAGE}=&Redland::librdf_new_storage($storage_name,$name,$options_string);
+  return undef if !$self->{STORAGE};
+
   bless ($self, $class);
   return $self;
 }
@@ -94,11 +99,14 @@ sub new_from_storage ($$$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{STORAGE}=&Redland::librdf_new_storage_from_storage($storage->{STORAGE});
+  return undef if !$self->{STORAGE};
+
   bless ($self, $class);
   return $self;
 }
 
 sub DESTROY ($) {
+  warn "RDF::Storage DESTROY\n" if $RDF::Debug;
   &Redland::librdf_free_storage(shift->{STORAGE});
 }
 
