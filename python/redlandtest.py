@@ -282,30 +282,31 @@ class RasqalQueryTestCase (unittest.TestCase):
 
     def testRDQLQueryCount(self):
         q = Query("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
-        bindings = q.run_as_bindings(self.model)
-        for result in bindings:
+        results = q.execute(self.model)
+        for result in results:
             pass
-        self.assert_(len(q) == 3, "Query count should be 3 after query finished running")
+        self.assert_(len(results) == 3, "Query count should be 3 after query finished running")
 
     def testRDQLQueryRun(self):
         q = Query("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
-        bindings = q.run_as_bindings(self.model)
-        self.assert_(bindings is not None,"Query eval not OK")
+        results = q.execute(self.model)
+        self.assert_(results is not None,"Query eval not OK")
 
         count = 0
-        for result in bindings:
+        for result in results:
             count += 1
         self.assert_(count == 3, "Should have found three results in query")
 
     def testTripleQueryAsBindingsDontWork(self):
         q = Query("- - -",query_language="triples")
-        results = q.run_as_bindings(self.model)
-        self.assert_(results is None,"Triples queries shouldn't work as bindings - None should be returned from run_as_bindings")
+        results = q.execute(self.model)
+	first = results.get_binding_name(0)
+        self.assert_(first is None,"Triples queries shouldn't work as bindings - None should be returned from get_binding_name(0)")
 
     def testRDQLQueryAsStreamDontWork(self):
         q = Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
-        results = q.run_as_statements(self.model)
-        self.assert_(results is None,"RDQL queries shouldn't work as streams - None should be returned from run_as_statements")
+        stream = q.execute(self.model).as_stream()
+        self.assert_(stream is None,"RDQL queries shouldn't work as streams - None should be returned from as_stream")
 
     #def testRDQLParseError(self):
         #q = Query("SELECT WHERE")
@@ -314,17 +315,18 @@ class RasqalQueryTestCase (unittest.TestCase):
 
     def testTripleQuery(self):
         q = Query("- - -",query_language="triples")
-        results = q.run_as_statements(self.model)
-        self.assert_(results is not None,"Query eval not OK")
+        results = q.execute(self.model)
+        stream = results.as_stream()
+        self.assert_(stream is not None,"Query eval not OK")
 
         count = 0
-        for result in results:
+        for result in stream:
             count += 1
         self.assert_(count == 3, "Should have found three results in query")
 
     def testRDQLQueryRunOnModel(self):
         q = Query("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
-        bindings = self.model.run_as_bindings(q)
+        bindings = self.model.execute(q)
         self.assert_(bindings is not None,"Query eval not OK")
 
         count = 0
@@ -334,11 +336,12 @@ class RasqalQueryTestCase (unittest.TestCase):
 
     def testTripleQueryOnModel(self):
         q = Query("- - -",query_language="triples")
-        results = self.model.run_as_statements(q)
+        results = self.model.execute(q)
+        stream = results.as_stream()
         self.assert_(results is not None,"Query eval not OK")
 
         count = 0
-        for result in results:
+        for result in stream:
             count += 1
         self.assert_(count == 3, "Should have found three results in query")
 
