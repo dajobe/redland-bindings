@@ -79,6 +79,10 @@ use Redland;
 
 package RDF::RSS;
 
+use RDF::Model;
+
+@ISA=qw(RDF::Model);
+
 use vars qw($NS_URL);
 
 $NS_URL="http://purl.org/rss/1.0/";
@@ -88,7 +92,6 @@ $NS_URL="http://purl.org/rss/1.0/";
 sub new ($$;$) {
   my($proto,$source_uri_string,$base_uri_string)=@_;
   my $class = ref($proto) || $proto;
-  my $self  = {};
 
   $base_uri_string ||= $source_uri_string;
 
@@ -102,17 +105,15 @@ sub new ($$;$) {
 			       "new='yes',write='yes',hash-type='memory'");
   return undef if !$storage;
   
-  my $model=new RDF::Model($storage, "");
-  return undef if !$model;
+  my $self=new RDF::Model($storage, "");
+  return undef if !$self;
 
   my $parser=new RDF::Parser('repat');
   return undef if !$parser;
 
-  $parser->parse_into_model($source_uri, $base_uri, $model);
+  $parser->parse_into_model($source_uri, $base_uri, $self);
 
-  $self->{MODEL}=$model;
-
-  bless ($self, $class);
+  bless ($self, $class); # reconsecrate as RDF::RSS
   return $self;
 }
 
@@ -122,11 +123,9 @@ sub new ($$;$) {
 sub new_from_model ($$) {
   my($proto,$model)=@_;
   my $class = ref($proto) || $proto;
-  my $self  = {};
+  my $self  = $model;
 
-  $self->{MODEL}=$model;
-
-  bless ($self, $class);
+  bless ($self, $class); # reconsecrate as RDF::RSS
   return $self;
 }
 
@@ -149,7 +148,7 @@ sub storage ($) {
 }
 
 sub model ($) {
-  shift->{MODEL};
+  shift;
 }
 
 sub _find_by_type ($$) {
@@ -161,10 +160,10 @@ sub _find_by_type ($$) {
   my $object=RDF::Node->new_from_uri_string($type_value);
   return () if !$object;
 
-  my(@results)=$self->{MODEL}->get_sources($rdf_type, $object);
+  my(@results)=$self->get_sources($rdf_type, $object);
 
   # Turn the nodes into RDF::RSS:Node-s
-  @results=map { RDF::RSS::Node->new($self->{MODEL},$_) } @results;
+  @results=map { RDF::RSS::Node->new($self,$_) } @results;
 
   return(@results);
 }
