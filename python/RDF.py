@@ -777,6 +777,16 @@ please use 'not iterator.end' instead."""
     """Move to the next object on the Iterator"""
     Redland.librdf_iterator_next(self._iterator)
 
+  def context (self):
+    """Return a SHARED copy of the context Node of the current object on the Iterator"""
+    my_node=Redland.librdf_iterator_get_context(self._iterator)
+    if my_node == "NULL" or my_node == None:
+      return None
+
+    # return a new shared node owned by the librdf iterator object
+    node=Node(from_object=my_node, free_node=0)
+    return node
+
 # end class Iterator
 
 
@@ -845,6 +855,19 @@ class Stream:
       return 1
 
     return Redland.librdf_stream_next(self.stream)
+
+  def context (self):
+    """Return a SHARED copy of the context Node of the current object on the Stream"""
+    if not self.stream:
+      return 1
+
+    my_node=Redland.librdf_stream_get_context(self._iterator)
+    if my_node == "NULL" or my_node == None:
+      return None
+
+    # return a new shared node owned by the librdf iterator object
+    node=Node(from_object=my_node, free_node=0)
+    return node
 
 # end class Stream
 

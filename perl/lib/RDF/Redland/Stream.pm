@@ -137,6 +137,27 @@ sub next ($) {
   return &RDF::Redland::CORE::librdf_stream_next($self->{STREAM});
 }
 
+
+=item context
+
+Returns the context RDF::Redland::Node object in the stream or undef if
+the stream is finished.
+
+=cut
+
+sub context ($) {
+  # return a new context node wrapping a shared node managed by
+  # by the librdf library, which should not be freed.
+  my $self=shift;
+  return undef if !$self->{STREAM};
+  
+  my $object=&RDF::Redland::CORE::librdf_stream_get_context($self->{STREAM});
+  return undef if !$object;
+
+  # return a new node created by the librdf stream object
+  RDF::Redland::Node->_new_from_object($object,0);
+}
+
 =pod
 
 =back

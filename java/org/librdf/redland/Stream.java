@@ -84,6 +84,15 @@ public class Stream implements java.util.Iterator
       return new Statement(this.world, statement_object, true);
     }
 
+  public Node context() {
+    long node_object=core.librdf_stream_get_context(this.object);
+    
+    if(node_object == 0)
+      throw new java.util.NoSuchElementException();
+
+    return new Node(this.world, node_object, false);
+  }
+
   public boolean move_to_next()
     {
       return (core.librdf_stream_next(this.object) != 0);

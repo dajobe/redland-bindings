@@ -91,6 +91,14 @@ public class Iterator implements java.util.Iterator
     return new Node(this.world, node_object, false);
   }
 
+  public Node context() {
+    long node_object=core.librdf_iterator_get_context(this.object);
+    
+    if(node_object == 0)
+      throw new java.util.NoSuchElementException();
+
+    return new Node(this.world, node_object, false);
+  }
 
   public boolean move_to_next() {
     return (core.librdf_iterator_next(this.object) != 0);
