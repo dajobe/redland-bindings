@@ -21,7 +21,7 @@ dnl
 dnl 
 
 
-AC_INIT([Redland RDF Application Framework bindings], 0.9.17.0.1, redland-dev@lists.librdf.org, redland-bindings)
+AC_INIT([Redland RDF Application Framework bindings], 0.9.17.1, redland-dev@lists.librdf.org, redland-bindings)
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(perl/example.pl)
 AC_REVISION($Revision$)dnl
