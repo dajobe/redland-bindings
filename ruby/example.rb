@@ -22,7 +22,7 @@
 # 
 #
 
-require 'Redland'
+require 'redland'
 
 uri_string=ARGV[0]
 parser_name=ARGV[1]
