@@ -71,7 +71,7 @@ example1.exe: example1.cs ../Redland.dll
 	$(CSHARP_LINK) example1.cs /r:../Redland.dll /out:$@
 
 
-unittests: $(NUNIT_TESTS)
+unittests: $(NUNIT_TESTS) ../Redland.dll
 	@MONO_PATH=..; export MONO_PATH; \
 	$(ECHO) Running $(NUNIT_CONSOLE) $(NUNIT_TESTS); \
 	$(top_builddir)/redland-src-config --run $(CLIRUN) $(NUNIT_CONSOLE) $(NUNIT_TESTS)
