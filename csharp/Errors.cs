@@ -208,6 +208,9 @@ namespace Redland {
 			base (msg, messages)
 		{
 		}
+
+		public RedlandError (string msg) : base (msg, null) {
+		}
 	}
 }
 
