@@ -115,9 +115,10 @@ sub parse_into_model ($$$$) {
 }
 
 sub feature ($$;$) {
-  my($self,$uri_string,$value)=@_;
+  my($self,$uri,$value)=@_;
 
-  $uri=RDF::URI->new($uri)  
+  warn "RDF::Parser->feature('$uri', '$value')\n" if $RDF::Debug;
+  $uri=RDF::URI->new($uri)
     unless ref $uri;
 
   return &Redland::librdf_parser_get_feature($self->{PARSER},$uri->{URI})
