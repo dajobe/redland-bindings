@@ -271,14 +271,22 @@ sub items ($) {
   my($seq_resource)=$self->{MODEL}->get_targets($self, $items_predicate);
   return () if !$seq_resource;
 
-  my $li_predicate=RDF::Node->new_from_uri_string('http://www.w3.org/1999/02/22-rdf-syntax-ns#li');
-  return () if !$li_predicate;
+  $seq_resource=RDF::RSS::Node->new($self->{MODEL}, $seq_resource);
 
-  # Find all contents of <rdf:Seq> - i.e. the rdf:li elements
-  my(@resources)=$self->{MODEL}->get_targets($seq_resource, $li_predicate);
+  # Find all rdf:_<n> properties from <rdf:Seq>
+  my(@resources);
+  for my $prop ($seq_resource->properties) {
+    if($prop->uri->as_string =~ m%^http://www.w3.org/1999/02/22-rdf-syntax-ns#_(\d+)$%) {
+       # Must want a list here otherwise get an RDF::Iterator object
+       my($resource)=$seq_resource->{MODEL}->get_targets($seq_resource, $prop);
+       push(@resources, [$1, $resource]);
+     }
+  }
 
-  # Convert list of RDF::Node-s into list of RDF::RSS:Node-s
-  return map { RDF::RSS::Node->new($self->{MODEL}, $_) } @resources;
+  # In order - sort them by ordinal, convert to RDF::RSS::Node objects
+  # and return
+  return map {RDF::RSS::Node->new($self->{MODEL}, $_->[1])}
+              sort {$a->[0] <=> $b->[0]} @resources;
 }
 
 # for channel (0 or 1 allowed)
