@@ -156,17 +156,15 @@ sub size ($) {
 
 =item add SUBJECT PREDICATE OBJECT
 
-Add a new statement to the model with RDF::Redland::Node I<SUBJECT>,
-I<PREDICATE> and I<OBJECT>.
+Add a new statement to the model with I<SUBJECT>,
+I<PREDICATE> and I<OBJECT>.  These can be
+RDF::Redland::Node, RDF::Redland::URI or perl URI objects.
 
 =cut
 
 sub add ($$$$) {
   my($self,$subject,$predicate,$object)=@_;
-  $subject=&RDF::Redland::CORE::librdf_new_node_from_node($subject->{NODE});
-  $predicate=&RDF::Redland::CORE::librdf_new_node_from_node($predicate->{NODE});
-  $object=&RDF::Redland::CORE::librdf_new_node_from_node($object->{NODE});
-  return &RDF::Redland::CORE::librdf_model_add($self->{MODEL},$subject,$predicate,$object);
+  return $self->add_statement($subject,$predicate,$object);
 }
 
 =item add_typed_literal_statement SUBJECT PREDICATE STRING [XML_LANGUAGE [DATATYPE]]
@@ -193,6 +191,8 @@ Add RDF::Redland::Statement I<STATEMENT>
 or the statement formed by I<NODE NODE NODE> to the model.
 If the optional RDF:Redland::Node I<CONTEXT> is given,
 associate it with that context.
+Any of I<NODE> or I<CONTEXT> can be a RDF::Redland::Node,
+RDF::Redland::URI or perl URI object.
 
 =cut
 
@@ -206,6 +206,10 @@ sub add_statement ($;$$$$) {
   }
   my $node=shift(@rest);
   if($node) {
+    my $class=ref($node);
+    $node=&RDF::Redland::Node::_ensure($node);
+    die "Cannot make a Node from an object of class $class\n"
+      unless $node;
     return &RDF::Redland::CORE::librdf_model_context_add_statement($self->{MODEL},$node->{NODE},$statement->{STATEMENT});
   } else {
     return &RDF::Redland::CORE::librdf_model_add_statement($self->{MODEL},$statement->{STATEMENT});
@@ -215,14 +219,19 @@ sub add_statement ($;$$$$) {
 =item add_statements STREAM [CONTEXT]
 
 Add the statements from the RDF::Redland::Stream I<STREAM> to the
-model.  If the optional RDF:Redland::Node I<CONTEXT> is given,
+model.  If the optional I<CONTEXT> is given,
 associate it with that context.
+I<CONTEXT> can be a RDF::Redland::Node, RDF::Redland::URI or perl URI object.
 
 =cut
 
 sub add_statements ($$;$) {
   my($self,$statement_stream,$node)=@_;
   if($node) {
+    my $class=ref($node);
+    $node=&RDF::Redland::Node::_ensure($node);
+    die "Cannot make a Node from an object of class $class\n"
+      unless $node;
     return &RDF::Redland::CORE::librdf_model_context_add_statements($self->{MODEL},$node->{NODE},$statement_stream->{STREAM});
  } else {
    return &RDF::Redland::CORE::librdf_model_add_statements($self->{MODEL},$statement_stream->{STREAM});
@@ -232,14 +241,19 @@ sub add_statements ($$;$) {
 =item remove_statement STATEMENT [CONTEXT]
 
 Remove RDF::Redland::Statement I<STATEMENT> from the model.
-If the optional RDF:Redland::Node I<CONTEXT> is given,
+If the optional I<CONTEXT> is given,
 remove only the statement stored with that context.
+I<CONTEXT> can be a RDF::Redland::Node, RDF::Redland::URI or perl URI object.
 
 =cut
 
 sub remove_statement ($$;$) {
   my($self,$statement,$node)=@_;
   if($node) {
+    my $class=ref($node);
+    $node=&RDF::Redland::Node::_ensure($node);
+    die "Cannot make a Node from an object of class $class\n"
+      unless $node;
     return &RDF::Redland::CORE::librdf_model_context_remove_statement($self->{MODEL},$node->{NODE},$statement->{STATEMENT});
   } else {
     return &RDF::Redland::CORE::librdf_model_remove_statement($self->{MODEL},$statement->{STATEMENT});
@@ -249,12 +263,17 @@ sub remove_statement ($$;$) {
 =item remove_context_statements CONTEXT
 
 Remove all RDF::Redland::Statement I<STATEMENT>s from the model
-with the given RDF:Redland::Node I<CONTEXT> context.
+with the given I<CONTEXT> context.
+I<CONTEXT> can be a RDF::Redland::Node, RDF::Redland::URI or perl URI object.
 
 =cut
 
-sub context_remove_statements ($$) {
+sub remove_context_statements ($$) {
   my($self,$node)=@_;
+  my $class=ref($node);
+  $node=&RDF::Redland::Node::_ensure($node);
+  die "Cannot make a Node from an object of class $class\n"
+    unless $node;
   return &RDF::Redland::CORE::librdf_model_context_remove_statements($self->{MODEL},$node->{NODE});
 }
 
