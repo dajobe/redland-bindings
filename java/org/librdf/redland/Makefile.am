@@ -1,5 +1,5 @@
 
-SWIG_OUTPUTS=core.java core.java.in coreJNI.java
+SWIG_OUTPUTS=core.java core.java.in
 EXTRA_DIST=World.java URI.java Node.java Statement.java Iterator.java \
 Serializer.java Stream.java Parser.java Storage.java Model.java \
 $(SWIG_OUTPUTS)
