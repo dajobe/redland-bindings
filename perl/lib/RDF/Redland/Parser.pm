@@ -135,6 +135,35 @@ sub parse_into_model ($$$$) {
   return &RDF::Redland::CORE::librdf_parser_parse_into_model($self->{PARSER},$uri->{URI},$base_uri->{URI},$model->{MODEL});
 }
 
+=item parse_string_as_stream STRING BASE_URI
+
+Parse the syntax in I<STRING> with required base
+RDF::Redland::URI I<BASE_URI>.
+
+Returns an RDF::Redland::Stream of RDF::Redland::Statement objects or
+undef on failure.
+
+=cut
+
+sub parse_string_as_stream ($$$) {
+  my($self,$string,$base_uri)=@_;
+  my $stream=&RDF::Redland::CORE::librdf_parser_parse_string_as_stream($self->{PARSER},$string, $base_uri->{URI});
+  return undef if !$stream;
+  return new RDF::Redland::Stream($stream,$self);
+}
+
+=item parse_string_into_model STRING BASE_URI MODEL
+
+Parse the syntax in I<STRING> with required base
+RDF::Redland::URI I<BASE_URI> into RDF::Redfland::Model I<MODEL>.
+
+=cut
+
+sub parse_string_into_model ($$$$) {
+  my($self,$string,$base_uri,$model)=@_;
+  return &RDF::Redland::CORE::librdf_parser_parse_into_model($self->{PARSER},$string,$base_uri->{URI},$model->{MODEL});
+}
+
 =item feature URI [VALUE]
 
 Get/set a parser feature.  The feature is named via RDF::Redland::URI I<URI>
