@@ -75,23 +75,26 @@
 
 use ExtUtils::MakeMaker;
 
-$SRCDIR='..';
-$PACKAGE='Redland';
+$TOP_SRCDIR=$ENV{TOP_SRCDIR} || '..';
+$PACKAGE=$ENV{PACKAGE} || "Redland";
 
-my $redland_libs=`$SRCDIR/redland-config --libs`;
+my $redland_libs=`$TOP_SRCDIR/redland-config --libs`;
 
-my $conf_in_file="$SRCDIR/configure.in";
-open(CONF, $conf_in_file) or die "Cannot open $conf_in_file for version - $!\n";
-my $version;
-while(<CONF>) {
-  if(/AM_INIT_AUTOMAKE\(redland,\s+(\d+\.\d+\.\d+)\)/) {
-    $version=$1;
-    last;
+my $version=$ENV{VERSION};
+
+if(!$version) {
+  my $conf_in_file="$TOP_SRCDIR/configure.in";
+  open(CONF, $conf_in_file) or die "Cannot open $conf_in_file for version - $!\n";
+  while(<CONF>) {
+    if(/AM_INIT_AUTOMAKE\(redland,\s+(\d+\.\d+\.\d+)\)/) {
+      $version=$1;
+      last;
+    }
   }
+  close(CONF);
+  die "Cannot find AM_INIT_AUTOMAKE in $conf_in_file for version\n"
+    unless $version;
 }
-close(CONF);
-die "Cannot find AM_INIT_AUTOMAKE in $conf_in_file for version\n"
-  unless $version;
 
 sub MY::postamble {
   return <<"EOT";
@@ -114,8 +117,8 @@ WriteMakefile(
     'ABSTRACT'  => "Redland RDF library",
     'VERSION'   => $version,
     'DEFINE'    => '-Dbool=char -DHAVE_CONFIG_H',
-    'CCFLAGS'   => "-I$SRCDIR",
-    'LIBS'      => ["-L$SRCDIR $redland_libs"],
+    'CCFLAGS'   => "-I$TOP_SRCDIR",
+    'LIBS'      => ["-L$TOP_SRCDIR $redland_libs"],
     'OBJECT'    => 'Redland_wrap.o',
     'MAKEFILE'  => 'Makefile.perl',
     'clean'     => { FILES => "test*.db" },
