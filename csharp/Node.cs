@@ -14,6 +14,14 @@ using System.Runtime.InteropServices;
 
 namespace Redland {
 
+	public enum NodeType {
+		Unknown,
+   		Resource,
+		Literal,
+	   	Reserved1,
+	   	Blank
+	};
+	
 	public class Node : IWrapper, IDisposable {
 		
 		IntPtr node = IntPtr.Zero;
@@ -22,6 +30,56 @@ namespace Redland {
 
 		public IntPtr Handle {
 			get { return node; }
+		}
+
+		[DllImport ("librdf")]
+		static extern int librdf_node_get_type (IntPtr node);
+
+		public NodeType Type {
+			get {
+				return (NodeType) librdf_node_get_type (node);
+			}
+		}
+		
+		public bool IsResource ()
+		{
+			return Type == NodeType.Resource;
+		}
+
+		public bool IsLiteral ()
+		{
+			return Type == NodeType.Literal;
+		}
+
+		public bool IsBlank ()
+		{
+			return Type == NodeType.Blank;
+		}		
+
+		[DllImport ("librdf")]
+		static extern IntPtr librdf_node_get_literal_value (IntPtr node);
+
+		public string Literal {
+			get {
+				if (! IsLiteral ())
+					throw new RedlandError 
+						("Can't get literal value of non-literal");
+				IntPtr istr = librdf_node_get_literal_value (node);
+				return Marshal.PtrToStringAuto (istr);
+			}
+		}
+
+		[DllImport ("librdf")]
+		static extern IntPtr librdf_node_get_literal_value_language (IntPtr node);
+
+		public string Language {
+			get {
+				if (! IsLiteral ())
+					throw new RedlandError 
+						("Can't get language of non-literal");
+				IntPtr istr = librdf_node_get_literal_value_language (node);
+				return Marshal.PtrToStringAuto (istr);
+			}
 		}
 
 		[DllImport ("librdf")]
@@ -134,7 +192,7 @@ namespace Redland {
 		{
 			IntPtr iuri = Marshal.StringToHGlobalAuto (uri.ToString());
 			node = librdf_new_node_from_uri_string (world.Handle, iuri);
-                        Marshal.FreeHGlobal (iuri);
+			Marshal.FreeHGlobal (iuri);
 		}
 
 		[DllImport ("librdf")]
@@ -181,6 +239,17 @@ namespace Redland {
 		{
 			IntPtr istr = librdf_node_to_string (node);
 			return Marshal.PtrToStringAuto (istr);
+		}
+		
+		[DllImport ("librdf")]
+		static extern IntPtr librdf_node_get_uri (IntPtr node);
+
+		public Redland.Uri Uri {
+			get {
+				if (! IsResource ())
+					throw new RedlandError ("Can't get URI of non-resource");
+				return new Redland.Uri (librdf_node_get_uri (node));
+			}
 		}
 	}
 }
