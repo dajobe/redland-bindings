@@ -30,6 +30,9 @@ RUBY_PACKAGE=redland
 SWIG_OUTPUTS=$(RUBY_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
+RDOC_DIR=rdoc
+RDOC_STAMP=rdoc-stamp
+
 rubylib=@RUBY_LIB@
 
 rubydir=/usr/lib/$(rubylib)
@@ -45,7 +48,7 @@ SUBDIRS=lib test
 CLEANFILES=*.db test-out.rdf core* \
 $(RUBY_PACKAGE)_wrap.so $(RUBY_PACKAGE)_wrap.o ruby-redland-stamp \
 $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle
-MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
+MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT) $(RDOC_DIR) $(RDOC_STAMP)
 
 RUN=@REDLAND_RUN@
 
@@ -99,14 +102,14 @@ test-example: $(RUBY_PACKAGE).so $(srcdir)/example.rb
 	$(RUN)$(RUBY) -I. -Ilib \
 	  $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
 
-docs: rdoc-stamp
-rdoc-stamp:
-	mkdir -p html; \
-	outdir=`cd html; pwd`; \
+docs: $(RDOC_STAMP)
+$(RDOC_STAMP):
+	mkdir -p $(RDOC_DIR); \
+	outdir=`cd $(RDOC_DIR); pwd`; \
 	rm -rf $$outdir; \
 	here=`pwd`; \
 	cd $(srcdir)/lib; \
-	rdoc --quiet --fmt html --charset utf8 --inline-source --image-format png --op $$outdir --title "Redland Ruby API RDoc" --exclude convert_owl.rb --exclude constants.rb --exclude convertfoaf.rb && touch $$here/$@
+	rdoc --quiet --fmt html --charset 'utf-8' --inline-source --image-format png --op $$outdir --title "Redland Ruby API RDoc" --exclude convert_owl.rb --exclude constants.rb --exclude convertfoaf.rb && touch $$here/$@
 
 clean-local:
-	rm -rf html rdoc.stamp
+	rm -rf $(RDOC_DIR) $(RDOC_STAMP)
