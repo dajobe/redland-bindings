@@ -73,7 +73,7 @@ $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java.in: $(srcdir)/../Redland.i
 	  rm -f $(JAVA_MODULE).java SWIGTYPE_*; \
 	  sed -e 's/class $(JAVA_MODULE)JNI/public class $(JAVA_MODULE)/' $(JAVA_MODULE)JNI.java > $(JAVA_MODULE).java; \
 	  sed -e 's/$(JAVA_MODULE)JNI/$(JAVA_MODULE)/g' $(JAVA_MODULE)_wrap.c > $(JAVA_MODULE)_wrap.c.new; \
-	  rm -f $(JAVA_MODULE)_wrap.c; $(JAVA_MODULE)JNI.java; \
+	  rm -f $(JAVA_MODULE)_wrap.c $(JAVA_MODULE)JNI.java; \
 	  mv $(JAVA_MODULE)_wrap.c.new $(JAVA_MODULE)_wrap.c; \
 	fi; \
 	mv $(JAVA_MODULE)_wrap.c $$here; \
