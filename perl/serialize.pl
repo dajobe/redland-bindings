@@ -150,7 +150,7 @@ while(!$stream->end) {
   } else {
     push(@{$state->{nodes}->{$subject_key}}, RDF::Redland::Statement->new_from_statement($statement));
   }
-  $state->{subject_key_to_node}->{$subject_key}=$subject;
+  $state->{subject_key_to_node}->{$subject_key}=RDF::Redland::Node->new_from_node($subject);
   $stream->next;
 }
 
@@ -264,7 +264,7 @@ sub format_statement ($$$) {
     emit($state, qq{<$qname${attrs}>$literal</$qname>});
   } elsif($otype == $RDF::Redland::Node::Type_Blank) {
     my $attr=make_xml_qname($state, $RDF_NS, "nodeID");
-    my $object_value=$object->as_string; # FIXME ->blank_identifer
+    my $object_value=$object->blank_identifer;
     emit($state, qq{<$qname $attr="$object_value"/>});
   } else {
     die "Unknown object type $otype\n";
@@ -277,14 +277,17 @@ sub start_format_subject($$) {
 
   my $element=make_xml_qname($state, $RDF_NS, "Description");
   my $about='';
-  if($subject_node->type eq $RDF::Redland::Node::Type_Resource) {
+  my $stype=$subject_node->type;
+  if($stype eq $RDF::Redland::Node::Type_Resource) {
     my $attr=make_xml_qname($state, $RDF_NS, "about", 1);
     my $url=$subject_node->uri->as_string;
     $about=qq{ $attr="$url"};
-  } elsif($subject_node->type eq $RDF::Redland::Node::Type_Blank) {
+  } elsif($stype eq $RDF::Redland::Node::Type_Blank) {
     my $attr=make_xml_qname($state, $RDF_NS, "nodeID", 1);
-    my $id=$subject_node->as_string; # FIXME ->blank_identifier
+    my $id=$subject_node->blank_identifier;
     $about=qq{ $attr="$id"};
+  } else {
+    die "Unknown subject type $stype\n";
   }
   emit($state, qq{<$element$about>});
 }
