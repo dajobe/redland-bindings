@@ -102,8 +102,9 @@ $statement=undef;
 warn "\nParsing URI (file) $test_file\n";
 my $uri=new RDF::URI("file:$test_file");
 
-my $parser=new RDF::Parser('repat');
+my $parser=new RDF::Parser('sirpac-w3c');
 die "Failed to find parser\n" if !$parser;
+$parser->feature("http://www.w3.org/1999/02/22-rdf-syntax-ns#aboutEach", "yes");
 
 $stream=$parser->parse_as_stream($uri,$uri);
 my $count=0;
