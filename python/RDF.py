@@ -1684,6 +1684,11 @@ optional.  When any are given, they must all match.
     elif type(uri) is unicode:
       import Redland_python
       uri = Uri(string=Redland_python.unicode_to_bytes(uri))
+    if type(base_uri) is str:
+      base_uri = Uri(string = base_uri)
+    elif type(base_uri) is unicode:
+      import Redland_python
+      base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
       base_uri = uri
     try:
@@ -1697,6 +1702,11 @@ optional.  When any are given, they must all match.
   def parse_string_into_model(self, model, string, base_uri):
     """"Parse into the Model model from the content ain string
         with the required base URI"""
+    if type(base_uri) is str:
+      base_uri = Uri(string = base_uri)
+    elif type(base_uri) is unicode:
+      import Redland_python
+      base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
       raise RedlandError("A base URI is required when parsing a string")
     return Redland.librdf_parser_parse_string_into_model(self._parser,
@@ -1893,6 +1903,11 @@ class Serializer(object):
   def serialize_model_to_file(self, name, model, base_uri=None):
     """Serialize to filename name the Model model using the
        optional base URI."""
+    if type(base_uri) is str:
+      base_uri = Uri(string = base_uri)
+    elif type(base_uri) is unicode:
+      import Redland_python
+      base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
       rbase_uri = base_uri._reduri
     else:
