@@ -15,11 +15,13 @@ using System.Runtime.InteropServices;
 
 namespace Redland {
 
-	public class Iterator : IWrapper, IEnumerator, IDisposable {
+	public class Iterator : IWrapper, IEnumerator, IEnumerable, IDisposable {
 		
 		IntPtr iterator = IntPtr.Zero;
 
 		bool disposed = false;
+
+		bool started = false;
 
 		public IntPtr Handle {
 			get { return iterator; }
@@ -51,9 +53,12 @@ namespace Redland {
 
 		public bool MoveNext ()
 		{
-			// underlying librdf method returns non-0 when done
-			// we want to return true while there's next to move to
-			return (librdf_iterator_next (iterator) == 0);
+			if (started) {
+				return (librdf_iterator_next (iterator) == 0);
+			} else {
+				started = true;
+				return true;
+			}
 		}
 
 		public void Reset ()
@@ -101,6 +106,11 @@ namespace Redland {
 		~Iterator ()
 		{
 			Dispose (false);
+		}
+
+		public IEnumerator GetEnumerator () 
+		{
+			return this;
 		}
 	}
 }

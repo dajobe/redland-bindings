@@ -19,11 +19,12 @@ using System.Runtime.InteropServices;
 
 namespace Redland {
 
-	public class Stream : IWrapper, IEnumerator, IDisposable {
+	public class Stream : IWrapper, IEnumerator, IEnumerable, IDisposable {
 
 		IntPtr stream = IntPtr.Zero;
 
 		bool disposed = false;
+		bool started = false;
 
 		public IntPtr Handle {
 			get { return stream; }
@@ -51,7 +52,12 @@ namespace Redland {
 
 		public bool MoveNext ()
 		{
-			return (librdf_stream_next (stream) != 0);
+			if (started) {
+				return (librdf_stream_next (stream) == 0);
+			} else {
+				started = true;
+				return true;
+			}
 		}
 
 		public void Reset ()
@@ -100,5 +106,9 @@ namespace Redland {
 			Dispose (false);
 		}
 
+		public IEnumerator GetEnumerator () 
+		{
+			return this;
+		}
 	}
 }
