@@ -90,7 +90,7 @@ $(PERL_MAKEFILE).old
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(PERL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
-	swig -v -perl5 -module $(PYTHON_PACKAGE) -o $@ $?
+	swig -v -perl5 -module $(PERL_PACKAGE) -o $@ $?
 
 $(PERL_MAKEFILE): Makefile.PL
 	PACKAGE=$(PERL_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) perl $? PREFIX=$(prefix)
