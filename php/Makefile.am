@@ -74,8 +74,14 @@ $(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.so
 
 check-local: test-php
 
+# Make PHP run using the build directory (.) as the PHP extension dir
+# to find redland.so (see php.ini for the configuration there)
+# -c $(srcdir) is the only portable way to make it read php.ini
+# from here rather than (also) reading some global php.ini.
+# The alternative to use php -n is only available in PHP 4.3.0 or newer.
+#
+# See the manual for the php command:
+#  http://www.php.net/manual/en/features.commandline.php
 test-php: $(PHP_PACKAGE).so $(srcdir)/test.php
-# I do not know why this is needed. PHP seems to ignore the global
-# libraries when not installed
 	-$(top_builddir)/redland-src-config --run \
-	  $(PHP) -c $(srcdir)/php.ini $(srcdir)/test.php
+	  $(PHP) -c $(srcdir) $(srcdir)/test.php
