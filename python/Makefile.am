@@ -40,7 +40,7 @@ SUBDIRS=test
 CLEANFILES=test*db core* test-out.rdf $(PYTHON_PACKAGE)_wrap.o
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
-PYTHON_SETUP=PACKAGE=$(PYTHON_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) $(PYTHON) setup.py
+PYTHON_SETUP=PACKAGE=$(PYTHON_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) $(PYTHON) $(srcdir)/setup.py
 
 $(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -python $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ $<
@@ -62,21 +62,21 @@ clean-python:
 realclean-python:
 	$(PYTHON_SETUP) clean --all
 
-install-python: setup.py build-python
+install-python: $(srcdir)/setup.py build-python
 	$(PYTHON_SETUP) install
 
 dist-python: sdist-python
 
 # Built distribution (may be binary) for module
-bdist-python: setup.py
+bdist-python: $(srcdir)/setup.py
 	$(PYTHON_SETUP) bdist
 
 # Source distributionn for module
-sdist-python: setup.py
+sdist-python: $(srcdir)/setup.py
 	$(PYTHON_SETUP) sdist
 
 # RPM distribution for module
-rpmdist-python: setup.py
+rpmdist-python: $(srcdir)/setup.py
 	$(PYTHON_SETUP) bdist_rpm --release=$(RELEASE)
 
 clean-local: clean-python
