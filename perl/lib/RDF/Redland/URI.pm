@@ -113,11 +113,28 @@ sub new_from_uri ($$) {
   return $self;
 }
 
+
+sub _new_from_object ($$) {
+  my($proto,$object)=@_;
+  my $class = ref($proto) || $proto;
+  my $self  = {};
+
+  warn "RDF::URI->_new_from_object from object $object\n" if $RDF::Debug;
+
+  $self->{URI}=$object;
+  $self->{DONT_FREE_ME}=1;
+
+  bless ($self, $class);
+  return $self;
+}
+
 sub DESTROY ($) {
   my $self=shift;
   warn "RDF::URI DESTROY\n" if $RDF::Debug;
   if($self->{URI}) {
-    &Redland::librdf_free_uri($self->{URI});
+    if(!$self->{DONT_FREE_ME}) {
+      &Redland::librdf_free_uri($self->{URI});
+    }
   }
 }
 
