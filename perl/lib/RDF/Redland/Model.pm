@@ -178,28 +178,80 @@ sub serialise ($) {
   return new RDF::Stream($stream,$self,1);
 }
 
+# Get all matching statements.
+# In an array context, returns an array of the matching RDF::Statement
+# objects.  In a scalar context, returns the RDF::Stream of results.
 sub find_statements ($$) {
   my($self,$statement)=@_;
   my $stream=&Redland::librdf_model_find_statements($self->{MODEL},$statement->{STATEMENT});
-  return new RDF::Stream($stream,$self,0);
+  my $user_stream=new RDF::Stream($stream,$self,0);
+  return $user_stream if !wantarray;
+  
+  my(@results)=();
+  while(!$user_stream->end) {
+    my $statement2=$user_stream->next;
+    last if !$statement2;
+    push(@results, RDF::Statement->new_from_statement($statement2));
+  }
+
+  @results;
 }
 
+# Get all source nodes for a given arc, target
+# In an array context, returns an array of the matching RDF::Node
+# objects.  In a scalar context, returns the RDF::Iterator of results.
 sub get_sources ($$) {
   my($self,$arc,$target)=@_;
   my $iterator=&Redland::librdf_model_get_sources($self->{MODEL},$arc->{NODE},$target->{NODE});
-  return new RDF::Iterator($iterator,$self);
+  my $user_iterator=new RDF::Iterator($iterator,[$self,$arc,$target]);
+  return $user_iterator if !wantarray;
+  
+  my(@results)=();
+  while($user_iterator->have_elements) {
+    my $node2=$user_iterator->next;
+    last if !$node2;
+    push(@results, RDF::Node->new_from_node($node2));
+  }
+
+  @results;
 }
 
+# Get all arc nodes for a given source, target
+# In an array context, returns an array of the matching RDF::Node
+# objects.  In a scalar context, returns the RDF::Iterator of results.
 sub get_arcs ($$) {
   my($self,$source,$target)=@_;
   my $iterator=&Redland::librdf_model_get_arcs($self->{MODEL},$source->{NODE},$target->{NODE});
-  return new RDF::Iterator($iterator,$self);
+  my $user_iterator=new RDF::Iterator($iterator,$self,$source,$target);
+  return $user_iterator if !wantarray;
+  
+  my(@results)=();
+  while($user_iterator->have_elements) {
+    my $node2=$user_iterator->next;
+    last if !$node2;
+    push(@results, RDF::Node->new_from_node($node2));
+  }
+
+  @results;
 }
 
+# Get all target nodes for a given source, arc
+# In an array context, returns an array of the matching RDF::Node
+# objects.  In a scalar context, returns the RDF::Iterator of results.
 sub get_targets ($$) {
   my($self,$source,$arc)=@_;
   my $iterator=&Redland::librdf_model_get_targets($self->{MODEL},$source->{NODE},$arc->{NODE});
-  return new RDF::Iterator($iterator,$self);
+  my $user_iterator=new RDF::Iterator($iterator,$self,$source,$arc);
+  return $user_iterator if !wantarray;
+  
+  my(@results)=();
+  while($user_iterator->have_elements) {
+    my $node2=$user_iterator->next;
+    last if !$node2;
+    push(@results, RDF::Node->new_from_node($node2));
+  }
+
+  @results;
 }
 
 1;
