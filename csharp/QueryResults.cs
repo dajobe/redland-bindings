@@ -17,7 +17,6 @@ namespace Redland {
 	public class QueryResults : IWrapper, IEnumerator {
 		Query query;
 		IntPtr query_results;
-		int pos = 0;
 
 		public IntPtr Handle {
 			get { return query_results; }
