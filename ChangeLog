@@ -1,3 +1,29 @@
+2004-11-09  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/RDF.py:
+	Use Redland_python.librdf_python_unicode_to_bytes to turn any
+	passed-in Python Unicode into UTF-8 strings for Redland API calls.
+	(Node.__unicode__, Statement.__unicode__, Model.__unicode__,
+	URI.__unicode__): Added to return Unicode representations,
+
+	* python/redland-post.i: Added a copyright header.
+	(librdf_python_unicode_to_bytes): Added, to turn a Python Unicode
+	string like u"foo" into the UTF-8 string equivalent.  Uses raptor's
+	raptor_unicode_char_to_utf8.
+
+	* perl/lib/RDF/Redland/Query.pm (new): better docs
+
+	* csharp/Query.cs: Query (World world, string s, Uri uri, string
+	query_language): Gains another argument, query_uri and the first
+	uri becomes base_uri as originally defined.
+
+	* python/RDF.py (Query.__init__):
+	Added query_uri argumetn and use base_uri correctly.
+
+	* perl/lib/RDF/Redland/Query.pm (new): Add base_uri argumemt
+
+	* configure.ac, RELEASE.html, NEWS.html: 0.9.20.1
+
 2004-11-04  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* ruby/test.rb, ruby/example.rb:
