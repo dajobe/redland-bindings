@@ -22,6 +22,7 @@
 # with building the shared object and dynamically loaded module.  libtool
 # is fooled into building a module (-module -rpath PWD in the link
 # line) called libfake.la which is installed into the working directory.
+# [Note: unlike Tcl that uses dynamically loaded libraries, no -module needed]
 #
 # This libfake.so is then suitable for loading dynamically.  On
 # Darwin/OSX this needs to be called Redland.bundle so it is copied
