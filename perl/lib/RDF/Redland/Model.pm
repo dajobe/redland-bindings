@@ -182,37 +182,67 @@ sub add_typed_literal_statement ($$$$$;$$) {
   return &RDF::Redland::CORE::librdf_model_add_typed_literal_statement($self->{MODEL},$subject->{NODE},$predicate->{NODE},$string,$xml_language,$uri);
 }
 
-=item add_statement STATEMENT
+=item add_statement STATEMENT [CONTEXT]
 
 Add RDF::Redland::Statement I<STATEMENT> to the model.
+If the optional RDF:Redland::Node I<CONTEXT> is given,
+associate it with that context.
 
 =cut
 
-sub add_statement ($$) {
-  my($self,$statement)=@_;
-  &RDF::Redland::CORE::librdf_model_add_statement($self->{MODEL},$statement->{STATEMENT});
+sub add_statement ($$$) {
+  my($self,$statement,$node)=@_;
+  if($node) {
+    return &RDF::Redland::CORE::librdf_model_context_add_statement($self->{MODEL},$node->{NODE},$statement->{STATEMENT});
+  } else {
+    return &RDF::Redland::CORE::librdf_model_add_statement($self->{MODEL},$statement->{STATEMENT});
+  }
 }
 
-=item add_statements STREAM
+=item add_statements STREAM [CONTEXT]
 
-Add the statements from the RDF::Redland::Stream I<STREAM> to the model.
+Add the statements from the RDF::Redland::Stream I<STREAM> to the
+model.  If the optional RDF:Redland::Node I<CONTEXT> is given,
+associate it with that context.
 
 =cut
 
-sub add_statements ($$) {
-  my($self,$statement_stream)=@_;
-  return &RDF::Redland::CORE::librdf_model_add_statements($self->{MODEL},$statement_stream->{STREAM});
+sub add_statements ($$;$) {
+  my($self,$statement_stream,$node)=@_;
+  if($node) {
+    return &RDF::Redland::CORE::librdf_model_context_add_statements($self->{MODEL},$node->{NODE},$statement_stream->{STREAM});
+ } else {
+   return &RDF::Redland::CORE::librdf_model_add_statements($self->{MODEL},$statement_stream->{STREAM});
+ }
 }
 
-=item remove_statement STATEMENT
+=item remove_statement STATEMENT [CONTEXT]
 
 Remove RDF::Redland::Statement I<STATEMENT> from the model.
+If the optional RDF:Redland::Node I<CONTEXT> is given,
+remove only the statement stored with that context.
 
 =cut
 
-sub remove_statement ($$) {
-  my($self,$statement)=@_;
-  return &RDF::Redland::CORE::librdf_model_remove_statement($self->{MODEL},$statement->{STATEMENT});
+sub remove_statement ($$;$) {
+  my($self,$statement,$node)=@_;
+  if($node) {
+    return &RDF::Redland::CORE::librdf_model_context_remove_statement($self->{MODEL},$node->{NODE},$statement->{STATEMENT});
+  } else {
+    return &RDF::Redland::CORE::librdf_model_remove_statement($self->{MODEL},$statement->{STATEMENT});
+  }
+}
+
+=item remove_context_statements CONTEXT
+
+Remove all RDF::Redland::Statement I<STATEMENT>s from the model
+with the given RDF:Redland::Node I<CONTEXT> context.
+
+=cut
+
+sub context_remove_statements ($$) {
+  my($self,$node)=@_;
+  return &RDF::Redland::CORE::librdf_model_context_remove_statements($self->{MODEL},$node->{NODE});
 }
 
 =item contains_statement STATEMENT
