@@ -20,7 +20,7 @@
 #
 
 
-lappend auto_path .libs
+lappend auto_path .
 
 package require redland
 
