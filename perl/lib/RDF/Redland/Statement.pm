@@ -79,19 +79,13 @@ sub new ($;$$$) {
   if(scalar(@args)==3) {
     for (@args) {
       next if !defined $_;
-      if(my $arg_class=ref $_) {
-	if(UNIVERSAL::isa($arg_class, 'RDF::Redland::Node')) {
-	  $_=&RDF::Redland::CORE::librdf_new_node_from_node($_->{NODE});
-	} elsif(UNIVERSAL::isa($arg_class, 'RDF::Redland::URI')) {
-	  $_=&RDF::Redland::CORE::librdf_new_node_from_uri($RDF::Redland::World->{WORLD},$_->{URI});
-	} elsif (UNIVERSAL::isa($class, 'URI')) {
-	  $_=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$_->as_string);	
-	} else {
-	  die "RDF::Redland::Statement::new - Cannot make a Node from an object of class $arg_class\n";
-	}
-	next;
+      if(my $class=ref $_) {
+	$_=&RDF::Redland::Node::_ensure($_);
+	die "Cannot make a Node from an object of class $class\n"
+	  unless $_;
+      } else {
+	$_=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$_);
       }
-      $_=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$_);
     } # end for args
     $self->{STATEMENT}=&RDF::Redland::CORE::librdf_new_statement_from_nodes($RDF::Redland::World->{WORLD}, @args);
   } elsif (scalar(@args) == 1) {
