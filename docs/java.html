@@ -14,11 +14,11 @@
 line, or <tt>--with-java=java</tt> to use a particular Java
 version/program.</p>
 
-<p>The <tt>--with-jdk</tt> configure argument MUST be given give the
-location of the root of the full JDK installation so that the
-interface can be properly compiled against the correct Java Native
-Interface (JNI) headers for the JDK that provides the <tt>java</tt>
-program.</p>
+<p>The <tt>--with-jdk</tt> configure argument is very likely to be
+required to declare the location of the root of the full JDK
+installation so that the interface can be properly compiled against
+the correct Java Native Interface (JNI) headers for the JDK that
+provides the <tt>java</tt> program.</p>
 
 
 <p>The standard 'make' at the top level will build it once enabled as
@@ -29,9 +29,7 @@ follows:</p>
   cd java
   make
 
-  # optional, but it may require a top-level 'make install
-  # first depending on the operating system and how it
-  # handles shared libraries
+  # optional
   make check
 </pre>
 
@@ -55,11 +53,11 @@ is present but not been used extensively.  The API has been has been
 tested with the following versions:</p>
 
 <blockquote>
-1.2.1 on Solaris/Sparc<br />
-1.4.1 on OSX/PPC<br />
-1.4.1_01 on Linux/x86<br />
-1.4.2 on Linux/x86<br />
 1.4.2-p5 on FreeBSD/x86<br />
+1.4.2 on Linux/x86<br />
+1.4.1_01 on Linux/x86<br />
+1.4.1 on OSX/PPC<br />
+1.2.1 on Solaris/Sparc
 </blockquote>
 
 <p>The JNI header and library files are in different places on all
@@ -73,7 +71,7 @@ or "linux").</p>
 
 <h2>Testing the Redland Java interface</h2>
 
-<p>There is the beginnings of an example program in
+<p>There is an example Java program in
 <a href="../java/example.java">example.java</a>
 which is mostly for reading (along with the test1.java)
 but can be compiled and run with:</p>
