@@ -75,13 +75,11 @@ $(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la
 
 check-local: test-php
 
-test-php: $(PHP_PACKAGE).so
+test-php: $(PHP_PACKAGE).so $(srcdir)/test.php
 # I do not know why this is needed. PHP seems to ignore the global
 # libraries when not installed
 	l=.libs; here=`pwd`; \
 	rm -rf $$l && mkdir $$l; \
 	ln -s $(phpdir)/* $$here/$(PHP_PACKAGE).so $$l
-	$(PHP) test.php
-
-clean-local realclean-local:
-	rm -f $(PHP_PACKAGE).so
+# The PHP command might not even be installed, so ignore errors
+	-$(PHP) $(srcdir)/test.php
