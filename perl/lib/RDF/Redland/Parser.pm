@@ -79,7 +79,6 @@ package RDF::Parser;
 use strict;
 
 use RDF::Stream;
-use Redland;
 
 =pod
 
@@ -171,7 +170,7 @@ Returns an RDF::Stream of RDF::Statement objects or undef on failure.
 sub parse_as_stream ($$$) {
   my($self,$uri,$base_uri)=@_;
   my $stream=&Redland::librdf_parser_parse_as_stream($self->{PARSER},$uri->{URI}, $base_uri->{URI});
-  return new RDF::Stream($stream,$self,1);
+  return new RDF::Stream($stream,$self);
 }
 
 =item parse_into_model SOURCE_URI BASE_URI MODEL
