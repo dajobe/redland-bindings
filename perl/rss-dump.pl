@@ -80,8 +80,15 @@ use RDF;
 use RDF::RSS;
 
 my(%namespaces)=(
+# Built in modules
   'Dublin Core' => 'http://purl.org/dc/elements/1.1/',
-  'Syndication' => 'http://purl.org/rss/1.0/modules/syndication/'
+  'Syndication' => 'http://purl.org/rss/1.0/modules/syndication/',
+
+# Proposed modules from http://purl.org/rss/1.0/modules/proposed/  
+  'Changed Page' => 'http://my.theinfo.org/changed/1.0/rss/',
+  'RSS 0.91'     => 'http://purl.org/rss/1.0/modules/rss091#',
+  'Threading'    => 'http://purl.org/rss/1.0/modules/threading/',
+  'Slash'        => 'ttp://purl.org/rss/1.0/modules/slash/', 
 );
 
 
