@@ -469,7 +469,8 @@ class Model:
 
     results=[]
     while not user_iterator.end():
-      results.append(user_iterator.next())
+      results.append(user_iterator.get())
+      user_iterator.next()
 
     user_iterator=None
     return results
@@ -486,7 +487,8 @@ class Model:
 
     results=[]
     while not user_iterator.end():
-      results.append(user_iterator.next())
+      results.append(user_iterator.get())
+      user_iterator.next()
 
     user_iterator=None
     return results
@@ -503,7 +505,8 @@ class Model:
 
     results=[]
     while not user_iterator.end():
-      results.append(user_iterator.next())
+      results.append(user_iterator.get())
+      user_iterator.next()
 
     user_iterator=None
     return results
@@ -578,14 +581,18 @@ class Iterator:
 please use 'not iterator.end' instead."""
     return Redland.librdf_iterator_have_elements(self._iterator)
 
-  def next (self):
-    my_node=Redland.librdf_iterator_get_next(self._iterator)
+  def get (self):
+    my_node=Redland.librdf_iterator_get_object(self._iterator)
     if my_node == "NULL":
       return None
     # return a new (1) node (2)owned by the librdf iterator object
     # Reasons: (1) at the user API level the iterator only returns nodes
     #          (2) the node returned is shared with the iterator
-    return Node(from_object=my_node, free_node=0)
+    node=Node(from_object=my_node, free_node=0)
+    return node
+
+  def next (self):
+    Redland.librdf_iterator_next(self._iterator)
 
 # end class Iterator
 
