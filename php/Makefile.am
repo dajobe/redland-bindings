@@ -67,7 +67,7 @@ $(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.so
 	else \
 	  args=" -shared"; \
 	fi; \
-	cmd="$(CC) $(AM_CFLAGS) $(CFLAGS) @REDLAND_CONFIG@ --libs` $(AM_LDFLAGS) $(LDFLAGS) $$args $(PHP_PACKAGE)_wrap.so -o $(PHP_PACKAGE).so"; \
+	cmd="$(CC) $(AM_CFLAGS) $(CFLAGS) `@REDLAND_CONFIG@ --libs` $(AM_LDFLAGS) $(LDFLAGS) $$args $(PHP_PACKAGE)_wrap.so -o $(PHP_PACKAGE).so"; \
 	echo $$cmd; \
 	$$cmd
 	if test `uname` = Darwin; then \
