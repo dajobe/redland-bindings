@@ -94,11 +94,11 @@ sub new ($;$) {
   if($arg) {
     if(my $arg_class=ref($arg)) {
       # Try several classes
-      if(UNIVERSAL::isa($arg_class, 'RDF::Redland::Node')) {
+      if(UNIVERSAL::isa($arg, 'RDF::Redland::Node')) {
         return $arg->clone;
-      } elsif(UNIVERSAL::isa($arg_class, 'RDF::Redland::URI')) {
+      } elsif(UNIVERSAL::isa($arg, 'RDF::Redland::URI')) {
         $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
-      } elsif (UNIVERSAL::isa($arg_class, 'URI')) {
+      } elsif (UNIVERSAL::isa($arg, 'URI')) {
 	$self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
       } else {
 	die "RDF::Redland::Node::new - Cannot make a node from an object of class $arg_class\n";
@@ -142,9 +142,9 @@ sub new_from_uri ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   if(my $class=ref $arg) {
-    if(UNIVERSAL::isa($class, 'RDF::Redland::URI')) {
+    if(UNIVERSAL::isa($arg, 'RDF::Redland::URI')) {
       $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri($RDF::Redland::World->{WORLD},$arg->{URI});
-    } elsif (UNIVERSAL::isa($class, 'URI')) {
+    } elsif (UNIVERSAL::isa($arg, 'URI')) {
       $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
     } else {
       die "RDF::Redland::Node::new_from_uri - Cannot make a Node from an object of class $class\n";
@@ -185,9 +185,9 @@ sub new_literal ($$;$$) {
   my $self  = {};
   my $dt_uri=undef;
   if(defined $dt) {
-    if(my $class=ref $dt && UNIVERSAL::isa($class, 'RDF::Redland::URI')) {
+    if(UNIVERSAL::isa($dt, 'RDF::Redland::URI')) {
       $dt_uri=$dt;
-    } elsif (UNIVERSAL::isa($class, 'URI')) {
+    } elsif (UNIVERSAL::isa($dt, 'URI')) {
       $dt_uri=new RDF::Redland::URI($dt->as_string);
     } else {
       $dt_uri=new RDF::Redland::URI($dt);
@@ -449,12 +449,11 @@ sub equals ($$) {
 # from other perl objects.
 sub _ensure ($) {
   my $node=shift;
-  my $class=ref($node);
-  if(UNIVERSAL::isa($class, 'RDF::Redland::Node')) {
+  if(UNIVERSAL::isa($node, 'RDF::Redland::Node')) {
     $node=&RDF::Redland::CORE::librdf_new_node_from_node($node->{NODE});
-  } elsif(UNIVERSAL::isa($class, 'RDF::Redland::URI')) {
+  } elsif(UNIVERSAL::isa($node, 'RDF::Redland::URI')) {
     $node=&RDF::Redland::CORE::librdf_new_node_from_uri($RDF::Redland::World->{WORLD},$node->{URI});
-  } elsif (UNIVERSAL::isa($class, 'URI')) {
+  } elsif (UNIVERSAL::isa($node, 'URI')) {
     $node=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$node->as_string);	
   } else {
     $node=undef;
