@@ -23,6 +23,7 @@ use ExtUtils::MakeMaker;
 
 $TOP_SRCDIR=$ENV{TOP_SRCDIR} || '..';
 $PACKAGE=$ENV{PACKAGE} || "RDF::Redland";
+$MEM=$ENV{MEM} || "";
 $MEM_LIBS=$ENV{MEM_LIBS} || "";
 $CORE_PACKAGE=$ENV{CORE_PACKAGE} || "CORE";
 
@@ -78,7 +79,7 @@ WriteMakefile(
     'ABSTRACT'  => "Redland RDF library",
     'VERSION'   => $version,
 
-    'DEFINE'    => '-DHAVE_CONFIG_H',
+    'DEFINE'    => "-DHAVE_CONFIG_H $MEM",
     'INC'       => "$includes",
     'OBJECT'    => "$objects $MEM_LIBS",
     'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS"},
