@@ -45,7 +45,7 @@ $(PERL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -perl5 -module $(PERL_PACKAGE) -o $@ $?
 
 $(PERL_MAKEFILE): Makefile.PL
-	PACKAGE=$(PERL_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) $(PERL) $? PREFIX=$(prefix)
+	PACKAGE=$(PERL_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) $(PERL) $?
 
 -perl test-perl install-perl clean-perl realclean-perl: $(PERL_MAKEFILE)
 	@target=`echo $@ | sed -e 's/-perl//'`; \
