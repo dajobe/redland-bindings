@@ -73,7 +73,7 @@
 #      under either the MPL or the LGPL License.
 #
 
-__version__ = "0.1"
+__version__ = "0.2"
 
 __debug__ = 0
 
@@ -87,7 +87,7 @@ class world:
   """Core RDF class"""
 
   def __init__(self,digest_name="",uri_hash=None):
-    """Create new RDF object (constructor)"""
+    """Create new RDF World object (constructor)"""
     # Keep a circular reference to this object so it is deleted last
     self.me=self
 
@@ -96,7 +96,7 @@ class world:
   # __init__ ()
 
   def close(self):
-    """Destroy RDF object (destructor)."""
+    """Destroy RDF World object (destructor)."""
     if __debug__:
       print "Destroying RDF.world"
     self.me=None
@@ -148,7 +148,7 @@ class node:
       # by librdf e.g. from the result of a iterator->next operation
       # this is always shared (at present) so should not be freed
       self.node=args['from_object']
-      self.free_me=args['free_statements']
+      self.free_me=args['free_node']
     else:
       self.node=Redland.librdf_new_node()
 
@@ -343,8 +343,6 @@ class model:
 
   def add_statement (self,statement):
     Redland.librdf_model_add_statement(self.model,statement.statement)
-    # Remove librdf_statement reference from RDF.statement object
-    statement.statement=None
 
   def add_statements (self,statement_stream):
     return Redland.librdf_model_add_statements(self.model, statement_stream.stream)
@@ -363,17 +361,41 @@ class model:
     my_stream=Redland.librdf_model_find_statements(self.model, statement.statement)
     return stream(my_stream,self,0)
 
-  def get_sources (self,arc,target):
+  # FIXME: Must add versions of get_sources/arcs/targets
+  # returning python lists of node objects
+
+  def get_sources_iterator (self,arc,target):
     my_iterator=Redland.librdf_model_get_sources(self.model, arc.node, target.node)
     return iterator(my_iterator,self)
 
-  def get_arcs (self,source,target):
+  def get_arcs_iterator (self,source,target):
     my_iterator=Redland.librdf_model_get_arcs(self.model, source.node, target.node)
     return iterator(my_iterator,self)
 
-  def get_targets (self,source,arc):
+  def get_targets_iterator (self,source,arc):
     my_iterator=Redland.librdf_model_get_targets(self.model, source.node, arc.node)
     return iterator(my_iterator,self)
+
+  def get_source (self,arc,target):
+    my_node=Redland.librdf_model_get_source(self.model, arc.node, target.node)
+    if not my_node:
+      return None
+    else:
+      return node({"from_object" : my_node, "free_node" : 1})
+
+  def get_arc (self,source,target):
+    my_node=Redland.librdf_model_get_arc(self.model, source.node, target.node)
+    if not my_node:
+      return None
+    else:
+      return node({"from_object" : my_node, "free_node" : 1})
+
+  def get_target (self,source,arc):
+    my_node=Redland.librdf_model_get_target(self.model, source.node, arc.node)
+    if not my_node:
+      return None
+    else:
+      return node({"from_object" : my_node, "free_node" : 1})
 
 #end class model
 
