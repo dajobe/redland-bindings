@@ -173,8 +173,9 @@ sub new_from_model ($$) {
 
 # DESTRUCTOR
 sub DESTROY ($) {
-  warn "RDF::Model DESTROY\n" if $RDF::Debug;
-  &Redland::librdf_free_model(shift->{MODEL});
+  my $self=shift;
+  warn "RDF::Model DESTROY $self\n" if $RDF::Debug;
+  &Redland::librdf_free_model($self->{MODEL});
 }
 
 
@@ -314,7 +315,7 @@ sub get_sources ($$) {
   my($self,$arc,$target)=@_;
   my $iterator=&Redland::librdf_model_get_sources($self->{MODEL},$arc->{NODE},$target->{NODE});
   return () if !$iterator;
-  my $user_iterator=new RDF::Iterator($iterator,$self,$self->{STORAGE},$arc,$target);
+  my $user_iterator=new RDF::Iterator($iterator,$self,$arc,$target);
   return () if !$user_iterator;
 
   my(@results)=();
@@ -338,7 +339,7 @@ sub get_arcs ($$) {
   my($self,$source,$target)=@_;
   my $iterator=&Redland::librdf_model_get_arcs($self->{MODEL},$source->{NODE},$target->{NODE});
   return () if !$iterator;
-  my $user_iterator=new RDF::Iterator($iterator,$self,$self->{STORAGE},$source,$target);
+  my $user_iterator=new RDF::Iterator($iterator,$self,$source,$target);
   return () if !$user_iterator;
   
   my(@results)=();
@@ -362,7 +363,7 @@ sub get_targets ($$) {
   my($self,$source,$arc)=@_;
   my $iterator=&Redland::librdf_model_get_targets($self->{MODEL},$source->{NODE},$arc->{NODE});
   return () if !$iterator;
-  my $user_iterator=new RDF::Iterator($iterator,$self,$self->{STORAGE},$source,$arc);
+  my $user_iterator=new RDF::Iterator($iterator,$self,$source,$arc);
   return () if !$user_iterator;
   
   my(@results)=();
@@ -385,7 +386,7 @@ I<TARGET> RDF::Node objects as an RDF::Iterator or undef on failure.
 sub get_sources_iterator ($$) {
   my($self,$arc,$target)=@_;
   my $iterator=&Redland::librdf_model_get_sources($self->{MODEL},$arc->{NODE},$target->{NODE});
-  return RDF::Iterator($iterator,$self,$self->{STORAGE},$arc,$target);
+  return RDF::Iterator($iterator,$self,$arc,$target);
 }
 
 =item get_arcs_iterator SOURCE TARGET
@@ -398,7 +399,7 @@ I<TARGET> RDF::Node objects as an RDF::Iterator or undef on failure.
 sub get_arcs_iterator ($$) {
   my($self,$source,$target)=@_;
   my $iterator=&Redland::librdf_model_get_arcs($self->{MODEL},$source->{NODE},$target->{NODE});
-  return new RDF::Iterator($iterator,$self,$self->{STORAGE},$source,$target);
+  return new RDF::Iterator($iterator,$self,$source,$target);
 }
 
 =item get_targets_iterator SOURCE ARC
@@ -411,7 +412,7 @@ RDF::Node objects as an RDF::Iterator or undef on failure.
 sub get_targets_iterator ($$) {
   my($self,$source,$arc)=@_;
   my $iterator=&Redland::librdf_model_get_targets($self->{MODEL},$source->{NODE},$arc->{NODE});
-  return new RDF::Iterator($iterator,$self,$self->{STORAGE},$source,$arc);
+  return new RDF::Iterator($iterator,$self,$source,$arc);
 }
 
 =item get_source ARC TARGET
