@@ -17,6 +17,8 @@ namespace Redland {
 	public class QueryResults : IWrapper, IEnumerator {
 		Query query;
 		IntPtr query_results;
+        	Hashtable results;
+        	bool first=true;
 
 		public IntPtr Handle {
 			get { return query_results; }
@@ -57,21 +59,24 @@ namespace Redland {
 		// IEnumerator implementation
 		public object Current {
 			get { 
-				int r = librdf_query_results_finished (query_results);
-                        	if(r != 0)
-                                	return null;  
-				Hashtable h=MakeResultsHash();
-				return h;
+				if(results == null)
+					results=MakeResultsHash();
+				return results;
 			}
 		}
 
 		public bool MoveNext ()
 		{
-			int r =	librdf_query_results_next (query_results);
-			if (r != 0)
-				return false;
-			else
-				return true;
+			if (first)
+                        	first = false;
+                        else
+				librdf_query_results_next (query_results);
+                        results=null;
+                        int r =	librdf_query_results_finished (query_results);
+                        if (r != 0)
+                          return false;
+			results=MakeResultsHash();
+                        return true;
 		}
 
 		public void Reset ()
@@ -82,10 +87,7 @@ namespace Redland {
 		public bool End {
 			get {
 				int r = librdf_query_results_finished (query_results);
-				if (r != 0)
-					return true;
-				else
-					return false;
+				return (r != 0);
 			}
 		}
 
