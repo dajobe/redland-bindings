@@ -43,6 +43,7 @@ namespace Rdf {
 
 		public Node (Uri uri)
 		{
+			Console.WriteLine ("Making Node from Uri {0} with handle {1}", uri.ToString (), uri.Handle);
 			node = librdf_new_node_from_uri (Redland.World.Handle, uri.Handle);
 		}
 

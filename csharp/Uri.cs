@@ -26,6 +26,7 @@ namespace Rdf {
 		private Uri (World world, string uri_str)
 		{
 			uri = librdf_new_uri (world.Handle, uri_str);
+			Console.WriteLine ("Making URI from string {0} giving handle {1}", uri_str, uri);
 		}
 
 		public Uri (string uri)
@@ -34,11 +35,11 @@ namespace Rdf {
 		}
 
 		[DllImport ("librdf")]
-		static extern string librdf_uri_as_string (IntPtr uri);
+		static extern string librdf_uri_to_string (IntPtr uri);
 
 		public override string ToString ()
 		{
-			return librdf_uri_as_string (uri);
+			return librdf_uri_to_string (uri);
 		}
 	}
 }
