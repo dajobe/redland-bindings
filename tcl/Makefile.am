@@ -37,7 +37,7 @@ tcldir=`echo 'puts $$tcl_library' | $(TCL)`
 tcl_DATA=Redland.so
 
 EXTRA_DIST=test.tcl example.tcl \
-$(SWIG_OUTPUTS)
+redland-init.i redland-pre.i $(SWIG_OUTPUTS)
 
 CLEANFILES=*.db test-out.rdf core* \
 $(TCL_PACKAGE)_wrap.lo $(TCL_PACKAGE)_wrap.so $(TCL_PACKAGE)-stamp \
@@ -45,11 +45,13 @@ $(TCL_PACKAGE).so $(TCL_PACKAGE).dylib \
 pkgIndex.tcl
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
-$(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
-	swig -v -tcl8 -module $(TCL_PACKAGE) -o $@ $<
+SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_INIT_I
+
+$(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i redland-init.i redland-pre.i
+	swig -v -tcl8 $(SWIG_OPTS) -module $(TCL_PACKAGE) -o $@ $<
 
 $(TCL_PACKAGE)_wrap.so: $(TCL_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(TCL_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(TCL_PACKAGE)_wrap.c -c -o $@
 
 
 $(TCL_PACKAGE).so: $(TCL_PACKAGE)-stamp

@@ -36,7 +36,7 @@ rubydir=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']"`
 ruby_DATA=redland.so
 
 EXTRA_DIST=example.rb \
-$(SWIG_OUTPUTS)
+redland-pre.i redland-types.i $(SWIG_OUTPUTS)
 
 SUBDIRS=lib test
 
@@ -45,12 +45,14 @@ $(RUBY_PACKAGE)_wrap.so $(RUBY_PACKAGE)_wrap.o ruby-redland-stamp \
 $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
-$(srcdir)/$(RUBY_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
-	swig -v -ruby -module $(RUBY_PACKAGE) -o $@ $<
+SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_TYPES_I
+
+$(srcdir)/$(RUBY_PACKAGE)_wrap.c: $(srcdir)/../Redland.i redland-pre.i redland-types.i
+	swig -v -ruby $(SWIG_OPTS) -module $(RUBY_PACKAGE) -o $@ $<
 
 
 $(RUBY_PACKAGE)_wrap.so: $(srcdir)/$(RUBY_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(rubydir) $(RUBY_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS)  $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(rubydir) $(RUBY_PACKAGE)_wrap.c -c -o $@
 
 
 $(RUBY_PACKAGE).so: ruby-redland-stamp

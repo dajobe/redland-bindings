@@ -1,6 +1,6 @@
---- redland_wrap.c.orig	2004-01-14 18:14:13.000000000 +0000
-+++ redland_wrap.c	2004-01-14 18:14:13.000000000 +0000
-@@ -1848,7 +1848,8 @@
+--- redland_wrap.c.orig	2004-07-12 01:03:45.000000000 +0100
++++ redland_wrap.c	2004-07-12 01:03:45.000000000 +0100
+@@ -1695,7 +1695,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value(arg1);
@@ -10,7 +10,7 @@
      
      ZVAL_STRING(return_value,result, 1);
      
-@@ -1875,6 +1876,8 @@
+@@ -1722,6 +1723,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value_as_latin1(arg1);
@@ -19,7 +19,7 @@
      
      
      ZVAL_STRING(return_value,result, 1);
-@@ -1902,6 +1905,8 @@
+@@ -1749,6 +1752,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value_language(arg1);
@@ -28,7 +28,7 @@
      
      
      ZVAL_STRING(return_value,result, 1);
-@@ -4485,6 +4490,7 @@
+@@ -5059,6 +5064,7 @@
  
  PHP_MSHUTDOWN_FUNCTION(redland)
  {

@@ -37,7 +37,7 @@ python_DATA=RDF.py Redland.so
 
 EXTRA_DIST=README RDF.py \
 example.py redlandtest.py \
-$(SWIG_OUTPUTS)
+redland-post.i redland-decl.i $(SWIG_OUTPUTS)
 
 SUBDIRS=test
 
@@ -46,11 +46,13 @@ $(PYTHON_PACKAGE)_wrap.so $(PYTHON_PACKAGE)_wrap.o $(PYTHON_PACKAGE)-stamp \
 $(PYTHON_PACKAGE).so $(PYTHON_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
-$(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
-	swig -v -python $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ $<
+SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_DECL_I
+
+$(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i redland-post.i redland-decl.i
+	swig -v -python $(SWIG_OPTS) $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ $<
 
 $(PYTHON_PACKAGE)_wrap.so: $(srcdir)/$(PYTHON_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(srcdir)/$(PYTHON_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(srcdir)/$(PYTHON_PACKAGE)_wrap.c -c -o $@
 
 $(PYTHON_PACKAGE).so: $(PYTHON_PACKAGE)-stamp
 $(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so

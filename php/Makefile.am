@@ -34,15 +34,17 @@ phpdir=`php-config --extension-dir`
 php_DATA=$(PHP_PACKAGE).so
 
 EXTRA_DIST=test.php example.php php.ini \
-$(SWIG_OUTPUTS)
+redland-decl.i redland-init.i redland-post.i redland-pre.i $(SWIG_OUTPUTS)
 
 CLEANFILES=dmalloc.log *.db test-out.rdf \
 $(PHP_PACKAGE)_wrap.so $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
 $(PHP_PACKAGE).so $(PHP_PACKAGE).bundle $(PHP_PACKAGE)_wrap.c.orig 
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
-$(PHP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
-	swig -v -php4 -noproxy -module $(PHP_PACKAGE) -o $@ $<
+SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_POST_I -DREDLAND_DECL_I -DREDLAND_DECL_I
+
+$(PHP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i redland-decl.i redland-init.i redland-post.i redland-pre.i
+	swig -v -php4 $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ $<
 	cp $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.tmp
 	patch $(PHP_PACKAGE)_wrap.c < redland_wrap.c.patch
 	mv $(PHP_PACKAGE)_wrap.c.tmp $(PHP_PACKAGE)_wrap.c.orig
@@ -56,7 +58,7 @@ endif
 # -UHAVE_CONFIG_H to stop PHP trying to include config.h which
 # quite often just doesn't exist
 $(PHP_PACKAGE)_wrap.so: $(PHP_PACKAGE)_wrap.c
-	$(CC) $(DEFS) -UHAVE_CONFIG_H $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(PHP_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) $(SWIG_OPTS) -UHAVE_CONFIG_H $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(PHP_PACKAGE)_wrap.c -c -o $@
 
 $(PHP_PACKAGE).so: $(PHP_PACKAGE)-stamp
 $(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.so
