@@ -3,6 +3,7 @@
 Makefile
 Makefile.in
 html
+rdoc-stamp
 redland.bundle
 redland_wrap*
 ruby-redland-stamp
