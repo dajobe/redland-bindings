@@ -67,4 +67,3 @@ dist-tcl:
 	@echo make tcl dist somehow
 
 clean-local: clean-tcl
-	rm -rf build dist
