@@ -75,7 +75,7 @@ $stream=undef;
 warn "Parsing added $count statements\n";
 
 warn "\nPrinting all statements\n";
-$stream=$model->serialise;
+$stream=$model->as_stream;
 while(!$stream->end) {
   print "Statement: ",$stream->current->as_string,"\n";
   $stream->next;

@@ -130,7 +130,7 @@ sub predicate_split($) {
 }
 
 
-$stream=$model->serialise;
+$stream=$model->as_stream;
 my $id=1;
 while(!$stream->end) {
   my $statement=$stream->current;
