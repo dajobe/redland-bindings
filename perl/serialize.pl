@@ -96,7 +96,7 @@ unlink $tmp_file if $tmp_file;
 
 my $RDF_NS="http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 my $XML_NS="http://www.w3.org/XML/1998/namespace";
-my $RDF_type_predicate=RDF::Redland::Node->new_from_uri_string($RDF_NS."type");
+my $RDF_type_predicate=RDF::Redland::Node->new_from_uri($RDF_NS."type");
 
 my $DC_NS="http://purl.org/dc/elements/1.1";
 
@@ -146,11 +146,11 @@ while(!$stream->end) {
   }
 
   if($statement->predicate->equals($RDF_type_predicate)) {
-    push(@{$state->{node_types}->{$subject_key}}, RDF::Redland::Node->new_from_node($statement->object));
+    push(@{$state->{node_types}->{$subject_key}}, $statement);
   } else {
-    push(@{$state->{nodes}->{$subject_key}}, RDF::Redland::Statement->new_from_statement($statement));
+    push(@{$state->{nodes}->{$subject_key}}, $statement);
   }
-  $state->{subject_key_to_node}->{$subject_key}=RDF::Redland::Node->new_from_node($subject);
+  $state->{subject_key_to_node}->{$subject_key}=$subject;
   $stream->next;
 }
 
@@ -353,12 +353,11 @@ sub format_statement ($$$) {
 
   my $qname=make_xml_qname($state, $predicate_uri, $predicate_name);
 
-  my $otype=$object->type;
-  if($otype == $RDF::Redland::Node::Type_Resource) {
+  if($object->is_resource) {
     my $attr=make_xml_qname($state, $RDF_NS, "resource", 1);
     my $object_value=$object->uri->as_string;
     emit_empty_element($state, $qname, [$attr, $object_value]);
-  } elsif($otype == $RDF::Redland::Node::Type_Literal) {
+  } elsif($object->is_literal) {
     my $literal=$object->literal_value; # FIXME or literal_value_as_latin1
     my $literal_lang=$object->literal_value_language;
     my $dt_uri=$object->literal_datatype;
@@ -375,11 +374,12 @@ sub format_statement ($$$) {
       push(@attrs, [$attr, $dt_uri->as_string]);
     }
     emit_literal_element($state, $qname, $literal, @attrs);
-  } elsif($otype == $RDF::Redland::Node::Type_Blank) {
+  } elsif($object->is_blank) {
     my $attr=make_xml_qname($state, $RDF_NS, "nodeID");
     my $object_value=$object->blank_identifier;
     emit_empty_element($state, $qname, [$attr, $object_value]);
   } else {
+    my $otype=$object->type;
     die "Unknown object type $otype\n";
   }
 }
@@ -390,14 +390,14 @@ sub start_format_subject($$) {
 
   my $element=make_xml_qname($state, $RDF_NS, "Description");
   my($attr, $value);
-  my $stype=$subject_node->type;
-  if($stype eq $RDF::Redland::Node::Type_Resource) {
+  if($subject_node->is_resource) {
     $attr=make_xml_qname($state, $RDF_NS, "about", 1);
     $value=$subject_node->uri->as_string;
-  } elsif($stype eq $RDF::Redland::Node::Type_Blank) {
+  } elsif($subject_node->is_blank) {
     $attr=make_xml_qname($state, $RDF_NS, "nodeID", 1);
     $value=$subject_node->blank_identifier;
   } else {
+    my $stype=$subject_node->type;
     die "Unknown subject type $stype\n";
   }
   emit_start_element($state, $element, [$attr, $value]);
