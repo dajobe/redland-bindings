@@ -87,6 +87,8 @@ sub new ($) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{STATEMENT}=&Redland::librdf_new_statement();
+  return undef if !$self->{STATEMENT};
+
   bless ($self, $class);
   return $self;
 }
@@ -96,6 +98,8 @@ sub new_from_statement ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{STATEMENT}=&Redland::librdf_new_statement_from_statement($statement->{STATEMENT});
+  return undef if !$self->{STATEMENT};
+
   bless ($self, $class);
   return $self;
 }
@@ -117,6 +121,8 @@ sub new_from_nodes ($$$$) {
   $subject->{NODE}=undef if $subject;
   $predicate->{NODE}=undef if $predicate;
   $object->{NODE}=undef if $object;
+
+  return undef if !$self->{STATEMENT};
 
   bless ($self, $class);
   return $self;
