@@ -1,3 +1,15 @@
+2004-07-20  Edd Dumbill  <edd@usefulinc.com>
+
+	* Stream.cs: (GetEnumerator ()): Implement IEnumerable.
+	(MoveNext ()): Properly implement: at start, position should be
+	before the first element, not on it.
+
+	* Iterator.cs: (GetEnumerator ()): Implement IEnumerable.
+	(MoveNext ()): Properly implement: at start, position should be
+	before the first element, not on it.
+
+	* test.cs: Fix to work with iterator fixes.
+
 2004-07-14  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* Serializer.cs:
