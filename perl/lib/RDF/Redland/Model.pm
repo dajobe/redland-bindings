@@ -173,32 +173,33 @@ sub contains_statement ($$) {
 }
 
 sub serialise ($) {
-  my $stream=&Redland::librdf_model_serialise(shift->{MODEL});
-  return new RDF::Stream($stream);
+  my $self=shift;
+  my $stream=&Redland::librdf_model_serialise($self->{MODEL});
+  return new RDF::Stream($stream,$self);
 }
 
 sub find_statements ($$) {
   my($self,$statement)=@_;
   my $stream=&Redland::librdf_model_find_statements($self->{MODEL},$statement->{STATEMENT});
-  return new RDF::Stream($stream);
+  return new RDF::Stream($stream,$self);
 }
 
 sub get_sources ($$) {
   my($self,$arc,$target)=@_;
   my $iterator=&Redland::librdf_model_get_sources($self->{MODEL},$arc->{NODE},$target->{NODE});
-  return new RDF::Iterator $iterator;
+  return new RDF::Iterator($iterator,$self);
 }
 
 sub get_arcs ($$) {
   my($self,$source,$target)=@_;
   my $iterator=&Redland::librdf_model_get_arcs($self->{MODEL},$source->{NODE},$target->{NODE});
-  return new RDF::Iterator $iterator;
+  return new RDF::Iterator($iterator,$self);
 }
 
 sub get_targets ($$) {
   my($self,$source,$arc)=@_;
   my $iterator=&Redland::librdf_model_get_targets($self->{MODEL},$source->{NODE},$arc->{NODE});
-  return new RDF::Iterator $iterator;
+  return new RDF::Iterator($iterator,$self);
 }
 
 1;
