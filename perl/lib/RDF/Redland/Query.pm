@@ -184,7 +184,7 @@ variable bindings.
 sub result_binding_names ($) {
   my($self)=shift;
   my(@names);
-  my $count=&RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY})
+  my $count=&RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY});
   for (my $i=0; $i < $count; $i++) {
     push(@names, $query->result_binding_name($i));
   }
@@ -216,7 +216,7 @@ variable bindings.
 sub result_binding_values ($) {
   my($self)=shift;
   my(@values);
-  my $count=&RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY})
+  my $count=&RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY});
   for (my $i=0; $i < $count; $i++) {
     push(@values, $query->result_binding_value($i));
   }
@@ -233,7 +233,7 @@ variable bindings.
 
 sub result_binding_value_by_name ($$) {
   my($self,$name)=@_;
-  my $node=&RDF::Redland::CORE::librdf_query_get_result_binding_value_by_name($self->{QUERY},$name)
+  my $node=&RDF::Redland::CORE::librdf_query_get_result_binding_value_by_name($self->{QUERY},$name);
   RDF::Redland::Node->_new_from_object($node);
 }
 
@@ -248,7 +248,7 @@ sequence of variable bindings as a hash
 sub result_bindings ($) {
   my($self)=shift;
   my(%results);
-  my $count=&RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY})
+  my $count=&RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY});
   for (my $i=0; $i < $count; $i++) {
     $results{$query->result_binding_name($i)}=$query->result_binding_value($i);
   }
@@ -264,7 +264,7 @@ Return the size of the sequence of variable bindings.
 
 sub bindings_count ($) {
   my($self)=@_;
-  return &RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY})
+  return &RDF::Redland::CORE::librdf_query_get_bindings_count($self->{QUERY});
 }
 
 
@@ -276,7 +276,7 @@ Move to the next result in the sequence of variable bindings.
 
 sub next_result ($) {
   my($self)=@_;
-  return &RDF::Redland::CORE::librdf_query_next_result($self->{QUERY})
+  return &RDF::Redland::CORE::librdf_query_next_result($self->{QUERY});
 }
 
 
