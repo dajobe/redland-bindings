@@ -271,7 +271,7 @@ RDF::Node objects as a list of RDF::Node objects.
 
 =cut
 
-sub sources ($$) {
+sub sources ($$$) {
   my($self,$arc,$target)=@_;
   my $iterator=&Redland::librdf_model_get_sources($self->{MODEL},$arc->{NODE},$target->{NODE});
   return () if !$iterator;
@@ -294,7 +294,7 @@ RDF::Node objects as a list of RDF::Node objects.
 
 =cut
 
-sub arcs ($$) {
+sub arcs ($$$) {
   my($self,$source,$target)=@_;
   my $iterator=&Redland::librdf_model_get_arcs($self->{MODEL},$source->{NODE},$target->{NODE});
   return () if !$iterator;
