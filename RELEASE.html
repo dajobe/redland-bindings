@@ -21,9 +21,135 @@ pre
 
 <h1>Redland RDF Application Framework Bindings</h1>
 
-<h2 id="rel0_9_17_1_0"><a name="rel0_9_17_1_0">Redland 0.9.17-1.0 Changes</a></h2>
+<h2 id="rel0_9_17_1"><a name="rel0_9_17_1">Redland 0.9.17-1 Changes</a></h2>
 
-<p>Split from Redland 0.9.17</p>
+<p>This is the first release of Redland Bindings separate from
+Redland and includes the following changes compared to the language
+bindings in Redland 0.9.16</p>
+
+<h3>General Changes</h3>
+
+<p>The main change is to split the API that Redland exports in the
+redland package from the language specific parts in the
+redland-bindings package.</p>
+
+<p>For most of the language bindings, the interface between them is
+using SWIG.  This is now defined by the Redland.i file installed by
+the redland package (redland-devel RPMs, librdf-dev debs).  This can
+be found via <code>redland-config --swig</code> and then used to
+generate the C wrappers for the bindings.  There may be need for
+language-specific changes which can be used via #included .i files
+triggered by calling swig and the C compiler with defines like
+-DREDLAND_PRE_I to #include redland-pre.i from the Redland.i.</p>
+
+<p>The last paragraph does not apply to C# (Redland#) which uses
+the built in P/Invoke feature of the language and runtime to call
+the Redland functions directly.</p>
+
+
+<h3>Packaging changes</h3>
+
+<h3>C# API (Redland#) Changes</h3>
+
+<p>This is an entirely new API for 0.9.17 originally created by Cesar
+Lopez Nataren &lt;cesar@ciencias.unam.mx&gt;  It was updated by Dave
+Beckett to work with the released Mono 1.0 and substantially improved
+by Edd Dumbill.  Changes since Cesar's version are given in detail in
+the csharp directory ChangeLog but include:</p>
+
+<ul>
+<li>Namespace changed from Rdf to Redland</li>
+<li>Added marshalling of strings between Redland and Redland#</li>
+<li>Freeing of native Redland objects by implementing the C# IDisposable interface, the Dispose method</li>
+<li>Query and QueryResults Classes: Added for Redland querying</li>
+<li>Added strong naming of Redland.dll</li>
+<li>Class Model. Added methods Execute, GetContexts, GetFeature, SetFeature, Load.</li>
+<li>Class World. Updated to use new Redland 0.9.17 logging API especially for parsing errors and warnings</li>
+<li>Class Parser: ParserError for parsing exceptions</li>
+<li>Classes Errors, Locator, LogMessage: Added for wrapping structured
+error messages returned from parsing.</li>
+<li>Classes Node, Statement, Uri: Added Equals, operator==, operator !=</li>
+<li>Classes Stream and Iterator: Fixes for the IEnumerable interface</li>
+<li>Class Node: Added methods for types - Type, IsResource, IsLiteral, IsBlank</li>
+<li>Class Node: Added method Uri.</li>
+<li>Fixed handling of null / IntPtr.Zero in several methods</li>
+</ul>
+
+
+
+<h3>Java API Changes</h3>
+
+<p>This API has not been updated for all Redland 0.9.17 changes.</p>
+
+<p>Class Statement. Added equals method.</p>
+
+
+<h3>Perl API changes</h3>
+
+<p>This API has been updated for all Redland 0.9.17 changes.</p>
+
+Class Statement. Added equals method.
+
+Classes Query, QueryResults: Added for new Redland 0.9.17 librdf_query,
+librdf_query_results.
+
+Class Model: Added execute method.
+
+
+<h3>PHP API Changes</h3>
+
+<p>Added some PHO 4.3 compatible defines to the test program.</p>
+
+
+<h3>Python API changes</h3>
+
+<p>This API has been updated for all Redland 0.9.17 changes.
+The main changes are as follows:</p>
+
+<ul>
+<li>Another attempt to return errors and warnings from parsing better.</li>
+
+<li>Class Model. Added new method load.<br />
+Added new method execute to invoke querying on a model.
+</li>
+
+<li>Class NS: Copy librdf_node each time since sharing the C pointers
+is wrong.</li>
+
+<li>Class Parser. Method parse_string_as_stream example fixed to show
+the required base_uri parameter.</li>
+
+<li>Clases Query, QueryResults: Added for new Redland 0.9.17 librdf_query,
+librdf_query_results including unit tests (Matt Biddulph)</li>
+
+<li>Class Statement. Added equality and inequality operators.<br />
+Added matches operator for comparing an incomplete
+statement with None values against a complete one
+</li>
+
+<li>Class TurtleParser, NTriplesParser: Added convenience classes to create
+parsers for the Turtle and N-Triples syntaxes.(Matt Biddulph)
+</li>
+
+</ul>
+
+<h3>Ruby API changes</h3>
+
+<p>Replaced with a fuller API rdf-redland
+written by by Dominic Sisneros &lt;dsisnero@comcast.net&gt;.
+See the
+<a href="http://rubyforge.org/projects/rdf-redland">rdf-redland project site</a>.</p>
+
+<p>This API has not been updated for all Redland 0.9.17 changes but
+may have newer version at the URI above.</p>
+
+
+<p>Class statement. Added == operator.</p>
+
+
+<h3>Tcl API changes</h3>
+
+<p>This API has not been updated for all Redland 0.9.17 changes.</p>
 
 
 <hr />
