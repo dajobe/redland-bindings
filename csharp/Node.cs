@@ -101,11 +101,24 @@ namespace Redland {
 
 		public static bool operator == (Node n1, Node n2)
 		{
+
+			if (Object.Equals (n1, null))
+				if (Object.Equals (n2, null))
+					return true;
+				else
+					return false;
+
 			return n1.Equals (n2);
 		}
 
 		public static bool operator != (Node n1, Node n2)
 		{
+			if (Object.Equals (n1, null))
+				if (Object.Equals (n2, null))
+					return false;
+				else
+					return true;
+
 			return !n1.Equals (n2);
 		}
 
