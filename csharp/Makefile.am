@@ -108,7 +108,7 @@ redland.snk:
 
 redland.pub: redland.snk
 	@$(ECHO) "WARNING: Creating a new redland.pub from redland.snk WARNING"
-	$(MONO_SN) -p $? $@
+	$(MONO_SN) -p $< $@
 endif
 
 install-mono: Redland.dll
