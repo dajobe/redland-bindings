@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -29,16 +29,18 @@ $CORE_PACKAGE=$ENV{CORE_PACKAGE} || "CORE";
 
 my $objects="${CORE_PACKAGE}_wrap.o ";
 
-my $redland_libs=`$TOP_SRCDIR/redland-src-config --static-libs`;
-chomp $redland_libs;
-$objects .= $redland_libs;
+if(-r '../redland-src-config') {
+  my $redland_libs=`../redland-src-config --static-libs`;
+  chomp $redland_libs;
+  $objects .= $redland_libs;
+}
 
 my $includes="-I$TOP_SRCDIR/librdf";
 
 my $version=$ENV{VERSION};
 
 if(!$version) {
-  $version=`$TOP_SRCDIR/redland-src-config --version`;
+  $version=`../redland-src-config --version`;
   chomp $version;
   die "Cannot find Redland version via redland-src-config\n"
     unless $version;
