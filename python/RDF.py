@@ -259,7 +259,7 @@ class Node(object):
       literal     - create a literal node from a literal string   
         datatype     - the datatype URI
         is_wf_xml    - the literal is XML (alternative to datatype)
-        xml_language - the literal XML language
+        language     - the literal XML language
       blank       - create a resource node from with a blank node identiifer
       node        - copy a node
     """
@@ -291,6 +291,8 @@ class Node(object):
     elif args.has_key('literal'):
       if args.has_key('xml_language'):
         xml_language=args['xml_language']
+      elif args.has_key('language'):
+        xml_language=args['language']
       else:
         xml_language=""
       if args.has_key('is_wf_xml'):
@@ -361,7 +363,7 @@ class Node(object):
     return val
 
   literal_value = property(_get_literal_value,
-          doc = "A dictionary containing the value of the node literal")
+          doc = "A dictionary containing the value of the node literal with keys string, language and datatype")
 
   def _get_blank_identifier(self):
     if not self.is_blank():
