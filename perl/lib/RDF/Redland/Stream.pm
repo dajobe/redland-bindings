@@ -110,16 +110,12 @@ the stream is finished.
 =cut
 
 sub current ($) {
-  # return a new statement wrappaing a shared statement managed
-  # by the librdf library, which should not be freed.
   my $self=shift;
   return undef if !$self->{STREAM};
   
   my $statement=&RDF::Redland::CORE::librdf_stream_get_object($self->{STREAM});
-  return undef if !$statement;
 
-  # return a new statement created by the librdf stream object
-  RDF::Redland::Statement->_new_from_object($statement, 0);
+  RDF::Redland::Statement->_new_from_object($statement);
 }
 
 =pod
@@ -147,16 +143,13 @@ the stream is finished.
 =cut
 
 sub context ($) {
-  # return a new context node wrapping a shared node managed by
-  # by the librdf library, which should not be freed.
   my $self=shift;
   return undef if !$self->{STREAM};
   
   my $object=&RDF::Redland::CORE::librdf_stream_get_context($self->{STREAM});
-  return undef if !$object;
 
-  # return a new node created by the librdf stream object
-  RDF::Redland::Node->_new_from_object($object,0);
+
+  RDF::Redland::Node->_new_from_object($object);
 }
 
 =pod
