@@ -70,14 +70,16 @@ from __future__ import generators
   ... do stuff
 
 The Python interface to the Redland RDF library.  See
-  http://www.redland.opensource.ac.uk/
+  http://librdf.org/
 for full details.
 
 The main class that is used is Model which represents the RDF graph
 formed from triples or Statements.  These statements consist of
 three Node objects for resource or literals and can be stored in
 a Storage (persistent or in-memory) as well as serialized to/from
-syntaxes via the Serializer or Parser classes.
+syntaxes via the Serializer or Parser classes.  The Query class
+provides a way to use a query language with a Model, returning
+answers in QueryResults objects.
 
 """
 
