@@ -814,8 +814,9 @@ sub properties ($) {
 
 =item properties_with_ns_prefix NS_PREFIX
 
-Get all properties off the RDF::Redland::RSS::Node which have namespace URI
-prefix I<NS_PREFIX>.  Returns a list of RDF::Redland::RSS::Node objects.
+Get all unique properties of the RDF::Redland::RSS::Node which have
+namespace URI prefix I<NS_PREFIX>.  Returns a list of
+the properties as RDF::Redland::RSS::Node objects.
 
 =cut
 
