@@ -81,7 +81,7 @@ RUN=@REDLAND_RUN@
 $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java.in: @REDLAND_SWIG@
 	here=`pwd`; \
 	cd $(JAVA_PATH); \
-	$(SWIG) -v -java -noproxy -module $(JAVA_MODULE) -package $(JAVA_PACKAGE) -o $(JAVA_MODULE)_wrap.c $<; \
+	$(SWIG) -v -java -noproxy -module $(JAVA_MODULE) -package $(JAVA_PACKAGE) -o $(JAVA_MODULE)_wrap.c @REDLAND_SWIG@; \
 	if test -r $(JAVA_MODULE)JNI.java; then \
 	  echo "Fixing SWIG 1.3.15+ broken Java API"; \
 	  rm -f $(JAVA_MODULE).java SWIGTYPE_*; \

@@ -47,7 +47,7 @@ RUN=@REDLAND_RUN@
 SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_INIT_I -DREDLAND_DECL_I -DREDLAND_TYPEMAP_I
 
 $(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i redland-typemap.i
-	swig -v -php4 $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ $<
+	swig -v -php4 $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ @REDLAND_SWIG@
 	cp $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.tmp
 	patch $(PHP_PACKAGE)_wrap.c < redland_wrap.c.patch
 	mv $(PHP_PACKAGE)_wrap.c.tmp $(PHP_PACKAGE)_wrap.c.orig
