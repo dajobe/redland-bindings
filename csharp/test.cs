@@ -31,15 +31,28 @@ public class Test {
 		Statement stm = new Statement (subject, predicate, obj);
 		model.AddStatement (stm);
 
-		IntPtr output = fopen ("test-cesar-redland-binding.xml", "w+");
+		IntPtr output = fopen ("test-out.rdf", "w+");
 		model.Print (output);
 
 		Statement partial_stm = new Statement ();
 		partial_stm.Subject = subject;
 		partial_stm.Predicate = predicate;
 
-		// FIXME: return types not handled at all.
 		Stream stream = model.FindStatements (partial_stm);
+                while(!stream.End) {
+			Statement statement = (Statement) stream.Current;
+			Console.Write ("Matched statement: ");
+			Console.WriteLine (statement.ToString ());
+                        stream.MoveNext();
+                }
+
 		Iterator iterator = model.GetTargets (subject, predicate);
+                
+                while(!iterator.End) {
+ 			Node target = (Node) iterator.Current;
+			Console.Write ("Matched target: ");
+			Console.WriteLine (target.ToString ());
+                        iterator.MoveNext ();
+                }
 	}
 }
