@@ -80,8 +80,30 @@ use RDF::Statement;
 
 use Redland;
 
-# CONSTRUCTOR
-# (main)
+=pod
+
+=head1 NAME
+
+RDF::Stream - Redland RDF Stream of RDF::Statement objects Class
+
+=head1 DESCRIPTION
+
+Represents a sequence of RDF::Statement objects passed between
+various Redland objects.
+
+=cut
+
+######################################################################
+
+=pod
+
+=head1 CONSTRUCTORS
+
+No public constructors - are created and returned from various methods
+of classes including RDF::Model and RDF::Parser
+
+=cut
+
 sub new ($$$$) {
   my($proto,$object,$creator,$free_statements)=@_;
   my $class = ref($proto) || $proto;
@@ -103,11 +125,28 @@ sub DESTROY ($) {
   warn "RDF::Stream DESTROY done\n" if $RDF::Debug;
 }
 
+=head1 METHODS
+
+=over
+
+=item end
+
+Returns non 0 if the stream is finished.
+
+=cut
+
 sub end ($) {
   my $self=shift;
   return 1 if !$self->{STREAM};
   &Redland::librdf_stream_end($self->{STREAM});
 }
+
+=item next
+
+Returns the next RDF::Statement object from the stream or undef if
+the stream is finished.
+
+=cut
 
 sub next ($) {
   my $self=shift;
@@ -115,5 +154,19 @@ sub next ($) {
   # return a new statement created by the librdf stream object
   RDF::Statement->_new_from_object(&Redland::librdf_stream_next($self->{STREAM}), $stream->{FREE_STATEMENTS});
 }
+
+=pod
+
+=back
+
+=head1 SEE ALSO
+
+L<RDF::Model> and L<RDF::Parser>
+
+=head1 AUTHOR
+
+Dave Beckett - http://purl.org/net/dajobe/
+
+=cut
 
 1;

@@ -90,6 +90,18 @@ use vars qw($Debug);
 
 $Debug=0;
 
+=pod
+
+=head1 NAME
+
+RDF - Redland RDF Class
+
+=head1 DESCRIPTION
+
+This class initialises the Redland RDF classes.
+
+=cut
+
 # 'Class' Constructor
 
 &Redland::librdf_init_world("", undef);
@@ -99,5 +111,19 @@ sub END ($) {
   warn "RDF:: DESTROY\n" if $RDF::Debug;
   &Redland::librdf_destroy_world;
 }
+
+=pod
+
+=head1 SEE ALSO
+
+L<RDF::Node>, L<RDF::Statement>, L<RDF::Model>, L<RDF::Storage>,
+L<RDF::Parser>, L<RDF::Iterator>, L<RDF::Stream>, L<RDF::URI>
+and L<RDF::RSS>.
+
+=head1 AUTHOR
+
+Dave Beckett - http://purl.org/net/dajobe/
+
+=cut
 
 1;

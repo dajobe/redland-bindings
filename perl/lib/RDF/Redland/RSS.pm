@@ -87,7 +87,35 @@ use vars qw($NS_URL);
 
 $NS_URL="http://purl.org/rss/1.0/";
 
-# CONSTRUCTOR
+=pod
+
+=head1 NAME
+
+RDF::RSS - Redland RSS 1.0 Class
+
+=head1 DESCRIPTION
+
+A class for processing RSS 1.0 as RDF and traversing the resulting
+graph using RSS propertiiies.
+
+=cut
+
+######################################################################
+
+=pod
+
+=head1 CONSTRUCTORS
+
+=over
+
+=item new SOURCE_URI_STRING [BASE_URI_STRING]
+
+Process RSS 1.0 at source URI I<SOURCE_URI_STRING>. If the 
+I<BASE_URI_STRING> string is given then use that as the base URI
+rather than the source URI.
+
+=cut
+
 # Do it all here, create storage (in memory), model, parse it.
 sub new ($$;$) {
   my($proto,$source_uri_string,$base_uri_string)=@_;
@@ -118,8 +146,12 @@ sub new ($$;$) {
 }
 
 
-# CONSTRUCTOR
-# Use an existing, open model to work on
+=item new MODEL
+
+Process RSS 1.0 from content stored in RDF::Model I<MODEL>.
+
+=cut
+
 sub new_from_model ($$) {
   my($proto,$model)=@_;
   my $class = ref($proto) || $proto;
@@ -129,6 +161,11 @@ sub new_from_model ($$) {
   return $self;
 }
 
+=pod
+
+=back
+
+=cut
 
 # DESTRUCTOR
 sub DESTROY ($) {
@@ -156,22 +193,59 @@ sub _find_by_type ($$) {
 }
 
 
+=head1 METHODS
+
+=over
+
+=item channels
+
+Return the RSS channels (E<lt>channelE<gt> tags) as a list of
+RDF::RSS::Node objects.
+
+=cut
+
 sub channels ($) {
   shift->_find_by_type($NS_URL.'channel');
 }
+
+=item items
+
+Return the RSS items (E<lt>itemE<gt> tags) as a list of
+RDF::RSS::Node objects.
+
+=cut
 
 sub items ($) {
   shift->_find_by_type($NS_URL.'item');
 }
 
+=item image
+
+Return the RSS 1.0 image (E<lt>imageE<gt> tag) as an
+RDF::RSS::Node object.
+
+=cut
+
 sub image ($) {
   shift->_find_by_type($NS_URL.'image');
 }
+
+=item textinput
+
+Return the RSS 1.0 textinput (E<lt>textinputE<gt> tag) as an
+RDF::RSS::Node object.
+
+=cut
 
 sub textinput ($) {
   shift->_find_by_type($NS_URL.'textinput');
 }
 
+=pod
+
+=back
+
+=cut
 
 
 package RDF::RSS::Node;
@@ -180,7 +254,27 @@ use RDF::Node;
 
 @ISA=qw(RDF::Node);
 
-# CONSTRUCTOR
+=head1 NAME
+
+RDF::RSS::Node - Redland RSS 1.0 Node Class
+
+=head1 DESCRIPTION
+
+Class representing concepts in an RSS 1.0 RDF graph.
+
+=cut
+
+######################################################################
+
+=pod
+
+=head1 CONSTRUCTORS
+
+No public constructors.  Nodes are created either by methods of
+this class or RDF::RSS.
+
+=cut
+
 sub new ($$$) {
   my($proto,$model,$node)=@_;
   my $class = ref($proto) || $proto;
@@ -214,22 +308,46 @@ sub _find_targets_by_predicate ($$) {
   my(@targets)=$self->{MODEL}->get_targets($self,$predicate);
   warn "RDF::RSS::_find_targets_by_predicate returned ",scalar @targets, " results\n" if $RDF::Debug;
 
-  # Convert list of RDF::Node-s into list of RDF::RSS:Node-s
+  # Convert list of RDF::Node-s into list of RDF::RSS::Node-s
   return map { RDF::RSS::Node->new($self->{MODEL}, $_) } @targets;
 }
 
-# Convienience accessors
+=head1 METHODS
 
+=over
+
+=item title
+
+Get the RSS titles for channel, image, item or textinput.
+Returns either a list or first one found depending on calling context.
+
+=cut
+
+# Convienience accessors
 # for all (channel, image, item, textinput) resources
 sub title ($) {
   my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'title');
   return wantarray ? @r : $r[0];
 }
 
+=item link
+
+Get the RSS link for channel, image, item or textinput.
+Returns either a list or first one found depending on calling context.
+
+=cut
+
 sub link ($) {
   my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'link');
   return wantarray ? @r : $r[0];
 }
+
+=item description
+
+Get the RSS description for channel, item or textinput.
+Returns either a list or first one found depending on calling context.
+
+=cut
 
 # for channel, item, textinput resources
 sub description ($) {
@@ -237,17 +355,38 @@ sub description ($) {
   return wantarray ? @r : $r[0];
 }
 
+=item inchannel
+
+Get the RSS inchannel for image, item or textinput.
+Returns either a list or first one found depending on calling context.
+
+=cut
+
 # for image, item, textinput resources
 sub inchannel ($) {
   my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'inchannel');
   return wantarray ? @r : $r[0];
 }
 
+=item image_url
+
+Get the RSS image URL string for an image.
+Returns either a list or first one found depending on calling context.
+
+=cut
+
 # for image resources
 sub image_url ($) {
   my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'url');
   return wantarray ? @r : $r[0];
 }
+
+=item name
+
+Get the RSS name for a textinput.
+Returns either a list or first one found depending on calling context.
+
+=cut
 
 # for textinput resources
 sub name ($) {
@@ -258,6 +397,12 @@ sub name ($) {
 
 # -------------------------
 # Methods for channels only
+
+=item items
+
+Get the RSS items in a channel as a list of RDF::RSS::Node objects.
+
+=cut
 
 # always returns a list of nodes
 sub items ($) {
@@ -289,6 +434,13 @@ sub items ($) {
               sort {$a->[0] <=> $b->[0]} @resources;
 }
 
+=item image
+
+Get the image of a channel as an RDF::RSS::Node object or undef
+if not present.
+
+=cut
+
 # for channel (0 or 1 allowed)
 sub image ($) {
   my $self=shift;
@@ -299,6 +451,13 @@ sub image ($) {
   return RDF::RSS::Node->new($self->{MODEL}, $image);
 }
 
+
+=item textinput
+
+Get the textinput of a channel as an RDF::RSS::Node object or undef
+if not present.
+
+=cut
 
 # for channel (0 or 1 allowed)
 sub textinput ($) {
@@ -311,6 +470,15 @@ sub textinput ($) {
 }
 
 
+=item property PROPERTY
+
+Get the value of the named property off an RDF::RSS::Node where
+I<PROPERTY> is an RDF::Node or RDF::RSS::Node.  Returns a list of
+RDF::RSS::Node objects or first one found depending on calling
+context.
+
+=cut
+
 # general property
 sub property ($$) {
   my($self,$property)=@_;
@@ -321,6 +489,13 @@ sub property ($$) {
   @targets=map { RDF::RSS::Node->new($self->{MODEL}, $_) } @targets;
   return wantarray ? @targets : $targets[0];
 }
+
+=item properties
+
+Get all properties off the RDF::RSS::Node.  Returns a list of
+RDF::RSS::Node objects.
+
+=cut
 
 sub properties ($) {
   my($self)=@_;
@@ -333,6 +508,13 @@ sub properties ($) {
   # of predicates
   return map { RDF::RSS::Node->new($self->{MODEL}, $_->predicate) } @arcs_out_statements;
 }
+
+=item properties_with_ns_prefix NS_PREFIX
+
+Get all properties off the RDF::RSS::Node which have namespace URI
+prefix I<NS_PREFIX>.  Returns a list of RDF::RSS::Node objects.
+
+=cut
 
 sub properties_with_ns_prefix ($$) {
   my($self,$ns_prefix)=@_;
@@ -348,6 +530,18 @@ sub properties_with_ns_prefix ($$) {
   @arcs;
 }
 
+=pod
 
+=back
+
+=head1 SEE ALSO
+
+L<RDF::Model> and RSS 1.0 web pages at http://purl.org/rss/1.0/
+
+=head1 AUTHOR
+
+Dave Beckett - http://purl.org/net/dajobe/
+
+=cut
 
 1;

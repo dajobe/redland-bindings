@@ -78,8 +78,34 @@ package RDF::URI;
 
 use Redland;
 
-# CONSTRUCTOR
-# (main)
+=pod
+
+=head1 NAME
+
+RDF::URI - Redland RDF URI Class
+
+=head1 DESCRIPTION
+
+Represents a URI as a mostly-opaque object for identifying things
+in the RDF world.  The URIs are also used for identifying features
+for the RDF::Parser class. 
+
+=cut
+
+######################################################################
+
+=pod
+
+=head1 CONSTRUCTORS
+
+=over
+
+=item new STRING
+
+Create a new RDF::URI object from a URI string.
+
+=cut
+
 sub new ($$) {
   my($proto,$string)=@_;
   my $class = ref($proto) || $proto;
@@ -93,6 +119,12 @@ sub new ($$) {
   bless ($self, $class);
   return $self;
 }
+
+=item new_from_uri URI
+
+Create a new RDF::URI object from RDF::URI I<URI> (copy constructor)
+
+=cut
 
 sub new_from_uri ($$) {
   my($proto,$uri)=@_;
@@ -128,6 +160,12 @@ sub _new_from_object ($$) {
   return $self;
 }
 
+=pod
+
+=back
+
+=cut
+
 sub DESTROY ($) {
   my $self=shift;
   warn "RDF::URI DESTROY\n" if $RDF::Debug;
@@ -138,8 +176,32 @@ sub DESTROY ($) {
   }
 }
 
+=head1 METHODS
+
+=over
+
+=item as_string
+
+Return the statement formatted as a string (UTF-8 encoded).
+
+=cut
+
 sub as_string ($) {
   &Redland::librdf_uri_to_string(shift->{URI});
 }
+
+=pod
+
+=back
+
+=head1 SEE ALSO
+
+L<RDF::Parser>
+
+=head1 AUTHOR
+
+Dave Beckett - http://purl.org/net/dajobe/
+
+=cut
 
 1;

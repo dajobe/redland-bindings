@@ -78,8 +78,36 @@ package RDF::Storage;
 
 use Redland;
 
-# CONSTRUCTOR
-# (main)
+=pod
+
+=head1 NAME
+
+RDF::Storage - Redland RDF Storage Class
+
+=head1 DESCRIPTION
+
+Create objects for storing RDF::Model objects either persistentantly
+or in memory.
+
+=cut
+
+######################################################################
+
+=pod
+
+=head1 CONSTRUCTORS
+
+=over
+
+=item new STORAGE_NAME NAME OPTIONS_STRING
+
+Create a new RDF::Storage object for the storage factory named
+I<STORAGE_NAME> with storage named I<NAME> and options
+I<OPTIONS_STRING>.  The options are formatted in the form
+key1='value1',key2='value2'.  The quotes are required.
+
+=cut
+
 sub new ($$$$) {
   my($proto,$storage_name,$name,$options_string)=@_;
   my $class = ref($proto) || $proto;
@@ -94,6 +122,13 @@ sub new ($$$$) {
   return $self;
 }
 
+=item new_from_storage STORAGE
+
+Create a new RDF::Storage object from RDF::Storage I<STORAGE> (copy
+constructor).
+
+=cut
+
 sub new_from_storage ($$$) {
   my($proto,$storage)=@_;
   my $class = ref($proto) || $proto;
@@ -105,10 +140,28 @@ sub new_from_storage ($$$) {
   return $self;
 }
 
+=pod
+
+=back
+
+=cut
+
 sub DESTROY ($) {
   warn "RDF::Storage DESTROY\n" if $RDF::Debug;
   &Redland::librdf_free_storage(shift->{STORAGE});
   warn "RDF::Storage DESTROY done\n" if $RDF::Debug;
 }
+
+=pod
+
+=head1 SEE ALSO
+
+L<RDF::Model>
+
+=head1 AUTHOR
+
+Dave Beckett - http://purl.org/net/dajobe/
+
+=cut
 
 1;

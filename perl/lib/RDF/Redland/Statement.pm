@@ -80,8 +80,35 @@ use RDF::Node;
 
 use Redland;
 
-# CONSTRUCTOR
-# (main)
+=pod
+
+=head1 NAME
+
+RDF::Statement - Redland RDF Statement Class
+
+=head1 DESCRIPTION
+
+Manipulate RDF statements which comprise three RDF::Node objects.
+Also used for I<partial> statements which can have empty parts and
+are used for matching statements in statement queries of the
+model - see the L<RDF::Model>.
+
+=cut
+
+######################################################################
+
+=pod
+
+=head1 CONSTRUCTORS
+
+=over
+
+=item new
+
+Create a new empty RDF::Statement object.
+
+=cut
+
 sub new ($) {
   my($proto)=@_;
   my $class = ref($proto) || $proto;
@@ -93,6 +120,13 @@ sub new ($) {
   return $self;
 }
 
+=item new_from_statement STATEMENT
+
+Create a new RDF::Statement object from RDF::Statement I<STATEMENT>
+(copy constructor).
+
+=cut
+
 sub new_from_statement ($$) {
   my($proto,$statement)=@_;
   my $class = ref($proto) || $proto;
@@ -103,6 +137,13 @@ sub new_from_statement ($$) {
   bless ($self, $class);
   return $self;
 }
+
+=item new_from_nodes SUBJECT PREDICATE OBJECT
+
+Create a new RDF::Statement with the given RDF::Node objects as parts
+(or undef when empty for a I<partial> statement).
+
+=cut
 
 sub new_from_nodes ($$$$) {
   my($proto,$subject,$predicate,$object)=@_;
@@ -142,6 +183,12 @@ sub _new_from_object ($$$) {
   return $self;
 }
 
+=pod
+
+=back
+
+=cut
+
 sub DESTROY ($) {
   warn "RDF::Statement DESTROY\n" if $RDF::Debug;
   my $self=shift;
@@ -156,10 +203,22 @@ sub DESTROY ($) {
   warn "RDF::Statement DESTROY done\n" if $RDF::Debug;
 }
 
+=head1 METHODS
+
+=over
+
+=item subject [SUBJECT]
+
+Get/set the statement subject.  When RDF::Node I<SUBJECT> is given, sets
+the subject of the statement, otherwise returns a reference to the
+statement RDF::Node subject which must be copied if used elsewhere.
+
+=cut
+
 sub subject ($;$) {
   my($self,$subject)=@_;
 
-  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_subject(shift->{STATEMENT}))
+  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_subject(shift->{STATEMENT}), 0)
     unless $subject;
 
   my $rc=&Redland::librdf_statement_set_subject($self->{STATEMENT},$subject->{NODE});
@@ -170,10 +229,18 @@ sub subject ($;$) {
   $rc;
 }
 
+=item predicate [PREDICATE]
+
+Get/set the statement predicate.  When RDF::Node I<PREDICATE> is given, sets
+the predicate of the statement, otherwise returns a reference to the
+statement RDF::Node predicate which must be copied if used elsewhere.
+
+=cut
+
 sub predicate ($;$) {
   my($self,$predicate)=@_;
   
-  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_predicate(shift->{STATEMENT}))
+  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_predicate(shift->{STATEMENT}), 0)
     unless $predicate;
 
   my $rc=&Redland::librdf_statement_set_predicate($self->{STATEMENT},$predicate->{NODE});
@@ -184,10 +251,18 @@ sub predicate ($;$) {
   $rc;
 }
 
+=item object [OBJECT]
+
+Get/set the statement object.  When RDF::Node I<OBJECT> is given, sets
+the object of the statement, otherwise returns a reference to the
+statement RDF::Node object which must be copied if used elsewhere.
+
+=cut
+
 sub object ($;$) {
   my($self,$object)=@_;
 
-  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_object(shift->{STATEMENT}))
+  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_object(shift->{STATEMENT}), 0)
     unless $object;
 
   my $rc=&Redland::librdf_statement_set_object($self->{STATEMENT},$object->{NODE});
@@ -199,8 +274,28 @@ sub object ($;$) {
   $rc;
 }
 
+=item as_string
+
+Return the statement formatted as a string (UTF-8 encoded).
+
+=cut
+
 sub as_string ($) {
   &Redland::librdf_statement_to_string(shift->{STATEMENT});
 }
+
+=pod
+
+=back
+
+=head1 SEE ALSO
+
+L<RDF::Node>
+
+=head1 AUTHOR
+
+Dave Beckett - http://purl.org/net/dajobe/
+
+=cut
 
 1;
