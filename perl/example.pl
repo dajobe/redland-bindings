@@ -95,9 +95,7 @@ my $statement=RDF::Statement->new_from_nodes(RDF::Node->new_from_uri_string("htt
 die "Failed to create RDF::Statement\n" unless $statement;
 
 warn "\nAdding statement to model\n";
-# after this $statement is owned by $model and should not be used
 $model->add_statement($statement);
-$statement=undef;
 
 warn "\nParsing URI (file) $test_file\n";
 my $uri=new RDF::URI("file:$test_file");
