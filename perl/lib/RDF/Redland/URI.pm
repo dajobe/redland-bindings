@@ -78,8 +78,6 @@ package RDF::URI;
 
 use strict;
 
-use Redland;
-
 =pod
 
 =head1 NAME
