@@ -78,8 +78,6 @@ package RDF::Iterator;
 
 use strict;
 
-use Redland;
-
 =pod
 
 =head1 NAME
@@ -129,11 +127,13 @@ sub new ($$@) {
   my($proto,$object,@creators)=@_;
   return undef if !$object;
 
+  warn "RDF::Iterator->new($object,@creators)\n" if $RDF::Debug;
+
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{ITERATOR}=$object;
-  # Keep around a reference to the objects that created the iterator
-  # so that perl does not destroy us before them.
+  # Keep around a reference to the objects that we use
+  # so that perl does not destroy them while we are using them
   $self->{CREATORS}=[@creators];
 
   bless ($self, $class);
@@ -145,6 +145,7 @@ sub DESTROY ($) {
   my $self=shift;
   warn "RDF::Iterator DESTROY\n" if $RDF::Debug;
   &Redland::librdf_free_iterator($self->{ITERATOR});
+  $self->{CREATORS}=undef;
 }
 
 
