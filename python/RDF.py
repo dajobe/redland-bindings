@@ -13,7 +13,7 @@
 #   2. GNU General Public License (GPL)
 #   3. Mozilla Public License (MPL)
 #
-# and as a this one file RDF.py is also available under the
+# and as an exception this one file RDF.py is also available under the
 #   4. BSD License without advertising (MIT license - from
 #        http://www.opensource.org/licenses/mit-license.html)
 #      -------------------------------------------------------------------
