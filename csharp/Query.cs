@@ -25,23 +25,28 @@ namespace Redland {
 		}
 
 		public Query (string s)
-			: this (Redland.World, s, null, RDQL)
+			: this (Redland.World, s, null, RDQL, null)
 		{
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_query (IntPtr world, IntPtr query_language, IntPtr uri, IntPtr query_string);
+		static extern IntPtr librdf_new_query (IntPtr world, IntPtr query_language, IntPtr uri, IntPtr query_string, IntPtr query_uri);
 
-		private Query (World world, string s, Uri uri, string query_language)
+		private Query (World world, string s, Uri base_uri, string query_language, Uri query_uri)
 		{
 			IntPtr iql = Marshal.StringToHGlobalAuto (query_language.ToString());
 			IntPtr iqs = Marshal.StringToHGlobalAuto (s.ToString());
-			IntPtr iuri = IntPtr.Zero;
+			IntPtr ibase_uri = IntPtr.Zero;
                         
-			if (uri != (Uri) null)
-				iuri = uri.Handle;
+			if (base_uri != (Uri) null)
+				ibase_uri = base_uri.Handle;
                         
-			query = librdf_new_query (Redland.World.Handle, iql, iuri, iqs);
+			IntPtr iquery_uri = IntPtr.Zero;
+                        
+			if (query_uri != (Uri) null)
+				iquery_uri = query_uri.Handle;
+                        
+			query = librdf_new_query (Redland.World.Handle, iql, iquery_uri, iqs, ibase_uri);
 			Marshal.FreeHGlobal (iql);
 			Marshal.FreeHGlobal (iqs);
 		}
