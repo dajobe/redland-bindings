@@ -158,28 +158,11 @@ def node_type_name(num):
       return n
   raise NodeTypeError('Unknown node type number %d' % num)
 
-def message_handler (type, message):
-  """Internal message dispatcher from Redland to python"""
-  global _debug
-  if _debug:
-      print "message_handler: type, message = ",type,message
-  if type == 0:
-    raise RedlandError(message)
-  else:
-    import warnings
-    warnings.warn(message, UserWarning, stacklevel=3)
+def message_handler(type, message):
+  raise RedlandError("Obsolete method")
 
 def set_message_handler(handler):
-  """Set the Redland message handler for Python.  It takes
-     a single function that takes (integer, string) arguments.
-
-     If it returns an non-zero integer, Redland will consider
-     the message handled and not display it using the default
-     handler."""
-  import Redland_python
-
-  Redland_python.set_callback(handler)
-
+  raise RedlandError("Obsolete method")
 
 class World(object):
   """Redland Initialisation class.
@@ -194,8 +177,6 @@ class World(object):
     Redland.librdf_world_open(self._world)
 
     Redland.librdf_python_world_init(self._world)
-    import Redland_python
-    Redland_python.set_callback(message_handler)
 
   def __del__(self):
     """Destroy RDF World object (destructor)."""
