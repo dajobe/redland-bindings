@@ -82,11 +82,11 @@ PYTHON_INCLUDES=@PYTHON_INCLUDES@
 
 PYTHON_PACKAGE=Redland
 
-SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c $(PYTHON_PACKAGE)_wrap.doc
+SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c
 SWIG_CRUFT=$(PYTHON_PACKAGE).bs blib pm_to_blib
 
 
-EXTRA_DIST=MANIFEST.in README Redland.i setup.cfg setup.py RDF.py \
+EXTRA_DIST=MANIFEST.in README setup.cfg setup.py RDF.py \
 $(SWIG_OUTPUTS)
 
 SUBDIRS=test
@@ -96,10 +96,10 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 PYTHON_SETUP=PACKAGE=$(PYTHON_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) $(PYTHON) setup.py
 
-$(PYTHON_PACKAGE)_wrap.c: Redland.i
-	swig -v -python -module $(PYTHON_PACKAGE) $?
+$(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
+	swig -v -python -module $(PYTHON_PACKAGE) -o $@ $?
 
-build-python:
+build-python: $(PYTHON_PACKAGE)_wrap.c
 	$(PYTHON_SETUP) build
 
 check-python: test-python
@@ -131,9 +131,6 @@ sdist-python: setup.py
 # RPM distribution for module
 rpmdist-python: setup.py
 	$(PYTHON_SETUP) bdist_rpm --release=$(RELEASE)
-
-Redland_wrap.o: Redland_wrap.c
-	$(COMPILE) -c $(PYTHON_INCLUDES) $<
 
 clean-local: clean-python
 	rm -rf build dist

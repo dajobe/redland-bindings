@@ -77,10 +77,10 @@ PERL_PACKAGE=Redland
 
 PERL_MAKEFILE=Makefile.perl
 
-SWIG_OUTPUTS=$(PERL_PACKAGE).pm $(PERL_PACKAGE)_wrap.c $(PERL_PACKAGE)_wrap.doc
+SWIG_OUTPUTS=$(PERL_PACKAGE).pm $(PERL_PACKAGE)_wrap.c
 PERL_CRUFT=blib pm_to_blib $(PERL_PACKAGE).bs $(PERL_MAKEFILE) $(PERL_MAKEFILE).old
 
-EXTRA_DIST=MANIFEST MANIFEST.SKIP Makefile.PL Redland.i test.pl \
+EXTRA_DIST=MANIFEST MANIFEST.SKIP Makefile.PL test.pl \
 $(SWIG_OUTPUTS)
 
 SUBDIRS=lib
@@ -89,8 +89,8 @@ CLEANFILES=test*db $(PERL_PACKAGE)_wrap.o $(PERL_MAKEFILE) \
 $(PERL_MAKEFILE).old
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
-$(PERL_PACKAGE)_wrap.c: Redland.i
-	swig -v -perl5 -package $(PERL_PACKAGE) $?
+$(PERL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
+	swig -v -perl5 -module $(PYTHON_PACKAGE) -o $@ $?
 
 $(PERL_MAKEFILE): Makefile.PL
 	PACKAGE=$(PERL_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) perl $? PREFIX=$(prefix)

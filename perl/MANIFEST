@@ -1,9 +1,7 @@
 MANIFEST		This file
 Makefile.PL		The Makefile generator (via MakeMaker)
 Redland.pm		Redland Interface module
-Redland.i		SWIG interface for Redland
 Redland_wrap.c		Generated SWIG C file
-Redland_wrap.doc	Generated SWIG documentation file
 lib/RDF.pm		RDF Module
 lib/RDF/Iterator.pm	RDF::Iterator Module
 lib/RDF/Model.pm	RDF::Model Module

@@ -115,8 +115,8 @@ if(!$version) {
 
 sub MY::postamble {
   return <<"EOT";
-Redland_wrap.c: Redland.i
-	swig -v -perl5 -package $PACKAGE Redland.i
+Redland_wrap.c: $TOP_SRCDIR/Redland.i
+	swig -v -perl5 -package $PACKAGE -o \$\@ \$\?
 EOT
 }
 
