@@ -37,7 +37,7 @@ die "Failed to create RDF::Redland::Model for storage\n" unless $model;
 warn "\nCreating statement\n";
 my $statement=RDF::Redland::Statement->new_from_nodes(RDF::Redland::Node->new_from_uri_string("http://purl.org/net/dajobe/"),
 					     RDF::Redland::Node->new_from_uri_string("http://purl.org/dc/elements/1.1/creator"),
-					     RDF::Redland::Node->new_from_literal("Dave Beckett", "", 0, 0));
+					     RDF::Redland::Node->new_from_literal("Dave Beckett", "", 0));
 die "Failed to create RDF::Redland::Statement\n" unless $statement;
 
 warn "\nAdding statement to model\n";
