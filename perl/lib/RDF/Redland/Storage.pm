@@ -69,9 +69,12 @@ key1='value1',key2='value2' and the single quotes are required.
                      but is dependent on the hash factories
                      available.
 
-  new='yes'          Create a new storage erasing any existing one
+  mode='MODE'        File creation mode, default is (octal) 0644
+                     Takes decimal (123), hex (0x123) or octal (0123).
 
-  write='yes'        Provide write access to store (default) 
+  new='yes'          Create a new storage erasing any existing one (default).
+
+  write='yes'        Provide write access to store (default)
                      otherwise is read only.
 
 Example:
