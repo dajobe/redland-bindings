@@ -58,7 +58,6 @@ $(PERL_CORE_PACKAGE)_wrap.c lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm : $(srcdir)/
 
 $(PERL_MAKEFILE): $(srcdir)/Makefile.PL lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
 	PACKAGE=$(PERL_REDLAND_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) CFLAGS="$(CFLAGS) $(MEM)" $(PERL) $(srcdir)/Makefile.PL
-	$(PERL) -p -i -e 's,Makefile.PL,$(srcdir)/Makefile.PL,; s,^FULLEXT = .*$$,FULLEXT = RDF/Redland,; s,^BASEEXT = .*$$,BASEEXT = CORE,; s,^BOOTSTRAP = .*$$,BOOTSTRAP = CORE.bs,;' $(PERL_MAKEFILE)
 
 -perl test-perl install-perl: $(PERL_MAKEFILE)
 	@target=`echo $@ | sed -e 's/-perl//'`; \
@@ -80,7 +79,7 @@ build-perl-stamp: $(srcdir)/../Redland.i
 check-local: build-perl-stamp test-perl
 
 # Perl make clean leaves the old makefile around
-clean-local: 
+clean-local:
 	rm -rf blib $(PERL_MAKEFILE) $(PERL_MAKEFILE).old build-perl-stamp
 
 # See this is the fake bit
