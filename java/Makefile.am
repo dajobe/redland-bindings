@@ -94,8 +94,6 @@ check-java: build-java test-java
 clean-local: clean-java
 
 clean-java:
-	target=`echo $@ | sed -e 's/-java//'`; \
-	cd org && $(MAKE) $$target
 	rm -f *.class
 
 
