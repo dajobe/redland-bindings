@@ -1,0 +1,8 @@
+.cvsignore
+Makefile
+Makefile.in
+*.dll
+*.so
+*.db
+*_wrap.c
+
