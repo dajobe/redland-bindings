@@ -61,12 +61,11 @@ test-csharp: build-csharp
 	$(CSHARP) test.cs
 
 clean-csharp realclean-csharp:
-	rm -f $(CSHARP_PACKAGE).so
+	rm -f $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE).so
 
-install-csharp: $(CSHARP_PACKAGE).so build-csharp
-	csharpdir=@prefix@/lib/csharp; \
-	mkdir $$csharpdir/redland; \
-	cp -p $(CSHARP_PACKAGE).so $$csharpdir/redland
+install-csharp: $(CSHARP_SHARED_LIB) build-csharp
+	$(INSTALL_PROGRAM) $(CSHARP_SHARED_LIB) @libdir@
+	$(INSTALL_PROGRAM) $(CSHARP_PACKAGE)PINVOKE.dll @libdir@
 
 dist-csharp:
 	@echo make csharp dist somehow
