@@ -589,7 +589,8 @@ ruby/Makefile
 ruby/test/Makefile
 ruby/lib/Makefile
 ruby/lib/rdf/Makefile
-ruby/lib/rdfs/Makefile
+ruby/lib/rdf/redland/Makefile
+ruby/lib/rdf/redland/schemas/Makefile
 csharp/Makefile
 csharp/examples/Makefile
 demos/Makefile
