@@ -21,6 +21,7 @@
 
 
 CSHARPC=@CSHARPC@
+CSHARPCFLAGS=@CSHARPCFLAGS@
 CLIRUN=@CLIRUN@
 
 EXTRA_DIST= GetsTest.cs ModelGeneralTest.cs \
@@ -37,9 +38,9 @@ CLEANFILES=test*.db \
 example1.xml example2.xml test-example3.xml test-example4.xml \
 $(CSHARP_TESTS) $(NUNIT_TESTS) TestResult.xml
 
-# These work for Mono and dotGNU
-CSHARPCFLAGS=/debug+
-CSHARPlDFLAGS=+/debug+
+# These should work for Mono and pnet
+CSHARPCFLAGS= $(CSHARPCFLAGS)
+CSHARPLDFLAGS= $(CSHARPCFLAGS)
 CSHARP_COMPILE=$(CSHARPC) $(CSHARPCFLAGS)
 CSHARP_LINK=$(CSHARPC) $(CSHARPLDFLAGS)
 
