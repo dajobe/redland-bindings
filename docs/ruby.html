@@ -44,14 +44,6 @@ or require quite a new version of Ruby.
 </p>
 
 
-<h2>Redland Ruby API Introduction</h2>
-
-<p>The Ruby API is an object-based API with the class names and method
-names flattened into Ruby procedure names like this:
-librdf_<em>class</em>_<em>method</em> - the same names as in the
-underlying C API.  The object references
-become Ruby variables.</p>
-
 <h2>Testing the Redland Ruby interface</h2>
 
 <p>The example program provided parses an RDF/XML source file into a
@@ -62,6 +54,14 @@ model.  It should be run with two arguments - the URI of the content
    ruby example.ruby file:../data/dc.rdf rdfxml
 </pre>
 
+
+<h2>Using the Redland Ruby API</h2>
+
+<p>The Ruby API is an object-based API with the class names and method
+names flattened into Ruby procedure names like this:
+librdf_<em>class</em>_<em>method</em> - the same names as in the
+underlying C API.  The object references
+become Ruby variables.</p>
 
 <hr />
 
