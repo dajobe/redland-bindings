@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -25,18 +25,22 @@ SWIG=@SWIG@
 
 JDK_INCLUDES=@JDK_INCLUDES@
 
-JAVA_C_SHLIB=redland-java
 JAVA_MODULE=core
 JAVA_PACKAGE=org.librdf.redland
 JAVA_PATH=org/librdf/redland/
 CLASSPATH=.
 
-JAVA_SHARED_LIB=lib$(JAVA_C_SHLIB).so
-JAVA_JAR=$(JAVA_C_SHLIB).jar
+EXTRA_LTLIBRARIES=librdf-java.la
+
+librdf_java_la_SOURCES=$(JAVA_MODULE)_wrap.c
+librdf_java_la_CFLAGS=$(JDK_INCLUDES)
+librdf_java_la_LDFLAGS=--rpath $(prefix)/lib/java $(top_srcdir)/librdf/librdf.la $(top_srcdir)/raptor/libraptor.la
+
+JAVA_JAR=librdf-java.jar
 
 SWIG_OUTPUTS=$(JAVA_PATH)$(JAVA_MODULE).java $(JAVA_MODULE)_wrap.c
 JAVA_CRUFT=$(JAVA_PATH)$(JAVA_MODULE).class $(JAVA_MODULE)_wrap.o \
-$(JAVA_SHARED_LIB) $(JAVA_JAR) skeleton.class \
+$(JAVA_JAR) skeleton.class \
 $(JAVA_PATH)$(JAVA_MODULE)JNI.java
 
 JAVA_SOURCE_FILES=$(JAVA_PATH)/Iterator.java $(JAVA_PATH)Hash.java	\
@@ -89,7 +93,7 @@ $(JAVA_PATH)$(JAVA_MODULE).java: $(JAVA_PATH)$(JAVA_MODULE).java.in redland-frag
 	rm -f $(JAVA_PATH)$(JAVA_MODULE).java.tmp
 
 
-build-java: $(JAVA_MODULE)_wrap.c $(JAVA_SHARED_LIB) skeleton.class
+build-java: $(JAVA_MODULE)_wrap.c librdf-java.la skeleton.class
 install-java: build-java
 check-java: build-java test-java
 
@@ -101,8 +105,8 @@ clean-java:
 
 compiled-java-classes: skeleton.class
 
-skeleton.class: skeleton.java $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java $(JAVA_SHARED_LIB)
-	$(JAVAC) -classpath $(CLASSPATH) skeleton.java
+skeleton.class: skeleton.java $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java librdf-java.la
+	$(JAVAC) skeleton.java
 
 $(JAVA_CLASS_FILES): skeleton.class
 $(JAVA_JAR): $(JAVA_CLASS_FILES)
@@ -112,22 +116,19 @@ $(JAVA_JAR): $(JAVA_CLASS_FILES)
 test-java: test1 test2
 
 test1: test1.class $(JAVA_JAR)
-	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) test1
+	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH $(JAVA) test1
 
 test1.class: test1.java $(JAVA_JAR)
-	$(JAVAC) -classpath $(JAVA_JAR) test1.java
+	$(JAVAC) -classpath $(CLASSPATH) test1.java
 
 test2: test2.class $(JAVA_JAR)
-	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) test2
+	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) test2
 
 test2.class: test2.java $(JAVA_JAR)
-	$(JAVAC) -classpath $(JAVA_JAR) test2.java
+	$(JAVAC) -classpath $(CLASSPATH) test2.java
 
 example: example.class $(JAVA_JAR)
-	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) example
+	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) example
 
 example.class: example.java $(JAVA_JAR)
-	$(JAVAC) -classpath $(JAVA_JAR) example.java
-
-$(JAVA_SHARED_LIB): $(JAVA_MODULE)_wrap.c
-	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. $(JDK_INCLUDES) $< -static `../redland-src-config --cflags` `../redland-src-config --libs` -o $@
+	$(JAVAC) -classpath $(CLASSPATH):$(JAVA_JAR) example.java
