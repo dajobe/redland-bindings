@@ -32,7 +32,7 @@ SWIG_OUTPUTS=$(RUBY_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
 
-EXTRA_DIST=README test.rb example.rb \
+EXTRA_DIST=test.rb example.rb \
 $(SWIG_OUTPUTS)
 
 CLEANFILES=test*db $(RUBY_PACKAGE)_wrap.o 
