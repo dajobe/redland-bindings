@@ -81,7 +81,7 @@ public class Stream implements java.util.Iterator
     if(statement_object == 0)
       throw new java.util.NoSuchElementException();
 
-      return new Statement(this.world, statement_object, true);
+      return new Statement(this.world, statement_object);
     }
 
   public Node context() {
@@ -90,7 +90,7 @@ public class Stream implements java.util.Iterator
     if(node_object == 0)
       throw new java.util.NoSuchElementException();
 
-    return new Node(this.world, node_object, false);
+    return new Node(this.world, node_object);
   }
 
   public boolean move_to_next()
