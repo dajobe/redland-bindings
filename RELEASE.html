@@ -39,6 +39,29 @@ returns.</p>
 boolean results.</p>
 
 
+<h3>PHP bindings changes</h3>
+
+<p>Fix for swig calling zend_rsrc_list_get_rsrc_type incorrectly.
+Added <code>PHP_MINFO_FUNCTION</code> to report that Redland was
+loaded, the version of redland and the PHP bindings.</p>
+
+
+<h3>Python bindings changes</h3>
+
+<p>Change the way that redland errors and warnings are reported.
+Warnings are now generated immediately as a Python
+<code>PyRedland_Warning</code> warning.  The first error generated is
+saved and thrown as an <code>PyRedland_Error</code> exception after
+the redland function returns.  If multiple errors are generated, the
+remaining ones are left to the default redland error handler, which
+prints them to stderr.</p>
+
+<p>This change has a disadvantage in no longer allowing
+user-registration of callbacks but it does seem to work better with
+Python than the former mechanism of python calling C calling
+Python.</p>
+
+
 
 <h2 id="rel1_0_0_1"><a name="rel1_0_0_1">Redland Bindings 1.0.0.1 Changes</a></h2>
 
