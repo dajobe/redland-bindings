@@ -6,7 +6,9 @@ Makefile.in
 RDF.html
 Redland_wrap*
 build
+build-python-stamp
 dist
+dmalloc.log
 lib
 not-used
 test*db
