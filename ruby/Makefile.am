@@ -41,7 +41,7 @@ $(SWIG_OUTPUTS)
 SUBDIRS=lib test
 
 CLEANFILES=*.db test-out.rdf core* \
-$(RUBY_PACKAGE)_wrap.so $(RUBY_PACKAGE)_wrap.o $(RUBY_PACKAGE)-stamp \
+$(RUBY_PACKAGE)_wrap.so $(RUBY_PACKAGE)_wrap.o ruby-redland-stamp \
 $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
@@ -53,8 +53,8 @@ $(RUBY_PACKAGE)_wrap.so: $(srcdir)/$(RUBY_PACKAGE)_wrap.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(rubydir) $(RUBY_PACKAGE)_wrap.c -c -o $@
 
 
-$(RUBY_PACKAGE).so: $(RUBY_PACKAGE)-stamp
-$(RUBY_PACKAGE)-stamp: $(RUBY_PACKAGE)_wrap.so
+$(RUBY_PACKAGE).so: ruby-redland-stamp
+ruby-redland-stamp: $(RUBY_PACKAGE)_wrap.so
 	@if test `uname` = Darwin; then \
 	  args=" -bundle -flat_namespace -undefined suppress"; \
 	else \
@@ -65,7 +65,7 @@ $(RUBY_PACKAGE)-stamp: $(RUBY_PACKAGE)_wrap.so
 	if test `uname` = Darwin; then \
 	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle; \
 	fi
-	touch $(RUBY_PACKAGE)-stamp
+	touch ruby-redland-stamp
 
 install-rubyDATA: $(ruby_DATA)
 	if test -r $(RUBY_PACKAGE).bundle; then \
