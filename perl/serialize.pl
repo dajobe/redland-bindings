@@ -233,6 +233,42 @@ sub emit($$) {
 }
 
 
+sub emit_start_element($$@) {
+  my($state,$name,@attrs)=@_;
+
+  my $str="<".$name;
+
+  if(my $namespaces=$state->{inscope_namespaces}) {
+    for my $ns (@$namespaces) {
+      my($prefix, $uri, $depth)=@$ns;
+      $str.=qq{ xmlns:$prefix="$uri"}
+        if $depth == $state->{depth};
+    }
+  }
+
+  if(my $lang=$state->{xml_lang}) {
+    $str.=qq{ xml:lang="$lang"};
+  }
+
+  if(my $base=$state->{xml_base}) {
+    $str.=qq{ xml:base="$base"};
+  }
+
+  for my $attr (@attrs) {
+    my($name,$value)=@$attr;
+    $str.=qq{ $name="$value"};
+  }
+
+  $str.=">";
+  emit($state, $str);
+}
+
+sub emit_end_element($$) {
+  my($state, $name)=@_;
+  emit($state, qq{</$name>});
+}
+
+
 # print <predicate>object </predicate>
 # in various forms depending on type of object node
 sub format_statement ($$$) {
@@ -342,18 +378,16 @@ my(@order)=(@nodes_with_types, @other_nodes);
 print qq{<?xml version='1.0' encoding='}; #'
 print $state->{feature_content_encoding}, "'?>\n"; #'
 
-declare_namespace($state, $RDF_NS);
-
+ensure_declared_namespace($state, $RDF_NS);
 my $element=make_xml_qname($state, $RDF_NS, "RDF");
 
-emit($state, qq{<$element>});
+emit_start_element($state, $element);
 
   indent($state);
   dump_nodes($state, @order);
   outdent($state);
 
-emit($state, qq{</$element>});
-
+emit_end_element($state, $element);
 
 exit 0;
 
