@@ -25,7 +25,8 @@ CLIRUN=@CLIRUN@
 
 EXTRA_DIST= GetsTest.cs ModelGeneralTest.cs \
 ModelTest.cs SimpleGetsTest.cs StreamTest.cs TemplateTest.cs	\
-example1.cs example2.cs example3.cs example4.cs
+example1.cs example2.cs example3.cs example4.cs \
+nunit-console.exe AssemblyInfo.cs ConsoleUi.cs
 
 NUNIT_TESTS = ModelTest.dll SimpleGetsTest.dll \
 GetsTest.dll StreamTest.dll ModelGeneralTest.dll
@@ -48,8 +49,8 @@ SUFFIXES=.cs .dll .exe
 .cs.exe:
 	$(CSHARP_LINK) 
 
-NUNIT_CONSOLE = /usr/share/dotnet/bin/nunit-console.exe
-NUNIT_FLAGS = /t:library /r:nunit.framework.dll /r:../Redland.dll 
+NUNIT_CONSOLE = nunit-console.exe
+NUNIT_FLAGS = -t:library -r:nunit.framework.dll -r:../Redland.dll 
 
 
 check-local: $(CSHARP_TESTS) 
@@ -60,16 +61,16 @@ check-local: $(CSHARP_TESTS)
 	done
 
 example4.exe: example4.cs ../Redland.dll
-	$(CSHARP_LINK) example4.cs /r:../Redland.dll /out:$@
+	$(CSHARP_LINK) example4.cs -r:../Redland.dll -out:$@
 
 example3.exe: example3.cs ../Redland.dll
-	$(CSHARP_LINK) example3.cs /r:../Redland.dll /out:$@
+	$(CSHARP_LINK) example3.cs -r:../Redland.dll -out:$@
 
 example2.exe: example2.cs ../Redland.dll
-	$(CSHARP_LINK) example2.cs /r:../Redland.dll /out:$@
+	$(CSHARP_LINK) example2.cs -r:../Redland.dll -out:$@
 
 example1.exe: example1.cs ../Redland.dll
-	$(CSHARP_LINK) example1.cs /r:../Redland.dll /out:$@
+	$(CSHARP_LINK) example1.cs -r:../Redland.dll -out:$@
 
 
 unittests: $(NUNIT_TESTS) ../Redland.dll
@@ -78,19 +79,19 @@ unittests: $(NUNIT_TESTS) ../Redland.dll
 	$(top_builddir)/redland-src-config --run $(CLIRUN) $(NUNIT_CONSOLE) $(NUNIT_TESTS)
 
 ModelGeneralTest.dll: ModelGeneralTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) ModelGeneralTest.cs /out:$@
+	$(CSHARP_LINK) $(NUNIT_FLAGS) ModelGeneralTest.cs -out:$@
 
 StreamTest.dll: StreamTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) StreamTest.cs /out:$@
+	$(CSHARP_LINK) $(NUNIT_FLAGS) StreamTest.cs -out:$@
 
 GetsTest.dll: GetsTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) GetsTest.cs /out:$@
+	$(CSHARP_LINK) $(NUNIT_FLAGS) GetsTest.cs -out:$@
 
 SimpleGetsTest.dll: SimpleGetsTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) SimpleGetsTest.cs /out:$@
+	$(CSHARP_LINK) $(NUNIT_FLAGS) SimpleGetsTest.cs -out:$@
 
 ModelTest.dll: ModelTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) ModelTest.cs /out:$@
+	$(CSHARP_LINK) $(NUNIT_FLAGS) ModelTest.cs -out:$@
 
 
 clean-local:
@@ -98,3 +99,8 @@ clean-local:
 
 ../Redland.dll:
 	@cd .. && $(MAKE) Redland.dll
+
+if MAINTAINER_MODE
+nunit-console.exe: AssemblyInfo.cs ConsoleUi.cs
+	$(CSHARP_LINK) -r:nunit.framework.dll -r:nunit.util.dll -r:nunit.core.dll AssemblyInfo.cs ConsoleUi.cs -out:$@
+endif
