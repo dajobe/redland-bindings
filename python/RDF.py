@@ -152,6 +152,10 @@ class node:
     """Get a string representation of an RDF Node."""
     return Redland.librdf_node_to_string(self.node)
 
+  def equals(self,node):
+    """Compare RDF Node to another RDF Node."""
+    return Redland.librdf_node_equals(self.node, node.node)
+
 # end class node
 
 
@@ -481,6 +485,10 @@ class uri:
   def __str__(self):
     """Get a string representation of an RDF URI."""
     return Redland.librdf_uri_to_string(self.uri)
+
+  def equals(self,uri):
+    """Compare RDF URI to another RDF URI."""
+    return Redland.librdf_uri_equals(self.uri, uri.uri)
 
 # end class uri
 
