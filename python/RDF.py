@@ -382,19 +382,13 @@ class Node(object):
   def __eq__(self,other):
     """Equality of an RDF Node compared to another RDF Node."""
     if other is None:
-      if self is None:
-        return 1
-      else:
-        return 0
+      return (self is None)
     return (Redland.librdf_node_equals(self._node, other._node) != 0)
 
   def __ne__(self,other):
     """Inequality of an RDF Node compared to another RDF Node."""
     if other is None:
-      if self is None:
-        return 0
-      else:
-        return 1
+      return (self is None)
     return (Redland.librdf_node_equals(self._node, other._node) == 0)
 
   def __hash__(self):
@@ -552,28 +546,19 @@ class Statement(object):
   def __eq__(self,other):
     """Equality of an RDF Statement compared to another RDF Statement."""
     if other is None:
-      if self is None:
-        return 1
-      else:
-        return 0
+      return (self is None)
     return (Redland.librdf_statement_equals(self._statement, other._statement) != 0)
 
   def __ne__(self,other):
     """Inequality of an RDF Statement compared to another RDF Statement."""
     if other is None:
-      if self is None:
-        return 0
-      else:
-        return 1
+      return (self is None)
     return (Redland.librdf_statement_equals(self._statement, other._statement) == 0)
 
   def matches(self,other):
     """Comparison of this potentially incomplete RDF Statement compared to another RDF Statement."""
     if other is None:
-      if self is None:
-        return 0
-      else:
-        return 1
+      return (self is None)
     return (Redland.librdf_statement_match(other._statement, self._statement) != 0)
  
 # end class Statement
@@ -1493,19 +1478,13 @@ Copy an existing URI uri1.
   def __eq__(self,other):
     """Equality of RDF URI to another RDF URI."""
     if other is None:
-      if self is None:
-        return 1
-      else:
-        return 0
+      return (self is None)
     return (Redland.librdf_uri_equals(self._reduri, other._reduri) != 0)
 
   def __ne__(self,other):
     """Inequality of RDF URI to another RDF URI."""
     if other is None:
-      if self is None:
-        return 0
-      else:
-        return 1
+      return (self is None)
     return (Redland.librdf_uri_equals(self._reduri, other._reduri) == 0)
 
 # end class Uri
