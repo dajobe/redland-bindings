@@ -15,7 +15,7 @@ Name:      %{name}
 Version:   %{version}
 Release:   %{release}
 Prefix:    %{_prefix}
-Copyright: LGPL/MPL
+Copyright: LGPL/Apache 2
 Group:     Development/Libraries
 Source:    http://www.redland.opensource.ac.uk/dist/source/%{name}-%{version}.tar.gz
 URL:       http://www.redland.opensource.ac.uk/
@@ -110,8 +110,8 @@ cd ..
 %{perlinstallsitearch}/RDF/Redland
 %{perlinstallsitearch}/RDF/Redland.pm
 
-%doc AUTHORS COPYING COPYING.LIB
-%doc README NEWS LICENSE.txt
+%doc AUTHORS COPYING COPYING.LIB ChangeLog LICENSE.txt NEWS README
+%doc LICENSE-2.0.txxt NOTICE
 
 %doc %{perlman3dir}/RDF::Redland*.3pm*
 %doc perl/example.pl
@@ -122,8 +122,8 @@ cd ..
 %{_libdir}/python*/site-packages/RDF.py
 %{_libdir}/python*/site-packages/Redland.so*
 
-%doc AUTHORS COPYING COPYING.LIB
-%doc README NEWS LICENSE.txt
+%doc AUTHORS COPYING COPYING.LIB LICENSE-2.0.txt
+%doc README NEWS LICENSE.txt NOTICE
 
 %doc docs/pydoc/RDF.html python/example.py
 
@@ -132,6 +132,10 @@ cd ..
 %postun
 
 %changelog
+* Mon Nov 2 2004   Dave Beckett <dave.beckett@bristol.ac.uk>
+- License now LGPL/Apache 2
+- Added LICENSE-2.0.txt and NOTICE
+
 * Mon Jul 19 2004  Dave Beckett <dave.beckett@bristol.ac.uk>
 - split redland to give redland-bindings
 - requires redland 0.9.17

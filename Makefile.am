@@ -30,7 +30,7 @@ EXTRA_DIST=ChangeLog \
 README      NEWS      LICENSE.txt  TODO \
 README.html NEWS.html LICENSE.html TODO.html \
 RELEASE.html INSTALL.html \
-MPL.html \
+LICENSE-2.0.txt NOTICE \
 autogen.sh \
 Makefile.PL \
 redland-bindings.spec redland-bindings.spec.in
