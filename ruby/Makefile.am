@@ -99,15 +99,14 @@ test-example: $(RUBY_PACKAGE).so $(srcdir)/example.rb
 	$(RUN)$(RUBY) -I. -Ilib \
 	  $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
 
-docs: rdoc
-
-rdoc: rdoc.stamp
-rdoc.stamp:
+docs: rdoc-stamp
+rdoc-stamp:
 	mkdir -p html; \
 	outdir=`cd html; pwd`; \
 	rm -rf $$outdir; \
+	here=`pwd`; \
 	cd $(srcdir)/lib; \
-	rdoc --quiet --fmt html --charset utf8 --inline-source --image-format png --op $$outdir --main index.html --title "Redland Ruby API RDoc" --exclude convert_owl.rb --exclude constants.rb --exclude convertfoaf.rb
+	rdoc --quiet --fmt html --charset utf8 --inline-source --image-format png --op $$outdir --title "Redland Ruby API RDoc" --exclude convert_owl.rb --exclude constants.rb --exclude convertfoaf.rb && touch $$here/$@
 
 clean-local:
 	rm -rf html rdoc.stamp
