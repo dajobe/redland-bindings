@@ -40,25 +40,23 @@ namespace Rdf {
 			stm = librdf_new_statement (world.Handle);
 		}
 
-		private static void set_pointer (Node n, IntPtr p)
-		{
-			if (n != null)
-				p = n.Handle;
-		}
-
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_new_statement_from_nodes (IntPtr world, IntPtr subject, IntPtr predicate, IntPtr obj);
 		private Statement (World world, Node subject, Node predicate, Node obj)
 		{
 			IntPtr subj, pred, o;
 			subj = pred = o = IntPtr.Zero;
+
+ 			Console.WriteLine ("Making Statement from {0} {1} {2}", subject.ToString(), predicate.ToString(), obj.ToString());
+			
 			if(subject != null)
-				set_pointer (subject, subj);
+				subj=new Node(subject)
 			if(predicate != null)
-				set_pointer (predicate, pred);
+				pred=new Node(predicate)
 			if(obj != null)
-				set_pointer (obj, o);
+				o=new Node(obj)
 			stm = librdf_new_statement_from_nodes (world.Handle, subj, pred, o);
+ 			Console.WriteLine ("New Statement is {0}", stm.ToString());
 		}
 
 		[DllImport ("librdf")]
