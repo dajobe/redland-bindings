@@ -7,8 +7,10 @@ lib/RDF/Iterator.pm	RDF::Iterator Module
 lib/RDF/Model.pm	RDF::Model Module
 lib/RDF/Node.pm		RDF::Node Module
 lib/RDF/Parser.pm	RDF::Parser Module
+lib/RDF/RSS.pm		RDF::RSS Module
 lib/RDF/Statement.pm	RDF::Statement Module
 lib/RDF/Storage.pm	RDF::Storage Module
 lib/RDF/Stream.pm	RDF::Stream Module
 lib/RDF/URI.pm		RDF::URI Module
 test.pl			Test suite
+rss-dump.pl		RSS 1.0 test program
