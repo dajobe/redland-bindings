@@ -39,7 +39,7 @@ RDF::Redland::Serializer - Redland RDF Serializing to Syntax Class
   ...
   my $serializer=new RDF::Redland::Serializer("ntriples");
 
-  $serializer->serialize_model(STDOUT, $base_uri, $model);
+  $serializer->serialize_model_to_file("foo.rdf", $base_uri, $model);
 
 =head1 DESCRIPTION
 
@@ -98,16 +98,16 @@ sub DESTROY ($) {
 
 =over
 
-=item serialize_model HANDLE BASE_URI MODEL
+=item serialize_model_to_file FILENAME BASE_URI MODEL
 
 Serialize the RDF Graph I<MODEL> as syntax with the
-base RDF::Redland::URI I<BASE_URI> to perl handle I<HANDLE>.
+base RDF::Redland::URI I<BASE_URI> to file I<FILENAME>.
 
 =cut
 
-sub serialize_model ($$$$) {
-  my($self,$handle,$base_uri,$model)=@_;
-  return &RDF::Redland::CORE::librdf_serializer_serialize_model($self->{SERIALIZER},$handle, $base_uri->{URI},$model->{MODEL});
+sub serialize_model_to_file ($$$$) {
+  my($self,$name,$base_uri,$model)=@_;
+  return &RDF::Redland::CORE::librdf_serializer_serialize_model($self->{SERIALIZER},$name, $base_uri->{URI},$model->{MODEL});
 }
 
 =item feature URI [VALUE]
