@@ -1,0 +1,7 @@
+.cvsignore
+Makefile
+Makefile.in
+*.dll
+*.so
+*.db
+test-example.xml

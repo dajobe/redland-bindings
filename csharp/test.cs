@@ -1,56 +1,48 @@
 //
-//
-// It compiles, runs and does nothing.
-//
-// If it wasn't my 2nd C# program, I might be able move onwards
+// tester.cs: play with new Redland's C# objects. Based on Redland's redland/example/example1.c
 //
 
-namespace RedlandTest
-{
+using Rdf;
+using System;
+using System.Runtime.InteropServices;
 
-  using System;
-  using System.Runtime.InteropServices;
+public class Test {
+	
+	static string rdfxml_content =
+	"<?xml version=\"1.0\"?> <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\"> <rdf:Description rdf:about=\"http://purl.org/net/dajobe/\"> <dc:title>Dave Beckett's Home Page </dc:title> <dc:creator>Dave Beckett </dc:creator> <dc:description> The generic homepage of Dave Beckett. </dc:description> </rdf:Description></rdf:RDF>";
 
-  public class test
-  {
+	[DllImport ("libc", EntryPoint="fopen")]
+	public static extern IntPtr fopen (string path, string mode);
 
-  [DllImport("librdf", EntryPoint="librdf_new_world")]
-  public static extern IntPtr librdf_new_world();
+	public static void Main ()
+	{
+		Rdf.World world = new Rdf.World ();
+		world.Open ();
 
-  [DllImport("librdf", EntryPoint="librdf_free_world")]
-  public static extern void librdf_free_world(IntPtr world);
+		Rdf.Uri uri = new Rdf.Uri (world, "http://example.librdf.org/");
+		Storage storage = new Storage (world, "memory", "test", null);
+		Model model = new Model (world, storage, null);
 
-  [DllImport("librdf", EntryPoint="librdf_world_open")]
-  public static extern void librdf_world_open(IntPtr world);
+		Parser parser = new Parser (world, "raptor", null, null);
+		parser.ParseStringIntoModel (rdfxml_content, uri, model);
 
-  [DllImport("librdf", EntryPoint="librdf_new_node_from_uri_string")]
-  public static extern IntPtr librdf_new_node_from_uri_string(IntPtr world, string uri_string);
+		Node subject, predicate, obj;
+		subject = new Node (world, "http://purl.org/net/dajobe/");
+		predicate = new Node (world, "http://purl.org/dc/elements/1.1/title");
+		obj = new Node (world, "My Home Page", null, 0);
 
-  [DllImport("librdf", EntryPoint="librdf_node_to_string")]
-  public static extern string librdf_node_to_string(IntPtr node);
+		Statement stm = new Statement (world, subject, predicate, obj);
+		model.AddStatement (stm);
 
-    public static void Main(String[] args)
-    {
-      try {
-        Console.Error.WriteLine("Starting");
+		IntPtr output = fopen ("test-cesar-redland-binding.xml", "w+");
+		model.Print (output);
 
-        IntPtr world = librdf_new_world();
-        librdf_world_open(world);
+		Statement partial_stm = new Statement (world);
+		partial_stm.Subject = subject;
+		partial_stm.Predicate = predicate;
 
-	IntPtr node=librdf_new_node_from_uri_string(world, "http://www.dajobe.org/");
-        Console.Error.WriteLine("Node");
-        Console.Error.WriteLine(librdf_node_to_string(node));
-
-        librdf_free_world(world);
-
-        Console.Error.WriteLine("Ending");
-      } catch (  System.Exception exception) {
-        Console.Error.WriteLine(exception);
-      }
-
-    }
-
-  }; // end public class
-
-
+		// FIXME: return types not handled at all.
+		Stream stream = model.FindStatements (partial_stm);
+		Iterator iterator = model.GetTargets (subject, predicate);
+	}
 }

@@ -30,24 +30,29 @@ CLIRUN=@CLIRUN@
 CSHARP_C_SHLIB=redland-csharp
 CSHARP_PACKAGE=Redland
 
-CSHARP_SHARED_LIB=lib$(CSHARP_C_SHLIB).so
+CSHARP_DLL=$(CSHARP_PACKAGE).dll
 
-SWIG_OUTPUTS=$(CSHARP_PACKAGE)_wrap.c $(CSHARP_PACKAGE).cs $(CSHARP_PACKAGE)PINVOKE.cs
-CSHARP_CRUFT=$(CSHARP_PACKAGE)_wrap.o $(CSHARP_PACKAGE).dll \
-$(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE).so
+CSHARP_DLL_SRCS=IWrapper.cs World.cs Uri.cs Storage.cs Model.cs		\
+Parser.cs Node.cs Statement.cs Stream.cs Iterator.cs Serializer.cs	\
+Redland.cs MemoryStorage.cs HashStorage.cs util.cs
+
+CSHARP_CRUFT=$(CSHARP_PACKAGE).dll
 
 fakedir=$(prefix)
 fake_DATA=build-csharp-stamp
 
-EXTRA_DIST=README test.cs \
-$(SWIG_OUTPUTS)
+SUBDIRS=examples
+
+EXTRA_DIST=README test.cs $(CSHARP_DLL_SRCS)
 
 CLEANFILES=test*db *.exe *.dll test-out.rdf $(CSHARP_CRUFT)
-MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
+#MAINTAINERCLEANFILES=
 
 # These work for Mono and dotGNU
-CSHARP_COMPILE=$(CSHARPC) $(CSHARPCFLAGS) $< -target:library -out:$@
-CSHARP_LINK=$(CSHARPC) $(CSHARPLDFLAGS) $< -target:exe -out:$@
+CSHARPCFLAGS=/debug+
+CSHARPLDFLAGS=/debug+
+CSHARP_COMPILE=$(CSHARPC) $(CSHARPCFLAGS)
+CSHARP_LINK=$(CSHARPC) $(CSHARPLDFLAGS)
 
 SUFFIXES=.cs .dll .exe
 .cs.dll:
@@ -55,19 +60,12 @@ SUFFIXES=.cs .dll .exe
 .cs.exe:
 	$(CSHARP_LINK) 
 
-$(CSHARP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
-	swig -v -csharp -package $(CSHARP_PACKAGE) -o $@ $<
-	rm -f SWIGTYPE_*
-
-$(CSHARP_PACKAGE)_wrap.o: $(CSHARP_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $< -c -o $@
-
-$(CSHARP_SHARED_LIB): $(CSHARP_PACKAGE)_wrap.o
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -shared $< `$(top_builddir)/redland-src-config --libs` -o $@
+$(CSHARP_DLL): $(CSHARP_DLL_SRCS)
+	$(CSHARP_COMPILE) /target:library $? -out:$@
 
 build-csharp: build-csharp-stamp
 
-build-csharp-stamp: $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE)PINVOKE.dll
+build-csharp-stamp: $(CSHARP_DLL)
 	touch build-csharp-stamp
 
 check-local: build-csharp-stamp test-csharp
@@ -75,12 +73,14 @@ check-local: build-csharp-stamp test-csharp
 test-csharp: build-csharp-stamp test.exe
 	$(top_builddir)/redland-src-config --run $(CLIRUN) test.exe
 
-install-csharp: $(CSHARP_SHARED_LIB) build-csharp
-	$(INSTALL_PROGRAM) $(CSHARP_SHARED_LIB) @libdir@
-	$(INSTALL_PROGRAM) $(CSHARP_PACKAGE)PINVOKE.dll @libdir@
+test.exe: test.cs Redland.dll
+	$(CSHARP_LINK) test.cs /target:exe /r:Redland.dll /out:$@
+
+install-csharp: build-csharp-stamp
+	$(INSTALL_PROGRAM) $(CSHARP_DLL) @libdir@
 
 clean-local:
-	rm -f build-csharp-stamp
+	rm -f build-csharp-stamp $(CSHARP_DLL)
 
 # See this is the fake bit
 install-fakeDATA: install-csharp

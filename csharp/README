@@ -1,1 +1,9 @@
-Don't rely on this interface yet, it's barely tested.
+				Hand crafted Redland library C# binding.
+					Cesar Lopez Nataren 
+				      (cesar@ciencias.unam.mx)
+
+
+This is a first attemp to wrap Redland library for Mono [1]'s aware
+programming language use, with a C#-ish programming-style feeling.
+
+[1] Visit http://go-mono.org for info on Mono platform.
