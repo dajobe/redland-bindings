@@ -66,7 +66,7 @@ namespace Redland {
 					throw new RedlandError 
 						("Can't get literal value of non-literal");
 				IntPtr istr = librdf_node_get_literal_value (node);
-				return Marshal.PtrToStringAuto (istr);
+				return Util.UTF8PtrToString (istr);
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace Redland {
 					throw new RedlandError 
 						("Can't get language of non-literal");
 				IntPtr istr = librdf_node_get_literal_value_language (node);
-				return Marshal.PtrToStringAuto (istr);
+				return Util.UTF8PtrToString (istr);
 			}
 		}
 
@@ -191,7 +191,7 @@ namespace Redland {
 
 		private Node (World world, System.Uri uri)
 		{
-			IntPtr iuri = Marshal.StringToHGlobalAuto (uri.ToString());
+			IntPtr iuri = Util.StringToHGlobalUTF8 (uri.ToString());
 			node = librdf_new_node_from_uri_string (world.Handle, iuri);
 			Marshal.FreeHGlobal (iuri);
 		}
@@ -201,8 +201,8 @@ namespace Redland {
 
 		private Node (World world, string s, string xml_language, bool is_wf_xml)
 		{
-			IntPtr istr = Marshal.StringToHGlobalAuto (s);
-			IntPtr ilang = Marshal.StringToHGlobalAuto (xml_language);
+			IntPtr istr = Util.StringToHGlobalUTF8 (s);
+			IntPtr ilang = Util.StringToHGlobalUTF8 (xml_language);
 			int is_xml = is_wf_xml ? 1: 0;
 			node = librdf_new_node_from_literal (world.Handle, istr, ilang, is_xml);
 			Marshal.FreeHGlobal (istr);
@@ -239,7 +239,7 @@ namespace Redland {
 		public override string ToString ()
 		{
 			IntPtr istr = librdf_node_to_string (node);
-			return Marshal.PtrToStringAuto (istr);
+			return Util.UTF8PtrToString (istr);
 		}
 		
 		[DllImport ("librdf")]

@@ -98,11 +98,11 @@ namespace Redland {
 			b = raptor_locator_byte (rloc);
 			IntPtr istr = raptor_locator_file (rloc);
 			if (istr != IntPtr.Zero) {
-				file = Marshal.PtrToStringAuto (istr);
+				file = Util.UTF8PtrToString (istr);
 			}
 			istr = raptor_locator_uri (rloc);
 			if (istr != IntPtr.Zero) {
-				uri = Marshal.PtrToStringAuto (istr);
+				uri = Util.UTF8PtrToString (istr);
 			}
 		}
 	}
@@ -135,7 +135,7 @@ namespace Redland {
 			facility = (Facility) librdf_log_message_facility (message);
 			IntPtr istr = librdf_log_message_message (message);
 			if (istr != IntPtr.Zero) {
-				this.message = Marshal.PtrToStringAuto (istr);
+				this.message = Util.UTF8PtrToString (istr);
 			}
 			IntPtr iloc = librdf_log_message_locator (message);
 			if (iloc != IntPtr.Zero) {

@@ -29,7 +29,7 @@ namespace Redland {
 
 		private Uri (World world, string uri_str)
 		{
-			IntPtr iuri_str = Marshal.StringToHGlobalAuto (uri_str);
+			IntPtr iuri_str = Util.StringToHGlobalUTF8 (uri_str);
 			uri = librdf_new_uri (world.Handle, iuri_str);
 			Marshal.FreeHGlobal (iuri_str);
 			// Console.WriteLine ("Making URI from string {0} giving handle {1}", uri_str, uri);
@@ -126,7 +126,7 @@ namespace Redland {
 		public override string ToString ()
 		{
 			IntPtr istr = librdf_uri_to_string (uri);
-			return Marshal.PtrToStringAuto (istr);
+			return Util.UTF8PtrToString (istr);
 		}
 	}
 }

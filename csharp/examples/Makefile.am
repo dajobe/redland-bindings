@@ -29,10 +29,10 @@ RUN=@REDLAND_RUN@
 EXTRA_DIST= GetsTest.cs ModelGeneralTest.cs \
 ModelTest.cs SimpleGetsTest.cs StreamTest.cs TemplateTest.cs	\
 example1.cs example2.cs example3.cs example4.cs \
-nunit-console.exe AssemblyInfo.cs ConsoleUi.cs
+nunit-console.exe AssemblyInfo.cs ConsoleUi.cs EncodingTest.cs
 
 NUNIT_TESTS = ModelTest.dll SimpleGetsTest.dll \
-GetsTest.dll StreamTest.dll ModelGeneralTest.dll
+GetsTest.dll StreamTest.dll ModelGeneralTest.dll EncodingTest.dll
 
 CSHARP_TESTS=example1.exe example2.exe example3.exe example4.exe
 
@@ -94,6 +94,9 @@ SimpleGetsTest.dll: SimpleGetsTest.cs
 
 ModelTest.dll: ModelTest.cs
 	$(CSHARP_LINK) $(NUNIT_FLAGS) ModelTest.cs -out:$@
+
+EncodingTest.dll: EncodingTest.cs
+	$(CSHARP_LINK) $(NUNIT_FLAGS) EncodingTest.cs -out:$@
 
 
 clean-local:

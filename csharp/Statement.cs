@@ -149,7 +149,7 @@ namespace Redland {
 		public override string ToString ()
 		{
 			IntPtr istr = librdf_statement_to_string (stm);
-			return Marshal.PtrToStringAuto (istr);
+			return Util.UTF8PtrToString (istr);
 		}
 	}
 }

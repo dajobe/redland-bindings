@@ -34,8 +34,8 @@ namespace Redland {
 
 		private Serializer (World world, string name, string mime_type, Uri type_uri)
 		{
-			IntPtr iname = Marshal.StringToHGlobalAuto (name);
-			IntPtr imime_type = Marshal.StringToHGlobalAuto (mime_type);
+			IntPtr iname = Util.StringToHGlobalUTF8 (name);
+			IntPtr imime_type = Util.StringToHGlobalUTF8 (mime_type);
 			if (world == null)
 				if (type_uri == null)
 					serializer = librdf_new_serializer (IntPtr.Zero, iname, imime_type, IntPtr.Zero);
@@ -93,7 +93,7 @@ namespace Redland {
 
 		public int SerializeModel (string name, Uri base_uri, Model model)
 		{
-			IntPtr iname = Marshal.StringToHGlobalAuto (name);
+			IntPtr iname = Util.StringToHGlobalUTF8 (name);
 			int ret = librdf_serializer_serialize_model_to_file (serializer, iname, base_uri.Handle, model.Handle);
 			Marshal.FreeHGlobal (iname);
 			// FIXME: throw exceptions instead of using ret code?

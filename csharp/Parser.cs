@@ -48,8 +48,8 @@ namespace Redland {
 
 		private Parser (World  world, string name, string mime_type, Uri uri)
 		{
-			IntPtr iname = Marshal.StringToHGlobalAuto (name);
-			IntPtr imime_type = Marshal.StringToHGlobalAuto (mime_type);
+			IntPtr iname = Util.StringToHGlobalUTF8 (name);
+			IntPtr imime_type = Util.StringToHGlobalUTF8 (mime_type);
 			if (uri == (Uri) null)
 				parser = librdf_new_parser (world.Handle, iname, imime_type, IntPtr.Zero);
 			else
@@ -95,7 +95,7 @@ namespace Redland {
 
 		public int ParseStringIntoModel (string s, Uri base_uri, Model model)
 		{
-			IntPtr istr = Marshal.StringToHGlobalAuto (s);
+			IntPtr istr = Util.StringToHGlobalUTF8 (s);
 			Redland.World.Enter ();
 			int rc = librdf_parser_parse_string_into_model (Handle, istr, base_uri.Handle, model.Handle);
 			Marshal.FreeHGlobal (istr);
@@ -150,7 +150,7 @@ namespace Redland {
 		{
 			// Console.WriteLine ("Parsing string '{0}' URI {1}", s, base_uri.ToString());
 
-			IntPtr istr = Marshal.StringToHGlobalAuto (s);
+			IntPtr istr = Util.StringToHGlobalUTF8 (s);
 			Redland.World.Enter ();
 			IntPtr raw_ret = librdf_parser_parse_string_as_stream (parser, istr, base_uri.Handle);
 			// FIXME: throw exception if raw_ret is zero ? currently

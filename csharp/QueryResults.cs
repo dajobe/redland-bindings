@@ -45,7 +45,7 @@ namespace Redland {
 			int c = librdf_query_results_get_bindings_count (query_results);
 			for (int i = 0; i < c; i++) {
 				IntPtr iname = librdf_query_results_get_binding_name (query_results, i);
-				String name = Marshal.PtrToStringAuto (iname);
+				String name = Util.UTF8PtrToString (iname);
 				IntPtr v = librdf_query_results_get_binding_value (query_results, i);
 				h.Add (name, new Node (v));
 			}
@@ -112,7 +112,7 @@ namespace Redland {
 		public string BindingName (int offset) 
 		{
  			IntPtr iname = librdf_query_results_get_binding_name (query_results, offset);
-			return Marshal.PtrToStringAuto (iname);
+			return Util.UTF8PtrToString (iname);
 		}
 
 		[DllImport ("librdf")]
@@ -120,7 +120,7 @@ namespace Redland {
 
 		public Node BindingValueByName (string name)
 		{
-			IntPtr iname = Marshal.StringToHGlobalAuto (name.ToString());
+			IntPtr iname = Util.StringToHGlobalUTF8 (name.ToString());
  			IntPtr v = librdf_query_results_get_binding_value_by_name(query_results,iname);
 			Marshal.FreeHGlobal (iname);
 			return new Node (v); // do_not_copy=1 FIXME

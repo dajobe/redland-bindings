@@ -29,9 +29,9 @@ namespace Redland {
 
 		private Storage (World world, string storage_name, string name, string options)
 		{
-			IntPtr istorage_name = Marshal.StringToHGlobalAuto (storage_name);
-			IntPtr iname = Marshal.StringToHGlobalAuto (name);
-			IntPtr ioptions = Marshal.StringToHGlobalAuto (options);
+			IntPtr istorage_name = Util.StringToHGlobalUTF8 (storage_name);
+			IntPtr iname = Util.StringToHGlobalUTF8 (name);
+			IntPtr ioptions = Util.StringToHGlobalUTF8 (options);
 			storage = librdf_new_storage (world.Handle, istorage_name, iname, ioptions);
 			Marshal.FreeHGlobal (istorage_name);
 			Marshal.FreeHGlobal (iname);

@@ -1,3 +1,18 @@
+2004-12-30  Edd Dumbill  <edd@usefulinc.com>
+
+	* Util.cs: (StringToHGlobalUTF8 ()): marshal .NET string to UTF-8
+	(UTF8PtrToString ()): marshal unmanaged UTF-8 to .NET string
+	
+	* Model.cs, Node.cs, Parser.cs, Query.cs, QueryResults.cs,
+	Serializer.cs, Storage.cs, Uri.cs: replace calls to
+	StringToHGlobalAuto with StringToHGlobalUTF8
+	
+	* Errors.cs, Node.cs, QueryResults.cs, Statement.cs, Uri.cs:
+	replace calls to PtrToStringAuto with UTF8PtrToString
+	
+	* examples/EncodingTest.cs: unit test for round tripped encoding
+	methods
+
 2004-11-02  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* AssemblyInfo.cs: Less boilerplate

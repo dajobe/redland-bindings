@@ -41,7 +41,7 @@ namespace Redland {
 
 		internal Model (World world, Storage storage, string options)
 		{
-			IntPtr ioptions = Marshal.StringToHGlobalAuto (options);
+			IntPtr ioptions = Util.StringToHGlobalUTF8 (options);
 			model = librdf_new_model (world.Handle, storage.Handle, ioptions);
                         Marshal.FreeHGlobal (ioptions);
 			// keep a reference around to storage so it doesn't
@@ -285,7 +285,7 @@ namespace Redland {
 
 		public void Load (Uri uri, String mime_type, Uri type_uri)
 		{
-			IntPtr imime = Marshal.StringToHGlobalAuto (mime_type.ToString());
+			IntPtr imime = Util.StringToHGlobalUTF8 (mime_type.ToString());
 			librdf_model_load (model, uri.Handle, imime, type_uri.Handle);
                         Marshal.FreeHGlobal (imime);
 		}

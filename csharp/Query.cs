@@ -34,19 +34,20 @@ namespace Redland {
 
 		private Query (World world, string s, Uri base_uri, string query_language, Uri query_uri)
 		{
-			IntPtr iql = Marshal.StringToHGlobalAuto (query_language.ToString());
-			IntPtr iqs = Marshal.StringToHGlobalAuto (s.ToString());
+			IntPtr iql = Util.StringToHGlobalUTF8 (query_language.ToString());
+			IntPtr iqs = Util.StringToHGlobalUTF8 (s.ToString());
 			IntPtr ibase_uri = IntPtr.Zero;
                         
 			if (base_uri != (Uri) null)
 				ibase_uri = base_uri.Handle;
-                        
+
 			IntPtr iquery_uri = IntPtr.Zero;
-                        
+
 			if (query_uri != (Uri) null)
 				iquery_uri = query_uri.Handle;
-                        
+
 			query = librdf_new_query (Redland.World.Handle, iql, iquery_uri, iqs, ibase_uri);
+			
 			Marshal.FreeHGlobal (iql);
 			Marshal.FreeHGlobal (iqs);
 		}
