@@ -77,12 +77,13 @@ sub new ($;$$$) {
   my($proto,$name,$mime_type,$uri)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
+  my $reduri = undef;
 
   if(defined $uri) {
-    $uri=$uri->{URI};
+    $reduri=$uri->{URI};
   }
 
-  $self->{PARSER}=&RDF::Redland::CORE::librdf_new_parser($RDF::Redland::World->{WORLD},$name,$mime_type,$uri);
+  $self->{PARSER}=&RDF::Redland::CORE::librdf_new_parser($RDF::Redland::World->{WORLD},$name,$mime_type,$reduri);
   return undef if !$self->{PARSER};
 
   bless ($self, $class);

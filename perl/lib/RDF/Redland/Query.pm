@@ -79,13 +79,14 @@ sub new ($;$$$) {
   my($proto,$query_string,$uri,$language)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
+  my $reduri = undef;
   $language ||= "rdql";
 
   if(defined $uri) {
-    $uri=$uri->{URI};
+    $reduri=$uri->{URI};
   }
 
-  $self->{QUERY}=&RDF::Redland::CORE::librdf_new_query($RDF::Redland::World->{WORLD},$language,$uri,$query_string);
+  $self->{QUERY}=&RDF::Redland::CORE::librdf_new_query($RDF::Redland::World->{WORLD},$language,$reduri,$query_string);
   return undef if !$self->{QUERY};
 
   bless ($self, $class);
