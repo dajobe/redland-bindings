@@ -101,42 +101,42 @@ public class model
     return (contains_int != 0);
   }
 
-  public stream model_serialise() 
+  public stream serialise() 
   {
     return new stream(this.world, redland.librdf_model_serialise(this.object), this);
   }
 
-  public stream model_find_statements(statement statement) 
+  public stream find_statements(statement statement) 
   {
     return new stream(this.world, redland.librdf_model_find_statements(this.object, statement.__get_object()), this);
   }
 
-  public iterator model_get_sources(node arc, node target) 
+  public iterator get_sources(node arc, node target) 
   {
     return new iterator(this.world, redland.librdf_model_get_sources(this.object, arc.__get_object(), target.__get_object()), this, arc, target);
   }
 
-  public iterator model_get_arcs(node source, node target) 
+  public iterator get_arcs(node source, node target) 
   {
     return new iterator(this.world, redland.librdf_model_get_arcs(this.object, source.__get_object(), target.__get_object()), this, source, target);
   }
 
-  public iterator model_get_targets(node source, node arc) 
+  public iterator get_targets(node source, node arc) 
   {
     return new iterator(this.world, redland.librdf_model_get_targets(this.object, source.__get_object(), arc.__get_object()), this, source, arc);
   }
 
-  public node model_get_source(node arc, node target) 
+  public node get_source(node arc, node target) 
   {
     return new node(this.world, redland.librdf_model_get_source(this.object, arc.__get_object(), target.__get_object()), true);
   }
 
-  public node model_get_arc(node source, node target) 
+  public node get_arc(node source, node target) 
   {
     return new node(this.world, redland.librdf_model_get_arc(this.object, source.__get_object(), target.__get_object()), true);
   }
 
-  public node model_get_target(node source, node arc) 
+  public node get_target(node source, node arc) 
   {
     return new node(this.world, redland.librdf_model_get_target(this.object, source.__get_object(), arc.__get_object()), true);
   }
