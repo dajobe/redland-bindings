@@ -29,8 +29,9 @@ PYTHON_INCLUDES=@PYTHON_INCLUDES@
 PYTHON_PACKAGE=Redland
 
 SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c
-SWIG_CRUFT=$(PYTHON_PACKAGE).bs blib pm_to_blib
 
+fakedir=$(prefix)
+fake_DATA=build-python-stamp
 
 EXTRA_DIST=MANIFEST.in README setup.cfg setup.py RDF.py \
 example.py redlandtest.py \
@@ -49,14 +50,16 @@ $(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 build-python: $(PYTHON_PACKAGE)_wrap.c
 	$(PYTHON_SETUP) build
 
-check-python: test-python
-test-python: build-python
+build-python-stamp: $(srcdir)/../Redland.i
+	$(MAKE) build-python && touch build-python-stamp
+
+test-python: build-python-stamp
 	@bdir=`ls -1d build/lib.*`; \
 	echo Using python build dir $$bdir; \
 	echo PYTHONPATH=$$bdir $(PYTHON) test/test.py; \
 	PYTHONPATH=$$bdir $(PYTHON) test/test.py
 
-unittest-python: build-python
+unittest-python: build-python-stamp
 	@bdir=`ls -1d build/lib.*`; \
 	echo Using python build dir $$bdir; \
 	echo PYTHONPATH=$$bdir $(PYTHON) redlandtest.py; \
@@ -86,11 +89,16 @@ sdist-python: $(srcdir)/setup.py
 rpmdist-python: $(srcdir)/setup.py
 	$(PYTHON_SETUP) bdist_rpm --release=$(RELEASE)
 
-clean-local: clean-python
-	rm -rf build dist
+check-local: test-python
 
-RDF.html: RDF.py build-python
+clean-local: clean-python
+	rm -rf dist build-python-stamp
+
+RDF.html: RDF.py build-python-stamp
 	@bdir=`ls -1d build/lib.*`; \
 	echo Using python build dir $$bdir; \
 	echo PYTHONPATH=$$bdir $(PYTHON); \
 	PYTHONPATH=$$bdir $(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF
+
+# See this is the fake bit
+install-fakeDATA: install-python
