@@ -1,5 +1,4 @@
-require 'rubygems'
-require_gem 'rdf'
+require 'rdf/redland'
 
 module DC
 

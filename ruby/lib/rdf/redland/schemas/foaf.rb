@@ -1,4 +1,4 @@
-require 'rdf'
+require 'rdf/redland'
 
 module FOAF
 
