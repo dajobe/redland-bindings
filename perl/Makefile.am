@@ -89,11 +89,14 @@ CLEANFILES=test*db $(PERL_PACKAGE)_wrap.o $(PERL_MAKEFILE) \
 $(PERL_MAKEFILE).old
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
+MEM_LIBS=@MEM_LIBS@
+#MEM_LIBS=-ldmalloc
+
 $(PERL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -perl5 -module $(PERL_PACKAGE) -o $@ $?
 
 $(PERL_MAKEFILE): Makefile.PL
-	PACKAGE=$(PERL_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) perl $? PREFIX=$(prefix)
+	PACKAGE=$(PERL_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) MEM_LIBS=$(MEM_LIBS) perl $? PREFIX=$(prefix)
 
 -perl test-perl install-perl clean-perl realclean-perl: $(PERL_MAKEFILE)
 	@target=`echo $@ | sed -e 's/-perl//'`; \
