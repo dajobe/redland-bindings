@@ -264,7 +264,7 @@ sub to_string($;$$) {
     my $tmpmodel=RDF::Redland::Model->new($tmpstorage, "");
     $tmpmodel->add_statements($self->as_stream);
     my $serializer=RDF::Redland::Serializer->new();
-    return $serializer->serialize_model_to_string($tmpmodel, $base_uri)
+    return $serializer->serialize_model_to_string($base_uri, $tmpmodel);
   }
 
   if($self->is_boolean) {
