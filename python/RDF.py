@@ -790,11 +790,14 @@ Create a model using an in-memory storage.
     """
     return StreamWithContextIter(self.as_stream(context))
 
-  def find_statements(self,statement):
+  def find_statements(self,statement, context = None):
     """Return a Stream of Statements matching the given Statement --
        any nodes with value None of the statement match any Node in
        the Model.
        
+       Specify the optional argument context if you want to search
+       only in one context.
+
        qs = RDF.Statement(subject = None,
            predicate = RDF.Node(uri_string = "http://example.com/pred"),
            object = None)
@@ -802,8 +805,13 @@ Create a model using an in-memory storage.
            # do whatever
        
     """
-    my_stream = Redland.librdf_model_find_statements(self._model,
+    if context is None:
+      my_stream = Redland.librdf_model_find_statements(self._model,
                                                      statement._statement)
+    else:
+      my_stream = Redland.librdf_model_find_statements_in_context(self._model,
+                                                                  statement._statement,
+                                                                  context._node)
     return Stream(my_stream, self)
 
   def find_statements_context(self,statement):
