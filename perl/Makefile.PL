@@ -85,7 +85,7 @@ WriteMakefile(
     'DEFINE'    => "-DHAVE_CONFIG_H $CFLAGS",
     'INC'       => "$includes",
     'OBJECT'    => "$objects",
-    'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS"},
+    'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS $CFLAGS"},
 
     'PM' => { map { ("lib/RDF/$_", "\$(INST_LIBDIR)/$_") }
  qw(Redland.pm
