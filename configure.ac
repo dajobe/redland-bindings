@@ -217,6 +217,7 @@ if test "X$RUBY" != X; then
   ruby_prefix=`$RUBY -rrbconfig -e "print Config::CONFIG['archdir']"`
   RUBY_LIB=`$RUBY -rrbconfig -e "puts Config::CONFIG['ruby_install_name']"`
   RUBY_DIR=`$RUBY -rrbconfig -e "puts Config::CONFIG['archdir']"`
+  RUBY_LIBDIR=`$RUBY -rrbconfig -e "puts Config::CONFIG['rubylibdir']"`
   changequote([, ])dnl
 
   RUBY_INCLUDES="-I$ruby_prefix"
@@ -227,10 +228,12 @@ else
   RUBY_INCLUDES=
   RUBY_LIB=
   RUBY_DIR=
+  RUBY_LIBDIR=
 fi
 AC_SUBST(RUBY_INCLUDES)
 AC_SUBST(RUBY_LIB)
 AC_SUBST(RUBY_DIR)
+AC_SUBST(RUBY_LIBDIR)
 
 
 AC_ARG_WITH(java, [  --with-java(=JAVA)      Enable the java interface], with_java="$withval", with_java="no")
