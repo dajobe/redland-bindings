@@ -31,11 +31,15 @@ JAVA_PATH=org/librdf/redland/
 CLASSPATH=.
 
 javalibdir=$(prefix)/lib/java
+javasharedir=$(prefix)/share/java
+
 javalib_LTLIBRARIES=librdf-java.la
 
 librdf_java_la_SOURCES=core_wrap.c
 librdf_java_la_CFLAGS=$(JDK_INCLUDES)
 librdf_java_la_LDFLAGS=--rpath $(javalibdir) $(top_srcdir)/librdf/librdf.la
+
+javashare_DATA=librdf-java.jar
 
 JAVA_JAR=librdf-java.jar
 
@@ -94,21 +98,8 @@ $(JAVA_PATH)$(JAVA_MODULE).java: $(JAVA_PATH)$(JAVA_MODULE).java.in redland-frag
 	rm -f $(JAVA_PATH)$(JAVA_MODULE).java.tmp
 
 
-build-java: $(JAVA_MODULE)_wrap.c librdf-java.la skeleton.class
-install-java: build-java
-
-install-javalibLTLIBRARIES:
-	@echo "Not installing java shared library by default yet"
-
-check-java: build-java test-java
-
-clean-local: clean-java
-
-clean-java:
+clean-local:
 	rm -f *.class
-
-
-compiled-java-classes: skeleton.class
 
 skeleton.class: skeleton.java $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java librdf-java.la
 	$(JAVAC) skeleton.java
@@ -118,7 +109,8 @@ $(JAVA_JAR): $(JAVA_CLASS_FILES)
 	rm -f $@
 	jar cf $@ $(JAVA_CLASS_FILES)
 
-test-java: test1 test2
+
+TESTS=test1 test2
 
 test1: test1.class $(JAVA_JAR)
 	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH $(JAVA) test1
