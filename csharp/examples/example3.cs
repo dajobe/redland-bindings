@@ -19,8 +19,8 @@ public class Test {
 		Statement stm = new Statement (n1, n2, n3);
 		model.AddStatement (stm);
 
-		IntPtr out = Util.fopen ("example3.out", "w+");
-		model.Print (out);
-		Util.fclose(out);
+		IntPtr fh = Util.fopen ("example3.out", "w+");
+		model.Print (fh);
+		Util.fclose(fh);
 	}
 }
