@@ -1,4 +1,4 @@
-require 'redland'
+require 'rdf/redland'
 
 module Redland
   class Serializer
