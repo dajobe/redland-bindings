@@ -1,5 +1,7 @@
 2005-02-27  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* configure.ac: Bumped version to 1.0.0.3
+
 	* Snapshotted redland-bindings_1_0_0_2 for 1.0.0.2 release
 
 2005-02-24  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
