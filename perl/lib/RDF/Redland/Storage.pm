@@ -38,7 +38,7 @@ RDF::Storage - Redland RDF Storage Class
 
 =head1 DESCRIPTION
 
-Create objects for storing RDF::Model objects either persistentantly
+Create objects for storing RDF::Model objects either persistently
 or in memory.
 
 =cut
@@ -54,9 +54,36 @@ or in memory.
 =item new STORAGE_NAME NAME OPTIONS_STRING
 
 Create a new RDF::Storage object for the storage factory named
-I<STORAGE_NAME> with storage named I<NAME> and options
-I<OPTIONS_STRING>.  The options are formatted in the form
-key1='value1',key2='value2'.  The quotes are required.
+I<STORAGE_NAME> with storage named I<NAME> and storage options
+I<OPTIONS_STRING> which are specific to the storage factory type.
+
+The storage options are formatted in the form
+key1='value1',key2='value2' and the single quotes are required.
+
+  Currently defined storage options:
+
+  dir='DIR'          Work in DIR directory when creating files.
+
+  hash-type='TYPE'   Use the TYPE hash-type for I<hashes> storage.
+                     Current defined types are 'memory' and 'bdb' 
+                     but is dependent on the hash factories
+                     available.
+
+  new='yes'          Create a new storage erasing any existing one
+
+  write='yes'        Provide write access to store (default) 
+                     otherwise is read only.
+
+Example:
+
+  $storage=new RDF::Storage("hashes", "test", 
+                            "new='yes',hash-type='bdb',dir='.'");
+
+Creates a new storage of the I<hashes> type (indexed hashes) named
+I<test> (these will be file names or URIs if the storage is persistent)
+and with options I<new='yes',hash-type='bdb',dir='.'> so a new storage
+is created with BerkeleyDB (BDB) key:value hashes i.e. persistent and
+in the current directory.
 
 =cut
 
@@ -77,7 +104,8 @@ sub new ($$$$) {
 =item new_from_storage STORAGE
 
 Create a new RDF::Storage object from RDF::Storage I<STORAGE> (copy
-constructor).
+constructor).  The new storage may have a new name chosen by the
+storage factory.
 
 =cut
 
