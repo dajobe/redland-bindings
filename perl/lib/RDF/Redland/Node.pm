@@ -97,8 +97,6 @@ $Type_Model     = 8;
 # FIXME: Needs to also match documentation near method type
 
 
-use Redland;
-
 
 =pod
 
@@ -256,7 +254,7 @@ sub _new_from_object ($$$) {
 # DESTRUCTOR
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::Node DESTROY $self\n" if $RDF::Debug;
+  warn "RDF::Node DESTROY $self" if $RDF::Debug;
   if($self->{NODE}) {
     if(!$self->{DONT_FREE_ME}) {
       warn "RDF::Node DESTROY doing librdf_free_node on librdf node" if $RDF::Debug;
