@@ -201,7 +201,7 @@ sub feature ($$;$) {
 
 =head1 SEE ALSO
 
-L<RDF::URi>
+L<RDF::URI>
 
 =head1 AUTHOR
 
