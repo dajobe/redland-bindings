@@ -132,7 +132,8 @@ class TestModel < Test::Unit::TestCase
   end
 
   def test_parse_and_merge()
-    model = Model.new()
+    store = Store.new(options="contexts='yes'")
+    model = Model.new(store)
     dom = BNode.new('dom')
     model.add(dom,FOAF::MBOX,Node.new(:uri_string=>'mailto:dominic@bogus.com'))
     model.add(dom,FOAF::NAME,'Dominic Sisneros')
