@@ -185,6 +185,19 @@ if test "X$PYTHON" != X; then
   PYTHON_LIB="${python_prefix}/lib/python${PYTHON_VERSION}/site-packages"
   AC_SUBST(PYTHON_LIB)
   AC_MSG_RESULT($PYTHON_LIB)
+
+  if test `uname` = Darwin; then
+    PYTHON_LDFLAGS="-Wl,-F. -Wl,-F. -bundle"
+    if $PYTHON -c 'import sys, string; sys.exit(string.find(sys.prefix,"Framework")+1)'; then
+      :
+    else
+      PYTHON_LDFLAGS="$PYTHON_LDFLAGS -framework Python"
+    fi
+  else
+    PYTHON_LDFLAGS="-shared"
+  fi
+  AC_SUBST(PYTHON_LDFLAGS)
+
 else
   # This allows 'make clean' in the python directory to work when
   # python isn't available
