@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+  xmlns="http://www.faa.gov/ontology/people#"
+  xmlns:site="http://www.faa.gov/ontology/site#"
+  xmlns:foaf="http://xmlns.com/foaf/0.1/"
+  xml:base="http://www.faa.gov/ontology/people">
+
+<foaf:Person>
+    <foaf:name>Pat Richardson</foaf:name>
+    <foaf:title>NISC Program Manager</foaf:title>
+    <foaf:firstName>Pat</foaf:firstName>
+    <foaf:surname>Richardson</foaf:surname>
+    <foaf:mbox rdf:resource="mailto:pat.ctr.richardson@faa.gov" />
+    <foaf:phone>202-646-2352</foaf:phone>
+    <worksFor rdf:resource="http://www.faa.gov/people#NISC" />
+</foaf:Person>
+
+<foaf:Person>
+    <foaf:name>Jack Nager</foaf:name>
+    <foaf:title>Director of NAS Implementation Program</foaf:title>
+    <foaf:firstName>Jack</foaf:firstName>
+    <foaf:surname>Nager</foaf:surname>
+    <foaf:mbox rdf:resource="mailto:jack.nager@bogus.com" />
+   
+</foaf:Person>
+
+<foaf:Person>
+    <foaf:name>Dominic Sisneros</foaf:name>
+    <foaf:title>Electronic Engineer</foaf:title>
+    <foaf:firstName>Dominic</foaf:firstName>
+    <foaf:surname>Sisneros</foaf:surname>
+    <foaf:mbox rdf:resource="mailto:dominic@bogus.com" />
+</foaf:Person>
+
+
+</rdf:RDF>
