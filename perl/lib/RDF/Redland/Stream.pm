@@ -76,6 +76,8 @@
 
 package RDF::Stream;
 
+use RDF::Statement;
+
 use Redland;
 
 # CONSTRUCTOR
@@ -91,7 +93,9 @@ sub new ($$) {
 
 # DESTRUCTOR
 sub DESTROY ($) {
+  warn "RDF::Stream DESTROY\n" if $RDF::Debug;
   &Redland::librdf_free_stream(shift->{STREAM});
+  warn "RDF::Stream DESTROY done\n" if $RDF::Debug;
 }
 
 sub end ($) {
@@ -99,7 +103,8 @@ sub end ($) {
 }
 
 sub next ($) {
-  &Redland::librdf_stream_next(shift->{STREAM});
+  # return a new statement created by the librdf stream object
+  RDF::Statement->_new_from_object(&Redland::librdf_stream_next(shift->{STREAM}));
 }
 
 1;
