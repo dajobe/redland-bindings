@@ -78,7 +78,7 @@ build-csharp-stamp: $(CSHARP_DLL)
 check-local: build-csharp-stamp test-csharp
 
 test-csharp: build-csharp-stamp test.exe
-	$(top_builddir)/redland-src-config --run $(CLIRUN) test.exe
+	MONO_PATH=. $(top_builddir)/redland-src-config --run $(CLIRUN) test.exe
 
 test.exe: test.cs Redland.dll
 	$(CSHARP_LINK) test.cs -target:exe -r:Redland.dll -out:$@
