@@ -589,6 +589,20 @@ sub query_execute ($$) {
 }
 
 
+=item load URI [SYNTAX-NAME [ MIME-TYPE [SYNTAX-URI]]
+
+Load content from I<URI> into the model, guessing the parser.
+
+sub load ($$;$$$) {
+  my($self,$uri,$name,$type,$syntax_uri)=@_;
+  $syntax_uri=$syntax_uri ? $syntax_uri->{URI} : undef;
+
+  return &RDF::Redland::CORE::librdf_model_load($self->{MODEL},$uri->{URI}, $name, $type, $uri);
+}
+
+
+=cut
+
 =pod
 
 =back
