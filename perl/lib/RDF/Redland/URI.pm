@@ -146,6 +146,17 @@ sub as_string ($) {
   &Redland::librdf_uri_to_string(shift->{URI});
 }
 
+=item equals URI
+
+Return non zero if this uri is equal to URI
+
+=cut
+
+sub equals ($$) {
+  my($self,$uri)=@_;
+  &Redland::librdf_uri_equals($self->{URI}, $uri->{URI});
+}
+
 =pod
 
 =back

@@ -333,6 +333,17 @@ sub as_string ($) {
   &Redland::librdf_node_to_string(shift->{NODE});
 }
 
+=item equals NODE
+
+Return non zero if this node is equal to NODE
+
+=cut
+
+sub equals ($$) {
+  my($self,$node)=@_;
+  &Redland::librdf_node_equals($self->{NODE}, $node->{NODE});
+}
+
 =pod
 
 =back
