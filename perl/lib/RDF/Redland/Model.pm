@@ -220,7 +220,7 @@ sub add_statement ($;$$$$) {
     $node=&RDF::Redland::Node::_ensure($node);
     die "Cannot make a Node from an object of class $class\n"
       unless $node;
-    return &RDF::Redland::CORE::librdf_model_context_add_statement($self->{MODEL},$node->{NODE},$statement->{STATEMENT});
+    return &RDF::Redland::CORE::librdf_model_context_add_statement($self->{MODEL},$node,$statement->{STATEMENT});
   } else {
     return &RDF::Redland::CORE::librdf_model_add_statement($self->{MODEL},$statement->{STATEMENT});
   }
@@ -242,7 +242,7 @@ sub add_statements ($$;$) {
     $node=&RDF::Redland::Node::_ensure($node);
     die "Cannot make a Node from an object of class $class\n"
       unless $node;
-    return &RDF::Redland::CORE::librdf_model_context_add_statements($self->{MODEL},$node->{NODE},$statement_stream->{STREAM});
+    return &RDF::Redland::CORE::librdf_model_context_add_statements($self->{MODEL},$node,$statement_stream->{STREAM});
  } else {
    return &RDF::Redland::CORE::librdf_model_add_statements($self->{MODEL},$statement_stream->{STREAM});
  }
@@ -273,7 +273,7 @@ sub remove_statement ($;$$$$) {
     $node=&RDF::Redland::Node::_ensure($node);
     die "Cannot make a Node from an object of class $class\n"
       unless $node;
-    return &RDF::Redland::CORE::librdf_model_context_remove_statement($self->{MODEL},$node->{NODE},$statement->{STATEMENT});
+    return &RDF::Redland::CORE::librdf_model_context_remove_statement($self->{MODEL},$node,$statement->{STATEMENT});
   } else {
     return &RDF::Redland::CORE::librdf_model_remove_statement($self->{MODEL},$statement->{STATEMENT});
   }
@@ -293,7 +293,7 @@ sub remove_context_statements ($$) {
   $node=&RDF::Redland::Node::_ensure($node);
   die "Cannot make a Node from an object of class $class\n"
     unless $node;
-  return &RDF::Redland::CORE::librdf_model_context_remove_statements($self->{MODEL},$node->{NODE});
+  return &RDF::Redland::CORE::librdf_model_context_remove_statements($self->{MODEL},$node);
 }
 
 =item contains_statement STATEMENT
@@ -307,9 +307,28 @@ sub contains_statement ($$) {
   return &RDF::Redland::CORE::librdf_model_contains_statement($self->{MODEL},$statement->{STATEMENT});
 }
 
-sub as_stream ($) {
-  my $self=shift;
-  my $stream=&RDF::Redland::CORE::librdf_model_as_stream($self->{MODEL});
+=item as_stream [CONTEXT]
+
+Return a new RDF::Redland::Stream object seralising the entire model,
+or just those statements with I<CONTEXT>, as RDF::Redland::Statement
+objects.  If given, I<CONTEXT> can be a RDF::Redland::Node,
+RDF::Redland::URI or perl URI object.
+
+=cut
+
+sub as_stream ($;$) {
+  my($self,$node)=@_;
+  my $stream;
+  if($node) {
+    my $class=ref($node);
+    $node=&RDF::Redland::Node::_ensure($node);
+    die "Cannot make a Node from an object of class $class\n"
+      unless $node;
+    $stream=&RDF::Redland::CORE::librdf_model_context_as_stream($self->{MODEL},
+								$node);
+  } else {
+    $stream=&RDF::Redland::CORE::librdf_model_as_stream($self->{MODEL});
+  }
   return new RDF::Redland::Stream($stream,$self);
 }
 
