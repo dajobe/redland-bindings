@@ -50,7 +50,7 @@ build-php: $(PHP_PACKAGE).so
 
 check-php: test-php
 test-php: build-php
-	$(PHP) example.php file:../perl/dc.rdf raptor
+	$(PHP) test.php
 
 clean-php realclean-php:
 	rm -f $(PHP_PACKAGE).so
