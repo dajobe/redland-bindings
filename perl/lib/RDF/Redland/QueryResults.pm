@@ -241,7 +241,7 @@ sub as_stream($) {
   die "Query results is not in RDF graph format"
     unless $self->is_graph;
 
-  my $stream==&RDF::Redland::CORE::librdf_query_results_as_stream($self->{QUERYRESULTS});
+  my $stream=&RDF::Redland::CORE::librdf_query_results_as_stream($self->{QUERYRESULTS});
   return new RDF::Redland::Stream($stream,$self);
 }
 
