@@ -47,12 +47,12 @@ public class World
 
   public String versionString() 
     {
-      return core.get_redland_version_string();
+      return core.get_librdf_version_string();
     }
 
   public String copyrightString() 
     {
-      return core.get_redland_copyright_string();
+      return core.get_librdf_copyright_string();
     }
 
 /*
@@ -73,11 +73,11 @@ public class World
       System.loadLibrary("rdf-java");
 
       // Initialise statics
-      copyright=new String(get_redland_copyright_string());
-      version=new String(get_redland_version_string());
-      version_major=get_redland_version_major();
-      version_minor=get_redland_version_minor();
-      version_release=get_redland_version_release();
+      copyright=new String(get_librdf_copyright_string());
+      version=new String(get_librdf_version_string());
+      version_major=get_librdf_version_major();
+      version_minor=get_librdf_version_minor();
+      version_release=get_librdf_version_release();
 
     }
 */
