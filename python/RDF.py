@@ -500,7 +500,7 @@ class uri:
 class parser:
 
   # CONSTRUCTOR
-  def __init__(self, name, mime_type="", uri=None):
+  def __init__(self, name, mime_type=None, uri=None):
     """Create an RDF Parser (constructor)."""
     if __debug__:
       print "Creating RDF.parser name=",name,"mime_type=",mime_type,"uri=",uri
