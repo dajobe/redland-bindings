@@ -243,6 +243,14 @@ type, otherwise sets it to I<TYPE>.  The current list of types are:
   $RDF::Node::Type_li
   $RDF::Node::Type_Model
 
+Example:
+
+  if ($node->type == $RDF::Node::Type_Resource) {
+    print "Node is a resource with URI ", $node->uri->as_string, "\n";
+  } else {
+    ...
+  }
+
 =cut
 
 sub type ($;$) {
