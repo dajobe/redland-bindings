@@ -78,3 +78,7 @@ while(!$stream->end) {
   print "  Object: ",$statement2->object->as_string,"\n";
 }
 $stream=undef;
+
+# Required in order to ensure storage is correctly flushed to disk
+$storage=undef;
+$model=undef;
