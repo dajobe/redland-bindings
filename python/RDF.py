@@ -27,8 +27,6 @@
 
 """Redland Python API
 
-More documentation needed here.
-
   import RDF
 
   storage=RDF.Storage(...)
@@ -36,7 +34,15 @@ More documentation needed here.
 
   ... do stuff
 
-See class comments for more.
+The Python interface to the Redland RDF library.  See
+  http://www.redland.opensource.ac.uk/
+for full details.
+
+The main class that is used is Model which represents the RDF graph
+formed from triples or Statement s.  These statements consist of
+three Node objects for resource or literals and can be stored in
+a Storage (persistent or in-memory) as well as serialized to/from
+syntaxes via the Serializer or Parser classes.
 
 """
 
@@ -476,6 +482,18 @@ Copy an existing Statement s1.
 # end class Statement
 
 class Model:
+  """Redland Graph class
+
+    import RDF
+    model1=RDF.model(storage=s)
+
+  The main interface to the Redland RDF graph (formed from triples, or
+  RDF statements).  There are many methods for adding, removing, querying
+  statements and serializing them to/from syntaxes using the Serializer
+  or Parser classes.
+
+
+  """
 
   def __init__(self, storage, **args):
     """Create an RDF Model (constructor).
