@@ -79,6 +79,7 @@ $TOP_SRCDIR=$ENV{TOP_SRCDIR} || '..';
 $PACKAGE=$ENV{PACKAGE} || "Redland";
 
 my $redland_libs=`$TOP_SRCDIR/redland-config --libs`;
+chomp $redland_libs;
 
 # Convert -Ldir -lname into list of dir/libname.a so that perl links with
 # the correct files rather than, say, an libname.a somewhere earlier in
@@ -92,9 +93,9 @@ while(1) {
       unless $name eq 'rdf'; # save all except librdf.a
     next;
   }
+  push(@abs_libs, split(/ /, $t));
   last;
 }
-warn "abs libs: @abs_libs\n";
 
 my $version=$ENV{VERSION};
 
