@@ -81,7 +81,7 @@ use strict;
 
 use Redland;
 
-use RDF::Model;
+use RDF;
 
 use vars qw(@ISA $NS_URL);
 
@@ -102,7 +102,7 @@ RDF::RSS - Redland RSS 1.0 Class
   ...
   my $rss=RDF::RSS->new_from_model($model);
 
-  my $rss2=new RDF::RSS(new RDF::URI("http://example.com/test.rdf"));
+  my $rss2=new RDF::RSS("http://example.com/test.rdf");
   ...
 
   for my $channel ($rss->channels) {
@@ -120,8 +120,8 @@ RDF::RSS - Redland RSS 1.0 Class
 
 =head1 DESCRIPTION
 
-A class for processing RSS 1.0 as RDF and traversing the resulting
-graph using RSS propertiiies.
+A class for processing RSS 1.0 as RDF, traversing the resulting
+graph using RSS propertiiies and formatting the output as XHTML.
 
 =cut
 
@@ -184,6 +184,320 @@ sub new_from_model ($$) {
 
   bless ($self, $class); # reconsecrate as RDF::RSS
   return $self;
+}
+
+=item as_xhtml (key1 => value1, key2 => value2, ...)
+
+Return a formatted XHTML string (or full XHTML document) representing
+the RSS 1.0 content with various options set as listed below.
+Based on the macro at http://macros.userland.com/viewRssBox
+
+=over
+
+=item boxTitle
+
+A string, is the text displayed in the title of the box. It defaults
+to the title element of the channel.
+
+=item align
+
+A string, has three possible values, left, right or the empty
+string. The HTML table is either left-aligned, right-aligned or not
+aligned. It defaults to the empty string.
+
+=item width
+
+A number, is the width of the box, in pixels. It defaults to
+125. Note that the title bar determines the minimum width of the box,
+if you're having trouble getting it to be narrower, try shortening
+boxTitle.
+
+=item frameColor
+
+A string, is the hex browser color for the frame of the box. Defaults
+to "#000000".
+
+=item titleBarTextColor
+
+A string, is the hex browser color for the text in the title bar of
+the box. Defalults to "#000000".
+
+=item titleBarColor
+
+A string, is the hex browser color for the title bar of the
+box. Defaults to "#ADD8E6".
+
+=item boxFillColor
+
+A string, is the hex browser color for the main part of the
+box. Defaults to "#FFFFFF".
+
+=item time
+
+A string, is text that's displayed as the time to the right of the
+box title. Defaults to "".
+
+=item hspace
+
+A number, is the number of pixels to the left and right of the
+box. Defaults to 0.
+
+=item vspace
+
+A number, is the number of pixels above and below the box. Defaults
+to 0.
+
+=item full
+
+If set to any value, returns a full XHTML document.  Defaults to
+returning an HTML fragment.
+
+=item imageAlign
+
+A string, has three possible values, left, right or the empty
+string. The channel image is either left-aligned or
+right-aligned. It defaults to right aligned.
+
+
+=back
+
+=cut
+
+sub as_xhtml ($%) {
+  my($self,%opts)=@_;
+  my $url=$opts{url};
+
+  sub format_literal ($) {
+    use HTML::Entities;
+    my $string=shift->literal_value_as_latin1;
+    encode_entities($string, "\200-\377");
+    $string;
+  }
+
+  sub format_url($) { shift->as_string; }
+
+
+  my($channel)=$self->channels;
+  return '' unless $channel;
+
+  my(@items)=$channel->items;
+  return '' unless @items;
+
+  my $boxTitle=$opts{boxTitle} || ($channel->title && format_literal($channel->title)) || '';
+  my $align=$opts{align} || '';
+  my $image_align=$opts{imageAlign} || 'right';
+  my $width=$opts{width} || '125';
+  my $frameColor=$opts{frameColor} || '#000000';
+  my $titleBarTextColor=$opts{titleBarTextColor} || '#000000';
+  my $titleBarColor=$opts{titleBarColor} || '#ADD8E6';
+  my $boxFillColor=$opts{boxFillColor} || '#FFFFFF';
+  my $time=$opts{time} || '';
+  my $hspace=$opts{hspace} || 0;
+  my $vspace=$opts{vspace} || 0;
+  my $full=$opts{full};
+
+  my $dc_date=RDF::Node->new_from_uri_string('http://purl.org/dc/elements/1.1/date');
+  if(!$time) {
+    $time=$channel->property($dc_date);
+    $time=$time ? format_literal($time) : '';
+  }
+
+  my $width_opt=($width eq 'infinity' ? '' : qq{ width="$width"});
+  my $align_opt=$align ? qq{ align="$align"} : '';
+  my $time_fmt=($time eq '') ? '&nbsp;' : qq{<font color="$titleBarTextColor" size="-1">$time</font>};
+  my $channel_title_fmt=qq{<b><font color="$titleBarTextColor">$boxTitle</font></b>};
+
+
+  my $ch_uri=$channel->uri ? format_url($channel->uri) : 'No URI';
+  my $ch_link=$channel->link ? format_url($channel->link) : 'No Link';
+  my $ch_desc=$channel->description ? format_literal($channel->description) : undef;
+
+  my $ch_desc_fmt=$ch_desc ? qq{<p>$ch_desc</p>\n\n} : '';
+
+
+  my $output='';
+
+  $output.=<<"EOT" if $full;
+<html>
+<head>
+<title>$boxTitle</title>
+</head>
+<body bgcolor='#FFFFFF' fgcolor='#000000'>
+
+<h1>$boxTitle</h1>
+
+<p>Converted from RSS 1.0 content at $ch_uri by 
+<a href="http://purl.org/net/redland/">Redland</a> <tt>RDF::RSS</tt>
+module <em>as_xhtml</em> method</p>
+
+EOT
+
+
+  $output.=<<"EOT";
+
+<!-- 
+RSS 1.0 content at $ch_uri rendered to XHTML by
+Redland - http://purl.org/net/redland/
+RDF::RSS module as_xhtml method
+-->
+EOT
+
+  if($vspace >=0 || $hspace >=0) {
+    $output.=<<"EOT";
+<table summary="RSS 1.0 content from $boxTitle" "cellpadding="0" cellspacing="0" border="0" $align_opt>
+  <!-- Top of frame -->
+  <tr>
+     <td height="$vspace" colspan="3">&nbsp;</td>
+  </tr>
+  <tr>
+     <!-- Left of frame -->
+     <td width="$hspace">&nbsp;</td>
+     <td><table$width_opt cellspacing="0" cellpadding="1" border="0">
+        <tr bgcolor="$frameColor">
+          <td$width_opt>
+            <!-- Start of main content frame -->
+EOT
+    $align_opt='';
+  }
+
+  $output.=<<"EOT";
+<table$width_opt cellspacing="0" cellpadding="7" border="0"$align_opt>
+EOT
+
+  my $image=$channel->image;
+  my $image_string='';
+  if($image) {
+    my $image_title=$image->title ? format_literal($image->title) : undef;
+    my $image_link=$image->link ? format_url($image->link) : undef;
+    my $image_url=$image->image_url ? format_url($image->image_url) : undef;
+
+    if ($image_title && $image_link && $image_url) {
+      $image_string=qq{<a href="$image_link"><img src="$image_url" alt="$image_title" align="$image_align" /></a>\n       }
+    } else {
+      $output.=qq{  <-- image missing some fields -->\n};
+    }
+  }
+
+  $output.= <<"EOT";
+  <!-- Title Bar -->
+  <tr bgcolor="$titleBarColor">
+    <td$width_opt nowrap="nowrap">
+       $image_string<a href="$ch_uri">$channel_title_fmt</a>
+    </td>
+    <td>&nbsp;</td>
+    <td nowrap="nowrap" align="right">$time_fmt</td>
+  </tr>
+
+  <!-- Title Bar Frame  -->
+  <tr bgcolor="$frameColor">
+     <td$width_opt colspan="3" height="1"></td>
+  </tr>
+
+  <!-- Content -->
+  <tr bgcolor="$boxFillColor">
+    <td$width_opt colspan="3">
+
+      $ch_desc_fmt
+
+      <ul>
+EOT
+
+  my $dc_source=RDF::Node->new_from_uri_string('http://purl.org/dc/elements/1.1/source');
+  my $dc_subject=RDF::Node->new_from_uri_string('http://purl.org/dc/elements/1.1/subject');
+  for my $item (@items) {
+    my $item_title=$item->title ? format_literal($item->title) : undef;
+    my $item_link=$item->link ? format_url($item->link) : undef;
+    my $item_desc=$item->description ? format_literal($item->description) : '';
+
+    if(my $date=$item->property($dc_date)) {
+      $item_desc.="<br />" if $item_desc;
+      $item_desc.="<em>".format_literal($date)."</em>";
+    }
+
+    if(my $source=$item->property($dc_source)) {
+      $item_desc.="<br />" if $item_desc;
+      $item_desc.="<small>Source: ".format_literal($source)."</small>";
+    }
+    
+    if(my $subject=$item->property($dc_subject)) {
+      $item_desc.="<br />" if $item_desc;
+      $item_desc.="<small>Subject: ".format_literal($subject)."</small>";
+    }
+
+    if($item_link && $item_title) {
+      $output.=qq{        <li><a href="$item_link">$item_title</a>: };
+      $output.=$item_desc
+	if $item_desc;
+      $output.=qq{</li>\n};
+    } else {
+      $output.=qq{        <-- item missing some fields -->\n};
+    }
+  }
+
+
+  $output.=qq{      </ul>\n\n};
+
+
+
+  my $textinput=$channel->textinput;
+  if($textinput) {
+    my $t_uri=$textinput->uri;
+    my $t_title=$textinput->title;
+    my $t_link=$textinput->link;
+    my $t_desc=$textinput->description;
+    my $t_name=$textinput->name;
+
+    if($t_uri && $t_title && $t_link && $t_desc && $t_name) {
+      my $t_uri_string=format_url($t_uri);
+      my $t_name_string=format_literal($t_name);
+      my $t_desc_string=format_literal($t_desc);
+      my $t_title_string=format_literal($t_title);
+
+      $output.= <<"EOT";
+      <form method="post" action="$t_uri_string">
+        <b>$t_title_string</b><br />
+        $t_desc_string
+        <input type="name" name="$t_name_string" />
+        <input type="submit" name="Go" value="Go" />
+      </form>
+EOT
+    } else {
+      $output .= qq{      <!-- textinput missing some fields -->\n};
+    }
+  }
+
+
+$output.=<<"EOT";
+    </td>
+  </tr>
+</table>
+EOT
+
+  if($vspace >=0 || $hspace >=0) {
+    $output.=<<"EOT";
+            <!-- End of main content frame -->
+        </td>
+      </tr>
+    </table></td>
+     <!-- Right of frame -->
+    <td width="$hspace">&nbsp;</td>
+  </tr>
+  <!-- Bottom of frame -->
+  <tr>
+    <td height="$vspace" colspan="3">&nbsp;</td>
+  </tr>
+</table>
+EOT
+  }
+
+  $output.=<<"EOT" if $full;
+
+</html>
+</body>
+EOT
+ 
+
+  $output;
 }
 
 =pod
