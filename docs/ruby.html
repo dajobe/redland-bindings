@@ -20,7 +20,7 @@ version/program.  The standard 'make' at the top level will build it.</p>
   cd ruby
   make
 
-  # optional
+  # optional (some tests require test/unit.rb - ships with ruby 1.8.0+)
   make check
 </pre>
 
@@ -38,9 +38,8 @@ and files here may be superceeded or updated by the files at the
 RubyForge project, check there for the latest versions.
 </p>
 
-<p>The Ruby interface has been tested with Ruby 1.8.1, 1.8, 1.6.8,
-1.6.7 and 1.6.4.  It is relatively new and may still change further
-or require quite a new version of Ruby.
+<p>The Ruby interface has been tested with Ruby 1.8.2, 1.8.1, 1.8.
+The minimum version is likely 1.8 although older ones may work.
 </p>
 
 
@@ -51,17 +50,20 @@ model.  It should be run with two arguments - the URI of the content
 (as <tt>file:</tt><em>/path/to/content</em>) and the syntax name
 (say, rdfxml):</p>
 <pre>
+   # If installed
    ruby example.ruby file:../data/dc.rdf rdfxml
+
+   # In source tree
+   ruby -I. -Ilib example.ruby file:../data/dc.rdf rdfxml
 </pre>
 
 
 <h2>Using the Redland Ruby API</h2>
 
-<p>The Ruby API is an object-based API with the class names and method
-names flattened into Ruby procedure names like this:
+<p>The Ruby API is an object-based API with the class names and
+method names flattened into Ruby procedure names like this:
 librdf_<em>class</em>_<em>method</em> - the same names as in the
-underlying C API.  The object references
-become Ruby variables.</p>
+underlying C API.  The object references become Ruby variables.</p>
 
 <hr />
 
