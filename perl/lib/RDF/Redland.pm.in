@@ -101,7 +101,7 @@ sub new ($) {
 
 sub DESTROY ($) {
   warn "RDF::World DESTROY" if $RDF::Debug;
-  &Redland::librdf_destroy_world;
+  &Redland::librdf_destroy_world();
 }
 
 
