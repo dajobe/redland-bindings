@@ -124,6 +124,26 @@ while(!$results->finished) {
   $count++;
 }
 $results=undef;
+warn "Returned $count results\n";
+
+
+print "\nExecuting query again\n";
+my $results=$model->query_execute($q);
+my $str=$results->to_string;
+print "Query results serialized to an XML string size ".length($str)." bytes\n";
+
+print "\nExecuting SPARQL construct query\n";
+my $q2 = new RDF::Redland::Query("CONSTRUCT * WHERE (?a ?b ?c)", undef, undef, "sparql");
+my $results=$model->query_execute($q2);
+$stream=$results->as_stream;
+$count=0;
+while(!$stream->end) {
+  print "Statement: ",$stream->current->as_string,"\n";
+  $stream->next;
+  $count++;
+}
+$stream=undef;
+warn "Returned $count triples\n";
 
 warn "\nWriting model to test-out.rdf as rdf/xml\n";
 
@@ -133,8 +153,8 @@ die "Failed to find serializer\n" if !$serializer;
 
 $serializer->serialize_model_to_file("test-out.rdf", $uri, $model);
 
-#my $str1=$serializer->serialize_model_to_string($uri, $model);
-#warn "\nSerialized to RDF/XML as a string size ",length($str1)," bytes\n";
+my $str1=$serializer->serialize_model_to_string($uri, $model);
+warn "\nSerialized to RDF/XML as a string size ",length($str1)," bytes\n";
 
 $serializer=undef;
 
