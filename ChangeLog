@@ -1,3 +1,16 @@
+2005-02-04  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/redlandtest.py (testSPARQLQueryAsString): Added.
+
+	* python/RDF.py (QueryResults.to_file, QueryResults.to_string):
+	Added
+	(Serializer.serialize_model_to_string): Added
+
+	* configure.ac: AM_PROG_LIBTOOL to AC_PROG_LIBTOOL seems to make
+	things happier
+
+	* autogen.sh: Add libtoolize and swig to the path search.
+
 2005-02-02  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* python/redlandtest.py (testRDQLQueryAsStreamDontWork):
