@@ -67,7 +67,22 @@ public class Iterator implements java.util.Iterator
 
 
   public Object next() {
-    long node_object=core.librdf_iterator_get_next(this.object);
+    Object n=new Node(this.current());
+    this.move_to_next();
+    return n;
+  }
+
+
+  public void remove() 
+    {
+      throw new UnsupportedOperationException();
+    }
+
+
+  // Redland API
+
+  public Node current() {
+    long node_object=core.librdf_iterator_get_object(this.object);
     
     if(node_object == 0)
       throw new java.util.NoSuchElementException();
@@ -76,9 +91,9 @@ public class Iterator implements java.util.Iterator
   }
 
 
-  public void remove() 
-    {
-      throw new UnsupportedOperationException();
-    }
+  public boolean move_to_next() {
+    return (core.librdf_iterator_next(this.object) != 0);
+  }
+
 
 }
