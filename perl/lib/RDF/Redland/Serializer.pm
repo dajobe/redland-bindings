@@ -161,6 +161,23 @@ sub feature ($$;$) {
 }
 
 
+=item set_namespace PREFIX URI
+
+Set a namespace I<PREFIX> and I<URI> for the serializer to use.
+
+=cut
+
+sub set_namespace ($$$) {
+  my($self,$prefix, $uri)=@_;
+
+  warn "RDF::Redland::Serializer->namespace('$prefix', '$uri')\n" if $RDF::Redland::Debug;
+  $uri=RDF::Redland::URI->new($uri)
+    unless ref $uri;
+
+  return &RDF::Redland::CORE::librdf_serializer_set_namespace($self->{SERIALIZER},$uri->{URI}, $prefix);
+}
+
+
 =pod
 
 =back
