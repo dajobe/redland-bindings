@@ -105,11 +105,10 @@ sub new_from_nodes ($$$$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
 
-  # Replace perl-land 'undef' with C-land 'NULL' pointers to librdf_node
-  my $s=$subject ? $subject->{NODE} : &Redland::redland_perl_get_empty_node();
-  my $p=$predicate ? $predicate->{NODE} : &Redland::redland_perl_get_empty_node();
-  my $o=$object ? $object->{NODE} : &Redland::redland_perl_get_empty_node();
-
+  # Get redland objects if Nodes given, or undef otherwise
+  my $s=($subject ? $subject->{NODE} : undef);
+  my $p=($predicate ? $predicate->{NODE} : undef);
+  my $o=($object ? $object->{NODE} : undef);
 
   $self->{STATEMENT}=&Redland::librdf_new_statement_from_nodes($s, $p, $o);
 
@@ -125,12 +124,14 @@ sub new_from_nodes ($$$$) {
 
 # internal constructor to build an object from a statement created
 # by librdf e.g. from the result of a stream->next operation
-sub _new_from_object ($$) {
-  my($proto,$object)=@_;
+sub _new_from_object ($$$) {
+  my($proto,$object,$free_me)=@_;
+  return undef if !$object;
   my $class = ref($proto) || $proto;
   my $self  = {};
+  warn "RDF::Statement::_new_from_object from object $object\n" if $RDF::Debug;
   $self->{STATEMENT}=$object;
-  $self->{DONT_FREE_ME}=1;
+  $self->{DONT_FREE_ME}=1 if !$free_me;
   bless ($self, $class);
   return $self;
 }
@@ -155,10 +156,12 @@ sub subject ($;$) {
   return RDF::Node->_new_from_object(&Redland::librdf_statement_get_subject(shift->{STATEMENT}))
     unless $subject;
 
+  my $rc=&Redland::librdf_statement_set_subject($self->{STATEMENT},$subject->{NODE});
   # Zap the incoming librdf node object since it is now owned by the
   # librdf statement object $self->{STATEMENT}
   $subject->{NODE}=undef;
-  return &Redland::librdf_statement_set_subject($self->{STATEMENT},$subject);
+
+  $rc;
 }
 
 sub predicate ($;$) {
@@ -167,10 +170,12 @@ sub predicate ($;$) {
   return RDF::Node->_new_from_object(&Redland::librdf_statement_get_predicate(shift->{STATEMENT}))
     unless $predicate;
 
+  my $rc=&Redland::librdf_statement_set_predicate($self->{STATEMENT},$predicate->{NODE});
   # Zap the incoming librdf node object since it is now owned by the
   # librdf statement object $self->{STATEMENT}
   $predicate->{NODE}=undef;
-  return &Redland::librdf_statement_set_predicate($self->{STATEMENT},$predicate);
+
+  $rc;
 }
 
 sub object ($;$) {
@@ -179,10 +184,13 @@ sub object ($;$) {
   return RDF::Node->_new_from_object(&Redland::librdf_statement_get_object(shift->{STATEMENT}))
     unless $object;
 
+  my $rc=&Redland::librdf_statement_set_object($self->{STATEMENT},$object->{NODE});
+
   # Zap the incoming librdf node object since it is now owned by the
   # librdf statement object $self->{STATEMENT}
   $object->{NODE}=undef;
-  return &Redland::librdf_statement_set_object($self->{STATEMENT},$object);
+
+  $rc;
 }
 
 sub as_string ($) {
