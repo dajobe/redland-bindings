@@ -135,7 +135,7 @@ WriteMakefile(
     'VERSION'   => $version,
     'DEFINE'    => '-Dbool=char -DHAVE_CONFIG_H',
     'CCFLAGS'   => "-I$TOP_SRCDIR",
-    'OBJECT'    => "Redland_wrap.o redland_perl.o ../librdf.a @abs_libs",
+    'OBJECT'    => "Redland_wrap.o ../librdf.a @abs_libs",
     'MAKEFILE'  => 'Makefile.perl',
     'clean'     => { FILES => "test*.db" },
     'realclean' => { FILES => "Redland_wrap.c Redland_wrap.o Redland.pm" },
