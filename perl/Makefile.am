@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -61,14 +61,14 @@ $(PERL_MAKEFILE): $(srcdir)/Makefile.PL lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
 
 -perl test-perl install-perl: $(PERL_MAKEFILE)
 	@target=`echo $@ | sed -e 's/-perl//'`; \
-	echo $(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix) SITEPREFIX=$(prefix); \
-	$(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix) SITEPREFIX=$(prefix)
+	echo $(MAKE) -f $(PERL_MAKEFILE) $$target; \
+	$(MAKE) -f $(PERL_MAKEFILE) $$target
 
 clean-perl realclean-perl:
 	@target=`echo $@ | sed -e 's/-perl//'`; \
 	if test -r $(PERL_MAKEFILE); then \
-	  echo $(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix) SITEPREFIX=$(prefix); \
-	  $(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix) SITEPREFIX=$(prefix); \
+	  echo $(MAKE) -f $(PERL_MAKEFILE) $$target; \
+	  $(MAKE) -f $(PERL_MAKEFILE) $$target; \
 	fi
 
 build-perl: -perl
