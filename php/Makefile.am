@@ -39,8 +39,8 @@ redland_wrap.c.patch
 
 CLEANFILES=dmalloc.log *.db test-out.rdf \
 $(PHP_PACKAGE)_wrap.so $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
-$(PHP_PACKAGE).so $(PHP_PACKAGE).bundle $(PHP_PACKAGE)_wrap.c.orig 
-MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
+$(PHP_PACKAGE).so $(PHP_PACKAGE).bundle
+MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT) $(PHP_PACKAGE)_wrap.c.orig
 
 RUN=@REDLAND_RUN@
 
