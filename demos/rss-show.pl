@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2004 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -47,7 +47,7 @@ my $log_file="$::ROOT_DIR/logs/rss.log";
 my $max_error_size=100;
 my $max_warning_size=100;
 
-my(@parameters)=qw(uri box soup);
+my(@parameters)=qw(uri box hide soup);
 
 # Used for deleting databases
 my @suffixes=qw(po2s so2p sp2o);
@@ -131,7 +131,7 @@ distribution as <tt>demos/rss-show.pl</tt> or from the
 EOT
 
 
-  print qq{<hr />\n\n<p class="copyright"><a href="http://purl.org/net/dajobe/">Dave Beckett</a></p>\n\n</body></html>};
+  print qq{\n\n<p class="copyright"><a href="http://purl.org/net/dajobe/">Dave Beckett</a></p>\n\n</body></html>};
 }
 
 sub format_term ($) {
@@ -180,12 +180,16 @@ if(defined $val && $val =~ /^([ -~]+)$/) {
   $uri_string='';
 }
 
-my $box;
+my $box=0;
 $val=$q->param('box');
-if(defined $val && $val eq 'yes') {
-  $box='yes';
-} else {
-  $box='no';
+if(defined $val) {
+  $box=1 if $val;
+}
+
+my $hide=0;
+$val=$q->param('hide');
+if(defined $val) {
+  $hide=1 if $val;
 }
 
 my $soup;
@@ -240,7 +244,6 @@ $q->delete_all;
 #$q->delete(@parameters);
 
 $q->param('uri', $uri_string) if $uri_string;
-$q->param('box', $box);
 
 # use q->url() to get URL of this script without any query parameters
 # since we are using a POST here and don't want them added to the
@@ -256,13 +259,18 @@ print $q->textfield(-name=>'uri',
 		    -maxlength=>1024);
 print '&nbsp;', $q->submit('Go');
 
-print "</p>\n\n<p>Format results in a simple box? ";
+print "</p>\n\n<p>";
 
-my $y=$q->popup_menu(-name=>'box',
-                     -values=>['yes','no'], -default=>'no');
-# XHTML fixup
-$y =~ s/selected /selected="selected" /;
-print $y;
+print $q->checkbox(-name=>'hide',
+		   -checked=>$hide,
+		   -label=>'Hide RSS 1.0 feed content');
+
+print "\n";
+
+print $q->checkbox(-name=>'box',
+		   -checked=>$box,
+		   -label=>'Format results in a simple box?');
+
 
 
 print "</p>\n\n";
@@ -272,6 +280,8 @@ print $q->endform,"\n\n";
 print <<"EOT";
 <p><b>Data Privacy:</b> IP addresses and RSS 1.0 content URIs are logged
 and may be used for testing.</p>
+
+<hr />
 
 EOT
 
@@ -299,11 +309,11 @@ for my $feed_label (@demo_rss_feeds_order) {
   #$q->delete(@parameters);
 
   $q->param('uri', $feed_uri);
-  $q->param('box', 'no');
+  $q->param('box', 0);
   my $feed_cgi_uri=$q->self_url;
   #$feed_cgi_uri =~ s/\&/\&amp;/g;
 
-  $q->param('box', 'yes');
+  $q->param('box', 1);
   my $box_feed_cgi_uri=$q->self_url;
   #$box_feed_cgi_uri =~ s/\&/\&amp;/g;
 
@@ -335,14 +345,13 @@ EOT
 print <<"EOT";
 
 <p>You can find other feeds in various places
-such as the
-<a href="http://www.oreillynet.com/meerkat/">Meerkat</a>,
+such as
+<a href="http://www.bloglines.com/">Bloglines</a>,
 <a href="http://www.newsisfree.com/">News Is Free</a> and
 <a href="http://www.syndic8.com/">Syndic8</a>
 RSS aggregrators.  You can make them yourself with
 online tools such as <a href="http://rssxpress.ukoln.ac.uk/">RSS-xpress</a>
-(which also has a list of RSS 1.0 feeds)
-or <a href="http://www.tnl.net/how/asp/rss">RSSup</a>.
+which also has a list of RSS 1.0 feeds.
 </p>
 
 EOT
@@ -357,7 +366,7 @@ if($empty) {
 
 ######################################################################
 
-print "<h2>Results of RSS 1.0 Validation</h2>\n";
+print "<h2>Validating RSS 1.0</h2>\n";
 
 
 # Validate me
@@ -442,10 +451,10 @@ if(!$parser) {
 my $redland_base_uri=new RDF::Redland::URI $uri;
 my $redland_source_uri=new RDF::Redland::URI $source_uri;
 
-log_action($host,"Parsing RSS URI $uri with Raptor", time);
+log_action($host,"RSS URI $uri", time);
 my $stream=$parser->parse_as_stream($redland_source_uri, $redland_base_uri);
 if(!$stream || $stream->end) {
-  print "\n\n<p>URI \"$uri\" failed to parse RSS 1.0 URI $uri as $parser_label with Raptor.</p>\n";
+  print "\n\n<p>Failed to parse URI $uri as RSS 1.0 (RDF/XML).</p>\n";
 }
 
 my $count=0;
@@ -500,14 +509,23 @@ if(!$count) {
   exit 0;
 }
 
-print "<h2>RSS 1.0 Content</h2>\n";
+print qq{\n\n<p>URI \"$uri\" is well-formed XML and the content is valid RDF/XML.  Checking RSS 1.0 features (<a href="#results">results</a>).</p>\n};
 
-print "\n\n<p>URI \"$uri\" parsed RSS 1.0 as $parser_label OK (creating $count triples)</p>\n";
+print "<h2>RSS 1.0 Content</h2>\n"
+  if !$hide;
+
+
 
 #unlink $temp_file if $temp_file;
 
-
+my $errors=0;
 #$RDF::Debug=1;
+
+sub bad($) {
+  my $arg=shift;
+  $errors++;
+  $arg;
+}
 
 my $rss=RDF::Redland::RSS->new_from_model($model);
 if(!$rss) {
@@ -518,7 +536,7 @@ if(!$rss) {
 }
 
 
-if($box eq 'yes') {
+if($box) {
   my $html=$rss->as_xhtml(align=>"right", width=>320, frameColor=>"#000000", titleBarTextColor=>"#000000", titleBarColor=>"#ccccff", boxFillColor=>"#eeeeee", hspace=>15, vspace=>0);
   if($html) {
     print $html,qq{<br clear="all"/></p>};
@@ -541,27 +559,38 @@ my $content_encoded_property=RDF::Redland::Node->new_from_uri_string($content_en
 my $missing;
 for my $channel ($rss->channels) {
   $missing=qq{<b>Missing.</b>  This is a required element of &lt;rdf:RDF&gt; - see <a href="${rss_spec_url}#s5.3">RSS 1.0 section 5.3</a>};
-  print "<p>Found channel with URI ",($channel->uri ? format_url($channel->uri->as_string) : $missing),"<br />\n";
-  print "  <b>Title</b>: ",($channel->title ? format_term($channel->title) : $missing),"<br />\n";
-  print "  <b>Link</b>: ",($channel->link ? format_url($channel->link->as_string) : $missing),"<br />\n";
-  print "  <b>Description</b>: ",format_term($channel->description),"<br />\n" if $channel->description;
-  print "</p>\n";
 
-  for my $ns_label (@namespace_order) {
-    my $ns_prefix=$namespaces{$ns_label};
-    my(@props)=$channel->properties_with_ns_prefix($ns_prefix);
-    if(@props) {
-      print qq{<p><a href="$ns_prefix">$ns_label</a> properties:<br />\n};
-      for my $property (@props) {
-	my $value=$channel->property($property);
-	my $puri=$property->uri->as_string;
-	my $puri_label=$puri; $puri_label =~ s%^$ns_prefix%%;
-	next if $puri_label =~ m%/%;
-	print qq{<b><a href="$puri">$puri_label</a></b> : };
-	print format_term($value); # probably literal
-	print "<br />\n";
+  if($hide) {
+    print "<p>Channel URI ", bad($missing),"</p>\n"
+      unless $channel->uri;
+    print "<p>Channel Title ", bad($missing),"</p>\n"
+      unless $channel->title;
+    print "<p>Channel Link ",bad($missing),"</p>\n"
+      unless $channel->link;
+  } else {
+    print "<p>Found channel with URI ",($channel->uri ? format_url($channel->uri->as_string) : bad($missing)),"<br />\n";
+    print "  <b>Title</b>: ",($channel->title ? format_term($channel->title) : bad($missing)),"<br />\n";
+    print "  <b>Link</b>: ",($channel->link ? format_url($channel->link->as_string) : bad($missing)),"<br />\n";
+    print "  <b>Description</b>: ",format_term($channel->description),"<br />\n" if $channel->description;
+
+    print "</p>\n";
+
+    for my $ns_label (@namespace_order) {
+      my $ns_prefix=$namespaces{$ns_label};
+      my(@props)=$channel->properties_with_ns_prefix($ns_prefix);
+      if(@props) {
+	print qq{<p><a href="$ns_prefix">$ns_label</a> properties:<br />\n};
+	for my $property (@props) {
+	  my $value=$channel->property($property);
+	  my $puri=$property->uri->as_string;
+	  my $puri_label=$puri; $puri_label =~ s%^$ns_prefix%%;
+	  next if $puri_label =~ m%/%;
+	  print qq{<b><a href="$puri">$puri_label</a></b> : };
+	  print format_term($value); # probably literal
+	  print "<br />\n";
+	}
+	print "</p>\n\n";
       }
-      print "</p>\n\n";
     }
   }
 
@@ -572,64 +601,87 @@ for my $channel ($rss->channels) {
     exit 0;
   }
 
+  if(!$hide) {
+    print "<p>Found ",scalar(@items)," items in the channel.</p>\n\n";
 
-  print "<p>Found ",scalar(@items)," items in channel.</p>\n\n";
+    print "<ul>\n\n";
+  }
 
-  print "<ul>\n\n";
+  my $item_count=1;
   for my $item (@items) {
     $missing=qq{<b>Missing.</b>  This is a required element of &lt;item&gt; - see <a href="${rss_spec_url}#s5.5">RSS 1.0 section 5.5</a>};
-    print "<li><p>Item with URI ",($item->uri ? format_url($item->uri->as_string) : $missing),"<br />\n";
-    print "    <b>Title</b>: ",($item->title ? format_term($item->title) : $missing),"<br />\n";
-    print "    <b>Link</b>: ",($item->link ? format_url($item->link->as_string) : $missing),"<br />\n";
+    if($hide) {
+      print "<p>Item $item_count URI ", bad($missing),"</p>\n"
+        unless $item->uri;
+      print "<p>Item $item_count Title ", bad($missing),"</p>\n"
+        unless $item->title;
+      print "<p>Item $item_count Link ", bad($missing),"</p>\n"
+        unless $item->link;
+    } else {
+      print "<li><p>Item with URI ",($item->uri ? format_url($item->uri->as_string) : bad($missing)),"<br />\n";
+      print "    <b>Title</b>: ",($item->title ? format_term($item->title) : bad($missing)),"<br />\n";
+      print "    <b>Link</b>: ",($item->link ? format_url($item->link->as_string) : bad($missing)),"<br />\n";
 
-    my $content_desc=$item->property($content_encoded_property);
-    if($content_desc) {
-      print "    <b>HTML Description (mod_content)</b>: [[",$content_desc->literal_value,"]]<br />\n";
-      if(0) {
-	# Now we have used that, remove it from the model
-	my $cs=RDF::Redland::Statement->new_from_nodes(RDF::Redland::Node->new_from_node($item),
-						       RDF::Redland::Node->new_from_node($content_encoded_property),
-						       RDF::Redland::Node->new_from_node($content_desc));
-	$model->remove_statement($cs);
+      my $content_desc=$item->property($content_encoded_property);
+      if($content_desc) {
+	print "    <b>HTML Description (mod_content)</b>: [[",$content_desc->literal_value,"]]<br />\n";
       }
-    }
-    # RSS 1.0 section 5.5 <item> - description</b>:optional
-    print "    <b>Description</b>: ",format_term($item->description),"<br />\n" if $item->description;
-    print "</p>\n";
+      # RSS 1.0 section 5.5 <item> - description</b>:optional
+      print "    <b>Description</b>: ",format_term($item->description),"<br />\n" if $item->description;
+      print "</p>\n";
 
-    for my $ns_label (@namespace_order) {
-      my $ns_prefix=$namespaces{$ns_label};
-      my(@props)=$item->properties_with_ns_prefix($ns_prefix);
-      if(@props) {
-	print qq{<p><a href="$ns_prefix">$ns_label</a> properties:<br />\n};
-	for my $property (@props) {
-	  my $value=$item->property($property);
-	  my $puri=$property->uri->as_string;
-	  my $puri_label=$puri; $puri_label =~ s%^$ns_prefix%%;
-	  next if $puri_label =~ m%/%;
+      for my $ns_label (@namespace_order) {
+	my $ns_prefix=$namespaces{$ns_label};
+	my(@props)=$item->properties_with_ns_prefix($ns_prefix);
+	if(@props) {
+	  print qq{<p><a href="$ns_prefix">$ns_label</a> properties:<br />\n};
+	  for my $property (@props) {
+	    my $value=$item->property($property);
+	    my $puri=$property->uri->as_string;
+	    my $puri_label=$puri; $puri_label =~ s%^$ns_prefix%%;
+	    next if $puri_label =~ m%/%;
 
-	  print qq{<b><a href="$puri">$puri_label</a></b> : };
-	  print format_term($value);
-	  print "<br />\n";
+	    print qq{<b><a href="$puri">$puri_label</a></b> : };
+	    print format_term($value);
+	    print "<br />\n";
+	  }
+	  print "</p>\n\n";
 	}
-	print "</p>\n\n";
       }
+
+      print "</li>\n";
     }
 
-    print "</li>\n";
+    $item_count++;
   }
-  print "</ul>\n\n";
+
+  print "</ul>\n\n"
+    if !$hide;
 
   my $image=$channel->image;
   if($image) {
     $missing=qq{<b>Missing.</b>  This is a required element of &lt;image&gt; - see <a href="${rss_spec_url}#s5.4">RSS 1.0 section 5.4</a>};
-    print "<p>Image with URI ",($image->uri ? format_url($image->uri->as_string) : $missing),"<br />\n";
-    
-    # RSS 1.0 section 5.4 <image> - If present, nothing optional
-    print "    <b>Title</b>: ",($image->title ? format_term($image->title) : $missing),"<br />\n";
-    print "    <b>Link</b>: ",($image->link ? format_url($image->link->as_string) : $missing),"<br />\n";
-    print "    <b>URL</b>: ",($image->image_url ? format_url($image->image_url->as_string) : $missing),"<br />\n" if $image->image_url;
-    print "</p>\n";
+
+    if($hide) {
+      print "<p>Image URI ", bad($missing),"</p>\n"
+	unless $image->uri;
+
+      # RSS 1.0 section 5.4 <image> - If present, nothing optional
+      print "<p>Image Title ", bad($missing),"</p>\n"
+	unless $image->title;
+      print "<p>Image Link ", bad($missing),"</p>\n"
+	unless $image->link;
+      print "<p>Image URL ", bad($missing),"</p>\n"
+	unless $image->image_url;
+    } else {
+      print "<p>Image with URI ",($image->uri ? format_url($image->uri->as_string) : bad($missing)),"<br />\n";
+
+      # RSS 1.0 section 5.4 <image> - If present, nothing optional
+      print "    <b>Title</b>: ",($image->title ? format_term($image->title) : bad($missing)),"<br />\n";
+      print "    <b>Link</b>: ",($image->link ? format_url($image->link->as_string) : bad($missing)),"<br />\n";
+      print "    <b>URL</b>: ",($image->image_url ? format_url($image->image_url->as_string) : bad($missing)),"<br />\n" if $image->image_url;
+      print "</p>\n";
+    }
   }
 
   my $textinput=$channel->textinput;
@@ -641,22 +693,38 @@ for my $channel ($rss->channels) {
     my $t_desc=$textinput->description;
     my $t_name=$textinput->name;
 
-    print "<p>Textinput with URI ",($t_uri ? format_url($t_uri->as_string) : $missing),"<br />\n";
+    if($hide) {
+      print "<p>Textinput URI ", bad($missing),"</p>\n"
+        unless $t_uri;
 
-    # RSS 1.0 section 5.6 <textinput> - If present, nothing optional
-    print "    <b>Title</b>: ",($t_title ? format_term($t_title) : $missing),"<br />\n";
-    print "    <b>Link</b>: ",($t_link ? format_url($t_link->as_string) : $missing),"<br />\n";
-    print "    <b>Description</b>: ",($t_desc ? format_term($t_desc) : $missing),"<br />\n";
-    print "    <b>Name</b>: ",($t_name ? format_term($t_name) : $missing),"<br />\n";
-    print "</p>\n";
+      # RSS 1.0 section 5.6 <textinput> - If present, nothing optional
+      print "<p>Textinput Title ", bad($missing),"</p>\n" 
+        unless $t_title;
+      print "<p>Textinput Link ",  bad($missing),"</p>\n"
+        unless $t_link;
+      print "<p>Textinput Description ", bad($missing),"</p>\n"
+        unless $t_desc;
+      print "<p>Textinput Name ", bad($missing),"<</p>\n"
+        unless $t_name;
 
-    if($t_uri && $t_title && $t_link && $t_desc && $t_name) {
-      my $t_uri_string=$t_uri->as_string;
-      my $t_name_string=$t_name->literal_value;
-      my $t_desc_string=$t_desc->literal_value;
-      my $t_title_string=$t_title->literal_value;
+    } else {
 
-      print <<"EOT";
+      print "<p>Textinput with URI ",($t_uri ? format_url($t_uri->as_string) : bad($missing)),"<br />\n";
+
+      # RSS 1.0 section 5.6 <textinput> - If present, nothing optional
+      print "    <b>Title</b>: ",($t_title ? format_term($t_title) : bad($missing)),"<br />\n";
+      print "    <b>Link</b>: ",($t_link ? format_url($t_link->as_string) : bad($missing)),"<br />\n";
+      print "    <b>Description</b>: ",($t_desc ? format_term($t_desc) : bad($missing)),"<br />\n";
+      print "    <b>Name</b>: ",($t_name ? format_term($t_name) : bad($missing)),"<br />\n";
+      print "</p>\n";
+
+      if($t_uri && $t_title && $t_link && $t_desc && $t_name) {
+	my $t_uri_string=$t_uri->as_string;
+	my $t_name_string=$t_name->literal_value;
+	my $t_desc_string=$t_desc->literal_value;
+	my $t_title_string=$t_title->literal_value;
+
+	print <<"EOT";
 <p>Formatted search form:</p>
 
 <blockquote>
@@ -667,16 +735,26 @@ for my $channel ($rss->channels) {
   <input type="submit" name="Go" value="Go" />
 </form>
 </blockquote>
-EOT
-    } else {
-      print <<"EOT";
+  EOT
+      } else {
+	print <<"EOT";
 <p>Not formatting search form since there are missing elements.</p>
 EOT
-    }
+      }
   }
+}
 
 }
 
+if(!$errors) {
+  print qq{<h2><a name="results">Valid RSS 1.0 Content</a></h2>\n};
+
+  print "\n\n<p>URI \"$uri\" is well-formed XML, valid RDF/XML and valid RSS 1.0.</p>\n"
+} else {
+  print qq{<h2><a name="results">Invalid RSS 1.0 Content</a></h2>\n};
+
+  print "\n\n<p>URI \"$uri\" is well-formed XML, valid RDF/XML but the content is invalid RSS 1.0 with $errors errors.</p>\n"
+}
 
 
 end_page($q);
