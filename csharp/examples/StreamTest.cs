@@ -1,6 +1,8 @@
 //
 // StreamTest.cs:
 //
+// $Id$
+//
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)
 //
@@ -41,13 +43,10 @@ namespace Redland {
 		{
 			int i = 0;
 			string a = "file:../../data/dc.rdf";
-			parser.ParseIntoModel (model, a);			
-			Stream model_iter = model.ToStream ();
-
-			while (!model_iter.End) {
+			parser.ParseIntoModel (model, a);
+			foreach (Statement s in model.ToStream ())
 				i++;
-				model_iter.MoveNext ();
-			}
+
 			NUnit.Framework.Assert.IsTrue (i == 3, "../../data/dc.rdf should have 3 statements");
 		}
 
@@ -55,12 +54,9 @@ namespace Redland {
 		public void ParseAsStream ()
 		{
 			string a = "file:../../data/dc.rdf";
-			Stream stream = parser.ParseAsStream (a);
+			foreach (Statement s in parser.ParseAsStream (a)) 
+				model.AddStatement (s);
 
-			while (!stream.End) {
-				model.AddStatement ((Statement) stream.Current);
-				stream.MoveNext ();
-			}
 			NUnit.Framework.Assert.IsTrue (model.Size == 3, "../../data/dc.rdf should have 3 statements");
 		}
 
@@ -70,12 +66,9 @@ namespace Redland {
 			int i = 0;
 			parser.ParseIntoModel (model, "file:../../data/dc.rdf");
 			Statement stm = new Statement (new Node (new Uri ("http://purl.org/net/dajobe/")), null, null);
-			Stream found_stms = model.FindStatements (stm);
-
-			while (!found_stms.End) {
+			foreach (Statement s in model.FindStatements (stm)) 
 				i++;
-				found_stms.MoveNext ();
-			}
+
 			NUnit.Framework.Assert.IsTrue (i == 3, "Should have found_stms 3 statements");
 		}
 
@@ -97,12 +90,8 @@ namespace Redland {
 			int i = 0;
 			string a = "file:../../data/dc.rdf";
 			Node intended_context = new Node (new Uri ("http://example.org/"));
-			Stream stream = parser.ParseAsStream (a);
-
-			while (!stream.End) {
-				model.AddStatement ((Statement) stream.Current, intended_context);
-				stream.MoveNext ();
-			}
+			foreach (Statement s in parser.ParseAsStream (a))
+				model.AddStatement (s, intended_context);
 
 			Node subject = new Node (new Uri ("http://purl.org/net/dajobe/"));
 			Statement stm = new Statement (subject, null, null);
