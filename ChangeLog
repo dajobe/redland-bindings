@@ -1,5 +1,15 @@
 2005-02-08  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* java/Makefile.am, perl/Makefile.am, php/Makefile.am,
+	python/Makefile.am, ruby/Makefile.am, tcl/Makefile.am,
+	csharp/Makefile.am: Remove linking to $(top_srcdir)../librdf -
+	that's not always right.
+
+	* perl/lib/RDF/Redland/Storage.pm (new):
+	allow NAME, OPTIONS_STRING to be optional if undef
+
+	* perl/example.pl: Added SPARQL CONSTRUCT
+
 	* perl/lib/RDF/Redland/QueryResults.pm (as_stream):
 	Added to return graph results.
 
