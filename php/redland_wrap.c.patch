@@ -1,6 +1,6 @@
---- redland_wrap.c.orig	2004-01-04 20:43:31.000000000 +0000
-+++ redland_wrap.c	2004-01-04 20:43:31.000000000 +0000
-@@ -1843,7 +1843,8 @@
+--- redland_wrap.c.orig	2004-01-05 00:38:02.000000000 +0000
++++ redland_wrap.c	2004-01-05 00:38:02.000000000 +0000
+@@ -1814,7 +1814,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value(arg1);
@@ -10,7 +10,7 @@
      
      ZVAL_STRING(return_value,result, 1);
      
-@@ -1870,6 +1871,8 @@
+@@ -1841,6 +1842,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value_as_latin1(arg1);
@@ -19,7 +19,7 @@
      
      
      ZVAL_STRING(return_value,result, 1);
-@@ -1897,6 +1900,8 @@
+@@ -1868,6 +1871,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value_language(arg1);
