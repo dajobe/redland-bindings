@@ -36,6 +36,10 @@ Makefile.PL \
 redland-bindings.spec redland-bindings.spec.in \
 redland-bindings.pc.in
 
+pkgconfigdir = $(libdir)/pkgconfig
+pkgconfig_DATA = redland-bindings.pc
+
+
 if MAINTAINER_MODE
 # Create some text files from HTML sources
 LYNX=lynx
