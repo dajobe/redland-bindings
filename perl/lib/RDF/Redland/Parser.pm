@@ -167,9 +167,10 @@ sub parse_string_into_model ($$$$) {
 
 =item feature URI [VALUE]
 
-Get/set a parser feature.  The feature is named via RDF::Redland::URI I<URI>
-and the value is a string.  If I<VALUE> is given, the feature is set
-to that value, otherwise the current value is returned.
+Get/set a parser feature.  The feature is named via RDF::Redland::URI
+I<URI> and the value is a RDF::Redland::Node.  If I<VALUE> is given,
+the feature is set to that value, otherwise the current value is
+returned.
 
 =cut
 
@@ -180,10 +181,11 @@ sub feature ($$;$) {
   $uri=RDF::Redland::URI->new($uri)
     unless ref $uri;
 
-  return &RDF::Redland::CORE::librdf_parser_get_feature($self->{PARSER},$uri->{URI})
-    unless $value;
+  return &RDF::Redland::CORE::librdf_parser_set_feature($self->{PARSER},$uri->{URI},$value->{NODE})
+      if $value;
 
-  return &RDF::Redland::CORE::librdf_parser_set_feature($self->{PARSER},$uri->{URI},$value);
+  $value=&RDF::Redland::CORE::librdf_parser_get_feature($self->{PARSER},$uri->{URI});
+  return $value ? RDF::Redland::Node->_new_from_object($value,1) : undef;
 }
 
 
