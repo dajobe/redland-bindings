@@ -1,6 +1,5 @@
-require 'redland'
+require 'rdf/redland'
 
-#module RDF
 module Redland
 
   class TripleStore
