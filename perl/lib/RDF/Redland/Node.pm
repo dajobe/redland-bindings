@@ -85,6 +85,8 @@ sub new ($) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{NODE}=&Redland::librdf_new_node;
+  return undef if !$self->{NODE};
+
   bless ($self, $class);
   return $self;
 }
@@ -94,6 +96,8 @@ sub new_from_uri_string ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{NODE}=&Redland::librdf_new_node_from_uri_string($uri_string);
+  return undef if !$self->{NODE};
+
   bless ($self, $class);
   return $self;
 }
@@ -103,6 +107,8 @@ sub new_from_uri ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{NODE}=&Redland::librdf_new_node_from_uri($uri->{URI});
+  return undef if !$self->{NODE};
+
   bless ($self, $class);
   return $self;
 }
@@ -112,6 +118,8 @@ sub new_from_literal ($$$$$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{NODE}=&Redland::librdf_new_node_from_literal($string,$xml_language,$xml_space,$is_wf_xml);
+  return undef if !$self->{NODE};
+
   bless ($self, $class);
   return $self;
 }
@@ -121,6 +129,8 @@ sub new_from_node ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{NODE}=&Redland::librdf_new_node_from_node($node->{NODE});
+  return undef if !$self->{NODE};
+
   bless ($self, $class);
   return $self;
 }
@@ -130,9 +140,11 @@ sub new_from_node ($$) {
 # this is always shared (at present) so should not be freed
 sub _new_from_object ($$) {
   my($proto,$object)=@_;
+  return undef if !$object;
   my $class = ref($proto) || $proto;
   my $self  = {};
   warn "RDF::Node::_new_from_object from object $object\n" if $RDF::Debug;
+
   $self->{NODE}=$object;
   $self->{DONT_FREE_ME}=1;
   bless ($self, $class);
