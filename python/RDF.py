@@ -444,7 +444,7 @@ class Statement(object):
     global _world
     global _debug    
     if _debug:
-      print "Creating RDF.Statement object args",args
+      print "Creating RDF.Statement subject=",subject,"predicate=",predicate,"object=",object,"args=",args
 
     self._statement = None
 
