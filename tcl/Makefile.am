@@ -30,6 +30,8 @@ TCL_PACKAGE=Redland
 SWIG_OUTPUTS=$(TCL_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
+tcldir=$(shell echo 'puts $$tcl_library' | $(TCL))
+tcl_DATA=Redland.so
 
 EXTRA_DIST=README test.tcl example.tcl \
 $(SWIG_OUTPUTS)
@@ -41,29 +43,13 @@ $(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -tcl8 -module $(TCL_PACKAGE) -o $@ $<
 
 $(TCL_PACKAGE)_wrap.o: $(TCL_PACKAGE)_wrap.c
-	$(CC) $(CFLAGS) `$(top_srcdir)/redland-src-config --cflags` -c -fpic -I$(top_srcdir)  $< -o $@
+	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf -c -fpic -I$(top_srcdir)  $< -o $@
 
-$(TCL_PACKAGE).so: $(TCL_PACKAGE)_wrap.o
-	$(CC) -shared $< -o $@ `$(top_srcdir)/redland-src-config --libs` -L$(top_srcdir) -lrdf
+$(TCL_PACKAGE).so: $(TCL_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la
+	$(LIBTOOL) --mode=link $(CC) $(TCL_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la -o $@
 
 pkgIndex.tcl: $(TCL_PACKAGE).so
-	$(TCL) -c "pkg_mkIndex . $(TCL_PACKAGE).so"
+	echo "pkg_mkIndex . $(TCL_PACKAGE).so" | $(TCL)
 
-build-tcl: $(TCL_PACKAGE).so pkgIndex.tcl
-
-check-tcl: test-tcl
-test-tcl: build-tcl
+check-local: $(TCL_PACKAGE).so
 	$(TCL) test.tcl
-
-clean-tcl realclean-tcl:
-	rm -f $(TCL_PACKAGE).so
-
-install-tcl: $(TCL_PACKAGE).so pkgIndex.tcl build-tcl
-	tcldir=`tcl -c 'puts [lindex $$auto_path 0]'`; \
-	mkdir $$tcldir/redland; \
-	cp -p $(TCL_PACKAGE).so pkgIndex.tcl $$tcldir/redland
-
-dist-tcl:
-	@echo make tcl dist somehow
-
-clean-local: clean-tcl
