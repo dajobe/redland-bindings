@@ -35,7 +35,7 @@ php_DATA=$(PHP_PACKAGE).so
 EXTRA_DIST=test.php example.php php.ini \
 $(SWIG_OUTPUTS)
 
-CLEANFILES=*.db core* \
+CLEANFILES=dmalloc.log *.db test-out.rdf \
 $(PHP_PACKAGE)_wrap.so $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
 $(PHP_PACKAGE).so $(PHP_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
@@ -57,8 +57,9 @@ $(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.so
 	else \
 	  args=" -shared"; \
 	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PHP_PACKAGE)_wrap.so `$(top_srcdir)/redland-src-config --libs` -o $(PHP_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(PHP_PACKAGE)_wrap.so `$(top_srcdir)/redland-src-config --libs` -o $(PHP_PACKAGE).so
+	cmd="$(CC) $(AM_CFLAGS) $(CFLAGS) `$(top_srcdir)/redland-src-config --libs` $(AM_LDFLAGS) $(LDFLAGS) $$args $(PHP_PACKAGE)_wrap.so -o $(PHP_PACKAGE).so"; \
+	echo $$cmd; \
+	$$cmd
 	if test `uname` = Darwin; then \
 	  $(INSTALL_PROGRAM) $(PHP_PACKAGE).so $(PHP_PACKAGE).bundle; \
 	fi
