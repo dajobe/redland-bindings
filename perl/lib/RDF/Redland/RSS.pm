@@ -212,8 +212,10 @@ sub _find_targets_by_predicate ($$) {
   return () if !$predicate;
 
   my(@targets)=$self->{MODEL}->get_targets($self,$predicate);
+  warn "RDF::RSS::_find_targets_by_predicate returned ",scalar @targets, " results\n" if $RDF::Debug;
 
-  @targets;
+  # Convert list of RDF::Node-s into list of RDF::RSS:Node-s
+  return map { RDF::RSS::Node->new($self->{MODEL}, $_) } @targets;
 }
 
 # Convienience accessors
@@ -299,6 +301,45 @@ sub textinput ($) {
 
   return RDF::RSS::Node->new($self->{MODEL}, $textinput);
 }
+
+
+# general property
+sub property ($$) {
+  my($self,$property)=@_;
+
+  my(@targets)=$self->{MODEL}->get_targets($self,$property);
+
+  # Convert list of RDF::Node-s into list of RDF::RSS:Node-s
+  @targets=map { RDF::RSS::Node->new($self->{MODEL}, $_) } @targets;
+  return wantarray ? @targets : $targets[0];
+}
+
+sub properties ($) {
+  my($self)=@_;
+
+  my $prop= RDF::Node->new_from_node($self);
+  my $statement=RDF::Statement->new_from_nodes($prop, undef, undef);
+  my(@arcs_out_statements)=$self->{MODEL}->find_statements($statement);
+
+  # Convert list of RDF::Statement-s into list of RDF::RSS:Node-s
+  # of predicates
+  return map { RDF::RSS::Node->new($self->{MODEL}, $_->predicate) } @arcs_out_statements;
+}
+
+sub properties_with_ns_prefix ($$) {
+  my($self,$ns_prefix)=@_;
+
+  my(@arcs);
+  my(%arcs_uris_seen);
+  for my $arc ($self->properties) {
+    my $uri=$arc->uri->as_string;
+    next unless $uri =~ m%^$ns_prefix(.*)$% && !$arcs_uris_seen{$uri};
+    push(@arcs, $arc);
+    $arcs_uris_seen{$uri}=1;
+  }
+  @arcs;
+}
+
 
 
 1;
