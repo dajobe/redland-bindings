@@ -40,34 +40,11 @@ static PyObject *_wrap_librdf_version_release_get(void);
 
 SWIGEXPORT(void) SWIG_init(void);
 
-static PyObject *librdf_python_callback = NULL;
+static char* librdf_python_error_message = NULL;
+static char* librdf_python_warning_message = NULL;
 
-static PyObject * librdf_python_set_callback(PyObject *dummy, PyObject *args);
-
-/*
- * set the Python function object callback
- */
-static PyObject *
-librdf_python_set_callback(PyObject *dummy, PyObject *args)
-{
-  PyObject *result = NULL;
-  PyObject *temp;
-  
-  if (PyArg_ParseTuple(args, "O:set_callback", &temp)) {
-    if (!PyCallable_Check(temp)) {
-      PyErr_SetString(PyExc_TypeError, "parameter must be callable");
-      return NULL;
-    }
-    Py_XINCREF(temp);         /* Add a reference to new callback */
-    Py_XDECREF(librdf_python_callback);  /* Dispose of previous callback */
-    librdf_python_callback = temp;       /* Remember new callback */
-    /* Boilerplate to return "None" */
-    Py_INCREF(Py_None);
-    result = Py_None;
-  }
-  return result;
-}
-
+static PyObject *PyRedland_Warning;
+static PyObject *PyRedland_Error;
 
 /*
  * helper function for turning a python Unicode string into the UTF-8
@@ -112,8 +89,6 @@ librdf_python_unicode_to_bytes(PyObject *dummy, PyObject *args)
 
 /* Declare a table of methods that python can call */
 static PyMethodDef librdf_python_methods [] = {
-    {"set_callback",  librdf_python_set_callback, METH_VARARGS,
-     "Set python message callback."},
     {"unicode_to_bytes",  librdf_python_unicode_to_bytes, METH_VARARGS,
      "Turn a python Unicode string into the UTF-8 bytes."},
     {NULL, NULL, 0, NULL}        /* Sentinel */
@@ -121,67 +96,61 @@ static PyMethodDef librdf_python_methods [] = {
 
 
 /*
- * calls a python function defined as:
- *   RDF.message($$)
- * where first argument is an integer, second is a (scalar) string
- * with an integer return value indicating if the message was handled.
+ * stores a redland error message for later
  */
 static int
-librdf_call_python_message(int type, const char *message, va_list arguments)
+librdf_python_message_handler(int type, const char *message, va_list arguments)
 {
   char empty_buffer[1];
-  PyObject *arglist;
-  PyObject *result;
-  char *buffer;
   int len;
   va_list args_copy;
-  int rc=0;
+  char **buffer;
 
-  if(!librdf_python_callback)
+  if(type)
+    buffer=&librdf_python_warning_message;
+  else
+    buffer=&librdf_python_error_message;
+
+  if(*buffer) {
+    /* There is already a pending warning or error, return not handled */
     return 0;
+    /* alternative: discard the older one with free(*buffer); */
+  }
 
   /* ask vsnprintf size of buffer required */
   va_copy(args_copy, arguments);
   len=vsnprintf(empty_buffer, 1, message, args_copy)+1;
   va_end(args_copy);
-  buffer=(char*)malloc(len);
-  if(!buffer) {
-    fprintf(stderr, "librdf_call_python_message: Out of memory\n");
+
+  *buffer=(char*)malloc(len);
+  if(!*buffer) {
+    fprintf(stderr, "librdf_python_message_handler: Out of memory\n");
     return 0;
   }
   
   va_copy(args_copy, arguments);
-  vsnprintf(buffer, len, message, args_copy);
+  vsnprintf(*buffer, len, message, args_copy);
   va_end(args_copy);
 
-  /* call the callback */
-  arglist = Py_BuildValue("(is)", type, buffer);
-  if(!arglist) {
-    fprintf(stderr, "librdf_call_python_message: Out of memory\n");
-    free(buffer);
-    return 0;
+  /*
+   * Emit warnings right away
+   * Note: this makes the %exception code for warning never run
+   */
+  if(*buffer == librdf_python_warning_message) {
+    PyErr_Warn(PyRedland_Warning, librdf_python_warning_message);
+    free(librdf_python_warning_message);
+    librdf_python_warning_message=NULL;
   }
-  result = PyEval_CallObject(librdf_python_callback, arglist);
-  Py_DECREF(arglist);
-  if(result) {
-    if(PyInt_Check(result))
-      rc=(int)PyInt_AS_LONG(result);
-    
-    Py_DECREF(result);
-  }
-
-  free(buffer);
-
-  rc=1;
   
-  return rc;
+  return 1;
 }
+
 
 static int
 librdf_python_error_handler(void *user_data, 
                             const char *message, va_list arguments)
 {
-  return librdf_call_python_message(0, message, arguments);
+  return librdf_python_message_handler(0, message, arguments);
 }
 
 
@@ -189,13 +158,33 @@ static int
 librdf_python_warning_handler(void *user_data,
                               const char *message, va_list arguments)
 {
-  return librdf_call_python_message(1, message, arguments);
+  return librdf_python_message_handler(1, message, arguments);
 }
+
 
 void
 librdf_python_world_init(librdf_world *world)
 {
-  (void) Py_InitModule("Redland_python", librdf_python_methods);
+  PyObject *module;
+  PyObject *dict;
+  PyObject *tuple;
+
+  module = Py_InitModule("Redland_python", librdf_python_methods);
+  dict = PyModule_GetDict(module);
+
+  tuple = Py_BuildValue ("(iii)", librdf_version_major, librdf_version_minor,
+                         librdf_version_release);
+  PyDict_SetItemString(dict, "version", tuple);
+  Py_DECREF(tuple);
+
+  PyRedland_Warning = PyErr_NewException("RDF.RedlandWarning", 
+                                         PyExc_Warning, NULL);
+  PyDict_SetItemString(dict, "Warning", PyRedland_Warning);
+
+  PyRedland_Error = PyErr_NewException("RDF.RedlandError",
+                                       PyExc_RuntimeError, NULL);
+  PyDict_SetItemString(dict, "Error", PyRedland_Error);
+
   librdf_world_set_error(world, NULL, librdf_python_error_handler);
-  librdf_world_set_warning(world,  NULL, librdf_python_warning_handler);
+  librdf_world_set_warning(world, NULL, librdf_python_warning_handler);
 }
