@@ -82,8 +82,7 @@ die "$0: Failed to create stream using parse_as_stream\n"
   if !$stream || $stream->end;
 my $count=0;
 while(!$stream->end) {
-  my $statement=$stream->current;
-  $model->add_statement($statement);
+  $model->add_statement($stream->current);
   $count++;
   $stream->next;
 }
