@@ -78,6 +78,7 @@ print "Writing model to test-out.rdf as rdf/xml"
 
 # Use any rdf/xml parser that is available
 serializer=RDF.Serializer()
+serializer.set_namespace("dc", RDF.Uri("http://purl.org/dc/elements/1.1/"))
 serializer.serialize_model_to_file("test-out.rdf", model)
 
 print "Serialized to ntriples as a string size",len(model.to_string(name="ntriples", base_uri="http://example.org/base#")),"bytes"
