@@ -157,7 +157,8 @@ def message_handler (type, message):
   if type == 0:
     raise RedlandError(message)
   else:
-    raise RedlandWarning(message)
+    import warnings
+    warnings.warn(message, UserWarning, stacklevel=3)
 
 def set_message_handler(handler):
   """Set the Redland message handler for Python.  It takes
