@@ -85,7 +85,7 @@ SWIG_OUTPUTS=$(TCL_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
 
-EXTRA_DIST=README test.tcl \
+EXTRA_DIST=README test.tcl example.tcl \
 $(SWIG_OUTPUTS)
 
 CLEANFILES=test*db $(TCL_PACKAGE)_wrap.o
