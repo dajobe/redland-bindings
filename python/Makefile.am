@@ -56,6 +56,7 @@ test-python: build-python
 	PYTHONPATH=$$bdir $(PYTHON) test/test.py
 
 clean-python:
+	rm -rf build
 	$(PYTHON_SETUP) clean
 
 realclean-python:
