@@ -133,22 +133,10 @@ public class Node
       return new URI(this.world, uri_object);
     }
 
-  public int setURI(URI uri) 
-    {
-      return core.librdf_node_set_uri(this.object, uri.__get_object());
-    }
-  
-
   public int getType() 
     {
       return core.librdf_node_get_type(this.object);
     }
-
-  public void setType(int type) 
-    {
-      core.librdf_node_set_type(this.object, type);
-    }
-  
 
   public String getLiteralValue() 
     {
@@ -171,12 +159,6 @@ public class Node
       return (is_wf_xml_int >0);
     }
   
-
-  public int setLiteralValue(String value, String xml_language, boolean is_wf_xml) 
-    {
-      int is_wf_xml_int=is_wf_xml ? 1 : 0;
-      return core.librdf_node_set_literal_value(this.object, value, xml_language, is_wf_xml_int);
-    }
 
   public String toString() 
     {
