@@ -85,15 +85,18 @@ __all__ = [ "World",
             "Serializer",
             "Stream",
             "Storage",
+            "MemoryStorage",
+            "HashStorage",
             "Uri",
             "Parser"]
 
-__version__ = "0.7"
+__version__ = "0.8"
 
 # For pydoc
 __date__ = '$Date$'
 __author__ = 'Dave Beckett - http://purl.org/net/dajobe'
-__credits__ = """Edd Dumbill for properly Pythonisising my Perl translation"""
+__credits__ = """Edd Dumbill and Matt Biddulph for properly
+                 Pythonisising my Perl translation"""
 
 # Package variables [globals]
 #   Python style says to use _ to prevent exporting
@@ -547,7 +550,7 @@ class Model:
 
   """
 
-  def __init__(self, storage, **args):
+  def __init__(self, storage=None, **args):
     """Create an RDF Model (constructor).
 
 Create a new RDF Model using any of these forms
@@ -561,6 +564,9 @@ Optional fields:
   m2=RDF.Model(model=m1)
 Copy an existing model m1, copying the underlying Storage of m1
 
+  m3=RDF.Model()
+Create a model using an in memory storage.
+
     """
     global _world
     global _debug    
@@ -568,6 +574,9 @@ Copy an existing model m1, copying the underlying Storage of m1
       print "Creating RDF.Model args=",args
     self._model=None
     self._storage=None
+
+    if storage is None:
+      storage = MemoryStorage()
 
     if args.has_key('options_string'):
       self._model=Redland.librdf_new_model(_world._world, storage._storage,
@@ -588,12 +597,18 @@ Copy an existing model m1, copying the underlying Storage of m1
       # keep a reference around so storage object is destroyed after this
       self._storage=storage
 
+  def __iter__(self):
+    return self.serialise().__iter__()
+
   def __del__(self):
     global _debug    
     if _debug:
       print "Destroying RDF.Model"
     if self._model:
       Redland.librdf_free_model(self._model)
+
+  def __len__(self):
+    return self.size()
 
   def size(self):
     """Return the size of the Model in number of statements (<0 if not countabl)"""
@@ -862,6 +877,88 @@ please use 'not iterator.end' instead."""
 
 # end class Iterator
 
+class StreamWithContextIter:
+  def __init__(self,stream):
+    global _debug
+    if _debug:
+      print "Creating StreamWithContextIter for Stream "+repr(stream)  
+    self.stream = stream
+    self.first = 1
+
+  def __iter__(self):
+    return self
+
+  def next(self):
+    if self.first:
+      self.first = 0
+    else:
+      self.stream.next()
+    if self.stream is None or self.stream.end():
+      raise StopIteration
+    return (self.stream.current(),self.stream.context())
+
+class IteratorWithContextIter:
+  def __init__(self,iterator):
+    global _debug
+    if _debug:
+      print "Creating IteratorWithContextIter for Iterator "+repr(iterator)  
+    self.iterator = iterator
+    self.first = 1
+
+  def __iter__(self):
+    return self
+
+  def next(self):
+    if self.first:
+      self.first = 0
+    else:
+      self.iterator.next()
+    if self.iterator is None or self.iterator.end():
+      raise StopIteration
+    try:
+      return (self.iterator.current(),self.iterator.context())
+    except AttributeError:
+      return (self.iterator.current(),None)
+
+class IteratorIter:
+  def __init__(self,iterator):
+    global _debug
+    if _debug:
+      print "Creating IteratorIter for Iterator "+repr(iterator)  
+    self.iterator = iterator
+    self.first = 1
+
+  def __iter__(self):
+    return self
+
+  def next(self):
+    if self.first:
+      self.first = 0
+    else:
+      self.iterator.next()
+    if self.iterator is None or self.iterator.end():
+      raise StopIteration
+    return self.iterator.current()
+
+class StreamIter:
+  def __init__(self,stream):
+    global _debug
+    if _debug:
+      print "Creating StreamIter for Stream "+repr(stream)  
+    self.stream = stream
+    self.first = 1
+
+  def __iter__(self):
+    return self
+
+  def next(self):
+    if self.first:
+      self.first = 0
+    else:
+      self.stream.next()
+    if self.stream is None or self.stream.end():
+      raise StopIteration
+    return self.stream.current()
 
 class Stream:
   """Redland Statement Stream class
@@ -898,6 +995,14 @@ class Stream:
 
     # should the resulting statements be freed?
     self.free_statements=free_statements;
+
+  def context_iter(self):
+    """Return an iterator over this tstream that
+       returns (stream, context) tuples each time it is iterated."""
+    return StreamWithContextIter(self)
+
+  def __iter__(self):
+    return StreamIter(self)
 
   def __del__(self):
     global _debug    
@@ -1014,6 +1119,33 @@ Copy an existing Storage s1.
 # end class Storage
 
 
+class HashStorage(Storage):
+  """Redland Hashed Storage class
+
+     import RDF
+     h1=RDF.HashStorage("abc", options="hash-type='memory'")
+
+  Class of hashed Storage for a particular type of hash (typically
+  hash-type is "memory" or "bdb") and any other options.
+  """
+  def __init__(self,hash_name,options):
+    return Storage.__init__(self,name=hash_name,storage_name="hashes",options_string=options)
+
+
+class MemoryStorage(Storage):
+  """Redland memory Storage class
+
+     import RDF
+     h1=RDF.MemoryStorage()
+     h1=RDF.MemoryStorage("abc")
+     h2=RDF.MemoryStorage("abc", "write='no'")
+
+  Class of memory Storage with optional name, additional options.
+  """
+  def __init__(self,mem_name="",options_string=""):
+    return Storage.__init__(self,name=mem_name,storage_name="memory",options_string=options_string)
+
+
 class Uri:
   """Redland URI Class
 
@@ -1098,9 +1230,12 @@ class Parser:
 
   stream=parser2.parse_as_stream("file://dir/file.rdf")
   parser3.parse_into_model(model, "file://dir/file.rdf", "http://example.org/")
+
+  The default parser type if not given explicitly is raptor,
+  for the RDF/XML syntax.
   """
   
-  def __init__(self, name=None, mime_type="application/rdf+xml", uri=None):
+  def __init__(self, name="raptor", mime_type="application/rdf+xml", uri=None):
     """Create an RDF Parser (constructor).
 
 Create a new RDF Parser for a particular syntax.  The parser is
@@ -1136,6 +1271,8 @@ optional.  When any are given, they must all match.
     """"Return a Stream of Statements from parsing the content at
         (file: only at present) URI, for the optional base URI
         or None if the parsing fails."""
+    if type(uri) is str:
+        uri = Uri(string=uri)
     if base_uri==None:
         base_uri=uri
     my_stream=Redland.librdf_parser_parse_as_stream(self._parser,
@@ -1147,6 +1284,8 @@ optional.  When any are given, they must all match.
   def parse_into_model (self, model, uri, base_uri=None):
     """"Parse into the Model model from the content at
         (file: only at present) URI, for the optional base URI"""
+    if type(uri) is str:
+        uri = Uri(string=uri)
     if base_uri==None:
         base_uri=uri
     return Redland.librdf_parser_parse_into_model(self._parser,
