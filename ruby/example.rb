@@ -17,15 +17,15 @@
 # See LICENSE.html or LICENSE.txt at the top of this package for the
 # full license terms.
 # 
+#
+# USAGE: ruby example.rb file:../perl/dc.rdf repat
 # 
 #
 
 require 'Redland'
 
-#uri_string=args[0]
-#parser_name=args[1]
-uri_string="file:../perl/dc.rdf"
-parser_name="repat"
+uri_string=ARGV[0]
+parser_name=ARGV[1]
 
 
 world=Redland::librdf_new_world
