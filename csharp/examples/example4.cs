@@ -13,7 +13,7 @@ public class Test {
 		Model model = new Model (storage);
 
 		Parser parser = new Parser ("raptor", "application/rdf+xml", null);
-		Rdf.Uri uri = new Rdf.Uri ("file:dc.rdf");
+		Rdf.Uri uri = new Rdf.Uri ("file:../../data/dc.rdf");
 		parser.ParseIntoModel (uri, uri, model);
 
 		Serializer serializer = new Serializer ("rdfxml", null, null);
