@@ -1,3 +1,4 @@
+README.txt			Perl API information
 MANIFEST			This file
 Makefile.PL			The Makefile generator (via MakeMaker)
 CORE_wrap.c			Generated SWIG C file
@@ -25,5 +26,4 @@ lib/RDF/URI.pm			RDF::URI Module (OLD API)
 test.pl				Test suite
 rss-dump.pl			RSS 1.0 test program
 example.pl			Example program
-rss-dump.pl			RSS 1.0 test program
 dc.rdf				RDF/XML example source
