@@ -95,6 +95,8 @@ sub new_from_uri_string ($$) {
   my($proto,$uri_string)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
+  die "RDF::Node::new_from_uri_string - Cannot create node from empty URI\n"
+    unless $uri_string;
   $self->{NODE}=&Redland::librdf_new_node_from_uri_string($uri_string);
   return undef if !$self->{NODE};
 
@@ -167,7 +169,7 @@ sub DESTROY ($) {
 sub uri ($;$) {
   my($self,$uri)=@_;
 
-  return &Redland::librdf_node_get_uri(shift->{NODE})
+  return RDF::URI->_new_from_object(&Redland::librdf_node_get_uri(shift->{NODE}))
     unless $uri;
 
   return &Redland::librdf_node_set_uri($self->{NODE},$uri->{URI});
