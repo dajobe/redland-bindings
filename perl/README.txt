@@ -1,11 +1,15 @@
-Perl API
+Redland 0.9.11 Perl API
 
-Redland 0.9.11
+The API changed in this release.  The following script will
+automatically update perl scripts to the new module names:
 
-The API changed as follows:
+  update-perl-api.pl SCRIPT-NAMES...
+
+Details of changes:
 
  * The names of the modules moved from RDF to RDF::Redland in order
-   to distinguish Redland from any other perl RDF modules.
+   to distinguish Redland from any other perl RDF modules and allow
+   it to be installed in parallel with them.
 
  * The use of the RDF::Redland::Iterator class is discouraged -
    the methods that returned these objects now return perl lists
