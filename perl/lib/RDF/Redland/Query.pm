@@ -64,13 +64,15 @@ bind variable names to RDF::Redland::Node values.
 
 =over
 
-=item new QUERY-STRING [BASE-URI [URI [NAME]]]
+=item new QUERY-STRING [BASE-URI [QUERY-LANG-URI [QUERY-LANG]]]
 
 Create a new RDF::Redland::Query object for a query string I<QUERY-STRING>
 with optional base URI I<BASE-URI>
-IN QUERY language I<NAME> or query language URI I<URI> (can be undef).
-If I<URI> is omitted, the current directory is used as the base URI.
-If I<NAME> is undef, the default query language "rdql" is used. 
+IN QUERY language I<QUERY-LANG> or query language URI I<QUERY-LANG-URI>
+(both can be undef).
+If I<QUERY-LANG-URI> is omitted, the current directory is used as the base URI.
+If I<QUERY-LANG-NAME> is undef, the default query language "rdql" is used. 
+If I<BASE-URI> is omitted, no base URI is used.
 
 =cut
 
