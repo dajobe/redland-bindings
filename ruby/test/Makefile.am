@@ -23,22 +23,28 @@ RUBY_TEST_FILES=test_model.rb test_node.rb test_parser.rb test_rdf.rb \
 test_rdfs_resource.rb test_resource.rb test_serializer.rb \
 test_statement.rb test_store.rb test_uri.rb
 
-EXTRA_DIST=$(RUBY_TEST_FILES)
+EXTRA_DIST=$(RUBY_TEST_FILES) ical.rdf triples.rdf
+
+
+CLEANFILES=*.db out_namespace.rdf
 
 check-local: check-ruby
 
 check-ruby: $(RUBY_TEST_FILES)
-	@result=0; \
+	@result=0; fails=; \
 	$(ECHO) "Testing Ruby"; \
 	for test in $(RUBY_TEST_FILES); do \
 	  $(ECHO) $(ECHO_N) "Checking $$test $(ECHO_C)"; \
-	  $(top_builddir)/redland-src-config --run $(RUBY) -I .. -I ../lib $(srcdir)/$$test; \
+	  $(top_builddir)/redland-src-config --run $(RUBY) -I .. -I ../lib $(srcdir)/$$test >/dev/null 2>&1; \
 	  status=$$?; \
 	  if test $$status != 0 -a $$status != 2 ; then \
 	    $(ECHO) FAILED returned status $$status; result=1; \
+	    fails="$$fails $$test"; \
 	  else \
 	    $(ECHO) "ok"; \
 	  fi; \
 	done; \
+	if test $$result = 1 ; then \
+	  echo "FAILED tests:$$fails"; \
+	fi; \
 	exit $$result
-
