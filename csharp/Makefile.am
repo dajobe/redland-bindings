@@ -58,7 +58,7 @@ build-csharp: $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE)PINVOKE.dll
 
 check-csharp: test-csharp
 test-csharp: build-csharp
-	$(CSHARP) test.cs
+	$(CLRRUN) test.cs
 
 clean-csharp realclean-csharp:
 	rm -f $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE).so
