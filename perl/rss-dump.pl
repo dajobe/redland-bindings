@@ -79,6 +79,12 @@ use strict;
 use RDF;
 use RDF::RSS;
 
+my(%namespaces)=(
+  'Dublin Core' => 'http://purl.org/dc/elements/1.1/',
+  'Syndication' => 'http://purl.org/rss/1.0/modules/syndication/'
+);
+
+
 die <<"EOT" if @ARGV < 1 || @ARGV > 2;
 Usage: $0 <RSS URI> [BASE URI>]
 
@@ -124,8 +130,8 @@ die "Failed to create RDF::RSS for URI $uri\n" unless $rss;
 
 for my $channel ($rss->channels) {
   print "Found channel with URI ",$channel->uri->as_string,"\n";
-  print "  title is ",$channel->title->as_string,"\n";
-  print "  link is ",$channel->link->as_string,"\n";
+  print "  title is ",($channel->title ? $channel->title->as_string : 'MISSING'),"\n";
+  print "  link is ",($channel->link ? $channel->link->as_string : 'MISSING'),"\n";
   print "  desc is ",$channel->description->as_string,"\n" if $channel->description;
 
   my(@items)=$channel->items;
@@ -133,10 +139,29 @@ for my $channel ($rss->channels) {
 
   for my $item (@items) {
     print "  Item with URI ",$item->uri->as_string,"\n";
-    print "    title is ",$item->title->as_string,"\n";
-    print "    link is ",$item->link->as_string,"\n";
+    print "    title is ",($item->title ? $item->title->as_string : 'MISSING'),"\n";
+    print "    link is ",($item->link ? $item->link->as_string : 'MISSING'),"\n";
     # RSS 1.0 section 5.5 <item> - description is optional
     print "    desc is ",$item->description->as_string,"\n" if $item->description;
+    
+    my(@props)=$item->properties;
+    print "    All properties: ",join(' ', map {$_->uri->as_string} @props),"\n";
+
+    while(my($ns_label,$ns_prefix)=each %namespaces) {
+      my(@props)=$item->properties_with_ns_prefix($ns_prefix);
+      if(@props) {
+	print "    $ns_label properties from $ns_prefix found:\n";
+	for my $property (@props) {
+	  my $value=$item->property($property);
+	  if($value->type == $RDF::Node::Type_Resource) {
+	    print "      ",$property->uri->as_string," : URI ",$value->uri->as_string,"\n";
+	  } else {
+	    print "      ",$property->uri->as_string," : ",$value->as_string,"\n";
+	  }
+	}
+      }
+    }
+   
   }
 
   my $image=$channel->image;
@@ -144,9 +169,9 @@ for my $channel ($rss->channels) {
     print "  Image with URI ",$image->uri->as_string,"\n";
     
     # RSS 1.0 section 5.4 <image> - If present, nothing optional
-    print "    title is ",$image->title->as_string,"\n";
-    print "    link is ",$image->link->as_string,"\n";
-    print "    url is ",$image->url->as_string,"\n" if $image->url;
+    print "    title is ",($image->title ? $image->title->as_string : 'MISSING'),"\n";
+    print "    link is ",($image->link ? $image->link->as_string : 'MISSING'),"\n";
+    print "    url is ",$image->image_url->as_string,"\n" if $image->image_url;
   }
 
   my $textinput=$channel->textinput;
@@ -154,10 +179,10 @@ for my $channel ($rss->channels) {
     print "  Textinput with URI ",$textinput->uri->as_string,"\n";
 
     # RSS 1.0 section 5.6 <textinput> - If present, nothing optional
-    print "    title is ",$textinput->title->as_string,"\n";
-    print "    link is ",$textinput->link->as_string,"\n";
-    print "    desc is ",$textinput->description->as_string,"\n";
-    print "    name is ",$textinput->name->as_string,"\n";
+    print "    title is ",($textinput->title ? $textinput->title->as_string : 'MISSING'),"\n";
+    print "    link is ",($textinput->link ? $textinput->link->as_string : 'MISSING'),"\n";
+    print "    desc is ",($textinput->description ? $textinput->description->as_string : 'MISSING'),"\n";
+    print "    name is ",($textinput->name ? $textinput->name->as_string : 'MISSING'),"\n";
   }
 
 }
