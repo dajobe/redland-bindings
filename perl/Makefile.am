@@ -39,7 +39,7 @@ fake_DATA=build-perl-stamp
 
 EXTRA_DIST=README.txt \
 MANIFEST MANIFEST.SKIP Makefile.PL example.pl \
-dc.rdf rss-dump.pl update-perl-api.pl \
+dc.rdf rss-dump.pl \
 $(SWIG_OUTPUTS)
 
 SUBDIRS=lib t
