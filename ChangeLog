@@ -1,5 +1,10 @@
 2004-08-13  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* perl/lib/RDF/Redland/Query.pm (execute):
+	Wrap any return object as a perl QueryResults
+
+	* perl/README.txt: Removed.  Described 2 year old API update
+
 	* perl/Makefile.am: Remove README.txt for old api update
 
 	* perl/lib/RDF/Redland/Query.pm: doc typo
