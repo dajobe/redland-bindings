@@ -30,7 +30,7 @@ PHP_PACKAGE=redland
 SWIG_OUTPUTS=$(PHP_PACKAGE)_wrap.c php_$(PHP_PACKAGE).h
 SWIG_CRUFT=$(PHP_PACKAGE).php
 
-phpdir=`php-config --extension-dir`
+phpdir=@PHP_EXTENSION_DIR@
 php_DATA=$(PHP_PACKAGE).so
 
 EXTRA_DIST=test.php example.php php.ini \
