@@ -972,7 +972,7 @@ class Uri:
   def __init__(self, **args):
     """Create an RDF URI (constructor).
 
-Creates a new RDF Node from either of the following forms:
+Creates a new RDF URI from either of the following forms:
 
   uri1=RDF.Uri(string="http://example.com/")
 Create a URI from the given string.
