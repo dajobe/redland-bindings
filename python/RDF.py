@@ -1927,6 +1927,60 @@ class QueryResults(object):
     if self._results:
       Redland.librdf_free_query_results(self._results)
 
+  def to_file(self, name, base_uri=None):
+    """Serialize to filename name using the optional base URI."""
+    if type(base_uri) is str:
+      base_uri = Uri(string = base_uri)
+    elif type(base_uri) is unicode:
+      import Redland_python
+      base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
+    if base_uri is not None:
+      rbase_uri = base_uri._reduri
+    else:
+      rbase_uri = None
+    return Redland.librdf_query_results_to_file(self._results, name, rbase_uri)
+
+  def to_string(self, format_uri=None, base_uri=None):
+    """Serialize to a string syntax format_uri using the optional base URI."""
+    if self.is_graph():
+      tmpmodel = Model(MemoryStorage())
+      tmpmodel.add_statements(self.as_stream())
+      serializer = RDF.Serializer()
+      return serializer.serialize_model_to_string(tmpmodel, base_uri)
+
+    if self.is_boolean():
+      return str(self.get_boolean())
+
+    if not self.is_bindings():
+      raise RedlandError("Unknown query result format cannot be written as a string")
+    
+    if type(format_uri) is str:
+      format_uri = Uri(string = format_uri)
+    elif type(format_uri) is unicode:
+      import Redland_python
+      format_uri = Uri(string=Redland_python.unicode_to_bytes(format_uri))
+    else:
+      format_uri = Uri(string="http://www.w3.org/TR/2004/WD-rdf-sparql-XMLres-20041221/")
+    if format_uri is not None:
+      rformat_uri = format_uri._reduri
+    else:
+      rformat_uri = None
+    if type(base_uri) is str:
+      base_uri = Uri(string = base_uri)
+    elif type(base_uri) is unicode:
+      import Redland_python
+      base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
+    if base_uri is not None:
+      rbase_uri = base_uri._reduri
+    else:
+      rbase_uri = None
+      return Redland.librdf_query_results_to_string(self._results,
+                                                    rformat_uri, rbase_uri)
+
+  def __str__(self):
+    """Serialize to string syntax format."""
+    return self.to_string()
+
 
 # end class QueryResults
 
@@ -1991,6 +2045,19 @@ class Serializer(object):
       rbase_uri = None
     return Redland.librdf_serializer_serialize_model_to_file(self._serializer,
       name, rbase_uri, model._model)
+
+  def serialize_model_to_string(self, model, base_uri=None):
+    """Serialize to a string using the optional base URI."""
+    if type(base_uri) is str:
+      base_uri = Uri(string = base_uri)
+    elif type(base_uri) is unicode:
+      import Redland_python
+      base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
+    if base_uri is not None:
+      rbase_uri = base_uri._reduri
+    else:
+      rbase_uri = None
+    return Redland.librdf_serializer_serialize_model_to_string(self._serializer, rbase_uri, model._model)
 
   # TODO: features could usefully be implemented as a collection
 
