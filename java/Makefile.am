@@ -93,19 +93,19 @@ skeleton.class: skeleton.java $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).j
 test-java: test1 test2
 
 test1: test1.class compiled-java-classes
-	env LD_LIBRARY_PATH=. $(JAVA) test1
+	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) test1
 
 test1.class: test1.java compiled-java-classes
 	env CLASSPATH=$(CLASSPATH) $(JAVAC) test1.java
 
 test2: test2.class compiled-java-classes
-	env LD_LIBRARY_PATH=. $(JAVA) test2
+	env LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) test2
 
 test2.class: test2.java compiled-java-classes
 	env CLASSPATH=$(CLASSPATH) $(JAVAC) test2.java
 
 example: example.class compiled-java-classes
-	env CLASSPATH=$(CLASSPATH) LD_LIBRARY_PATH=. $(JAVA) example
+	env CLASSPATH=$(CLASSPATH) LD_LIBRARY_PATH=.:$$LD_LIBRARY_PATH $(JAVA) example
 
 example.class: example.java compiled-java-classes
 	$(JAVAC) -classpath . example.java
