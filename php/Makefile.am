@@ -37,13 +37,18 @@ $(SWIG_OUTPUTS)
 
 CLEANFILES=dmalloc.log *.db test-out.rdf \
 $(PHP_PACKAGE)_wrap.so $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
-$(PHP_PACKAGE).so $(PHP_PACKAGE).bundle
+$(PHP_PACKAGE).so $(PHP_PACKAGE).bundle $(PHP_PACKAGE)_wrap.c.orig 
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(PHP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -php4 -noproxy -module $(PHP_PACKAGE) -o $@ $<
 	patch $(PHP_PACKAGE)_wrap.c < redland_wrap.c.patch
-	rm -f $(PHP_PACKAGE)_wrap.c.orig $(PHP_PACKAGE).php
+	rm -f $(PHP_PACKAGE).php
+
+if MAINTAINER_MODE
+$(PHP_PACKAGE)_wrap.c.patch: $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.orig 
+	-diff -u $(PHP_PACKAGE)_wrap.c.orig $(PHP_PACKAGE)_wrap.c > $@
+endif
 
 # -UHAVE_CONFIG_H to stop PHP trying to include config.h which
 # quite often just doesn't exist
