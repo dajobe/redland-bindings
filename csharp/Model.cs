@@ -206,5 +206,47 @@ namespace Redland {
 		{
 			librdf_model_sync (model);
 		}
+
+		[DllImport ("librdf")]
+		static extern IntPtr librdf_model_get_contexts (IntPtr model);
+
+		public Iterator GetContexts ()
+		{
+			IntPtr raw_ret = librdf_model_get_contexts (model);
+			Iterator it = new Iterator (raw_ret);
+			return it;
+		}
+
+		[DllImport ("librdf")]
+		static extern IntPtr librdf_model_get_feature (IntPtr model, IntPtr uri);
+
+		public Node GetFeature (Uri uri)
+		{
+			IntPtr raw_ret = librdf_model_get_feature (model, uri.Handle);
+			Node r = null;
+			if (raw_ret != IntPtr.Zero)
+				r = new Node (raw_ret);
+			else
+				throw new Exception ("Model.GetFeature failed");
+			return r;
+		}
+
+		[DllImport ("librdf")]
+		static extern void librdf_model_set_feature (IntPtr model, IntPtr uri, IntPtr value);
+
+		public void SetFeature (Uri uri, Node value)
+		{
+			librdf_model_set_feature (model, uri.Handle, value.Handle);
+		}
+
+		[DllImport ("librdf")]
+		static extern void librdf_model_load (IntPtr model, IntPtr uri, IntPtr mime_type, IntPtr type_uri);
+
+		public void Load (Uri uri, String mime_type, Uri type_uri)
+		{
+			IntPtr imime = Marshal.StringToHGlobalAuto (mime_type.ToString());
+			librdf_model_load (model, uri.Handle, imime, type_uri.Handle);
+                        Marshal.FreeHGlobal (imime);
+		}
 	}
 }
