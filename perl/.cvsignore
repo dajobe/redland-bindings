@@ -1,6 +1,9 @@
 Makefile
+Makefile.in
+Makefile.perl
 Redland.bs
-Redland_wrap.c
+Redland.pm
+Redland_wrap*
 blib
 pm_to_blib
 test*db
