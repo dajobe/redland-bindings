@@ -47,8 +47,8 @@ SUFFIXES=.cs .dll .exe
 .cs.exe:
 	$(CSHARP_LINK) 
 
-NUNIT_CONSOLE = nunit-console.exe
-NUNIT_FLAGS = /t:library /r:NUnit.Framework.dll 
+NUNIT_CONSOLE = /usr/share/dotnet/bin/nunit-console.exe
+NUNIT_FLAGS = /t:library /r:nunit.framework.dll /r:../Redland.dll 
 
 
 check-local: $(CSHARP_TESTS) 
@@ -71,9 +71,9 @@ example1.exe: example1.cs ../Redland.dll
 	$(CSHARP_LINK) example1.cs /r:../Redland.dll /out:$@
 
 
-unittests: $(NUNIT_CONSOLE)
+unittests: $(NUNIT_TESTS)
 	@MONO_PATH=..; export MONO_PATH; \
-	$(ECHO) Running $(NUNIT_CONSOLE) $(NUNIT_TESTS)
+	$(ECHO) Running $(NUNIT_CONSOLE) $(NUNIT_TESTS); \
 	$(top_builddir)/redland-src-config --run $(CLIRUN) $(NUNIT_CONSOLE) $(NUNIT_TESTS)
 
 ModelGeneralTest.dll: ModelGeneralTest.cs
