@@ -110,9 +110,9 @@ $(JAVA_JAR): $(JAVA_CLASS_FILES)
 	jar cf $@ $(JAVA_CLASS_FILES)
 
 
-TESTS=test1 test2
+check-local: test-java
 
-test-java: check
+test-java: test1 test2
 
 test1: test1.class $(JAVA_JAR)
 	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH $(JAVA) test1
