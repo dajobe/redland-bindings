@@ -26,30 +26,65 @@ import org.librdf.redland.core;
 import org.librdf.redland.World;
 import org.librdf.redland.URI;
 
+/** Node is an interface to the Redland librdf_node class
+ *
+ * <p>An <code>Node</code> is a class that represents nodes (resource,
+ * literal, blank node) and arcs (properties, predicates) in the graph.</p>
+ *
+ * @version Revision='$Revision$' Date='$Date$'
+ */
+
 public class Node
 {
   private long object;
   private World world;
   private boolean dont_free_me=false;
   
-  public Node(World world) 
+  /**
+   * Construct a new resource node
+   *
+   * @param world       Redland world object
+   */
+  public Node(World world)
     {
       this.world=world;
       this.object=core.librdf_new_node(world.__get_object());
     }
 
-  public Node(World world, String uri_string) 
+  /**
+   * Construct a new resource node from a URI string or blank node identifier
+   *
+   * @param world       Redland world object
+   * @param identifier  The URI string / identifier or null
+   * @param is_blank    boolean to distinguish the two cases
+   */
+  public Node(World world, String identifier, boolean is_blank) 
     {
       this.world=world;
-      this.object=core.librdf_new_node_from_uri_string(world.__get_object(), uri_string);
+      if(is_blank)
+        this.object=core.librdf_new_node_from_blank_identifier(world.__get_object(), identifier);
+      else
+        this.object=core.librdf_new_node_from_uri_string(world.__get_object(), identifier);
     }
 
+  /**
+   * Construct a new resource node from a URI
+   *
+   * @param world       Redland world object
+   * @param uri         The Redland URI object or null
+   */
   public Node(World world, URI uri)
     {
       this.world=world;
       this.object=core.librdf_new_node_from_uri(world.__get_object(), uri.__get_object());
     }
 
+  /**
+   * Construct a new literal node, optionally from a URI
+   *
+   * @param world       Redland world object
+   * @param uri         The Redland URI object or null
+   */
   public Node(World world, String literal_string, String xml_language,
        int xml_space, boolean is_wf_xml)
     {
@@ -58,6 +93,12 @@ public class Node
       this.object=core.librdf_new_node_from_literal(world.__get_object(), literal_string, xml_language, xml_space, is_wf_xml_int);
     }
 
+  /**
+   * Construct a new node from an existing node (copy constructor)
+   *
+   * @param world       Redland world object
+   * @param old_node    The Redland Node object
+   */
   public Node(Node old_node)
     {
       this.world=old_node.world;
