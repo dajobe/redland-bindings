@@ -30,6 +30,8 @@ PHP_PACKAGE=redland
 SWIG_OUTPUTS=$(PHP_PACKAGE)_wrap.c php_$(PHP_PACKAGE).h
 SWIG_CRUFT=$(PHP_PACKAGE).php
 
+phpdir= $(shell php-config --extension-dir)
+php_DATA=$(PHP_PACKAGE).so
 
 EXTRA_DIST=test.php example.php php.ini \
 $(SWIG_OUTPUTS)
@@ -42,25 +44,15 @@ $(PHP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	rm -f $(PHP_PACKAGE).php
 
 $(PHP_PACKAGE)_wrap.lo: $(PHP_PACKAGE)_wrap.c
-	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf -prefer-pic -c $(INCLUDES)  $<
+	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf `php-config --includes` -prefer-pic -c $(INCLUDES)  $<
 
-$(PHP_PACKAGE).so: $(PHP_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la $(top_builddir)/raptor/libraptor.la
-	$(LIBTOOL) --mode=link $(CC) -shared $(PHP_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la $(top_builddir)/raptor/libraptor.la -o $@
+$(PHP_PACKAGE).so: $(PHP_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la
+	$(LIBTOOL) --mode=link $(CC) $(PHP_PACKAGE)_wrap.lo `php-config --ldflags` `php-config --libs` $(top_builddir)/librdf/librdf.la -o $@
 
-build-php: $(PHP_PACKAGE).so 
+check-local: test-php
 
-check-php: test-php
-test-php: build-php
+test-php: $(PHP_PACKAGE).so
 	$(PHP) -c . test.php
 
-clean-php realclean-php:
+clean-local realclean-local:
 	rm -f $(PHP_PACKAGE).so
-
-install-php: $(PHP_PACKAGE).so build-php
-	phpdir=`php-config --extension-dir`; \
-	$(LIBTOOL) --mode=install $(INSTALL) $(PHP_PACKAGE).so $$phpdir
-
-dist-php:
-	@echo make php dist somehow
-
-clean-local: clean-php
