@@ -37,17 +37,9 @@ my $includes="-I$TOP_SRCDIR/librdf";
 my $version=$ENV{VERSION};
 
 if(!$version) {
-  my $conf_in_file="$TOP_SRCDIR/configure.in";
-  open(CONF, $conf_in_file) or die "Cannot open $conf_in_file for version - $!\n";
-  my $v;
-  while(<CONF>) {
-    if(/LIBRDF_VERSION_(MAJOR|MINOR|RELEASE)=(\d+)$/) {
-      $v{$1}=$2;
-    }
-  }
-  close(CONF);
-  $version=join(".",$v{MAJOR}, $v{MINOR}, $v{RELEASE});
-  die "Cannot find AM_INIT_AUTOMAKE in $conf_in_file for version\n"
+  $version=`$TOP_SRCDIR/redland-src-config --version`;
+  chomp $version;
+  die "Cannot find Redland version via redland-src-config\n"
     unless $version;
 }
 
