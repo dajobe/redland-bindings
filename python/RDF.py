@@ -19,7 +19,7 @@
 # 
 #
 
-__version__ = "0.2"
+__version__ = "0.3"
 
 __debug__ = 0
 
@@ -68,7 +68,7 @@ class world:
 class node:
 
   # CONSTRUCTOR
-  def __init__(self, args={}):
+  def __init__(self, **args):
     """Create an RDF Node (constructor)."""
     if __debug__:
       print "Creating RDF.node args=",args
@@ -162,7 +162,7 @@ class node:
 class statement:
 
   # CONSTRUCTOR
-  def __init__(self, args={}):
+  def __init__(self, **args):
     """Create an RDF Statement (constructor)."""
     if __debug__:
       print "Creating RDF.statement object args",args
@@ -257,7 +257,7 @@ class statement:
 class model:
 
   # CONSTRUCTOR
-  def __init__(self, storage, args={}):
+  def __init__(self, storage, **args):
     """Create an RDF Model (constructor)."""
     if __debug__:
       print "Creating RDF.model args=",args
@@ -298,7 +298,7 @@ class model:
     return Redland.librdf_model_add_string_literal_statement(self.model, subject.node, predicate.node, string, xml_language, xml_space, is_wf_xml)
 
   def add_statement (self,statement):
-    Redland.librdf_model_add_statement(self.model,statement.statement)
+    Redland.librdf_model_add_statement(self.model, statement.statement)
 
   def add_statements (self,statement_stream):
     return Redland.librdf_model_add_statements(self.model, statement_stream.stream)
@@ -337,21 +337,21 @@ class model:
     if not my_node:
       return None
     else:
-      return node({"from_object" : my_node, "free_node" : 1})
+      return node(from_object=my_node, free_node=1)
 
   def get_arc (self,source,target):
     my_node=Redland.librdf_model_get_arc(self.model, source.node, target.node)
     if not my_node:
       return None
     else:
-      return node({"from_object" : my_node, "free_node" : 1})
+      return node(from_object=my_node, free_node=1)
 
   def get_target (self,source,arc):
     my_node=Redland.librdf_model_get_target(self.model, source.node, arc.node)
     if not my_node:
       return None
     else:
-      return node({"from_object" : my_node, "free_node" : 1})
+      return node(from_object=my_node, free_node=1)
 
 #end class model
 
@@ -378,7 +378,7 @@ class iterator:
     return Redland.librdf_iterator_end(self.iterator)
 
   def have_elements (self):
-    print "RDF.iterator method have_elements is deprecated, please use !iterator.end instead"
+    print "RDF.iterator method have_elements is deprecated, please use !iterator.end instead"
     return Redland.librdf_iterator_have_elements(self.iterator)
 
   def next (self):
@@ -388,7 +388,7 @@ class iterator:
     # return a new (1) node (2)owned by the librdf iterator object
     # Reasons: (1) at the user API level the iterator only returns nodes
     #          (2) the node returned is shared with the iterator
-    return node({"from_object" : my_node})
+    return node(from_object=my_node)
 
 #end class iterator
 
@@ -426,7 +426,7 @@ class stream:
     my_statement=Redland.librdf_stream_next(self.stream)
     if my_statement == "NULL":
       return None
-    return statement({"from_object" : my_statement, "free_statements" : self.free_statements})
+    return statement(from_object=my_statement, free_statements=self.free_statements)
 
 # end class stream
 
@@ -434,7 +434,7 @@ class stream:
 class storage:
 
   # CONSTRUCTOR
-  def __init__(self, args):
+  def __init__(self, **args):
     """Create an RDF Storage (constructor)."""
     if __debug__:
       print "Creating RDF.storage args=",args
@@ -465,26 +465,28 @@ class storage:
 class uri:
 
   # CONSTRUCTOR
-  def __init__(self, args):
-    """Create an RDF Uri (constructor)."""
+  def __init__(self, **args):
+    """Create an RDF URI (constructor)."""
     if __debug__:
       print "Creating RDF.uri args=",args
     self.uri=None
 
     if args.has_key('string'):
-     self.uri=Redland.librdf_new_uri(__world__.world, string)
+     self.uri=Redland.librdf_new_uri(__world__.world, args['string'])
     elif args.has_key('uri'):
       # FIXME: If the URI is a python URI ... need to use the above constructor
       # if isa(uri, <python uri object>):
       #   self.uri=Redland.librdf_new_uri(__world__.world, uri.as_string)
-      self.uri=Redland.librdf_new_uri_from_uri(uri.uri)
+      self.uri=Redland.librdf_new_uri_from_uri(args['uri'].uri)
 
   # DESTRUCTOR
   def __del__(self):
     if __debug__:
       print "Destroying RDF.uri"
     if self.uri:
-      Redland.librdf_free_uri(self.model)
+      if __debug__:
+        print "Deleting Redland uri object"
+      Redland.librdf_free_uri(self.uri)
 
   def __str__(self):
     """Get a string representation of an RDF URI."""
@@ -500,7 +502,7 @@ class uri:
 class parser:
 
   # CONSTRUCTOR
-  def __init__(self, name, mime_type=None, uri=None):
+  def __init__(self, name, mime_type="", uri=None):
     """Create an RDF Parser (constructor)."""
     if __debug__:
       print "Creating RDF.parser name=",name,"mime_type=",mime_type,"uri=",uri
@@ -508,7 +510,7 @@ class parser:
     if uri:
       uri=uri.uri
   
-    self.parser=Redland.librdf_new_parser(__world__.world, name,mime_type,uri)
+    self.parser=Redland.librdf_new_parser(__world__.world, name, mime_type, uri)
 
   # DESTRUCTOR
   def __del__(self):
@@ -526,7 +528,7 @@ class parser:
 
   def feature (self,uri,value=None):
     # FIXME: if uri not <an RDF.uri object>:
-    #  uri=uri({'string'} : uri_string})  
+    #uri=RDF.uri(string=uri)  
 
     if not value:
       return Redland.librdf_parser_get_feature(self.parser,uri.uri)
