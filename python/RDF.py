@@ -957,6 +957,10 @@ Create a model using an in-memory storage.
     else:
       return Node(from_object=my_node, do_not_copy=1)
 
+  def sync(self):
+    """Synchronise the Model with the underlying Storage."""
+    Redland.librdf_model_sync(self._model)
+
 # end class Model
 
 
