@@ -41,7 +41,7 @@ $(PERL_MAKEFILE).old
 fakedir=$(prefix)
 fake_DATA=build-perl-stamp
 
-EXTRA_DIST=README.txt \
+EXTRA_DIST= \
 MANIFEST MANIFEST.SKIP Makefile.PL example.pl \
 rss-dump.pl \
 redland-pre.i redland-post.i redland-decl.i $(SWIG_OUTPUTS)
