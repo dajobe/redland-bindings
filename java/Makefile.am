@@ -115,19 +115,19 @@ check-local: test-java
 test-java: test1 test2
 
 test1: test1.class $(JAVA_JAR)
-	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH $(JAVA) test1
+	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH DYLD_LIBRARY_PATH=.libs:$$DYLD_LIBRARY_PATH $(JAVA) test1
 
 test1.class: test1.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH) test1.java
 
 test2: test2.class $(JAVA_JAR)
-	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) test2
+	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH DYLD_LIBRARY_PATH=.libs:$$DYLD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) test2
 
 test2.class: test2.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH) test2.java
 
 example: example.class $(JAVA_JAR)
-	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) example
+	env LD_LIBRARY_PATH=.libs:$$LD_LIBRARY_PATH DYLD_LIBRARY_PATH=.libs:$$DYLD_LIBRARY_PATH $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) example
 
 example.class: example.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH):$(JAVA_JAR) example.java
