@@ -16,48 +16,45 @@ namespace Redland {
 
 	public class Uri : IWrapper, IDisposable {
 
-		IntPtr uri = IntPtr.Zero;
+		private HandleRef handle;
 
-		bool disposed = false;
+		private bool disposed = false;
+		private World world = Redland.World.AddReference ();
 
-		public IntPtr Handle {
-			get { return uri; }
+		public HandleRef Handle {
+			get { return handle; }
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_uri (IntPtr world, IntPtr uri_str);
+		static extern IntPtr librdf_new_uri (HandleRef world, IntPtr uri_str);
 
-		private Uri (World world, string uri_str)
+		public Uri (string uri_str)
 		{
 			IntPtr iuri_str = Util.StringToHGlobalUTF8 (uri_str);
-			uri = librdf_new_uri (world.Handle, iuri_str);
+			IntPtr uri = librdf_new_uri (world.Handle, iuri_str);
+			handle = new HandleRef (this, uri);
 			Marshal.FreeHGlobal (iuri_str);
 			// Console.WriteLine ("Making URI from string {0} giving handle {1}", uri_str, uri);
 		}
-
-		public Uri (string uri)
-			: this (Redland.World, uri)
-		{
-		}
-
 
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_new_uri_from_uri (IntPtr uri);
 	
 		internal Uri (IntPtr iuri)
 		{
-			uri = librdf_new_uri_from_uri (iuri);
+			IntPtr uri = librdf_new_uri_from_uri (iuri);
+			handle = new HandleRef (this, uri);
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_uri_equals (IntPtr first_uri, IntPtr second_uri);
+		static extern int librdf_uri_equals (HandleRef first_uri, HandleRef second_uri);
 		
 		public override bool Equals (object o)
 		{
 			if (o == null)
  				return false;
 
-			int i = librdf_uri_equals (uri, ((Uri) o).Handle);
+			int i = librdf_uri_equals (handle, ((Uri) o).Handle);
 			if (i == 0)
 				return false;
 			else
@@ -88,7 +85,7 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern void librdf_free_uri (IntPtr uri);
+		static extern void librdf_free_uri (HandleRef uri);
 
 		protected void Dispose (bool disposing)
 		{
@@ -96,10 +93,12 @@ namespace Redland {
 				// if disposing is true then dispose
 				// of managed resources
 
-				if (uri != IntPtr.Zero) {
-					librdf_free_uri (uri);
-					uri = IntPtr.Zero;
+				if (handle.Handle != IntPtr.Zero) {
+					librdf_free_uri (handle);
+					handle = new HandleRef (this, IntPtr.Zero);
 				}
+				world.RemoveReference ();
+				world = null;
 				disposed = true;
 			}
 		}
@@ -121,11 +120,11 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_uri_to_string (IntPtr uri);
+		static extern IntPtr librdf_uri_to_string (HandleRef uri);
 
 		public override string ToString ()
 		{
-			IntPtr istr = librdf_uri_to_string (uri);
+			IntPtr istr = librdf_uri_to_string (handle);
 			return Util.UTF8PtrToString (istr);
 		}
 	}

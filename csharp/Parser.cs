@@ -20,48 +20,45 @@ namespace Redland {
 
 	public class Parser : IWrapper, IDisposable {
 
-		IntPtr parser = IntPtr.Zero;
+		private HandleRef handle;
 
-		bool disposed = false;
+		private bool disposed = false;
+		private World world = Redland.World.AddReference ();
 
-		public IntPtr Handle {
-			get { return parser; }
+		public HandleRef Handle {
+			get { return handle; }
 		}
 
 		public Parser ()
-			: this (Redland.World, "rdfxml", "application/rdf+xml", new Uri ("http://www.w3.org/TR/rdf-testcases/#ntriples"))
+			: this ("rdfxml", "application/rdf+xml", new Uri ("http://www.w3.org/TR/rdf-testcases/#ntriples"))
 		{
 		}
 
 		public Parser (string name)
-			: this (Redland.World, name, "application/rdf+xml", new Uri ("http://www.w3.org/TR/rdf-testcases/#ntriples"))
-		{
-		}
-
-		public Parser (string name, string mime_type, Uri uri)
-			: this (Redland.World, name, mime_type, uri)
+			: this (name, "application/rdf+xml", new Uri ("http://www.w3.org/TR/rdf-testcases/#ntriples"))
 		{
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_parser (IntPtr world, IntPtr name, IntPtr mime_type, IntPtr uri);
+		static extern IntPtr librdf_new_parser (HandleRef world, IntPtr name, IntPtr mime_type, IntPtr uri);
 
-		private Parser (World  world, string name, string mime_type, Uri uri)
+		public Parser (string name, string mime_type, Uri uri)
 		{
 			IntPtr iname = Util.StringToHGlobalUTF8 (name);
 			IntPtr imime_type = Util.StringToHGlobalUTF8 (mime_type);
+			IntPtr parser;
 			if (uri == (Uri) null)
 				parser = librdf_new_parser (world.Handle, iname, imime_type, IntPtr.Zero);
 			else
-				parser = librdf_new_parser (world.Handle, iname, imime_type, uri.Handle);
-
+				parser = librdf_new_parser (world.Handle, iname, imime_type, uri.Handle.Handle);
+			handle = new HandleRef (this, parser);
 			Marshal.FreeHGlobal (iname);
 			Marshal.FreeHGlobal (imime_type);
 		}
 
 
 		[DllImport ("librdf")]
-		static extern void librdf_free_parser (IntPtr parser);
+		static extern void librdf_free_parser (HandleRef parser);
 
 		protected void Dispose (bool disposing)
 		{
@@ -69,11 +66,12 @@ namespace Redland {
 				// if disposing is true, then dispose of
 				// managed resources
 
-				if (parser != IntPtr.Zero) {
-					librdf_free_parser (parser);
-					parser = IntPtr.Zero;
+				if (handle.Handle != IntPtr.Zero) {
+					librdf_free_parser (handle);
+					handle = new HandleRef (this, IntPtr.Zero);
 				}
-
+				world.RemoveReference ();
+				world = null;
 				disposed = true;
 			}
 		}
@@ -91,30 +89,30 @@ namespace Redland {
 
 
 		[DllImport ("librdf")]
-		static extern int librdf_parser_parse_string_into_model (IntPtr parser, IntPtr s, IntPtr base_uri, IntPtr model);
+		static extern int librdf_parser_parse_string_into_model (HandleRef parser, IntPtr s, HandleRef base_uri, HandleRef model);
 
 		public int ParseStringIntoModel (string s, Uri base_uri, Model model)
 		{
 			IntPtr istr = Util.StringToHGlobalUTF8 (s);
-			Redland.World.Enter ();
-			int rc = librdf_parser_parse_string_into_model (Handle, istr, base_uri.Handle, model.Handle);
+			world.Enter ();
+			int rc = librdf_parser_parse_string_into_model (handle, istr, base_uri.Handle, model.Handle);
 			Marshal.FreeHGlobal (istr);
-			LogMessage [] errs = Redland.World.Messages;
-			Redland.World.Exit ();
+			LogMessage [] errs = world.Messages;
+			world.Exit ();
 			if (errs.Length > 0)
 				throw new ParseError ("Parsing error", errs);
 			return rc;
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_parser_parse_into_model (IntPtr parser, IntPtr uri, IntPtr base_uri, IntPtr model);
+		static extern int librdf_parser_parse_into_model (HandleRef parser, HandleRef uri, HandleRef base_uri, HandleRef model);
 
 		public int ParseIntoModel (Uri uri, Uri base_uri, Model model)
 		{
-			Redland.World.Enter ();
-			int rc = librdf_parser_parse_into_model (parser, uri.Handle, base_uri.Handle, model.Handle);
-			LogMessage [] errs = Redland.World.Messages;
-			Redland.World.Exit ();
+			world.Enter ();
+			int rc = librdf_parser_parse_into_model (handle, uri.Handle, base_uri.Handle, model.Handle);
+			LogMessage [] errs = world.Messages;
+			world.Exit ();
 			if (errs.Length > 0)
 				throw new ParseError ("Parsing error", errs);
 			// FIXME: can we remove rc now we throw exceptions?
@@ -127,16 +125,16 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_parser_parse_as_stream (IntPtr parser, IntPtr uri, IntPtr base_uri);
+		static extern IntPtr librdf_parser_parse_as_stream (HandleRef parser, HandleRef uri, IntPtr base_uri);
 
 		public Stream ParseAsStream (string uri)
 		{
 			Uri tmp_uri = new Redland.Uri (uri);
-			Redland.World.Enter ();
-			IntPtr raw_stream = librdf_parser_parse_as_stream (parser, tmp_uri.Handle, IntPtr.Zero);
+			world.Enter ();
+			IntPtr raw_stream = librdf_parser_parse_as_stream (handle, tmp_uri.Handle, IntPtr.Zero);
 			// FIXME: throw exception if raw_stream is zero ?
-			LogMessage [] errs = Redland.World.Messages;
-			Redland.World.Exit ();
+			LogMessage [] errs = world.Messages;
+			world.Exit ();
 			if (errs.Length > 0)
 				throw new ParseError ("Parsing error", errs);
 			Stream stream = new Stream (raw_stream);
@@ -144,30 +142,29 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_parser_parse_string_as_stream (IntPtr parser, IntPtr s, IntPtr base_uri);
+		static extern IntPtr librdf_parser_parse_string_as_stream (HandleRef parser, IntPtr s, HandleRef base_uri);
 
 		public Stream ParseStringAsStream (string s, Uri base_uri)
 		{
 			// Console.WriteLine ("Parsing string '{0}' URI {1}", s, base_uri.ToString());
 
 			IntPtr istr = Util.StringToHGlobalUTF8 (s);
-			Redland.World.Enter ();
-			IntPtr raw_ret = librdf_parser_parse_string_as_stream (parser, istr, base_uri.Handle);
+
+			world.Enter ();
+			IntPtr raw_ret = librdf_parser_parse_string_as_stream (handle, istr, base_uri.Handle);
 			// FIXME: throw exception if raw_ret is zero ? currently
 			// we return null, see below.
-			Stream stream;
 			Marshal.FreeHGlobal (istr);
-			LogMessage [] errs = Redland.World.Messages;
-			Redland.World.Exit ();
+			LogMessage [] errs = world.Messages;
+			world.Exit ();
 
 			if (errs.Length > 0)
 				throw new ParseError ("Parsing error", errs);
 
 			if (raw_ret == IntPtr.Zero)
 				return null;
-			else
-				stream = new Stream (raw_ret);
-			return stream;
+
+			return new Stream (raw_ret);
 		}
 	}
 }

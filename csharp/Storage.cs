@@ -15,36 +15,33 @@ using System.Runtime.InteropServices;
 namespace Redland {
 
 	public class Storage : IWrapper, IDisposable {
+		
+		private HandleRef handle;
 
-		IntPtr storage = IntPtr.Zero;
+		private bool disposed = false;
+		private World world = Redland.World.AddReference ();
 
-		bool disposed = false;
-
-		public IntPtr Handle {
-			get { return storage; }
+		public HandleRef Handle {
+			get { return handle; }
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_storage (IntPtr world, IntPtr storage_name, IntPtr name, IntPtr options);
+		static extern IntPtr librdf_new_storage (HandleRef world, IntPtr storage_name, IntPtr name, IntPtr options);
 
-		private Storage (World world, string storage_name, string name, string options)
+		public Storage (string storage_name, string name, string options)
 		{
 			IntPtr istorage_name = Util.StringToHGlobalUTF8 (storage_name);
 			IntPtr iname = Util.StringToHGlobalUTF8 (name);
 			IntPtr ioptions = Util.StringToHGlobalUTF8 (options);
-			storage = librdf_new_storage (world.Handle, istorage_name, iname, ioptions);
+			IntPtr storage = librdf_new_storage (world.Handle, istorage_name, iname, ioptions);
+			handle = new HandleRef (this, storage);
 			Marshal.FreeHGlobal (istorage_name);
 			Marshal.FreeHGlobal (iname);
 			Marshal.FreeHGlobal (ioptions);
 		}
 
-		public Storage (string storage_name, string name, string options)
-			: this (Redland.World, storage_name, name, options)
-		{
-		}
-
 		[DllImport ("librdf")]
-		static extern void librdf_free_storage (IntPtr storage);
+		static extern void librdf_free_storage (HandleRef storage);
 
 		protected void Dispose (bool disposing)
 		{
@@ -52,11 +49,12 @@ namespace Redland {
 				// if disposing is true, then dispose of
 				// managed resources
 
-				if (storage != IntPtr.Zero) {
-					librdf_free_storage (storage);
-					storage = IntPtr.Zero;
+				if (handle.Handle != IntPtr.Zero) {
+					librdf_free_storage (handle);
+					handle = new HandleRef (this, IntPtr.Zero);
 				}
-
+				world.RemoveReference ();
+				world = null;
 				disposed = true;
 			}
 		}

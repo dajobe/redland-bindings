@@ -21,21 +21,22 @@ namespace Redland {
 
 	public class Stream : IWrapper, IEnumerator, IEnumerable, IDisposable {
 
-		IntPtr stream = IntPtr.Zero;
+		private HandleRef handle;
 
-		bool disposed = false;
-		bool started = false;
+		private bool disposed = false;
+		private bool started = false;
+		private Redland.World world = Redland.World.AddReference ();
 
-		public IntPtr Handle {
-			get { return stream; }
+		public HandleRef Handle {
+			get { return handle; }
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_stream_get_object (IntPtr stream);
+		static extern IntPtr librdf_stream_get_object (HandleRef stream);
 
 		public object Current {
 			get {
-				IntPtr raw_ret = librdf_stream_get_object (stream);
+				IntPtr raw_ret = librdf_stream_get_object (handle);
 				// FIXME: throw exception if raw_ret is zero
 				return new Statement (raw_ret);
 			}
@@ -48,15 +49,15 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_stream_next (IntPtr stream);
+		static extern int librdf_stream_next (HandleRef stream);
 
 		public bool MoveNext ()
 		{
 			if (started) {
-				return (librdf_stream_next (stream) == 0);
+				return (librdf_stream_next (handle) == 0);
 			} else {
 				started = true;
-				IntPtr cur = librdf_stream_get_object (stream);
+				IntPtr cur = librdf_stream_get_object (handle);
 				return (cur != IntPtr.Zero);
 			}
 		}
@@ -66,32 +67,25 @@ namespace Redland {
 			throw new NotSupportedException ("The invoked method is not supported");
 		}
 
-		[DllImport ("librdf")]
-		static extern int librdf_stream_end (IntPtr stream);
-
-		public bool End {
-			get {
-				return (librdf_stream_end (stream) != 0);
-			}
-		}
-
 		internal Stream (IntPtr raw)
 		{
-			stream = raw;
+			handle = new HandleRef (this, raw);
 		}
 
 		[DllImport ("librdf")]
-		static extern void librdf_free_stream (IntPtr stream);
+		static extern void librdf_free_stream (HandleRef stream);
 
 		protected void Dispose (bool disposing)
 		{
 			if (! disposed) {
 				// if disposing true, dispose managed resources
 
-				if (stream != IntPtr.Zero) {
-					librdf_free_stream (stream);
-					stream = IntPtr.Zero;
+				if (handle.Handle != IntPtr.Zero) {
+					librdf_free_stream (handle);
+					handle = new HandleRef (this, IntPtr.Zero);
 				}
+				world.RemoveReference ();
+				world = null;
 				disposed = true;
 			}
 		}

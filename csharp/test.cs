@@ -30,8 +30,8 @@ public class Test {
 		parser.ParseStringIntoModel (rdfxml_content, uri, model);
 
 		Node subject, predicate, obj;
-		subject = new Node (new Redland.Uri("http://purl.org/net/dajobe/"));
-		predicate = new Node (new Redland.Uri("http://purl.org/dc/elements/1.1/title"));
+		subject = new Node (new Redland.Uri ("http://purl.org/net/dajobe/"));
+		predicate = new Node (new Redland.Uri ("http://purl.org/dc/elements/1.1/title"));
 		obj = new Node ("My Home Page");
 
 		Statement stm = new Statement (subject, predicate, obj);
@@ -56,17 +56,13 @@ public class Test {
 			Console.WriteLine (target.ToString ());
 		}
 
-		Query query = new Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>");
-		Console.Write ("Querying for dc:titles:");
-		QueryResults qr = model.Execute (query);
-		while (! qr.End) {
-			Hashtable result = (Hashtable) qr.Current;
-			Console.WriteLine("Result:");
-			
-			IDictionaryEnumerator enumerator = result.GetEnumerator ();
-			while (enumerator.MoveNext ())
-				Console.WriteLine("  {0} = {1}", enumerator.Key, enumerator.Value);
-			qr.MoveNext();
+		using (Query query = new Query ("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")) {
+			Console.WriteLine ("Querying for dc:titles:");
+			foreach (Hashtable result in model.Execute (query)) {
+				Console.WriteLine("Result:");
+				foreach (DictionaryEntry entry in result)
+					Console.WriteLine (" {0} = {1}", entry.Key, entry.Value);
+			}
 		}
 	}
 }

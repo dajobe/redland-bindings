@@ -25,20 +25,21 @@ namespace Redland {
 	
 	public class Node : IWrapper, IDisposable {
 		
-		IntPtr node = IntPtr.Zero;
+		private HandleRef handle;
 
-		bool disposed = false;
+		private bool disposed = false;
+		private World world = Redland.World.AddReference ();
 
-		public IntPtr Handle {
-			get { return node; }
+		public HandleRef Handle {
+			get { return handle; }
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_node_get_type (IntPtr node);
+		static extern int librdf_node_get_type (HandleRef node);
 
 		public NodeType Type {
 			get {
-				return (NodeType) librdf_node_get_type (node);
+				return (NodeType) librdf_node_get_type (handle);
 			}
 		}
 		
@@ -58,65 +59,56 @@ namespace Redland {
 		}		
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_node_get_literal_value (IntPtr node);
+		static extern IntPtr librdf_node_get_literal_value (HandleRef node);
 
 		public string Literal {
 			get {
 				if (! IsLiteral ())
 					throw new RedlandError 
 						("Can't get literal value of non-literal");
-				IntPtr istr = librdf_node_get_literal_value (node);
+				IntPtr istr = librdf_node_get_literal_value (handle);
 				return Util.UTF8PtrToString (istr);
 			}
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_node_get_literal_value_language (IntPtr node);
+		static extern IntPtr librdf_node_get_literal_value_language (HandleRef node);
 
 		public string Language {
 			get {
 				if (! IsLiteral ())
 					throw new RedlandError 
 						("Can't get language of non-literal");
-				IntPtr istr = librdf_node_get_literal_value_language (node);
+				IntPtr istr = librdf_node_get_literal_value_language (handle);
 				return Util.UTF8PtrToString (istr);
 			}
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_node (IntPtr world);
+		static extern IntPtr librdf_new_node (HandleRef world);
 
 		public Node ()
 		{
-			node = librdf_new_node (Redland.World.Handle);
+			IntPtr node = librdf_new_node (world.Handle);
+			handle = new HandleRef (this, node);
 		}
 
-		public Node (System.Uri uri)
-			: this (Redland.World, uri)
-		{
-		}
-		
 		public Node (string s)
-			: this (Redland.World, s, null, false)
-		{
-		}
-
-		public Node (string s, string xml_language, bool is_wf_xml)
-			: this (Redland.World, s, xml_language, is_wf_xml)
+			: this (s, null, false)
 		{
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_node_from_uri (IntPtr world, IntPtr uri);
-
-		public Node (Uri uri)
+		static extern IntPtr librdf_new_node_from_uri (HandleRef world, HandleRef uri);
+		public Node (Redland.Uri uri)
 		{
  			// Console.WriteLine ("Making Node from Uri {0} with handle {1}", uri.ToString (), uri.Handle);
-			node = librdf_new_node_from_uri (Redland.World.Handle, uri.Handle);
+			IntPtr node = librdf_new_node_from_uri (world.Handle, uri.Handle);
+			handle = new HandleRef (this, node);
 		}
 
 		[DllImport ("librdf")]
-		static extern void librdf_free_node (IntPtr node);
+		static extern void librdf_free_node (HandleRef node);
 
 		protected void Dispose (bool disposing)
 		{
@@ -124,10 +116,12 @@ namespace Redland {
 				// only dispose of managed objects if
 				// disposing is true.
 
-				if (node != IntPtr.Zero) {
-					librdf_free_node (node);
-					node = IntPtr.Zero;
+				if (handle.Handle != IntPtr.Zero) {
+					librdf_free_node (handle);
+					handle = new HandleRef (this, IntPtr.Zero);
 				}
+				world.RemoveReference ();
+				world = null;
 				disposed = true;
 			}
 		}
@@ -144,14 +138,14 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_node_equals (IntPtr first_node, IntPtr second_node);
+		static extern int librdf_node_equals (HandleRef first_node, HandleRef second_node);
 		
 		public override bool Equals (object o)
 		{
 			if (o == null)
  				return false;
 
-			int i = librdf_node_equals (node, ((Node) o).Handle);
+			int i = librdf_node_equals (handle, ((Node) o).Handle);
 			if (i == 0)
 				return false;
 			else
@@ -187,69 +181,76 @@ namespace Redland {
 		}
 		
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_node_from_uri_string (IntPtr world, IntPtr uri);
+		static extern IntPtr librdf_new_node_from_uri_string (HandleRef world, IntPtr uri);
 
-		private Node (World world, System.Uri uri)
+		public Node (System.Uri uri)
 		{
 			IntPtr iuri = Util.StringToHGlobalUTF8 (uri.ToString());
-			node = librdf_new_node_from_uri_string (world.Handle, iuri);
+			IntPtr node = librdf_new_node_from_uri_string (world.Handle, iuri);
 			Marshal.FreeHGlobal (iuri);
+			handle = new HandleRef (this, node);
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_node_from_literal (IntPtr world, IntPtr s, IntPtr xml_language, int is_wf_xml);
+		static extern IntPtr librdf_new_node_from_literal (HandleRef world, IntPtr s, IntPtr xml_language, int is_wf_xml);
 
-		private Node (World world, string s, string xml_language, bool is_wf_xml)
+		public Node (string s, string xml_language, bool is_wf_xml)
 		{
 			IntPtr istr = Util.StringToHGlobalUTF8 (s);
 			IntPtr ilang = Util.StringToHGlobalUTF8 (xml_language);
 			int is_xml = is_wf_xml ? 1: 0;
-			node = librdf_new_node_from_literal (world.Handle, istr, ilang, is_xml);
+			IntPtr node = librdf_new_node_from_literal (world.Handle, istr, ilang, is_xml);
+			handle = new HandleRef (this, node);
 			Marshal.FreeHGlobal (istr);
 			Marshal.FreeHGlobal (ilang);
 		}
 		
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_node_from_node (IntPtr node);
+		static extern IntPtr librdf_new_node_from_node (HandleRef node);
 
 		public Node (Node node)
 		{
-			this.node = librdf_new_node_from_node (node.node);
+			IntPtr newnode = librdf_new_node_from_node (node.handle);
+			handle = new HandleRef (this, newnode);
 		}
+
+		[DllImport ("librdf")]
+		static extern IntPtr librdf_new_node_from_node (IntPtr node);
 
 		internal Node (IntPtr node)
 		{
-			this.node = librdf_new_node_from_node (node);
+			IntPtr newnode = librdf_new_node_from_node (node);
+			handle = new HandleRef (this, newnode);
 		}
 
 		[DllImport ("librdf")]
-		static extern void librdf_node_print (IntPtr node, IntPtr fh);
+		static extern void librdf_node_print (HandleRef node, IntPtr fh);
 
 		public void Print (IntPtr fh)
 		{
-			if (node == IntPtr.Zero)
+			if (handle.Handle == IntPtr.Zero)
 				Util.fputs ("null", fh);
 			else
-				librdf_node_print (node, fh);
+				librdf_node_print (handle, fh);
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_node_to_string (IntPtr node);
+		static extern IntPtr librdf_node_to_string (HandleRef node);
 
 		public override string ToString ()
 		{
-			IntPtr istr = librdf_node_to_string (node);
+			IntPtr istr = librdf_node_to_string (handle);
 			return Util.UTF8PtrToString (istr);
 		}
 		
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_node_get_uri (IntPtr node);
+		static extern IntPtr librdf_node_get_uri (HandleRef node);
 
 		public Redland.Uri Uri {
 			get {
 				if (! IsResource ())
 					throw new RedlandError ("Can't get URI of non-resource");
-				return new Redland.Uri (librdf_node_get_uri (node));
+				return new Redland.Uri (librdf_node_get_uri (handle));
 			}
 		}
 	}

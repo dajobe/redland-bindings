@@ -1,3 +1,32 @@
+2005-01-04  Edd Dumbill  <edd@usefulinc.com>
+
+	* Iterator.cs, Model.cs, Node.cs, Parser.cs, Query.cs,
+	QueryResults.cs, Serializer.cs, Statement.cs, Storage.cs,
+	Stream.cs, Uri.cs: add a private member reference to the World,
+	which when assigned increments a refcount.  Corresponding refcount
+	is decreased in Dispose(), ensuring world's clients are
+	counted. Also, move to HandleRef instead of IntPtr for C-world
+	pointers, which is more GC-safe.
+
+	* World.cs: take destruction of the C world out of the destructor,
+	and instead make it static depending on a ref count.  Ensure that
+	the dynamic World, allocated in Redland.cs, also uses this ref
+	count so the world persists for as long as we run.
+
+	* test.cs: Fixed to use proper iterator syntax with query results.
+
+	* Iterator.cs: (End ()): removed from API, vestige of extinct
+	iterator usage
+
+	* Stream.cs: (End ()): removed from API, vestige of extinct
+	iterator usage
+
+	* examples/example1.cs: Fixed up to use proper iterator syntax.
+
+	* QueryResults.cs:  (MoveNext ()): cleaned up iterator logic so it
+	works properly with foreach.
+	(End ()): removed from API, no longer needed
+
 2004-12-30  Edd Dumbill  <edd@usefulinc.com>
 
 	* Util.cs: (StringToHGlobalUTF8 ()): marshal .NET string to UTF-8

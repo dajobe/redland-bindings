@@ -10,11 +10,12 @@
 //
 
 using System;
+using System.Runtime.InteropServices;
 
 namespace Redland {
 
 	public interface IWrapper {		
 
-		IntPtr Handle { get; }
+		HandleRef Handle { get; }
 	}
 }

@@ -36,25 +36,18 @@ public class Test {
 		partial_stm.Subject = subject;
 		partial_stm.Predicate = predicate;
 		
-		Stream stream = model.FindStatements (partial_stm);
 		int count = 0;
-		while (!stream.End) {
-			Statement statement = (Statement) stream.Current;
+		foreach (Statement statement in model.FindStatements (partial_stm)) {
 			Console.Write ("Matched statement: ");
 			Console.WriteLine (statement.ToString ());
-			stream.MoveNext ();
 			count++;
 		}
 
 		Console.WriteLine ("Got {0} matching statements.", count);
 
-		Iterator iterator = model.GetTargets (subject, predicate);
-
- 		while (!iterator.End) {
-			Node target = (Node) iterator.Current;
+ 		foreach (Node target in model.GetTargets (subject, predicate)) {
 			Console.Write ("Matched target: ");
 			Console.WriteLine (target.ToString ());
-			iterator.MoveNext ();
 		}
 	}
 }

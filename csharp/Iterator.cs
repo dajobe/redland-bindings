@@ -17,29 +17,29 @@ namespace Redland {
 
 	public class Iterator : IWrapper, IEnumerator, IEnumerable, IDisposable {
 		
-		IntPtr iterator = IntPtr.Zero;
+		private HandleRef handle;
 
-		bool disposed = false;
+		private bool disposed = false;
+		private bool started = false;
+		private World world = Redland.World.AddReference ();
 
-		bool started = false;
-
-		public IntPtr Handle {
-			get { return iterator; }
+		public HandleRef Handle {
+			get { return handle; }
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_iterator_end (IntPtr iterator);
+		static extern int librdf_iterator_end (HandleRef iterator);
 		
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_iterator_get_object (IntPtr iterator);
+		static extern IntPtr librdf_iterator_get_object (HandleRef iterator);
 
 		[DllImport ("librdf")]
-		static extern int librdf_iterator_next (IntPtr iterator);
+		static extern int librdf_iterator_next (HandleRef iterator);
 
 		// IEnumerator implementation
 		public object Current {
 			get { 
-				IntPtr raw_ret = librdf_iterator_get_object (iterator);
+				IntPtr raw_ret = librdf_iterator_get_object (handle);
 				// FIXME: throw exception if zero?
 				return new Node (raw_ret);
 			}
@@ -54,10 +54,10 @@ namespace Redland {
 		public bool MoveNext ()
 		{
 			if (started) {
-				return (librdf_iterator_next (iterator) == 0);
+				return (librdf_iterator_next (handle) == 0);
 			} else {
 				started = true;
-				IntPtr cur = librdf_iterator_get_object (iterator);
+				IntPtr cur = librdf_iterator_get_object (handle);
 				return (cur != IntPtr.Zero);
 			}
 		}
@@ -67,22 +67,13 @@ namespace Redland {
 			throw new NotSupportedException ();
 		}
 
-		[DllImport ("librdf")]
-		static extern int libdf_iterator_end (IntPtr iterator);
-
-		public bool End {
-			get {
-				return (librdf_iterator_end (iterator) != 0);
-			}
-		}
-
 		internal Iterator (IntPtr iterator)
 		{
-			this.iterator = iterator;
+			handle = new HandleRef (this, iterator);
 		}
 
 		[DllImport ("librdf")]
-		static extern void librdf_free_iterator (IntPtr iterator);
+		static extern void librdf_free_iterator (HandleRef iterator);
 
 		protected void Dispose (bool disposing)
 		{
@@ -90,10 +81,12 @@ namespace Redland {
 				// if disposing is true, dispose of
 				// managed resources
 
-				if (iterator != IntPtr.Zero) {
-					librdf_free_iterator (iterator);
-					iterator = IntPtr.Zero;
+				if (handle.Handle != IntPtr.Zero) {
+					librdf_free_iterator (handle);
+					handle = new HandleRef (this, IntPtr.Zero);
 				}
+				world.RemoveReference ();
+				world = null;
 				disposed = true;
 			}
 		}

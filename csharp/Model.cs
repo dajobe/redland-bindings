@@ -17,40 +17,37 @@ namespace Redland {
 
 	public class Model : IWrapper, IDisposable {
 
-		IntPtr model = IntPtr.Zero;
-		Storage storage;
+		private Storage storage;
+		private HandleRef handle;
 
-		bool disposed = false;
+		private bool disposed = false;
+		private World world = Redland.World.AddReference ();
 
-		public IntPtr Handle {
-			get { return model; }
+		public HandleRef Handle {
+			get { return handle; }
 		}
 
 		public Model (Storage storage)
-			: this (Redland.World, storage, null)
+			: this (storage, null)
 		{			
 		}
 
-		public Model (Storage storage, string options)
-			: this (Redland.World, storage, options)
-		{
-		}
-
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_model (IntPtr world, IntPtr storage, IntPtr options);
+		static extern IntPtr librdf_new_model (HandleRef world, HandleRef storage, IntPtr options);
 
-		internal Model (World world, Storage storage, string options)
+		public Model (Storage storage, string options)
 		{
 			IntPtr ioptions = Util.StringToHGlobalUTF8 (options);
-			model = librdf_new_model (world.Handle, storage.Handle, ioptions);
-                        Marshal.FreeHGlobal (ioptions);
+			IntPtr model = librdf_new_model (world.Handle, storage.Handle, ioptions);
+			Marshal.FreeHGlobal (ioptions);
+			handle = new HandleRef (this, model);
 			// keep a reference around to storage so it doesn't
 			// get destroyed before us
 			this.storage = storage;
 		}
 
 		[DllImport ("librdf")]
-		static extern void librdf_free_model (IntPtr model);
+		static extern void librdf_free_model (HandleRef model);
 
 		protected void Dispose (bool disposing)
 		{
@@ -59,10 +56,12 @@ namespace Redland {
 				// if 'disposing' is true, then any managed
 				// objects should be disposed here.
 
-				if (model != IntPtr.Zero) {
-					librdf_free_model (model);
-					model = IntPtr.Zero;
+				if (handle.Handle != IntPtr.Zero) {
+					librdf_free_model (handle);
+					handle = new HandleRef (this, IntPtr.Zero);
 				}
+				world.RemoveReference ();
+				world = null;
 				disposed = true;
 			}
 		}
@@ -81,45 +80,45 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_model_add_statement (IntPtr model, IntPtr statement);
+		static extern int librdf_model_add_statement (HandleRef model, HandleRef statement);
 
 		public int AddStatement (Statement stm)
 		{
-			return librdf_model_add_statement (model, stm.Handle);
+			return librdf_model_add_statement (handle, stm.Handle);
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_model_context_add_statement (IntPtr model, IntPtr context, IntPtr stm);
+		static extern int librdf_model_context_add_statement (HandleRef model, HandleRef context, HandleRef stm);
 
 		public int AddStatement (Statement stm, Node context)
 		{
-			return librdf_model_context_add_statement (model, context.Handle, stm.Handle);
+			return librdf_model_context_add_statement (handle, context.Handle, stm.Handle);
 		}
 
 		[DllImport ("librdf")]
-		static extern void librdf_model_print (IntPtr model, IntPtr fh);
+		static extern void librdf_model_print (HandleRef model, IntPtr fh);
 
 		public void Print (IntPtr fh)
 		{
-			librdf_model_print (model, fh);
+			librdf_model_print (handle, fh);
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_find_statements (IntPtr model, IntPtr stm);
+		static extern IntPtr librdf_model_find_statements (HandleRef model, HandleRef stm);
 
 		public Stream FindStatements (Statement stm)
 		{
-			IntPtr raw_ret = librdf_model_find_statements (model, stm.Handle);
+			IntPtr raw_ret = librdf_model_find_statements (handle, stm.Handle);
 			return new Stream (raw_ret);
 		}
 		
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_get_source (IntPtr model, IntPtr arc, IntPtr target);
+		static extern IntPtr librdf_model_get_source (HandleRef model, HandleRef arc, HandleRef target);
 
 		public Node GetSource (Node arc, Node target)
 		{
 			Node r;
-			IntPtr raw_ret = librdf_model_get_source (model, arc.Handle, target.Handle);
+			IntPtr raw_ret = librdf_model_get_source (handle, arc.Handle, target.Handle);
 			if (raw_ret != IntPtr.Zero)
 				r = new Node (raw_ret);
 			else
@@ -128,23 +127,23 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_get_sources (IntPtr model, IntPtr arc, IntPtr target);
+		static extern IntPtr librdf_model_get_sources (HandleRef model, HandleRef arc, HandleRef target);
 
 		public Iterator GetSources (Node arc, Node target)
 		{
-			IntPtr raw_ret = librdf_model_get_sources (model, arc.Handle, target.Handle);
+			IntPtr raw_ret = librdf_model_get_sources (handle, arc.Handle, target.Handle);
 			// FIXME: throw exception if raw_ret == IntPtr.Zero?
 			Iterator it = new Iterator (raw_ret);
 			return it;
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_get_arc (IntPtr model, IntPtr source, IntPtr target);
+		static extern IntPtr librdf_model_get_arc (HandleRef model, HandleRef source, HandleRef target);
 
 		public Node GetPredicate (Node source, Node target)
 		{
 			Node r;
-			IntPtr raw_ret = librdf_model_get_arc (model, source.Handle, target.Handle);
+			IntPtr raw_ret = librdf_model_get_arc (handle, source.Handle, target.Handle);
 			if (raw_ret != IntPtr.Zero)
 				r = new Node (raw_ret);
 			else
@@ -153,11 +152,11 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_get_target (IntPtr model, IntPtr source, IntPtr arc);
+		static extern IntPtr librdf_model_get_target (HandleRef model, HandleRef source, HandleRef arc);
 
 		public Node GetTarget (Node source, Node arc)
 		{
-			IntPtr raw_ret = librdf_model_get_target (model, source.Handle, arc.Handle);
+			IntPtr raw_ret = librdf_model_get_target (handle, source.Handle, arc.Handle);
 			Node r;
 			if (raw_ret != IntPtr.Zero)
 				r = new Node (raw_ret);
@@ -167,103 +166,103 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_get_targets (IntPtr model, IntPtr source, IntPtr arc);
+		static extern IntPtr librdf_model_get_targets (HandleRef model, HandleRef source, HandleRef arc);
 
 		public Iterator GetTargets (Node source, Node arc)
 		{
-			IntPtr raw_ret = librdf_model_get_targets (model, source.Handle, arc.Handle);
+			IntPtr raw_ret = librdf_model_get_targets (handle, source.Handle, arc.Handle);
 			// FIXME: throw exception if raw_ret is zero?
 			Iterator it = new Iterator (raw_ret);
 			return it;
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_get_arcs (IntPtr model, IntPtr source, IntPtr target);
+		static extern IntPtr librdf_model_get_arcs (HandleRef model, HandleRef source, HandleRef target);
 
 		public Iterator GetPredicates (Node source, Node target)
 		{
-			IntPtr raw_ret = librdf_model_get_arcs (model, source.Handle, target.Handle);
+			IntPtr raw_ret = librdf_model_get_arcs (handle, source.Handle, target.Handle);
 			// FIXME: throw exception if raw_ret is zero?
 			Iterator it = new Iterator (raw_ret);
 			return it;
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_model_contains_statement (IntPtr model, IntPtr statement);
+		static extern int librdf_model_contains_statement (HandleRef model, HandleRef statement);
 
 		public bool Contains (Statement stm)
 		{
-			int r = librdf_model_contains_statement (model, stm.Handle);
+			int r = librdf_model_contains_statement (handle, stm.Handle);
 			return (r != 0);
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_model_remove_statement (IntPtr model, IntPtr statement);
+		static extern int librdf_model_remove_statement (HandleRef model, HandleRef statement);
 
 		public int Remove (Statement statement)
 		{
-			return librdf_model_remove_statement (model, statement.Handle);
+			return librdf_model_remove_statement (handle, statement.Handle);
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_model_context_remove_statement (IntPtr model, IntPtr context, IntPtr statement);
+		static extern int librdf_model_context_remove_statement (HandleRef handel, HandleRef context, HandleRef statement);
 
 		public int Remove (Statement stm, Node context)
 		{
-			return librdf_model_context_remove_statement (model, context.Handle, stm.Handle);
+			return librdf_model_context_remove_statement (handle, context.Handle, stm.Handle);
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_model_size (IntPtr model);
+		static extern int librdf_model_size (HandleRef model);
 
 		public int Size {
-			get { return librdf_model_size (model); }
+			get { return librdf_model_size (handle); }
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_as_stream (IntPtr model);
+		static extern IntPtr librdf_model_as_stream (HandleRef model);
 
 		public Stream ToStream ()
 		{
-			IntPtr raw_ret = librdf_model_as_stream (model);
+			IntPtr raw_ret = librdf_model_as_stream (handle);
 			// FIXME: throw exception if raw_ret == zero?
 			Stream stream = new Stream (raw_ret);
 			return stream;
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_model_add_statements (IntPtr model, IntPtr statement_stream);
+		static extern int librdf_model_add_statements (HandleRef model, HandleRef statement_stream);
 
 		public int AddStatements (Stream stream)
 		{
-			return librdf_model_add_statements (model, stream.Handle);
+			return librdf_model_add_statements (handle, stream.Handle);
 		}
 
 		[DllImport ("librdf")]
-		static extern void librdf_model_sync (IntPtr model);
+		static extern void librdf_model_sync (HandleRef model);
 
 		public void Sync ()
 		{
-			librdf_model_sync (model);
+			librdf_model_sync (handle);
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_get_contexts (IntPtr model);
+		static extern IntPtr librdf_model_get_contexts (HandleRef model);
 
 		public Iterator GetContexts ()
 		{
-			IntPtr raw_ret = librdf_model_get_contexts (model);
+			IntPtr raw_ret = librdf_model_get_contexts (handle);
 			// FIXME: throw exception if raw_ret == zero?
 			Iterator it = new Iterator (raw_ret);
 			return it;
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_get_feature (IntPtr model, IntPtr uri);
+		static extern IntPtr librdf_model_get_feature (HandleRef model, HandleRef uri);
 
 		public Node GetFeature (Uri uri)
 		{
-			IntPtr raw_ret = librdf_model_get_feature (model, uri.Handle);
+			IntPtr raw_ret = librdf_model_get_feature (handle, uri.Handle);
 			Node r;
 			if (raw_ret != IntPtr.Zero)
 				r = new Node (raw_ret);
@@ -273,29 +272,29 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern void librdf_model_set_feature (IntPtr model, IntPtr uri, IntPtr value);
+		static extern void librdf_model_set_feature (HandleRef model, HandleRef uri, HandleRef value);
 
 		public void SetFeature (Uri uri, Node value)
 		{
-			librdf_model_set_feature (model, uri.Handle, value.Handle);
+			librdf_model_set_feature (handle, uri.Handle, value.Handle);
 		}
 
 		[DllImport ("librdf")]
-		static extern void librdf_model_load (IntPtr model, IntPtr uri, IntPtr mime_type, IntPtr type_uri);
+		static extern void librdf_model_load (HandleRef model, HandleRef uri, IntPtr mime_type, HandleRef type_uri);
 
 		public void Load (Uri uri, String mime_type, Uri type_uri)
 		{
 			IntPtr imime = Util.StringToHGlobalUTF8 (mime_type.ToString());
-			librdf_model_load (model, uri.Handle, imime, type_uri.Handle);
+			librdf_model_load (handle, uri.Handle, imime, type_uri.Handle);
                         Marshal.FreeHGlobal (imime);
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_model_query_execute (IntPtr model, IntPtr query);
+		static extern IntPtr librdf_model_query_execute (HandleRef model, HandleRef query);
 
 		public QueryResults Execute (Query query)
 		{
-			IntPtr raw_ret = librdf_model_query_execute (model, query.Handle);
+			IntPtr raw_ret = librdf_model_query_execute (handle, query.Handle);
 			// FIXME: throw exception if raw_ret == zero?
 			QueryResults qr = new QueryResults (raw_ret);
 			return qr;
