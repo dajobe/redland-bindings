@@ -40,7 +40,7 @@ RDF::Redland::Query - Redland RDF Syntax Querys Class
   my $query=new RDF::Redland::Query("rdql", undef, $query_string);
   my $results=$model->execute($query);
   while(!$results->finished) {
-    for (my $i=0; $i < $results->count(); $i++) {
+    for (my $i=0; $i < $results->bindings_count(); $i++) {
       my $name=$results->binding_name($i);
       my $value=$results->binding_value($i);
       # ... do something with the results
