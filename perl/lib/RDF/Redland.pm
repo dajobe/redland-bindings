@@ -50,8 +50,8 @@ sub new ($) {
 }
 
 sub DESTROY ($) {
-  warn "RDF::World DESTROY" if $RDF::Debug;
-  &RDF::Redland::CORE::librdf_free_world($self->{WORLD}) if $self->{WORLD};
+  warn "RDF::World DESTROY\n" if $RDF::Debug;
+  &RDF::Redland::CORE::librdf_perl_world_finish();
 }
 
 sub message ($$) {
