@@ -4,7 +4,7 @@
  *
  * $Id$
  *
- * Copyright (C) 2000-2004, David Beckett http://purl.org/net/dajobe/
+ * Copyright (C) 2000-2005, David Beckett http://purl.org/net/dajobe/
  * Institute for Learning and Research Technology http://www.ilrt.bristol.ac.uk/
  * University of Bristol, UK http://www.bristol.ac.uk/
  * 
@@ -39,6 +39,98 @@ static PyObject *_wrap_librdf_version_minor_get(void);
 static PyObject *_wrap_librdf_version_release_get(void);
 
 SWIGEXPORT(void) SWIG_init(void);
+
+static PyObject *librdf_python_callback = NULL;
+
+static PyObject * librdf_python_set_callback(PyObject *dummy, PyObject *args);
+static PyObject * librdf_python_reset_callback(PyObject *dummy, PyObject *args);
+
+/*
+ * set the Python function object callback
+ */
+static PyObject *
+librdf_python_set_callback(PyObject *dummy, PyObject *args)
+{
+  PyObject *result = NULL;
+  PyObject *temp;
+  
+  if (PyArg_ParseTuple(args, "O:set_callback", &temp)) {
+    if (!PyCallable_Check(temp)) {
+      PyErr_SetString(PyExc_TypeError, "parameter must be callable");
+      return NULL;
+    }
+    Py_XINCREF(temp);         /* Add a reference to new callback */
+    Py_XDECREF(librdf_python_callback);  /* Dispose of previous callback */
+    librdf_python_callback = temp;       /* Remember new callback */
+
+    /* Boilerplate to return "None" */
+    Py_INCREF(Py_None);
+    result = Py_None;
+  }
+  return result;
+}
+
+
+/*
+ * set the Python function object callback
+ */
+static PyObject *
+librdf_python_reset_callback(PyObject *dummy, PyObject *args)
+{
+  PyObject *result = NULL;
+  PyObject *temp;
+  
+  if(librdf_python_callback) {
+    Py_XDECREF(librdf_python_callback);  /* Dispose of previous callback */
+    librdf_python_callback = NULL;
+  }
+
+  /* Boilerplate to return "None" */
+  Py_INCREF(Py_None);
+  return Py_None;
+}
+
+
+/*
+ * calls a python function defined as:
+ *   RDF.message(level, message, line, file, uri)
+ * where first argument is the log leve, second is a (scalar) string
+ * message, line number, file (or None), uri (or None)
+ * with an integer return value indicating if the message was handled.
+ */
+static int
+librdf_call_python_message(int code, int level, int facility,
+                           const char *message,
+                           int line, int column, int byte,
+                           const char *file, const char *uri)
+{
+  PyObject *arglist;
+  PyObject *result;
+  int rc=0;
+
+  if(!librdf_python_callback)
+     return 0;
+ 
+  /* call the callback */
+  arglist = Py_BuildValue("(iiisiiiss)", code, level, facility, message, line, column, byte, file, uri);
+  if(!arglist) {
+    fprintf(stderr, "librdf_call_python_message: Out of memory\n");
+    return 0;
+  }
+  result = PyEval_CallObject(librdf_python_callback, arglist);
+  Py_DECREF(arglist);
+  if(result) {
+    if(PyInt_Check(result))
+      rc=(int)PyInt_AS_LONG(result);
+    
+    Py_DECREF(result);
+   }
+
+  rc=1;
+  
+  return rc;
+}
+
 
 static char* librdf_python_error_message = NULL;
 static char* librdf_python_warning_message = NULL;
@@ -89,9 +181,13 @@ librdf_python_unicode_to_bytes(PyObject *dummy, PyObject *args)
 
 /* Declare a table of methods that python can call */
 static PyMethodDef librdf_python_methods [] = {
-    {"unicode_to_bytes",  librdf_python_unicode_to_bytes, METH_VARARGS,
-     "Turn a python Unicode string into the UTF-8 bytes."},
-    {NULL, NULL, 0, NULL}        /* Sentinel */
+  {"set_callback",  librdf_python_set_callback, METH_VARARGS, 
+   "Set python message callback."},
+  {"reset_callback",  librdf_python_reset_callback, METH_VARARGS, 
+   "Set python message callback."},
+  {"unicode_to_bytes",  librdf_python_unicode_to_bytes, METH_VARARGS,
+   "Turn a python Unicode string into the UTF-8 bytes."},
+  {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
 
@@ -99,14 +195,12 @@ static PyMethodDef librdf_python_methods [] = {
  * stores a redland error message for later
  */
 static int
-librdf_python_message_handler(int type, const char *message, va_list arguments)
+librdf_python_message_handler(int is_warning, const char *message)
 {
-  char empty_buffer[1];
   int len;
-  va_list args_copy;
   char **buffer;
 
-  if(type)
+  if(is_warning)
     buffer=&librdf_python_warning_message;
   else
     buffer=&librdf_python_error_message;
@@ -117,20 +211,14 @@ librdf_python_message_handler(int type, const char *message, va_list arguments)
     /* alternative: discard the older one with free(*buffer); */
   }
 
-  /* ask vsnprintf size of buffer required */
-  va_copy(args_copy, arguments);
-  len=vsnprintf(empty_buffer, 1, message, args_copy)+1;
-  va_end(args_copy);
-
-  *buffer=(char*)malloc(len);
+  len=strlen(message);
+  *buffer=(char*)malloc(len+1);
   if(!*buffer) {
     fprintf(stderr, "librdf_python_message_handler: Out of memory\n");
     return 0;
   }
   
-  va_copy(args_copy, arguments);
-  vsnprintf(*buffer, len, message, args_copy);
-  va_end(args_copy);
+  strncpy(*buffer, message, len+1);
 
   /*
    * Emit warnings right away
@@ -147,18 +235,34 @@ librdf_python_message_handler(int type, const char *message, va_list arguments)
 
 
 static int
-librdf_python_error_handler(void *user_data, 
-                            const char *message, va_list arguments)
+librdf_python_logger_handler(void *user_data, librdf_log_message *log)
 {
-  return librdf_python_message_handler(0, message, arguments);
-}
+  raptor_locator* locator = log->locator;
+  int line= -1;
+  int column= -1;
+  int byte= -1;
+  const char *uri=NULL;
+  const char *file=NULL;
+  
+  if(locator) {
+    line=raptor_locator_line(locator);
+    column=raptor_locator_column(locator);
+    byte=raptor_locator_byte(locator);
+    file=raptor_locator_file(locator);
+    uri=raptor_locator_uri(locator);
+  }
+  
+  if(librdf_python_callback)
+    return librdf_call_python_message(log->code, log->level, log->facility,
+                                      log->message,
+                                      line, column, byte, file, uri);
+  
 
-
-static int
-librdf_python_warning_handler(void *user_data,
-                              const char *message, va_list arguments)
-{
-  return librdf_python_message_handler(1, message, arguments);
+  if(log->level < LIBRDF_LOG_WARN)
+    return 1;
+  
+  return librdf_python_message_handler((log->level < LIBRDF_LOG_ERROR),
+                                       log->message);
 }
 
 
@@ -185,6 +289,5 @@ librdf_python_world_init(librdf_world *world)
                                        PyExc_RuntimeError, NULL);
   PyDict_SetItemString(dict, "Error", PyRedland_Error);
 
-  librdf_world_set_error(world, NULL, librdf_python_error_handler);
-  librdf_world_set_warning(world, NULL, librdf_python_warning_handler);
+  librdf_world_set_logger(world, NULL, librdf_python_logger_handler);
 }
