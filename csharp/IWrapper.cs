@@ -9,7 +9,7 @@
 
 using System;
 
-namespace Rdf {
+namespace Redland {
 
 	public interface IWrapper {		
 

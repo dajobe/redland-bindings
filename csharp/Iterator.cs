@@ -11,7 +11,7 @@ using System;
 using System.Collections;
 using System.Runtime.InteropServices;
 
-namespace Rdf {
+namespace Redland {
 
 	public class Iterator : IWrapper, IEnumerator {
 		

@@ -9,7 +9,7 @@
 
 using System.Collections;
 using NUnit.Framework;
-using Rdf;
+using Redland;
 
 namespace Redland {
 
@@ -84,8 +84,8 @@ namespace Redland {
 		{
 			bool b=false;
 			parser.ParseIntoModel (model, "file:../../data/dc.rdf");
-			Statement stm = new Statement (new Node (new Rdf.Uri ("http://purl.org/net/dajobe/")),
-						       new Node (new Rdf.Uri ("http://purl.org/dc/elements/1.1/creator")),
+			Statement stm = new Statement (new Node (new Redland.Uri ("http://purl.org/net/dajobe/")),
+						       new Node (new Redland.Uri ("http://purl.org/dc/elements/1.1/creator")),
 						       new Node ("Dave Beckett"));
 			b=model.Contains(stm);
 			NUnit.Framework.Assert.IsTrue (b, "Should have found_stmts 1 statement");

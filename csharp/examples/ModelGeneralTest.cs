@@ -9,7 +9,7 @@
 
 using System.Collections;
 using NUnit.Framework;
-using Rdf;
+using Redland;
 
 namespace Redland {
 

@@ -2,7 +2,7 @@
 // example4.cs: C#'s port of redland's redland/example4.c
 //
 
-using Rdf;
+using Redland;
 using System;
 
 public class Test {
@@ -13,11 +13,11 @@ public class Test {
 		Model model = new Model (storage);
 
 		Parser parser = new Parser ("raptor", "application/rdf+xml", null);
-		Rdf.Uri uri = new Rdf.Uri ("file:../../data/dc.rdf");
+		Redland.Uri uri = new Redland.Uri ("file:../../data/dc.rdf");
 		parser.ParseIntoModel (uri, uri, model);
 
 		Serializer serializer = new Serializer ("rdfxml", null, null);
-		Rdf.Uri base_uri = new Rdf.Uri ("http://example.org/base.rdf");
+		Redland.Uri base_uri = new Redland.Uri ("http://example.org/base.rdf");
 
 		serializer.SerializeModel ("example4.xml", base_uri, model);
 	}

@@ -2,7 +2,7 @@
 // tester.cs: play with new Redland's C# objects. Based on Redland's redland/example/example1.c
 //
 
-using Rdf;
+using Redland;
 using System;
 using System.Runtime.InteropServices;
 
@@ -16,7 +16,7 @@ public class Test {
 
 	public static void Main ()
 	{
-		Rdf.Uri uri = new Rdf.Uri ("http://example.librdf.org/");
+		Redland.Uri uri = new Redland.Uri ("http://example.librdf.org/");
 		Storage storage = new Storage ("memory", "test", null);
 		Model model = new Model (storage, null);
 
@@ -33,7 +33,7 @@ public class Test {
 
 		IntPtr output = fopen ("test-out.rdf", "w+");
 		Serializer serializer = new Serializer ("rdfxml", null, null);
-		Rdf.Uri base_uri = new Rdf.Uri ("http://example.org/base.rdf");
+		Redland.Uri base_uri = new Redland.Uri ("http://example.org/base.rdf");
 		serializer.SerializeModel (output, base_uri, model);
 
 		Statement partial_stm = new Statement ();

@@ -11,7 +11,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Collections;
 
-namespace Rdf {
+namespace Redland {
 
 	public class Model : IWrapper {
 

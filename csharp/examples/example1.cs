@@ -2,7 +2,7 @@
 // example1.cs: C# port of Redland's redland/example/example1.c
 //
 
-using Rdf;
+using Redland;
 using System;
 
 public class Test {
@@ -12,7 +12,7 @@ public class Test {
 
 	public static void Main ()
 	{
-		Rdf.Uri uri = new Rdf.Uri ("http://example.librdf.org/");
+		Redland.Uri uri = new Redland.Uri ("http://example.librdf.org/");
 		Storage storage = new Storage ("memory", "test", null);
 		Model model = new Model (storage);
 
@@ -21,15 +21,15 @@ public class Test {
 		parser.ParseStringIntoModel (rdfxml_content, uri, model);
 
 		Node subject, predicate, obj;
-		subject = new Node (new Rdf.Uri("http://purl.org/net/dajobe/"));
-		predicate = new Node (new Rdf.Uri("http://purl.org/dc/elements/1.1/title"));
+		subject = new Node (new Redland.Uri("http://purl.org/net/dajobe/"));
+		predicate = new Node (new Redland.Uri("http://purl.org/dc/elements/1.1/title"));
 		obj = new Node ("My Home Page");
 
 		Statement stm = new Statement (subject, predicate, obj);
 		model.AddStatement (stm);
 
 		Serializer serializer = new Serializer ("rdfxml", null, null);
-		Rdf.Uri base_uri = new Rdf.Uri ("http://example.org/base#");
+		Redland.Uri base_uri = new Redland.Uri ("http://example.org/base#");
 		serializer.SerializeModel ("example1.xml", base_uri, model);
 
 		Statement partial_stm = new Statement ();

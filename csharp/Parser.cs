@@ -9,7 +9,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Rdf {
+namespace Redland {
 
 	public class Parser {
 
@@ -78,7 +78,7 @@ namespace Rdf {
 
 		public int ParseIntoModel (Model model, string uri)
 		{			
-			return ParseIntoModel (new Rdf.Uri (uri), new Rdf.Uri (uri), model);
+			return ParseIntoModel (new Redland.Uri (uri), new Redland.Uri (uri), model);
 		}
 
 		[DllImport ("librdf")]
@@ -86,7 +86,7 @@ namespace Rdf {
 
 		public Stream ParseAsStream (string uri)
 		{
-			Uri tmp_uri = new Rdf.Uri (uri);
+			Uri tmp_uri = new Redland.Uri (uri);
 			IntPtr raw_stream = librdf_parser_parse_as_stream (parser, tmp_uri.Handle, IntPtr.Zero);
 			Stream stream = new Stream (raw_stream);
 			return stream;

@@ -9,7 +9,7 @@
 //
 
 using NUnit.Framework;
-using Rdf;
+using Redland;
 
 namespace Redland {
 
@@ -25,12 +25,12 @@ namespace Redland {
 		{
 			storage = new MemoryStorage ();
 			model = new Model (storage);
-			node1 = new Node (new Rdf.Uri ("http://node1/"));
-			node2 = new Node (new Rdf.Uri ("http://node2/"));
-			node3 = new Node (new Rdf.Uri ("http://node3/"));
-			node4 = new Node (new Rdf.Uri ("http://node4/"));
-			node5 = new Node (new Rdf.Uri ("http://node5/"));
-			node6 = new Node (new Rdf.Uri ("http://node6/"));
+			node1 = new Node (new Redland.Uri ("http://node1/"));
+			node2 = new Node (new Redland.Uri ("http://node2/"));
+			node3 = new Node (new Redland.Uri ("http://node3/"));
+			node4 = new Node (new Redland.Uri ("http://node4/"));
+			node5 = new Node (new Redland.Uri ("http://node5/"));
+			node6 = new Node (new Redland.Uri ("http://node6/"));
 			nodeb = new Node ();
 			model.AddStatement (new Statement (node1, node2, node3));
 			model.AddStatement (new Statement (node1, node2, node4));
@@ -40,7 +40,7 @@ namespace Redland {
 
 			storage_c = new MemoryStorage ("contexts='yes'");
 			model_c = new Model (storage_c);
-			context_node = new Node (new Rdf.Uri ("http://mycontext/"));
+			context_node = new Node (new Redland.Uri ("http://mycontext/"));
 
 			model_c.AddStatement (new Statement (node1, node2, node3), context_node);
 			model_c.AddStatement (new Statement (node1, node2, node4), context_node);

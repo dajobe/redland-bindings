@@ -10,7 +10,7 @@
 
 using NUnit.Framework;
 using System;
-using Rdf;
+using Redland;
 
 namespace Redland {
 
@@ -26,9 +26,9 @@ namespace Redland {
 		{
 			storage = new MemoryStorage ();
 			model = new Model (storage);
-			node1 = new Node (new Rdf.Uri ("http://node1/"));
-			node2 = new Node (new Rdf.Uri ("http://node2/"));
-			node3 = new Node (new Rdf.Uri ("http://node3/"));
+			node1 = new Node (new Redland.Uri ("http://node1/"));
+			node2 = new Node (new Redland.Uri ("http://node2/"));
+			node3 = new Node (new Redland.Uri ("http://node3/"));
 			model.AddStatement (new Statement (node1, node2, node3));
 		}
 

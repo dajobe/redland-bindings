@@ -10,7 +10,7 @@
 using System;
 using System.Runtime.InteropServices;
 
-namespace Rdf {
+namespace Redland {
 
 	public class Node : IWrapper {
 		

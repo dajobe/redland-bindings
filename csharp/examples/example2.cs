@@ -2,7 +2,7 @@
 // example2.cs: C# port of Redland's redland's redland/example/example2.c
 //
 
-using Rdf;
+using Redland;
 using System;
 
 public class Example2 {
@@ -12,7 +12,7 @@ public class Example2 {
 	
 	public static void Main ()
 	{
-		Rdf.Uri uri = new Rdf.Uri ("http://example.librdf.org/");
+		Redland.Uri uri = new Redland.Uri ("http://example.librdf.org/");
 
 		Storage storage = new Storage ("memory", "test", null);
 		Model model = new Model (storage);
@@ -22,10 +22,10 @@ public class Example2 {
 
 		Statement stm = new Statement ();
 
-		Node subject = new Node (new Rdf.Uri("http://example.org/subject"));
+		Node subject = new Node (new Redland.Uri("http://example.org/subject"));
 		stm.Subject = subject;
 
-		Node predicate = new Node (new Rdf.Uri("http://example.org/pred1"));
+		Node predicate = new Node (new Redland.Uri("http://example.org/pred1"));
 		stm.Predicate = predicate;
 
 		Node obj = new Node ("object");

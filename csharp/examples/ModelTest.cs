@@ -10,7 +10,7 @@
 
 using NUnit.Framework;
 using System;
-using Rdf;
+using Redland;
 
 namespace Redland {
 
@@ -30,15 +30,15 @@ namespace Redland {
 							  "hash-type='bdb',contexts='no',dir='/tmp',new='yes'");
 			storage_context = new Storage ("hashes", "redland_testcase_c", 
 						       "hash-type='bdb',contexts='yes',dir='/tmp',new='yes'");
-			context_node = new Node (new Rdf.Uri ("http://mycontext/"));
-			alien_context_node = new Node (new Rdf.Uri ("http://mycontext/alien"));
+			context_node = new Node (new Redland.Uri ("http://mycontext/"));
+			alien_context_node = new Node (new Redland.Uri ("http://mycontext/alien"));
 		}
 
 		private static Statement MakeStatement (int n)
 		{
-			return new Statement (new Node (new Rdf.Uri ("http://subject/" + n)),
-					      new Node (new Rdf.Uri ("http://pred/" + n)),
-					      new Node (new Rdf.Uri ("http://object/" + n)));
+			return new Statement (new Node (new Redland.Uri ("http://subject/" + n)),
+					      new Node (new Redland.Uri ("http://pred/" + n)),
+					      new Node (new Redland.Uri ("http://object/" + n)));
 		}
 
 		[Test]
