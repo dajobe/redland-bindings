@@ -23,7 +23,7 @@ RELEASE=@VERSION_RELEASE@
 
 INCLUDES=-I$(top_srcdir)
 
-TCL=tcl
+TCL=@TCL@
 
 TCL_PACKAGE=Redland
 
