@@ -80,14 +80,15 @@ use Redland;
 
 # CONSTRUCTOR
 # (main)
-sub new ($$$) {
-  my($proto,$object,$creator)=@_;
+sub new ($$@) {
+  my($proto,$object,@creators)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{ITERATOR}=$object;
-  # Keep around a reference to the object that created the iterator
+  # Keep around a reference to the objects that created the iterator
   # so that perl does not destroy us before them.
-  $self->{CREATOR}=$creator;
+  $self->{CREATORS}=\@creators;
+
   bless ($self, $class);
   return $self;
 }
@@ -106,7 +107,11 @@ sub next ($$) {
   # return a new (1) node (2)owned by the librdf iterator object
   # Reasons: (1) at the user API level the iterator only returns nodes
   #          (2) the node returned is shared with the iterator
-  RDF::Node->_new_from_object(&Redland::librdf_iterator_get_next(shift->{ITERATOR}));
+  my $object=&Redland::librdf_iterator_get_next(shift->{ITERATOR});
+  return undef if !$object;
+
+  warn "RDF::Iterator::next object is $object\n" if $RDF::Debug;
+  RDF::Node->_new_from_object($object);
 }
 
 1;
