@@ -1,7 +1,6 @@
 Makefile
 Makefile.in
-Redland.php
-Redland.so
-Redland_wrap*
-php_Redland.h
+php_redland.h
+redland.so
+redland_wrap*
 test*db
