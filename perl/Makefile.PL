@@ -22,10 +22,10 @@
 use ExtUtils::MakeMaker;
 
 $TOP_SRCDIR=$ENV{TOP_SRCDIR} || '..';
-$PACKAGE=$ENV{PACKAGE} || "RDF::Redland";
 $CFLAGS=$ENV{CFLAGS} || "";
 $MEM_LIBS=$ENV{MEM_LIBS} || "";
-$CORE_PACKAGE=$ENV{CORE_PACKAGE} || "CORE";
+
+my $CORE_PACKAGE="CORE";
 
 my $objects="${CORE_PACKAGE}_wrap.o ";
 
@@ -77,7 +77,7 @@ sub MY::init_main {
 
 WriteMakefile(
     'DISTNAME'	=> "Redland",
-    'NAME'	=> $PACKAGE,
+    'NAME'	=> "RDF::Redland",
     'AUTHOR'    => 'Dave Beckett <Dave.Beckett@bristol.ac.uk>',
     'ABSTRACT'  => "Redland RDF library",
     'VERSION'   => $version,
