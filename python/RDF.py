@@ -961,6 +961,15 @@ Create a model using an in-memory storage.
     """Synchronise the Model with the underlying Storage."""
     Redland.librdf_model_sync(self._model)
 
+  def get_contexts(self):
+    """Return a sequence of context Nodes in the Model."""
+
+    my_iterator = Redland.librdf_model_get_contexts(self._model)
+    if my_iterator is None:
+      raise RedlandError("Unable to create iterator")
+
+    return Iterator(my_iterator,self,source,predicate)
+
   def get_feature(self, uri):
     """Return the Node value of Model feature URI uri"""
     if not isinstance(uri, Uri):
