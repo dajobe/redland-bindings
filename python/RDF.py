@@ -149,21 +149,35 @@ class Node:
   """Redland Node (RDF Resource, Property, Literal) Class
 
     import RDF
-    node1=RDF.Node();
-    node2=RDF.Node(uri_string="http://example.com/");
-    node3=RDF.Node(uri=RDF.URI("http://example.com/"));
-    node4=RDF.Node(literal="Hello, World!");
-    node5=RDF.Node(literal="<tag>content</tag>", is_wf_xml=1);
-    node6=RDF.Node(node=node5);
+    node1=RDF.Node()
+    node2=RDF.Node(uri_string="http://example.com/")
+    node3=RDF.Node(uri=RDF.Uri("http://example.com/"))
+    node4=RDF.Node(literal="Hello, World!")
+    node5=RDF.Node(literal="<tag>content</tag>", is_wf_xml=1)
+    node5=RDF.Node(blank="abc")
+    node7=RDF.Node(node=node5)
   ...
 
-    print node2,"\\n"
-    print node5->equals(node6),"\\n"
+    print node2
+    if node7->is_resource:
+      print "Resource with URI", node7->uri
 
   """
 
   def __init__(self, **args):
-    """Create an RDF Node (constructor)."""
+    """Create an RDF Node (constructor).
+
+Creates a new RDF Node using the following fields:
+  uri_string  - create a resource node from a string URI
+  uri         - create a resource node from a URI object
+  literal     - create a literal node from a literal string   
+    datatype     - the datatype URI
+    is_wf_xml    - the literal is XML (alternative to datatype)
+    xml_language - the literal XML language
+  blank       - create a resource node from with a blank node identiifer
+  node        - copy a node
+
+    """
     global _world
     global _debug
     if _debug:
@@ -189,11 +203,19 @@ class Node:
         is_wf_xml=args['is_wf_xml']
       else:
         is_wf_xml=0
-      self._node=Redland.librdf_new_node_from_literal(_world._world,
-        args['literal'], xml_language, is_wf_xml)
+      if args.has_key('datatype'):
+        datatype=args['datatype']
+        self._node=Redland.librdf_new_node_from_typed_literal(_world._world,
+          args['literal'], xml_language, datatype._uri)
+      else:
+        self._node=Redland.librdf_new_node_from_literal(_world._world,
+          args['literal'], xml_language, is_wf_xml)
 
     elif args.has_key('node'):
       self._node=Redland.librdf_new_node_from_node(args['node']._node)
+
+    elif args.has_key('blank'):
+      self._node=Redland.librdf_new_node_from_blank_identifier(args['blank'])
 
     elif args.has_key('from_object'):
       # internal constructor to build an object from a node created
@@ -313,9 +335,29 @@ class Node:
 
 
 class Statement:
+  """Redland Statement (triple) class
+
+    import RDF
+    statement1=RDF.Statement(subject=node1, predicate=node2, object=node3)
+    statement2=RDF.Statement(statement=statement1)
+
+    if statement2.subject.is_resource:
+      print "statement2 subject is URI ",statement2.subject.uri
+    
+  """
 
   def __init__(self, **args):
-    """Create an RDF Statement (constructor)."""
+    """Create an RDF Statement (constructor).
+
+Creates a new RDF Statement from either of the two forms:
+
+    s1=RDF.Statement(subject=node1, predicate=node2, object=node3)
+Create a Statement from three Node objects.
+
+    s2=RDF.Statement(statement=s1)
+Copy an existing Statement s1.
+
+    """
     global _world
     global _debug    
     if _debug:
@@ -436,7 +478,20 @@ class Statement:
 class Model:
 
   def __init__(self, storage, **args):
-    """Create an RDF Model (constructor)."""
+    """Create an RDF Model (constructor).
+
+Create a new RDF Model using any of these forms
+
+  m1=RDF.Model(storage=s1)
+Create a Model from an existing Storage (most common use).  
+Optional fields:
+  options_string - A string of options for the Model
+  options_hash   - A Hash of options for the Model
+
+  m2=RDF.Model(model=m1)
+Copy an existing model m1, copying the underlying Storage of m1
+
+    """
     global _world
     global _debug    
     if _debug:
@@ -771,11 +826,33 @@ class Stream:
 
 # end class Stream
 
-
 class Storage:
 
   def __init__(self, **args):
-    """Create an RDF Storage (constructor)."""
+    """Create an RDF Storage (constructor).
+
+    Create a new RDF Storage using any of these forms
+
+  s1=RDF.Storage(storage_name="name")
+Create a Storage with the given name.  Currently the built in
+storages are "memory" and "hashes".  "hashes" takes extra
+arguments passed in the field options_string, some of which are
+required:
+  options_string="hash-type='memory',new='yes',write='yes'"
+    hash-type - required and can be the name of any Hash type supported.
+      'memory' is always present, and 'bdb' is available
+      when BerkeleyDB is compiled in.
+    new - optional and takes a boolean value (default false)
+      If true, it allows updating of an existing Storage 
+    write - optional and takes a boolean value (default true)
+      If false, the Storage is opened read-only and for file-based
+      Storages or those with locks, may be shared-read.
+
+The other form is:
+  s2=RDF.Storage(storage=s1)
+Copy an existing Storage s1.
+
+"""
     global _world
     global _debug    
     if _debug:
@@ -808,9 +885,25 @@ class Storage:
 
 
 class Uri:
+  """Redland URI Class
 
+  import RDF
+  uri1=RDF.Uri(string="http://example.com/")
+  uri2=RDF.Uri(uri=uri1)
+
+"""
   def __init__(self, **args):
-    """Create an RDF URI (constructor)."""
+    """Create an RDF URI (constructor).
+
+Creates a new RDF Node from either of the following forms:
+
+  uri1=RDF.Uri(string="http://example.com/")
+Create a URI from the given string.
+
+  uri2=RDF.Uri(uri=uri1)
+Copy an existing URI uri1.
+
+    """
     global _world
     global _debug    
     if _debug:
@@ -865,9 +958,30 @@ class Uri:
 
 
 class Parser:
+  """Redland Parser Class
 
-  def __init__(self, name="", mime_type="application/rdf+xml", uri=None):
-    """Create an RDF Parser (constructor)."""
+  import RDF
+  parser1=RDF.Parser()
+  parser2=RDF.Parser(name="rdfxml")
+  parser3=RDF.Parser(mime_type="application/rdf+xml")
+
+  stream=parser2.parse_as_stream("file://dir/file.rdf")
+  parser3.parse_into_model(model, "file://dir/file.rdf", "http://example.org/")
+  """
+  
+  def __init__(self, name=None, mime_type="application/rdf+xml", uri=None):
+    """Create an RDF Parser (constructor).
+
+Create a new RDF Parser for a particular syntax.  The parser is
+chosen by the fields given to the constructor, all of which are
+optional.  When any are given, they must all match.
+
+  name      - parser name (currently "raptor", "repat" and "ntriples")
+  mime_type - currently "application/rdf+xml" (default) or "text/plain" (ntriples)
+  uri       - URI identifying the syntax
+              currently only "http://www.w3.org/TR/rdf-testcases/#ntriples"
+
+    """
     global _world
     global _debug    
     if _debug:
