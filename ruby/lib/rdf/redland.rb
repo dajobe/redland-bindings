@@ -1,21 +1,28 @@
 require 'rdf/redland/model'
 require 'rdf/redland/store'
+require 'rdf/redland/stream'
 require 'rdf/redland/statement'
+require 'rdf/redland/util'
 require 'rdf/redland/node'
 require 'rdf/redland/parser'
+# syntax error in query
 #require 'rdf/redland/query'
 require 'rdf/redland/resource'
 require 'rdf/redland/serializer'
 require 'rdf/redland/uri'
 require 'rdf/redland/resource'
-#require 'log4r'
+require 'rdf/redland/util'
 #require 'rdf/redland/constants'
+
+require 'log4r'
 
 module Redland
 
   
+  # Load the interface to the C shared library
+  require 'redland'
 
-  #  include Redland
+  include Redland
 
   class RedlandError < RuntimeError
   end
