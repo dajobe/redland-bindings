@@ -161,7 +161,11 @@ def message_handler (type, message):
 
 def set_message_handler(handler):
   """Set the Redland message handler for Python.  It takes
-     a single function that takes (integer, string) arguments."""
+     a single function that takes (integer, string) arguments.
+
+     If it returns an non-zero integer, Redland will consider
+     the message handled and not display it using the default
+     handler."""
   import Redland_python
 
   Redland_python.set_callback(handler)
