@@ -45,22 +45,22 @@ RDF::Redland::Node - Redland RDF Node (RDF Resource, Property, Literal) Class
 =head1 SYNOPSIS
 
   use RDF::Redland;
-  my $node=new RDF::Redland::Node();
-  my $node2=RDF::Redland::Node->new_from_uri_string("http://example.com/");
-  my $node3=RDF::Redland::Node->new_from_uri(new RDF::Redland::URI("http://example.com/"));
-  my $node4=RDF::Redland::Node->new_from_literal("Hello, World!","",0);
-  my $node5=RDF::Redland::Node->new_from_literal("<tag>content</tag>","",1);
-  my $node6=RDF::Redland::Node->new_from_blank_identifier("genid1");
+  my $node1=new RDF::Redland::Node("Hello, World!");
+  my $node2=new RDF::Redland::Node($uri);
+  my $node3=$node2->clone;
+
+  my $node4=RDF::Redland::Node->new_from_uri("http://example.com/");
+  my $node5=RDF::Redland::Node->new_literal("Hello, World!");
+  my $node6=RDF::Redland::Node->new_xml_literal("<tag>content</tag>");
+  my $node7=RDF::Redland::Node->new_from_blank_identifier("genid1");
   ...
 
-  print $node2->uri->as_string,"\n";           # Using RDF::Redland::URI::as_string
-  print $node4->literal_value_as_latin1,"\n";
+  print $node4->uri->as_string,"\n";  # Using RDF::Redland::URI::as_string
+  print $node5->literal_value_as_latin1,"\n";
 
 =head1 DESCRIPTION
 
-This class represents nodes and arcs in the RDF model graph.  RDF
-model Nodes are RDF resources and literals and RDF model Arcs are
-properties.   RDF::Redland::Statement is a subclass of RDF::Redland::Node.
+This class represents RDF URIs, literals and blank nodes in the RDF graph.  
 
 =cut
 
@@ -72,31 +72,49 @@ properties.   RDF::Redland::Statement is a subclass of RDF::Redland::Node.
 
 =over
 
-=item new
+=item new [STRING | URI | NODE]
 
-Create a new RDF::Redland::Node object
+Create a new URI node, literal node or copy an existing node.
+
+If a literal I<STRING> is given, make a plain literal node.  If a
+I<URI> class (perl URI or RDF::Redland::URI), make a resource node.
+Otherwise if an existing (RDF::Redland::Node) I<NODE> is given, copy
+the existing node.
 
 =cut
 
 
 # CONSTRUCTOR
 # (main)
-sub new ($) {
-  my($proto)=@_;
+sub new ($;$) {
+  my($proto,$arg)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{NODE}=&RDF::Redland::CORE::librdf_new_node($RDF::Redland::World->{WORLD});
+
+  if($arg) {
+    if(my $arg_class=ref($arg)) {
+      # Try several classes
+      if(UNIVERSAL::isa($arg_class, 'RDF::Redland::Node')) {
+        return $self->clone;
+      } elsif(UNIVERSAL::isa($arg_class, 'RDF::Redland::URI')) {
+        $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
+      } elsif (UNIVERSAL::isa($arg_class, 'URI')) {
+	$self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
+      } else {
+	die "RDF::Redland::Node::new - Cannot make a node from an object of class $arg_class\n";
+      }
+    } else {
+      # Not a class
+      $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_typed_literal($RDF::Redland::World->{WORLD},$arg,'',undef);
+    }
+  } else {
+    $self->{NODE}=&RDF::Redland::CORE::librdf_new_node($RDF::Redland::World->{WORLD});
+  }
   return undef if !$self->{NODE};
 
   bless ($self, $class);
   return $self;
 }
-
-=item new_from_uri_string URI_STRING
-
-Create a new RDF::Redland::Node object for a resource with URI I<URI_STRING>.
-
-=cut
 
 sub new_from_uri_string ($$) {
   my($proto,$uri_string)=@_;
@@ -104,6 +122,7 @@ sub new_from_uri_string ($$) {
   my $self  = {};
   die "RDF::Redland::Node::new_from_uri_string - Cannot create node from empty URI\n"
     unless $uri_string;
+
   $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$uri_string);
   return undef if !$self->{NODE};
 
@@ -113,30 +132,32 @@ sub new_from_uri_string ($$) {
 
 =item new_from_uri URI
 
-Create a new RDF::Redland::Node object for a resource with RDF::Redland::URI object
-I<URI>.
+Create a new URI node.  I<URI> can be either a RDF::Redland::URI
+object, a perl URI class or a literal string.
 
 =cut
 
 sub new_from_uri ($$) {
-  my($proto,$uri)=@_;
+  my($proto,$arg)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri($RDF::Redland::World->{WORLD},$uri->{URI});
+  if(my $class=ref $arg) {
+    if(UNIVERSAL::isa($class, 'RDF::Redland::URI')) {
+      $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri($RDF::Redland::World->{WORLD},$arg->{URI});
+    } elsif (UNIVERSAL::isa($class, 'URI')) {
+      $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
+    } else {
+      die "RDF::Redland::Node::new_from_uri - Cannot make a Node from an object of class $class\n";
+    }
+  } else {
+    $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg);
+  }
   return undef if !$self->{NODE};
 
   bless ($self, $class);
   return $self;
 }
 
-=item new_from_literal STRING XML_LANGUAGE IS_WF
-
-Create a new RDF::Redland::Node object for a literal value I<STRING> with XML
-language (xml:lang attribute) I<XML_LANGUAGE>
-and if content is well formed XML, when I<IS_WF> is non
-0.  I<XML_LANGUAGE> is optional can can be set to undef.
-
-=cut
 
 sub new_from_literal ($$$$) {
   my($proto,$string,$xml_language,$is_wf_xml)=@_;
@@ -149,31 +170,51 @@ sub new_from_literal ($$$$) {
   return $self;
 }
 
-=item new_from_typed_literal STRING DATATYPE [XML_LANGUAGE]
+=item new_literal STRING [DATATYPE [XML_LANGUAGE]]
 
-Create a new RDF::Redland::Node object for a 
-datatyped literal value I<STRING> with dataype URI I<DATATYPE>
-(an RDF::Redland::URI)
-and language (xml:lang attribute) I<XML_LANGUAGE>
-I<XML_LANGUAGE> is optional can can be omitted.
+Create a new literal node for a literal value I<STRING>.
+Optional datatype URI I<DATATYPE> (RDF::Redland::URI, perl URI or string)
+and language (xml:lang attribute) I<XML_LANGUAGE> may also be given.
 
 =cut
 
-sub new_from_typed_literal ($$$;$) {
-  my($proto,$string,$datatype_uri,$xml_language)=@_;
+sub new_literal ($$;$$) {
+  my($proto,$string,$dt,$xml_language)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_typed_literal($RDF::Redland::World->{WORLD},$string,$xml_language,$datatype_uri->{URI});
+  my $dt_uri=undef;
+  if(defined $dt) {
+    if(my $class=ref $dt && UNIVERSAL::isa($class, 'RDF::Redland::URI')) {
+      $dt_uri=$dt;
+    } elsif (UNIVERSAL::isa($class, 'URI')) {
+      $dt_uri=new RDF::Redland::URI($dt->as_string);
+    } else {
+      $dt_uri=new RDF::Redland::URI($dt);
+    }
+  }
+
+  $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_typed_literal($RDF::Redland::World->{WORLD},$string,$xml_language,$dt_uri);
   return undef if !$self->{NODE};
 
   bless ($self, $class);
   return $self;
 }
 
+=item new_xml_literal STRING
+
+Create a new XML datatyped literal node for the XML in I<STRING>.
+
+=cut
+
+sub new_xml_literal ($$) {
+  my($proto,$string)=@_;
+  return $proto->new_from_literal($string,'',1);
+}
+
+
 =item new_from_blank_identifier IDENTIFIER
 
-Create a new RDF::Redland::Node object for a blank node with
-the (string) identifier IDENTIFIER.
+Create a new blank node with blank node identifier I<IDENTIFIER>.
 
 =cut
 
@@ -188,17 +229,22 @@ sub new_from_blank_identifier ($;$) {
   return $self;
 }
 
-=item new_from_node NODE
 
-Create a new RDF::Redland::Node object from existing RDF::Redland::Node I<NODE> (copy
-constructor).
+=item clone
+
+Copy a RDF::Redland::Node.
 
 =cut
 
-sub new_from_node ($$) {
-  my($proto,$node)=@_;
-  my $class = ref($proto) || $proto;
+sub clone ($) {
+  my($node)=@_;
+  my $class = ref($node);
   my $self  = {};
+
+  if(!$class || $class ne 'RDF::Redland::Node') {
+    die "RDF::Redland::Node::clone - Cannot copy a node object not of class RDF::Redland::Node\n";
+  }
+
   $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_node($node->{NODE});
   return undef if !$self->{NODE};
 
@@ -206,18 +252,21 @@ sub new_from_node ($$) {
   return $self;
 }
 
+sub new_from_node ($$) {
+  my($proto,$node)=@_;
+  return $node->clone;
+}
+
 # internal constructor to build an object from a node created
 # by librdf e.g. from the result of a iterator->next operation
-# this may be shared in which case it should not be freed
-sub _new_from_object ($$$) {
-  my($proto,$object,$free_me)=@_;
+# It always makes a new Redland Node
+sub _new_from_object ($$;$) {
+  my($proto,$object,$do_not_copy)=@_;
   return undef if !$object;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  warn "RDF::Redland::Node::_new_from_object from object $object, free_me=$free_me\n" if $RDF::Redland::Debug;
 
-  $self->{NODE}=$object;
-  $self->{DONT_FREE_ME}=!$free_me;
+  $self->{NODE}=$do_not_copy ? $object : &RDF::Redland::CORE::librdf_new_node_from_node($object);
   bless ($self, $class);
   return $self;
 }
@@ -233,10 +282,7 @@ sub DESTROY ($) {
   my $self=shift;
   warn "RDF::Redland::Node DESTROY $self" if $RDF::Redland::Debug;
   if($self->{NODE}) {
-    if(!$self->{DONT_FREE_ME}) {
-      warn "RDF::Redland::Node DESTROY doing librdf_free_node on librdf node" if $RDF::Redland::Debug;
-      &RDF::Redland::CORE::librdf_free_node($self->{NODE});
-    }
+    &RDF::Redland::CORE::librdf_free_node($self->{NODE});
   }
   warn "RDF::Redland::Node DESTROY done\n" if $RDF::Redland::Debug;
 }
@@ -298,7 +344,7 @@ Return true if node is a resource (with a URI)
 
 =cut
 sub is_resource($) {
-  return &RDF::Redland::CORE::librdf_node_is_resource(shift->{NODE}) != 0;
+  return &RDF::Redland::CORE::librdf_node_is_resource(shift->{NODE});
 }
 
 =item is_literal
@@ -307,7 +353,7 @@ Return true if node is a literal
 
 =cut
 sub is_literal($) {
-  return &RDF::Redland::CORE::librdf_node_is_literal(shift->{NODE}) != 0;
+  return &RDF::Redland::CORE::librdf_node_is_literal(shift->{NODE});
 }
 
 =item is_blank
@@ -316,7 +362,7 @@ Return true if node is a blank nodeID
 
 =cut
 sub is_blank($) {
-  return &RDF::Redland::CORE::librdf_node_is_blank(shift->{NODE}) != 0;
+  return &RDF::Redland::CORE::librdf_node_is_blank(shift->{NODE});
 }
 
 =item literal_value
@@ -398,6 +444,48 @@ sub equals ($$) {
 }
 
 =pod
+
+=head1 OLDER METHODS
+
+=over
+
+=item new_from_literal STRING XML_LANGUAGE IS_WF
+
+Create a new RDF::Redland::Node object for a literal value I<STRING> with XML
+language (xml:lang attribute) I<XML_LANGUAGE>
+and if content is well formed XML, when I<IS_WF> is non
+0.  I<XML_LANGUAGE> is optional can can be set to undef.
+
+This method remains but using new_literal is prefered.
+For plain literals $node=new RDF::Redland::Node("blah") is simplest.
+
+
+=item new_from_typed_literal STRING [DATATYPE [XML_LANGUAGE]]
+
+Renamed to new_literal with same arguments.
+
+=back
+
+=cut
+
+
+=item new_from_uri_string URI_STRING
+
+Create a new RDF::Redland::Node object for a resource with URI I<URI_STRING>.
+It is equivalent to use the shorter
+$a=new RDF::Redland::Node->new_from_uri($uri_string)
+
+=item new_from_node NODE
+
+Create a new RDF::Redland::Node object from existing
+RDF::Redland::Node I<NODE> (copy constructor).
+It is equivalent to use $new_node=$old_node->clone
+
+=back
+
+
+=cut
+
 
 =back
 
