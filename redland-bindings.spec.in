@@ -34,7 +34,7 @@ mechanisms and other elements. Redland is designed for applications
 developers to provide RDF support in their applications as well as
 for RDF developers to experiment with the technology.
 
-%package perl
+%package -n redland-perl
 Summary: Perl modules for the Redland RDF library
 Group: Development/Libraries
 Requires: redland = %{redland_version}
@@ -43,7 +43,7 @@ Requires: redland = %{redland_version}
 The redland-perl package contains the parts of Redland that provide
 an interface to Perl.
 
-%package python
+%package -n redland-python
 Summary: Python modules for the Redland RDF library
 Group: Development/Libraries
 Requires: redland = %{redland_version}
