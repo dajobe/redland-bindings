@@ -47,15 +47,21 @@ namespace Redland {
                                 IntPtr v = librdf_query_results_get_binding_value(query_results,i);
                                 h.Add(name, new Node(v));
                         }
-                        
+
                         return h;
                 }
+
+		[DllImport ("librdf")]
+		static extern int libdf_query_results_finished (IntPtr query_results);
 
 		// IEnumerator implementation
 		public object Current {
 			get { 
+				int r = librdf_query_results_finished (query_results);
+                        	if(r != 0)
+                                	return null;  
 				Hashtable h=MakeResultsHash();
-				return h;						 
+				return h;
 			}
 		}
 
@@ -72,9 +78,6 @@ namespace Redland {
 		{
 			throw new NotSupportedException ();
 		}
-
-		[DllImport ("librdf")]
-		static extern int libdf_query_results_finished (IntPtr query_results);
 
 		public bool End {
 			get {
