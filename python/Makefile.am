@@ -63,6 +63,7 @@ $(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so
 
 install-pythonDATA: $(python_DATA)
 	$(INSTALL_PROGRAM) $(PYTHON_PACKAGE).so $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so
+	$(INSTALL_DATA) RDF.py $(DESTDIR)$(pythondir)/RDF.py
 
 uninstall-pythonDATA: $(python_DATA)
 	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so
