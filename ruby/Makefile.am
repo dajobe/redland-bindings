@@ -46,7 +46,7 @@ $(srcdir)/$(RUBY_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -ruby -module $(RUBY_PACKAGE) -o $@ $<
 
 
-$(RUBY_PACKAGE)_wrap.so: $(srcdir)/$(RUBY_PACKAGE)_wrap.c $(top_builddir)/librdf/librdf.la
+$(RUBY_PACKAGE)_wrap.so: $(srcdir)/$(RUBY_PACKAGE)_wrap.c
 	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf -I$(rubydir) $(RUBY_PACKAGE)_wrap.c -c -o $@
 
 
