@@ -516,6 +516,29 @@ sub target ($$$) {
   return $node ? RDF::Redland::Node->_new_from_object($node,1) : undef;
 }
 
+=item contexts
+
+Get all context RDF::Redland::Node objects in the model
+
+=cut
+
+sub contexts ($) {
+  my($self)=@_;
+  my $iterator=&RDF::Redland::CORE::librdf_model_get_contexts($self->{MODEL});
+  return () if !$iterator;
+  my $user_iterator=new RDF::Redland::Iterator($iterator,$self);
+  return () if !$user_iterator;
+  
+  my(@results)=();
+  while(!$user_iterator->end) {
+    push(@results, $user_iterator->current);
+    $user_iterator->next;
+  }
+  $user_iterator=undef;
+
+  @results;
+}
+
 =item feature URI [VALUE]
 
 Get/set a model feature.  The feature is named via RDF::Redland::URI
