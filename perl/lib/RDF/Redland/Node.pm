@@ -150,6 +150,27 @@ sub new_from_literal ($$$$) {
   return $self;
 }
 
+=item new_from_typed_literal STRING DATATYPE [XML_LANGUAGE]
+
+Create a new RDF::Redland::Node object for a 
+datatyped literal value I<STRING> with dataype URI I<DATATYPE>
+(an RDF::Redland::URI)
+and language (xml:lang attribute) I<XML_LANGUAGE>
+I<XML_LANGUAGE> is optional can can be omitted.
+
+=cut
+
+sub new_from_typed_literal ($$$;$) {
+  my($proto,$string,$datatype_uri,$xml_language)=@_;
+  my $class = ref($proto) || $proto;
+  my $self  = {};
+  $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_typed_literal($RDF::Redland::World->{WORLD},$string,$xml_language,$datatype_uri->{URI});
+  return undef if !$self->{NODE};
+
+  bless ($self, $class);
+  return $self;
+}
+
 =item new_from_blank_identifier IDENTIFIER
 
 Create a new RDF::Redland::Node object for a blank node with
