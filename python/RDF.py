@@ -105,7 +105,7 @@ __all__ = [ "Node",
             "SPARQLQuery",
             "debug"]
 
-__version__ = "1.0"
+__version__ = "1.1"
 
 # For pydoc
 __date__ = '$Date$'
@@ -158,7 +158,7 @@ def node_type_name(num):
       return n
   raise NodeTypeError('Unknown node type number %d' % num)
 
-def message_handler(type, message):
+def message_handler (type, message):
   raise RedlandError("Obsolete method")
 
 def set_message_handler(handler):
@@ -1050,10 +1050,14 @@ Create a model using an in-memory storage.
       value=Node(literal=value)
     Redland.librdf_model_set_feature(self._model,uri._reduri,value._node)
 
-  def load(self, uri, name="", mime_type="", type_uri=None):
+  def load(self, uri, name="", mime_type="", type_uri=None, handler=None):
     """Load triples into the Model from a URI in a syntax.
 
        If no parser name is given, the parser to use is guessed.
+
+       If handler is given, an error handler with the signature
+         def handler(code, level, facility, message, line, column, byte, file, uri)
+       is called.
    """
     if type(uri) is str:
       uri = Uri(string=uri)
@@ -1074,12 +1078,22 @@ Create a model using an in-memory storage.
     else:
       rtype_uri = None
 
-    Redland.librdf_model_load(self._model, ruri, name, mime_type, rtype_uri)
-    
+    if handler is not None:
+      import Redland_python
+      Redland_python.set_callback(handler)
+
+    rc=Redland.librdf_model_load(self._model, ruri, name, mime_type, rtype_uri)
+
+    if handler is not None:
+      import Redland_python
+      Redland_python.reset_callback()
+
+    return rc
+
   def to_string(self, base_uri=None, name="", mime_type="", type_uri=None):
     """Serialize the Model to a syntax.
 
-       print model.to_string(base_uri="http://example.org/base#");
+       print model.to_string(base_uri="http://example.org/base");
 
        If no serializer name is given, the default serializer RDF/XML is used.
    """
@@ -1626,7 +1640,7 @@ optional.  When any are given, they must all match.
       Redland.librdf_free_parser(self._parser)
 
   def parse_as_stream(self, uri, base_uri=None):
-    """"Return a Stream of Statements from parsing the content at
+    """Return a Stream of Statements from parsing the content at
         a URI for the optional base URI or None if the parsing fails.
 
         (This depends on what URI support raptor provides to redland)
@@ -1648,7 +1662,7 @@ optional.  When any are given, they must all match.
     return Stream(my_stream, self)
 
   def parse_string_as_stream(self, string, base_uri):
-    """"Return a Stream of Statements from parsing the content in
+    """Return a Stream of Statements from parsing the content in
         string with the required base URI or None if the parsing fails.
 
           for statement in parser.parse_string_as_stream(rdfstring, base_uri):
@@ -1667,12 +1681,16 @@ optional.  When any are given, they must all match.
       return None
     return Stream(my_stream, self)
 
-  def parse_into_model(self, model, uri, base_uri=None):
-    """"Parse into the Model model from the content at
-        (file: only at present) URI, for the optional base URI.
+  def parse_into_model(self, model, uri, base_uri=None, handler=None):
+    """Parse into the Model model from the content at the URI, for
+       the optional base URI.
         
-          parser.parse_into_model(model, "file:./foo.rdf",
-                                  "http://example.com/foo.rdf")
+       If handler is given, an error handler with the signature
+         def handler(code, level, facility, message, line, column, byte, file, uri)
+       is called.
+
+       parser.parse_into_model(model, "file:./foo.rdf",
+                               "http://example.com/foo.rdf")
     """
 
     if type(uri) is str:
@@ -1687,17 +1705,33 @@ optional.  When any are given, they must all match.
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
       base_uri = uri
+
+    if handler is not None:
+      import Redland_python
+      Redland_python.set_callback(handler)
+
     try:
       r = Redland.librdf_parser_parse_into_model(self._parser,
         uri._reduri, base_uri._reduri, model._model)
     except RedlandError, err:
       print "Caught error",err
       raise err
+
+    if handler is not None:
+      import Redland_python
+      Redland_python.reset_callback()
+
     return 1
 
-  def parse_string_into_model(self, model, string, base_uri):
-    """"Parse into the Model model from the content ain string
-        with the required base URI"""
+  def parse_string_into_model(self, model, string, base_uri, handler = None):
+    """Parse into the Model model from the content string
+        with the required base URI
+
+       If handler is given, an error handler with the signature
+         def handler(code, level, facility, message, line, column, byte, file, uri)
+       is called.
+
+    """
     if type(base_uri) is str:
       base_uri = Uri(string = base_uri)
     elif type(base_uri) is unicode:
@@ -1705,8 +1739,19 @@ optional.  When any are given, they must all match.
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
       raise RedlandError("A base URI is required when parsing a string")
-    return Redland.librdf_parser_parse_string_into_model(self._parser,
-      string, base_uri._reduri, model._model)
+
+    if handler is not None:
+      import Redland_python
+      Redland_python.set_callback(handler)
+
+    rc=Redland.librdf_parser_parse_string_into_model(self._parser, string,
+                                           base_uri._reduri, model._model)
+
+    if handler is not None:
+      import Redland_python
+      Redland_python.reset_callback()
+
+    return rc
 
   def get_feature(self, uri):
     """Return the Node value of Parser feature URI uri"""
@@ -2127,7 +2172,7 @@ class NS(object):
   """ Redland Namespace Utility Class
 
   import RDF
-  nspace = RDF.NS("http://example.com/foo#")
+  nspace = RDF.NS("http://example.com/foo")
 
   # creates an RDF Node for http://example.com/foo#blah   
   node1 = nspace.blah
