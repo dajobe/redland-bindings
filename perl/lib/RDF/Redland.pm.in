@@ -92,7 +92,7 @@ $Debug=0;
 
 # 'Class' Constructor
 
-&Redland::librdf_init_world(undef, undef);
+&Redland::librdf_init_world("", undef);
 
 # 'Class' Destructor
 sub END ($) {
