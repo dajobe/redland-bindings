@@ -86,6 +86,14 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
+		static extern void librdf_free_statement (IntPtr statement);
+
+		~Statement ()
+		{
+			librdf_free_statement (stm);
+		}
+
+		[DllImport ("librdf")]
 		static extern IntPtr librdf_statement_to_string (IntPtr stm);
 
 		public override string ToString ()

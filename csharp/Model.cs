@@ -42,6 +42,14 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
+		static extern void librdf_free_model (IntPtr model);
+
+		~Model ()
+		{
+			librdf_free_model (model);
+		}
+
+		[DllImport ("librdf")]
 		static extern int librdf_model_add_statement (IntPtr model, IntPtr statement);
 
 		public int AddStatement (Statement stm)

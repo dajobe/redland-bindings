@@ -53,6 +53,14 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
+		static extern void librdf_free_node (IntPtr node);
+
+		~Node ()
+		{
+			librdf_free_node (node);
+		}
+
+		[DllImport ("librdf")]
 		static extern int librdf_node_equals (IntPtr first_node, IntPtr second_node);
 		
 		public override bool Equals (object o)

@@ -35,5 +35,14 @@ namespace Redland {
 		public  IntPtr Handle {
 			get { return world; }
 		}
+
+		[DllImport ("librdf")]
+		static extern void librdf_free_world (IntPtr world);
+
+		~World ()
+		{
+			librdf_free_world (world);
+		}
+
 	}
 }

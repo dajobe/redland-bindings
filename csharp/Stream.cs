@@ -70,5 +70,15 @@ namespace Redland {
 		{
 			stream = raw;
 		}
+
+		[DllImport ("librdf")]
+		static extern void librdf_free_stream (IntPtr stream);
+
+		~Stream ()
+		{
+			librdf_free_stream (stream);
+		}
+
+
 	}
 }

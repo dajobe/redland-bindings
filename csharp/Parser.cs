@@ -57,6 +57,14 @@ namespace Redland {
 		}
 
 
+		[DllImport ("librdf")]
+		static extern void librdf_free_parser (IntPtr parser);
+
+		~Parser ()
+		{
+			librdf_free_parser (parser);
+		}
+
 
 		[DllImport ("librdf")]
 		static extern int librdf_parser_parse_string_into_model (IntPtr parser, IntPtr s, IntPtr base_uri, IntPtr model);

@@ -72,6 +72,15 @@ namespace Redland {
 		{
 			this.iterator = iterator;
 		}
+
+		[DllImport ("librdf")]
+		static extern void librdf_free_iterator (IntPtr iterator);
+
+		~Iterator ()
+		{
+			librdf_free_iterator (iterator);
+		}
+
 	}
 }
 

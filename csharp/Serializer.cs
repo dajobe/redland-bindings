@@ -47,6 +47,15 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
+		static extern void librdf_free_serializer (IntPtr serializer);
+
+		~Serializer ()
+		{
+			librdf_free_serializer (serializer);
+		}
+
+
+		[DllImport ("librdf")]
 		static extern int librdf_serializer_serialize_model (IntPtr serializer, IntPtr file, IntPtr base_uri, IntPtr model);
 
 		public int SerializeModel (IntPtr file, Uri base_uri, Model model)

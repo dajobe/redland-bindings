@@ -38,5 +38,15 @@ namespace Redland {
 			: this (Redland.World, storage_name, name, options)
 		{
 		}
+
+		[DllImport ("librdf")]
+		static extern void librdf_free_storage (IntPtr storage);
+
+		~Storage ()
+		{
+			librdf_free_storage (storage);
+		}
+
+
 	}
 }
