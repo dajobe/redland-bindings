@@ -69,7 +69,7 @@ sub MY::init_main {
   my($self)=@_;
   package MY; # so that "SUPER" works right
   $self->SUPER::init_main();
-  $self->{FULLEXT}.="/".$::CORE_PACKAGE;
+  $self->{FULLEXT}="RDF/Redland";
   $self->{BASEEXT}=$::CORE_PACKAGE;
 }
 
