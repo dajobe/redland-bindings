@@ -43,7 +43,7 @@ if statement is None:
 model.add_statement(statement)
 
 # Match against an empty statement - find everything
-for s in model.find_statements(RDF.Statement(subject=None, predicate=None, object=None)):
+for s in model.find_statements(RDF.Statement()):
   print "found statement:",s
 
 test_file='../perl/dc.rdf'
