@@ -1,4 +1,18 @@
+2004-07-27  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* php/Makefile.am: Added redland_wrap.c.patch to dist
+
+2004-07-26  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Makefile.am: bindings in html
+
+	* ruby/README.txt: grammar
+
 2004-07-23  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* AUTHORS: Dominic Sisneros email
+
+	* configure.ac: 0.9.17.1
 
 	* python/test/test.py, python/RDF.py,
 	perl/lib/RDF/Redland/Parser.pm, perl/serialize.pl,
