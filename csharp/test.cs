@@ -64,8 +64,12 @@ public class Test {
 		QueryResults qr = model.Execute (query);
                 while(!qr.End) {
 			Hashtable result = (Hashtable) qr.Current;
-			Console.Write ("Result: ");
-			Console.WriteLine (result.ToString ());
+			Console.WriteLine("Result:");
+
+                        IDictionaryEnumerator enumerator = result.GetEnumerator();
+                        while ( enumerator.MoveNext() )
+                          Console.WriteLine("  {0} = {1}", enumerator.Key, enumerator.Value);
+
                         qr.MoveNext();
                 }
 
