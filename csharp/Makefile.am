@@ -114,7 +114,7 @@ redland.pub:
 endif
 
 install-mono: Redland.dll
-	$(MONO_GACUTIL) -i Redland.dll -f -package 1.0 -gacdir $(CLI_PREFIX)/lib -root $(CLI_PREFIX)/lib
+	$(MONO_GACUTIL) -i Redland.dll -f -package 1.0 -gacdir $(DESTDIR)$(CLI_PREFIX)/lib -root $(DESTDIR)$(CLI_PREFIX)/lib
 
 install-pnet: Redland.dll
 	$(PNET_GACUTIL) --install --default Redland.dll 1.0
