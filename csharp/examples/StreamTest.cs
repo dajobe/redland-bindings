@@ -31,7 +31,7 @@ namespace Redland {
 		[Test]
 		public void ParserIntoModel () 
 		{
-			string a = "file:dc.rdf";
+			string a = "file:../../data/dc.rdf";
 			parser.ParseIntoModel (model, a);
 			NUnit.Framework.Assert.IsTrue (model.Size == 3);
 		}
@@ -40,7 +40,7 @@ namespace Redland {
 		public void IterateModel ()
 		{
 			int i = 0;
-			string a = "file:dc.rdf";
+			string a = "file:../../data/dc.rdf";
 			parser.ParseIntoModel (model, a);			
 			Stream model_iter = model.ToStream ();
 
@@ -48,27 +48,27 @@ namespace Redland {
 				i++;
 				model_iter.MoveNext ();
 			}
-			NUnit.Framework.Assert.IsTrue (i == 3, "dc.rdf should have 3 statements");
+			NUnit.Framework.Assert.IsTrue (i == 3, "../../data/dc.rdf should have 3 statements");
 		}
 
 		[Test]
 		public void ParseAsStream ()
 		{
-			string a = "file:dc.rdf";
+			string a = "file:../../data/dc.rdf";
 			Stream stream = parser.ParseAsStream (a);
 
 			while (!stream.End) {
 				model.AddStatement ((Statement) stream.Current);
 				stream.MoveNext ();
 			}
-			NUnit.Framework.Assert.IsTrue (model.Size == 3, "dc.rdf should have 3 statements");
+			NUnit.Framework.Assert.IsTrue (model.Size == 3, "../../data/dc.rdf should have 3 statements");
 		}
 
 		[Test]
 		public void FindStatements1 ()
 		{
 			int i = 0;
-			parser.ParseIntoModel (model, "file:dc.rdf");
+			parser.ParseIntoModel (model, "file:../../data/dc.rdf");
 			Statement stm = new Statement (new Node (new Uri ("http://purl.org/net/dajobe/")), null, null);
 			Stream found_stms = model.FindStatements (stm);
 
@@ -83,7 +83,7 @@ namespace Redland {
 		public void Contains ()
 		{
 			int i = 0;
-			parser.ParseIntoModel (model, "file:dc.rdf");
+			parser.ParseIntoModel (model, "file:../../data/dc.rdf");
 			Statement stm = new Statement (new Node (new Uri ("http://purl.org/net/dajobe/")),
 						       new Node (new Uri ("http://purl.org/dc/elements/1.1/creator")),
 						       new Node ("Dave Beckett"));
@@ -100,7 +100,7 @@ namespace Redland {
 		public void FindStatementsWithContext ()
 		{
 			int i = 0;
-			string a = "file:dc.rdf";
+			string a = "file:../../data/dc.rdf";
 			Node intended_context = new Node (new Uri ("http://example.org/"));
 			Stream stream = parser.ParseAsStream (a);
 
