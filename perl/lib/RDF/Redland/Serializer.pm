@@ -124,6 +124,20 @@ sub serialize_model_to_string($$$) {
 }
 
 
+=item set_namespace URI PREFIX
+
+Define a namespace I<URI> with the supplied I<PREFIX> for use in serializing
+an RDF Graph.
+
+=cut
+
+sub set_namespace($$$) {
+  my($self,$uri,$prefix)=@_;
+
+  return &RDF::Redland::CORE::librdf_serializer_set_namespace($self->{SERIALIZER}, $uri->{URI}, $prefix);
+}
+
+
 =item feature URI [VALUE]
 
 Get/set a serializer feature.  The feature is named via
