@@ -140,7 +140,8 @@ sub new_from_statement ($$) {
 }
 
 sub new_from_nodes ($$$$) {
-  return new(@_);
+  my($proto,$s,$p,$o)=@_;
+  return RDF::Redland::Statement->new($s,$p,$o);
 }
 
 # internal constructor to build a new object from a statement created
