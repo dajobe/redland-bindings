@@ -9,6 +9,7 @@ lib/RDF/Redland/Model.pm	RDF::Redland::Model Module
 lib/RDF/Redland/Node.pm		RDF::Redland::Node Module
 lib/RDF/Redland/Parser.pm	RDF::Redland::Parser Module
 lib/RDF/Redland/RSS.pm		RDF::Redland::RSS Module
+lib/RDF/Redland/Serializer.pm	RDF::Redland::Serializer Module
 lib/RDF/Redland/Statement.pm	RDF::Redland::Statement Module
 lib/RDF/Redland/Storage.pm	RDF::Redland::Storage Module
 lib/RDF/Redland/Stream.pm	RDF::Redland::Stream Module
