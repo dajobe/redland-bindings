@@ -112,7 +112,6 @@ _node_types={
     'NODE_TYPE_UNKNOWN'   : 0,
     'NODE_TYPE_RESOURCE'  : 1,
     'NODE_TYPE_LITERAL'   : 2,
-    'NODE_TYPE_LI'        : 3,
     'NODE_TYPE_BLANK'     : 4}
 
 import Redland;
@@ -382,15 +381,15 @@ Creates a new RDF Node using the following fields:
 
   def is_resource(self):
     """Return true if node is a resource  with a URI"""   
-    return self.type==_node_types['NODE_TYPE_RESOURCE']
+    return (Redland.librdf_node_is_resource(self._node) != 0)
 
   def is_literal(self):
     """Return true if node is a literal"""
-    return self.type==_node_types['NODE_TYPE_LITERAL']
+    return (Redland.librdf_node_is_literal(self._node) != 0)
   
   def is_blank(self):
     """Return true if node is a blank node"""   
-    return self.type==_node_types['NODE_TYPE_BLANK']
+    return (Redland.librdf_node_is_blank(self._node) != 0)
   
 # end class Node
 
