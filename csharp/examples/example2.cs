@@ -22,13 +22,13 @@ public class Example2 {
 
 		Statement stm = new Statement ();
 
-		Node subject = new Node ("http://example.org/subject");
+		Node subject = new Node (new Rdf.Uri("http://example.org/subject"));
 		stm.Subject = subject;
 
-		Node predicate = new Node ("http://example.org/pred1");
+		Node predicate = new Node (new Rdf.Uri("http://example.org/pred1"));
 		stm.Predicate = predicate;
 
-		Node obj = new Node ("object", null, 0);
+		Node obj = new Node ("object");
 		stm.Object = obj;
 
 		model.AddStatement (stm);

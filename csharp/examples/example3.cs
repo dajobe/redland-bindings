@@ -12,9 +12,9 @@ public class Test {
 		Storage storage = new Storage ("hashes", "test", "hash-type='bdb',dir='.'");
 		Model model = new Model (storage);
 
-		Node n1 = new Node ("http://purl.org/net/dajobe/");
-		Node n2 = new Node ("http://purl.org/dc/elements/1.1/creator");
-		Node n3 = new Node ("Dave Beckett", null, 0);
+		Node n1 = new Node (new Rdf.Uri("http://purl.org/net/dajobe/"));
+		Node n2 = new Node (new Rdf.Uri("http://purl.org/dc/elements/1.1/creator"));
+		Node n3 = new Node ("Dave Beckett");
 		
 		Statement stm = new Statement (n1, n2, n3);
 		model.AddStatement (stm);

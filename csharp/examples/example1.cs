@@ -21,9 +21,9 @@ public class Test {
 		parser.ParseStringIntoModel (rdfxml_content, uri, model);
 
 		Node subject, predicate, obj;
-		subject = new Node ("http://purl.org/net/dajobe/");
-		predicate = new Node ("http://purl.org/dc/elements/1.1/title");
-		obj = new Node ("My Home Page", null, 0);
+		subject = new Node (new Rdf.Uri("http://purl.org/net/dajobe/"));
+		predicate = new Node (new Rdf.Uri("http://purl.org/dc/elements/1.1/title"));
+		obj = new Node ("My Home Page");
 
 		Statement stm = new Statement (subject, predicate, obj);
 		model.AddStatement (stm);
