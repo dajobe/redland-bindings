@@ -46,6 +46,8 @@ $(PYTHON_PACKAGE)_wrap.so $(PYTHON_PACKAGE)_wrap.o $(PYTHON_PACKAGE)-stamp \
 $(PYTHON_PACKAGE).so $(PYTHON_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
+RUN=@REDLAND_RUN@
+
 SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_DECL_I
 
 $(PYTHON_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-post.i redland-decl.i
@@ -77,12 +79,12 @@ check-local: unittest-python test-python
 
 test-python: $(PYTHON_PACKAGE).so
 	PYTHONPATH=. \
-	  $(PYTHON) $(srcdir)/test/test.py
+	  $(RUN)$(PYTHON) $(srcdir)/test/test.py
 
 unittest-python: $(PYTHON_PACKAGE).so
 	PYTHONPATH=. \
-	  $(PYTHON) $(srcdir)/redlandtest.py
+	  $(RUN)$(PYTHON) $(srcdir)/redlandtest.py
 
 RDF.html: RDF.py $(PYTHON_PACKAGE).so
 	PYTHONPATH=. \
-	  $(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF
+	  $(RUN)$(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF

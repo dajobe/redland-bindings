@@ -41,6 +41,8 @@ $(PHP_PACKAGE)_wrap.so $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
 $(PHP_PACKAGE).so $(PHP_PACKAGE).bundle $(PHP_PACKAGE)_wrap.c.orig 
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
+RUN=@REDLAND_RUN@
+
 SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_POST_I -DREDLAND_DECL_I -DREDLAND_DECL_I
 
 $(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i redland-pre.i
@@ -86,4 +88,4 @@ check-local: test-php
 # See the manual for the php command:
 #  http://www.php.net/manual/en/features.commandline.php
 test-php: $(PHP_PACKAGE).so $(srcdir)/test.php
-	$(PHP) -c $(srcdir) $(srcdir)/test.php
+	$(RUN)$(PHP) -c $(srcdir) $(srcdir)/test.php

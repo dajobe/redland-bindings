@@ -45,6 +45,8 @@ $(RUBY_PACKAGE)_wrap.so $(RUBY_PACKAGE)_wrap.o ruby-redland-stamp \
 $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
+RUN=@REDLAND_RUN@
+
 SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_TYPES_I
 
 $(srcdir)/$(RUBY_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-pre.i redland-types.i
@@ -86,4 +88,4 @@ uninstall-rubyDATA: $(ruby_DATA)
 check-local: test-ruby
 
 test-ruby: $(RUBY_PACKAGE).so $(srcdir)/example.rb
-	$(RUBY) -I. $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
+	$(RUN)$(RUBY) -I. $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor

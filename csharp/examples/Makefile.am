@@ -24,6 +24,8 @@ CSHARPC=@CSHARPC@
 CSHARPCFLAGS=@CSHARPCFLAGS@
 CLIRUN=@CLIRUN@
 
+RUN=@REDLAND_RUN@
+
 EXTRA_DIST= GetsTest.cs ModelGeneralTest.cs \
 ModelTest.cs SimpleGetsTest.cs StreamTest.cs TemplateTest.cs	\
 example1.cs example2.cs example3.cs example4.cs \
@@ -57,7 +59,7 @@ check-local: $(CSHARP_TESTS)
 	@MONO_PATH=..; export MONO_PATH; \
 	for prog in $(CSHARP_TESTS); do \
 	  $(ECHO) Running $$prog; \
-	  $(CLIRUN) $$prog; \
+	  $(RUN) $(CLIRUN) $$prog; \
 	done
 
 example4.exe: example4.cs ../Redland.dll
@@ -76,7 +78,7 @@ example1.exe: example1.cs ../Redland.dll
 unittests: $(NUNIT_TESTS) ../Redland.dll nunit-console.exe
 	@MONO_PATH=..; export MONO_PATH; \
 	$(ECHO) Running $(NUNIT_CONSOLE) $(NUNIT_TESTS); \
-	$(CLIRUN) $(NUNIT_CONSOLE) $(NUNIT_TESTS)
+	$(RUN) $(CLIRUN) $(NUNIT_CONSOLE) $(NUNIT_TESTS)
 
 ModelGeneralTest.dll: ModelGeneralTest.cs
 	$(CSHARP_LINK) $(NUNIT_FLAGS) ModelGeneralTest.cs -out:$@

@@ -26,8 +26,6 @@ SWIG=@SWIG@
 AM_CPPFLAGS=@CPPFLAGS@ -I$(top_srcdir)/librdf -I$(top_builddir)/librdf @LIBRDF_CPPFLAGS@ @JDK_INCLUDES@
 AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
-noinst_SCRIPTS=run-java
-
 JAVA_MODULE=core
 JAVA_PACKAGE=org.librdf.redland
 JAVA_PATH=org/librdf/redland/
@@ -76,6 +74,8 @@ $(SWIG_OUTPUTS)
 CLEANFILES=test*db $(JAVA_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
+RUN=@REDLAND_RUN@
+
 
 $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java.in: @REDLAND_SWIG@
 	here=`pwd`; \
@@ -117,13 +117,13 @@ check-local: test-java
 test-java: test1 test2
 
 test1: test1.class $(JAVA_JAR)
-	$(srcdir)/run-java $(JAVA) test1
+	$(RUN)$(srcdir)/run-java $(JAVA) test1
 
 test1.class: test1.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH) test1.java
 
 test2: test2.class $(JAVA_JAR)
-	$(srcdir)/run-java $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) test2
+	$(RUN)$(srcdir)/run-java $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) test2
 
 test2.class: test2.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH) test2.java

@@ -32,6 +32,8 @@ ILGAC=@ILGAC@
 SN=@SN@
 CLI_PREFIX=@CLI_PREFIX@
 
+RUN=@REDLAND_RUN@
+
 CSHARP_C_SHLIB=redland-csharp
 CSHARP_PACKAGE=Redland
 
@@ -78,7 +80,8 @@ build-csharp-stamp: $(CSHARP_DLL)
 check-local: build-csharp-stamp test-csharp
 
 test-csharp: build-csharp-stamp test.exe
-	MONO_PATH=. $(CLIRUN) test.exe
+	MONO_PATH=. \
+	$(RUN) $(CLIRUN) test.exe
 
 test.exe: test.cs Redland.dll
 	$(CSHARP_LINK) test.cs -target:exe -r:Redland.dll -out:$@

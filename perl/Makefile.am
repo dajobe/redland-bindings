@@ -57,6 +57,8 @@ MEM_LIBS=@MEM_LIBS@
 $(perlshareRDFdir)/Redland.pm: build-perl
 
 
+RUN=@REDLAND_RUN@
+
 SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_POST_I -DREDLAND_DECL_I
 
 $(PERL_CORE_PACKAGE)_wrap.c lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm : @REDLAND_SWIG@ redland-pre.i redland-post.i redland-decl.i
@@ -71,7 +73,7 @@ $(PERL_MAKEFILE): $(srcdir)/Makefile.PL lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
 	$(MAKE) -f $(PERL_MAKEFILE) $$target
 
 test-perl: $(PERL_MAKEFILE)
-	$(MAKE) -f $(PERL_MAKEFILE) test
+	$(RUN)$(MAKE) -f $(PERL_MAKEFILE) test
 
 clean-perl realclean-perl:
 	@target=`echo $@ | sed -e 's/-perl//'`; \
