@@ -127,6 +127,9 @@ class RedlandError(Exception):
 class NodeTypeError(RedlandError):
     pass
 
+class RedlandWarning(RedlandError):
+    pass
+
 def node_type(name):
     """Return the Redland node type of a node name"""
     if _node_types.has_key(name):
@@ -143,10 +146,13 @@ def node_type_name(num):
 
 def message_handler (type, message):
   """Internal message dispatcher from Redland to python"""
+  global _debug
+  if _debug:
+      print "message_handler: type, message = ",type,message
   if type == 0:
-    raise "Redland error - ",message
+    raise RedlandError(message)
   else:
-    raise "Redland warning - ",message
+    raise RedlandWarning(message)
 
 def set_message_handler(handler):
   """Set the Redland message handler for Python.  It takes
@@ -155,7 +161,7 @@ def set_message_handler(handler):
   Redland_python.set_callback(handler)
 
 
-class World:
+class World(object):
   """Redland Initialisation class.
 
   There are no user methods (can only be constructed).
@@ -188,7 +194,7 @@ def debug(value=-1):
     return _debug
 
 
-class Node:
+class Node(object):
   """Redland Node (RDF Resource, Property, Literal) Class
 
     import RDF
@@ -280,14 +286,6 @@ Creates a new RDF Node using the following fields:
         print "Deleting Redland node object"
       Redland.librdf_free_node(self._node)
 
-  def __getattr__(self, name):
-    if name=='uri':
-        return self._get_uri()
-    elif name=='type':
-        return self._get_type()
-    else:
-        return self.__dict__[name]
-
   def _get_uri(self):
     # we return a copy of our internal uri
     if self._get_type()==node_type('NODE_TYPE_RESOURCE'):
@@ -298,6 +296,9 @@ Creates a new RDF Node using the following fields:
 
   def _get_type(self):
     return Redland.librdf_node_get_type(self._node)
+
+  uri = property (_get_uri)
+  type = property (_get_type)
 
   def get_literal_value (self):
     """Get a dictionary containing the value of the Node literal"""
@@ -361,7 +362,7 @@ Creates a new RDF Node using the following fields:
 # end class Node
 
 
-class Statement:
+class Statement(object):
   """Redland Statement (triple) class
 
     import RDF
@@ -447,26 +448,6 @@ Copy an existing Statement s1.
         print "Deleting Redland statement object"
       Redland.librdf_free_statement(self._statement)
 
-  def __getattr__(self, name):
-    if name=="subject":
-        return self._get_subject()
-    elif name=="predicate":
-        return self._get_predicate()
-    elif name=="object":
-        return self._get_object()
-    else:
-        return self.__dict__[name]
-
-  def __setattr__(self, name, value):
-    if name=="subject":
-        self._set_subject(value)
-    elif name=="predicate":
-        self._set_predicate(value)
-    elif name=="object":
-        self._set_object(value)
-    else:
-        self.__dict__[name]=value
-
   def _wrap_node(self, rednode):
     return Node(from_object=rednode)
 
@@ -503,6 +484,10 @@ Copy an existing Statement s1.
         Redland.librdf_statement_set_predicate(self._statement,
             Redland.librdf_new_node_from_node(value._node))
 
+  object = property (_get_object, _set_object)
+  subject = property (_get_subject, _set_subject)
+  predicate = property (_get_predicate, _set_predicate)
+  
   def __str__ (self):
     if self._statement == None:
         return ""
@@ -511,7 +496,7 @@ Copy an existing Statement s1.
 
 # end class Statement
 
-class Model:
+class Model(object):
   """Redland Graph class
 
     import RDF
@@ -785,7 +770,7 @@ Create a model using an in memory storage.
 # end class Model
 
 
-class Iterator:
+class Iterator(object):
   """Redland Node Iterator class
 
      A class for iterating over a sequence of Node s such as
@@ -854,7 +839,7 @@ please use 'not iterator.end' instead."""
 
 # end class Iterator
 
-class StreamWithContextIter:
+class StreamWithContextIter(object):
   def __init__(self,stream):
     global _debug
     if _debug:
@@ -874,7 +859,7 @@ class StreamWithContextIter:
       raise StopIteration
     return (self.stream.current(),self.stream.context())
 
-class IteratorWithContextIter:
+class IteratorWithContextIter(object):
   def __init__(self,iterator):
     global _debug
     if _debug:
@@ -897,7 +882,7 @@ class IteratorWithContextIter:
     except AttributeError:
       return (self.iterator.current(),None)
 
-class IteratorIter:
+class IteratorIter(object):
   def __init__(self,iterator):
     global _debug
     if _debug:
@@ -937,7 +922,7 @@ class StreamIter:
       raise StopIteration
     return self.stream.current()
 
-class Stream:
+class Stream(object):
   """Redland Statement Stream class
 
      A class for iterating over a sequence of Statement s such as
@@ -1022,7 +1007,7 @@ class Stream:
 # end class Stream
 
 
-class Storage:
+class Storage(object):
 
   """Redland Statement Storage class
 
@@ -1118,7 +1103,7 @@ class MemoryStorage(Storage):
     return Storage.__init__(self,name=mem_name,storage_name="memory",options_string=options_string)
 
 
-class Uri:
+class Uri(object):
   """Redland URI Class
 
   import RDF
@@ -1192,7 +1177,7 @@ Copy an existing URI uri1.
 # end class Uri
 
 
-class Parser:
+class Parser(object):
   """Redland Syntax Parser Class
 
   import RDF
@@ -1271,8 +1256,13 @@ optional.  When any are given, they must all match.
         uri = Uri(string=uri)
     if base_uri==None:
         base_uri=uri
-    return Redland.librdf_parser_parse_into_model(self._parser,
-      uri._reduri, base_uri._reduri, model._model)
+    try:
+        r = Redland.librdf_parser_parse_into_model(self._parser,
+          uri._reduri, base_uri._reduri, model._model)
+    except RedlandError, err:
+        print "Caught error",err
+        raise err
+    return 1
 
   def parse_string_into_model (self, model, string, base_uri):
     """"Parse into the Model model from the content ain string
@@ -1297,7 +1287,7 @@ optional.  When any are given, they must all match.
 # end class Parser
 
 
-class Serializer:
+class Serializer(object):
   """ Redland Syntax Serializer Class
 
   import RDF
@@ -1351,7 +1341,7 @@ class Serializer:
 # end class Serializer
 
 
-class NS:
+class NS(object):
   """ Redland Namespace Utility Class
 
   import RDF
