@@ -3,7 +3,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2002 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -93,6 +93,13 @@ n1=RDF.Node(uri_string="http://purl.org/net/dajobe/")
 n2=RDF.Node(uri_string="http://purl.org/dc/elements/1.1/title")
 for node in model.targets(n1,n2):
   print "  found node:",node
+
+print "Adding datatyped literal statement to model"
+model.add_typed_literal_statement(subject=RDF.Node(uri_string="http://example.org/subject"),
+                                  predicate=RDF.Node(uri_string="http://example.org/predicate"),
+                                  string="Literal content",
+                                  xml_language="en-GB",
+                                  datatype=RDF.Uri(string="http://example.org/datatype"))
 
 print "writing model as RDF/XML to test-out.rdf"
 ser=RDF.Serializer()
