@@ -57,7 +57,9 @@ namespace Redland {
 
 		~Node ()
 		{
-			librdf_free_node (node);
+                // FIXME
+                // if((Object)node != null)
+				librdf_free_node (node);
 		}
 
 		[DllImport ("librdf")]
