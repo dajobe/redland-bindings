@@ -13,10 +13,11 @@ using System.Runtime.InteropServices;
 
 namespace Redland {
 
-	public class Iterator : IWrapper, IEnumerator {
+	public class Iterator : IWrapper, IEnumerator, IDisposable {
 		
-		IntPtr iterator;
-		int pos = 0;
+		IntPtr iterator = IntPtr.Zero;
+
+		bool disposed = false;
 
 		public IntPtr Handle {
 			get { return iterator; }
@@ -34,20 +35,23 @@ namespace Redland {
 		// IEnumerator implementation
 		public object Current {
 			get { 
-				Node node;
-				IntPtr raw_ret =librdf_iterator_get_object (iterator);
-				node = new Node (raw_ret);
-				return node;						 
+				IntPtr raw_ret = librdf_iterator_get_object (iterator);
+				// FIXME: throw exception if zero?
+				return new Node (raw_ret);
+			}
+		}
+
+		public Node CurrentNode {
+			get {
+				return (Node) Current;
 			}
 		}
 
 		public bool MoveNext ()
 		{
-			int r =	librdf_iterator_next (iterator);
-			if (r != 0)
-				return false;
-			else
-				return true;
+			// underlying librdf method returns non-0 when done
+			// we want to return true while there's next to move to
+			return (librdf_iterator_next (iterator) == 0);
 		}
 
 		public void Reset ()
@@ -60,11 +64,7 @@ namespace Redland {
 
 		public bool End {
 			get {
-				int r = librdf_iterator_end (iterator);
-				if (r != 0)
-					return true;
-				else
-					return false;
+				return (librdf_iterator_end (iterator) != 0);
 			}
 		}
 
@@ -76,12 +76,30 @@ namespace Redland {
 		[DllImport ("librdf")]
 		static extern void librdf_free_iterator (IntPtr iterator);
 
-		~Iterator ()
+		protected void Dispose (bool disposing)
 		{
-			if(iterator != (IntPtr)null)
-				librdf_free_iterator (iterator);
+			if (! disposed) {
+				// if disposing is true, dispose of
+				// managed resources
+
+				if (iterator != IntPtr.Zero) {
+					librdf_free_iterator (iterator);
+					iterator = IntPtr.Zero;
+				}
+				disposed = true;
+			}
 		}
 
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		~Iterator ()
+		{
+			Dispose (false);
+		}
 	}
 }
 
