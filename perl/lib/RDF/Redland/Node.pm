@@ -28,19 +28,15 @@ use vars qw($Type_Resource $Type_Property $Type_Literal
 	    $Type_Statement $Type_Bag $Type_Seq $Type_Alt $Type_Li
 	    $Type_Model);
 
-# FIXME:Should be the same as values of librdf_node_type enum in rdf_node.h
+# FIXME: Should be the same as values of librdf_node_type enum in rdf_node.h
 # and mechanically kept in sync.
 $Type_Resource  = 1;
 $Type_Property  = $Type_Resource;
 $Type_Literal   = 2;
 $Type_Statement = 3;
-# FIXME: Are these sensible?
-#$Type_Bag       = 4;
-#$Type_Seq       = 5;
-#$Type_Alt       = 6;
-$Type_Li        = 7;
-$Type_Model     = 8;
-# FIXME: Needs to also match documentation near method type
+$Type_Li        = 4;
+$Type_Blank     = 5;
+# FIXME: Needs to also match documentation near sub type
 
 
 
@@ -253,14 +249,12 @@ sub uri ($;$) {
 =item type [TYPE]
 
 Get/set the node type.  With no arguments, returns the current
-type, otherwise sets it to I<TYPE>.  The current list of types are:
+type, otherwise sets it to I<TYPE>.  The current list of types
+that are supported are:
 
   $RDF::Redland::Node::Type_Resource
-  $RDF::Redland::Node::Type_Property 
   $RDF::Redland::Node::Type_Literal
-  $RDF::Redland::Node::Type_Statement
-  $RDF::Redland::Node::Type_li
-  $RDF::Redland::Node::Type_Model
+  $RDF::Redland::Node::Type_Blank
 
 Example:
 
