@@ -1,5 +1,7 @@
 2004-08-13  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* perl/Makefile.am: Remove README.txt for old api update
+
 	* perl/lib/RDF/Redland/Query.pm: doc typo
 
 	* docs/perl.html: link to POD QueryResults.html correctly.
