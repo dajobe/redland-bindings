@@ -1,6 +1,6 @@
 # -*- Mode: Makefile -*-
 #
-# Makefile.am - automake file for Tcl/Tk interface to Redland
+# Makefile.am - automake file for Tcl interface to Redland
 #
 # $Id$
 #
