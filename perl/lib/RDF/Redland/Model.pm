@@ -189,8 +189,7 @@ sub add_typed_literal_statement ($$$$$;$$) {
 
 Add RDF::Redland::Statement I<STATEMENT>
 or the statement formed by I<NODE NODE NODE> to the model.
-If the optional RDF:Redland::Node I<CONTEXT> is given,
-associate it with that context.
+If the optional I<CONTEXT> is given, associate it with that context.
 Any of I<NODE> or I<CONTEXT> can be a RDF::Redland::Node,
 RDF::Redland::URI or perl URI object.
 
@@ -238,17 +237,26 @@ sub add_statements ($$;$) {
  }
 }
 
-=item remove_statement STATEMENT [CONTEXT]
+=item remove_statement STATEMENT [CONTEXT] | NODE NODE NODE [CONTEXT]
 
-Remove RDF::Redland::Statement I<STATEMENT> from the model.
+Remove RDF::Redland::Statement I<STATEMENT> 
+or the statement formed by I<NODE NODE NODE> from the model.
 If the optional I<CONTEXT> is given,
 remove only the statement stored with that context.
-I<CONTEXT> can be a RDF::Redland::Node, RDF::Redland::URI or perl URI object.
+Any of I<NODE> or I<CONTEXT> can be a RDF::Redland::Node,
+RDF::Redland::URI or perl URI object.
 
 =cut
 
-sub remove_statement ($$;$) {
-  my($self,$statement,$node)=@_;
+sub remove_statement ($;$$$$) {
+  my($self,@rest)=@_;
+  my $statement=undef;
+  if(scalar(@rest)>2) {
+    $statement=new RDF::Redland::Statement(splice(@rest, 0, 3));
+  } else {
+    $statement=shift(@rest);
+  }
+  my $node=shift(@rest);
   if($node) {
     my $class=ref($node);
     $node=&RDF::Redland::Node::_ensure($node);
