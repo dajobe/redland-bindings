@@ -32,7 +32,7 @@ SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c
 SWIG_CRUFT=$(PYTHON_PACKAGE).bs blib pm_to_blib
 
 
-EXTRA_DIST=MANIFEST.in README setup.cfg setup.py RDF.py \
+EXTRA_DIST=MANIFEST.in README setup.cfg setup.py RDF.py example.py \
 $(SWIG_OUTPUTS)
 
 SUBDIRS=test
