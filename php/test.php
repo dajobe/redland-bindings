@@ -28,7 +28,16 @@ print "Testing Redland...\n";
 global $REDLAND_LOADED__;
 if ($REDLAND_LOADED__) return;
 if (!extension_loaded("redland")) {
-  if (!dl("redland.so")){
+
+  /* PHP 4.3 provides PHP_SHLIB_PREFIX and PHP_SHLIB_SUFFIX */
+  if (!defined('PHP_SHLIB_SUFFIX')) {
+    define('PHP_SHLIB_SUFFIX', strtoupper(substr(PHP_OS, 0,3)) == 'WIN' ? 'dll' : 'so');
+  }
+  if (!defined('PHP_SHLIB_PREFIX')) {
+    define('PHP_SHLIB_PREFIX',PHP_SHLIB_SUFFIX == 'dll' ? 'php_' : '');
+  }
+
+  if (!dl(PHP_SHLIB_PREFIX . "redland" . "." . PHP_SHLIB_SUFFIX )){
     die('no redland?');
     exit;
   }
