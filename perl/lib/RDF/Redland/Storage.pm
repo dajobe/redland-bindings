@@ -60,22 +60,46 @@ I<OPTIONS_STRING> which are specific to the storage factory type.
 The storage options are formatted in the form
 key1='value1',key2='value2' and the single quotes are required.
 
-  Currently defined storage options:
+Currently defined storage options:
 
-  dir='DIR'          Work in DIR directory when creating files.
+=over
 
-  hash-type='TYPE'   Use the TYPE hash-type for I<hashes> storage.
-                     Current defined types are 'memory' and 'bdb' 
-                     but is dependent on the hash factories
-                     available.
+=item new='yes'
 
-  mode='MODE'        File creation mode, default is (octal) 0644
-                     Takes decimal (123), hex (0x123) or octal (0123).
+Create a new storage erasing any existing one (default).
 
-  new='yes'          Create a new storage erasing any existing one (default).
+=item write='yes'
 
-  write='yes'        Provide write access to store (default)
-                     otherwise is read only.
+Provide write access to store (default)
+otherwise is read only.
+
+=item dir='DIR'          
+
+Work in DIR directory when creating files.
+
+=item mode='MODE'        
+
+File creation mode, default is (octal) 0644
+Takes decimal (123), hex (0x123) or octal (0123).
+
+=item contexts='yes'     
+
+Enable statement contexts.  Each statement can
+be stored with an optional context Node and
+the context retrieved after queries.
+
+=item hash-type='TYPE' (I<hashes> storage only)
+
+Use the TYPE hash-type for I<hashes> storage.  Current defined types
+are 'memory' and 'bdb' but is dependent on the hash factories
+available.
+
+=item index-predicates='yes' (I<hashes> storage only)
+
+Enable indexing from predicates to (subject,object) which can in
+particular be useful for rdf:type relations.
+
+=back
 
 Example:
 
