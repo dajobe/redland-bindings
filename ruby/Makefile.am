@@ -31,7 +31,7 @@ RUBY_PACKAGE=Redland
 SWIG_OUTPUTS=$(RUBY_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
-rubylib=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']")
+rubylib=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG']")
 
 rubydir=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']")
 ruby_DATA=Redland.so
