@@ -78,34 +78,42 @@ lappend auto_path .
 
 package require redland
 
-librdf_init_world $"" NULL
+librdf_init_world "" NULL
 
 set storage [librdf_new_storage "hashes" "test" {new='yes',hash-type='bdb',dir='.'}]
-if {[expr {"$storage" == "NULL"}]} then {
-  puts "Failed to create RDF storage"
-  exit 1
+if {"$storage" == "NULL"} then {
+  error "Failed to create RDF storage"
 }
 
 set model [librdf_new_model $storage ""]
-if {[expr {"$model" == "NULL"}]} then {
+if {"$model" == "NULL"} then {
   librdf_free_storage $storage
-  puts "Failed to create RDF model"
-  exit 1
+  error "Failed to create RDF model"
 }
 
 
 set statement [librdf_new_statement_from_nodes [librdf_new_node_from_uri_string "http://purl.org/net/dajobe/"] [librdf_new_node_from_uri_string "http://purl.org/dc/elements/1.1/creator"] [librdf_new_node_from_literal "Dave Beckett" "" 0 0]]
-if {[expr {"$statement" == "NULL"}]} then {
+if {"$statement" == "NULL"} then {
   librdf_free_model $model
   librdf_free_storage $storage
-  puts "failed to create RDF statement"
-  exit 1
+  error "failed to create RDF statement"
 }
 
 librdf_model_add_statement $model $statement
 
 
-puts "program hasn't crashed yet"
+# Match against an empty statement - find everything
+set statement [librdf_new_statement_from_nodes NULL NULL NULL]
+
+# after this statement should not be touched since find_statements is using it
+set stream [librdf_model_find_statements $model $statement]
+
+while {! [librdf_stream_end $stream]} {
+  set statement2 [librdf_stream_next $stream]
+  puts [concat "found statement:" [librdf_statement_to_string $statement2]]
+}
+librdf_free_stream $stream
+librdf_free_statement $statement
 
 
 librdf_free_model $model
