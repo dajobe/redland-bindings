@@ -163,7 +163,10 @@ I<PREDICATE> and I<OBJECT>.
 
 sub add ($$$$) {
   my($self,$subject,$predicate,$object)=@_;
-  return &RDF::Redland::CORE::librdf_model_add($self->{MODEL},$subject->{NODE},$predicate->{NODE},$object->{NODE});
+  $subject=&RDF::Redland::CORE::librdf_new_node_from_node($subject->{NODE});
+  $predicate=&RDF::Redland::CORE::librdf_new_node_from_node($predicate->{NODE});
+  $object=&RDF::Redland::CORE::librdf_new_node_from_node($object->{NODE});
+  return &RDF::Redland::CORE::librdf_model_add($self->{MODEL},$subject,$predicate,$object);
 }
 
 =item add_typed_literal_statement SUBJECT PREDICATE STRING [XML_LANGUAGE [DATATYPE]]
@@ -177,9 +180,11 @@ or I<DATATYPE> can either or both be set to undef.
 
 sub add_typed_literal_statement ($$$$$;$$) {
   my($self,$subject,$predicate,$string,$xml_language,$datatype)=@_;
+  $subject=&RDF::Redland::CORE::librdf_new_node_from_node($subject->{NODE});
+  $predicate=&RDF::Redland::CORE::librdf_new_node_from_node($predicate->{NODE});
   $xml_language ||= "";
   my $uri=$datatype ? $datatype->{URI} : undef;
-  return &RDF::Redland::CORE::librdf_model_add_typed_literal_statement($self->{MODEL},$subject->{NODE},$predicate->{NODE},$string,$xml_language,$uri);
+  return &RDF::Redland::CORE::librdf_model_add_typed_literal_statement($self->{MODEL},$subject,$predicate,$string,$xml_language,$uri);
 }
 
 =item add_statement STATEMENT [CONTEXT]
@@ -190,7 +195,7 @@ associate it with that context.
 
 =cut
 
-sub add_statement ($$$) {
+sub add_statement ($$;$) {
   my($self,$statement,$node)=@_;
   if($node) {
     return &RDF::Redland::CORE::librdf_model_context_add_statement($self->{MODEL},$node->{NODE},$statement->{STATEMENT});
