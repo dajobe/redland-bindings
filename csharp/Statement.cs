@@ -52,9 +52,12 @@ namespace Rdf {
 		{
 			IntPtr subj, pred, o;
 			subj = pred = o = IntPtr.Zero;
-			set_pointer (subject, subj);
-			set_pointer (predicate, pred);
-			set_pointer (obj, o);
+			if(subject != null)
+				set_pointer (subject, subj);
+			if(predicate != null)
+				set_pointer (predicate, pred);
+			if(obj != null)
+				set_pointer (obj, o);
 			stm = librdf_new_statement_from_nodes (world.Handle, subj, pred, o);
 		}
 
