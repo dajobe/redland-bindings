@@ -1,10 +1,10 @@
 #!/usr/bin/env ruby
 #
-# example.rb - Redland example Ruby program
+# test.rb - Redland low-level test Ruby program
 #
 # $Id$
 #
-# Copyright (C) 2002 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2002-2004 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -22,44 +22,64 @@
 # 
 #
 
-require 'rdf/redland'
+require 'redland'
 
 uri_string=ARGV[0]
 parser_name=ARGV[1]
 
-storage=Redland::TripleStore.new("hashes", "test", "new='yes',hash-type='bdb',dir='.'")
+
+world=Redland::librdf_new_world
+Redland::librdf_world_open world
+
+storage=Redland::librdf_new_storage world, "hashes", "test", "new='yes',hash-type='bdb',dir='.'"
 raise "Failed to create RDF storage" if !storage
 
 
-model=Redland::Model.new(storage)
+model=Redland::librdf_new_model world, storage, ""
 if !model then
+  Redland::librdf_free_storage storage
   raise "Failed to create RDF model"
 end
 
-parser=Redland::Parser.new(parser_name, "", nil)
+parser=Redland::librdf_new_parser world, parser_name, "", nil
 if !parser then
+  Redland::librdf_free_model model
+  Redland::librdf_free_storage storage
   raise "Failed to create RDF parser"
 end
 
-uri=Redland::Uri.new(uri_string)
-stream=parser.parse_as_stream(uri, uri)
+uri=Redland::librdf_new_uri world, uri_string
+
+stream=Redland::librdf_parser_parse_as_stream parser, uri, uri
 
 count=0
-while !stream.end?()
-  statement=stream.current()
-  model.add_statement(statement)
-  puts "found statement: #{statement}"
+while Redland::librdf_stream_end(stream) == 0
+  statement=Redland::librdf_stream_get_object stream
+  Redland::librdf_model_add_statement model, statement
+  puts "found statement: #{Redland::librdf_statement_to_string statement}"
   count=count+1
-  stream.next()
+  Redland::librdf_stream_next stream
 end
+
+Redland::librdf_free_stream stream
 
 puts "Parsing added #{count} statements"
 
+Redland::librdf_free_parser parser
+
 
 puts "Printing all statements"
-stream=model.as_stream()
-while !stream.end?()
-  statement=stream.current()
-  puts "Statement: #{statement}"
-  stream.next()
+stream=Redland::librdf_model_as_stream model
+while Redland::librdf_stream_end(stream) == 0
+  statement=Redland::librdf_stream_get_object stream
+  puts "Statement: #{Redland::librdf_statement_to_string statement}"
+  Redland::librdf_stream_next stream
 end
+
+Redland::librdf_free_stream stream
+
+
+Redland::librdf_free_model model
+Redland::librdf_free_storage storage
+
+Redland::librdf_free_world world
