@@ -29,7 +29,7 @@ my $objects="Redland_wrap.o $TOP_SRCDIR/librdf.a ";
 
 my $redland_libs=`$TOP_SRCDIR/redland-config --libs`;
 chomp $redland_libs;
-$redland_libs =~ s/^-L\S+ -lrdf //;
+$redland_libs =~ s/^-L\S+ -lrdf\s*//;
 $objects .= $redland_libs;
 
 my $version=$ENV{VERSION};
