@@ -132,6 +132,10 @@ my $serializer=new RDF::Redland::Serializer("rdfxml");
 die "Failed to find serializer\n" if !$serializer;
 
 $serializer->serialize_model_to_file("test-out.rdf", $uri, $model);
+
+#my $str1=$serializer->serialize_model_to_string($uri, $model);
+#warn "\nSerialized to RDF/XML as a string size ",length($str1)," bytes\n";
+
 $serializer=undef;
 
 my $str=$model->to_string(new RDF::Redland::URI("http://example.org/base#"), "ntriples");
