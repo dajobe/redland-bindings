@@ -40,8 +40,8 @@ my $uri=$ARGV[0];
 my $tmp_file;
 my $source_uri;
 if($uri !~ m%^file:%) {
-  use URI::URL;
-  use LWP::Simple;
+  eval 'use URI::URL';
+  eval 'use LWP::Simple';
   
   $tmp_file="/tmp/$0-$$.serialize";
 
@@ -108,6 +108,7 @@ my $state={
     $RDF_NS => "rdf",
     $DC_NS  => "dc",
   },
+  ns_count => 0,  # for generating ns0:, ns1: etc.
   feature_prefer_ID_to_about => "false", # prefer rdf:ID or rdf:about ?
   feature_indenting_size => 2,
   feature_content_encoding => "utf8",
@@ -134,6 +135,7 @@ $stream=$model->serialise;
 my $id=1;
 while(!$stream->end) {
   my $statement=$stream->next;
+  last if !$statement;
   my $subject=$statement->subject;
   my $subject_key=$subject->as_string;
 
@@ -167,6 +169,7 @@ sub make_xml_qname($$$;$) {
   die "Namespace URI $ns_uri is not declared in current scope\n";
 }
 
+
 sub declare_namespace($$;$) {
   my($state,$ns_uri,$prefix)=@_;
   if(!defined $prefix) {
@@ -177,6 +180,26 @@ sub declare_namespace($$;$) {
   unshift(@{$state->{inscope_namespaces}},
 	  [$prefix, $ns_uri, $state->{depth}]);
 }
+
+
+sub ensure_declared_namespace($$) {
+  my($state,$ns_uri)=@_;
+  my $ns_prefix=undef;
+  for my $ns (@{$state->{inscope_namespaces}}) {
+    my($prefix,$uri,$depth)=@$ns;
+    if($uri eq $ns_uri) {
+      $ns_prefix=$prefix;
+      last;
+    }
+  }
+  return $ns_prefix if $ns_prefix;
+  $ns_prefix=$state->{favourite_prefixes}->{$ns_uri};
+  if(!$ns_prefix) {
+    $ns_prefix="ns" . $state->{ns_count}++;
+  }
+  declare_namespace($state, $ns_uri, $ns_prefix);
+}
+
 
 sub undeclare_namespaces($) {
   my $state=shift;
@@ -193,10 +216,12 @@ sub indent($) {
   $state->{depth}++;
 }
 
+
 sub outdent($) {
   my $state=shift;
   $state->{depth}--;
 }
+
 
 sub emit($$) {
   my($state,$string)=@_;
@@ -238,8 +263,9 @@ sub format_statement ($$$) {
     }
     emit($state, qq{<$qname${attrs}>$literal</$qname>});
   } elsif($otype == $RDF::Redland::Node::Type_Blank) {
-    my $element=make_xml_qname($state, $RDF_NS, "Description");
-    emit($state, qq{<$qname><$element/></$qname>});
+    my $attr=make_xml_qname($state, $RDF_NS, "nodeID");
+    my $object_value=$object->as_string; # FIXME ->blank_identifer
+    emit($state, qq{<$qname $attr="$object_value"/>});
   } else {
     die "Unknown object type $otype\n";
   }
@@ -255,9 +281,14 @@ sub start_format_subject($$) {
     my $attr=make_xml_qname($state, $RDF_NS, "about", 1);
     my $url=$subject_node->uri->as_string;
     $about=qq{ $attr="$url"};
+  } elsif($subject_node->type eq $RDF::Redland::Node::Type_Blank) {
+    my $attr=make_xml_qname($state, $RDF_NS, "nodeID", 1);
+    my $id=$subject_node->as_string; # FIXME ->blank_identifier
+    $about=qq{ $attr="$id"};
   }
   emit($state, qq{<$element$about>});
 }
+
 
 sub end_format_subject($$) {
   my($state,$subject_node)=@_;
@@ -266,7 +297,6 @@ sub end_format_subject($$) {
   my $about='';
   emit($state, qq{</$element>});
 }
-
 
 
 sub dump_nodes ($@) {
@@ -279,14 +309,12 @@ sub dump_nodes ($@) {
     start_format_subject($state, $subject_node);
 
     indent($state);
-    my $count=1;
     for my $statement (@{$state->{nodes}->{$subject_key}}) {
       format_statement($state, $statement->predicate, $statement->object);
-      $count++;
     }
     outdent($state);
 
-    end_format_subject($state, $subject_node)
+    end_format_subject($state, $subject_node);
   }
 
 }
@@ -311,6 +339,8 @@ my(@order)=(@nodes_with_types, @other_nodes);
 print qq{<?xml version='1.0' encoding='}; #'
 print $state->{feature_content_encoding}, "'?>\n"; #'
 
+declare_namespace($state, $RDF_NS);
+
 my $element=make_xml_qname($state, $RDF_NS, "RDF");
 
 emit($state, qq{<$element>});
@@ -320,4 +350,233 @@ emit($state, qq{<$element>});
   outdent($state);
 
 emit($state, qq{</$element>});
+
+
+exit 0;
+
+
+package Element;
+
+sub new ($$$) {
+  my($proto,$ns_uri,$local_name)=@_;
+  my $class = ref($proto) || $proto;
+  my $self  = {
+    namespace_URI => $ns_uri,
+    name => $local_name,
+    prefix => undef,
+    children => undef,
+    parent => undef,
+    attributes => undef,
+    xml_namespaces => [], # lists of [URI,prefix]
+    xml_lang => undef,
+    xml_base => undef,
+  };
+
+  bless ($self, $class);
+  return $self;
+}
+
+
+sub uri ($;$) {
+  my($self,$uri)=@_;
+  my $old=$self->{namespace_URI};
+  $self->{namespace_URI}=$uri if $uri;
+  $old;
+}
+
+
+sub prefix ($;$) {
+  my($self,$prefix)=@_;
+  my $old=$self->{prefix};
+  $self->{prefix}=$prefix if $prefix;
+  $old;
+}
+
+
+sub lang ($;$) {
+  my($self,$lang)=@_;
+  my $old=$self->{xml_lang};
+  $self->{xml_lang}=$lang if $lang;
+  $old;
+}
+
+
+sub base ($;$) {
+  my($self,$base)=@_;
+  my $old=$self->{xml_base};
+  $self->{xml_base}=$base if $base;
+  $old;
+}
+
+
+sub parent ($;$) {
+  my($self,$parent)=@_;
+  my $old=$self->{parent};
+  $self->{parent}=$parent if $parent;
+  $old;
+}
+
+
+sub add_namespace ($$$) {
+  my($self,$uri,$prefix)=@_;
+  push(@{$self->xml_namespaces}, [$uri,$prefix]);
+
+  if($self->{namespace_URI} eq $uri) {
+    $self->{prefix}=$prefix;
+  }
+
+  # Set all attributes with that ns uri to the prefix
+  if(my $attrs=$self->{attributes}) {
+    for my $attr (@$attrs) {
+      if($attr->uri eq $uri) {
+        $attr->prefix($prefix);
+      }
+    }
+  }
+}
+
+
+sub add_attribute ($$) {
+  my($self,$attr)=@_;
+
+  # Set namespace of attribute if possible
+  for my $ns (@{$self->{namespaces}}) {
+    my($uri,$prefix)=@$ns;
+    if($attr->uri eq $uri) {
+      $attr->prefix($prefix);
+      last;
+    }
+  }
+  push(@{$self->{attributes}}, $attr);
+}
+
+
+sub add_child ($$) {
+  my($self,$child)=@_;
+
+  # Set namespace of child if possible
+  for my $ns (@{$self->{namespaces}}) {
+    my($uri,$prefix)=@$ns;
+    if($child->uri && 
+       ($child->uri eq $uri)) {
+      $child->prefix($prefix);
+      last;
+    }
+  }
+  $child->parent($self);
+  push(@{$self->{children}}, $child);
+}
+
+
+sub emit ($) {
+  my $self=shift;
+
+  my $str='';
+  $str.= "<".$self->{prefix}.":".$self->{name};
+  if(my $namespaces=$self->{xml_namespaces}) {
+    for my $ns (@$namespaces) {
+      my($uri,$prefix)=@$ns;
+      $str.=qq{ xmlns:$prefix="$uri"};
+    }
+  }
+
+  if(my $lang=$self->{xml_lang}) {
+    $str.=qq{ xml:lang="$lang"};
+  }
+
+  if(my $base=$self->{xml_base}) {
+    $str.=qq{ xml:base="$base"};
+  }
+
+  if(my $attrs=$self->{attributes}) {
+    for my $attr (@$attrs) {
+      $str.=" ".$attr->emit;
+    }
+  }
+
+  if(my $children=$self->{children}) {
+    $str.= ">";
+    for my $child (@$children) {
+      $str.= $child->emit;
+    }
+    $str.= "</".$self->{prefix}.":".$self->{name}.">";
+  } else {
+    $str .= "/>";
+  }
+  $str;
+}
+
+
+package Attribute;
+
+sub new ($$$$) {
+  my($proto,$ns_uri,$local_name,$value)=@_;
+  my $class = ref($proto) || $proto;
+  my $self  = {
+    namespace_URI => $ns_uri,
+    name => $local_name,
+    value => $value,
+  };
+
+  bless ($self, $class);
+  return $self;
+}
+
+
+sub emit ($) {
+  my($self)=shift;
+  my $attr=$self->{prefix}.":".$self->{name};
+  my $value=$self->{value};
+  return qq{$attr="$value"};
+}
+
+
+sub uri ($;$) {
+  my($self,$uri)=@_;
+  my $old=$self->{uri};
+  $self->{uri}=$uri if $uri;
+  $old;
+}
+
+sub prefix ($;$) {
+  my($self,$prefix)=@_;
+  my $old=$self->{prefix};
+  $self->{prefix}=$prefix if $prefix;
+  $old;
+}
+
+
+
+package Text;
+
+sub new ($$) {
+  my($proto,$text)=@_;
+  my $class = ref($proto) || $proto;
+  my $self  = {
+    text => $text,
+    parent => undef,
+  };
+
+  bless ($self, $class);
+  return $self;
+}
+
+
+sub emit ($) {
+  my($self)=shift;
+  return $self->{text};
+}
+
+
+sub parent ($;$) {
+  my($self,$parent)=@_;
+  my $old=$self->{parent};
+  $self->{parent}=$parent if $parent;
+  $old;
+}
+
+
+sub uri ($) {
+  return undef;
+}
 
