@@ -1,5 +1,7 @@
 //
-// IWrapper.cs:
+// IWrapper.cs: Redland Iterator wrapper class
+//
+// $Id$
 //
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)

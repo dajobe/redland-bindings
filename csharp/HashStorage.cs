@@ -1,5 +1,7 @@
 //
-// HashStorage.cs:
+// HashStorage.cs: Redland Hashed Storage
+//
+// $Id$
 //
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)

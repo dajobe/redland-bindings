@@ -1,5 +1,7 @@
 //
-// Iterator.cs:
+// Iterator.cs: Redland Iterator class
+//
+// $Id$
 //
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)
