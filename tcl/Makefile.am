@@ -33,7 +33,7 @@ SWIG_CRUFT=
 tclversion=@TCL_VERSION@
 tcllib=-ltcl$(tclversion)
 
-tcldir=`echo 'puts $$tcl_library' | $(TCL)`
+tcldir=@TCL_DIR@
 tcl_DATA=Redland.so
 
 EXTRA_DIST=test.tcl example.tcl \
@@ -44,6 +44,8 @@ $(TCL_PACKAGE)_wrap.lo $(TCL_PACKAGE)_wrap.so $(TCL_PACKAGE)-stamp \
 $(TCL_PACKAGE).so $(TCL_PACKAGE).dylib \
 pkgIndex.tcl
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
+
+RUN=@REDLAND_RUN@
 
 SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_INIT_I
 
@@ -92,4 +94,4 @@ pkgIndex.tcl: $(TCL_PACKAGE).so
 check-local: test-tcl
 
 test-tcl: $(TCL_PACKAGE).so pkgIndex.tcl $(srcdir)/test.tcl
-	$(TCL) $(srcdir)/test.tcl
+	$(RUN)$(TCL) $(srcdir)/test.tcl
