@@ -28,8 +28,9 @@ public class Test {
 		Statement stm = new Statement (subject, predicate, obj);
 		model.AddStatement (stm);
 
-		IntPtr output = Util.fopen ("example1.xml", "w+");
-		model.Print (output);
+		Serializer serializer = new Serializer ("rdfxml", null, null);
+		Rdf.Uri base_uri = new Rdf.Uri ("http://example.org/base#");
+		serializer.SerializeModel ("example1.xml", base_uri, model);
 
 		Statement partial_stm = new Statement ();
 		partial_stm.Subject = subject;
