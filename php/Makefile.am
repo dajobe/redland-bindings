@@ -78,4 +78,4 @@ test-php: $(PHP_PACKAGE).so $(srcdir)/test.php
 # I do not know why this is needed. PHP seems to ignore the global
 # libraries when not installed
 	-$(top_builddir)/redland-src-config --run \
-	  $(PHP) -d extension_dir=. $(srcdir)/test.php
+	  $(PHP) -c $(srcdir)/php.ini $(srcdir)/test.php
