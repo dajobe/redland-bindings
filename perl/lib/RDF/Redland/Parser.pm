@@ -37,7 +37,8 @@ RDF::Redland::Parser - Redland RDF Syntax Parsers Class
   use RDF::Redland;
 
   ...
-  my $parser=new RDF::Redland::Parser("repat");
+  my $parser=new RDF::Redland::Parser("raptor");
+  my $parser2=new RDF::Redland::Parser(undef, "application/rdf+xml);
 
   # Return as an RDF::Redland::Stream
   my $stream=$parser->parse_as_stream($source_uri, $base_uri);
