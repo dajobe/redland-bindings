@@ -138,19 +138,6 @@ sub DESTROY ($) {
 
 
 
-# Accessors
-sub uri ($) {
-  shift->{URI};
-}
-
-sub storage ($) {
-  shift->{STORAGE};
-}
-
-sub model ($) {
-  shift;
-}
-
 sub _find_by_type ($$) {
   my($self,$type_value)=@_;
 
@@ -255,7 +242,7 @@ sub inchannel ($) {
 }
 
 # for image resources
-sub url ($) {
+sub image_url ($) {
   my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'url');
   return wantarray ? @r : $r[0];
 }
