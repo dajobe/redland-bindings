@@ -1,3 +1,14 @@
+2004-08-13  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/Query.pm: doc typo
+
+	* docs/perl.html: link to POD QueryResults.html correctly.
+
+	* perl/lib/RDF/Redland/QueryResults.pm: Update documentation.
+
+	* perl/lib/RDF/Redland/Query.pm:
+	Fix example, use $results->bindings_count
+
 2004-08-12  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* python/example.py: update to final 0.9.18 redland query api
