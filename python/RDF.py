@@ -17,7 +17,7 @@
 #   4. BSD License without advertising (MIT license - from
 #        http://www.opensource.org/licenses/mit-license.html)
 #      -------------------------------------------------------------------
-#      Copyright (c) 2003, David Beckett, ILRT, University of Bristol
+#      Copyright (c) 2003-2004, David Beckett, ILRT, University of Bristol
 #
 #      Permission is hereby granted, free of charge, to any person
 #      obtaining a copy of this software and associated documentation
@@ -539,6 +539,24 @@ class Statement(object):
       raise RedlandError("Statement is invalid")
     else:
       return Redland.librdf_statement_to_string(self._statement)
+
+  def __eq__(self,other):
+    """Equality of an RDF Statement compared to another RDF Statement."""
+    if other is None:
+      if self is None:
+        return 1
+      else:
+        return 0
+    return (Redland.librdf_statement_equals(self._statement, other._statement) != 0)
+
+  def __ne__(self,other):
+    """Inequality of an RDF Statement compared to another RDF Statement."""
+    if other is None:
+      if self is None:
+        return 0
+      else:
+        return 1
+    return (Redland.librdf_statement_equals(self._statement, other._statement) == 0)
 
 # end class Statement
 
