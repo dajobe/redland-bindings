@@ -58,6 +58,7 @@ RDF::Redland::Node - Redland RDF Node (RDF Resource, Property, Literal) Class
   my $node3=RDF::Redland::Node->new_from_uri(new RDF::Redland::URI("http://example.com/"));
   my $node4=RDF::Redland::Node->new_from_literal("Hello, World!","",0,0);
   my $node5=RDF::Redland::Node->new_from_literal("<tag>content</tag>","",0,1);
+  my $node6=RDF::Redland::Node->new_from_blank_identifier("genid1");
   ...
 
   print $node2->uri->as_string,"\n";           # Using RDF::Redland::URI::as_string
@@ -151,6 +152,24 @@ sub new_from_literal ($$$$$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_literal($RDF::Redland::World->{WORLD},$string,$xml_language,$xml_space,$is_wf_xml);
+  return undef if !$self->{NODE};
+
+  bless ($self, $class);
+  return $self;
+}
+
+=item new_from_blank_identifier IDENTIFIER
+
+Create a new RDF::Redland::Node object for a blank node with
+the (string) identifier IDENTIFIER.
+
+=cut
+
+sub new_from_blank_identifier ($;$) {
+  my($proto,$identifier)=@_;
+  my $class = ref($proto) || $proto;
+  my $self  = {};
+  $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_blank_identifier($RDF::Redland::World->{WORLD},$identifier);
   return undef if !$self->{NODE};
 
   bless ($self, $class);
