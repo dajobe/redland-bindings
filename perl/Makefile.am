@@ -4,14 +4,15 @@ PERL_PACKAGE=Redland
 PERL_MAKEFILE=Makefile.perl
 
 SWIG_OUTPUTS=$(PERL_PACKAGE).pm $(PERL_PACKAGE)_wrap.c $(PERL_PACKAGE)_wrap.doc
-SWIG_CRUFT=$(PERL_PACKAGE).bs blib pm_to_blib
+PERL_CRUFT=blib pm_to_blib $(PERL_PACKAGE).bs $(PERL_MAKEFILE) $(PERL_MAKEFILE).old
 
 EXTRA_DIST=MANIFEST MANIFEST.SKIP Makefile.PL Redland.i test.pl \
 redland_perl.c $(SWIG_OUTPUTS)
 
 SUBDIRS=lib
 
-CLEANFILES=test*db $(PERL_PACKAGE)_wrap.o redland_perl.o $(PERL_MAKEFILE)
+CLEANFILES=test*db $(PERL_PACKAGE)_wrap.o redland_perl.o $(PERL_MAKEFILE) \
+$(PERL_MAKEFILE).old
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(PERL_PACKAGE)_wrap.c: Redland.i
@@ -28,3 +29,7 @@ $(PERL_MAKEFILE): Makefile.PL
 build-perl: -perl
 install-perl: build-perl
 check-perl: build-perl test-perl
+
+# Perl make clean leaves the old makefile around
+clean-local: clean-perl
+	rm -f $(PERL_MAKEFILE).old
