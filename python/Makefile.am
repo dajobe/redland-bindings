@@ -32,7 +32,8 @@ SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c
 SWIG_CRUFT=$(PYTHON_PACKAGE).bs blib pm_to_blib
 
 
-EXTRA_DIST=MANIFEST.in README setup.cfg setup.py RDF.py example.py \
+EXTRA_DIST=MANIFEST.in README setup.cfg setup.py RDF.py \
+example.py redlandtest.py \
 $(SWIG_OUTPUTS)
 
 SUBDIRS=test
@@ -54,6 +55,12 @@ test-python: build-python
 	echo Using python build dir $$bdir; \
 	echo PYTHONPATH=$$bdir $(PYTHON) test/test.py; \
 	PYTHONPATH=$$bdir $(PYTHON) test/test.py
+
+unittest-python: build-python
+	@bdir=`ls -1d build/lib.*`; \
+	echo Using python build dir $$bdir; \
+	echo PYTHONPATH=$$bdir $(PYTHON) redlandtest.py; \
+	PYTHONPATH=$$bdir $(PYTHON) redlandtest.py
 
 clean-python:
 	rm -rf build
