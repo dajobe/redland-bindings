@@ -1,6 +1,10 @@
 2004-08-03  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* configure.ac: Bumped version to 0.9.18.2
+
 	* Snapshotted redland-bindings_0_9_18_1 for 0.9.18.1 release
+
+	* configure.ac: Bumped version to 0.9.18.1
 
 	* Snapshotted redland-bindings_0_9_17_1 for 0.9.17.1 release
 
