@@ -1,5 +1,10 @@
 2004-07-27  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* php/Makefile.am:
+	Oops, use -DREDLAND_INIT_I to get init of redland world by PHP
+
+	* php/redland-post.i: declare static function prototypes
+
 	* php/Makefile.am: Added redland_wrap.c.patch to dist
 
 2004-07-26  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
