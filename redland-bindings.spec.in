@@ -111,7 +111,7 @@ cd ..
 %{perlinstallsitearch}/RDF/Redland.pm
 
 %doc AUTHORS COPYING COPYING.LIB ChangeLog LICENSE.txt NEWS README
-%doc LICENSE-2.0.txxt NOTICE
+%doc LICENSE-2.0.txt NOTICE
 
 %doc %{perlman3dir}/RDF::Redland*.3pm*
 %doc perl/example.pl
