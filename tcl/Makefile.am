@@ -40,7 +40,7 @@ EXTRA_DIST=test.tcl example.tcl \
 $(SWIG_OUTPUTS)
 
 CLEANFILES=*.db test-out.rdf core* \
-$(TCL_PACKAGE)_wrap.lo $(TCL_PACKAGE)_wrap.o $(TCL_PACKAGE)-stamp \
+$(TCL_PACKAGE)_wrap.lo $(TCL_PACKAGE)_wrap.so $(TCL_PACKAGE)-stamp \
 $(TCL_PACKAGE).so $(TCL_PACKAGE).dylib \
 pkgIndex.tcl
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
