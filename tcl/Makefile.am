@@ -46,7 +46,7 @@ SWIG_OUTPUTS=$(TCL_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
 tclversion=@TCL_VERSION@
-tclincdir=-I@TCL_INCLUDE@
+tclincdir=@TCL_INCLUDE@
 tcllib=-ltcl$(tclversion)
 
 tcldir=$(shell echo 'puts $$tcl_library' | $(TCL))
