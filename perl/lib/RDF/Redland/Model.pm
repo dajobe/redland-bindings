@@ -574,6 +574,21 @@ sub feature ($$;$) {
 }
 
 
+=item query_execute QUERY
+
+Execute the I<QUERY> RDF::Redland::Query against the model returning
+a result set RDF::Redland::QueryResults or undef on failure.
+
+=cut
+
+sub query_execute ($$) {
+  my($self,$query)=@_;
+
+  my $results = &RDF::Redland::CORE::librdf_model_query_execute($self->{MODEL}, $query->{QUERY});
+  return $results ? RDF::Redland::QueryResults->new($results) : undef;
+}
+
+
 =pod
 
 =back
