@@ -27,18 +27,34 @@ JAVA_C_SHLIB=redland-java
 JAVA_MODULE=core
 JAVA_PACKAGE=org.librdf.redland
 JAVA_PATH=org/librdf/redland/
+CLASSPATH=.
 
 JAVA_SHARED_LIB=lib$(JAVA_C_SHLIB).so
+JAVA_JAR=$(JAVA_C_SHLIB).jar
 
 SWIG_OUTPUTS=$(JAVA_PATH)$(JAVA_MODULE).java $(JAVA_MODULE)_wrap.c
 JAVA_CRUFT=$(JAVA_PATH)$(JAVA_MODULE).class $(JAVA_MODULE)_wrap.o \
-$(JAVA_SHARED_LIB) skeleton.class
+$(JAVA_SHARED_LIB) $(JAVA_JAR) skeleton.class
+
+JAVA_SOURCE_FILES=$(JAVA_PATH)/Iterator.java $(JAVA_PATH)Hash.java \
+$(JAVA_PATH)Parser.java $(JAVA_PATH)URI.java $(JAVA_PATH)Node.java \
+$(JAVA_PATH)World.java $(JAVA_PATH)Statement.java \
+$(JAVA_PATH)Model.java $(JAVA_PATH)Storage.java $(JAVA_PATH)core.java \
+$(JAVA_PATH)Stream.java
+
+JAVA_CLASS_FILES=$(JAVA_PATH)/Iterator.class $(JAVA_PATH)Hash.class \
+$(JAVA_PATH)Parser.class $(JAVA_PATH)URI.class $(JAVA_PATH)Node.class \
+$(JAVA_PATH)World.class $(JAVA_PATH)Statement.class \
+$(JAVA_PATH)Model.class $(JAVA_PATH)Storage.class \
+$(JAVA_PATH)core.class $(JAVA_PATH)Stream.class
+
 
 SUBDIRS=org
 
 # The SWIG outputs are included in the distribution so SWIG is not
 # required to use the Java interface
-EXTRA_DIST=redland-fragment.java test.java example.java skeleton.java \
+EXTRA_DIST=redland-fragment.java test1.java test2.java \
+example.java skeleton.java \
 $(SWIG_OUTPUTS)
 
 CLEANFILES=test*db $(JAVA_CRUFT)
@@ -72,16 +88,24 @@ clean-java:
 compiled-java-classes: skeleton.class
 
 skeleton.class: skeleton.java $(JAVA_MODULE)_wrap.c $(JAVA_PATH)$(JAVA_MODULE).java $(JAVA_SHARED_LIB)
-	$(JAVAC) -classpath . skeleton.java
+	env CLASSPATH=$(CLASSPATH) $(JAVAC) skeleton.java
 
-test-java: test.class compiled-java-classes
-	env LD_LIBRARY_PATH=. $(JAVA) -classpath . test
+test-java: test1 test2
 
-test.class: test.java compiled-java-classes
-	$(JAVAC) -classpath . test.java
+test1: test1.class compiled-java-classes
+	env LD_LIBRARY_PATH=. $(JAVA) test1
+
+test1.class: test1.java compiled-java-classes
+	env CLASSPATH=$(CLASSPATH) $(JAVAC) test1.java
+
+test2: test2.class compiled-java-classes
+	env LD_LIBRARY_PATH=. $(JAVA) test2
+
+test2.class: test2.java compiled-java-classes
+	env CLASSPATH=$(CLASSPATH) $(JAVAC) test2.java
 
 example: example.class compiled-java-classes
-	$(JAVA) -classpath . example
+	env CLASSPATH=$(CLASSPATH) LD_LIBRARY_PATH=. $(JAVA) example
 
 example.class: example.java compiled-java-classes
 	$(JAVAC) -classpath . example.java
@@ -89,3 +113,7 @@ example.class: example.java compiled-java-classes
 
 $(JAVA_SHARED_LIB): $(JAVA_MODULE)_wrap.c
 	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. -I/usr/local/include/linux $? -static -L.. `../redland-config --libs` -o $@
+
+$(JAVA_JAR): $(JAVA_CLASS_FILES)
+	rm -f $@
+	jar cf $@ $?
