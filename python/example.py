@@ -34,21 +34,17 @@ model=RDF.Model(storage)
 if model is None:
   raise "new RDF.model failed"
 
-statement=RDF.Statement(subject=RDF.Node(uri_string="http://purl.org/net/dajobe/"),
-                        predicate=RDF.Node(uri_string="http://purl.org/dc/elements/1.1/creator"),
-                        object=RDF.Node(literal="Dave Beckett"))
+statement=RDF.Statement(RDF.Uri("http://purl.org/net/dajobe/"),
+                        RDF.Uri("http://purl.org/dc/elements/1.1/creator"),
+                        RDF.Node("Dave Beckett"))
 if statement is None:
   raise "new RDF.Statement failed"
 
-# after this statement is owned by model and should not be used
 model.add_statement(statement)
 
 # Match against an empty statement - find everything
-stream=model.find_statements(RDF.Statement(subject=None, predicate=None, object=None));
-
-while not stream.end():
-  print "found statement:",stream.current()
-  stream.next();
+for s in model.find_statements(RDF.Statement(subject=None, predicate=None, object=None)):
+  print "found statement:",s
 
 test_file='../perl/dc.rdf'
 
@@ -59,20 +55,16 @@ parser=RDF.Parser('raptor')
 if parser is None:
   raise "Failed to create RDF.Parser raptor"
 
-stream=parser.parse_as_stream(uri,uri)
 count=0
-while not stream.end() :
-  model.add_statement(stream.current())
+for s in parser.parse_as_stream(uri,uri):
+  model.add_statement(s)
   count=count+1
-  stream.next();
 
 print "Parsing added",count,"statements"
 
 print "Printing all statements"
-stream=model.serialise()
-while not stream.end():
-  print "Statement:",stream.current()
-  stream.next()
+for s in model.as_stream():
+  print "Statement:",s
 
 
 print "Writing model to test-out.rdf as rdf/xml"
