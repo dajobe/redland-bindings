@@ -2170,6 +2170,18 @@ class Serializer(object):
         raise TypeError("uri must be string or RDF.Uri")
     Redland.librdf_serializer_set_feature(self._serializer,uri._reduri,value)
 
+  def set_namespace(self, prefix, uri):
+    """Set a namespace prefix and URI for the Serializer to use."""
+    if not isinstance(uri, Uri):
+      if type(uri) is str:
+        uri = Uri(string=uri)
+      elif type(uri) is unicode:
+        import Redland_python
+        uri = Uri(string=Redland_python.unicode_to_bytes(uri))
+      else:
+        raise TypeError("uri must be string or RDF.Uri")
+    Redland.librdf_serializer_set_namespace(self._serializer, uri._reduri, prefix)
+
 
 # end class Serializer
 
