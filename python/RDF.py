@@ -112,9 +112,9 @@ def node_type_name(num):
     raise NodeTypeError('Unknown node type number %d' % num)
 
 class World:
-  """Internal Redland RDF class.
+  """Redland Initialisation class.
 
-  No user methods here at present.
+  There are no user methods (can only be constructed).
 
   """
 
@@ -715,7 +715,9 @@ Copy an existing model m1, copying the underlying Storage of m1
 
 
 class Iterator:
-  """A class for iterating over a sequence of Node s such as
+  """Redland Node Iterator class
+
+     A class for iterating over a sequence of Node s such as
      those returned from a Model query.  Some methods return
      Iterator s or Python sequences.  If this is used, it works
      as follows:
@@ -779,7 +781,9 @@ please use 'not iterator.end' instead."""
 
 
 class Stream:
-  """A class for iterating over a sequence of Statement s such as
+  """Redland Statement Stream class
+
+     A class for iterating over a sequence of Statement s such as
      those returned from a Model query.  Some methods return
      Statement s or Python sequences.  If this is used, it works
      as follows:
@@ -846,7 +850,7 @@ class Stream:
 
 class Storage:
 
-  """Redland triple storage class
+  """Redland Statement Storage class
 
      import RDF
      storage=RDF.Storage(storage_name="memory")
@@ -988,7 +992,7 @@ Copy an existing URI uri1.
 
 
 class Parser:
-  """Redland Parser Class
+  """Redland Syntax Parser Class
 
   import RDF
   parser1=RDF.Parser()
@@ -1063,7 +1067,15 @@ optional.  When any are given, they must all match.
 # end class Parser
 
 class Serializer:
+  """ Redland Syntax Serializer Class
 
+  import RDF
+  ser1=RDF.Serializer(mime_type="application/rdf+xml")
+
+  A class for turning a Model into a syntax serialization (at present
+  only to local files).
+  """
+  
   def __init__(self, name="", mime_type="application/rdf+xml", uri=None):
     """Create an RDF Serializer (constructor)."""
     global _world
