@@ -568,9 +568,10 @@ Copy an existing model m1, copying the underlying Storage of m1
        literal string, optional XML language and optional datatype URI."""
     if datatype !=None:
         datatype=datatype._reduri
-    return Redland.librdf_model_add_typed_literal_statement( self._model,
-        subject._node, predicate._node, string,
-        xml_language, 0, is_wf_xml)
+    subject_copy=Redland.librdf_new_node_from_node(subject._node)
+    predicate_copy=Redland.librdf_new_node_from_node(predicate._node)
+    return Redland.librdf_model_add_typed_literal_statement(self._model,
+        subject_copy, predicate_copy, string, xml_language, datatype)
 
   def add_statement (self,statement,context=None):
     """Add the Statement to the Model with optional context Node"""
