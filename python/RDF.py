@@ -290,14 +290,6 @@ Creates a new RDF Node using the following fields:
     else:
         return self.__dict__[name]
 
-  def __setattr__(self, name, value):
-    if name=='uri':
-        self._set_uri(value)
-    elif name=='type':
-        return self._set_type(value)
-    else:
-        self.__dict__[name]=value
-
   def _get_uri(self):
     # we return a copy of our internal uri
     if self._get_type()==node_type('NODE_TYPE_RESOURCE'):
@@ -306,20 +298,8 @@ Creates a new RDF Node using the following fields:
         raise NodeTypeError("Can't get URI for node type %s (%d)" % \
             (node_type_name(self._get_type()), self._get_type()))
 
-  def _set_uri(self, uri):
-    # when we set the uri, the node takes ownership of it
-    # also it frees the existing one.  this means that
-    # we need to take a copy of the underlying redland URI
-    # passed in, so as not to cause the URI to disappear
-    # when this node is deconstructed
-    Redland.librdf_node_set_uri(self._node,
-        Redland.librdf_uri_from_uri(uri._reduri))
-
   def _get_type(self):
     return Redland.librdf_node_get_type(self._node)
-
-  def _set_type(self, type):
-    Redland.librdf_node_set_type(self._node, type)
 
   def get_literal_value (self):
     """Get a dictionary containing the value of the Node literal"""
@@ -333,23 +313,12 @@ Creates a new RDF Node using the following fields:
         }
     return val
 
-  def set_literal_value (self,string,xml_language=None,datatype=None):
-    """Set a literal Node string value, with optional XML language or datatype URI."""
-    if datatype !=None:
-        datatype=datatype._reduri
-    Redland.librdf_node_set_typed_literal_value(self._node, string,
-        xml_language, datatype)
-
   def get_blank_identifier(self):
     """Get the blank node identifier of the Node"""
     if self.type != _node_types['NODE_TYPE_BLANK']:
       return ""
     else:
       return Redland.librdf_node_get_blank_identifier(self._node)
-
-  def set_blank_identifier(self, identifier):
-    """Get the blank node identifier of the Node"""
-    return Redland.librdf_node_set_blank_identifier(self._node, identifier)
 
   def __str__(self):
     """Get a string representation of an RDF Node."""
