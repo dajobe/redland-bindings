@@ -488,14 +488,13 @@ if test $with_redland = system; then
   REDLAND_VERSION="system $REDLAND_VERSION"
 else
   if test -x ../librdf/redland-src-config; then
-    dir=../librdf
-    REDLAND_CONFIG=../librdf/redland-src-config
+    dir=`cd ../librdf; pwd`
   elif test -x ../redland-src-config; then
-    dir=..
-    REDLAND_CONFIG=../redland-src-config
+    dir=`cd ..; pwd`
   else
     AC_MSG_ERROR(Redland sources missing in .. or ../librdf directory - cannot use internal)
   fi
+  REDLAND_CONFIG=$dir/redland-src-config
   REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
   REDLAND_VERSION="internal $REDLAND_VERSION in $dir"
 fi
