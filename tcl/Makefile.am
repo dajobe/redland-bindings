@@ -76,7 +76,7 @@ $(TCL_PACKAGE)_wrap.lo: $(TCL_PACKAGE)_wrap.c
 $(TCL_PACKAGE).so: $(TCL_PACKAGE)-stamp
 $(TCL_PACKAGE)-stamp: $(TCL_PACKAGE)_wrap.lo
 	destdir=`pwd`; \
-	$(LIBTOOL) --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o libfake.la -module -rpath $$destdir $(TCL_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la $(tcllib); \
+	$(LIBTOOL) --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o libfake.la -rpath $$destdir $(TCL_PACKAGE)_wrap.lo $(top_builddir)/librdf/librdf.la $(tcllib); \
 	$(LIBTOOL) --mode=install install libfake.la $(DESTDIR)$$destdir/libfake.la
 	if test -r libfake.dylib; then \
 	  $(INSTALL_PROGRAM) libfake.dylib $(TCL_PACKAGE).dylib; \
