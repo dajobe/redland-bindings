@@ -58,12 +58,11 @@ public class Stream implements java.util.Iterator
       return (is_end_int == 0);
     }
 
-
   public Object next()
     {
-      long statement_object=core.librdf_stream_next(this.object);
-
-      return new Statement(this.world, statement_object, true);
+      Statement s=new Statement(this.current());
+      this.move_to_next();
+      return s;
     }
 
   public void remove() 
@@ -71,6 +70,23 @@ public class Stream implements java.util.Iterator
       throw new UnsupportedOperationException();
     }
 
+
+  // Redland API
+
+  public Statement current()
+    {
+      long statement_object=core.librdf_stream_get_object(this.object);
+
+    if(statement_object == 0)
+      throw new java.util.NoSuchElementException();
+
+      return new Statement(this.world, statement_object, true);
+    }
+
+  public boolean move_to_next()
+    {
+      return (core.librdf_stream_next(this.object) != 0);
+    }
 
 
   protected long __get_object() 
