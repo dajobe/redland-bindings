@@ -34,13 +34,16 @@ redland package from the language specific parts in the
 redland-bindings package.</p>
 
 <p>For most of the language bindings, the interface between them is
-using SWIG.  This is now defined by the Redland.i file installed by
-the redland package (redland-devel RPMs, librdf-dev debs).  This can
-be found via <code>redland-config --swig</code> and then used to
-generate the C wrappers for the bindings.  There may be need for
-language-specific changes which can be used via #included .i files
-triggered by calling swig and the C compiler with defines like
--DREDLAND_PRE_I to #include redland-pre.i from the Redland.i.</p>
+using the <a href="http://www.swig.org/">swig</a> interface generator tool.
+
+This is now defined by the Redland.i file provided by the redland
+package (in binary packages inside redland-devel rpm or librdf-dev
+debs).  This can also be found via <code>redland-config --swig</code>
+and then used to generate the C wrappers for the bindings.  There may
+be need for language-specific changes which can be used via #included
+.i files triggered by calling swig and the C compiler with defines
+like <code>-DREDLAND_PRE_I</code> to #include redland-pre.i from the
+Redland.i.</p>
 
 <p>The last paragraph does not apply to C# (Redland#) which uses
 the built in P/Invoke feature of the language and runtime to call
@@ -61,7 +64,8 @@ the csharp directory ChangeLog but include:</p>
 <li>Namespace changed from Rdf to Redland</li>
 <li>Added marshalling of strings between Redland and Redland#</li>
 <li>Freeing of native Redland objects by implementing the C# IDisposable interface, the Dispose method</li>
-<li>Query and QueryResults Classes: Added for Redland querying</li>
+<li>Query and QueryResults Classes: Added for new Redland 0.9.17 librdf_query
+and librdf_query_results classes.</li>
 <li>Added strong naming of Redland.dll</li>
 <li>Class Model. Added methods Execute, GetContexts, GetFeature, SetFeature, Load.</li>
 <li>Class World. Updated to use new Redland 0.9.17 logging API especially for parsing errors and warnings</li>
@@ -91,8 +95,8 @@ error messages returned from parsing.</li>
 <ul>
 <li>Class Statement. Added equals method.</li>
 
-<li>Classes Query, QueryResults: Added for new Redland 0.9.17 librdf_query,
-librdf_query_results.</li>
+<li>Classes Query, QueryResults: Added for new Redland 0.9.17 librdf_query
+and librdf_query_results classes.</li>
 
 <li>Class Model: Added execute method.</li>
 </ul>
