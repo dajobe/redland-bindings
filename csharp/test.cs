@@ -4,6 +4,7 @@
 
 using Redland;
 using System;
+using System.Collections;
 using System.Runtime.InteropServices;
 
 public class Test {
@@ -56,5 +57,18 @@ public class Test {
 			Console.WriteLine (target.ToString ());
                         iterator.MoveNext ();
                 }
+
+
+		Query query = new Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>");
+                Console.Write ("Querying for dc:titles:");
+		QueryResults qr = model.Execute (query);
+                while(!qr.End) {
+			Hashtable result = (Hashtable) qr.Current;
+			Console.Write ("Result: ");
+			Console.WriteLine (result.ToString ());
+                        qr.MoveNext();
+                }
+
+
 	}
 }
