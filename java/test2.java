@@ -56,6 +56,10 @@ class test2 {
       System.exit(1);
     }
 
+    Node node=new Node(world, uri);
+
+    node=null;
+    
     // These need not be done in Java if garbage collection
     // works in the right order
     parser=null;

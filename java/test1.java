@@ -58,6 +58,10 @@ class test1 {
       System.exit(1);
     }
 
+    long node=core.librdf_new_node_from_uri_string(world, "http://example.org/");
+
+    core.librdf_free_node(node);
+
     core.librdf_free_parser(parser);
 
     core.librdf_free_model(model);
