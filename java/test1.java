@@ -1,24 +1,74 @@
-import UK.ac.bristol.ilrt.redland.*;
+// -*- Mode: java; c-basic-offset: 2 -*-
+//
+// test.c - Redland Java interface test code
+//
+// $Id$
+//
+// Copyright (C) 2001 David Beckett - http://purl.org/net/dajobe/
+// Institute for Learning and Research Technology - http://www.ilrt.org/
+// University of Bristol - http://www.bristol.ac.uk/
+// 
+// This package is Free Software or Open Source available under the
+// following licenses (these are alternatives):
+//   1. GNU Lesser General Public License (LGPL)
+//   2. GNU General Public License (GPL)
+//   3. Mozilla Public License (MPL)
+// 
+// See LICENSE.html or LICENSE.txt at the top of this package for the
+// full license terms.
+// 
+// 
+//
+
+import org.librdf.redland;
 
 class test {
   
   public static void main(String[] args) {
-    byte[] storage_name=null;
-    byte[] name=null;
-    byte[] options_string=null;
+
+    // LOW LEVEL TESTING - using the C objects directly, no Java objects
+
+    long world=org.librdf.redland.librdf_new_world();
+    org.librdf.redland.librdf_world_open(world);
+
+    long storage=org.librdf.redland.librdf_new_storage(world,
+                                                       "hashes",
+                                                       "test",
+                                                       "hash-type='bdb',dir='.',new='yes'");
+    if(storage == 0) {
+      System.out.println("Failed to create RDF storage");
+      System.exit(1);
+    }
+
+    long model=org.librdf.redland.librdf_new_model(world, storage, null);
+
+    if(model == 0) {
+      System.out.println("Failed to create RDF model");
+      System.exit(1);
+    }
     
-    UK.ac.bristol.ilrt.redland.redland.init_world(name, null);
 
-    System.out.println("Version is '" + UK.ac.bristol.ilrt.redland.redland.version + "'\n");
-    System.out.println("Copyright is '" + UK.ac.bristol.ilrt.redland.redland.copyright + "'\n");
+    long parser=org.librdf.redland.librdf_new_parser(world, "raptor", "", 0);
 
-    storage_name=new String("memory").getBytes();
-    UK.ac.bristol.ilrt.redland.redland.new_storage(storage_name,
-                                                   name,
-                                                   options_string);
-
+    if(parser == 0) {
+      System.out.println("Failed to create RDF parser");
+      System.exit(1);
+    }
     
-    UK.ac.bristol.ilrt.redland.redland.destroy_world();
+    long uri=org.librdf.redland.librdf_new_uri(world, "file:../perl/dc.rdf");
+
+    if(org.librdf.redland.librdf_parser_parse_into_model(parser, uri, uri, model) != 0) {
+      System.out.println("Failed to parse ../perl/dc.rdf into model");
+      System.exit(1);
+    }
+
+    org.librdf.redland.librdf_free_parser(parser);
+
+    org.librdf.redland.librdf_free_model(model);
+
+    org.librdf.redland.librdf_free_storage(storage);
+
+    org.librdf.redland.librdf_free_world(world);
     
   }
 }
