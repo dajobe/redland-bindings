@@ -1,3 +1,45 @@
+2005-02-22  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/Parser.pm (parse_into_model,
+	parse_string_into_model): Use set_log_handler, reset_log_handler
+	when $handler is given as a final arg.
+
+	* perl/lib/RDF/Redland/Model.pm (load): Use set_log_handler,
+	reset_log_handler when $handler is given as a final arg.
+
+	* perl/lib/RDF/Redland.pm (set_log_handler, reset_log_handler):
+	Internal.
+
+	* perl/t/test3.t (message): Take full log args.
+
+	* perl/lib/RDF/Redland.pm (message): Take full log args.
+	Added Log_Sub
+	(set_log_handler): Added to set redland log handler callback.
+
+	* perl/redland-post.i (librdf_call_perl_message):
+	Update to handle full log args.
+	(librdf_perl_logger_handler): Added to take redland log message.
+	(librdf_perl_world_init): Set librdf_perl_logger_handler.
+
+	* python/redland-post.i: Another way to do error reports.
+	Use librdf_world_set_logger to grab structured log messages rather
+	than just warning or error strings.
+	If the callback handler is set, call a python callback with signature
+	  def handler(code, level, facility, message, line, column, byte, file, uri)
+	and reset it afterwards.
+	Add set_callback and reset_callback to set/restore these.
+	(librdf_call_python_message): Restored, removing varargs use but
+	taking the args above.
+	(librdf_python_message_handler): Removed need for varargs.
+	(librdf_python_logger_handler): Use structured log messages and pass
+	on to python either via callback or delivering an exception/warning.
+
+	* python/RDF.py: V1.1 another new error reporting method.
+	(Model.load, Parser.parse_into_model,
+	Parser.parse_string_into_model): Gain an optional 'handler' arg that
+	receives error callbacks with signature
+	   def handler(code, level, facility, message, line, column, byte, file, uri)
+
 2005-02-16  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* perl/lib/RDF/Redland/QueryResults.pm (to_string):
