@@ -37,7 +37,7 @@ rubyarchdir=@RUBY_DIR@
 
 rubyarch_DATA=redland.so
 
-EXTRA_DIST=example.rb \
+EXTRA_DIST=example.rb core.rb \
 redland-pre.i redland-types.i $(SWIG_OUTPUTS)
 
 SUBDIRS=lib test
@@ -89,5 +89,12 @@ uninstall-rubyarchDATA: $(rubyarch_DATA)
 
 check-local: test-ruby
 
-test-ruby: $(RUBY_PACKAGE).so $(srcdir)/example.rb
-	$(RUN)$(RUBY) -I. $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
+test-ruby: test-core test-example
+
+test-core: $(RUBY_PACKAGE).so $(srcdir)/example.rb
+	RUBYLIB=. \
+	  $(RUN)$(RUBY) -Ilib $(srcdir)/core.rb file:$(srcdir)/../data/dc.rdf raptor
+
+test-example: $(RUBY_PACKAGE).so $(srcdir)/example.rb
+	RUBYLIB=. \
+	  $(RUN)$(RUBY) -Ilib $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
