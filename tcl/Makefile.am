@@ -43,7 +43,7 @@ $(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -tcl8 -module $(TCL_PACKAGE) -o $@ $<
 
 $(TCL_PACKAGE)_wrap.o: $(TCL_PACKAGE)_wrap.c
-	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf -c -fpic -I$(top_srcdir)  $< -o $@
+	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf -c -fpic -I$(top_srcdir) -c $< -o $@
 
 $(TCL_PACKAGE).so: $(TCL_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la
 	$(LIBTOOL) --mode=link $(CC) $(TCL_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la -o $@
