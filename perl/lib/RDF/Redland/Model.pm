@@ -593,6 +593,8 @@ sub query_execute ($$) {
 
 Load content from I<URI> into the model, guessing the parser.
 
+=cut
+
 sub load ($$;$$$) {
   my($self,$uri,$name,$type,$syntax_uri)=@_;
   $syntax_uri=$syntax_uri ? $syntax_uri->{URI} : undef;
@@ -601,7 +603,21 @@ sub load ($$;$$$) {
 }
 
 
+=item to_string [BASE-URI [SYNTAX-NAME [ MIME-TYPE [SYNTAX-URI]]]
+
+Serialize the model to a syntax.  If no serializer name is given,
+the default serializer RDF/XML is used.
+
 =cut
+
+sub to_string($;$$$$) {
+  my($self,$uri,$name,$type,$syntax_uri)=@_;
+  my $ruri=$uri ? $uri->{URI} : undef;
+  my $rsyntax_uri=$syntax_uri ? $syntax_uri->{URI} : undef;
+
+  return &RDF::Redland::CORE::librdf_model_to_string($self->{MODEL}, $ruri, $name, $type, $rsyntax_uri);
+}
+
 
 =pod
 
