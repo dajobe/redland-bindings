@@ -180,6 +180,17 @@ public class Model
     return new Node(this.world, core.librdf_model_get_target(this.object, source.__get_object(), arc.__get_object()), true);
   }
 
+  public Node getFeature(URI feature) 
+    {
+      return new Node(this.world, core.librdf_parser_get_feature(this.object, feature.__get_object()), true);
+    }
+
+  
+  public int setFeature(URI feature, Node value) 
+    {
+      return core.librdf_parser_set_feature(this.object, feature.__get_object(), value.__get_object());
+    }
+  
 
   protected long __get_object() 
   {

@@ -75,15 +75,15 @@ public class Parser
     }
 
   
-  public String getFeature(URI feature) 
+  public Node getFeature(URI feature) 
     {
-      return core.librdf_parser_get_feature(this.object, feature.__get_object());
+      return new Node(this.world, core.librdf_parser_get_feature(this.object, feature.__get_object()), true);
     }
 
   
-  public int setFeature(URI feature, String value) 
+  public int setFeature(URI feature, Node value) 
     {
-      return core.librdf_parser_set_feature(this.object, feature.__get_object(), value);
+      return core.librdf_parser_set_feature(this.object, feature.__get_object(), value.__get_object());
     }
   
 }
