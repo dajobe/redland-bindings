@@ -22,7 +22,7 @@
 
 import org.librdf.redland.core;
 
-class test {
+class test1 {
   
   public static void main(String[] args) {
 
@@ -30,47 +30,41 @@ class test {
 
     System.out.println("Test starting");
 
-    long world=org.librdf.redland.core.librdf_new_world();
-    org.librdf.redland.core.librdf_world_open(world);
+    long world=core.librdf_new_world();
+    core.librdf_world_open(world);
 
-    long storage=org.librdf.redland.core.librdf_new_storage(world,
-                                                       "hashes",
-                                                       "test",
-                                                       "hash-type='bdb',dir='.',new='yes'");
+    long storage=core.librdf_new_storage(world, "hashes", "test",
+                                         "hash-type='bdb',dir='.',new='yes'");
     if(storage == 0) {
       System.out.println("Failed to create RDF storage");
       System.exit(1);
     }
 
-    long model=org.librdf.redland.core.librdf_new_model(world, storage, null);
-
+    long model=core.librdf_new_model(world, storage, null);
     if(model == 0) {
       System.out.println("Failed to create RDF model");
       System.exit(1);
     }
     
-
-    long parser=org.librdf.redland.core.librdf_new_parser(world, "raptor", "", 0);
-
+    long parser=core.librdf_new_parser(world, "raptor", "", 0);
     if(parser == 0) {
       System.out.println("Failed to create RDF parser");
       System.exit(1);
     }
     
-    long uri=org.librdf.redland.core.librdf_new_uri(world, "file:../perl/dc.rdf");
-
-    if(org.librdf.redland.core.librdf_parser_parse_into_model(parser, uri, uri, model) != 0) {
+    long uri=core.librdf_new_uri(world, "file:../perl/dc.rdf");
+    if(core.librdf_parser_parse_into_model(parser, uri, uri, model) != 0) {
       System.out.println("Failed to parse ../perl/dc.rdf into model");
       System.exit(1);
     }
 
-    org.librdf.redland.core.librdf_free_parser(parser);
+    core.librdf_free_parser(parser);
 
-    org.librdf.redland.core.librdf_free_model(model);
+    core.librdf_free_model(model);
 
-    org.librdf.redland.core.librdf_free_storage(storage);
+    core.librdf_free_storage(storage);
 
-    org.librdf.redland.core.librdf_free_world(world);
+    core.librdf_free_world(world);
     
     System.out.println("Test finished");
   }

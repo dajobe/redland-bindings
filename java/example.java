@@ -20,17 +20,17 @@
 // 
 //
 
-import org.librdf.*;
+import org.librdf.redland.*;
 
 class example {
   
   public static void main(String[] args) {
 
-    org.librdf.world world=new org.librdf.world();
+    org.librdf.redland.World world=new org.librdf.redland.World();
     world.open();
 
-    System.out.println("Redland version: " + world.version_string());
-    System.out.println("Redland Copyright: " + world.copyright_string());
+    System.out.println("Redland version: " + world.versionString());
+    System.out.println("Redland Copyright: " + world.copyrightString());
 
   }
 }
