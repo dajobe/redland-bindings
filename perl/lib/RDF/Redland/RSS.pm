@@ -508,7 +508,14 @@ EOT
     
     if(my $subject=$item->property($dc_subject)) {
       $item_desc.="<br />" if $item_desc;
-      $item_desc.="<small>Subject: ".format_literal($subject)."</small>";
+      my $fmt_subject;
+      if($subject->type eq $RDF::Node::Type_Literal) {
+        $fmt_subject=format_literal($subject);
+      } else {
+        $fmt_subject=format_url($subject);
+        $fmt_subject=qq{<a href="$fmt_subject">$fmt_subject</a>};
+      }
+      $item_desc.="<small>Subject: $fmt_subject</small>";
     }
 
     if($item_link && $item_title) {
