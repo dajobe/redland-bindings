@@ -120,8 +120,9 @@ sub new ($$$$) {
 
 # DESTRUCTOR
 sub DESTROY ($) {
-  warn "RDF::Stream DESTROY\n" if $RDF::Debug;
-  &Redland::librdf_free_stream(shift->{STREAM});
+  my $self=shift;
+  warn "RDF::Stream DESTROY $self\n" if $RDF::Debug;
+  &Redland::librdf_free_stream($self->{STREAM});
   warn "RDF::Stream DESTROY done\n" if $RDF::Debug;
 }
 

@@ -190,13 +190,13 @@ sub _new_from_object ($$$) {
 =cut
 
 sub DESTROY ($) {
-  warn "RDF::Statement DESTROY\n" if $RDF::Debug;
   my $self=shift;
+  warn "RDF::Statement DESTROY $self\n" if $RDF::Debug;
   if($self->{STATEMENT}) {
     if($self->{DONT_FREE_ME}) {
-      warn "RDF::Statement NOT doing librdf_free_statement on librdf statement\n" if $RDF::Debug;
+      warn "RDF::Statement DESTROY NOT doing librdf_free_statement on librdf statement\n" if $RDF::Debug;
     } else {
-      warn "RDF::Statement doing librdf_free_statement on librdf statement\n" if $RDF::Debug;
+      warn "RDF::Statement DESTROY doing librdf_free_statement on librdf statement\n" if $RDF::Debug;
       &Redland::librdf_free_statement($self->{STATEMENT});
     }
   }

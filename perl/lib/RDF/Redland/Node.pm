@@ -241,9 +241,10 @@ sub _new_from_object ($$$) {
 # DESTRUCTOR
 sub DESTROY ($) {
   my $self=shift;
+  warn "RDF::Node DESTROY $self\n" if $RDF::Debug;
   if($self->{NODE}) {
     if(!$self->{DONT_FREE_ME}) {
-      warn "RDF::Node doing librdf_free_node on librdf node\n" if $RDF::Debug;
+      warn "RDF::Node DESTROY doing librdf_free_node on librdf node" if $RDF::Debug;
       &Redland::librdf_free_node($self->{NODE});
     }
   }
