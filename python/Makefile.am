@@ -66,7 +66,7 @@ install-pythonDATA: $(python_DATA)
 	$(INSTALL_DATA) RDF.py $(DESTDIR)$(pythondir)/RDF.py
 
 uninstall-pythonDATA: $(python_DATA)
-	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so
+	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so $(DESTDIR)$(pythondir)/RDF.py
 
 check-local: unittest-python test-python
 
