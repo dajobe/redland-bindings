@@ -1037,19 +1037,19 @@ Create a model using an in-memory storage.
       type_uri = type_uri._reduri
     Redland.librdf_model_load(self._model, uri, name, mime_type, type_uri)
     
-  def run_as_bindings(self,query):
-    success = (Redland.librdf_model_query_as_bindings(self._model,query._query) == 0)
-    if success:
+  def execute(self,query):
+    results = Redland.librdf_model_query_execute(self._model,query._query)
+    if results is not None:
       self.been_run = True
-      return QueryResultIterator(query)
+      return QueryResults(query._query,results)
     else:
       return None
 
   def run_as_statements(self,query):
-    s = Redland.librdf_model_query_as_stream(self._model,query._query)
-    if s is not None:
-      self.been_run = True
-      return Stream(s,self)
+    results = Redland.librdf_model_query_execute(self._model,query._query)
+    if results is not None:
+      s=Redland.librdf_query_results_as_stream(results)
+      return Stream(s,results)
     else:
       return None
 
@@ -1644,11 +1644,12 @@ class Query(object):
   q1 = RDF.Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
   q2 = RDF.Query("- - -",name="triples")
 
-  for result in q1.run_as_bindings(model):
+  results=q1.execute(model)
+  for result in results:
     print result['a']
     print result['c']
 
-  for statement in q2.run_as_statements(model):
+  for statement in q2.execute().as_stream(model):
     print statement
 
   """
@@ -1671,59 +1672,90 @@ class Query(object):
     if self._query:
       Redland.librdf_free_query(self._query)
 
-  def __len__(self):
-    return Redland.librdf_query_get_result_count(self._query)
-
-  def run_as_bindings(self,model):
-    success = (Redland.librdf_query_run_as_bindings(self._query,model._model) == 0)
-    if success:
+  def execute(self,model):
+    results = Redland.librdf_query_execute(self._query,model._model)
+    if results is not None:
       self.been_run = True
-      return QueryResultIterator(self)
-    else:
-      return None
-
-  def run_as_statements(self,model):
-    s = Redland.librdf_query_run_as_stream(self._query,model._model)
-    if s is not None:
-      self.been_run = True
-      return Stream(s,self)
+      return QueryResults(self._query,results)
     else:
       return None
 
 # end class Query
 
-class QueryResultIterator(object):
-  def __init__(self,query):
+
+class QueryResults(object):
+  """Redland Query results class
+
+
+  """
+  def __init__(self,query,results):
     global _debug
     if _debug:
-      print "Creating QueryResultIterator"
-    self.query = query
+      print "Creating QueryResults"
+    self._query = query
+    self._results = results
     self.first = True
 
   def __iter__(self):
     return self
 
+  def __len__(self):
+    return Redland.librdf_query_results_get_count(self._results)
+
+  # Iterator method
   def next(self):
     if self.first:
       self.first = False
     else:
-      Redland.librdf_query_next_result(self.query._query)
-    if Redland.librdf_query_results_finished(self.query._query):
+      Redland.librdf_query_results_next(self._results)
+    if Redland.librdf_query_results_finished(self._results):
       raise StopIteration
     return self.make_results_hash()
 
   def make_results_hash(self):
-    _query = self.query._query
     results = {}
-    c = Redland.librdf_query_get_bindings_count(_query)
+    c = Redland.librdf_query_results_get_bindings_count(self._results)
     for i in range(c):
-      n = Redland.librdf_query_get_result_binding_name(_query,i)
-      v = Redland.librdf_query_get_result_binding_value(_query,i)
+      n = Redland.librdf_query_results_get_binding_name(self._results,i)
+      v = Redland.librdf_query_results_get_binding_value(self._results,i)
       results[n] = Node(from_object=v)
 
     return results
 
-# end class QueryIterator
+  def as_stream(self):
+    s=Redland.librdf_query_results_as_stream(self._results)
+    if s is not None:
+      return Stream(s, self)
+    else:
+      return None
+
+  def finished(self):
+    return Redland.librdf_query_results_finished(self._results)
+
+  def get_binding_value(self, offset):
+    n=Redland.librdf_query_results_get_binding_value(self._results, offset)
+    return Node(from_object=n, do_not_copy=1)
+
+  def get_binding_name(self, offset):
+    return Redland.librdf_query_results_get_binding_name(self._results, offset)
+
+  def get_binding_value_by_name(self, name):
+    n=Redland.librdf_query_results_get_binding_value_by_name(self._results, name)
+    return Node(from_object=n, do_not_copy=1)
+
+  def get_bindings_count(self):
+    return Redland.librdf_query_results_get_bindings_count(self._results)
+
+  def __del__(self):
+    global _debug    
+    if _debug:
+      print "Destroying RDF.QueryResults"
+    if self._results:
+      Redland.librdf_free_query_results(self._results)
+
+
+# end class QueryResults
+
 
 class Serializer(object):
   """ Redland Syntax Serializer Class
