@@ -16,28 +16,25 @@ public class Test {
 
 	public static void Main ()
 	{
-		Rdf.World world = new Rdf.World ();
-		world.Open ();
+		Rdf.Uri uri = new Rdf.Uri ("http://example.librdf.org/");
+		Storage storage = new Storage ("memory", "test", null);
+		Model model = new Model (storage, null);
 
-		Rdf.Uri uri = new Rdf.Uri (world, "http://example.librdf.org/");
-		Storage storage = new Storage (world, "memory", "test", null);
-		Model model = new Model (world, storage, null);
-
-		Parser parser = new Parser (world, "raptor", null, null);
+		Parser parser = new Parser ("raptor", null, null);
 		parser.ParseStringIntoModel (rdfxml_content, uri, model);
 
 		Node subject, predicate, obj;
-		subject = new Node (world, "http://purl.org/net/dajobe/");
-		predicate = new Node (world, "http://purl.org/dc/elements/1.1/title");
-		obj = new Node (world, "My Home Page", null, 0);
+		subject = new Node ("http://purl.org/net/dajobe/");
+		predicate = new Node ("http://purl.org/dc/elements/1.1/title");
+		obj = new Node ("My Home Page", null, 0);
 
-		Statement stm = new Statement (world, subject, predicate, obj);
+		Statement stm = new Statement (subject, predicate, obj);
 		model.AddStatement (stm);
 
 		IntPtr output = fopen ("test-cesar-redland-binding.xml", "w+");
 		model.Print (output);
 
-		Statement partial_stm = new Statement (world);
+		Statement partial_stm = new Statement ();
 		partial_stm.Subject = subject;
 		partial_stm.Predicate = predicate;
 
