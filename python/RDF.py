@@ -58,9 +58,39 @@ __version__ = "0.6"
 _debug = 0
 _world = None
 
+_node_types={
+    'NODE_TYPE_UNKNOWN'   : 0,
+    'NODE_TYPE_RESOURCE'  : 1,
+    'NODE_TYPE_PROPERTY'  : 1,
+    'NODE_TYPE_LITERAL'   : 2,
+    'NODE_TYPE_STATEMENT' : 3,
+    'NODE_TYPE_LI'        : 4,
+    'NODE_TYPE_BLANK'     : 5,
+    'NODE_TYPE_LAST'      : 5}
 
 import Redland;
 
+class RedlandError(Exception):
+    def __init__(self, value):
+        self.value = value
+
+    def __str__(self):
+        return `self.value`
+
+class NodeTypeError(RedlandError):
+    pass
+
+def node_type(name):
+    if _node_types.has_key(name):
+        return _node_types[name]
+    else:
+        raise NodeTypeError('Unknown node type %s' % name)
+
+def node_type_name(num):
+    for n in _node_types.keys():
+        if num==_node_types[n]:
+            return n
+    raise NodeTypeError('Unknown node type number %d' % num)
 
 class World:
   """Core RDF class"""
@@ -162,7 +192,11 @@ class Node:
 
   def _get_uri(self):
     # we return a copy of our internal uri
-    return Uri(from_object=Redland.librdf_node_get_uri(self._node))
+    if self._get_type()==node_type('NODE_TYPE_RESOURCE'):
+        return Uri(from_object=Redland.librdf_node_get_uri(self._node))
+    else:
+        raise NodeTypeError("Can't get URI for node type %s (%d)" % \
+            (node_type_name(self._get_type()), self._get_type()))
 
   def _set_uri(self, uri):
     # when we set the uri, the node takes ownership of it
@@ -218,6 +252,12 @@ class Node:
 
   def __hash__(self):
     return hash(str(self))
+
+  def is_resource(self):
+    return self.type==_node_types['NODE_TYPE_RESOURCE']
+
+  def is_literal(self):
+    return self.type==_node_types['NODE_TYPE_LITERAL']
   
 # end class Node
 
@@ -648,7 +688,10 @@ class Uri:
     elif args.has_key('uri'):
         self._reduri=Redland.librdf_new_uri_from_uri(args['uri']._reduri)
     elif args.has_key('from_object'):
-        self._reduri=Redland.librdf_new_uri_from_uri(args['from_object'])
+        if args['from_object']!=None:
+            self._reduri=Redland.librdf_new_uri_from_uri(args['from_object'])
+        else:
+            raise 'RDF.py: attempt to create new URI from null URI'
 
   def __del__(self):
     global _debug    
