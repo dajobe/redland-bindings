@@ -1,15 +1,18 @@
 //
 // World.cs: Redland Initialization class
 //
+// $Id$
+//
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)
 //	Edd Dumbill (edd@usefulinc.com)
 //
 // (C) 2004, Cesar Lopez Nataren
-// Edd Dumbill
+//           Edd Dumbill
 //
 
-using System; using System.Runtime.InteropServices;
+using System;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Collections;
 
@@ -19,34 +22,40 @@ namespace Redland {
 
 		IntPtr world;
 
-		internal ArrayList errors;
-		internal ArrayList warnings;
+		internal ArrayList messages;
 
-		public string [] Errors {
+		LogLevel level;
+
+		public LogMessage [] Messages {
 			get {
-				return (string []) errors.ToArray (typeof (String));
+				return (LogMessage []) messages.ToArray (typeof (LogMessage));
 			}
 		}
-		public string [] Warnings {
-			get { return (string []) warnings.ToArray (typeof (String)); }
-		}
 
-		public bool ErrorsWaiting {
-			get { return errors.Count > 0; }
-		}
-
-		public bool WarningsWaiting {
-			get { return warnings.Count > 0; }
-		}
+		private delegate int MessageHandler (IntPtr userdata, IntPtr message);
 
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_new_world ();
+		[DllImport ("librdf")]
+		static extern void librdf_world_set_logger (IntPtr world,
+				IntPtr userdata, Delegate cb);
 
 		internal World ()
 		{
 			world = librdf_new_world ();
 			ClearLog ();
-			setupHandlers ();
+			librdf_world_set_logger (world, new IntPtr (0),
+					new MessageHandler (dispatchMessage));
+			level = LogLevel.Warn;
+		}
+
+		public LogLevel LogLevel {
+			get {
+				return level;
+			}
+			set {
+				level = value;
+			}
 		}
 
 		[DllImport ("librdf")]
@@ -71,8 +80,7 @@ namespace Redland {
 
 		public void ClearLog ()
 		{
-			errors = new ArrayList ();
-			warnings = new ArrayList ();
+			messages = new ArrayList ();
 		}
 
 		// called by anything that can get errors, in order to lock
@@ -90,31 +98,13 @@ namespace Redland {
 			Monitor.Exit (this);
 		}
 
-		private delegate int intErrorHandler (IntPtr userdata, IntPtr message, IntPtr args);
-
-		[DllImport ("librdf")]
-		static extern void librdf_world_set_error (IntPtr world, IntPtr userdata, Delegate cb);
-		[DllImport ("librdf")]
-		static extern void librdf_world_set_warning (IntPtr world, IntPtr userdata, Delegate cb);
-
-		private int dispatchError (IntPtr userdata, IntPtr message, IntPtr args)
+		// handle incoming log messages
+		private int dispatchMessage (IntPtr userdata, IntPtr message)
 		{
-			errors.Add (Marshal.PtrToStringAuto (message));
+			LogMessage lm = new LogMessage (message);
+			if (lm.Level >= level)
+				messages.Add (lm);
 			return 1;
-		}
-
-		private int dispatchWarning (IntPtr userdata, IntPtr message, IntPtr args)
-		{
-			warnings.Add (Marshal.PtrToStringAuto (message));
-			return 1;
-		}
-
-		private void setupHandlers ()
-		{
-			librdf_world_set_error (world,
-					new IntPtr (0), new intErrorHandler (dispatchError));
-			librdf_world_set_warning (world,
-					new IntPtr (0), new intErrorHandler (dispatchWarning));
 		}
 	}
 }
