@@ -90,4 +90,5 @@ pkgIndex.tcl: $(TCL_PACKAGE).so
 check-local: test-tcl
 
 test-tcl: $(TCL_PACKAGE).so pkgIndex.tcl $(srcdir)/test.tcl
-	$(TCL) $(srcdir)/test.tcl
+	$(top_builddir)/redland-src-config --run \
+	  $(TCL) $(srcdir)/test.tcl
