@@ -10,6 +10,8 @@
 %define perlinstallsitearch @PERLINSTALLSITEARCH@
 %define perlman3dir @PERLMAN3DIR@
 
+%define ruby_dir @RUBY_DIR@
+
 Summary:   Redland RDF Application Framework API Bindings
 Name:      %{name}
 Version:   %{version}
@@ -20,7 +22,7 @@ Group:     Development/Libraries
 Source:    http://www.redland.opensource.ac.uk/dist/source/%{name}-%{version}.tar.gz
 URL:       http://www.redland.opensource.ac.uk/
 BuildRoot: /tmp/%{name}-%{version}
-BuildRequires: redland-devel >= %{redland_version}
+BuildRequires: redland-devel >= %{redland_version}, perl, python-devel, ruby-devel
 Packager:  Dave Beckett <Dave.Beckett@bristol.ac.uk>
 Docdir: %{prefix}/doc
 Requires:  redland >= %{redland_version}
@@ -52,6 +54,15 @@ Requires: redland = %{redland_version}
 The redland-python package contains the parts of Redland that provide
 an interface to Python.
 
+%package -n redland-ruby
+Summary: Ruby modules for the Redland RDF library
+Group: Development/Libraries
+Requires: redland = %{redland_version}
+
+%description -n redland-ruby
+The redland-ruby package contains the parts of Redland that provide
+an interface to Ruby.
+
 %prep
 %setup
 
@@ -81,6 +92,13 @@ cd python
 cd ..
 
 
+cd ruby
+
+%{__make}
+
+cd ..
+
+
 %install
 [ "$RPM_BUILD_ROOT" != "/" ] && rm -rf $RPM_BUILD_ROOT
 
@@ -97,6 +115,13 @@ cd python
 
 make install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT%{prefix} -name "*.py[co]" -exec rm -f {} \;
+
+cd ..
+
+cd ruby
+
+mkdir -p $RPM_BUILD_ROOT%{ruby_dir}
+make install DESTDIR=$RPM_BUILD_ROOT
 
 cd ..
 
@@ -127,11 +152,25 @@ cd ..
 
 %doc docs/pydoc/RDF.html python/example.py
 
+%files -n redland-ruby
+%defattr(-, bin, bin)
+
+%{ruby_dir}/redland.so
+
+%doc AUTHORS COPYING COPYING.LIB LICENSE-2.0.txt
+%doc README NEWS LICENSE.txt NOTICE
+
+%doc ruby/example.rb
+
 %post
 
 %postun
 
 %changelog
+* Wed Nov 3 2004  Dave Beckett <dave.beckett@bristol.ac.uk>
+- Added redland-ruby
+- BuildRequires: perl, python-devel, ruby-devel
+
 * Mon Nov 2 2004   Dave Beckett <dave.beckett@bristol.ac.uk>
 - License now LGPL/Apache 2
 - Added LICENSE-2.0.txt and NOTICE
