@@ -30,11 +30,12 @@ JAVA_PACKAGE=org.librdf.redland
 JAVA_PATH=org/librdf/redland/
 CLASSPATH=.
 
-EXTRA_LTLIBRARIES=librdf-java.la
+javalibdir=$(prefix)/lib/java
+javalib_LTLIBRARIES=librdf-java.la
 
 librdf_java_la_SOURCES=$(JAVA_MODULE)_wrap.c
 librdf_java_la_CFLAGS=$(JDK_INCLUDES)
-librdf_java_la_LDFLAGS=--rpath $(prefix)/lib/java $(top_srcdir)/librdf/librdf.la $(top_srcdir)/raptor/libraptor.la
+librdf_java_la_LDFLAGS=--rpath $(javalibdir) $(top_srcdir)/librdf/librdf.la
 
 JAVA_JAR=librdf-java.jar
 
@@ -95,6 +96,10 @@ $(JAVA_PATH)$(JAVA_MODULE).java: $(JAVA_PATH)$(JAVA_MODULE).java.in redland-frag
 
 build-java: $(JAVA_MODULE)_wrap.c librdf-java.la skeleton.class
 install-java: build-java
+
+install-javalibLTLIBRARIES:
+	@echo "Not installing java shared library by default yet"
+
 check-java: build-java test-java
 
 clean-local: clean-java
