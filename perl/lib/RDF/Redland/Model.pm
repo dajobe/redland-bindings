@@ -235,7 +235,7 @@ objects.
 sub serialise ($) {
   my $self=shift;
   my $stream=&Redland::librdf_model_serialise($self->{MODEL});
-  return new RDF::Stream($stream,$self,1);
+  return new RDF::Stream($stream,$self);
 }
 
 =item find_statements STATEMENT
