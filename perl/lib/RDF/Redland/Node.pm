@@ -51,8 +51,8 @@ RDF::Redland::Node - Redland RDF Node (RDF Resource, Property, Literal) Class
   my $node=new RDF::Redland::Node();
   my $node2=RDF::Redland::Node->new_from_uri_string("http://example.com/");
   my $node3=RDF::Redland::Node->new_from_uri(new RDF::Redland::URI("http://example.com/"));
-  my $node4=RDF::Redland::Node->new_from_literal("Hello, World!","",0,0);
-  my $node5=RDF::Redland::Node->new_from_literal("<tag>content</tag>","",0,1);
+  my $node4=RDF::Redland::Node->new_from_literal("Hello, World!","",0);
+  my $node5=RDF::Redland::Node->new_from_literal("<tag>content</tag>","",1);
   my $node6=RDF::Redland::Node->new_from_blank_identifier("genid1");
   ...
 
