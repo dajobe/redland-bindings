@@ -42,7 +42,9 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(PHP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -php4 -noproxy -module $(PHP_PACKAGE) -o $@ $<
+	cp $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.tmp
 	patch $(PHP_PACKAGE)_wrap.c < redland_wrap.c.patch
+	mv $(PHP_PACKAGE)_wrap.c.tmp $(PHP_PACKAGE)_wrap.c.orig
 	rm -f $(PHP_PACKAGE).php
 
 if MAINTAINER_MODE
