@@ -57,6 +57,7 @@ class test1 {
       System.out.println("Failed to parse ../perl/dc.rdf into model");
       System.exit(1);
     }
+    core.librdf_free_uri(uri);
 
     long node=core.librdf_new_node_from_uri_string(world, "http://example.org/");
 
