@@ -32,7 +32,9 @@ public class Test {
 		model.AddStatement (stm);
 
 		IntPtr output = fopen ("test-out.rdf", "w+");
-		model.Print (output);
+		Serializer serializer = new Serializer ("rdfxml", null, null);
+		Rdf.Uri base_uri = new Rdf.Uri ("http://example.org/base.rdf");
+		serializer.SerializeModel (output, base_uri, model);
 
 		Statement partial_stm = new Statement ();
 		partial_stm.Subject = subject;
