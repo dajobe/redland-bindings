@@ -29,7 +29,14 @@
 
 More documentation needed here.
 
-See the perl API documentation for inspiration :)
+  import RDF
+
+  storage=RDF.Storage(...)
+  model=RDF.Model(storage)
+
+  ... do stuff
+
+See class comments for more.
 
 """
 
@@ -99,7 +106,11 @@ def node_type_name(num):
     raise NodeTypeError('Unknown node type number %d' % num)
 
 class World:
-  """Core RDF class"""
+  """Internal Redland RDF class.
+
+  No user methods here at present.
+
+  """
 
   def __init__(self,digest_name="",uri_hash=None):
     """Create new RDF World object (constructor)"""
@@ -125,6 +136,7 @@ class World:
 
 # end class World
 
+
 def debug(value=-1):
   global _debug
   if value >= 0:
@@ -132,7 +144,23 @@ def debug(value=-1):
   else:
     return _debug
 
+
 class Node:
+  """Redland Node (RDF Resource, Property, Literal) Class
+
+    import RDF
+    node1=RDF.Node();
+    node2=RDF.Node(uri_string="http://example.com/");
+    node3=RDF.Node(uri=RDF.URI("http://example.com/"));
+    node4=RDF.Node(literal="Hello, World!");
+    node5=RDF.Node(literal="<tag>content</tag>", is_wf_xml=1);
+    node6=RDF.Node(node=node5);
+  ...
+
+    print node2,"\\n"
+    print node5->equals(node6),"\\n"
+
+  """
 
   def __init__(self, **args):
     """Create an RDF Node (constructor)."""
@@ -614,6 +642,22 @@ class Model:
 
 
 class Iterator:
+  """A class for iterating over a sequence of Node s such as
+     those returned from a Model query.  Some methods return
+     Iterator s or Python sequences.  If this is used, it works
+     as follows:
+
+       iterator=model.get_targets_iterator(source, arc)
+       while not iterator.end():
+         # get the current Node
+         node=iterator.current()
+         # do something with it
+         # (it is shared; you must copy it you want to keep it)
+         ...
+         iterator.next()
+       iterator=None
+
+     """
 
   def __init__(self,object,creator1=None,creator2=None,creator3=None):
     """Create an RDF Iterator (constructor)."""
@@ -643,7 +687,7 @@ please use 'not iterator.end' instead."""
     return Redland.librdf_iterator_have_elements(self._iterator)
 
   def current (self):
-    """Return the current object on the Iterator"""
+    """Return a SHARED copy of the current object on the Iterator"""
     my_node=Redland.librdf_iterator_get_object(self._iterator)
     if my_node == "NULL" or my_node == None:
       return None
@@ -662,6 +706,22 @@ please use 'not iterator.end' instead."""
 
 
 class Stream:
+  """A class for iterating over a sequence of Statement s such as
+     those returned from a Model query.  Some methods return
+     Statement s or Python sequences.  If this is used, it works
+     as follows:
+
+       stream=model.serialize()
+       while not stream.end():
+         # get the current Statement
+         statement=stream.current()
+         # do something with it
+         # (it is shared; you must copy it you want to keep it)
+         ...
+         stream.next()
+       stream=None
+
+     """
 
   def __init__(self, object, creator, free_statements):
     """Create an RDF Stream (constructor)."""
@@ -692,7 +752,7 @@ class Stream:
     return Redland.librdf_stream_end(self.stream)
 
   def current (self):
-    """Return the current Statement on the Stream"""
+    """Return a SHARED copy of the current Statement on the Stream"""
     if not self.stream:
       return None
 
