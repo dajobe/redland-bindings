@@ -86,7 +86,7 @@ import Redland;
 class world:
   """Core RDF class"""
 
-  def __init__(self,digest_name=None,uri_hash=None):
+  def __init__(self,digest_name="",uri_hash=None):
     """Create new RDF object (constructor)"""
     # Keep a circular reference to this object so it is deleted last
     self.me=self
@@ -316,7 +316,7 @@ class model:
       self.model=Redland.librdf_new_model_from_model(storage.storage,
       args['model'].model)
     else:
-      self.model=Redland.librdf_new_model(storage.storage, None)
+      self.model=Redland.librdf_new_model(storage.storage, "")
 
     if self.model == "NULL":
       self.model=None
