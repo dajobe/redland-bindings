@@ -254,6 +254,7 @@ fi
 
 changequote(<<, >>)dnl
 TCL_VERSION=`echo 'puts -nonewline [info tclversion]' | $TCL 2>/dev/null`
+TCL_DIR=`echo 'puts $tcl_library' | $TCL 2>/dev/null`
 changequote([, ])dnl
 if test "X$TCL_VERSION" != X; then
   languages_available="$languages_available tcl($TCL_VERSION)"
@@ -263,6 +264,7 @@ if test "X$TCL_VERSION" != X; then
 fi
 AC_MSG_RESULT($with_tcl)
 AC_SUBST(TCL_VERSION)
+AC_SUBST(TCL_DIR)
 
 AC_ARG_WITH(tcl_include, [  --with-tcl-include=DIR  Tcl include directory], tcl_include="$withval", tcl_include="")
 AC_MSG_CHECKING(TCL include)
