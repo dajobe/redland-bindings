@@ -83,10 +83,13 @@ use Redland;
 # CONSTRUCTOR
 # (main)
 sub new ($$) {
-  my($proto,$object)=@_;
+  my($proto,$object,$creator)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{STREAM}=$object;
+  # Keep around a reference to the object that created the stream
+  # so that perl does not destroy us before them.
+  $self->{CREATOR}=$creator;
   bless ($self, $class);
   return $self;
 }
@@ -94,7 +97,7 @@ sub new ($$) {
 # DESTRUCTOR
 sub DESTROY ($) {
   warn "RDF::Stream DESTROY\n" if $RDF::Debug;
-  &Redland::librdf_free_stream(shift->{STREAM});
+  &Redland::librdf_free_stream(self->{STREAM});
   warn "RDF::Stream DESTROY done\n" if $RDF::Debug;
 }
 
