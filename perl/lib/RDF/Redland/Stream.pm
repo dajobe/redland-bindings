@@ -80,7 +80,8 @@ sub new ($$$) {
 sub DESTROY ($) {
   my $self=shift;
   warn "RDF::Redland::Stream DESTROY $self" if $RDF::Redland::Debug;
-  &RDF::Redland::CORE::librdf_free_stream($self->{STREAM});
+  &RDF::Redland::CORE::librdf_free_stream($self->{STREAM})
+    if($self->{STREAM});
   $self->{CREATOR}=undef;
   warn "RDF::Redland::Stream DESTROY done\n" if $RDF::Redland::Debug;
 }
