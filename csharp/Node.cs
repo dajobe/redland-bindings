@@ -28,12 +28,17 @@ namespace Rdf {
 			node = librdf_new_node (Redland.World.Handle);
 		}
 
-		public Node (string uri)
+		public Node (System.Uri uri)
 			: this (Redland.World, uri)
 		{
 		}
 		
-		public Node (string s, string xml_language, int is_wf_xml)
+		public Node (string s)
+			: this (Redland.World, s, null, false)
+		{
+		}
+
+		public Node (string s, string xml_language, bool is_wf_xml)
 			: this (Redland.World, s, xml_language, is_wf_xml)
 		{
 		}
@@ -80,9 +85,9 @@ namespace Rdf {
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_new_node_from_uri_string (IntPtr world, IntPtr uri);
 
-		private Node (World world, string uri)
+		private Node (World world, System.Uri uri)
 		{
-			IntPtr iuri = Marshal.StringToHGlobalAuto (uri);
+			IntPtr iuri = Marshal.StringToHGlobalAuto (uri.ToString());
 			node = librdf_new_node_from_uri_string (world.Handle, iuri);
                         Marshal.FreeHGlobal (iuri);
 		}
@@ -90,11 +95,12 @@ namespace Rdf {
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_new_node_from_literal (IntPtr world, IntPtr s, IntPtr xml_language, int is_wf_xml);
 
-		private Node (World world, string s, string xml_language, int is_wf_xml)
+		private Node (World world, string s, string xml_language, bool is_wf_xml)
 		{
 			IntPtr istr = Marshal.StringToHGlobalAuto (s);
 			IntPtr ilang = Marshal.StringToHGlobalAuto (xml_language);
-			node = librdf_new_node_from_literal (world.Handle, istr, ilang, is_wf_xml);
+			int is_xml=is_wf_xml ? 1: 0;
+			node = librdf_new_node_from_literal (world.Handle, istr, ilang, is_xml);
                         Marshal.FreeHGlobal (istr);
                         Marshal.FreeHGlobal (ilang);
 		}
