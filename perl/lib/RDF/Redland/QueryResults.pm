@@ -30,7 +30,7 @@ use strict;
 
 =head1 NAME
 
-RDF::Redland::QueryResults - Redland RDF Syntax Querys Class
+RDF::Redland::QueryResults - Redland RDF Syntax Query Results Class
 
 =head1 SYNOPSIS
 
@@ -38,15 +38,17 @@ RDF::Redland::QueryResults - Redland RDF Syntax Querys Class
 
   ...
   my $query=new RDF::Redland::Query("rdql", undef, $query_string);
-  $model->query_as_bindings($query);
-  while(!$query->finished) {
-    for (my $i=0; $i < $query->bindings_count(); $i++) {
-      my $name=$query->result_binding_name($i);
-      my $value=$query->result_binding_value($i);
+  my $results=$model->execute($query);
+  while(!$results->finished) {
+    for (my $i=0; $i < $results->bindings_count(); $i++) {
+      my $name=$results->binding_name($i);
+      my $value=$results->binding_value($i);
       # ... do something with the results
     }
-    $query->next_result;
+    $results->next_result;
   }
+
+The $results in the example is an object of class RDF::Redland::QueryResults.
 
 =head1 DESCRIPTION
 
@@ -92,7 +94,7 @@ sub DESTROY ($) {
 
 =item count
 
-Return the current number of results from the query.
+Return the number of current results from the query.
 
 =cut
 
@@ -116,8 +118,7 @@ sub finished ($) {
 
 =item binding_name INDEX
 
-Get the name of the variable binding I<INDEX> in the sequence of
-variable bindings.
+Get the name of variable binding I<INDEX> in the array of variable names.
 
 =cut
 
@@ -129,8 +130,7 @@ sub binding_name ($$) {
 
 =item binding_names
 
-Get the names of all of the variable bindings in the sequence of
-variable bindings.
+Get the names all of the variable bindings as an array.
 
 =cut
 
@@ -147,8 +147,7 @@ sub binding_names ($) {
 
 =item binding_value INDEX
 
-Get the value of the variable binding I<INDEX> in the sequence of
-variable bindings.
+Get the value of the variable binding I<INDEX> in the current query result.
 
 =cut
 
@@ -161,8 +160,7 @@ sub binding_value ($$) {
 
 =item binding_values
 
-Get the values of all of the variable bindings in the sequence of
-variable bindings.
+Get the values of all of the variable bindings in the current query result.
 
 =cut
 
@@ -179,8 +177,7 @@ sub binding_values ($) {
 
 =item binding_value_by_name NAME
 
-Get the value of the variable binding I<NAME> in the sequence of
-variable bindings.
+Get the value of the variable binding I<NAME> in the current query result.
 
 =cut
 
@@ -193,8 +190,7 @@ sub binding_value_by_name ($$) {
 
 =item bindings
 
-Get the names and values of all of the variable bindings in the
-sequence of variable bindings as a hash
+Get the variable names and values of the current query result as a hash
 
 =cut
 
@@ -211,7 +207,7 @@ sub bindings ($) {
 
 =item bindings_count
 
-Return the size of the sequence of variable bindings.
+Return the number of variable bindings.
 
 =cut
 
@@ -223,7 +219,7 @@ sub bindings_count ($) {
 
 =item next_result
 
-Move to the next result in the sequence of variable bindings.
+Move to the next query result.
 
 =cut
 
