@@ -1,4 +1,5 @@
 require 'rdf/redland'
+require 'rdf/redland/util'
 
 module Redland
 
