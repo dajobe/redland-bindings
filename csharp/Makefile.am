@@ -32,13 +32,17 @@ CSHARP_PACKAGE=Redland
 CSHARP_SHARED_LIB=lib$(CSHARP_C_SHLIB).so
 
 SWIG_OUTPUTS=$(CSHARP_PACKAGE)_wrap.c $(CSHARP_PACKAGE).cs $(CSHARP_PACKAGE)PINVOKE.cs
-CSHARP_CRUFT=$(CSHARP_PACKAGE)_wrap.o
+CSHARP_CRUFT=$(CSHARP_PACKAGE)_wrap.o $(CSHARP_PACKAGE).dll
 
 EXTRA_DIST=README test.cs example.cs \
 $(SWIG_OUTPUTS)
 
-CLEANFILES=test*db test-out.rdf $(CSHARP_CRUFT)
+CLEANFILES=test*db *.dll test-out.rdf $(CSHARP_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
+
+SUFFIXES=.cs .dll
+.cs.dll:
+	$(CSHARP_COMPILE) 
 
 $(CSHARP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -csharp -package $(CSHARP_PACKAGE) -o $@ $<
@@ -47,10 +51,10 @@ $(CSHARP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 $(CSHARP_PACKAGE)_wrap.o: $(CSHARP_PACKAGE)_wrap.c
 	$(CC) $(CFLAGS) `$(top_srcdir)/redland-src-config --cflags` -c -fpic -I$(top_srcdir)  $< -o $@
 
-$(CSHARP_PACKAGE).so: $(CSHARP_PACKAGE)_wrap.o
+$(CSHARP_SHARED_LIB): $(CSHARP_PACKAGE)_wrap.o
 	$(CC) -shared $< -o $@ `$(top_srcdir)/redland-src-config --libs`
 
-build-csharp: $(CSHARP_PACKAGE).so
+build-csharp: $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE)PINVOKE.dll
 
 check-csharp: test-csharp
 test-csharp: build-csharp
