@@ -77,25 +77,14 @@ use ExtUtils::MakeMaker;
 
 $TOP_SRCDIR=$ENV{TOP_SRCDIR} || '..';
 $PACKAGE=$ENV{PACKAGE} || "Redland";
+$MEM_LIBS=$ENV{MEM_LIBS} || "";
+
+my $objects="Redland_wrap.o $TOP_SRCDIR/librdf.a ";
 
 my $redland_libs=`$TOP_SRCDIR/redland-config --libs`;
 chomp $redland_libs;
-
-# Convert -Ldir -lname into list of dir/libname.a so that perl links with
-# the correct files rather than, say, an libname.a somewhere earlier in
-# the libs search path.
-my(@abs_libs);
-my $t=$redland_libs;
-while(1) {
-  if($t =~ s/-L(\S+) -l(\S+)\s+//) {
-    my($dir,$name)=($1,$2);
-    push(@abs_libs, "$dir/lib$name.a") 
-      unless $name eq 'rdf'; # save all except librdf.a
-    next;
-  }
-  push(@abs_libs, split(/ /, $t));
-  last;
-}
+$redland_libs =~ s/^-L\S+ -lrdf //;
+$objects .= $redland_libs;
 
 my $version=$ENV{VERSION};
 
@@ -135,7 +124,7 @@ WriteMakefile(
     'VERSION'   => $version,
     'DEFINE'    => '-Dbool=char -DHAVE_CONFIG_H',
     'CCFLAGS'   => "-I$TOP_SRCDIR",
-    'OBJECT'    => "Redland_wrap.o ../librdf.a @abs_libs",
+    'OBJECT'    => "$objects $MEM_LIBS",
     'MAKEFILE'  => 'Makefile.perl',
     'clean'     => { FILES => "test*.db" },
     'realclean' => { FILES => "Redland_wrap.c Redland_wrap.o Redland.pm" },
