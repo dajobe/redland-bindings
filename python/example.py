@@ -23,7 +23,7 @@ import RDF
 
 world=RDF.world()
 
-storage=RDF.storage({'storage_name' : "hashes", 'name' : "test", "options_string" : "new='yes',hash-type='bdb',dir='.'"})
+storage=RDF.storage(storage_name="hashes", name="test", options_string="new='yes',hash-type='memory',dir='.'")
 if not storage:
   raise "new RDF.storage failed"
 
@@ -33,9 +33,9 @@ model=RDF.model(storage)
 if not model:
   raise "new RDF.model failed"
 
-statement=RDF.statement({'subject' : RDF.node({"uri_string" : "http://purl.org/net/dajobe/"}),
-                        'predicate' : RDF.node({"uri_string" : "http://purl.org/dc/elements/1.1/creator"}),
-                        'object' : RDF.node({"literal" : "Dave Beckett"})})
+statement=RDF.statement(subject=RDF.node(uri_string="http://purl.org/net/dajobe/"),
+                        predicate=RDF.node(uri_string="http://purl.org/dc/elements/1.1/creator"),
+                        object=RDF.node(literal="Dave Beckett"))
 if not statement:
   raise "new RDF.statement failed"
 
@@ -44,7 +44,7 @@ model.add_statement(statement)
 del statement
 
 # Match against an empty statement - find everything
-statement=RDF.statement({"subject" : None, "predicate" : None, "object": None});
+statement=RDF.statement(subject=None, predicate=None, object=None);
 # after this statement should not be touched since find_statements is using it
 stream=model.find_statements(statement);
 
@@ -57,7 +57,43 @@ del statement
 
 del stream
 
+test_file='../perl/dc.rdf'
+
+print "Parsing URI (file)", test_file
+uri=RDF.uri(string="file:"+test_file)
+
+parser=RDF.parser('raptor')
+if not parser:
+  raise "Failed to create RDF.parser raptor"
+parser.feature(RDF.uri(string="http://www.w3.org/1999/02/22-rdf-syntax-ns#aboutEach"), "yes")
+
+stream=parser.parse_as_stream(uri,uri)
+count=0
+while not stream.end() :
+  model.add_statement(stream.next())
+  count=count+1
+
+# Not needed since assignment below does this
+#stream=None
+#del stream
+
+parser=None
+del parser
+
+del uri
+
+print "Parsing added",count,"statements"
+
+print "Printing all statements"
+stream=model.serialise()
+while not stream.end():
+  print "Statement:",stream.next()
+stream=None
+
+del stream
+
 del model
+
 del storage
 
 # this must be done last
