@@ -25,8 +25,8 @@
 	(ClearLog): Added to empty the errors and warnings lists.
 	(Enter): To lock world for gathering errors
 	(Exit): To unlock world after gathering errors
-	(setupHandlers): Use a delegate intErrorHandler (function pointer in C) to
-	register callbacks for errors and warnings.
+	(setupHandlers): Use a delegate intErrorHandler (function pointer
+	in C) to register callbacks for errors and warnings.
 	(dispatchError, dispatchWarning): Added the error, warning gatherers.
 
 	* Errors.cs, Makefile.am: Added Errors.cs
