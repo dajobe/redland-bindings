@@ -1,5 +1,6 @@
-danbri
+*.db
+.deps
 Makefile
 Makefile.in
-Redland_wrap*
-*.db
+redland-stamp
+redland_wrap*
