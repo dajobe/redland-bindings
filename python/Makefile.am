@@ -81,3 +81,9 @@ rpmdist-python: setup.py
 
 clean-local: clean-python
 	rm -rf build dist
+
+RDF.html: RDF.py build-python
+	@bdir=`ls -1d build/lib.*`; \
+	echo Using python build dir $$bdir; \
+	echo PYTHONPATH=$$bdir $(PYTHON); \
+	PYTHONPATH=$$bdir $(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF
