@@ -1,14 +1,10 @@
 2004-07-19  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
-	* redland-bindings.spec.in: core docs in all pacakges
+	* redland-bindings.spec.in: core docs in all packages
 
 	* redland-bindings.spec.in:
 	no need to configure loads of redland things
 	no need to make install librdf
-
-	* redland-bindings.pc.in: remove redland-bindings.pc.in
-
-	* redland-bindings.spec.in: remove redland-bindings.spec.in
 
 	* configure.ac, Makefile.am: remove redland-bindings.pc.in
 
@@ -18,16 +14,9 @@
 
 	* redland-bindings.spec.in: fix package names
 
-	* configure.ac: make redland-bindings.pc
+	* redland-bindings.spec.in: redland-bindings spec
 
-	* Makefile.am: added redland-bindings.pc installing to pkgconfig dir
-
-	* redland-bindings.pc.in, redland-bindings.spec.in:
-	redland-bindings spec, pc
-
-	* Makefile.am: added redland-bindings.spec, redland-bindings.pc.in
-
-	* configure.ac: added redland-bindings.spec
+	* Makefile.am, configure.ac: added redland-bindings.spec
 
 	* Makefile.am: zap man_MANS
 
