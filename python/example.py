@@ -74,3 +74,12 @@ stream=model.serialise()
 while not stream.end():
   print "Statement:",stream.current()
   stream.next()
+
+
+print "Writing model to test-out.rdf as rdf/xml"
+
+# Use any rdf/xml parser that is available
+serializer=RDF.Serializer("rdfxml")
+serializer.serialize_model_to_file("test-out.rdf", model)
+
+print "Done"
