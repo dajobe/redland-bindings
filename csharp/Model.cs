@@ -155,10 +155,7 @@ namespace Rdf {
 		public bool Contains (Statement stm)
 		{
 			int r = librdf_model_contains_statement (model, stm.Handle);
-			if (r != 0)
-				return true;
-			else
-				return false;
+			return (r != 0);
 		}
 
 		[DllImport ("librdf")]
