@@ -186,6 +186,86 @@ sub new_from_model ($$) {
   return $self;
 }
 
+=pod
+
+=back
+
+=cut
+
+# DESTRUCTOR
+sub DESTROY ($) {
+  my $self=shift;
+  warn "RDF::RSS DESTROY\n" if $RDF::Debug;
+}
+
+
+
+sub _find_by_type ($$) {
+  my($self,$type_value)=@_;
+
+  my $rdf_type=RDF::Node->new_from_uri_string("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+  return () if !$rdf_type;
+
+  my $object=RDF::Node->new_from_uri_string($type_value);
+  return () if !$object;
+
+  my(@results)=$self->sources($rdf_type, $object);
+
+  # Turn the nodes into RDF::RSS:Node-s
+  @results=map { RDF::RSS::Node->new($self,$_) } @results;
+
+  return(@results);
+}
+
+
+=head1 METHODS
+
+=over
+
+=item channels
+
+Return the RSS channels (E<lt>channelE<gt> tags) as a list of
+RDF::RSS::Node objects.
+
+=cut
+
+sub channels ($) {
+  shift->_find_by_type($NS_URL.'channel');
+}
+
+=item items
+
+Return the RSS items (E<lt>itemE<gt> tags) as a list of
+RDF::RSS::Node objects.
+
+=cut
+
+sub items ($) {
+  shift->_find_by_type($NS_URL.'item');
+}
+
+=item image
+
+Return the RSS 1.0 image (E<lt>imageE<gt> tag) as an
+RDF::RSS::Node object.
+
+=cut
+
+sub image ($) {
+  shift->_find_by_type($NS_URL.'image');
+}
+
+=item textinput
+
+Return the RSS 1.0 textinput (E<lt>textinputE<gt> tag) as an
+RDF::RSS::Node object.
+
+=cut
+
+sub textinput ($) {
+  shift->_find_by_type($NS_URL.'textinput');
+}
+
 =item as_xhtml (key1 => value1, key2 => value2, ...)
 
 Return a formatted XHTML string (or full XHTML document) representing
@@ -498,86 +578,6 @@ EOT
  
 
   $output;
-}
-
-=pod
-
-=back
-
-=cut
-
-# DESTRUCTOR
-sub DESTROY ($) {
-  my $self=shift;
-  warn "RDF::RSS DESTROY\n" if $RDF::Debug;
-}
-
-
-
-sub _find_by_type ($$) {
-  my($self,$type_value)=@_;
-
-  my $rdf_type=RDF::Node->new_from_uri_string("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
-  return () if !$rdf_type;
-
-  my $object=RDF::Node->new_from_uri_string($type_value);
-  return () if !$object;
-
-  my(@results)=$self->sources($rdf_type, $object);
-
-  # Turn the nodes into RDF::RSS:Node-s
-  @results=map { RDF::RSS::Node->new($self,$_) } @results;
-
-  return(@results);
-}
-
-
-=head1 METHODS
-
-=over
-
-=item channels
-
-Return the RSS channels (E<lt>channelE<gt> tags) as a list of
-RDF::RSS::Node objects.
-
-=cut
-
-sub channels ($) {
-  shift->_find_by_type($NS_URL.'channel');
-}
-
-=item items
-
-Return the RSS items (E<lt>itemE<gt> tags) as a list of
-RDF::RSS::Node objects.
-
-=cut
-
-sub items ($) {
-  shift->_find_by_type($NS_URL.'item');
-}
-
-=item image
-
-Return the RSS 1.0 image (E<lt>imageE<gt> tag) as an
-RDF::RSS::Node object.
-
-=cut
-
-sub image ($) {
-  shift->_find_by_type($NS_URL.'image');
-}
-
-=item textinput
-
-Return the RSS 1.0 textinput (E<lt>textinputE<gt> tag) as an
-RDF::RSS::Node object.
-
-=cut
-
-sub textinput ($) {
-  shift->_find_by_type($NS_URL.'textinput');
 }
 
 =pod
