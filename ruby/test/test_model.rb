@@ -1,7 +1,6 @@
 require 'test/unit'
 require 'rdf/redland'
 require 'rdf/redland/constants'
-require 'rdf/redland/model'
 require 'rdf/redland/schemas/foaf'
 
 class TestModel < Test::Unit::TestCase
@@ -132,7 +131,7 @@ class TestModel < Test::Unit::TestCase
   end
 
   def test_parse_and_merge()
-    store = Store.new(options="contexts='yes'")
+    store = HashStore.new(hash_type='memory', options="contexts='yes'")
     model = Model.new(store)
     dom = BNode.new('dom')
     model.add(dom,FOAF::MBOX,Node.new(:uri_string=>'mailto:dominic@bogus.com'))
