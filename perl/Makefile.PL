@@ -61,7 +61,13 @@ sub MY::init_main {
   my($self)=@_;
   package MY; # so that "SUPER" works right
   $self->SUPER::init_main();
-  $self->{FULLEXT}.="/".$::CORE_PACKAGE;
+
+  # Perl 5.8 just made this harder
+  if ($] < 5.800) {
+    # Nop
+  } else {
+    $self->{FULLEXT}.="/".$::CORE_PACKAGE;
+  }
   $self->{BASEEXT}=$::CORE_PACKAGE;
 }
 
