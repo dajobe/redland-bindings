@@ -31,9 +31,11 @@ SWIG_OUTPUTS=$(RUBY_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
 rubylib=@RUBY_LIB@
-rubydir=@RUBY_DIR@
 
-ruby_DATA=redland.so
+rubydir=/usr/lib/$(rubylib)
+rubyarchdir=@RUBY_DIR@
+
+rubyarch_DATA=redland.so
 
 EXTRA_DIST=example.rb \
 redland-pre.i redland-types.i $(SWIG_OUTPUTS)
@@ -53,7 +55,7 @@ $(srcdir)/$(RUBY_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-pre.i redland-types.i
 	swig -v -ruby $(SWIG_OPTS) -module $(RUBY_PACKAGE) -o $@ @REDLAND_SWIG@
 
 $(RUBY_PACKAGE)_wrap.so: $(srcdir)/$(RUBY_PACKAGE)_wrap.c
-	$(CC) $(DEFS)  $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(rubydir) $(RUBY_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS)  $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(rubyarchdir) $(RUBY_PACKAGE)_wrap.c -c -o $@
 
 
 $(RUBY_PACKAGE).so: ruby-redland-stamp
@@ -70,18 +72,19 @@ ruby-redland-stamp: $(RUBY_PACKAGE)_wrap.so
 	fi
 	touch ruby-redland-stamp
 
-install-rubyDATA: $(ruby_DATA)
+install-rubyarchDATA: $(rubyarch_DATA)
+	$(mkinstalldirs) $(DESTDIR)$(rubyarchdir)
 	if test -r $(RUBY_PACKAGE).bundle; then \
-	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).bundle $(DESTDIR)$(rubydir)/$(RUBY_PACKAGE).bundle; \
+	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).bundle $(DESTDIR)$(rubyarchdir)/$(RUBY_PACKAGE).bundle; \
 	else \
-	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(DESTDIR)$(rubydir)/$(RUBY_PACKAGE).so; \
+	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(DESTDIR)$(rubyarchdir)/$(RUBY_PACKAGE).so; \
 	fi
 
-uninstall-rubyDATA: $(ruby_DATA)
+uninstall-rubyarchDATA: $(rubyarch_DATA)
 	if test -r $(RUBY_PACKAGE).bundle; then \
-	  rm -f $(DESTDIR)$(rubydir)/$(RUBY_PACKAGE).bundle; \
+	  rm -f $(DESTDIR)$(rubyarchdir)/$(RUBY_PACKAGE).bundle; \
 	else \
-	  rm -f $(DESTDIR)$(rubydir)/$(RUBY_PACKAGE).so; \
+	  rm -f $(DESTDIR)$(rubyarchdir)/$(RUBY_PACKAGE).so; \
 	fi
 
 check-local: test-ruby

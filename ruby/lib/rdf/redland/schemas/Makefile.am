@@ -18,4 +18,11 @@
 # full license terms.
 #
 
+rubylib=@RUBY_LIB@
+
+rubydir=/usr/lib/$(rubylib)/rdf/redland/schemas
+
+ruby_DATA=$(EXTRA_DIST)
+
 EXTRA_DIST=foaf.rb owl.rb rdfs.rb
+

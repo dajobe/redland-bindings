@@ -19,5 +19,3 @@
 #
 
 SUBDIRS=rdf
-
-EXTRA_DIST=redland.rb

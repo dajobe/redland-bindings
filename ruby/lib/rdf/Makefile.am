@@ -18,5 +18,12 @@
 # full license terms.
 #
 
-EXTRA_DIST= redland.rb
+rubylib=@RUBY_LIB@
+
+rubydir=/usr/lib/$(rubylib)/rdf
+
+ruby_DATA=redland.rb
+
+EXTRA_DIST=redland.rb
+
 SUBDIRS=redland

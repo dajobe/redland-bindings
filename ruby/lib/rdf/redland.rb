@@ -1,18 +1,17 @@
-require 'redland'
-require 'singleton'
-#require 'rubygems'
-#require_gem 'log4r'
-require 'rdf/model'
-require 'rdf/store'
-require 'rdf/statement'
-require 'rdf/node'
-require 'rdf/parser'
-require 'rdf/serializer'
-require 'rdf/uri'
-require 'rdf/resource'
-
+require 'rdf/redland/model'
+require 'rdf/redland/store'
+require 'rdf/redland/statement'
+require 'rdf/redland/node'
+require 'rdf/redland/parser'
+require 'rdf/redland/serializer'
+require 'rdf/redland/uri'
+require 'rdf/redland/resource'
+require 'log4r'
+#require 'rdf/redland/constants'
 
 module Redland
+
+  
 
   #  include Redland
 
@@ -23,7 +22,7 @@ module Redland
   end
 
   class World
-    #include Singleton
+     #include Singleton
     attr_accessor :world,:uri_hash
 
     # Create new RDF World object (constructor)
@@ -36,13 +35,18 @@ module Redland
 
     def World.create_finalizer(world)
       proc {|id| "Finalizer on #{id}"
-        puts "closing world"
+        log_final.info "closing world"
         #Redland::librdf_free_world world
       }
     end
   end
 
+# Initialize Globals
   $world = Redland::World.new()
+  $log_final = Log4r::Logger.new('log_final')
+  outfile = Log4r::FileOutputter.new('final.log',:filename=>"final.log")
+  $log_final.outputters = outfile
+  $log_final.level = Log4r::DEBUG
 
 end
 
