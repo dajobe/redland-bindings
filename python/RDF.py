@@ -1415,13 +1415,16 @@ arguments passed in the field options_string, some of which are
 required:
   options_string="hash-type='memory',new='yes',write='yes'"
     hash-type - required and can be the name of any Hash type supported.
-      'memory' is always present, and 'bdb' is available
-      when BerkeleyDB is compiled in.
+      'memory', 'file' and 'uri' are always present. 'bdb' is available
+      when BerkeleyDB is compiled in, 'mysql' when MySQL is compiled in,
+      and 'sqlite' when SQLite is compiled in
     new - optional and takes a boolean value (default false)
-      If true, it allows updating of an existing Storage 
+      If true, it deletes any existing store and creates a new one
+      otherwise if false (default) open an existing store.
     write - optional and takes a boolean value (default true)
-      If false, the Storage is opened read-only and for file-based
-      Storages or those with locks, may be shared-read.
+      If true (default) the Storage is opened read-write otherwise
+      if false the storage is opened read-only and for file-based
+      Storages or those with locks, may be opened with shared-readers.
 
 The other form is:
   s2=RDF.Storage(storage=s1)
@@ -1606,7 +1609,7 @@ class Parser(object):
   for the RDF/XML syntax.
   """
   
-  def __init__(self, name="rdfxml", mime_type="application/rdf+xml", uri=None):
+  def __init__(self, name="rdfxml", mime_type="", uri=None):
     """Create an RDF Parser (constructor).
 
 Create a new RDF Parser for a particular syntax.  The parser is
@@ -1631,6 +1634,8 @@ optional.  When any are given, they must all match.
       ruri=None
 
     self._parser=Redland.librdf_new_parser(_world._world, name, mime_type, ruri)
+    if self._parser is None:
+      raise RedlandError("Failed to create parser "+name)
 
   def __del__(self):
     global _debug    
@@ -1742,6 +1747,10 @@ optional.  When any are given, they must all match.
 
 # end class Parser
 
+class RDFXMLParser(Parser):
+  def __init__(self, uri = None):
+    return Parser.__init__(self, name = "rdfxml", mime_type="", uri=uri)
+
 class NTriplesParser(Parser):
   def __init__(self, uri = None):
     return Parser.__init__(self, name = "ntriples", mime_type="text/plain", uri=uri)
@@ -1749,6 +1758,10 @@ class NTriplesParser(Parser):
 class TurtleParser(Parser):
   def __init__(self, uri = None):
     return Parser.__init__(self, name = "turtle", mime_type="application/x-turtle", uri=uri)
+
+class RSSTagSoupParser(Parser):
+  def __init__(self, uri = None):
+    return Parser.__init__(self, name = "rss-tag-soup", mime_type="", uri=uri)
 
 
 class Query(object):
@@ -2108,8 +2121,25 @@ class RDFXMLSerializer(Serializer):
      ser=RDF.RDFXMLSerializer()
   """
   def __init__(self):
-    return Serializer.__init__(self, name = "", mime_type = "application/rdf+xml",
-            uri = None)
+    return Serializer.__init__(self, name = "rdfxml", mime_type = "", uri = None)
+
+class RDFXMLAbbrevSerializer(Serializer):
+  """Redland RDF/XML with abbreviations Serializer class
+
+     import RDF
+     ser=RDF.RDFXMLAbbrevSerializer()
+  """
+  def __init__(self):
+    return Serializer.__init__(self, name = "rdfxml-abbrev", mime_type = "", uri = None)
+
+class RSS10Serializer(Serializer):
+  """Redland RSS 1.0 Serializer class
+
+     import RDF
+     ser=RDF.RSS10Serializer()
+  """
+  def __init__(self):
+    return Serializer.__init__(self, name = "rss-1.0", uri = None)
 
 
 class NS(object):
