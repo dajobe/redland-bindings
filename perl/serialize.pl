@@ -82,10 +82,10 @@ die "$0: Failed to create stream using parse_as_stream\n"
   if !$stream || $stream->end;
 my $count=0;
 while(!$stream->end) {
-  my $statement=$stream->next;
+  my $statement=$stream->current;
   $model->add_statement($statement);
-  $statement=undef;
   $count++;
+  $stream->next;
 }
 $stream=undef;
 print "URI \"$uri\" parsed as RDF/XML OK (created $count statements)\n";
@@ -134,7 +134,7 @@ sub predicate_split($) {
 $stream=$model->serialise;
 my $id=1;
 while(!$stream->end) {
-  my $statement=$stream->next;
+  my $statement=$stream->current;
   last if !$statement;
   my $subject=$statement->subject;
   my $subject_key=$subject->as_string;
@@ -152,6 +152,7 @@ while(!$stream->end) {
     push(@{$state->{nodes}->{$subject_key}}, $statement);
   }
   $state->{subject_key_to_node}->{$subject_key}=$subject;
+  $stream->next;
 }
 
 

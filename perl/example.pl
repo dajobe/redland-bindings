@@ -53,8 +53,9 @@ die "Failed to find parser\n" if !$parser;
 $stream=$parser->parse_as_stream($uri,$uri);
 my $count=0;
 while(!$stream->end) {
-  $model->add_statement($stream->next);
+  $model->add_statement($stream->current);
   $count++;
+  $stream->next;
 }
 $stream=undef;
 warn "Parsing added $count statements\n";
@@ -62,7 +63,8 @@ warn "Parsing added $count statements\n";
 warn "\nPrinting all statements\n";
 $stream=$model->serialise;
 while(!$stream->end) {
-  print "Statement: ",$stream->next->as_string,"\n";
+  print "Statement: ",$stream->current->as_string,"\n";
+  $stream->next;
 }
 $stream=undef;
 
@@ -70,12 +72,13 @@ warn "\nSearching model for statements matching predicate http://purl.org/dc/ele
 $statement=RDF::Redland::Statement->new_from_nodes(undef, RDF::Redland::Node->new_from_uri_string("http://purl.org/dc/elements/1.1/creator"), undef);
 my $stream=$model->find_statements($statement);
 while(!$stream->end) {
-  my $statement2=$stream->next;
+  my $statement2=$stream->current;
   print "Matching Statement: ",$statement2->as_string,"\n";
   my $subject=$statement2->subject;
   print "  Subject: ",$subject->as_string,"\n";
   print "  Predicate: ",$statement2->predicate->as_string,"\n";
   print "  Object: ",$statement2->object->as_string,"\n";
+  $stream->next;
 }
 $stream=undef;
 
