@@ -1404,23 +1404,43 @@ class Storage(object):
     Create a new RDF Storage using any of these forms
 
   s1=RDF.Storage(storage_name="name")
-Create a Storage with the given name.  Currently the built in
-storages are "memory" and "hashes".  "hashes" takes extra
-arguments passed in the field options_string, some of which are
-required:
-  options_string="hash-type='memory',new='yes',write='yes'"
-    hash-type - required and can be the name of any Hash type supported.
-      'memory', 'file' and 'uri' are always present. 'bdb' is available
-      when BerkeleyDB is compiled in, 'mysql' when MySQL is compiled in,
-      and 'sqlite' when SQLite is compiled in
+
+Create a Storage of the given type.  Currently the built in storage
+names that are always present are 'memory', 'hashes', 'file' and
+'uri'.  'bdb' is available when Sleepycat / BerkeleyDB is compiled
+in, 'mysql' when MySQL is compiled in, and 'sqlite' when SQLite is
+compiled in
+
+Extra options can be passed with the options_string, some of which
+are required.  This uses the following form:
+
+  s1=RDF.Storage(storage_name="name", options_string="key1='value1', .....")
+
+for multiple key/value pairs, values are always surrouned by single quotes.
+
+The common options are:
     new - optional and takes a boolean value (default false)
       If true, it deletes any existing store and creates a new one
       otherwise if false (default) open an existing store.
+
     write - optional and takes a boolean value (default true)
       If true (default) the Storage is opened read-write otherwise
       if false the storage is opened read-only and for file-based
       Storages or those with locks, may be opened with shared-readers.
 
+Some storage types have additional options in the options_string.
+
+storage_name "hashes" has options:
+    hash-type - required and can be the name of any Hash type supported.
+      'memory', 'file' hash types are always present. 'bdb' is available
+      when BerkeleyDB is compiled in,
+storage_name "mysql" has options:
+     host - required MySQL database hostname
+     port - optional MySQL database port (defaults to 3306)
+     database - required MySQL database name
+     user - required MySQL database user
+     password - required MySQL database password
+      
 The other form is:
   s2=RDF.Storage(storage=s1)
 Copy an existing Storage s1.
