@@ -1,5 +1,34 @@
 2004-07-19  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* redland-bindings.spec.in: core docs in all pacakges
+
+	* redland-bindings.spec.in:
+	no need to configure loads of redland things
+	no need to make install librdf
+
+	* redland-bindings.pc.in: remove redland-bindings.pc.in
+
+	* redland-bindings.spec.in: remove redland-bindings.spec.in
+
+	* configure.ac, Makefile.am: remove redland-bindings.pc.in
+
+	* redland-bindings.spec.in: full package names
+
+	* configure.ac: 0.9.17.0.1
+
+	* redland-bindings.spec.in: fix package names
+
+	* configure.ac: make redland-bindings.pc
+
+	* Makefile.am: added redland-bindings.pc installing to pkgconfig dir
+
+	* redland-bindings.pc.in, redland-bindings.spec.in:
+	redland-bindings spec, pc
+
+	* Makefile.am: added redland-bindings.spec, redland-bindings.pc.in
+
+	* configure.ac: added redland-bindings.spec
+
 	* Makefile.am: zap man_MANS
 
 	* php/Makefile.am, python/Makefile.am: backticks
@@ -7,9 +36,8 @@
 	* python/Makefile.am, ruby/Makefile.am, ruby/test/Makefile.am,
 	tcl/Makefile.am, csharp/Makefile.am, csharp/examples/Makefile.am,
 	docs/Makefile.am, java/Makefile.am, perl/Makefile.PL,
-	perl/Makefile.am, php/Makefile.am, ChangeLog, INSTALL.html,
-	LICENSE.html, Makefile.am, NEWS.html, README.html, RELEASE.html,
-	TODO.html, configure.ac: redland-bindings fixes
+	perl/Makefile.am, php/Makefile.am, ChangeLog, Makefile.am,
+	configure.ac: redland-bindings fixes
 
 	* AUTHORS, autogen.sh: redland-bindings
 
