@@ -52,7 +52,7 @@ tcllib=-ltcl$(tclversion)
 tcldir=$(shell echo 'puts $$tcl_library' | $(TCL))
 tcl_DATA=Redland.so
 
-EXTRA_DIST=README test.tcl example.tcl \
+EXTRA_DIST=test.tcl example.tcl \
 $(SWIG_OUTPUTS)
 
 CLEANFILES=*.db test-out.rdf core* \
