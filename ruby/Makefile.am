@@ -92,9 +92,9 @@ check-local: test-ruby
 test-ruby: test-simple test-example
 
 test-simple: $(RUBY_PACKAGE).so $(srcdir)/example.rb
-	RUBYLIB=.:lib:lib/rdf:lib/rdf/redland \
-	  $(RUN)$(RUBY) $(srcdir)/test.rb file:$(srcdir)/../data/dc.rdf raptor
+	$(RUN)$(RUBY) -I. -Ilib \
+	  $(srcdir)/test.rb file:$(srcdir)/../data/dc.rdf raptor
 
 test-example: $(RUBY_PACKAGE).so $(srcdir)/example.rb
-	RUBYLIB=.:lib:lib/rdf:lib/rdf/redland \
-	  $(RUN)$(RUBY) $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
+	$(RUN)$(RUBY) -I. -Ilib \
+	  $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
