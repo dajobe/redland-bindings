@@ -34,10 +34,12 @@ my $model=new RDF::Redland::Model($storage, "");
 die "Failed to create RDF::Redland::Model for storage\n" unless $model;
 
 
+my $creator_uri=new RDF::Redland::URI("http://purl.org/dc/elements/1.1/creator");
+
 warn "\nCreating statement\n";
-my $statement=RDF::Redland::Statement->new_from_nodes(RDF::Redland::Node->new_from_uri_string("http://purl.org/net/dajobe/"),
-					     RDF::Redland::Node->new_from_uri_string("http://purl.org/dc/elements/1.1/creator"),
-					     RDF::Redland::Node->new_from_literal("Dave Beckett", "", 0));
+my $statement=new RDF::Redland::Statement(RDF::Redland::Node->new_from_uri("http://purl.org/net/dajobe/"),
+					  $creator_uri,
+					  new RDF::Redland::Node("Dave Beckett"));
 die "Failed to create RDF::Redland::Statement\n" unless $statement;
 
 warn "\nAdding statement to model\n";
@@ -70,7 +72,7 @@ while(!$stream->end) {
 $stream=undef;
 
 warn "\nSearching model for statements matching predicate http://purl.org/dc/elements/1.1/creator\n";
-$statement=RDF::Redland::Statement->new_from_nodes(undef, RDF::Redland::Node->new_from_uri_string("http://purl.org/dc/elements/1.1/creator"), undef);
+$statement=new RDF::Redland::Statement(undef, $creator_uri, undef);
 my $stream=$model->find_statements($statement);
 while(!$stream->end) {
   my $statement2=$stream->current;
@@ -84,6 +86,17 @@ while(!$stream->end) {
 $stream=undef;
 
 $statement=undef;
+
+
+my $home=RDF::Redland::Node->new_from_uri("http://purl.org/net/dajobe/");
+warn "\nSearching model for targets of subject ",$home->uri->as_string," predicate ", $creator_uri->as_string, "\n";
+my(@nodes)=$model->targets($home, new RDF::Redland::Node($creator_uri));
+die "Failed to find any targets matching\n"
+  unless @nodes;
+for my $node (@nodes) {
+  print "Matching Node: ",$node->as_string,"\n";
+}
+$iterator=undef;
 
 warn "\nWriting model to test-out.rdf as rdf/xml\n";
 
