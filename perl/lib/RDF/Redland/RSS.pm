@@ -79,8 +79,6 @@ package RDF::RSS;
 use strict;
 
 
-use Redland;
-
 use RDF;
 
 use vars qw(@ISA $NS_URL);
@@ -543,10 +541,10 @@ EOT
       my $t_title_string=format_literal($t_title);
 
       $output.= <<"EOT";
-      <form method="post" action="$t_uri_string">
+      <form method="get" action="$t_uri_string">
         <b>$t_title_string</b><br />
         $t_desc_string
-        <input type="name" name="$t_name_string" />
+        <input type="text" name="$t_name_string" />
         <input type="submit" name="Go" value="Go" />
       </form>
 EOT
@@ -628,8 +626,7 @@ sub new ($$$) {
 
   return undef if !$model || !$node;
 
-  my $self  = RDF::Node->new_from_node($node);
-  return undef if !$self;
+  my $self=$node;
 
   $self->{MODEL}=$model;
 
@@ -757,8 +754,7 @@ sub items ($) {
   return () if !$items_predicate;
 
   # Get 1st resource inside <items> - i.e. the 1st rdf:Seq
-  # This gets the entire list then just takes the first one
-  my($seq_resource)=$self->{MODEL}->targets($self, $items_predicate);
+  my $seq_resource=$self->{MODEL}->target($self, $items_predicate);
   return () if !$seq_resource;
 
   $seq_resource=RDF::RSS::Node->new($self->{MODEL}, $seq_resource);
@@ -767,9 +763,9 @@ sub items ($) {
   my(@resources);
   for my $prop ($seq_resource->properties) {
     if($prop->uri->as_string =~ m%^http://www.w3.org/1999/02/22-rdf-syntax-ns#_(\d+)$%) {
-       # Must want a list here otherwise get an RDF::Iterator object
-       my($resource)=$seq_resource->{MODEL}->targets($seq_resource, $prop);
-       push(@resources, [$1, $resource]);
+       push(@resources,
+	    [$1, $seq_resource->{MODEL}->target($seq_resource, $prop)]
+	    );
      }
   }
 
@@ -828,11 +824,15 @@ context.
 sub property ($$) {
   my($self,$property)=@_;
 
-  my(@targets)=$self->{MODEL}->targets($self,$property);
-
-  # Convert list of RDF::Node-s into list of RDF::RSS:Node-s
-  @targets=map { RDF::RSS::Node->new($self->{MODEL}, $_) } @targets;
-  return wantarray ? @targets : $targets[0];
+  if(wantarray) {
+    my(@targets)=$self->{MODEL}->targets($self,$property);
+    
+    # Convert list of RDF::Node-s into list of RDF::RSS:Node-s
+    return map { RDF::RSS::Node->new($self->{MODEL}, $_) } @targets;
+  } else {
+    my $target=$self->{MODEL}->target($self,$property);
+    return RDF::RSS::Node->new($self->{MODEL}, $target);
+  }
 }
 
 =item properties
@@ -849,9 +849,15 @@ sub properties ($) {
   my $statement=RDF::Statement->new_from_nodes($prop, undef, undef);
   my(@arcs_out_statements)=$self->{MODEL}->find_statements($statement);
 
-  # Convert list of RDF::Statement-s into list of RDF::RSS:Node-s
-  # of predicates
-  return map { RDF::RSS::Node->new($self->{MODEL}, $_->predicate) } @arcs_out_statements;
+  # Convert list of RDF::Statement-s into list of RDF::RSS:Node-s predicates.
+  # 
+  # Note: Here the node has to be copied since the predicate method
+  # returns a pointer to a *shared* copy of the node inside the
+  # statement object and this node is going to be reconsecrated as an
+  # RDF::RSS::Node.
+  return map { RDF::RSS::Node->new($self->{MODEL}, 
+				   RDF::Node->new_from_node($_->predicate)) }
+         @arcs_out_statements;
 }
 
 =item properties_with_ns_prefix NS_PREFIX
