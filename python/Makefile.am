@@ -43,7 +43,7 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 PYTHON_SETUP=PACKAGE=$(PYTHON_PACKAGE) VERSION=$(VERSION) TOP_SRCDIR=$(top_srcdir) $(PYTHON) setup.py
 
 $(PYTHON_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
-	swig -v -python -module $(PYTHON_PACKAGE) -o $@ $?
+	swig -v -python $(SWIG_PYTHON_ARGS) -module $(PYTHON_PACKAGE) -o $@ $?
 
 build-python: $(PYTHON_PACKAGE)_wrap.c
 	$(PYTHON_SETUP) build
