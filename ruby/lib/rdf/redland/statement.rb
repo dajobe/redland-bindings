@@ -1,4 +1,5 @@
-require 'redland'
+require 'rdf/redland'
+require 'rdf/redland/util'
 
 # Redland Statement (triple class).  The main means of manipulating
 # statements is by the subject,predicate,and object properties
