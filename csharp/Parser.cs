@@ -1,6 +1,8 @@
 //
 // Parser.cs: Redland Syntax Parser class.
 //
+// $Id$
+//
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)
 //
@@ -12,7 +14,7 @@ using System.Runtime.InteropServices;
 namespace Redland {
 
 	public class ParseError : RedlandError {
-		public ParseError (string msg, string [] errs) :
+		public ParseError (string msg, LogMessage [] errs) :
 			base (msg, errs) { }
 	}
 
@@ -79,7 +81,7 @@ namespace Redland {
 			Redland.World.Enter ();
 			int rc=librdf_parser_parse_string_into_model (Handle, istr, base_uri.Handle, model.Handle);
 			Marshal.FreeHGlobal (istr);
-			string [] errs = Redland.World.Errors;
+			LogMessage [] errs = Redland.World.Messages;
 			Redland.World.Exit ();
 			if (errs.Length > 0)
 				throw new ParseError ("Parsing error", errs);
@@ -93,7 +95,7 @@ namespace Redland {
 		{
 			Redland.World.Enter ();
 			int rc=librdf_parser_parse_into_model (parser, uri.Handle, base_uri.Handle, model.Handle);
-			string [] errs = Redland.World.Errors;
+			LogMessage [] errs = Redland.World.Messages;
 			Redland.World.Exit ();
 			if (errs.Length > 0)
 				throw new ParseError ("Parsing error", errs);
@@ -113,7 +115,7 @@ namespace Redland {
 			Uri tmp_uri = new Redland.Uri (uri);
 			Redland.World.Enter ();
 			IntPtr raw_stream = librdf_parser_parse_as_stream (parser, tmp_uri.Handle, IntPtr.Zero);
-			string [] errs = Redland.World.Errors;
+			LogMessage [] errs = Redland.World.Messages;
 			Redland.World.Exit ();
 			if (errs.Length > 0)
 				throw new ParseError ("Parsing error", errs);
@@ -133,7 +135,7 @@ namespace Redland {
 			IntPtr raw_ret = librdf_parser_parse_string_as_stream (parser, istr, base_uri.Handle);
 			Stream stream;
 			Marshal.FreeHGlobal (istr);
-			string [] errs = Redland.World.Errors;
+			LogMessage [] errs = Redland.World.Messages;
 			Redland.World.Exit ();
 
 			if (errs.Length > 0)
