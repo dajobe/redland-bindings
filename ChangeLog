@@ -1,3 +1,7 @@
+2004-08-12  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/example.py: update to final 0.9.18 redland query api
+
 2004-08-11  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* configure.ac: Look in $JAVA_HOME for the JDK.  Duh!
