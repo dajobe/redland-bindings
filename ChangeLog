@@ -1,3 +1,8 @@
+2005-02-24  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/Model.pm (load):
+	Make ruri and rsyntax_uri from perl objects.
+
 2005-02-22  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* perl/lib/RDF/Redland/Parser.pm (parse_into_model,
