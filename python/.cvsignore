@@ -1,11 +1,13 @@
+*.pyc
+.deps
+MANIFEST
 Makefile
 Makefile.in
-MANIFEST
-*.pyc
+RDF.html
 Redland_wrap*
 build
 dist
 lib
 not-used
 test*db
-.deps
+test-out.rdf
