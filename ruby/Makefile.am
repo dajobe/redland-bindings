@@ -51,7 +51,7 @@ build-ruby: $(RUBY_PACKAGE).so
 
 check-ruby: test-ruby
 test-ruby: build-ruby
-	$(RUBY) example.rb
+	$(RUBY) example.rb file:../perl/dc.rdf repat
 
 clean-ruby realclean-ruby:
 	rm -f $(RUBY_PACKAGE).so
