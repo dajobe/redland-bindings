@@ -35,21 +35,21 @@ if(-r '../redland-src-config') {
   $objects .= $redland_libs;
 }
 
-my $includes="-I$TOP_SRCDIR/librdf -I../librdf -I$TOP_SRCDIR/librdf/perl";
+my $includes="-I$TOP_SRCDIR/librdf";
 
 my $version=$ENV{VERSION};
 
 if(!$version) {
   $version=`../redland-src-config --version`;
   chomp $version;
-  die "Cannot find Redland version via redland-src-config\n"
+  die "Cannot find Redland version via ../redland-src-config\n"
     unless $version;
 }
 
 sub MY::postamble {
   return <<"EOT";
 ${CORE_PACKAGE}_wrap.c: $TOP_SRCDIR/Redland.i
-	cp $TOP_SRCDIR/perl/${CORE_PACKAGE}_wrap.c .
+	\$(MAKE) ${CORE_PACKAGE}_wrap.c
 EOT
 }
 
@@ -69,7 +69,7 @@ sub MY::init_main {
   my($self)=@_;
   package MY; # so that "SUPER" works right
   $self->SUPER::init_main();
-  $self->{FULLEXT}="RDF/Redland";
+  $self->{FULLEXT}.="/".$::CORE_PACKAGE;
   $self->{BASEEXT}=$::CORE_PACKAGE;
 }
 
