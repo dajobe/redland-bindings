@@ -150,6 +150,11 @@ public class Model
     return new Stream(this.world, core.librdf_model_find_statements(this.object, statement.__get_object()), this);
   }
 
+  public Stream findStatements(Statement statement, Node context_node) 
+  {
+    return new Stream(this.world, core.librdf_model_find_statements_in_context(this.object, statement.__get_object(), context_node.__get_object()), this);
+  }
+
   public Iterator getSources(Node arc, Node target) 
   {
     return new Iterator(this.world, core.librdf_model_get_sources(this.object, arc.__get_object(), target.__get_object()), this, arc, target);
@@ -191,6 +196,10 @@ public class Model
       return core.librdf_parser_set_feature(this.object, feature.__get_object(), value.__get_object());
     }
   
+  public Iterator getContexts() 
+  {
+    return new Iterator(this.world, core.librdf_model_get_contexts(this.object), this, null, null);
+  }
 
   protected long __get_object() 
   {
