@@ -24,7 +24,7 @@ RELEASE=@VERSION_RELEASE@
 INCLUDES=-I$(top_srcdir)
 
 CSHARPC=@CSHARPC@
-CLRRUN=@CLRRUN@
+CLIRUN=@CLIRUN@
 
 CSHARP_C_SHLIB=redland-csharp
 CSHARP_PACKAGE=Redland
@@ -65,7 +65,7 @@ build-csharp: $(CSHARP_SHARED_LIB) $(CSHARP_PACKAGE)PINVOKE.dll
 
 check-csharp: test-csharp
 test-csharp: build-csharp test.exe
-	$(CLRRUN) test.exe
+	$(CLIRUN) test.exe
 
 install-csharp: $(CSHARP_SHARED_LIB) build-csharp
 	$(INSTALL_PROGRAM) $(CSHARP_SHARED_LIB) @libdir@
