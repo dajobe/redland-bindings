@@ -53,8 +53,8 @@ $(PERL_MAKEFILE): Makefile.PL lib/RDF/Redland/$(PERL_CORE_PACKAGE).pm
 
 -perl test-perl install-perl clean-perl realclean-perl: $(PERL_MAKEFILE)
 	@target=`echo $@ | sed -e 's/-perl//'`; \
-	echo $(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix); \
-	$(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix)
+	echo $(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix) SITEPREFIX=$(prefix); \
+	$(MAKE) -f $(PERL_MAKEFILE) $$target PREFIX=$(prefix) SITEPREFIX=$(prefix)
 
 build-perl: -perl
 install-perl: build-perl
