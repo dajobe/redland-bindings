@@ -42,11 +42,11 @@ die <<"EOT" if @ARGV < 1 || @ARGV > 2;
 Usage: $0 <RSS URI> [BASE URI>]
 
 This program excercises the Redland Perl RDF:RSS module which supports
-the RSS 1.0 specification, Release Candidate 1
-http://www.egroups.com/files/rss-dev/RC1/specification.html
+the RSS 1.0 specification http://purl.org/rss/1.0/
 
 Further information on this format can be found at the RSS-Dev list
-page at http://www.egroups.com/group/rss-dev
+page at http://groups.yahoo.com/group/rss-dev/
+
 EOT
 
 my $uri=$ARGV[0];
