@@ -4,7 +4,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2001 David Beckett - http://purl.org/net/dajobe/
+// Copyright (C) 2001-2003 David Beckett - http://purl.org/net/dajobe/
 // Institute for Learning and Research Technology - http://www.ilrt.org/
 // University of Bristol - http://www.bristol.ac.uk/
 // 
@@ -29,7 +29,6 @@ public class Statement
 {
   private long object;
   private World world;
-  private boolean dont_free_me=false;
 
   public Statement(World world) 
     {
@@ -46,36 +45,27 @@ public class Statement
   public Statement(World world,
                    Node subject, Node predicate, Node object) 
     {
-      long s=(subject != null) ? subject.__get_object() : 0;
-      long p=(predicate != null) ? predicate.__get_object() : 0;
-      long o=(object != null) ? object.__get_object() : 0;
+      long s=(subject != null) ? core.librdf_new_node_from_node(subject.__get_object()) : 0;
+      long p=(predicate != null) ? core.librdf_new_node_from_node(predicate.__get_object()) : 0;
+      long o=(object != null) ? core.librdf_new_node_from_node(object.__get_object()) : 0;
 
       this.world=world;
       this.object=core.librdf_new_statement_from_nodes(world.__get_object(), s, p, o);
-
-      if(subject !=null)
-        subject.__zap_object();
-      if(predicate !=null)
-        predicate.__zap_object();
-      if(object !=null)
-        object.__zap_object();
     }
 
   // internal constructor to build an object from a statement created
   // by librdf e.g. from the result of a stream.next() operation
-  protected Statement(World world, long object, boolean free_me) 
+  protected Statement(World world, long object) 
     {
       this.world=world;
-      this.object=object;
-      this.dont_free_me=!free_me;
+      this.object=core.librdf_new_statement_from_statement(object);
     }
   
 
   public void finished()
     {
       if(this.object != 0) {
-        if(!this.dont_free_me)
-          core.librdf_free_statement(this.object);
+        core.librdf_free_statement(this.object);
         this.object=0;
         this.world=null;
       }
@@ -85,39 +75,39 @@ public class Statement
   public Node getSubject() 
     {
       long node_object=core.librdf_statement_get_subject(this.object);
-      return new Node(this.world, node_object, false);
+      return new Node(this.world, node_object);
     }
 
   public void setSubject(Node node) 
     {
-      core.librdf_statement_set_subject(this.object, node.__get_object());
-      node.__zap_object();
+      long node_object=core.librdf_new_node_from_node(node.__get_object());
+      core.librdf_statement_set_subject(this.object, node_object);
     }
 
 
   public Node getPredicate()
     {
       long node_object=core.librdf_statement_get_predicate(this.object);
-      return new Node(this.world, node_object, false);
+      return new Node(this.world, node_object);
     }
 
   public void setPredicate(Node node)
     {
-      core.librdf_statement_set_predicate(this.object, node.__get_object());
-      node.__zap_object();
+      long node_object=core.librdf_new_node_from_node(node.__get_object());
+      core.librdf_statement_set_predicate(this.object, node_object);
     }
 
 
   public Node getObject() 
     {
       long node_object=core.librdf_statement_get_object(this.object);
-      return new Node(this.world, node_object, false);
+      return new Node(this.world, node_object);
     }
 
   public void setObject(Node node) 
     {
-      core.librdf_statement_set_object(this.object, node.__get_object());
-      node.__zap_object();
+      long node_object=core.librdf_new_node_from_node(node.__get_object());
+      core.librdf_statement_set_object(this.object, node_object);
     }
 
 
