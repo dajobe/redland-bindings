@@ -1,7 +1,8 @@
 require 'rdf/redland'
 
 module Redland
-RDFNS = Namespace.new("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+
+RDFNS = Redland::Namespace.new("http://www.w3.org/1999/02/22-rdf-syntax-ns#")
 
 # Syntax names
 RDF = RDFNS["RDF"]
