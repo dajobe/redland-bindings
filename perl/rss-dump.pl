@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -50,33 +50,34 @@ page at http://groups.yahoo.com/group/rss-dev/
 EOT
 
 my $uri=$ARGV[0];
+my $tmp_file=undef;
+my $source_uri=$uri;
+my $base_uri=(@ARGV ==2) ? $ARGV[1]: $uri;
 
-my $tmp_file;
-my $source_uri;
-if($uri !~ m%^file:%) {
-  use URI::URL;
-  use LWP::Simple;
-  
-  $tmp_file="/tmp/$0-$$.rss";
+if(0) { # use this code if the parser does not do URIs
+  if($uri !~ m%^file:%) {
+    use URI::URL;
+    use URI::file;
+    use LWP::Simple;
 
-  my $perl_uri;
-  eval "\$perl_uri=new URI::URL('$uri')";
-  if($@) {
-    die "$0: URI $uri is not supported by Perl\n";
-  }
-  my $rc=getstore($perl_uri, $tmp_file);
-  
-  if(!is_success($rc)) {
-    die "$0: Failed to fetch URI $uri - HTTP error $rc\n";
-    unlink $tmp_file;
-  }
-  $source_uri="file:$tmp_file";
-} else {
-  $source_uri=$uri;
+    $tmp_file="/tmp/$0-$$.rss";
+
+    my $perl_uri;
+    eval "\$perl_uri=new URI::URL('$uri')";
+    if($@) {
+      die "$0: URI $uri is not supported by Perl\n";
+    }
+    my $rc=getstore($perl_uri, $tmp_file);
+
+    if(!is_success($rc)) {
+      die "$0: Failed to fetch URI $uri - HTTP error $rc\n";
+      unlink $tmp_file;
+    }
+    $source_uri=URI::file->new($tmp_file)->as_string;
+  } 
 }
-my $base_uri=$uri;
-$base_uri=$ARGV[1] if @ARGV ==2;
 
+print "Using source URI $source_uri and base URI $base_uri\n";
 
 my $rss=new RDF::Redland::RSS($source_uri, $base_uri);
 die "Failed to create RDF::Redland::RSS for URI $uri\n" unless $rss;
@@ -93,7 +94,7 @@ for my $channel ($rss->channels) {
       print "  $ns_label properties from $ns_prefix found:\n";
       for my $property (@props) {
 	my $value=$channel->property($property);
-	if($value->type == $RDF::Redland::Node::Type_Resource) {
+	if($value->is_resource) {
 	  print "    ",$property->uri->as_string," : URI ",$value->uri->as_string,"\n";
 	} else {
 	  print "    ",$property->uri->as_string," : ",$value->literal_value_as_latin1,"\n";
@@ -121,7 +122,7 @@ for my $channel ($rss->channels) {
 	print "    $ns_label properties from $ns_prefix found:\n";
 	for my $property (@props) {
 	  my $value=$item->property($property);
-	  if($value->type == $RDF::Redland::Node::Type_Resource) {
+	  if($value->is_resource) {
 	    print "      ",$property->uri->as_string," : URI ",$value->uri->as_string,"\n";
 	  } else {
 	    print "      ",$property->uri->as_string," : ",$value->literal_value_as_latin1,"\n";
