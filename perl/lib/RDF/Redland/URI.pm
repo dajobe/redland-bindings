@@ -63,35 +63,40 @@ Create a new RDF::Redland::URI object from a URI string.
 =cut
 
 sub new ($$) {
-  my($proto,$string)=@_;
+  my($proto,$arg)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
 
-  warn "RDF::Redland::URI->new('$string')\n" if $RDF::Redland::Debug;
-
-  $self->{URI}=&RDF::Redland::CORE::librdf_new_uri($RDF::Redland::World->{WORLD},$string);
+  if(ref($arg)) {
+    if(UNIVERSAL::isa($class, 'RDF::Redland::URI')) {
+      return $self->clone;
+    } elsif($class =~ '^URI') {
+      $arg=$arg->as_string;
+    } else {
+      die "RDF::Redland::URI::new - Cannot make a URI from an object of class $class\n";
+    }
+  }
+  
+  $self->{URI}=&RDF::Redland::CORE::librdf_new_uri($RDF::Redland::World->{WORLD},$arg);
   return undef if !$self->{URI};
 
   bless ($self, $class);
   return $self;
 }
 
-=item new_from_uri URI
+=item clone URI
 
-Create a new RDF::Redland::URI object from RDF::Redland::URI I<URI> (copy constructor)
+Copy a RDF::Redland::URI
 
 =cut
 
-sub new_from_uri ($$) {
-  my($proto,$uri)=@_;
-  my $class = ref($proto) || $proto;
+sub clone ($) {
+  my($uri)=@_;
+  my $class = ref($uri);
   my $self  = {};
 
-  warn "RDF::Redland::URI->new_from_uri($uri)\n" if $RDF::Redland::Debug;
-
-  # If the URI is a perl URI, use the above constructor
-  if (UNIVERSAL::isa($uri, 'URI::http')) {
-    return new($proto, $uri->as_string);
+  if(!$class || $class ne 'RDF::Redland::URI') {
+    die "RDF::Redland::URI::clone - Cannot copy a URI object not of class RDF::Redland::URI\n";
   }
 
   $self->{URI}=&RDF::Redland::CORE::librdf_new_uri_from_uri($uri->{URI});
@@ -99,6 +104,12 @@ sub new_from_uri ($$) {
 
   bless ($self, $class);
   return $self;
+}
+
+
+sub new_from_uri ($$) {
+  my($proto,$uri)=@_;
+  return $uri->clone;
 }
 
 
@@ -158,6 +169,19 @@ sub equals ($$) {
 }
 
 =pod
+
+=back
+
+=head1 OLD METHODS
+
+=over
+
+=item new_from_uri URI
+
+Create a new RDF::Redland::URI object from RDF::Redland::URI I<URI>
+(copy constructor)
+
+Use $u=$uri->clone
 
 =back
 
