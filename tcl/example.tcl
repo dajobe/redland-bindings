@@ -22,7 +22,7 @@
 
 lappend auto_path .
 
-package require Redland
+package require redland
 
 
 set uri_string [lindex $argv 0]

@@ -20,9 +20,9 @@
 #
 
 
-lappend auto_path .
+lappend auto_path .libs
 
-package require Redland
+package require redland
 
 set world [librdf_new_world]
 librdf_world_open $world
