@@ -57,7 +57,7 @@ print "Redland model created\n";
 $parser=librdf_new_parser($world,'raptor','application/rdf+xml',librdf_new_uri($world,''));
 print "Redland parser created\n";
 
-$uri=librdf_new_uri($world,'file:../perl/dc.rdf');
+$uri=librdf_new_uri($world,'file:../data/dc.rdf');
 
 print "Parsing...\n";
 librdf_parser_parse_into_model($parser,$uri,$uri,$model);

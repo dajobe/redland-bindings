@@ -52,7 +52,7 @@ class test1 {
       System.exit(1);
     }
     
-    long uri=core.librdf_new_uri(world, "file:../perl/dc.rdf");
+    long uri=core.librdf_new_uri(world, "file:../data/dc.rdf");
     if(core.librdf_parser_parse_into_model(parser, uri, uri, model) != 0) {
       System.out.println("Failed to parse ../perl/dc.rdf into model");
       System.exit(1);

@@ -18,7 +18,7 @@
 # full license terms.
 # 
 #
-# USAGE: ruby example.rb file:../perl/dc.rdf raptor
+# USAGE: ruby example.rb file:../data/dc.rdf raptor
 # 
 #
 

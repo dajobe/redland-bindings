@@ -85,4 +85,4 @@ check-local: test-ruby
 
 test-ruby: $(RUBY_PACKAGE).so $(srcdir)/example.rb
 	$(top_builddir)/redland-src-config --run \
-	  $(RUBY) -I. $(srcdir)/example.rb file:$(srcdir)/../perl/dc.rdf raptor
+	  $(RUBY) -I. $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor

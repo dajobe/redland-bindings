@@ -50,7 +50,7 @@ class test2 {
       System.exit(1);
     }
     
-    URI uri=new URI(world, "file:../perl/dc.rdf");
+    URI uri=new URI(world, "file:../data/dc.rdf");
     if(parser.parse(uri, uri, model)) {
       System.out.println("Failed to parse " + uri + " into model");
       System.exit(1);

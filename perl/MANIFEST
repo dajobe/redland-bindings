@@ -27,4 +27,3 @@ lib/RDF/URI.pm			RDF::URI Module (OLD API)
 test.pl				Test suite
 rss-dump.pl			RSS 1.0 test program
 example.pl			Example program
-dc.rdf				RDF/XML example source

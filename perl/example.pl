@@ -22,7 +22,7 @@
 
 use RDF::Redland;
 
-$test_file="dc.rdf";
+$test_file="../data/dc.rdf";
 
 warn "Creating storage\n";
 my $storage=new RDF::Redland::Storage("hashes", "test", 
