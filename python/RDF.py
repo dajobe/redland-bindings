@@ -1505,14 +1505,14 @@ class Parser(object):
   for the RDF/XML syntax.
   """
   
-  def __init__(self, name="raptor", mime_type="application/rdf+xml", uri=None):
+  def __init__(self, name="rdfxml", mime_type="application/rdf+xml", uri=None):
     """Create an RDF Parser (constructor).
 
 Create a new RDF Parser for a particular syntax.  The parser is
 chosen by the fields given to the constructor, all of which are
 optional.  When any are given, they must all match.
 
-  name      - parser name (currently "raptor" and "ntriples")
+  name      - parser name (currently "rdfxml", "ntriples", "turtle" and "rss-tag-soup")
   mime_type - currently "application/rdf+xml" (default) or "text/plain" (ntriples)
   uri       - URI identifying the syntax
               currently only "http://www.w3.org/TR/rdf-testcases/#ntriples"

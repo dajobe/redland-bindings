@@ -46,9 +46,9 @@ class test1 {
       System.exit(1);
     }
     
-    long parser=core.librdf_new_parser(world, "raptor", "", 0);
+    long parser=core.librdf_new_parser(world, "rdfxml", "", 0);
     if(parser == 0) {
-      System.out.println("Failed to create RDF parser");
+      System.out.println("Failed to create RDF/XML parser");
       System.exit(1);
     }
     

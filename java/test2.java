@@ -44,9 +44,9 @@ class test2 {
       System.exit(1);
     }
     
-    Parser parser=new Parser(world, "raptor", "", null);
+    Parser parser=new Parser(world, "rdfxml", "", null);
     if(parser == null) {
-      System.out.println("Failed to create RDF parser");
+      System.out.println("Failed to create RDF/XML parser");
       System.exit(1);
     }
     

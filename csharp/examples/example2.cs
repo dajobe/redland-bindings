@@ -20,7 +20,7 @@ public class Example2 {
 		Storage storage = new Storage ("memory", "test", null);
 		Model model = new Model (storage);
 
-		Parser parser = new Parser ("raptor");
+		Parser parser = new Parser ("rdfxml");
 		parser.ParseStringIntoModel (rdfxml_content, uri, model);
 
 		Statement stm = new Statement ();

@@ -29,7 +29,7 @@ namespace Redland {
 		}
 
 		public Parser ()
-			: this (Redland.World, "raptor", "application/rdf+xml", new Uri ("http://www.w3.org/TR/rdf-testcases/#ntriples"))
+			: this (Redland.World, "rdfxml", "application/rdf+xml", new Uri ("http://www.w3.org/TR/rdf-testcases/#ntriples"))
 		{
 		}
 

@@ -48,7 +48,7 @@ class skeleton {
     org.librdf.redland.Stream stream=new org.librdf.redland.Stream(world, 0L, statement);
     org.librdf.redland.Storage storage=new org.librdf.redland.Storage(world, "memory", "name", "");
     org.librdf.redland.Model model=new org.librdf.redland.Model(world, storage, "");
-    org.librdf.redland.Parser parser=new org.librdf.redland.Parser(world, "raptor", "", uri);
+    org.librdf.redland.Parser parser=new org.librdf.redland.Parser(world, "rdfxml", "", uri);
     org.librdf.redland.Serializer serializer=new org.librdf.redland.Serializer(world, "rdfxml", "", uri);
   }
   

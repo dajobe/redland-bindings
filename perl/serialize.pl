@@ -71,8 +71,8 @@ die "$0: Failed to create RDF::Redland::Storage\n" unless $storage;
 my $model=new RDF::Redland::Model($storage, "");
 die "$0: Failed to create RDF::Redland::Model for storage\n" unless $model;
 
-my $parser=new RDF::Redland::Parser("raptor");
-die "$0: Failed to create RDF::Redland::Parser 'raptor'\n" unless $parser;
+my $parser=new RDF::Redland::Parser("rdfxml");
+die "$0: Failed to create RDF::Redland::Parser 'rdfxml'\n" unless $parser;
 
 my $redland_base_uri=new RDF::Redland::URI $uri;
 my $redland_source_uri=new RDF::Redland::URI $source_uri;

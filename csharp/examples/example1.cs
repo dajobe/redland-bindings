@@ -16,7 +16,7 @@ public class Test {
 		Storage storage = new Storage ("memory", "test", null);
 		Model model = new Model (storage);
 
-		Parser parser = new Parser ("raptor");
+		Parser parser = new Parser ("rdfxml");
 		Console.WriteLine ("Parsing URI: {0}", uri.ToString ());
 		parser.ParseStringIntoModel (rdfxml_content, uri, model);
 

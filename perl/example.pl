@@ -61,7 +61,7 @@ warn "\nParsing URI (file) $test_file\n";
 my $uri=new RDF::Redland::URI("file:$test_file");
 
 # Use any rdf/xml parser that is available
-my $parser=new RDF::Redland::Parser("raptor", "application/rdf+xml");
+my $parser=new RDF::Redland::Parser("rdfxml", "application/rdf+xml");
 die "Failed to find parser\n" if !$parser;
 
 $stream=$parser->parse_as_stream($uri,$uri);

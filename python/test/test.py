@@ -48,7 +48,7 @@ for s in model.find_statements(statement):
   print "  found statement:",s
 
 # Use any rdf/xml parser that is available
-parser=RDF.Parser(name="raptor",mime_type="application/rdf+xml")
+parser=RDF.Parser(name="rdfxml",mime_type="application/rdf+xml")
 if parser is None:
   raise "Could not find any rdf/xml parser"
 

@@ -26,7 +26,7 @@ public class Test {
 		Storage storage = new Storage ("memory", "test", null);
 		Model model = new Model (storage, null);
 
-		Parser parser = new Parser ("raptor", null, null);
+		Parser parser = new Parser ("rdfxml", null, null);
 		parser.ParseStringIntoModel (rdfxml_content, uri, model);
 
 		Node subject, predicate, obj;

@@ -12,7 +12,7 @@ public class Test {
 		Storage storage = new Storage ("hashes", "test", "hash-type='bdb',dir='.'");
 		Model model = new Model (storage);
 
-		Parser parser = new Parser ("raptor", "application/rdf+xml", null);
+		Parser parser = new Parser ("rdfxml", "application/rdf+xml", null);
 		Redland.Uri uri = new Redland.Uri ("file:../../data/dc.rdf");
 		parser.ParseIntoModel (uri, uri, model);
 
