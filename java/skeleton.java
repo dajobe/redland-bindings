@@ -20,17 +20,17 @@
 // 
 //
 
-import org.librdf.redland;
-import org.librdf.world;
-import org.librdf.uri;
-import org.librdf.node;
-import org.librdf.statement;
-import org.librdf.iterator;
-import org.librdf.stream;
-import org.librdf.storage;
-import org.librdf.hash;
-import org.librdf.parser;
-import org.librdf.model;
+import org.librdf.redland.core;
+import org.librdf.redland.World;
+import org.librdf.redland.URI;
+import org.librdf.redland.Node;
+import org.librdf.redland.Statement;
+import org.librdf.redland.Iterator;
+import org.librdf.redland.Stream;
+import org.librdf.redland.Storage;
+import org.librdf.redland.Hash;
+import org.librdf.redland.Parser;
+import org.librdf.redland.Model;
 
 class skeleton {
   
@@ -39,15 +39,15 @@ class skeleton {
     // It is just used to get all the classes compiled.
     System.exit(1);
     
-    org.librdf.world world=new org.librdf.world();
-    org.librdf.uri uri=new org.librdf.uri(world, "test");
-    org.librdf.node node=new org.librdf.node(world, uri);
-    org.librdf.statement statement=new org.librdf.statement(world, node, node, node);
-    org.librdf.iterator iterator=new org.librdf.iterator(world, 0L, statement, statement, statement);
-    org.librdf.stream stream=new org.librdf.stream(world, 0L, statement);
-    org.librdf.storage storage=new org.librdf.storage(world, "memory", "name", "");
-    org.librdf.model model=new org.librdf.model(world, storage, "");
-    org.librdf.parser parser=new org.librdf.parser(world, "raptor", "", uri);
+    org.librdf.redland.World world=new org.librdf.redland.World();
+    org.librdf.redland.URI uri=new org.librdf.redland.URI(world, "test");
+    org.librdf.redland.Node node=new org.librdf.redland.Node(world, uri);
+    org.librdf.redland.Statement statement=new org.librdf.redland.Statement(world, node, node, node);
+    org.librdf.redland.Iterator iterator=new org.librdf.redland.Iterator(world, 0L, statement, statement, statement);
+    org.librdf.redland.Stream stream=new org.librdf.redland.Stream(world, 0L, statement);
+    org.librdf.redland.Storage storage=new org.librdf.redland.Storage(world, "memory", "name", "");
+    org.librdf.redland.Model model=new org.librdf.redland.Model(world, storage, "");
+    org.librdf.redland.Parser parser=new org.librdf.redland.Parser(world, "raptor", "", uri);
   }
   
 }
