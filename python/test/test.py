@@ -23,7 +23,7 @@ import RDF
 
 world=RDF.world()
 
-storage=RDF.storage({'storage_name' : "memory", 'name' : "test", "options_string" : ""})
+storage=RDF.storage(storage_name="memory", name="test", options_string="")
 if not storage:
   raise "new RDF.storage failed"
 
@@ -33,16 +33,16 @@ model=RDF.model(storage)
 if not model:
   raise "new RDF.model failed"
 
-statement=RDF.statement({'subject' : RDF.node({"uri_string" : "http://purl.org/net/dajobe/"}),
-                        'predicate' : RDF.node({"uri_string" : "http://purl.org/dc/elements/1.1/creator"}),
-                        'object' : RDF.node({"literal" : "Dave Beckett"})})
+statement=RDF.statement(subject=RDF.node(uri_string="http://purl.org/net/dajobe/"),
+                        predicate=RDF.node(uri_string="http://purl.org/dc/elements/1.1/creator"),
+                        object=RDF.node(literal="Dave Beckett"))
 if not statement:
   raise "new RDF.statement failed"
 
 model.add_statement(statement)
 
 # Match against an empty statement - find everything
-statement=RDF.statement({"subject" : None, "predicate" : None, "object": None});
+statement=RDF.statement(subject=None, predicate=None, object=None);
 # after this statement should not be touched since find_statements is using it
 stream=model.find_statements(statement);
 
