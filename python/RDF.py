@@ -961,6 +961,27 @@ Create a model using an in-memory storage.
     """Synchronise the Model with the underlying Storage."""
     Redland.librdf_model_sync(self._model)
 
+  def get_feature(self, uri):
+    """Return the Node value of Model feature URI uri"""
+    if not isinstance(uri, Uri):
+      uri=Uri(string=uri)
+
+    value=Redland.librdf_model_get_feature(self._model,uri._reduri)
+    if value == "NULL" or value == None:
+      return None
+    return Node(from_object=value)
+
+  def set_feature(self, uri, value):
+    """Set the Node value of Model feature URI uri."""
+    if not isinstance(uri, Uri):
+      uri=Uri(string=uri)
+    if not isinstance(value, Node):
+      value=Node(literal=value)
+    Redland.librdf_model_set_feature(self._model,uri._reduri,value._node)
+
+# end class Parser
+
+
 # end class Model
 
 
@@ -1495,16 +1516,22 @@ optional.  When any are given, they must all match.
       string, base_uri._reduri, model._model)
 
   def get_feature(self, uri):
-    """Return the value of Parser feature URI uri"""
+    """Return the Node value of Parser feature URI uri"""
     if not isinstance(uri, Uri):
       uri=Uri(string=uri)
-    return Redland.librdf_parser_get_feature(self._parser,uri._reduri)
+
+    value=Redland.librdf_parser_get_feature(self._parser,uri._reduri)
+    if value == "NULL" or value == None:
+      return None
+    return Node(from_object=value)
 
   def set_feature(self, uri, value):
-    """Set the value of Parser feature URI uri."""
+    """Set the Node value of Parser feature URI uri."""
     if not isinstance(uri, Uri):
       uri=Uri(string=uri)
-    Redland.librdf_parser_set_feature(self._parser,uri._reduri,value)
+    if not isinstance(value, Node):
+      value=Node(literal=value)
+    Redland.librdf_parser_set_feature(self._parser,uri._reduri,value._node)
 
 # end class Parser
 
