@@ -76,6 +76,8 @@
 
 package RDF::Parser;
 
+use strict;
+
 use RDF::Stream;
 use Redland;
 
@@ -84,6 +86,19 @@ use Redland;
 =head1 NAME
 
 RDF::Parser - Redland RDF Syntax Parsers Class
+
+=head1 SYNOPSIS
+
+  use RDF;
+
+  ...
+  my $parser=new RDF::Parser("repat");
+
+  # Return as an RDF::Stream
+  my $stream=$parser->parse_as_stream($source_uri, $base_uri);
+  
+  # Store in an RDF::Model
+  $parser->parse_into_model($source_uri, $base_uri, $model);
 
 =head1 DESCRIPTION
 

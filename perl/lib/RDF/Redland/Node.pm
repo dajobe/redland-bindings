@@ -76,6 +76,8 @@
 
 package RDF::Node;
 
+use strict;
+
 use vars qw($Type_Resource $Type_Property $Type_Literal
 	    $Type_Statement $Type_Bag $Type_Seq $Type_Alt $Type_Li
 	    $Type_Model);
@@ -103,6 +105,19 @@ use Redland;
 =head1 NAME
 
 RDF::Node - Redland RDF Node (RDF Resource, Property, Literal) Class
+
+=head1 SYNOPSIS
+
+  use RDF;
+  my $node=new RDF::Node();
+  my $node2=RDF::Node->new_from_uri_string("http://example.com/");
+  my $node3=RDF::Node->new_from_uri(new RDF::URI("http://example.com/"));
+  my $node4=RDF::Node->new_from_literal("Hello, World!","",0,0);
+  my $node5=RDF::Node->new_from_literal("<tag>content</tag>","",0,1);
+  ...
+
+  print $node2->uri->as_string,"\n";           # Using RDF::URI::as_string
+  print $node4->literal_value_as_latin1,"\n";
 
 =head1 DESCRIPTION
 
@@ -297,13 +312,24 @@ sub type ($;$) {
 
 =item literal_value
 
-Get the node literal value string (when the node is of type
+Get the node literal value string as UTF-8 (when the node is of type
 $RDF::Node::Type_Literal)
 
 =cut
 
 sub literal_value ($) {
   &Redland::librdf_node_get_literal_value(shift->{NODE});
+}
+
+=item literal_value_as_latin1
+
+Get the node literal value string converted from UTF-8 to ISO Latin-1
+(when the node is of type $RDF::Node::Type_Literal)
+
+=cut
+
+sub literal_value_as_latin1 ($) {
+  &Redland::librdf_node_get_literal_value_as_latin1(shift->{NODE});
 }
 
 =item literal_value_language

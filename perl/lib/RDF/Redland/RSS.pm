@@ -74,16 +74,18 @@
 #      under either the MPL or the LGPL License.
 #
 
-use Redland;
-
-
 package RDF::RSS;
+
+use strict;
+
+
+use Redland;
 
 use RDF::Model;
 
-@ISA=qw(RDF::Model);
+use vars qw(@ISA $NS_URL);
 
-use vars qw($NS_URL);
+@ISA=qw(RDF::Model);
 
 $NS_URL="http://purl.org/rss/1.0/";
 
@@ -92,6 +94,29 @@ $NS_URL="http://purl.org/rss/1.0/";
 =head1 NAME
 
 RDF::RSS - Redland RSS 1.0 Class
+
+=head1 SYNOPSIS
+
+  use RDF::RSS;
+
+  ...
+  my $rss=RDF::RSS->new_from_model($model);
+
+  my $rss2=new RDF::RSS(new RDF::URI("http://example.com/test.rdf"));
+  ...
+
+  for my $channel ($rss->channels) {
+    ...
+   print "channel title is ",$channel->title->as_string,"\n"; # UTF-8
+  }
+
+  my(@items)=$channel->items;
+  # Print channel items (URI, title)
+  for my $item (@items) {
+    print "item ",$item->uri->as_string, " ", $item->title->as_string, "\n";
+  }
+
+  ...
 
 =head1 DESCRIPTION
 
@@ -184,7 +209,7 @@ sub _find_by_type ($$) {
   my $object=RDF::Node->new_from_uri_string($type_value);
   return () if !$object;
 
-  my(@results)=$self->get_sources($rdf_type, $object);
+  my(@results)=$self->sources($rdf_type, $object);
 
   # Turn the nodes into RDF::RSS:Node-s
   @results=map { RDF::RSS::Node->new($self,$_) } @results;
@@ -252,6 +277,8 @@ package RDF::RSS::Node;
 
 use RDF::Node;
 
+use vars qw(@ISA);
+
 @ISA=qw(RDF::Node);
 
 =head1 NAME
@@ -305,7 +332,7 @@ sub _find_targets_by_predicate ($$) {
   my $predicate=RDF::Node->new_from_uri_string($uri_string);
   return () if !$predicate;
 
-  my(@targets)=$self->{MODEL}->get_targets($self,$predicate);
+  my(@targets)=$self->{MODEL}->targets($self,$predicate);
   warn "RDF::RSS::_find_targets_by_predicate returned ",scalar @targets, " results\n" if $RDF::Debug;
 
   # Convert list of RDF::Node-s into list of RDF::RSS::Node-s
@@ -413,7 +440,7 @@ sub items ($) {
 
   # Get 1st resource inside <items> - i.e. the 1st rdf:Seq
   # This gets the entire list then just takes the first one
-  my($seq_resource)=$self->{MODEL}->get_targets($self, $items_predicate);
+  my($seq_resource)=$self->{MODEL}->targets($self, $items_predicate);
   return () if !$seq_resource;
 
   $seq_resource=RDF::RSS::Node->new($self->{MODEL}, $seq_resource);
@@ -423,7 +450,7 @@ sub items ($) {
   for my $prop ($seq_resource->properties) {
     if($prop->uri->as_string =~ m%^http://www.w3.org/1999/02/22-rdf-syntax-ns#_(\d+)$%) {
        # Must want a list here otherwise get an RDF::Iterator object
-       my($resource)=$seq_resource->{MODEL}->get_targets($seq_resource, $prop);
+       my($resource)=$seq_resource->{MODEL}->targets($seq_resource, $prop);
        push(@resources, [$1, $resource]);
      }
   }
@@ -483,7 +510,7 @@ context.
 sub property ($$) {
   my($self,$property)=@_;
 
-  my(@targets)=$self->{MODEL}->get_targets($self,$property);
+  my(@targets)=$self->{MODEL}->targets($self,$property);
 
   # Convert list of RDF::Node-s into list of RDF::RSS:Node-s
   @targets=map { RDF::RSS::Node->new($self->{MODEL}, $_) } @targets;

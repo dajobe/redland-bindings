@@ -76,6 +76,8 @@
 
 package RDF::URI;
 
+use strict;
+
 use Redland;
 
 =pod
@@ -83,6 +85,16 @@ use Redland;
 =head1 NAME
 
 RDF::URI - Redland RDF URI Class
+
+=head1 SYNOPSIS
+
+  use RDF;
+
+  my $uri=new RDF::URI("http://example.com/");
+
+  my $uri2=RDF::URI->new_from_uri($uri);
+
+  print $uri2->as_string,"\n";
 
 =head1 DESCRIPTION
 

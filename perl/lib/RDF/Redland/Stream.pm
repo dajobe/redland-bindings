@@ -76,15 +76,28 @@
 
 package RDF::Stream;
 
-use RDF::Statement;
+use strict;
 
 use Redland;
+
+use RDF::Statement;
 
 =pod
 
 =head1 NAME
 
 RDF::Stream - Redland RDF Stream of RDF::Statement objects Class
+
+=head1 SYNOPSIS
+
+  use RDF;
+
+  ...
+  my $stream=$model->serialise;
+  while($stream && !$stream->end) {
+    my $statement=$stream->next;
+    ...
+  }
 
 =head1 DESCRIPTION
 
@@ -153,7 +166,7 @@ sub next ($) {
   my $self=shift;
   return undef if !$self->{STREAM};
   # return a new statement created by the librdf stream object
-  RDF::Statement->_new_from_object(&Redland::librdf_stream_next($self->{STREAM}), $stream->{FREE_STATEMENTS});
+  RDF::Statement->_new_from_object(&Redland::librdf_stream_next($self->{STREAM}), $self->{FREE_STATEMENTS});
 }
 
 =pod

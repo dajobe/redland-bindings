@@ -76,15 +76,25 @@
 
 package RDF::Statement;
 
-use RDF::Node;
+use strict;
 
 use Redland;
+
+use RDF::Node;
 
 =pod
 
 =head1 NAME
 
 RDF::Statement - Redland RDF Statement Class
+
+=head1 SYNOPSIS
+
+  use RDF;
+  my $statement=new RDF::Statement();
+  my $statement2=RDF::Statement->new_from_statement($statement);
+  my $statement3=RDF::Statement->new_from_nodes($subject, $predicate, $object);
+  ...
 
 =head1 DESCRIPTION
 

@@ -76,6 +76,8 @@
 
 package RDF::Storage;
 
+use strict;
+
 use Redland;
 
 =pod
@@ -83,6 +85,12 @@ use Redland;
 =head1 NAME
 
 RDF::Storage - Redland RDF Storage Class
+
+=head1 SYNOPSIS
+
+  use RDF;
+  my $storage=new RDF::Storage("hashes", "test", "new='yes',hash-type='memory'");
+  ...
 
 =head1 DESCRIPTION
 

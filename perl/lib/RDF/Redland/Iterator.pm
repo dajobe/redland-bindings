@@ -76,6 +76,8 @@
 
 package RDF::Iterator;
 
+use strict;
+
 use Redland;
 
 =pod
@@ -83,6 +85,17 @@ use Redland;
 =head1 NAME
 
 RDF::Iterator - Redland RDF Iterator Class
+
+=head1 SYNOPSIS
+
+  use RDF;
+
+  ...
+  my $iterator=$model->targets_iterator($source_node, $arc_node);
+  while($iterator && $iterator->have_elements) {
+    my $node=$iterator->next;
+    ...
+  }
 
 =head1 DESCRIPTION
 
@@ -129,8 +142,9 @@ sub new ($$@) {
 
 # DESTRUCTOR
 sub DESTROY ($) {
+  my $self=shift;
   warn "RDF::Iterator DESTROY\n" if $RDF::Debug;
-  &Redland::librdf_free_iterator($shift->{ITERATOR});
+  &Redland::librdf_free_iterator($self->{ITERATOR});
 }
 
 
