@@ -51,7 +51,7 @@ while not stream.end():
 
 
 # Use any rdf/xml parser that is available
-parser=RDF.Parser("", "application/rdf+xml")
+parser=RDF.Parser("raptor", "application/rdf+xml")
 if parser is None:
   raise "Could not find any rdf/xml parser"
 
