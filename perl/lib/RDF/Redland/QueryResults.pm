@@ -229,6 +229,23 @@ sub next_result ($) {
 }
 
 
+=item as_stream
+
+Return a new RDF::Redland::Stream object returning the query results
+as an RDF Graph.
+
+=cut
+
+sub as_stream($) {
+  my($self)=@_;
+  die "Query results is not in RDF graph format"
+    unless $self->is_graph;
+
+  my $stream==&RDF::Redland::CORE::librdf_query_results_as_stream($self->{QUERYRESULTS});
+  return new RDF::Redland::Stream($stream,$self);
+}
+
+
 =item to_string [FORMAT-URI [BASE-URI]]
 
 Serialize to a string syntax in format I<FORMAT-URI> using the optional
