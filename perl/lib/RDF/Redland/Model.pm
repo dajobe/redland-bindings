@@ -77,16 +77,29 @@
 
 package RDF::Model;
 
-use RDF::Iterator;
-use RDF::Stream;
+use strict;
 
 use Redland;
+
+use RDF::Iterator;
+use RDF::Stream;
 
 =pod
 
 =head1 NAME
 
 RDF::Model - Redland RDF Model Class
+
+=head1 SYNOPSIS
+
+  use RDF;
+  my $storage=new RDF::Storage("hashes", "test", "new='yes',hash-type='memory'");
+  my $model=new RDF::Model($storage, "");
+  ...
+
+  my(@sources)=$model->targets($predicate_node, $object_node);
+
+  ...
 
 =head1 DESCRIPTION
 
@@ -156,11 +169,9 @@ sub new_from_model ($$) {
   my($proto,$model)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{MODEL}=&Redland::librdf_new_model_from_model($storage->{STORAGE},$model->{MODEL});
+  $self->{MODEL}=&Redland::librdf_new_model_from_model($model->{MODEL});
   return undef if !$self->{MODEL};
 
-  # keep a reference around so storage object is destroyed after this
-  $self->{STORAGE}=$storage;
   bless ($self, $class);
   return $self;
 }
@@ -304,14 +315,14 @@ sub find_statements ($$) {
   @results;
 }
 
-=item get_sources ARC TARGET
+=item sources ARC TARGET
 
 Get all source RDF::Node objects for a given arc I<ARC>, target I<TARGET>>
 RDF::Node objects as a list of RDF::Node objects.
 
 =cut
 
-sub get_sources ($$) {
+sub sources ($$) {
   my($self,$arc,$target)=@_;
   my $iterator=&Redland::librdf_model_get_sources($self->{MODEL},$arc->{NODE},$target->{NODE});
   return () if !$iterator;
@@ -328,14 +339,14 @@ sub get_sources ($$) {
   @results;
 }
 
-=item get_arcs SOURCE TARGET
+=item arcs SOURCE TARGET
 
 Get all arc RDF::Node objects for a given source I<SOURCE>, target I<TARGET>
 RDF::Node objects as a list of RDF::Node objects.
 
 =cut
 
-sub get_arcs ($$) {
+sub arcs ($$) {
   my($self,$source,$target)=@_;
   my $iterator=&Redland::librdf_model_get_arcs($self->{MODEL},$source->{NODE},$target->{NODE});
   return () if !$iterator;
@@ -352,14 +363,14 @@ sub get_arcs ($$) {
   @results;
 }
 
-=item get_targets SOURCE ARC
+=item targets SOURCE ARC
 
 Get all target RDF::Node objects for a given source I<SOURCE>, arc I<ARC>
 RDF::Node objects as a list of RDF::Node objects.
 
 =cut
 
-sub get_targets ($$) {
+sub targets ($$$) {
   my($self,$source,$arc)=@_;
   my $iterator=&Redland::librdf_model_get_targets($self->{MODEL},$source->{NODE},$arc->{NODE});
   return () if !$iterator;
@@ -376,72 +387,72 @@ sub get_targets ($$) {
   @results;
 }
 
-=item get_sources_iterator ARC TARGET
+=item sources_iterator ARC TARGET
 
 Get all source RDF::Node objects for a given arc I<ARC>, target
 I<TARGET> RDF::Node objects as an RDF::Iterator or undef on failure.
 
 =cut
 
-sub get_sources_iterator ($$) {
+sub sources_iterator ($$$) {
   my($self,$arc,$target)=@_;
   my $iterator=&Redland::librdf_model_get_sources($self->{MODEL},$arc->{NODE},$target->{NODE});
-  return RDF::Iterator($iterator,$self,$arc,$target);
+  return new RDF::Iterator($iterator,$self,$arc,$target);
 }
 
-=item get_arcs_iterator SOURCE TARGET
+=item arcs_iterator SOURCE TARGET
 
 Get all arc RDF::Node objects for a given source I<SOURCE>, target
 I<TARGET> RDF::Node objects as an RDF::Iterator or undef on failure.
 
 =cut
 
-sub get_arcs_iterator ($$) {
+sub arcs_iterator ($$$) {
   my($self,$source,$target)=@_;
   my $iterator=&Redland::librdf_model_get_arcs($self->{MODEL},$source->{NODE},$target->{NODE});
   return new RDF::Iterator($iterator,$self,$source,$target);
 }
 
-=item get_targets_iterator SOURCE ARC
+=item targets_iterator SOURCE ARC
 
 Get all target RDF::Node objects for a given source I<SOURCE>, arc I<ARC>
 RDF::Node objects as an RDF::Iterator or undef on failure.
 
 =cut
 
-sub get_targets_iterator ($$) {
+sub targets_iterator ($$$) {
   my($self,$source,$arc)=@_;
   my $iterator=&Redland::librdf_model_get_targets($self->{MODEL},$source->{NODE},$arc->{NODE});
   return new RDF::Iterator($iterator,$self,$source,$arc);
 }
 
-=item get_source ARC TARGET
+=item source ARC TARGET
 
 Get one source RDF::Node object that matches a given arc I<ARC>,
 target I<TARGET> RDF::Node objects or undef if there is no match.
 
 =cut
 
-sub get_source ($$) {
+sub source ($$$) {
   my($self,$arc,$target)=@_;
   my $node=&Redland::librdf_model_get_source($self->{MODEL},$arc->{NODE},$target->{NODE});
   return $node ? RDF::Node->_new_from_object($node,1) : undef;
 }
 
-=item get_arc SOURCE TARGET
+=item arc SOURCE TARGET
 
 Get one arc RDF::Node object that matches a given source I<SOURCE>,
 target I<TARGET> RDF::Node objects or undef if there is no match.
 
 =cut
 
-sub get_arc ($$) {
+sub arc ($$$) {
   my($self,$source,$target)=@_;
   my $node=&Redland::librdf_model_get_arc($self->{MODEL},$source->{NODE},$target->{NODE});
   return $node ? RDF::Node->_new_from_object($node,1) : undef;
 }
 
-=item get_target SOURCE ARC
+=item target SOURCE ARC
 
 Get one target RDF::Node object that matches a given source
 I<SOURCE>, arc I<ARC> RDF::Node objects or undef if there is no
@@ -449,11 +460,36 @@ match.
 
 =cut
 
-sub get_target ($$) {
+sub target ($$$) {
   my($self,$source,$arc)=@_;
   my $node=&Redland::librdf_model_get_target($self->{MODEL},$source->{NODE},$arc->{NODE});
   return $node ? RDF::Node->_new_from_object($node,1) : undef;
 }
+
+
+# FIXME - remove these functions in future release
+use vars qw($get_sources_warning $get_arcs_warning $get_targets_warning);
+sub get_sources ($$$) {
+  my($self,$arc,$target)=@_;
+  warn "RDF::Model::get_sources is deprecated, please use RDF::Model::sources_iterator\n" 
+    if $get_sources_warning++ == 0;
+  $self->sources_iterator($arc,$target);
+}
+
+sub get_arcs ($$$) {
+  my($self,$source,$target)=@_;
+  warn "RDF::Model::get_arcs is deprecated, please use RDF::Model::arcs_iterator\n" 
+    if $get_arcs_warning++ == 0;
+  $self->arcs_iterator($source,$target);
+}
+
+sub get_targets ($$$) {
+  my($self,$source,$arc)=@_;
+  warn "RDF::Model::get_targets is deprecated, please use RDF::Model::targets_iterator\n" 
+    if $get_targets_warning++ == 0;
+  $self->targets_iterator($source,$arc);
+}
+
 
 =pod
 
