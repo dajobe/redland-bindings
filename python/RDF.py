@@ -627,7 +627,7 @@ Create a model using an in-memory storage.
       self._storage=storage
 
   def __iter__(self):
-    return self.as_stream()
+    return self.as_stream().__iter__()
 
   def __del__(self):
     global _debug    
