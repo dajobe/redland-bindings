@@ -1411,39 +1411,61 @@ names that are always present are 'memory', 'hashes', 'file' and
 in, 'mysql' when MySQL is compiled in, and 'sqlite' when SQLite is
 compiled in
 
+An optional argument 'name' is used when the storage needs a name
+to operate, such as used for a filename or URI:
+
+  s1=RDF.Storage(storage_name="file", name='/filename')
+
+  s2=RDF.Storage(storage_name="uri", name='http://rdf.example.org/')
+
+
 Extra options can be passed with the options_string, some of which
 are required.  This uses the following form:
 
-  s1=RDF.Storage(storage_name="name", options_string="key1='value1', .....")
+  s3=RDF.Storage(storage_name="name", name='abc',
+                 options_string="key1='value1', key2='value2', ...")
 
-for multiple key/value pairs, values are always surrouned by single quotes.
+for multiple key/value pairs, key value are always surrounded by
+single quotes.
 
 The common options are:
-    new - optional and takes a boolean value (default false)
-      If true, it deletes any existing store and creates a new one
-      otherwise if false (default) open an existing store.
+  new - optional and takes a boolean value (default false)
+    If true, it deletes any existing store and creates a new one
+    otherwise if false (default) open an existing store.
 
-    write - optional and takes a boolean value (default true)
-      If true (default) the Storage is opened read-write otherwise
-      if false the storage is opened read-only and for file-based
-      Storages or those with locks, may be opened with shared-readers.
+  write - optional and takes a boolean value (default true)
+    If true (default) the Storage is opened read-write otherwise
+    if false the storage is opened read-only and for file-based
+    Storages or those with locks, may be opened with shared-readers.
 
 Some storage types have additional options in the options_string.
 
-storage_name "hashes" has options:
-    hash-type - required and can be the name of any Hash type supported.
-      'memory', 'file' hash types are always present. 'bdb' is available
-      when BerkeleyDB is compiled in,
-storage_name "mysql" has options:
-     host - required MySQL database hostname
-     port - optional MySQL database port (defaults to 3306)
-     database - required MySQL database name
-     user - required MySQL database user
-     password - required MySQL database password
+storage_name 'hashes' has options:
+  hash-type -  the name of any hash type supported.
+    'memory' (default), 'file' hash types are always present. 'bdb' is
+    available when BerkeleyDB is compiled in,
+
+storage_name 'mysql' has options:
+  host - required MySQL database hostname
+  port - optional MySQL database port (defaults to 3306)
+  database - required MySQL database name;
+  user - required MySQL database user
+  password - required MySQL database password
       
 The other form is:
-  s2=RDF.Storage(storage=s1)
+  s4=RDF.Storage(storage=s1)
 Copy an existing Storage s1.
+
+
+Note: there are convience classes to create a memory storage
+  s5=RDF.MemoryStorage()
+
+and Hash storage:
+  # memory hash
+  s6=RDF.HashStorage('abc')
+
+  # specified bdb hash stored in files named 'def'*
+  s7=RDF.HashStorage('def', options="hash-type='bdb'")
 
     """
     global _world
