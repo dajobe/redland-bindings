@@ -4,9 +4,9 @@ MANIFEST
 Makefile
 Makefile.in
 RDF.html
+Redland-stamp
 Redland_wrap*
 build
-build-python-stamp
 dist
 dmalloc.log
 lib
