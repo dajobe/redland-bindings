@@ -65,11 +65,7 @@ install-pythonDATA: $(python_DATA)
 	$(INSTALL_PROGRAM) $(PYTHON_PACKAGE).so $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so
 
 uninstall-pythonDATA: $(python_DATA)
-	if test -r $(PYTHON_PACKAGE).bundle; then \
-	  rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).bundle; \
-	else \
-	  rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so; \
-	fi
+	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so; \
 
 check-local: unittest-python test-python
 
@@ -79,8 +75,5 @@ test-python: $(PYTHON_PACKAGE).so
 unittest-python: $(PYTHON_PACKAGE).so
 	PYTHONPATH=. $(PYTHON)  $(srcdir)/redlandtest.py
 
-RDF.html: RDF.py build-python-stamp
-	@bdir=`ls -1d build/lib.*`; \
-	echo Using python build dir $$bdir; \
-	echo PYTHONPATH=$$bdir $(PYTHON); \
-	PYTHONPATH=$$bdir $(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF
+RDF.html: RDF.py $(PYTHON_PACKAGE).so
+	PYTHONPATH=. $(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF
