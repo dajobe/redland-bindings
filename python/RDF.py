@@ -1036,6 +1036,26 @@ Create a model using an in-memory storage.
       type_uri = type_uri._reduri
     Redland.librdf_model_load(self._model, uri, name, mime_type, type_uri)
     
+  def to_string(self, base_uri=None, name="", mime_type="", type_uri=None):
+    """Serialize the Model to a syntax.
+
+       print model.to_string(base_uri="http://example.org/base#");
+
+       If no serializer name is given, the default serializer RDF/XML is used.
+   """
+    if type(base_uri) is str:
+      base_uri = Uri(string=base_uri)
+    if base_uri is not None:
+      base_uri = base_uri._reduri
+    if type(type_uri) is str:
+      type_uri = Uri(string=type_uri)
+    if type_uri is not None:
+      type_uri = type_uri._reduri
+    return Redland.librdf_model_to_string(self._model, base_uri, name, mime_type, type_uri)
+
+  def __str__(self):
+    return self.to_string()
+
   def execute(self,query):
     results = Redland.librdf_model_query_execute(self._model,query._query)
     if results is not None:
