@@ -26,6 +26,7 @@ import org.librdf.redland.URI;
 import org.librdf.redland.Node;
 import org.librdf.redland.Statement;
 import org.librdf.redland.Iterator;
+import org.librdf.redland.Serializer;
 import org.librdf.redland.Stream;
 import org.librdf.redland.Storage;
 import org.librdf.redland.Hash;
@@ -48,6 +49,7 @@ class skeleton {
     org.librdf.redland.Storage storage=new org.librdf.redland.Storage(world, "memory", "name", "");
     org.librdf.redland.Model model=new org.librdf.redland.Model(world, storage, "");
     org.librdf.redland.Parser parser=new org.librdf.redland.Parser(world, "raptor", "", uri);
+    org.librdf.redland.Serializer serializer=new org.librdf.redland.Serializer(world, "rdfxml", "", uri);
   }
   
 }
