@@ -7,3 +7,4 @@ Makefile.in
 *_wrap.c
 build-csharp-stamp
 not-used
+test-out.rdf
