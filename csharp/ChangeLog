@@ -1,5 +1,9 @@
 2004-07-14  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* Node.cs (operator ==, operator !=):
+	Added tests for null using Object.Equals
+	written by Edd Dumbill.
+
 	* Redland.cs, MemoryStorage.cs, Iterator.cs, IWrapper.cs,
 	HashStorage.cs, URI.cs: Added CVS IDs to the header.
 
