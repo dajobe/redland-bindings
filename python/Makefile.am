@@ -75,6 +75,8 @@
 
 RELEASE=@VERSION_RELEASE@
 
+INCLUDES=-I$(top_srcdir)
+
 PYTHON=@PYTHON@
 PYTHON_INCLUDES=@PYTHON_INCLUDES@
 
@@ -83,7 +85,11 @@ PYTHON_PACKAGE=Redland
 SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c $(PYTHON_PACKAGE)_wrap.doc
 SWIG_CRUFT=$(PYTHON_PACKAGE).bs blib pm_to_blib
 
-EXTRA_DIST=Redland.i $(SWIG_OUTPUTS)
+
+EXTRA_DIST=MANIFEST.in README Redland.i setup.cfg setup.py RDF.py \
+$(SWIG_OUTPUTS)
+
+SUBDIRS=test
 
 # Need this so automake includes C support
 noinst_LIBRARIES = libfake.a
