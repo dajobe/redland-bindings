@@ -35,11 +35,12 @@ check-ruby: ../ruby-redland-stamp $(RUBY_TEST_FILES)
 	$(ECHO) "Testing Ruby"; \
 	for test in $(RUBY_TEST_FILES); do \
 	  $(ECHO) $(ECHO_N) "Checking $$test $(ECHO_C)"; \
-	  $(RUBY) -I .. -I ../lib -I../lib/rdf -I../lib/rdf/redland $(srcdir)/$$test; \
+	  arg="-I.. -I../lib -I../lib/rdf -I../lib/rdf/redland"; \
+	  $(RUBY) $$arg $(srcdir)/$$test; \
 	  status=$$?; \
 	  if test $$status != 0 -a $$status != 2 ; then \
 	    $(ECHO) FAILED returned status $$status; result=1; \
-	    echo $(RUBY) -I .. -I ../lib $(srcdir)/$$test; \
+	    echo $(RUBY) $$arg $(srcdir)/$$test; \
 	    fails="$$fails $$test"; \
 	  else \
 	    $(ECHO) "ok"; \
