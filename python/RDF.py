@@ -41,12 +41,18 @@ __all__ = [ "World",
             "Statement",
             "Model",
             "Iterator",
+            "Serializer",
             "Stream",
             "Storage",
             "Uri",
             "Parser"]
 
-__version__ = "0.6"
+__version__ = "0.7"
+
+# For pydoc
+__date__ = '$Date$'
+__author__ = 'Dave Beckett - http://purl.org/net/dajobe'
+__credits__ = """Edd Dumbill for properly Pythonisising my Perl translation"""
 
 # Package variables [globals]
 #   Python style says to use _ to prevent exporting
@@ -61,16 +67,14 @@ _world = None
 _node_types={
     'NODE_TYPE_UNKNOWN'   : 0,
     'NODE_TYPE_RESOURCE'  : 1,
-    'NODE_TYPE_PROPERTY'  : 1,
     'NODE_TYPE_LITERAL'   : 2,
-    'NODE_TYPE_STATEMENT' : 3,
-    'NODE_TYPE_LI'        : 4,
-    'NODE_TYPE_BLANK'     : 5,
-    'NODE_TYPE_LAST'      : 5}
+    'NODE_TYPE_LI'        : 3,
+    'NODE_TYPE_BLANK'     : 4}
 
 import Redland;
 
 class RedlandError(Exception):
+    """Redland Runtime errors"""
     def __init__(self, value):
         self.value = value
 
@@ -81,12 +85,14 @@ class NodeTypeError(RedlandError):
     pass
 
 def node_type(name):
+    """Return the Redland node type of a node name"""
     if _node_types.has_key(name):
         return _node_types[name]
     else:
         raise NodeTypeError('Unknown node type %s' % name)
 
 def node_type_name(num):
+    """Return the name of a Redland node type"""
     for n in _node_types.keys():
         if num==_node_types[n]:
             return n
@@ -104,6 +110,7 @@ class World:
     Redland_python.set_callback(World.message)
 
   def message (type, message):
+    """Internal message dispatcher from Redland to python"""
     if type == 0:
       raise "Redland error - ",message
     else:
@@ -219,18 +226,20 @@ class Node:
     Redland.librdf_node_set_type(self._node, type)
 
   def get_literal_value (self):
-    """Get a dictionary containing the value of the node literal"""
+    """Get a dictionary containing the value of the Node literal"""
     val={
         'string': Redland.librdf_node_get_literal_value(self._node),
         'language': Redland.librdf_node_get_literal_value_language(self._node),
-        'is_wf_xml': Redland.librdf_node_get_literal_value_is_wf_xml(self._node)
+        'datatype': Redland.librdf_node_get_literal_value_datatype(self._node)
         }
     return val
 
-  def set_literal_value (self,string,xml_language,is_wf_xml):
-    """Set a literal node string value."""
-    Redland.librdf_node_set_literal_value(self._node, string,
-        xml_language, is_wf_xml)
+  def set_literal_value (self,string,xml_language=None,datatype=None):
+    """Set a literal Node string value, with optional XML language or datatype URI."""
+    if datatype !=None:
+        datatype=datatype._reduri
+    Redland.librdf_node_set_typed_literal_value(self._node, string,
+        xml_language, datatype)
 
   def __str__(self):
     """Get a string representation of an RDF Node."""
@@ -261,10 +270,16 @@ class Node:
     return hash(str(self))
 
   def is_resource(self):
+    """Return true if node is a resource  with a URI"""   
     return self.type==_node_types['NODE_TYPE_RESOURCE']
 
   def is_literal(self):
+    """Return true if node is a literal"""
     return self.type==_node_types['NODE_TYPE_LITERAL']
+  
+  def is_blank(self):
+    """Return true if node is a blank node"""   
+    return self.type==_node_types['NODE_TYPE_BLANK']
   
 # end class Node
 
@@ -428,51 +443,65 @@ class Model:
       Redland.librdf_free_model(self._model)
 
   def size(self):
+    """Return the size of the Model in number of statements (<0 if not countabl)"""
     return Redland.librdf_model_size(self._model)
 
   def add(self,subject,predicate,object):
+    """Add the statement (subject,predicate,object) to the model"""
     return Redland.librdf_model_add(self._model, 
         Redland.librdf_new_node_from_node(subject._node),
         Redland.librdf_new_node_from_node(predicate._node),
         Redland.librdf_new_node_from_node(object._node));
 
-  def add_string_literal_statement (self,subject,predicate,
-                                    string,xml_language,is_wf_xml):
-    return Redland.librdf_model_add_string_literal_statement( self._model,
+  def add_typed_literal_statement (self,subject,predicate,
+                                   string,xml_language=None,datatype=None):
+    """Add the Statement (subject,predicate, typed literal) to the Model
+       where the typed literal is constructed from the
+       literal string, optional XML language and optional datatype URI."""
+    if datatype !=None:
+        datatype=datatype._reduri
+    return Redland.librdf_model_add_typed_literal_statement( self._model,
         subject._node, predicate._node, string,
         xml_language, 0, is_wf_xml)
 
   def add_statement (self,statement):
+    """Add the Statement to the Model"""
     # adding a statement means it gets *copied* into the model
-    # we should be free to re-use the statement after adding it
+    # we arex free to re-use the statement after adding it
     Redland.librdf_model_add_statement(self._model, 
         statement._statement)
 
   def add_statements (self,statement_stream):
+    """Add the Stream of Statements to the Model"""
     return Redland.librdf_model_add_statements(self._model,
         statement_stream.stream)
 
   def remove_statement (self,statement):
+    """Add the Statement from the Model"""
     return Redland.librdf_model_remove_statement(self._model,
         statement._statement)
 
   def contains_statement (self,statement):
+    """Return true if the Statement is in the Model"""
     return Redland.librdf_model_contains_statement(self._model,
         statement._statement)
 
-  def serialize(self):
-    return self.serialise()
-
   def serialise (self):
+    """Return the Model as a Stream of Statements"""
     my_stream=Redland.librdf_model_serialise(self._model)
     return Stream(my_stream,self,1)
 
   def find_statements (self,statement):
+    """Return a Stream of Statements matching the given
+       partial Statement - the missing nodes of the
+       partial statement match any node in the Model."""
     my_stream=Redland.librdf_model_find_statements(self._model,
         statement._statement)
     return Stream(my_stream,self,0)
 
   def sources (self,arc,target):
+    """Return a sequence of Node s that are the source
+       of Statements in the Model matching (?, arc, target)."""
     my_iterator=Redland.librdf_model_get_sources(self._model, arc._node,
         target._node)
     if my_iterator is None:
@@ -491,6 +520,8 @@ class Model:
     return results
 
   def arcs (self,source,target):
+    """Return a sequence of Node s that are the arcs
+       of Statements in the Model matching (source, ?, target)."""
     my_iterator=Redland.librdf_model_get_arcs(self._model, source._node,
         target._node)
     if my_iterator is None:
@@ -509,6 +540,8 @@ class Model:
     return results
 
   def targets (self,source,arc):
+    """Return a sequence of Node s that are the targets
+       of Statements in the Model matching (source, arc, ?)."""
     my_iterator=Redland.librdf_model_get_targets(self._model, source._node,
         arc._node)
     if my_iterator is None:
@@ -527,21 +560,31 @@ class Model:
     return results
 
   def get_sources_iterator (self,arc,target):
+    """Return an Iterator of Node s that are the sources
+       of Statements in the Model matching (?, arc, target).
+       The sources method is recommended in preference to this."""
     my_iterator=Redland.librdf_model_get_sources(self._model, arc._node,
         target._node)
     return Iterator(my_iterator,self,arc,target)
 
   def get_arcs_iterator (self,source,target):
+    """Return an Iterator of Node s that are the arcs
+       of Statements in the Model matching (source, ?, target).
+       The arcs method is recommended in preference to this."""
     my_iterator=Redland.librdf_model_get_arcs(self._model, source._node,
         target._node)
     return Iterator(my_iterator,self,source,target)
 
   def get_targets_iterator (self,source,arc):
+    """Return an Iterator of Node s that are the targets
+       of Statements in the Model matching (source, arc, ?).
+       The targets method is recommended in preference to this."""
     my_iterator=Redland.librdf_model_get_targets(self._model, source._node,
         arc._node)
     return Iterator(my_iterator,self,source,arc)
 
   def get_source (self,arc,target):
+    """Return one Node in the Model matching (?, arc, target)."""
     my_node=Redland.librdf_model_get_source(self._model, arc._node,
         target._node)
     if not my_node:
@@ -550,6 +593,7 @@ class Model:
       return Node(from_object=my_node, free_node=1)
 
   def get_arc (self,source,target):
+    """Return one Node in the Model matching (source, ?, target)."""
     my_node=Redland.librdf_model_get_arc(self._model, source._node,
         target._node)
     if not my_node:
@@ -558,6 +602,7 @@ class Model:
       return Node(from_object=my_node, free_node=1)
 
   def get_target (self,source,arc):
+    """Return one Node in the Model matching (source, arc, ?)."""
     my_node=Redland.librdf_model_get_target(self._model, source._node,
         arc._node)
     if not my_node:
@@ -589,6 +634,7 @@ class Iterator:
     Redland.librdf_free_iterator(self._iterator)
 
   def end (self):
+    """Return true if the iterator is exhausted"""
     return Redland.librdf_iterator_end(self._iterator)
 
   def have_elements (self):
@@ -597,6 +643,7 @@ please use 'not iterator.end' instead."""
     return Redland.librdf_iterator_have_elements(self._iterator)
 
   def current (self):
+    """Return the current object on the Iterator"""
     my_node=Redland.librdf_iterator_get_object(self._iterator)
     if my_node == "NULL" or my_node == None:
       return None
@@ -608,6 +655,7 @@ please use 'not iterator.end' instead."""
     return node
 
   def next (self):
+    """Move to the next object on the Iterator"""
     Redland.librdf_iterator_next(self._iterator)
 
 # end class Iterator
@@ -638,11 +686,13 @@ class Stream:
     Redland.librdf_free_stream(self.stream)
 
   def end (self):
+    """Return true if the stream is exhausted"""
     if not self.stream:
       return 1
     return Redland.librdf_stream_end(self.stream)
 
   def current (self):
+    """Return the current Statement on the Stream"""
     if not self.stream:
       return None
 
@@ -653,6 +703,7 @@ class Stream:
     return Statement(from_object=my_statement, free_statements=0)
 
   def next (self):
+    """Move to the next Statement on the Stream"""
     if not self.stream:
       return 1
 
@@ -777,6 +828,8 @@ class Parser:
       Redland.librdf_free_parser(self._parser)
 
   def parse_as_stream (self, uri, base_uri=None):
+    """"Return a Stream of Statements from parsing the content at
+        (file: only at present) URI, for the optional base URI"""
     if base_uri==None:
         base_uri=uri
     my_stream=Redland.librdf_parser_parse_as_stream(self._parser,
@@ -784,17 +837,21 @@ class Parser:
     return Stream(my_stream, self, 1)
 
   def parse_into_model (self, model, uri, base_uri=None):
+    """"Parse into the Model model from the content at
+        (file: only at present) URI, for the optional base URI"""
     if base_uri==None:
         base_uri=uri
     return Redland.librdf_parser_parse_into_model(self._parser,
       uri._reduri, base_uri._reduri, model._model)
 
   def get_feature(self, uri):
+    """Return the value of Parser feature URI uri"""
     if not isinstance(uri, Uri):
       uri=Uri(string=uri)
     return Redland.librdf_parser_get_feature(self._parser,uri._reduri)
 
   def set_feature(self, uri, value):
+    """Set the value of Parser feature URI uri."""
     if not isinstance(uri, Uri):
       uri=Uri(string=uri)
     Redland.librdf_parser_set_feature(self._parser,uri._reduri,value)
@@ -825,17 +882,21 @@ class Serializer:
       Redland.librdf_free_serializer(self._serializer)
 
   def serialize_model_to_file (self, name, model, base_uri=None):
+    """Serialize to filename name the Model model using the
+       optional base URI."""
     if base_uri !=None:
         base_uri=base_uri._reduri
     return Redland.librdf_serializer_serialize_model_to_file(self._serializer,
       name, base_uri, model._model)
 
   def get_feature(self, uri):
+    """Return the value of Serializer feature URI uri"""
     if not isinstance(uri, Uri):
       uri=Uri(string=uri)
     return Redland.librdf_serializer_get_feature(self._serializer,uri._reduri)
 
   def set_feature(self, uri, value):
+    """Set the value of Serializer feature URI uri."""
     if not isinstance(uri, Uri):
       uri=Uri(string=uri)
     Redland.librdf_serializer_set_feature(self._serializer,uri._reduri,value)
