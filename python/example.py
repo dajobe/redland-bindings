@@ -3,7 +3,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2002 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -21,51 +21,44 @@
 
 import RDF
 
-world=RDF.world()
-
-storage=RDF.storage(storage_name="hashes", name="test", options_string="new='yes',hash-type='memory',dir='.'")
+storage=RDF.Storage(storage_name="hashes",
+                    name="test",
+                    options_string="new='yes',hash-type='memory',dir='.'")
 if not storage:
-  raise "new RDF.storage failed"
+  raise "new RDF.Storage failed"
 
-#world.debug(1)
+#RDF.debug(1)
 
-model=RDF.model(storage)
+model=RDF.Model(storage)
 if not model:
   raise "new RDF.model failed"
 
-statement=RDF.statement(subject=RDF.node(uri_string="http://purl.org/net/dajobe/"),
-                        predicate=RDF.node(uri_string="http://purl.org/dc/elements/1.1/creator"),
-                        object=RDF.node(literal="Dave Beckett"))
+statement=RDF.Statement(subject=RDF.Node(uri_string="http://purl.org/net/dajobe/"),
+                        predicate=RDF.Node(uri_string="http://purl.org/dc/elements/1.1/creator"),
+                        object=RDF.Node(literal="Dave Beckett"))
 if not statement:
-  raise "new RDF.statement failed"
+  raise "new RDF.Statement failed"
 
 # after this statement is owned by model and should not be used
 model.add_statement(statement)
-del statement
 
 # Match against an empty statement - find everything
-statement=RDF.statement(subject=None, predicate=None, object=None);
+statement=RDF.Statement(subject=None, predicate=None, object=None);
 # after this statement should not be touched since find_statements is using it
 stream=model.find_statements(statement);
 
 while not stream.end():
   statement2=stream.next();
   print "found statement:",statement2
-del statement2
-
-del statement
-
-del stream
 
 test_file='../perl/dc.rdf'
 
 print "Parsing URI (file)", test_file
-uri=RDF.uri(string="file:"+test_file)
+uri=RDF.Uri(string="file:"+test_file)
 
-parser=RDF.parser('raptor')
+parser=RDF.Parser('raptor')
 if not parser:
-  raise "Failed to create RDF.parser raptor"
-parser.feature(RDF.uri(string="http://www.w3.org/1999/02/22-rdf-syntax-ns#aboutEach"), "yes")
+  raise "Failed to create RDF.Parser raptor"
 
 stream=parser.parse_as_stream(uri,uri)
 count=0
@@ -73,29 +66,9 @@ while not stream.end() :
   model.add_statement(stream.next())
   count=count+1
 
-# Not needed since assignment below does this
-#stream=None
-#del stream
-
-parser=None
-del parser
-
-del uri
-
 print "Parsing added",count,"statements"
 
 print "Printing all statements"
 stream=model.serialise()
 while not stream.end():
   print "Statement:",stream.next()
-stream=None
-
-del stream
-
-del model
-
-del storage
-
-# this must be done last
-world.close()
-
