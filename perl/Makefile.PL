@@ -80,6 +80,22 @@ $PACKAGE=$ENV{PACKAGE} || "Redland";
 
 my $redland_libs=`$TOP_SRCDIR/redland-config --libs`;
 
+# Convert -Ldir -lname into list of dir/libname.a so that perl links with
+# the correct files rather than, say, an libname.a somewhere earlier in
+# the libs search path.
+my(@abs_libs);
+my $t=$redland_libs;
+while(1) {
+  if($t =~ s/-L(\S+) -l(\S+)\s+//) {
+    my($dir,$name)=($1,$2);
+    push(@abs_libs, "$dir/lib$name.a") 
+      unless $name eq 'rdf'; # save all except librdf.a
+    next;
+  }
+  last;
+}
+warn "abs libs: @abs_libs\n";
+
 my $version=$ENV{VERSION};
 
 if(!$version) {
@@ -118,8 +134,7 @@ WriteMakefile(
     'VERSION'   => $version,
     'DEFINE'    => '-Dbool=char -DHAVE_CONFIG_H',
     'CCFLAGS'   => "-I$TOP_SRCDIR",
-    'LIBS'      => ["-L$TOP_SRCDIR $redland_libs"],
-    'OBJECT'    => 'Redland_wrap.o',
+    'OBJECT'    => "Redland_wrap.o redland_perl.o ../librdf.a @abs_libs",
     'MAKEFILE'  => 'Makefile.perl',
     'clean'     => { FILES => "test*.db" },
     'realclean' => { FILES => "Redland_wrap.c Redland_wrap.o Redland.pm" },
