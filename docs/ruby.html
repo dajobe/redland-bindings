@@ -60,10 +60,73 @@ model.  It should be run with two arguments - the URI of the content
 
 <h2>Using the Redland Ruby API</h2>
 
-<p>The Ruby API is an object-based API with the class names and
-method names flattened into Ruby procedure names like this:
-librdf_<em>class</em>_<em>method</em> - the same names as in the
-underlying C API.  The object references become Ruby variables.</p>
+<p>Read the Ruby Doc <a href="rdoc/index.html">Redland Ruby Doc API</a>
+for details of the classes and methods provided wrapping the C API.</p>
+
+<p>The Ruby API is an object-based API reflecting the same structure
+of the Redland objects with simple mappings between them:</p>
+
+<table border="1">
+<tr>
+<th>Concept</th><th>Redland Class</th><th>Ruby Class</th><th>Purpose</th>
+</tr>
+<tr>
+<td>Resource / Literal</td><td><span class="redland_class">librdf_node</span></td><td><a href="rdoc/classes/Redland/Node.html"><tt>Redland::Node</tt></a><br /><a href="rdoc/classes/Redland/BNode.html"><tt>Redland::BNode</tt></a><br /><a href="rdoc/classes/Redland/Literal.html"><tt>Redland::Literal</tt></a></td>
+<td>RDF Model &amp; Syntax nodes</td>
+</tr>
+<tr>
+<td>Statement / Triple</td><td><span class="redland_class">librdf_statement</span></td><td><a href="rdoc/classes/Redland/Statement.html"><tt>Redland::Statement</tt></a></td>
+<td>RDF Model &amp; Syntax arcs (statements, triples) [isa Resource]</td>
+</tr>
+<tr>
+<td>Model</td><td><span class="redland_class">librdf_model</span></td><td><a href="rdoc/classes/Redland/Model.html"><tt>Redland::Model</tt></a></td>
+<td>Set of <em>Statement</em>s usually held in one <em>Storage</em>.</td>
+</tr>
+<tr>
+<td>Storage</td><td><span class="redland_class">librdf_storage</span></td><td><a href="rdoc/classes/Redland/TripleStore.html"><tt>Redland::TripleStore</tt></a><br /><a href="rdoc/classes/Redland/FileStore.html"><tt>Redland::FileStore</tt></a><br /><a href="rdoc/classes/Redland/HashStore.html"><tt>Redland::HashStore</tt></a><br /><a href="rdoc/classes/Redland/MemoryStore.html"><tt>Redland::MemoryStore</tt></a></td>
+<td>Storage for <em>Model</em>s either persistant or in-memory.</td>
+</tr>
+<tr>
+<td>Stream</td><td><span class="redland_class">librdf_stream</span></td><td><a href="rdoc/classes/Redland/Stream.html"><tt>Redland::Stream</tt></a></td>
+<td>Providing sequences of <em>Statement</em>s from <em>Parser</em>s, queries.</td>
+</tr>
+<tr>
+<td>Parser</td><td><span class="redland_class">librdf_parser</span></td><td><a href="rdoc/classes/Redland/Parser.html"><tt>Redland::Parser</tt></a></td>
+<td>Syntaxes parsers delivering <em>Stream</em> of <em>Statement</em>s or writing to a <em>Model</em></td>
+</tr>
+<tr>
+<td>Query</td><td><span class="redland_class">librdf_query</span></td><td><a href="rdoc/classes/Redland/Query.html"><tt>Redland::Query</tt></a></td>
+<td>Querying of an <em>Model</em> delivering a <em>QueryResults</em></td>
+</tr>
+<tr>
+<td>QueryResults</td><td><span class="redland_class">librdf_query_results</span></td><td><a href="rdoc/classes/Redland/QueryResults.html"><tt>Redland::QueryResults</tt></a></td>
+<td>Results of applying an <em>Query</em> to a <em>Model</em> giving either variable bindings with <em>Node</em> values or <em>Stream</em> of <em>Statement</em>s</td>
+</tr>
+<tr>
+<td>Serializer</td><td><span class="redland_class">librdf_serializer</span></td><td><a href="rdoc/classes/Redland/Serializer.html"><tt>Redland::Serializer</tt></a></td>
+<td>Serializes a <em>Model</em> into a syntax such as RDF/XML</td>
+</tr>
+<tr>
+<td>Iterator</td><td><span class="redland_class">librdf_iterator</span></td><td><a href="rdoc/classes/Redland/Iterator.html"><tt>Redland::Iterator</tt></a></td>
+<td>Enumerating lists (of <em>Node</em>) from queries.</td>
+</tr>
+<tr>
+<td>URI</td><td><span class="redland_class">librdf_uri</span></td><td><a href="rdoc/classes/Redland/Uri.html"><tt>Redland::Uri</tt></a></td>
+<td>Provides URIs for <em>Resource</em>s, <em>Parser</em>s, ...</td>
+</tr>
+<tr>
+<td>World</td><td>&nbsp;</td><td><a href="rdoc/classes/Redland/World.html"><tt>Redland::World</tt></a></td>
+<td>RDF wrapper class handling Redland startup/shutdown</td>
+</tr>
+<tr>
+<td>Digest</td><td><span class="redland_class">librdf_digest</span></td><td>&nbsp;</td>
+<td>Internal content digest class</td>
+</tr>
+<tr>
+<td>Hash</td><td><span class="redland_class">librdf_hash</span></td><td>&nbsp;</td>
+<td>Internal key:value maps class</td>
+</tr>
+</table>
 
 <hr />
 
