@@ -42,11 +42,11 @@ namespace Rdf {
 			IntPtr iname = Marshal.StringToHGlobalAuto (name);
 			IntPtr imime_type = Marshal.StringToHGlobalAuto (mime_type);
 			if (world == null)
-				if (uri == null)
+				if ((Object)uri == null)
 					parser = librdf_new_parser (IntPtr.Zero, iname, imime_type, IntPtr.Zero);
 				else
 					parser = librdf_new_parser (IntPtr.Zero, iname, imime_type, uri.Handle);
-			else if (uri == null)
+			else if ((Object)uri == null)
 				parser = librdf_new_parser (world.Handle, iname, imime_type, IntPtr.Zero);
 			else
 				parser = librdf_new_parser (world.Handle, iname, imime_type, uri.Handle);

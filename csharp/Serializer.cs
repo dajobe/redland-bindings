@@ -33,11 +33,11 @@ namespace Rdf {
 			IntPtr iname = Marshal.StringToHGlobalAuto (name);
 			IntPtr imime_type = Marshal.StringToHGlobalAuto (mime_type);
 			if (world == null)
-				if (type_uri == null)
+				if ((Object)type_uri == null)
 					serializer = librdf_new_serializer (IntPtr.Zero, iname, imime_type, IntPtr.Zero);
 				else
 					serializer = librdf_new_serializer (IntPtr.Zero, iname, imime_type, type_uri.Handle);
-			else if (type_uri == null)
+			else if ((Object)type_uri == null)
 				serializer = librdf_new_serializer (world.Handle, iname, imime_type, IntPtr.Zero);
 			else
 				serializer = librdf_new_serializer (world.Handle, iname, imime_type, type_uri.Handle);
