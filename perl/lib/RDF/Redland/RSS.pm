@@ -27,11 +27,12 @@ use strict;
 
 use RDF;
 
-use vars qw(@ISA $NS_URL);
+use vars qw(@ISA $NS_URL $DC_NS_URL);
 
 @ISA=qw(RDF::Model);
 
 $NS_URL="http://purl.org/rss/1.0/";
+$DC_NS_URL="http://purl.org/dc/elements/1.1/";
 
 =pod
 
@@ -305,6 +306,7 @@ sub as_xhtml ($%) {
     return 'UNDEFINED' if !$string;
     use HTML::Entities;
     $string=$string->literal_value_as_latin1;
+    return '' if !defined $string || !length $string;
     encode_entities($string, "\200-\377");
     $string;
   }
@@ -640,14 +642,20 @@ sub link ($) {
 
 =item description
 
-Get the RSS description for channel, item or textinput.
-Returns either a list or first one found depending on calling context.
+Get the Dublin Core description element or RSS description for
+channel, item or textinput.  Returns either a list or first one found
+depending on calling context.
 
 =cut
 
 # for channel, item, textinput resources
 sub description ($) {
-  my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'description');
+  my $node=shift;
+  my(@r);
+  @r=$node->_find_targets_by_predicate($RDF::RSS::DC_NS_URL.'description');
+  return (wantarray ? @r : $r[0]) if @r;
+
+  @r=$node->_find_targets_by_predicate($RDF::RSS::NS_URL.'description');
   return wantarray ? @r : $r[0];
 }
 
