@@ -6,8 +6,6 @@ INSTALL.txt
 LICENSE.txt
 Makefile
 Makefile.in
-MANIFEST
-MANIFEST.SKIP
 NEWS
 README
 TODO
@@ -25,5 +23,5 @@ ltmain.sh
 missing
 mkinstalldirs
 not-used
+redland-bindings.spec
 releases
-stamp-h*
