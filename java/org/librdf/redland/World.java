@@ -20,44 +20,39 @@
 // 
 //
 
-package org.librdf;
+package org.librdf.redland;
 
-import org.librdf.redland;
+import org.librdf.redland.core;
 
-public class world 
+public class World 
 {
   private long object=0;
   
-  public world() {
+  public World() {
   }
 
   protected void finalized() 
     {
       if(this.object != 0) {
-        redland.librdf_free_world(this.object);
+        core.librdf_free_world(this.object);
         this.object=0;
       }
     }
 
   public void open() 
     {
-      this.object=redland.librdf_new_world();
-      redland.librdf_world_open(this.object);
+      this.object=core.librdf_new_world();
+      core.librdf_world_open(this.object);
     }
 
-  protected long __get_object() 
+  public String versionString() 
     {
-      return this.object;
+      return core.get_redland_version_string();
     }
 
-  public String version_string() 
+  public String copyrightString() 
     {
-      return redland.get_redland_version_string();
-    }
-
-  public String copyright_string() 
-    {
-      return redland.get_redland_copyright_string();
+      return core.get_redland_copyright_string();
     }
 
 /*
@@ -86,5 +81,10 @@ public class world
 
     }
 */
+
+  protected long __get_object() 
+    {
+      return this.object;
+    }
   
 }

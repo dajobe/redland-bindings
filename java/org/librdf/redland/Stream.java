@@ -20,18 +20,19 @@
 // 
 //
 
-package org.librdf;
+package org.librdf.redland;
 
-import org.librdf.world;
-import org.librdf.redland;
+import org.librdf.redland.core;
+import org.librdf.redland.World;
 
-public class stream
+
+public class Stream implements java.util.Iterator
 {
   private long object;
-  private world world;
+  private World world;
   private Object creator;
 
-  public stream(world world, long object, Object creator) 
+  public Stream(World world, long object, Object creator) 
     {
       this.world=world;
       this.object=object;
@@ -41,25 +42,34 @@ public class stream
 
   protected void finalize() 
     {
-      redland.librdf_free_stream(this.object);
+      core.librdf_free_stream(this.object);
       this.object=0;
       this.creator=null;
     }
 
 
-  public boolean is_end() 
+  // java.util.Iterator methods
+
+  public boolean hasNext() 
     {
-      int is_end_int=redland.librdf_stream_end(this.object);
-      return (is_end_int != 0);
+      int is_end_int=core.librdf_stream_end(this.object);
+      return (is_end_int == 0);
     }
 
 
-  public statement next()
+  public Object next()
     {
-      long statement_object=redland.librdf_stream_next(this.object);
+      long statement_object=core.librdf_stream_next(this.object);
 
-      return new statement(this.world, statement_object, true);
+      return new Statement(this.world, statement_object, true);
     }
+
+  public void remove() 
+    {
+      throw new UnsupportedOperationException();
+    }
+
+
 
   protected long __get_object() 
     {

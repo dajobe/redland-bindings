@@ -20,51 +20,53 @@
 // 
 //
 
-package org.librdf;
+package org.librdf.redland;
 
-import org.librdf.world;
-import org.librdf.redland;
-import org.librdf.uri;
+import org.librdf.redland.core;
+import org.librdf.redland.World;
+import org.librdf.redland.URI;
 
-public class parser
+public class Parser
 {
   private long object;
-  private world world;
+  private World world;
 
-  public parser (world world, String name, String mime_type, uri type_uri) 
+  public Parser (World world, String name, String mime_type, URI type_uri) 
     {
       this.world=world;
-      this.object=redland.librdf_new_parser(world.__get_object(), name, mime_type, type_uri.__get_object());
+      long uri_object=(type_uri == null) ? 0 : type_uri.__get_object();
+      this.object=core.librdf_new_parser(world.__get_object(), name, mime_type, uri_object);
     }
   
   protected void finalize() 
     {
-      redland.librdf_free_parser(this.object);
+      core.librdf_free_parser(this.object);
     }
   
 
-  public stream parse_as_stream(uri uri, uri base_uri) 
+  public Stream parse(URI uri, URI base_uri) 
     {
-      long stream_object=redland.librdf_parser_parse_as_stream(this.object, uri.__get_object(), base_uri.__get_object());
-      return new stream(this.world, stream_object, this);
+      long stream_object=core.librdf_parser_parse_as_stream(this.object, uri.__get_object(), base_uri.__get_object());
+      return new Stream(this.world, stream_object, this);
     }
 
   
-  public int parse_into_model(uri uri, uri base_uri, model model) 
+  public boolean parse(URI uri, URI base_uri, Model model) 
     {
-      return redland.librdf_parser_parse_into_model(this.object, uri.__get_object(), base_uri.__get_object(), model.__get_object());
+      int result=core.librdf_parser_parse_into_model(this.object, uri.__get_object(), base_uri.__get_object(), model.__get_object());
+      return (result != 0);
     }
 
   
-  public String get_feature(uri feature) 
+  public String getFeature(URI feature) 
     {
-      return redland.librdf_parser_get_feature(this.object, feature.__get_object());
+      return core.librdf_parser_get_feature(this.object, feature.__get_object());
     }
 
   
-  public int set_feature(uri feature, String value) 
+  public int setFeature(URI feature, String value) 
     {
-      return redland.librdf_parser_set_feature(this.object, feature.__get_object(), value);
+      return core.librdf_parser_set_feature(this.object, feature.__get_object(), value);
     }
   
 }

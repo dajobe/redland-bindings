@@ -20,31 +20,33 @@
 // 
 //
 
-package org.librdf;
+package org.librdf.redland;
 
-import org.librdf.world;
-import org.librdf.redland;
+import org.librdf.redland.core;
+import org.librdf.redland.World;
 
-public class storage
+public class Storage
 {
   private long object;
 
-  public storage(org.librdf.world world, String storage_name, String name, String options_string) 
+  public Storage(World world, String storage_name, String name, 
+                 String options_string) 
     {
-      redland.librdf_new_storage(world.__get_object(), 
-                                 storage_name, name, options_string);
+      core.librdf_new_storage(world.__get_object(), 
+                              storage_name, name, options_string);
     }
   
-  public storage(org.librdf.storage old_storage) 
+  public Storage(Storage old_storage) 
     {
-      object=redland.librdf_new_storage_from_storage(old_storage.object);
+      object=core.librdf_new_storage_from_storage(old_storage.object);
     }
 
   protected void finalize() 
     {
-      org.librdf.redland.librdf_free_storage(this.object);
+      core.librdf_free_storage(this.object);
       this.object=0;
     }
+
 
   protected long __get_object() 
   {

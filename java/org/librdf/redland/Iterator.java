@@ -20,21 +20,23 @@
 // 
 //
 
-package org.librdf;
+package org.librdf.redland;
 
-import org.librdf.world;
-import org.librdf.redland;
-import org.librdf.node;
+import org.librdf.redland.core;
+import org.librdf.redland.World;
+import org.librdf.redland.Node;
 
-public class iterator
+
+
+public class Iterator implements java.util.Iterator
 {
   private long object;
-  private world world;
+  private World world;
   private Object creator1;
   private Object creator2;
   private Object creator3;
   
-  public iterator (world world, long object,
+  public Iterator (World world, long object,
                    Object creator1, Object creator2, Object creator3)  
     {
       this.world=world;
@@ -46,29 +48,35 @@ public class iterator
 
   protected void finalize()
     {
-      redland.librdf_free_iterator(this.object);
+      core.librdf_free_iterator(this.object);
       this.object=0;
       this.creator1=null;
       this.creator2=null;
       this.creator3=null;
     }
 
-  public boolean have_elements() 
+
+  // java.util.Iterator methods
+  public boolean hasNext() 
     {
-      int have_elements_int=redland.librdf_iterator_have_elements(this.object);
-      return (have_elements_int != 0);
+      int is_end_int=core.librdf_iterator_end(this.object);
+      return (is_end_int == 0);
     }
 
-  public boolean is_end() 
-    {
-      int is_end_int=redland.librdf_iterator_end(this.object);
-      return (is_end_int != 0);
-    }
 
-  public node next() {
-    long node_object=redland.librdf_iterator_get_next(this.object);
+  public Object next() {
+    long node_object=core.librdf_iterator_get_next(this.object);
+    
+    if(node_object == 0)
+      throw new java.util.NoSuchElementException();
 
-    return new node(this.world, node_object, false);
+    return new Node(this.world, node_object, false);
   }
+
+
+  public void remove() 
+    {
+      throw new UnsupportedOperationException();
+    }
 
 }

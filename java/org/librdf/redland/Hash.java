@@ -20,9 +20,9 @@
 // 
 //
 
-package org.librdf;
+package org.librdf.redland;
 
-public class hash 
+public class Hash
 {
   //
   protected long __get_object() 

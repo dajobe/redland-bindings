@@ -20,38 +20,38 @@
 // 
 //
 
-package org.librdf;
+package org.librdf.redland;
 
-import org.librdf.world;
-import org.librdf.redland;
+import org.librdf.redland.core;
+import org.librdf.redland.World;
 
-public class statement
+public class Statement
 {
   private long object;
-  private world world;
+  private World world;
   private boolean dont_free_me=false;
 
-  public statement(world world) 
+  public Statement(World world) 
     {
       this.world=world;
-      this.object=redland.librdf_new_statement(world.__get_object());
+      this.object=core.librdf_new_statement(world.__get_object());
     }
   
-  public statement(statement old_statement) 
+  public Statement(Statement old_statement) 
     {
       this.world=old_statement.world;
-      object=redland.librdf_new_statement_from_statement(old_statement.object);
+      object=core.librdf_new_statement_from_statement(old_statement.object);
     }
 
-  public statement(world world,
-            node subject, node predicate, node object) 
+  public Statement(World world,
+                   Node subject, Node predicate, Node object) 
     {
       long s=(subject != null) ? subject.__get_object() : 0;
       long p=(predicate != null) ? predicate.__get_object() : 0;
       long o=(object != null) ? object.__get_object() : 0;
 
       this.world=world;
-      this.object=redland.librdf_new_statement_from_nodes(world.__get_object(), s, p, o);
+      this.object=core.librdf_new_statement_from_nodes(world.__get_object(), s, p, o);
 
       if(subject !=null)
         subject.__zap_object();
@@ -63,7 +63,7 @@ public class statement
 
   // internal constructor to build an object from a statement created
   // by librdf e.g. from the result of a stream.next() operation
-  protected statement(world world, long object, boolean free_me) 
+  protected Statement(World world, long object, boolean free_me) 
     {
       this.world=world;
       this.object=object;
@@ -74,55 +74,56 @@ public class statement
   protected void finalize() 
     {
       if(!this.dont_free_me)
-        redland.librdf_free_statement(this.object);
+        core.librdf_free_statement(this.object);
       this.object=0;
     }
   
 
-  public node get_subject() 
+  public Node getSubject() 
     {
-      long node_object=redland.librdf_statement_get_subject(this.object);
-      return new node(this.world, node_object, false);
+      long node_object=core.librdf_statement_get_subject(this.object);
+      return new Node(this.world, node_object, false);
     }
 
-  public void set_subject(node node) 
+  public void setSubject(Node node) 
     {
-      redland.librdf_statement_set_subject(this.object, node.__get_object());
+      core.librdf_statement_set_subject(this.object, node.__get_object());
       node.__zap_object();
     }
 
 
-  public node get_predicate()
+  public Node getPredicate()
     {
-      long node_object=redland.librdf_statement_get_predicate(this.object);
-      return new node(this.world, node_object, false);
+      long node_object=core.librdf_statement_get_predicate(this.object);
+      return new Node(this.world, node_object, false);
     }
 
-  public void set_predicate(node node)
+  public void setPredicate(Node node)
     {
-      redland.librdf_statement_set_predicate(this.object, node.__get_object());
+      core.librdf_statement_set_predicate(this.object, node.__get_object());
       node.__zap_object();
     }
 
 
-  public node get_object() 
+  public Node getObject() 
     {
-      long node_object=redland.librdf_statement_get_object(this.object);
-      return new node(this.world, node_object, false);
+      long node_object=core.librdf_statement_get_object(this.object);
+      return new Node(this.world, node_object, false);
     }
 
-  public void set_object(node node) 
+  public void setObject(Node node) 
     {
-      redland.librdf_statement_set_object(this.object, node.__get_object());
+      core.librdf_statement_set_object(this.object, node.__get_object());
       node.__zap_object();
     }
 
 
-  public String to_string() 
+  public String toString() 
     {
-      return redland.librdf_statement_to_string(this.object);
+      return core.librdf_statement_to_string(this.object);
     }
   
+
 
   protected long __get_object() 
     {

@@ -20,125 +20,125 @@
 // 
 //
 
-package org.librdf;
+package org.librdf.redland;
 
-import org.librdf.storage;
-import org.librdf.node;
-import org.librdf.statement;
-import org.librdf.stream;
-import org.librdf.iterator;
-import org.librdf.hash;
+import org.librdf.redland.Storage;
+import org.librdf.redland.Node;
+import org.librdf.redland.Statement;
+import org.librdf.redland.Stream;
+import org.librdf.redland.Iterator;
+import org.librdf.redland.Hash;
 
 
-public class model
+public class Model
 {
-  private world world;
+  private World world;
   private long object;
-  private storage storage;
+  private Storage storage;
 
-  public model(world world, storage storage, String options_string) 
+  public Model(World world, Storage storage, String options_string) 
   {
     this.world=world;
-    this.object=redland.librdf_new_model(world.__get_object(), storage.__get_object(), options_string);
+    this.object=core.librdf_new_model(world.__get_object(), storage.__get_object(), options_string);
     this.storage=storage;
   }
 
-  public model(world world, storage storage, hash options) 
+  public Model(World world, Storage storage, Hash options) 
   {
     this.world=world;
-    this.object=redland.librdf_new_model_with_options(world.__get_object(), storage.__get_object(), options.__get_object());
+    this.object=core.librdf_new_model_with_options(world.__get_object(), storage.__get_object(), options.__get_object());
     this.storage=storage;
   }
 
-  public model(model old_model) 
+  public Model(Model old_model) 
   {
     this.world=old_model.world;
-    this.object=redland.librdf_new_model_from_model(old_model.__get_object());
+    this.object=core.librdf_new_model_from_model(old_model.__get_object());
   }
 
 
   protected void finalize()
   {
-    redland.librdf_free_model(this.object);
+    core.librdf_free_model(this.object);
     this.object=0;
   }
 
 
   public int size() 
   {
-    return redland.librdf_model_size(this.object);
+    return core.librdf_model_size(this.object);
   }
 
-  public int add(node subject, node predicate, node object) 
+  public int add(Node subject, Node predicate, Node object) 
   {
-    return redland.librdf_model_add(this.object, subject.__get_object(), predicate.__get_object(), object.__get_object());
+    return core.librdf_model_add(this.object, subject.__get_object(), predicate.__get_object(), object.__get_object());
   }
 
-  public int add_string_literal_statement(node subject, node predicate, String string, String xml_language, int xml_space, boolean is_wf_xml) 
+  public int add(Node subject, Node predicate, String string, String xml_language, int xml_space, boolean is_wf_xml) 
   {
     int is_wf_xml_int=is_wf_xml ? 1 : 0;
-    return redland.librdf_model_add_string_literal_statement(this.object, subject.__get_object(), predicate.__get_object(), string, xml_language, xml_space, is_wf_xml_int);
+    return core.librdf_model_add_string_literal_statement(this.object, subject.__get_object(), predicate.__get_object(), string, xml_language, xml_space, is_wf_xml_int);
   }
 
-  public int add_statement(statement statement) 
+  public int add(Statement statement) 
   {
-    return redland.librdf_model_add_statement(this.object, statement.__get_object());
+    return core.librdf_model_add_statement(this.object, statement.__get_object());
   }
 
-  public int add_statements(stream statement_stream) 
+  public int add(Stream statement_stream) 
   {
-    return redland.librdf_model_add_statements(this.object, statement_stream.__get_object());
+    return core.librdf_model_add_statements(this.object, statement_stream.__get_object());
   }
 
-  public int remove_statement(statement statement) 
+  public int remove(Statement statement) 
   {
-    return redland.librdf_model_remove_statement(this.object, statement.__get_object());
+    return core.librdf_model_remove_statement(this.object, statement.__get_object());
   }
 
-  public boolean contains_statement(statement statement) 
+  public boolean contains(Statement statement) 
   {
-    int contains_int=redland.librdf_model_contains_statement(this.object, statement.__get_object());
+    int contains_int=core.librdf_model_contains_statement(this.object, statement.__get_object());
     return (contains_int != 0);
   }
 
-  public stream serialise() 
+  public Stream serialise() 
   {
-    return new stream(this.world, redland.librdf_model_serialise(this.object), this);
+    return new Stream(this.world, core.librdf_model_serialise(this.object), this);
   }
 
-  public stream find_statements(statement statement) 
+  public Stream findStatements(Statement statement) 
   {
-    return new stream(this.world, redland.librdf_model_find_statements(this.object, statement.__get_object()), this);
+    return new Stream(this.world, core.librdf_model_find_statements(this.object, statement.__get_object()), this);
   }
 
-  public iterator get_sources(node arc, node target) 
+  public Iterator getSources(Node arc, Node target) 
   {
-    return new iterator(this.world, redland.librdf_model_get_sources(this.object, arc.__get_object(), target.__get_object()), this, arc, target);
+    return new Iterator(this.world, core.librdf_model_get_sources(this.object, arc.__get_object(), target.__get_object()), this, arc, target);
   }
 
-  public iterator get_arcs(node source, node target) 
+  public Iterator getArcs(Node source, Node target) 
   {
-    return new iterator(this.world, redland.librdf_model_get_arcs(this.object, source.__get_object(), target.__get_object()), this, source, target);
+    return new Iterator(this.world, core.librdf_model_get_arcs(this.object, source.__get_object(), target.__get_object()), this, source, target);
   }
 
-  public iterator get_targets(node source, node arc) 
+  public Iterator getTargets(Node source, Node arc) 
   {
-    return new iterator(this.world, redland.librdf_model_get_targets(this.object, source.__get_object(), arc.__get_object()), this, source, arc);
+    return new Iterator(this.world, core.librdf_model_get_targets(this.object, source.__get_object(), arc.__get_object()), this, source, arc);
   }
 
-  public node get_source(node arc, node target) 
+  public Node getSource(Node arc, Node target) 
   {
-    return new node(this.world, redland.librdf_model_get_source(this.object, arc.__get_object(), target.__get_object()), true);
+    return new Node(this.world, core.librdf_model_get_source(this.object, arc.__get_object(), target.__get_object()), true);
   }
 
-  public node get_arc(node source, node target) 
+  public Node getArc(Node source, Node target) 
   {
-    return new node(this.world, redland.librdf_model_get_arc(this.object, source.__get_object(), target.__get_object()), true);
+    return new Node(this.world, core.librdf_model_get_arc(this.object, source.__get_object(), target.__get_object()), true);
   }
 
-  public node get_target(node source, node arc) 
+  public Node getTarget(Node source, Node arc) 
   {
-    return new node(this.world, redland.librdf_model_get_target(this.object, source.__get_object(), arc.__get_object()), true);
+    return new Node(this.world, core.librdf_model_get_target(this.object, source.__get_object(), arc.__get_object()), true);
   }
 
 
