@@ -824,11 +824,11 @@ class Serializer:
     if self._serializer:
       Redland.librdf_free_serializer(self._serializer)
 
-  def serialize_model_to_file (self, name, base_uri=None, model):
-    if base_uri==None:
-        base_uri=uri
+  def serialize_model_to_file (self, name, model, base_uri=None):
+    if base_uri !=None:
+        base_uri=base_uri._reduri
     return Redland.librdf_serializer_serialize_model_to_file(self._serializer,
-      name, base_uri._reduri, model._model)
+      name, base_uri, model._model)
 
   def get_feature(self, uri):
     if not isinstance(uri, Uri):
