@@ -498,7 +498,7 @@ else
   REDLAND_CONFIG=$dir/redland-src-config
   REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
   REDLAND_VERSION="internal $REDLAND_VERSION in $dir"
-  REDLAND_RUN="$REDLAND_CONFIG --run"
+  REDLAND_RUN="$REDLAND_CONFIG --run "
 fi
 AC_MSG_RESULT($REDLAND_VERSION)
 
