@@ -23,6 +23,8 @@ JAVA=@JAVA@
 JAVAC=@JAVAC@
 SWIG=@SWIG@
 
+JDK_INCLUDES=@JDK_INCLUDES@
+
 JAVA_C_SHLIB=redland-java
 JAVA_MODULE=core
 JAVA_PACKAGE=org.librdf.redland
@@ -128,4 +130,4 @@ example.class: example.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(JAVA_JAR) example.java
 
 $(JAVA_SHARED_LIB): $(JAVA_MODULE)_wrap.c
-	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. -I/usr/local/include/linux $< -static `../redland-src-config --cflags` `../redland-src-config --libs` -o $@
+	gcc -shared -Wl,-soname,$(JAVA_SHARED_LIB) -I.. $(JDK_INCLUDES) $< -static `../redland-src-config --cflags` `../redland-src-config --libs` -o $@
