@@ -1,0 +1,11 @@
+Makefile
+Makefile.in
+MANIFEST
+*.pyc
+Redland_wrap*
+build
+dist
+lib
+not-used
+test*db
+.deps
