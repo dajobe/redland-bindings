@@ -30,6 +30,9 @@ TCL_PACKAGE=Redland
 SWIG_OUTPUTS=$(TCL_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
+tclversion=$(shell echo 'puts [info tclversion]' | $(TCL))
+tclincdir=/usr/include/tcl$(tclversion)
+
 tcldir=$(shell echo 'puts $$tcl_library' | $(TCL))
 tcl_DATA=Redland.so
 
@@ -43,15 +46,15 @@ $(TCL_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -tcl8 -module $(TCL_PACKAGE) -o $@ $<
 
 $(TCL_PACKAGE)_wrap.o: $(TCL_PACKAGE)_wrap.c
-	$(LIBTOOL) --mode=compile $(CC) $(CFLAGS) -I$(top_srcdir)/librdf -I$(top_srcdir) -c $< -o $@
+	$(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) -c -prefer-pic -I$(top_srcdir)/librdf -I$(tclincdir) $< -o $@
 
 $(TCL_PACKAGE).so: $(TCL_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la
-	$(LIBTOOL) --mode=link $(CC) $(TCL_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la -o $@
+	$(LIBTOOL) --mode=link $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -shared $(TCL_PACKAGE)_wrap.o $(top_builddir)/librdf/librdf.la -ltcl$(tclversion) -o $@
 
 pkgIndex.tcl: $(TCL_PACKAGE).so
-	echo "pkg_mkIndex . $(TCL_PACKAGE).so" | $(TCL)
+	echo "pkg_mkIndex .libs $(TCL_PACKAGE).so" | $(TCL)
 
 check-local: test-tcl
 
-test-tcl: $(TCL_PACKAGE).so
+test-tcl: $(TCL_PACKAGE).so pkgIndex.tcl
 	$(TCL) test.tcl
