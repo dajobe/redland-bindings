@@ -84,6 +84,8 @@ __all__ = [ "Node",
             "Model",
             "Iterator",
             "Serializer",
+            "NTriplesSerializer",
+            "RDFXMLSerializer",
             "Stream",
             "Storage",
             "MemoryStorage",
@@ -1632,8 +1634,9 @@ optional.  When any are given, they must all match.
 
   def parse_as_stream(self, uri, base_uri=None):
     """"Return a Stream of Statements from parsing the content at
-        (file: only at present) URI, for the optional base URI
-        or None if the parsing fails.
+        a URI for the optional base URI or None if the parsing fails.
+
+        (This depends on what URI support raptor provides to redland)
         
           for statement in parser.parse_as_stream("http://localhost/r.rdf"):
               print statement
@@ -1871,14 +1874,27 @@ class Serializer(object):
   """ Redland Syntax Serializer Class
 
   import RDF
-  ser1=RDF.Serializer(mime_type="application/rdf+xml")
+  ser1=RDF.Serializer()
+
+  ser2=RDF.Serializer(mime_type="application/rdf+xml")
+
+  ser3=RDF.Serializer(name="ntriples")
 
   A class for turning a Model into a syntax serialization (at present
   only to local files).
   """
   
-  def __init__(self, name="", mime_type="application/rdf+xml", uri=None):
-    """Create an RDF Serializer (constructor)."""
+  def __init__(self, name="", mime_type="", uri=None):
+    """Create an RDF Serializer (constructor).
+
+    The arguments name, mime_type and uri are all optional and
+    when omitted the default serialization syntax is used.  If
+    any arguments are given, they must all match for an appropriate
+    syntax to be chosen.  For example, RDF/XML has a MIME type of
+    'application/rdf+xml' so this can be given with the mime_type
+    argument, however the N-Triples has none, so the 'ntriples' name
+    must be used.  Most syntaxes have URIs.
+    """
     global _world
     global _debug    
     if _debug:
@@ -1944,6 +1960,28 @@ class Serializer(object):
 
 
 # end class Serializer
+
+
+class NTriplesSerializer(Serializer):
+  """Redland N-Triples Serializer class
+
+     import RDF
+     ser=RDF.NTriplesSerializer()
+  """
+  def __init__(self):
+    return Serializer.__init__(self, name = "ntriples", mime_type = "",
+            uri = None)
+
+
+class RDFXMLSerializer(Serializer):
+  """Redland RDF/XML Serializer class
+
+     import RDF
+     ser=RDF.RDFXMLSerializer()
+  """
+  def __init__(self):
+    return Serializer.__init__(self, name = "", mime_type = "application/rdf+xml",
+            uri = None)
 
 
 class NS(object):
