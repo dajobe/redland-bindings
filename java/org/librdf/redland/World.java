@@ -65,12 +65,12 @@ public class World
 
   static
     {
-      // Load a library whose "core" name is 'java-redland'
+      // Load a library whose "core" name is 'rdf-java'
       // Operating system specific stuff will be added to make from this an
-      // actual filename: Under Unix this will become libjava-redland.s
+      // actual filename: Under Unix this will become librdf-java.so
       // while under Windows it will likely become something like
-      // java-redland.dll
-      System.loadLibrary("redland-java");
+      // rdf-java.dll
+      System.loadLibrary("rdf-java");
 
       // Initialise statics
       copyright=new String(get_redland_copyright_string());
