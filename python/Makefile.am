@@ -71,13 +71,13 @@ uninstall-pythonDATA: $(python_DATA)
 	  rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE).so; \
 	fi
 
-check-local: test-python
+check-local: unittest-python test-python
 
-test-python: $(PYTHON_PACKAGE).so $(srcdir)/test/test.py
-	PYTHONPATH=. $(PYTHON) test/test.py
+test-python: $(PYTHON_PACKAGE).so
+	PYTHONPATH=. $(PYTHON)  $(srcdir)/test/test.py
 
-unittest-python: $(PYTHON_PACKAGE).so build-python-stamp
-	PYTHONPATH=. $(PYTHON) redlandtest.py
+unittest-python: $(PYTHON_PACKAGE).so
+	PYTHONPATH=. $(PYTHON)  $(srcdir)/redlandtest.py
 
 RDF.html: RDF.py build-python-stamp
 	@bdir=`ls -1d build/lib.*`; \
