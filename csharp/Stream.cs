@@ -1,8 +1,11 @@
 //
-// Stream.cs: Redland Statement Stream class. A class encapsulating 
-//	      a sequence of Statements, such as those returned from a Model
-//	      query. You should not normally find yourself needing to use this
-//	      class explicitly.
+// Stream.cs: Redland Statement Stream class.
+//
+// $Id$
+//
+// A class encapsulating a sequence of Statements, such as those
+// returned from a Model query. You should not normally find yourself
+// needing to use this class explicitly.
 //
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)
@@ -16,9 +19,11 @@ using System.Runtime.InteropServices;
 
 namespace Redland {
 
-	public class Stream : IWrapper, IEnumerator {
+	public class Stream : IWrapper, IEnumerator, IDisposable {
 
-		IntPtr stream;
+		IntPtr stream = IntPtr.Zero;
+
+		bool disposed = false;
 
 		public IntPtr Handle {
 			get { return stream; }
@@ -29,10 +34,15 @@ namespace Redland {
 
 		public object Current {
 			get {
-				Statement stm;
 				IntPtr raw_ret = librdf_stream_get_object (stream);
-				stm = new Statement (raw_ret);
-				return stm;
+				// FIXME: throw exception if raw_ret is zero
+				return new Statement (raw_ret);
+			}
+		}
+
+		public Statement CurrentStatement {
+			get {
+				return (Statement) Current;
 			}
 		}
 
@@ -41,11 +51,7 @@ namespace Redland {
 
 		public bool MoveNext ()
 		{
-			int r = librdf_stream_next (stream);
-			if (r != 0)
-				return false;
-			else
-				return true;
+			return (librdf_stream_next (stream) != 0);
 		}
 
 		public void Reset ()
@@ -58,11 +64,7 @@ namespace Redland {
 
 		public bool End {
 			get {
-				int r = librdf_stream_end (stream);
-				if (r != 0)
-					return true;
-				else
-					return false;
+				return (librdf_stream_end (stream) != 0);
 			}
 		}
 
@@ -74,11 +76,29 @@ namespace Redland {
 		[DllImport ("librdf")]
 		static extern void librdf_free_stream (IntPtr stream);
 
-		~Stream ()
+		protected void Dispose (bool disposing)
 		{
-			librdf_free_stream (stream);
+			if (! disposed) {
+				// if disposing true, dispose managed resources
+
+				if (stream != IntPtr.Zero) {
+					librdf_free_stream (stream);
+					stream = IntPtr.Zero;
+				}
+				disposed = true;
+			}
 		}
 
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		~Stream ()
+		{
+			Dispose (false);
+		}
 
 	}
 }
