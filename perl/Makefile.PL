@@ -37,13 +37,14 @@ my $version=$ENV{VERSION};
 if(!$version) {
   my $conf_in_file="$TOP_SRCDIR/configure.in";
   open(CONF, $conf_in_file) or die "Cannot open $conf_in_file for version - $!\n";
+  my $v;
   while(<CONF>) {
-    if(/AM_INIT_AUTOMAKE\(redland,\s+(\d+\.\d+\.\d+)\)/) {
-      $version=$1;
-      last;
+    if(/LIBRDF_VERSION_(MAJOR|MINOR|RELEASE)=(\d+)$/) {
+      $v{$1}=$2;
     }
   }
   close(CONF);
+  $version=join(".",$v{MAJOR}, $v{MINOR}, $v{RELEASE});
   die "Cannot find AM_INIT_AUTOMAKE in $conf_in_file for version\n"
     unless $version;
 }
