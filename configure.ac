@@ -202,15 +202,22 @@ if test "X$RUBY" != X; then
   dnl need to change quotes to allow square brackets
   changequote(<<, >>)dnl
   ruby_prefix=`$RUBY -rrbconfig -e "print Config::CONFIG['archdir']"`
+  RUBY_LIB=`$RUBY -rrbconfig -e "puts Config::CONFIG['ruby_install_name']"`
+  RUBY_DIR=`$RUBY -rrbconfig -e "puts Config::CONFIG['archdir']"`
   changequote([, ])dnl
 
   RUBY_INCLUDES="-I$ruby_prefix"
-  AC_SUBST(RUBY_INCLUDES)
 else
-  # This allows 'make clean' in the python directory to work when
-  # python isn't available
+  # This allows 'make clean' in the ruby directory to work when
+  # ruby isn't available
   RUBY=:
+  RUBY_INCLUDES=
+  RUBY_LIB=
+  RUBY_DIR=
 fi
+AC_SUBST(RUBY_INCLUDES)
+AC_SUBST(RUBY_LIB)
+AC_SUBST(RUBY_DIR)
 
 
 AC_ARG_WITH(java, [  --with-java(=JAVA)      Enable the java interface], with_java="$withval", with_java="no")
