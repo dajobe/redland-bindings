@@ -99,6 +99,26 @@ public class Model
     return core.librdf_model_remove_statement(this.object, statement.__get_object());
   }
 
+  public int add(Statement statement, Node context) 
+  {
+    return core.librdf_model_context_add_statement(this.object, context.__get_object(), statement.__get_object());
+  }
+
+  public int add(Stream statement_stream, Node context) 
+  {
+    return core.librdf_model_context_add_statements(this.object, context.__get_object(), statement_stream.__get_object());
+  }
+
+  public int remove(Statement statement, Node context) 
+  {
+    return core.librdf_model_context_remove_statement(this.object, context.__get_object(), statement.__get_object());
+  }
+
+  public int context_remove(Node context) 
+  {
+    return core.librdf_model_context_remove_statements(this.object, context.__get_object());
+  }
+
   public boolean contains(Statement statement) 
   {
     int contains_int=core.librdf_model_contains_statement(this.object, statement.__get_object());
