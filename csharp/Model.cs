@@ -248,5 +248,16 @@ namespace Redland {
 			librdf_model_load (model, uri.Handle, imime, type_uri.Handle);
                         Marshal.FreeHGlobal (imime);
 		}
+
+		[DllImport ("librdf")]
+		static extern IntPtr librdf_model_execute (IntPtr model, IntPtr query);
+
+		public QueryResults Execute (Query query)
+		{
+			IntPtr raw_ret = librdf_model_execute (model, query.Handle);
+			QueryResults qr = new QueryResults (query, raw_ret);
+			return qr;
+		}
+
 	}
 }
