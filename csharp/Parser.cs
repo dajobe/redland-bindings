@@ -35,28 +35,37 @@ namespace Rdf {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_parser (IntPtr world, string name, string mime_type, IntPtr uri);
+		static extern IntPtr librdf_new_parser (IntPtr world, IntPtr name, IntPtr mime_type, IntPtr uri);
 
 		private Parser (World  world, string name, string mime_type, Uri uri)
 		{
+			IntPtr iname = Marshal.StringToHGlobalAuto (name);
+			IntPtr imime_type = Marshal.StringToHGlobalAuto (mime_type);
 			if (world == null)
 				if (uri == null)
-					parser = librdf_new_parser (IntPtr.Zero, name, mime_type, IntPtr.Zero);
+					parser = librdf_new_parser (IntPtr.Zero, iname, imime_type, IntPtr.Zero);
 				else
-					parser = librdf_new_parser (IntPtr.Zero, name, mime_type, uri.Handle);
+					parser = librdf_new_parser (IntPtr.Zero, iname, imime_type, uri.Handle);
 			else if (uri == null)
-				parser = librdf_new_parser (world.Handle, name, mime_type, IntPtr.Zero);
+				parser = librdf_new_parser (world.Handle, iname, imime_type, IntPtr.Zero);
 			else
-				parser = librdf_new_parser (world.Handle, name, mime_type, uri.Handle);
+				parser = librdf_new_parser (world.Handle, iname, imime_type, uri.Handle);
+
+                        Marshal.FreeHGlobal (iname);
+                        Marshal.FreeHGlobal (imime_type);
+
 		}
 
 
 
 		[DllImport ("librdf")]
-		static extern int librdf_parser_parse_string_into_model (IntPtr parser, string s, IntPtr base_uri, IntPtr model);
+		static extern int librdf_parser_parse_string_into_model (IntPtr parser, IntPtr s, IntPtr base_uri, IntPtr model);
 		public int ParseStringIntoModel (string s, Uri base_uri, Model model)
 		{
-			return librdf_parser_parse_string_into_model (Handle, s, base_uri.Handle, model.Handle);
+			IntPtr istr = Marshal.StringToHGlobalAuto (s);
+			int rc=librdf_parser_parse_string_into_model (Handle, istr, base_uri.Handle, model.Handle);
+                        Marshal.FreeHGlobal (istr);
+                        return rc;
 		}
 
 		[DllImport ("librdf")]
@@ -84,12 +93,15 @@ namespace Rdf {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_parser_parse_string_as_stream (IntPtr parser, string s, IntPtr base_uri);
+		static extern IntPtr librdf_parser_parse_string_as_stream (IntPtr parser, IntPtr s, IntPtr base_uri);
 
 		public Stream ParseStringAsStream (string s, Uri base_uri)
 		{
-			IntPtr raw_ret = librdf_parser_parse_string_as_stream (parser, s, base_uri.Handle);
+			IntPtr istr = Marshal.StringToHGlobalAuto (s);
+			IntPtr raw_ret = librdf_parser_parse_string_as_stream (parser, istr, base_uri.Handle);
 			Stream stream;
+
+                        Marshal.FreeHGlobal (istr);
 
 			if (raw_ret == IntPtr.Zero)
 				return null;

@@ -26,19 +26,24 @@ namespace Rdf {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_serializer (IntPtr world, string name, string mime_type, IntPtr type_uri);
+		static extern IntPtr librdf_new_serializer (IntPtr world, IntPtr name, IntPtr mime_type, IntPtr type_uri);
 
 		private Serializer (World world, string name, string mime_type, Uri type_uri)
 		{
+			IntPtr iname = Marshal.StringToHGlobalAuto (name);
+			IntPtr imime_type = Marshal.StringToHGlobalAuto (mime_type);
 			if (world == null)
 				if (type_uri == null)
-					serializer = librdf_new_serializer (IntPtr.Zero, name, mime_type, IntPtr.Zero);
+					serializer = librdf_new_serializer (IntPtr.Zero, iname, imime_type, IntPtr.Zero);
 				else
-					serializer = librdf_new_serializer (IntPtr.Zero, name, mime_type, type_uri.Handle);
+					serializer = librdf_new_serializer (IntPtr.Zero, iname, imime_type, type_uri.Handle);
 			else if (type_uri == null)
-				serializer = librdf_new_serializer (world.Handle, name, mime_type, IntPtr.Zero);
+				serializer = librdf_new_serializer (world.Handle, iname, imime_type, IntPtr.Zero);
 			else
-				serializer = librdf_new_serializer (world.Handle, name, mime_type, type_uri.Handle);
+				serializer = librdf_new_serializer (world.Handle, iname, imime_type, type_uri.Handle);
+                        Marshal.FreeHGlobal (iname);
+                        Marshal.FreeHGlobal (imime_type);
+
 		}
 
 		[DllImport ("librdf")]

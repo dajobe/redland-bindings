@@ -21,11 +21,17 @@ namespace Rdf {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_storage (IntPtr world, string storage_name, string name, string options);
+		static extern IntPtr librdf_new_storage (IntPtr world, IntPtr storage_name, IntPtr name, IntPtr options);
 
 		private Storage (World world, string storage_name, string name, string options)
 		{
-			storage = librdf_new_storage (world.Handle, storage_name, name, options);
+			IntPtr istorage_name = Marshal.StringToHGlobalAuto (storage_name);
+			IntPtr iname = Marshal.StringToHGlobalAuto (name);
+			IntPtr ioptions = Marshal.StringToHGlobalAuto (options);
+			storage = librdf_new_storage (world.Handle, istorage_name, iname, ioptions);
+                        Marshal.FreeHGlobal (istorage_name);
+                        Marshal.FreeHGlobal (iname);
+                        Marshal.FreeHGlobal (ioptions);
 		}
 
 		public Storage (string storage_name, string name, string options)

@@ -32,11 +32,13 @@ namespace Rdf {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_model (IntPtr world, IntPtr storage, string options);
+		static extern IntPtr librdf_new_model (IntPtr world, IntPtr storage, IntPtr options);
 
 		internal Model (World world, Storage storage, string options)
 		{
-			model = librdf_new_model (world.Handle, storage.Handle, options);
+			IntPtr ioptions = Marshal.StringToHGlobalAuto (options);
+			model = librdf_new_model (world.Handle, storage.Handle, ioptions);
+                        Marshal.FreeHGlobal (ioptions);
 		}
 
 		[DllImport ("librdf")]

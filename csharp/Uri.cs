@@ -21,12 +21,14 @@ namespace Rdf {
 		}
 
 		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_uri (IntPtr world, string uri_str);
+		static extern IntPtr librdf_new_uri (IntPtr world, IntPtr uri_str);
 
 		private Uri (World world, string uri_str)
 		{
-			uri = librdf_new_uri (world.Handle, uri_str);
-			Console.WriteLine ("Making URI from string {0} giving handle {1}", uri_str, uri);
+			IntPtr iuri_str = Marshal.StringToHGlobalAuto (uri_str);
+			uri = librdf_new_uri (world.Handle, iuri_str);
+                        Marshal.FreeHGlobal (iuri_str);
+			// Console.WriteLine ("Making URI from string {0} giving handle {1}", uri_str, uri);
 		}
 
 		public Uri (string uri)
@@ -35,11 +37,12 @@ namespace Rdf {
 		}
 
 		[DllImport ("librdf")]
-		static extern string librdf_uri_to_string (IntPtr uri);
+		static extern IntPtr librdf_uri_to_string (IntPtr uri);
 
 		public override string ToString ()
 		{
-			return librdf_uri_to_string (uri);
+			IntPtr istr=librdf_uri_to_string (uri);
+                        return Marshal.PtrToStringAuto(istr);
 		}
 	}
 }

@@ -88,11 +88,12 @@ namespace Rdf {
 		}
 
 		[DllImport ("librdf")]
-		static extern string librdf_statement_to_string (IntPtr stm);
+		static extern IntPtr librdf_statement_to_string (IntPtr stm);
 
 		public override string ToString ()
 		{
-			return librdf_statement_to_string (stm);
+			IntPtr istr=librdf_statement_to_string (stm);
+                        return Marshal.PtrToStringAuto(istr);
 		}
 	}
 }
