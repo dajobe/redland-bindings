@@ -189,6 +189,21 @@ podcasts
 , D => 'http://B4mad.Net/datenbrei/feed/rdf',
 , T => 'What podcasts have you got in your RSS feed?  (you will need an RSS feed using the enclosures vocab) ',
 },
+{ Q => <<'PERIODIC',
+PREFIX table: <http://www.daml.org/2003/01/periodictable/PeriodicTable#>
+PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
+SELECT ?name, ?symbol, ?weight, ?number
+WHERE
+(?element table:group ?group)
+(?group table:name "Noble gas"^^xsd:string)
+(?element table:name ?name)
+(?element table:symbol ?symbol)
+(?element table:atomicWeight ?weight)
+(?element table:atomicNumber ?number)
+PERIODIC
+, D => 'http://www.daml.org/2003/01/periodictable/PeriodicTable.owl',
+, T => 'What are the Noble Gases?',
+},
   ]
 );
 
