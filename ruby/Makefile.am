@@ -56,16 +56,12 @@ test-ruby: build-ruby
 clean-ruby realclean-ruby:
 	rm -f $(RUBY_PACKAGE).so
 
-# todo
 install-ruby: $(RUBY_PACKAGE).so build-ruby
-	tcldir=`tcl -c 'puts [lindex $$auto_path 0]'`; \
-	mkdir $$tcldir/redland; \
-	cp -p $(RUBY_PACKAGE).so pkgIndex.tcl $$tcldir/redland
+	rubydir=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']"`; \
+	mkdir $$rubydir; \
+	cp -p $(RUBY_PACKAGE).so $$rubydir
 
 dist-ruby:
 	@echo make ruby dist somehow
 
 clean-local: clean-ruby
-
-
-
