@@ -25,6 +25,8 @@ die "USAGE: $progname OUTPUT-FILE\n" if @ARGV < 1;
 
 my($file)=@ARGV;
 
+my $is_index = ($file =~ /(fr_file_index|fr_class_index|fr_method_index)/);
+
 open(OUT, ">$file") or die "$progname: Cannot create $file - $!\n";
 open(IN, "-");
 while(<IN>) {
@@ -35,7 +37,7 @@ while(<IN>) {
 
   if(m%<body>%) {
     print OUT;
-    print OUT <<"EOT";
+    print OUT <<"EOT" if !$is_index;
 <div class="outerBlock">
 
 <div class="outerHeader">
@@ -62,20 +64,28 @@ EOT
   }
 
   my $year=1900+(localtime)[5];
-  print OUT <<"EOT" if m%^</body>%;
+  if(m%^</body>%) {
+    print OUT <<"EOT";
 <hr />
 
+EOT
+
+    print OUT <<"EOT" if !$is_index;
 <div class="outerHeader">
 Go to <a href="/" target="_parent">Redland Home</a> - 
 <a href="/bindings/" target="_parent">Language Bindings Home</a> - 
 <a href="/docs/ruby.html" target="_parent">Ruby API Home</a>
 </div>
 
+EOT
+
+    print OUT <<"EOT";
 <p>Copyright 2004-$year <a href="http://purl.org/net/dajobe/" target="_parent">Dave Beckett</a>, <a href="http://www.ilrt.bris.ac.uk/" target="_parent">Institute for Learning and Research Technology</a>, <a href="http://www.bristol.ac.uk/" target="_parent">University of Bristol</a></p>
 
 </div> <!-- end outerBlock -->
 
 EOT
+  }
 
   print OUT;
 }
