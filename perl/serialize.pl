@@ -231,6 +231,20 @@ sub emit($$) {
   print $string;
 }
 
+sub format_element_content ($) {
+  my $string=shift;
+  $string =~ s/\&/\&amp;/g;
+  $string =~ s/</\&lt;/g;
+  $string =~ s/>/\&gt;/g;
+  $string;
+}
+
+sub format_attribute ($) {
+  my $string=shift;
+  $string = format_element_content($string);
+  $string =~ s/"/\&quot;/g; #"
+  $string;
+}
 
 sub emit_start_element($$@) {
   my($state,$name,@attrs)=@_;
@@ -255,7 +269,7 @@ sub emit_start_element($$@) {
 
   for my $attr (@attrs) {
     my($name,$value)=@$attr;
-    $str.=qq{ $name="$value"};
+    $str.=qq{ $name="}.format_attribute($value).qq{"};
   }
 
   $str.=">";
@@ -285,7 +299,7 @@ sub emit_empty_element($$@) {
 
   for my $attr (@attrs) {
     my($name,$value)=@$attr;
-    $str.=qq{ $name="$value"};
+    $str.=qq{ $name="}.format_attribute($value).qq{"};
   }
 
   $str.=" />\n";
@@ -315,10 +329,10 @@ sub emit_literal_element($$$@) {
 
   for my $attr (@attrs) {
     my($name,$value)=@$attr;
-    $str.=qq{ $name="$value"};
+    $str.=qq{ $name="}.format_attribute($value).qq{"};
   }
 
-  $str.=">$literal</$name>\n";
+  $str.=">".format_element_content($literal)."</$name>\n";
   emit($state, $str);
 }
 
@@ -351,7 +365,7 @@ sub format_statement ($$$) {
     my(@attrs);
     if($literal_lang) {
       my $attr=make_xml_qname($state, $XML_NS, "lang", 1);
-      push(@attrs, [$attr, "$literal_lang"]);
+      push(@attrs, [$attr, $literal_lang]);
     }
     if ($object->literal_value_is_wf_xml) {
       my $attr=make_xml_qname($state, $RDF_NS, "parseType", 1);
