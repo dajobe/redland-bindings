@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #
 # example.py - Redland Python 2.0 example code
 #

@@ -1,3 +1,4 @@
+#!/usr/bin/python
 # 
 # redlandtest.py - Redland Python RDF model unit tests
 #
