@@ -61,17 +61,18 @@ directly into an RDF::Redland::Model object.
 
 =over
 
-=item new NAME MIME_TYPE URI
+=item new [NAME [MIME_TYPE [URI]]]
 
 Create a new RDF::Redland::Parser object for a syntax parser named I<NAME>,
-with MIME Type I<MIME_TYPE> and/or URI I<URI>.  I<NAME> is the only
-required field.
+with MIME Type I<MIME_TYPE> and/or URI I<URI>.  Any field can be undef
+or omitted; if all are omitted, a parser that provides MIME Type 
+application/rdf+xml will be requested.
 
 =cut
 
 # CONSTRUCTOR
 # (main)
-sub new ($$;$$) {
+sub new ($;$$$) {
   my($proto,$name,$mime_type,$uri)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
