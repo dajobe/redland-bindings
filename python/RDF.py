@@ -771,9 +771,9 @@ Create a model using an in-memory storage.
             # process statement
     """
     if context is None:
-      my_stream = Redland.librdf_model_serialise(self._model)
+      my_stream = Redland.librdf_model_as_stream(self._model)
     else:
-      my_stream = Redland.librdf_model_context_serialize(self._model,
+      my_stream = Redland.librdf_model_context_as_stream(self._model,
                                                          context._node)
     return Stream(my_stream, self)
 
