@@ -190,7 +190,7 @@ sub subject ($;$) {
   return RDF::Redland::Node->_new_from_object(&RDF::Redland::CORE::librdf_statement_get_subject(shift->{STATEMENT}))
     unless $subject;
 
-  my $s=&RDF::Redland::Node->_new_from_object($subject->{NODE});
+  my $s=&RDF::Redland::CORE::librdf_new_node_from_node($subject->{NODE});
   return &RDF::Redland::CORE::librdf_statement_set_subject($self->{STATEMENT},$s);
 }
 
@@ -208,7 +208,7 @@ sub predicate ($;$) {
   return RDF::Redland::Node->_new_from_object(&RDF::Redland::CORE::librdf_statement_get_predicate(shift->{STATEMENT}))
     unless $predicate;
 
-  my $p=&RDF::Redland::Node->_new_from_object($predicate->{NODE});
+  my $p=&RDF::Redland::CORE::librdf_new_node_from_node($predicate->{NODE});
   return &RDF::Redland::CORE::librdf_statement_set_predicate($self->{STATEMENT},$p);
 }
 
@@ -226,7 +226,7 @@ sub object ($;$) {
   return RDF::Redland::Node->_new_from_object(&RDF::Redland::CORE::librdf_statement_get_object(shift->{STATEMENT}))
     unless $object;
 
-  my $o=&RDF::Redland::Node->_new_from_object($object->{NODE});
+  my $o=&RDF::Redland::CORE::librdf_new_node_from_node($object->{NODE});
   return &RDF::Redland::CORE::librdf_statement_set_object($self->{STATEMENT},$o);
 }
 
