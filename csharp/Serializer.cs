@@ -1,5 +1,7 @@
 //
-// Serializer.cs:
+// Serializer.cs: Redland Serialize to syntax class
+//
+// $Id$
 //
 // Author:
 //	Cesar Lopez Nataren (cesar@ciencias.unam.mx)
@@ -12,9 +14,11 @@ using System.Runtime.InteropServices;
 
 namespace Redland {
 
-	public class Serializer : IWrapper {
+	public class Serializer : IWrapper, IDisposable {
 
-		IntPtr serializer;
+		IntPtr serializer = IntPtr.Zero;
+
+		bool disposed = false;
 
 		public IntPtr Handle {
 			get { return serializer; }
@@ -49,17 +53,37 @@ namespace Redland {
 		[DllImport ("librdf")]
 		static extern void librdf_free_serializer (IntPtr serializer);
 
-		~Serializer ()
+		protected void Dispose (bool disposing)
 		{
-			librdf_free_serializer (serializer);
+			if (! disposed) {
+				// if disposing is true, then dispose of managed
+				// resources
+
+				if (serializer != IntPtr.Zero) {
+					librdf_free_serializer (serializer);
+					serializer = IntPtr.Zero;
+				}
+				disposed = true;
+			}
 		}
 
+		public void Dispose ()
+		{
+			Dispose (true);
+			GC.SuppressFinalize (this);
+		}
+
+		~Serializer ()
+		{
+			Dispose (false);
+		}
 
 		[DllImport ("librdf")]
 		static extern int librdf_serializer_serialize_model (IntPtr serializer, IntPtr file, IntPtr base_uri, IntPtr model);
 
 		public int SerializeModel (IntPtr file, Uri base_uri, Model model)
 		{
+			// FIXME: throw exceptions instead of using ret code?
 			return librdf_serializer_serialize_model (serializer, file, base_uri.Handle, model.Handle);
 		}
 
@@ -70,9 +94,10 @@ namespace Redland {
 		public int SerializeModel (string name, Uri base_uri, Model model)
 		{
 			IntPtr iname = Marshal.StringToHGlobalAuto (name);
-			int ret=librdf_serializer_serialize_model_to_file (serializer, iname, base_uri.Handle, model.Handle);
-                        Marshal.FreeHGlobal (iname);
-                        return ret;
-		}
+			int ret = librdf_serializer_serialize_model_to_file (serializer, iname, base_uri.Handle, model.Handle);
+			Marshal.FreeHGlobal (iname);
+			// FIXME: throw exceptions instead of using ret code?
+			return ret;
+}
 	}
 }
