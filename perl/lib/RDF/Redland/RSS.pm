@@ -118,6 +118,8 @@ RDF::RSS - Redland RSS 1.0 Class
 
   ...
 
+  print $rss->as_xhtml(width => 320, align => 'right');
+
 =head1 DESCRIPTION
 
 A class for processing RSS 1.0 as RDF, traversing the resulting
@@ -269,8 +271,15 @@ sub textinput ($) {
 =item as_xhtml (key1 => value1, key2 => value2, ...)
 
 Return a formatted XHTML string (or full XHTML document) representing
-the RSS 1.0 content with various options set as listed below.
-Based on the macro at http://macros.userland.com/viewRssBox
+the RSS 1.0 content with various options set as listed in the section
+below.
+
+The parameters to this method are mostly from the specification of
+the viewRssBox macro at http://macros.userland.com/viewRssBox
+
+=back
+
+=head1 AS_XHTML OPTIONS
 
 =over
 
@@ -580,11 +589,6 @@ EOT
   $output;
 }
 
-=pod
-
-=back
-
-=cut
 
 
 package RDF::RSS::Node;
