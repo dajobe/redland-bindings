@@ -30,9 +30,9 @@ RUBY_PACKAGE=redland
 SWIG_OUTPUTS=$(RUBY_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
-rubylib=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['ruby_install_name']"`
+rubylib=@RUBY_LIB@
+rubydir=@RUBY_DIR@
 
-rubydir=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']"`
 ruby_DATA=redland.so
 
 EXTRA_DIST=example.rb \
