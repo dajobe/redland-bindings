@@ -389,7 +389,7 @@ jdkinc=
 AC_ARG_WITH(jdk, [  --with-jdk=DIR          Java JDK location (default=auto)], user_jdk="$withval", user_jdk="")
 AC_MSG_CHECKING(Java JDK includes)
 if test "X$JAVA_VERSION" != X; then
-  for jdkdir in $user_jdk `ls -1dr /usr/local/jdk* 2>/dev/null` /usr/j2se `ls -1dr /usr/lib/java* 2>/dev/null` /System/Library/Frameworks/JavaVM.framework /usr/local/packages/j2sdk /opt/blackdown-jdk-*; do
+  for jdkdir in $user_jdk $JAVA_HOME `ls -1dr /usr/local/jdk* 2>/dev/null` /usr/j2se `ls -1dr /usr/lib/java* 2>/dev/null` /System/Library/Frameworks/JavaVM.framework /usr/local/packages/j2sdk /opt/blackdown-jdk-*; do
     if test ! -d $jdkdir; then
       continue
     fi
