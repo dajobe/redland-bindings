@@ -20,9 +20,7 @@ version/program.  The standard 'make' at the top level will build it.</p>
   cd perl
   make
 
-  # optional, but it may require a top-level 'make install
-  # first depending on the operating system and how it
-  # handles shared libraries
+  # optional
   make check
 </pre>
 
@@ -38,11 +36,12 @@ following versions (5.6.0 is the likely minimum; 5.005 is too
 old).</p>
 
 <blockquote>
-5.8.0 on Linux/x86<br />
-5.8.0 on Linux/IA64<br />
-5.8.1-RC3 on OSX/PPC<br />
+5.8.3 on Solaris/Sparc<br />
+5.8.3 on Linux/x86<br />
 5.8.2 on Linux/x86<br />
-5.8.3 on Solaris/Sparc
+5.8.1-RC3 on OSX/PPC<br />
+5.8.0 on Linux/x86<br />
+5.8.0 on Linux/IA64
 </blockquote>
 
 
@@ -97,6 +96,11 @@ program with:</p>
   Searching model for targets of subject http://purl.org/net/dajobe/ predicate http://purl.org/dc/elements/1.1/creator
   Matching Node: Dave Beckett
   Matching Node: Dave Beckett
+  Querying for dc:titles:
+  result 1: {
+    a=[http://purl.org/net/dajobe/]
+    c=Dave Beckett's Home Page
+  }
 
   Writing model to test-out.rdf as rdf/xml
 
