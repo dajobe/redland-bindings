@@ -163,6 +163,7 @@ sub new_from_literal ($$$$) {
   my($proto,$string,$xml_language,$is_wf_xml)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
+  $is_wf_xml=($is_wf_xml ? 1 : 0);
   $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_literal($RDF::Redland::World->{WORLD},$string,$xml_language,$is_wf_xml);
   return undef if !$self->{NODE};
 
