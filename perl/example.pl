@@ -109,6 +109,22 @@ for my $node (@nodes) {
 }
 $iterator=undef;
 
+
+my $q = new RDF::Redland::Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>");
+print "Querying for dc:titles:\n";
+my $results=$model->query_execute($q);
+my $count=1;
+while(!$results->finished) {
+  print "result $count: {\n";
+  for(my $i=0; $i < $results->bindings_count; $i++) {
+    print "  ",$results->binding_name($i),"=",$results->binding_value($i)->as_string,"\n";
+  }
+  print "}\n";
+  $results->next_result;
+  $count++;
+}
+$results=undef;
+
 warn "\nWriting model to test-out.rdf as rdf/xml\n";
 
 # Use any rdf/xml parser that is available
