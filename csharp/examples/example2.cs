@@ -1,6 +1,9 @@
 //
 // example2.cs: C# port of Redland's redland's redland/example/example2.c
 //
+// $Id$
+//
+//
 
 using Redland;
 using System;
@@ -45,5 +48,7 @@ public class Example2 {
 		model.Remove (stm);
 
 		model.Print (stdout);
+
+		Console.WriteLine ("Exiting.");
 	}
 }
