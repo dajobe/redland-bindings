@@ -95,7 +95,7 @@ sub new ($;$) {
     if(my $arg_class=ref($arg)) {
       # Try several classes
       if(UNIVERSAL::isa($arg_class, 'RDF::Redland::Node')) {
-        return $self->clone;
+        return $arg->clone;
       } elsif(UNIVERSAL::isa($arg_class, 'RDF::Redland::URI')) {
         $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
       } elsif (UNIVERSAL::isa($arg_class, 'URI')) {
