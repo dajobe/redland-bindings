@@ -51,9 +51,9 @@ print "Redland parser created\n";
 
 $uri=librdf_new_uri($world,'file:../perl/dc.rdf');
 
-print("Parsing...\n");
+print "Parsing...\n";
 librdf_parser_parse_into_model($parser,$uri,$uri,$model);
-print("Done...\n");
+print "Done...\n";
 
 librdf_free_uri($uri);
 
@@ -65,9 +65,9 @@ print "Redland serializer created\n";
 $base=librdf_new_uri($world,'http://exampe.org/base.rdf');
 
 /*
-print("Serializing...\n");
+print "Serializing...\n";
 librdf_serializer_serialize_model_to_file($serializer,'./test-out.rdf',$base,$model);
-print("Done...\n");
+print "Done...\n";
 
 librdf_free_serializer($serializer);
 */
@@ -80,6 +80,6 @@ librdf_free_storage($storage);
 
 
 librdf_free_world($world);
-print "\n</pre>Done\n";
+print "Done\n";
 
 ?>
