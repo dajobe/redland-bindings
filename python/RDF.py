@@ -146,7 +146,7 @@ class Node:
       else:
         is_wf_xml=0
       self._node=Redland.librdf_new_node_from_literal(_world._world,
-        args['literal'], xml_language, 0, is_wf_xml)
+        args['literal'], xml_language, is_wf_xml)
 
     elif args.has_key('node'):
       self._node=Redland.librdf_new_node_from_node(args['node']._node)

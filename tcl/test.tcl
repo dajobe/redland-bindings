@@ -39,7 +39,7 @@ if {"$model" == "NULL"} then {
 }
 
 
-set statement [librdf_new_statement_from_nodes $world [librdf_new_node_from_uri_string $world "http://purl.org/net/dajobe/"] [librdf_new_node_from_uri_string $world "http://purl.org/dc/elements/1.1/creator"] [librdf_new_node_from_literal $world "Dave Beckett" "" 0 0]]
+set statement [librdf_new_statement_from_nodes $world [librdf_new_node_from_uri_string $world "http://purl.org/net/dajobe/"] [librdf_new_node_from_uri_string $world "http://purl.org/dc/elements/1.1/creator"] [librdf_new_node_from_literal $world "Dave Beckett" "" 0]]
 if {"$statement" == "NULL"} then {
   librdf_free_model $model
   librdf_free_storage $storage
