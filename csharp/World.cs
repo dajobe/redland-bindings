@@ -33,6 +33,7 @@ namespace Redland {
 		}
 
 		private delegate int MessageHandler (IntPtr userdata, IntPtr message);
+		private MessageHandler mhandler;
 
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_new_world ();
@@ -44,8 +45,8 @@ namespace Redland {
 		{
 			world = librdf_new_world ();
 			ClearLog ();
-			librdf_world_set_logger (world, new IntPtr (0),
-					new MessageHandler (dispatchMessage));
+			mhandler = new MessageHandler (dispatchMessage);
+			librdf_world_set_logger (world, new IntPtr (0), mhandler);
 			level = LogLevel.Warn;
 		}
 

@@ -1,3 +1,8 @@
+2004-09-30  Edd Dumbill  <edd@usefulinc.com>
+
+	* World.cs: (World ()): assign logging delegate to private member
+	to stop it being prematurely GC'd
+
 2004-08-05  Edd Dumbill  <edd@usefulinc.com>
 
 	* TODO: remove completed tasks.
