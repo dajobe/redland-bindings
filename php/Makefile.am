@@ -42,10 +42,13 @@ MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 $(PHP_PACKAGE)_wrap.c: $(srcdir)/../Redland.i
 	swig -v -php4 -noproxy -module $(PHP_PACKAGE) -o $@ $<
-	rm -f $(PHP_PACKAGE).php
+	patch $(PHP_PACKAGE)_wrap.c < redland_wrap.c.patch
+	rm -f $(PHP_PACKAGE)_wrap.c.orig $(PHP_PACKAGE).php
 
+# -UHAVE_CONFIG_H to stop PHP trying to include config.h which
+# quite often just doesn't exist
 $(PHP_PACKAGE)_wrap.so: $(PHP_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf `php-config --includes` $(PHP_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) -UHAVE_CONFIG_H $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(top_srcdir)/librdf `php-config --includes` $(PHP_PACKAGE)_wrap.c -c -o $@
 
 $(PHP_PACKAGE).so: $(PHP_PACKAGE)-stamp
 $(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.so
@@ -66,4 +69,4 @@ check-local: test-php
 test-php: $(PHP_PACKAGE).so $(srcdir)/test.php
 # I do not know why this is needed. PHP seems to ignore the global
 # libraries when not installed
-	-$(PHP) $(srcdir)/test.php
+	-$(PHP) -d extension_dir=. $(srcdir)/test.php
