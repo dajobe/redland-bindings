@@ -11,6 +11,11 @@ using System.Runtime.InteropServices;
 
 namespace Redland {
 
+	public class ParseError : RedlandError {
+		public ParseError (string msg, string [] errs) :
+			base (msg, errs) { }
+	}
+
 	public class Parser {
 
 		IntPtr parser;
@@ -51,9 +56,8 @@ namespace Redland {
 			else
 				parser = librdf_new_parser (world.Handle, iname, imime_type, uri.Handle);
 
-                        Marshal.FreeHGlobal (iname);
-                        Marshal.FreeHGlobal (imime_type);
-
+			Marshal.FreeHGlobal (iname);
+			Marshal.FreeHGlobal (imime_type);
 		}
 
 
@@ -72,9 +76,14 @@ namespace Redland {
 		public int ParseStringIntoModel (string s, Uri base_uri, Model model)
 		{
 			IntPtr istr = Marshal.StringToHGlobalAuto (s);
+			Redland.World.Enter ();
 			int rc=librdf_parser_parse_string_into_model (Handle, istr, base_uri.Handle, model.Handle);
-                        Marshal.FreeHGlobal (istr);
-                        return rc;
+			Marshal.FreeHGlobal (istr);
+			string [] errs = Redland.World.Errors;
+			Redland.World.Exit ();
+			if (errs.Length > 0)
+				throw new ParseError ("Parsing error", errs);
+			return rc;
 		}
 
 		[DllImport ("librdf")]
@@ -82,7 +91,13 @@ namespace Redland {
 
 		public int ParseIntoModel (Uri uri, Uri base_uri, Model model)
 		{
-			return librdf_parser_parse_into_model (parser, uri.Handle, base_uri.Handle, model.Handle);
+			Redland.World.Enter ();
+			int rc=librdf_parser_parse_into_model (parser, uri.Handle, base_uri.Handle, model.Handle);
+			string [] errs = Redland.World.Errors;
+			Redland.World.Exit ();
+			if (errs.Length > 0)
+				throw new ParseError ("Parsing error", errs);
+			return rc;
 		}
 
 		public int ParseIntoModel (Model model, string uri)
@@ -96,7 +111,12 @@ namespace Redland {
 		public Stream ParseAsStream (string uri)
 		{
 			Uri tmp_uri = new Redland.Uri (uri);
+			Redland.World.Enter ();
 			IntPtr raw_stream = librdf_parser_parse_as_stream (parser, tmp_uri.Handle, IntPtr.Zero);
+			string [] errs = Redland.World.Errors;
+			Redland.World.Exit ();
+			if (errs.Length > 0)
+				throw new ParseError ("Parsing error", errs);
 			Stream stream = new Stream (raw_stream);
 			return stream;
 		}
@@ -109,10 +129,15 @@ namespace Redland {
 			// Console.WriteLine ("Parsing string '{0}' URI {1}", s, base_uri.ToString());
 
 			IntPtr istr = Marshal.StringToHGlobalAuto (s);
+			Redland.World.Enter ();
 			IntPtr raw_ret = librdf_parser_parse_string_as_stream (parser, istr, base_uri.Handle);
 			Stream stream;
+			Marshal.FreeHGlobal (istr);
+			string [] errs = Redland.World.Errors;
+			Redland.World.Exit ();
 
-                        Marshal.FreeHGlobal (istr);
+			if (errs.Length > 0)
+				throw new ParseError ("Parsing error", errs);
 
 			if (raw_ret == IntPtr.Zero)
 				return null;
