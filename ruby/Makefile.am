@@ -20,7 +20,7 @@
 
 RELEASE=@VERSION_RELEASE@
 
-INCLUDES=-I$(top_srcdir) @RUBY_INCLUDES@
+AM_CPPFLAGS=-I$(top_srcdir) @RUBY_INCLUDES@
 
 RUBY=@RUBY@
 
@@ -29,9 +29,9 @@ RUBY_PACKAGE=redland
 SWIG_OUTPUTS=$(RUBY_PACKAGE)_wrap.c
 SWIG_CRUFT=
 
-rubylib=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['ruby_install_name']")
+rubylib=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['ruby_install_name']"`
 
-rubydir=$(shell $(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']")
+rubydir=`$(RUBY) -rrbconfig -e "puts Config::CONFIG['archdir']"`
 ruby_DATA=redland.so
 
 EXTRA_DIST=test.rb example.rb \

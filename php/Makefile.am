@@ -20,7 +20,7 @@
 
 RELEASE=@VERSION_RELEASE@
 
-INCLUDES=-I$(top_srcdir) @PHP_INCLUDES@
+AM_CPPFLAGS=-I$(top_srcdir) @PHP_INCLUDES@
 
 PHP=php
 
@@ -29,7 +29,7 @@ PHP_PACKAGE=redland
 SWIG_OUTPUTS=$(PHP_PACKAGE)_wrap.c php_$(PHP_PACKAGE).h
 SWIG_CRUFT=$(PHP_PACKAGE).php
 
-phpdir= $(shell php-config --extension-dir)
+phpdir=`php-config --extension-dir`
 php_DATA=$(PHP_PACKAGE).so
 
 EXTRA_DIST=test.php example.php php.ini \

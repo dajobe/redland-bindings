@@ -20,7 +20,7 @@
 
 RELEASE=@VERSION_RELEASE@
 
-INCLUDES=-I$(top_srcdir)
+AM_CPPFLAGS=-I$(top_srcdir)
 
 TCL=@TCL@
 
@@ -33,7 +33,7 @@ tclversion=@TCL_VERSION@
 tclincs=@TCL_INCLUDES@
 tcllib=-ltcl$(tclversion)
 
-tcldir=$(shell echo 'puts $$tcl_library' | $(TCL))
+tcldir=`echo 'puts $$tcl_library' | $(TCL)`
 tcl_DATA=Redland.so
 
 EXTRA_DIST=test.tcl example.tcl \
