@@ -61,7 +61,7 @@ SUFFIXES=.cs .dll .exe
 	$(CSHARP_LINK) 
 
 $(CSHARP_DLL): $(CSHARP_DLL_SRCS)
-	$(CSHARP_COMPILE) /target:library $? -out:$@
+	$(CSHARP_COMPILE) /target:library $(CSHARP_DLL_SRCS) -out:$@
 
 build-csharp: build-csharp-stamp
 
