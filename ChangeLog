@@ -8,7 +8,7 @@
 	csharp/test.cs, csharp/Parser.cs: Replace parser name "raptor"
 	with "rdfxml"
 
-2004-07-20  Edd Dumbill  <edd@hoth.ilrt.bris.ac.uk>
+2004-07-20  Edd Dumbill  <Dave.Beckett@bristol.ac.uk>
 
 	* csharp/Node.cs: Added my name to header.
 
