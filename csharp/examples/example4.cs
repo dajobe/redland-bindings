@@ -19,7 +19,7 @@ public class Test {
 		Serializer serializer = new Serializer ("rdfxml", null, null);
 		Rdf.Uri base_uri = new Rdf.Uri ("http://exampe.org/base.rdf");
 
-		IntPtr stdout = Util.fopen ("test-example4.xml", "a+");
+		IntPtr stdout = Util.fopen ("test-example4.xml", "w+");
 		serializer.SerializeModel (stdout, base_uri, model);
 	}
 }
