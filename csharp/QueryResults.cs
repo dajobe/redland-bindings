@@ -18,7 +18,6 @@ namespace Redland {
 		Query query;
 		IntPtr query_results;
         	Hashtable results;
-        	bool first=true;
 
 		public IntPtr Handle {
 			get { return query_results; }
@@ -67,16 +66,12 @@ namespace Redland {
 
 		public bool MoveNext ()
 		{
-			if (first)
-                        	first = false;
-                        else
-				librdf_query_results_next (query_results);
+			librdf_query_results_next (query_results);
                         results=null;
+
                         int r =	librdf_query_results_finished (query_results);
-                        if (r != 0)
-                          return false;
-			results=MakeResultsHash();
-                        return true;
+
+                        return (r != 0);
 		}
 
 		public void Reset ()
