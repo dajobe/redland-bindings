@@ -5,7 +5,7 @@ dnl (Process this file with autoconf to produce a configure script.)
 dnl
 dnl $Id$
 dnl
-dnl Copyright (C) 2000-2004, David Beckett http://purl.org/net/dajobe/
+dnl Copyright (C) 2000-2005, David Beckett http://purl.org/net/dajobe/
 dnl Institute for Learning and Research Technology http://www.ilrt.bristol.ac.uk/
 dnl University of Bristol, UK http://www.bristol.ac.uk/
 dnl 
