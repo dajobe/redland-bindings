@@ -238,6 +238,11 @@ sub serialise ($) {
   return new RDF::Redland::Stream($stream,$self);
 }
 
+# for alternate spelling
+sub serialize ($) {
+  shift->serialise;
+}
+
 =item find_statements STATEMENT
 
 Find all matching statements in the model matching partial RDF::Redland::Statement
