@@ -57,7 +57,8 @@ namespace Redland {
 				return (librdf_iterator_next (iterator) == 0);
 			} else {
 				started = true;
-				return true;
+				IntPtr cur = librdf_iterator_get_object (iterator);
+				return (cur != IntPtr.Zero);
 			}
 		}
 
