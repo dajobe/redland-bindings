@@ -69,7 +69,7 @@ sub new ($$) {
 
   if(ref($arg)) {
     if(UNIVERSAL::isa($class, 'RDF::Redland::URI')) {
-      return $self->clone;
+      return $arg->clone;
     } elsif($class =~ '^URI') {
       $arg=$arg->as_string;
     } else {
