@@ -54,26 +54,34 @@ sub DESTROY ($) {
   &RDF::Redland::CORE::librdf_free_world($self->{WORLD}) if $self->{WORLD};
 }
 
-use vars qw($Error_Sub $Warning_Sub);
-$Error_Sub=undef;
-$Warning_Sub=undef;
-
 sub message ($$) {
   my($type,$message)=@_;
   if($type == 0) {
-    if(ref $Error_Sub) {
-      $Error_Sub->($message);
+    if(ref $RDF::Redland::Error_Sub) {
+      $RDF::Redland::Error_Sub->($message);
     } else {
       die "Redland error: $message\n";
     }
   } else {
-    if(ref $Warning_Sub) {
-      $Warning_Sub->($message);
+    if(ref $RDF::Redland::Warning_Sub) {
+      $RDF::Redland::Warning_Sub->($message);
     } else {
       warn "Redland warning: $message\n";
     }
   }
 }
+
+package RDF::Redland;
+
+use vars qw($Debug $World $Error_Sub $Warning_Sub);
+
+$Debug=0;
+
+$World=new RDF::Redland::World;
+
+$Error_Sub=undef;
+
+$Warning_Sub=undef;
 
 sub set_error_handler ($) {
   $Error_Sub=shift;
@@ -83,17 +91,6 @@ sub set_warning_handler ($) {
   $Warning_Sub=shift;
 }
 
-package RDF::Redland;
-
-use vars qw($Debug $World);
-
-$Debug=0;
-
-$World=new RDF::Redland::World;
-
-$Error_Sub=undef;
-
-$Warning_Sub=undef;
 
 =pod
 
