@@ -43,6 +43,18 @@ class RedlandModelCase (unittest.TestCase):
             
         s_two = self.make_statement (2)
 
+        s_two_again = self.make_statement (2)
+
+        self.assert_(s_two == s_two_again,
+                "equality; statement %s should equal statement %s" % \
+                        (str(s_two), str(s_two_again)))
+
+        s_three = self.make_statement (3)
+
+        self.assert_(s_two != s_three,
+                "inequality; statement %s should not equal statement %s" % \
+                        (str(s_two), str(s_three)))
+
         del model[s_two]
 
         self.assert_(s_two not in model,
