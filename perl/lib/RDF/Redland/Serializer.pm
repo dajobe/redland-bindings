@@ -60,8 +60,8 @@ from an RDF::Redland::Model object.
 
 Create a new RDF::Redland::Serializer object for a syntax serializer
 named I<NAME>, with MIME Type I<MIME_TYPE> and/or URI I<URI>.  Any
-field can be undef or omitted; if all are omitted, a random serializer
-will be requested.
+field can be undef or omitted; if all are omitted, the default serializer
+is used, currently 'ntriples'.
 
 =cut
 
