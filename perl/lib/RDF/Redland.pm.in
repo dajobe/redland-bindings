@@ -1,6 +1,6 @@
 # -*- Mode: Perl -*-
 #
-# RDF.pm - Redland top level Perl module
+# Redland.pm - Redland top level Perl module
 #
 # $Id$
 #
@@ -20,26 +20,26 @@
 # 
 #
 
-use RDF::Iterator;
-use RDF::Model;
-use RDF::Node;
-use RDF::Parser;
-use RDF::Statement;
-use RDF::Storage;
-use RDF::Stream;
-use RDF::URI;
+use RDF::Redland::Iterator;
+use RDF::Redland::Model;
+use RDF::Redland::Node;
+use RDF::Redland::Parser;
+use RDF::Redland::Statement;
+use RDF::Redland::Storage;
+use RDF::Redland::Stream;
+use RDF::Redland::URI;
 
-use Redland;
+use RDF::Redland::CORE;
 
-package RDF::World;
+package RDF::Redland::World;
 
 sub new ($) {
   my($proto)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
 
-  $self->{WORLD}=&Redland::librdf_new_world();
-  &Redland::librdf_world_open($self->{WORLD});
+  $self->{WORLD}=&RDF::Redland::CORE::librdf_new_world();
+  &RDF::Redland::CORE::librdf_world_open($self->{WORLD});
 
   bless ($self, $class);
   $self->{ME}=$self;
@@ -48,30 +48,30 @@ sub new ($) {
 
 sub DESTROY ($) {
   warn "RDF::World DESTROY" if $RDF::Debug;
-  &Redland::librdf_free_world($self->{WORLD}) if $self->{WORLD};
+  &RDF::Redland::CORE::librdf_free_world($self->{WORLD}) if $self->{WORLD};
 }
 
 
-package RDF;
+package RDF::Redland;
 
 use vars qw($Debug $World);
 
 $Debug=0;
 
-$World=new RDF::World;
+$World=new RDF::Redland::World;
 
 
 =pod
 
 =head1 NAME
 
-RDF - Redland RDF Class
+RDF::Redland - Redland RDF Class
 
 =head1 SYNOPSIS
 
-  use RDF;
-  my $storage=new RDF::Storage("hashes", "test", "new='yes',hash-type='memory'");
-  my $model=new RDF::Model($storage, "");
+  use RDF::Redland;
+  my $storage=new RDF::Redland::Storage("hashes", "test", "new='yes',hash-type='memory'");
+  my $model=new RDF::Redland::Model($storage, "");
 
   ...
 
@@ -81,9 +81,9 @@ This class initialises the Redland RDF classes.
 
 =head1 SEE ALSO
 
-L<RDF::Node>, L<RDF::Statement>, L<RDF::Model>, L<RDF::Storage>,
-L<RDF::Parser>, L<RDF::Iterator>, L<RDF::Stream>, L<RDF::URI>
-and L<RDF::RSS>.
+L<RDF::Redland::Node>, L<RDF::Redland::Statement>, L<RDF::Redland::Model>,
+L<RDF::Redland::Storage>, L<RDF::Redland::Parser>, L<RDF::Redland::Iterator>,
+L<RDF::Redland::Stream>, L<RDF::Redland::URI> and L<RDF::Redland::RSS>.
 
 =head1 AUTHOR
 

@@ -20,16 +20,16 @@
 # 
 #
 
-package RDF::RSS;
+package RDF::Redland::RSS;
 
 use strict;
 
 
-use RDF;
+use RDF::Redland;
 
 use vars qw(@ISA $NS_URL $DC_NS_URL);
 
-@ISA=qw(RDF::Model);
+@ISA=qw(RDF::Redland::Model);
 
 $NS_URL="http://purl.org/rss/1.0/";
 $DC_NS_URL="http://purl.org/dc/elements/1.1/";
@@ -38,16 +38,16 @@ $DC_NS_URL="http://purl.org/dc/elements/1.1/";
 
 =head1 NAME
 
-RDF::RSS - Redland RSS 1.0 Class
+RDF::Redland::RSS - Redland RSS 1.0 Class
 
 =head1 SYNOPSIS
 
-  use RDF::RSS;
+  use RDF::Redland::RSS;
 
   ...
-  my $rss=RDF::RSS->new_from_model($model);
+  my $rss=RDF::Redland::RSS->new_from_model($model);
 
-  my $rss2=new RDF::RSS("http://example.com/test.rdf");
+  my $rss2=new RDF::Redland::RSS("http://example.com/test.rdf");
   ...
 
   for my $channel ($rss->channels) {
@@ -95,32 +95,32 @@ sub new ($$;$) {
 
   $base_uri_string ||= $source_uri_string;
 
-  my $base_uri=new RDF::URI $base_uri_string;
+  my $base_uri=new RDF::Redland::URI $base_uri_string;
   return undef if !$base_uri;
 
-  my $source_uri=new RDF::URI $source_uri_string;
+  my $source_uri=new RDF::Redland::URI $source_uri_string;
   return undef if !$source_uri;
 
-  my $storage=new RDF::Storage("hashes", "rss", 
+  my $storage=new RDF::Redland::Storage("hashes", "rss", 
 			       "new='yes',write='yes',hash-type='memory'");
   return undef if !$storage;
   
-  my $self=new RDF::Model($storage, "");
+  my $self=new RDF::Redland::Model($storage, "");
   return undef if !$self;
 
-  my $parser=new RDF::Parser('raptor');
+  my $parser=new RDF::Redland::Parser('raptor');
   return undef if !$parser;
 
   $parser->parse_into_model($source_uri, $base_uri, $self);
 
-  bless ($self, $class); # reconsecrate as RDF::RSS
+  bless ($self, $class); # reconsecrate as RDF::Redland::RSS
   return $self;
 }
 
 
 =item new MODEL
 
-Process RSS 1.0 from content stored in RDF::Model I<MODEL>.
+Process RSS 1.0 from content stored in RDF::Redland::Model I<MODEL>.
 
 =cut
 
@@ -129,7 +129,7 @@ sub new_from_model ($$) {
   my $class = ref($proto) || $proto;
   my $self  = $model;
 
-  bless ($self, $class); # reconsecrate as RDF::RSS
+  bless ($self, $class); # reconsecrate as RDF::Redland::RSS
   return $self;
 }
 
@@ -142,7 +142,7 @@ sub new_from_model ($$) {
 # DESTRUCTOR
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::RSS DESTROY\n" if $RDF::Debug;
+  warn "RDF::Redland::RSS DESTROY\n" if $RDF::Redland::Debug;
 }
 
 
@@ -150,16 +150,16 @@ sub DESTROY ($) {
 sub _find_by_type ($$) {
   my($self,$type_value)=@_;
 
-  my $rdf_type=RDF::Node->new_from_uri_string("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
+  my $rdf_type=RDF::Redland::Node->new_from_uri_string("http://www.w3.org/1999/02/22-rdf-syntax-ns#type");
   return () if !$rdf_type;
 
-  my $object=RDF::Node->new_from_uri_string($type_value);
+  my $object=RDF::Redland::Node->new_from_uri_string($type_value);
   return () if !$object;
 
   my(@results)=$self->sources($rdf_type, $object);
 
-  # Turn the nodes into RDF::RSS:Node-s
-  @results=map { RDF::RSS::Node->new($self,$_) } @results;
+  # Turn the nodes into RDF::Redland::RSS:Node-s
+  @results=map { RDF::Redland::RSS::Node->new($self,$_) } @results;
 
   return(@results);
 }
@@ -172,7 +172,7 @@ sub _find_by_type ($$) {
 =item channels
 
 Return the RSS channels (E<lt>channelE<gt> tags) as a list of
-RDF::RSS::Node objects.
+RDF::Redland::RSS::Node objects.
 
 =cut
 
@@ -183,7 +183,7 @@ sub channels ($) {
 =item items
 
 Return the RSS items (E<lt>itemE<gt> tags) as a list of
-RDF::RSS::Node objects.
+RDF::Redland::RSS::Node objects.
 
 =cut
 
@@ -194,7 +194,7 @@ sub items ($) {
 =item image
 
 Return the RSS 1.0 image (E<lt>imageE<gt> tag) as an
-RDF::RSS::Node object.
+RDF::Redland::RSS::Node object.
 
 =cut
 
@@ -205,7 +205,7 @@ sub image ($) {
 =item textinput
 
 Return the RSS 1.0 textinput (E<lt>textinputE<gt> tag) as an
-RDF::RSS::Node object.
+RDF::Redland::RSS::Node object.
 
 =cut
 
@@ -336,7 +336,7 @@ sub as_xhtml ($%) {
   my $vspace=$opts{vspace} || 0;
   my $full=$opts{full};
 
-  my $dc_date=RDF::Node->new_from_uri_string('http://purl.org/dc/elements/1.1/date');
+  my $dc_date=RDF::Redland::Node->new_from_uri_string('http://purl.org/dc/elements/1.1/date');
   if(!$time) {
     $time=$channel->property($dc_date);
     $time=$time ? format_literal($time) : '';
@@ -367,7 +367,7 @@ sub as_xhtml ($%) {
 <h1>$boxTitle</h1>
 
 <p>Converted from RSS 1.0 content at $ch_uri by 
-<a href="http://purl.org/net/redland/">Redland</a> <tt>RDF::RSS</tt>
+<a href="http://purl.org/net/redland/">Redland</a> <tt>RDF::Redland::RSS</tt>
 module <em>as_xhtml</em> method</p>
 
 EOT
@@ -378,7 +378,7 @@ EOT
 <!-- 
 RSS 1.0 content at $ch_uri rendered to XHTML by
 Redland - http://purl.org/net/redland/
-RDF::RSS module as_xhtml method
+RDF::Redland::RSS module as_xhtml method
 -->
 EOT
 
@@ -442,8 +442,8 @@ EOT
       <ul>
 EOT
 
-  my $dc_source=RDF::Node->new_from_uri_string('http://purl.org/dc/elements/1.1/source');
-  my $dc_subject=RDF::Node->new_from_uri_string('http://purl.org/dc/elements/1.1/subject');
+  my $dc_source=RDF::Redland::Node->new_from_uri_string('http://purl.org/dc/elements/1.1/source');
+  my $dc_subject=RDF::Redland::Node->new_from_uri_string('http://purl.org/dc/elements/1.1/subject');
   for my $item (@items) {
     my $item_title=$item->title ? format_literal($item->title) : undef;
     my $item_link=$item->link ? format_url($item->link) : undef;
@@ -462,7 +462,7 @@ EOT
     if(my $subject=$item->property($dc_subject)) {
       $item_desc.="<br />" if $item_desc;
       my $fmt_subject;
-      if($subject->type eq $RDF::Node::Type_Literal) {
+      if($subject->type eq $RDF::Redland::Node::Type_Literal) {
         $fmt_subject=format_literal($subject);
       } else {
         $fmt_subject=format_url($subject);
@@ -548,17 +548,17 @@ EOT
 
 
 
-package RDF::RSS::Node;
+package RDF::Redland::RSS::Node;
 
-use RDF::Node;
+use RDF::Redland::Node;
 
 use vars qw(@ISA);
 
-@ISA=qw(RDF::Node);
+@ISA=qw(RDF::Redland::Node);
 
 =head1 NAME
 
-RDF::RSS::Node - Redland RSS 1.0 Node Class
+RDF::Redland::RSS::Node - Redland RSS 1.0 Node Class
 
 =head1 DESCRIPTION
 
@@ -573,7 +573,7 @@ Class representing concepts in an RSS 1.0 RDF graph.
 =head1 CONSTRUCTORS
 
 No public constructors.  Nodes are created either by methods of
-this class or RDF::RSS.
+this class or RDF::Redland::RSS.
 
 =cut
 
@@ -581,7 +581,7 @@ sub new ($$$) {
   my($proto,$model,$node)=@_;
   my $class = ref($proto) || $proto;
 
-  warn "RDF::RSS::Node::new in model $model with node $node\n" if $RDF::Debug;
+  warn "RDF::Redland::RSS::Node::new in model $model with node $node\n" if $RDF::Redland::Debug;
 
   return undef if !$model || !$node;
 
@@ -589,28 +589,28 @@ sub new ($$$) {
 
   $self->{MODEL}=$model;
 
-  bless ($self, $class); # reconsecrate as RDF::RSS::Node
+  bless ($self, $class); # reconsecrate as RDF::Redland::RSS::Node
   return $self;
 }
 
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::RSS::Node DESTROY\n" if $RDF::Debug;
+  warn "RDF::Redland::RSS::Node DESTROY\n" if $RDF::Redland::Debug;
 }
 
 
 sub _find_targets_by_predicate ($$) {
   my($self,$uri_string)=@_;
-  warn "RDF::RSS::_find_targets_by_predicate from $self with predicate $uri_string\n" if $RDF::Debug;
+  warn "RDF::Redland::RSS::_find_targets_by_predicate from $self with predicate $uri_string\n" if $RDF::Redland::Debug;
 
-  my $predicate=RDF::Node->new_from_uri_string($uri_string);
+  my $predicate=RDF::Redland::Node->new_from_uri_string($uri_string);
   return () if !$predicate;
 
   my(@targets)=$self->{MODEL}->targets($self,$predicate);
-  warn "RDF::RSS::_find_targets_by_predicate returned ",scalar @targets, " results\n" if $RDF::Debug;
+  warn "RDF::Redland::RSS::_find_targets_by_predicate returned ",scalar @targets, " results\n" if $RDF::Redland::Debug;
 
-  # Convert list of RDF::Node-s into list of RDF::RSS::Node-s
-  return map { RDF::RSS::Node->new($self->{MODEL}, $_) } @targets;
+  # Convert list of RDF::Redland::Node-s into list of RDF::Redland::RSS::Node-s
+  return map { RDF::Redland::RSS::Node->new($self->{MODEL}, $_) } @targets;
 }
 
 =head1 METHODS
@@ -627,7 +627,7 @@ Returns either a list or first one found depending on calling context.
 # Convienience accessors
 # for all (channel, image, item, textinput) resources
 sub title ($) {
-  my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'title');
+  my(@r)=shift->_find_targets_by_predicate($RDF::Redland::RSS::NS_URL.'title');
   return wantarray ? @r : $r[0];
 }
 
@@ -639,7 +639,7 @@ Returns either a list or first one found depending on calling context.
 =cut
 
 sub link ($) {
-  my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'link');
+  my(@r)=shift->_find_targets_by_predicate($RDF::Redland::RSS::NS_URL.'link');
   return wantarray ? @r : $r[0];
 }
 
@@ -655,10 +655,10 @@ depending on calling context.
 sub description ($) {
   my $node=shift;
   my(@r);
-  @r=$node->_find_targets_by_predicate($RDF::RSS::DC_NS_URL.'description');
+  @r=$node->_find_targets_by_predicate($RDF::Redland::RSS::DC_NS_URL.'description');
   return (wantarray ? @r : $r[0]) if @r;
 
-  @r=$node->_find_targets_by_predicate($RDF::RSS::NS_URL.'description');
+  @r=$node->_find_targets_by_predicate($RDF::Redland::RSS::NS_URL.'description');
   return wantarray ? @r : $r[0];
 }
 
@@ -671,7 +671,7 @@ Returns either a list or first one found depending on calling context.
 
 # for image, item, textinput resources
 sub inchannel ($) {
-  my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'inchannel');
+  my(@r)=shift->_find_targets_by_predicate($RDF::Redland::RSS::NS_URL.'inchannel');
   return wantarray ? @r : $r[0];
 }
 
@@ -684,7 +684,7 @@ Returns either a list or first one found depending on calling context.
 
 # for image resources
 sub image_url ($) {
-  my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'url');
+  my(@r)=shift->_find_targets_by_predicate($RDF::Redland::RSS::NS_URL.'url');
   return wantarray ? @r : $r[0];
 }
 
@@ -697,7 +697,7 @@ Returns either a list or first one found depending on calling context.
 
 # for textinput resources
 sub name ($) {
-  my(@r)=shift->_find_targets_by_predicate($RDF::RSS::NS_URL.'name');
+  my(@r)=shift->_find_targets_by_predicate($RDF::Redland::RSS::NS_URL.'name');
   return wantarray ? @r : $r[0];
 }
 
@@ -707,7 +707,7 @@ sub name ($) {
 
 =item items
 
-Get the RSS items in a channel as a list of RDF::RSS::Node objects.
+Get the RSS items in a channel as a list of RDF::Redland::RSS::Node objects.
 
 =cut
 
@@ -715,14 +715,14 @@ Get the RSS items in a channel as a list of RDF::RSS::Node objects.
 sub items ($) {
   my $self=shift;
 
-  my $items_predicate=RDF::Node->new_from_uri_string($RDF::RSS::NS_URL.'items');
+  my $items_predicate=RDF::Redland::Node->new_from_uri_string($RDF::Redland::RSS::NS_URL.'items');
   return () if !$items_predicate;
 
   # Get 1st resource inside <items> - i.e. the 1st rdf:Seq
   my $seq_resource=$self->{MODEL}->target($self, $items_predicate);
   return () if !$seq_resource;
 
-  $seq_resource=RDF::RSS::Node->new($self->{MODEL}, $seq_resource);
+  $seq_resource=RDF::Redland::RSS::Node->new($self->{MODEL}, $seq_resource);
 
   # Find all rdf:_<n> properties from <rdf:Seq>
   my(@resources);
@@ -734,15 +734,15 @@ sub items ($) {
      }
   }
 
-  # In order - sort them by ordinal, convert to RDF::RSS::Node objects
+  # In order - sort them by ordinal, convert to RDF::Redland::RSS::Node objects
   # and return
-  return map {RDF::RSS::Node->new($self->{MODEL}, $_->[1])}
+  return map {RDF::Redland::RSS::Node->new($self->{MODEL}, $_->[1])}
               sort {$a->[0] <=> $b->[0]} @resources;
 }
 
 =item image
 
-Get the image of a channel as an RDF::RSS::Node object or undef
+Get the image of a channel as an RDF::Redland::RSS::Node object or undef
 if not present.
 
 =cut
@@ -751,16 +751,16 @@ if not present.
 sub image ($) {
   my $self=shift;
 
-  my($image)=$self->_find_targets_by_predicate($RDF::RSS::NS_URL.'image');
+  my($image)=$self->_find_targets_by_predicate($RDF::Redland::RSS::NS_URL.'image');
   return undef if !$image;
 
-  return RDF::RSS::Node->new($self->{MODEL}, $image);
+  return RDF::Redland::RSS::Node->new($self->{MODEL}, $image);
 }
 
 
 =item textinput
 
-Get the textinput of a channel as an RDF::RSS::Node object or undef
+Get the textinput of a channel as an RDF::Redland::RSS::Node object or undef
 if not present.
 
 =cut
@@ -769,18 +769,18 @@ if not present.
 sub textinput ($) {
   my $self=shift;
 
-  my($textinput)=$self->_find_targets_by_predicate($RDF::RSS::NS_URL.'textinput');
+  my($textinput)=$self->_find_targets_by_predicate($RDF::Redland::RSS::NS_URL.'textinput');
   return undef if !$textinput;
 
-  return RDF::RSS::Node->new($self->{MODEL}, $textinput);
+  return RDF::Redland::RSS::Node->new($self->{MODEL}, $textinput);
 }
 
 
 =item property PROPERTY
 
-Get the value of the named property off an RDF::RSS::Node where
-I<PROPERTY> is an RDF::Node or RDF::RSS::Node.  Returns a list of
-RDF::RSS::Node objects or first one found depending on calling
+Get the value of the named property off an RDF::Redland::RSS::Node where
+I<PROPERTY> is an RDF::Redland::Node or RDF::Redland::RSS::Node.  Returns a list of
+RDF::Redland::RSS::Node objects or first one found depending on calling
 context.
 
 =cut
@@ -792,43 +792,43 @@ sub property ($$) {
   if(wantarray) {
     my(@targets)=$self->{MODEL}->targets($self,$property);
     
-    # Convert list of RDF::Node-s into list of RDF::RSS:Node-s
-    return map { RDF::RSS::Node->new($self->{MODEL}, $_) } @targets;
+    # Convert list of RDF::Redland::Node-s into list of RDF::Redland::RSS:Node-s
+    return map { RDF::Redland::RSS::Node->new($self->{MODEL}, $_) } @targets;
   } else {
     my $target=$self->{MODEL}->target($self,$property);
-    return RDF::RSS::Node->new($self->{MODEL}, $target);
+    return RDF::Redland::RSS::Node->new($self->{MODEL}, $target);
   }
 }
 
 =item properties
 
-Get all properties off the RDF::RSS::Node.  Returns a list of
-RDF::RSS::Node objects.
+Get all properties off the RDF::Redland::RSS::Node.  Returns a list of
+RDF::Redland::RSS::Node objects.
 
 =cut
 
 sub properties ($) {
   my($self)=@_;
 
-  my $prop= RDF::Node->new_from_node($self);
-  my $statement=RDF::Statement->new_from_nodes($prop, undef, undef);
+  my $prop= RDF::Redland::Node->new_from_node($self);
+  my $statement=RDF::Redland::Statement->new_from_nodes($prop, undef, undef);
   my(@arcs_out_statements)=$self->{MODEL}->find_statements($statement);
 
-  # Convert list of RDF::Statement-s into list of RDF::RSS:Node-s predicates.
+  # Convert list of RDF::Redland::Statement-s into list of RDF::Redland::RSS:Node-s predicates.
   # 
   # Note: Here the node has to be copied since the predicate method
   # returns a pointer to a *shared* copy of the node inside the
   # statement object and this node is going to be reconsecrated as an
-  # RDF::RSS::Node.
-  return map { RDF::RSS::Node->new($self->{MODEL}, 
-				   RDF::Node->new_from_node($_->predicate)) }
+  # RDF::Redland::RSS::Node.
+  return map { RDF::Redland::RSS::Node->new($self->{MODEL}, 
+				   RDF::Redland::Node->new_from_node($_->predicate)) }
          @arcs_out_statements;
 }
 
 =item properties_with_ns_prefix NS_PREFIX
 
-Get all properties off the RDF::RSS::Node which have namespace URI
-prefix I<NS_PREFIX>.  Returns a list of RDF::RSS::Node objects.
+Get all properties off the RDF::Redland::RSS::Node which have namespace URI
+prefix I<NS_PREFIX>.  Returns a list of RDF::Redland::RSS::Node objects.
 
 =cut
 
@@ -852,7 +852,7 @@ sub properties_with_ns_prefix ($$) {
 
 =head1 SEE ALSO
 
-L<RDF::Model> and RSS 1.0 web pages at http://purl.org/rss/1.0/
+L<RDF::Redland::Model> and RSS 1.0 web pages at http://purl.org/rss/1.0/
 
 =head1 AUTHOR
 

@@ -1,6 +1,6 @@
 # -*- Mode: Perl -*-
 #
-# RDF.pm - Redland Perl RDF Storage module
+# Storage.pm - Redland Perl RDF Storage module
 #
 # $Id$
 #
@@ -20,7 +20,7 @@
 # 
 #
 
-package RDF::Storage;
+package RDF::Redland::Storage;
 
 use strict;
 
@@ -28,17 +28,17 @@ use strict;
 
 =head1 NAME
 
-RDF::Storage - Redland RDF Storage Class
+RDF::Redland::Storage - Redland RDF Storage Class
 
 =head1 SYNOPSIS
 
-  use RDF;
-  my $storage=new RDF::Storage("hashes", "test", "new='yes',hash-type='memory'");
+  use RDF::Redland;
+  my $storage=new RDF::Redland::Storage("hashes", "test", "new='yes',hash-type='memory'");
   ...
 
 =head1 DESCRIPTION
 
-Create objects for storing RDF::Model objects either persistently
+Create objects for storing RDF::Redland::Model objects either persistently
 or in memory.
 
 =cut
@@ -53,7 +53,7 @@ or in memory.
 
 =item new STORAGE_NAME NAME OPTIONS_STRING
 
-Create a new RDF::Storage object for the storage factory named
+Create a new RDF::Redland::Storage object for the storage factory named
 I<STORAGE_NAME> with storage named I<NAME> and storage options
 I<OPTIONS_STRING> which are specific to the storage factory type.
 
@@ -79,7 +79,7 @@ key1='value1',key2='value2' and the single quotes are required.
 
 Example:
 
-  $storage=new RDF::Storage("hashes", "test", 
+  $storage=new RDF::Redland::Storage("hashes", "test", 
                             "new='yes',hash-type='bdb',dir='.'");
 
 Creates a new storage of the I<hashes> type (indexed hashes) named
@@ -95,9 +95,9 @@ sub new ($$$$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
 
-  warn qq{RDF::Storage->new("$storage_name", "$name", "$options_string")\n} if $RDF::Debug;
+  warn qq{RDF::Redland::Storage->new("$storage_name", "$name", "$options_string")\n} if $RDF::Redland::Debug;
 
-  $self->{STORAGE}=&Redland::librdf_new_storage($RDF::World->{WORLD},$storage_name,$name,$options_string);
+  $self->{STORAGE}=&RDF::Redland::CORE::librdf_new_storage($RDF::Redland::World->{WORLD},$storage_name,$name,$options_string);
   return undef if !$self->{STORAGE};
 
   bless ($self, $class);
@@ -106,7 +106,7 @@ sub new ($$$$) {
 
 =item new_from_storage STORAGE
 
-Create a new RDF::Storage object from RDF::Storage I<STORAGE> (copy
+Create a new RDF::Redland::Storage object from RDF::Redland::Storage I<STORAGE> (copy
 constructor).  The new storage may have a new name chosen by the
 storage factory.
 
@@ -116,7 +116,7 @@ sub new_from_storage ($$$) {
   my($proto,$storage)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{STORAGE}=&Redland::librdf_new_storage_from_storage($storage->{STORAGE});
+  $self->{STORAGE}=&RDF::Redland::CORE::librdf_new_storage_from_storage($storage->{STORAGE});
   return undef if !$self->{STORAGE};
 
   bless ($self, $class);
@@ -131,20 +131,20 @@ sub new_from_storage ($$$) {
 
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::Storage DESTROY $self" if $RDF::Debug;
+  warn "RDF::Redland::Storage DESTROY $self" if $RDF::Redland::Debug;
   if(!$self->{STORAGE}) {
-    warn "RDF::Storage DESTROY - librdf object gone - FIXME!\n" if $RDF::Debug;
+    warn "RDF::Redland::Storage DESTROY - librdf object gone - FIXME!\n" if $RDF::Redland::Debug;
   } else {
-    &Redland::librdf_free_storage($self->{STORAGE});
+    &RDF::Redland::CORE::librdf_free_storage($self->{STORAGE});
   }
-  warn "RDF::Storage DESTROY done\n" if $RDF::Debug;
+  warn "RDF::Redland::Storage DESTROY done\n" if $RDF::Redland::Debug;
 }
 
 =pod
 
 =head1 SEE ALSO
 
-L<RDF::Model>
+L<RDF::Redland::Model>
 
 =head1 AUTHOR
 

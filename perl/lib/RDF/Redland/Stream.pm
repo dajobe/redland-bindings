@@ -1,6 +1,6 @@
 # -*- Mode: Perl -*-
 #
-# RDF.pm - Redland Perl RDF Stream module
+# Stream.pm - Redland Perl RDF Stream module
 #
 # $Id$
 #
@@ -20,21 +20,21 @@
 # 
 #
 
-package RDF::Stream;
+package RDF::Redland::Stream;
 
 use strict;
 
-use RDF::Statement;
+use RDF::Redland::Statement;
 
 =pod
 
 =head1 NAME
 
-RDF::Stream - Redland RDF Stream of RDF::Statement objects Class
+RDF::Redland::Stream - Redland RDF Stream of RDF::Redland::Statement objects Class
 
 =head1 SYNOPSIS
 
-  use RDF;
+  use RDF::Redland;
 
   ...
   my $stream=$model->serialise;
@@ -45,7 +45,7 @@ RDF::Stream - Redland RDF Stream of RDF::Statement objects Class
 
 =head1 DESCRIPTION
 
-Represents a sequence of RDF::Statement objects passed between
+Represents a sequence of RDF::Redland::Statement objects passed between
 various Redland objects.
 
 =cut
@@ -57,7 +57,7 @@ various Redland objects.
 =head1 CONSTRUCTORS
 
 No public constructors - are created and returned from various methods
-of classes including RDF::Model and RDF::Parser
+of classes including RDF::Redland::Model and RDF::Redland::Parser
 
 =cut
 
@@ -78,10 +78,10 @@ sub new ($$$) {
 # DESTRUCTOR
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::Stream DESTROY $self" if $RDF::Debug;
-  &Redland::librdf_free_stream($self->{STREAM});
+  warn "RDF::Redland::Stream DESTROY $self" if $RDF::Redland::Debug;
+  &RDF::Redland::CORE::librdf_free_stream($self->{STREAM});
   $self->{CREATOR}=undef;
-  warn "RDF::Stream DESTROY done\n" if $RDF::Debug;
+  warn "RDF::Redland::Stream DESTROY done\n" if $RDF::Redland::Debug;
 }
 
 =head1 METHODS
@@ -97,12 +97,12 @@ Returns non 0 if the stream is finished.
 sub end ($) {
   my $self=shift;
   return 1 if !$self->{STREAM};
-  &Redland::librdf_stream_end($self->{STREAM});
+  &RDF::Redland::CORE::librdf_stream_end($self->{STREAM});
 }
 
 =item next
 
-Returns the next RDF::Statement object from the stream or undef if
+Returns the next RDF::Redland::Statement object from the stream or undef if
 the stream is finished.
 
 =cut
@@ -111,11 +111,11 @@ sub next ($) {
   my $self=shift;
   return undef if !$self->{STREAM};
   
-  my $statement=&Redland::librdf_stream_next($self->{STREAM});
+  my $statement=&RDF::Redland::CORE::librdf_stream_next($self->{STREAM});
   return undef if !$statement;
 
   # return a new statement created by the librdf stream object
-  RDF::Statement->_new_from_object($statement, 1);
+  RDF::Redland::Statement->_new_from_object($statement, 1);
 }
 
 =pod
@@ -124,7 +124,7 @@ sub next ($) {
 
 =head1 SEE ALSO
 
-L<RDF::Model> and L<RDF::Parser>
+L<RDF::Redland::Model> and L<RDF::Redland::Parser>
 
 =head1 AUTHOR
 

@@ -1,6 +1,6 @@
 # -*- Mode: Perl -*-
 #
-# RDF.pm - Redland Perl RDF Statement module
+# Statement.pm - Redland Perl RDF Statement module
 #
 # $Id$
 #
@@ -20,32 +20,32 @@
 # 
 #
 
-package RDF::Statement;
+package RDF::Redland::Statement;
 
 use strict;
 
-use RDF::Node;
+use RDF::Redland::Node;
 
 =pod
 
 =head1 NAME
 
-RDF::Statement - Redland RDF Statement Class
+RDF::Redland::Statement - Redland RDF Statement Class
 
 =head1 SYNOPSIS
 
-  use RDF;
-  my $statement=new RDF::Statement();
-  my $statement2=RDF::Statement->new_from_statement($statement);
-  my $statement3=RDF::Statement->new_from_nodes($subject, $predicate, $object);
+  use RDF::Redland;
+  my $statement=new RDF::Redland::Statement();
+  my $statement2=RDF::Redland::Statement->new_from_statement($statement);
+  my $statement3=RDF::Redland::Statement->new_from_nodes($subject, $predicate, $object);
   ...
 
 =head1 DESCRIPTION
 
-Manipulate RDF statements which comprise three RDF::Node objects.
+Manipulate RDF statements which comprise three RDF::Redland::Node objects.
 Also used for I<partial> statements which can have empty parts and
 are used for matching statements in statement queries of the
-model - see the L<RDF::Model>.
+model - see the L<RDF::Redland::Model>.
 
 =cut
 
@@ -59,7 +59,7 @@ model - see the L<RDF::Model>.
 
 =item new
 
-Create a new empty RDF::Statement object.
+Create a new empty RDF::Redland::Statement object.
 
 =cut
 
@@ -67,7 +67,7 @@ sub new ($) {
   my($proto)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{STATEMENT}=&Redland::librdf_new_statement($RDF::World->{WORLD});
+  $self->{STATEMENT}=&RDF::Redland::CORE::librdf_new_statement($RDF::Redland::World->{WORLD});
   return undef if !$self->{STATEMENT};
 
   bless ($self, $class);
@@ -76,7 +76,7 @@ sub new ($) {
 
 =item new_from_statement STATEMENT
 
-Create a new RDF::Statement object from RDF::Statement I<STATEMENT>
+Create a new RDF::Redland::Statement object from RDF::Redland::Statement I<STATEMENT>
 (copy constructor).
 
 =cut
@@ -85,7 +85,7 @@ sub new_from_statement ($$) {
   my($proto,$statement)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  $self->{STATEMENT}=&Redland::librdf_new_statement_from_statement($statement->{STATEMENT});
+  $self->{STATEMENT}=&RDF::Redland::CORE::librdf_new_statement_from_statement($statement->{STATEMENT});
   return undef if !$self->{STATEMENT};
 
   bless ($self, $class);
@@ -94,15 +94,15 @@ sub new_from_statement ($$) {
 
 =item new_from_nodes SUBJECT PREDICATE OBJECT
 
-Create a new RDF::Statement with the given RDF::Node objects as parts
+Create a new RDF::Redland::Statement with the given RDF::Redland::Node objects as parts
 (or undef when empty for a I<partial> statement).
 
-NOTE: After construction, the RDF::Node objects become owned by the
-new RDF::Statement object and I<must not> be used elsewhere.
-Existing nodes can be copied to use in this method with the RDF::Node
+NOTE: After construction, the RDF::Redland::Node objects become owned by the
+new RDF::Redland::Statement object and I<must not> be used elsewhere.
+Existing nodes can be copied to use in this method with the RDF::Redland::Node
 copy constructor new_from_node like this:
 
-  $new_node = RDF::Node->new_from_node($node);
+  $new_node = RDF::Redland::Node->new_from_node($node);
 
 =cut
 
@@ -116,7 +116,7 @@ sub new_from_nodes ($$$$) {
   my $p=($predicate ? $predicate->{NODE} : undef);
   my $o=($object ? $object->{NODE} : undef);
 
-  $self->{STATEMENT}=&Redland::librdf_new_statement_from_nodes($RDF::World->{WORLD}, $s, $p, $o);
+  $self->{STATEMENT}=&RDF::Redland::CORE::librdf_new_statement_from_nodes($RDF::Redland::World->{WORLD}, $s, $p, $o);
 
   # Zap the incoming librdf node objects since they are now owned by the
   # librdf statement object $self->{STATEMENT}
@@ -137,7 +137,7 @@ sub _new_from_object ($$$) {
   return undef if !$object;
   my $class = ref($proto) || $proto;
   my $self  = {};
-  warn "RDF::Statement::_new_from_object from object $object free_me=$free_me\n" if $RDF::Debug;
+  warn "RDF::Redland::Statement::_new_from_object from object $object free_me=$free_me\n" if $RDF::Redland::Debug;
   $self->{STATEMENT}=$object;
   $self->{DONT_FREE_ME}=!$free_me;
   bless ($self, $class);
@@ -152,16 +152,16 @@ sub _new_from_object ($$$) {
 
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::Statement DESTROY $self\n" if $RDF::Debug;
+  warn "RDF::Redland::Statement DESTROY $self\n" if $RDF::Redland::Debug;
   if($self->{STATEMENT}) {
     if($self->{DONT_FREE_ME}) {
-      warn "RDF::Statement DESTROY NOT doing librdf_free_statement on librdf statement\n" if $RDF::Debug;
+      warn "RDF::Redland::Statement DESTROY NOT doing librdf_free_statement on librdf statement\n" if $RDF::Redland::Debug;
     } else {
-      warn "RDF::Statement DESTROY doing librdf_free_statement on librdf statement\n" if $RDF::Debug;
-      &Redland::librdf_free_statement($self->{STATEMENT});
+      warn "RDF::Redland::Statement DESTROY doing librdf_free_statement on librdf statement\n" if $RDF::Redland::Debug;
+      &RDF::Redland::CORE::librdf_free_statement($self->{STATEMENT});
     }
   }
-  warn "RDF::Statement DESTROY done\n" if $RDF::Debug;
+  warn "RDF::Redland::Statement DESTROY done\n" if $RDF::Redland::Debug;
 }
 
 =head1 METHODS
@@ -170,19 +170,19 @@ sub DESTROY ($) {
 
 =item subject [SUBJECT]
 
-Get/set the statement subject.  When RDF::Node I<SUBJECT> is given, sets
+Get/set the statement subject.  When RDF::Redland::Node I<SUBJECT> is given, sets
 the subject of the statement, otherwise returns a reference to the
-statement RDF::Node subject which must be copied if used elsewhere.
+statement RDF::Redland::Node subject which must be copied if used elsewhere.
 
 =cut
 
 sub subject ($;$) {
   my($self,$subject)=@_;
 
-  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_subject(shift->{STATEMENT}), 0)
+  return RDF::Redland::Node->_new_from_object(&RDF::Redland::CORE::librdf_statement_get_subject(shift->{STATEMENT}), 0)
     unless $subject;
 
-  my $rc=&Redland::librdf_statement_set_subject($self->{STATEMENT},$subject->{NODE});
+  my $rc=&RDF::Redland::CORE::librdf_statement_set_subject($self->{STATEMENT},$subject->{NODE});
   # Zap the incoming librdf node object since it is now owned by the
   # librdf statement object $self->{STATEMENT}
   $subject->{NODE}=undef;
@@ -192,19 +192,19 @@ sub subject ($;$) {
 
 =item predicate [PREDICATE]
 
-Get/set the statement predicate.  When RDF::Node I<PREDICATE> is given, sets
+Get/set the statement predicate.  When RDF::Redland::Node I<PREDICATE> is given, sets
 the predicate of the statement, otherwise returns a reference to the
-statement RDF::Node predicate which must be copied if used elsewhere.
+statement RDF::Redland::Node predicate which must be copied if used elsewhere.
 
 =cut
 
 sub predicate ($;$) {
   my($self,$predicate)=@_;
   
-  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_predicate(shift->{STATEMENT}), 0)
+  return RDF::Redland::Node->_new_from_object(&RDF::Redland::CORE::librdf_statement_get_predicate(shift->{STATEMENT}), 0)
     unless $predicate;
 
-  my $rc=&Redland::librdf_statement_set_predicate($self->{STATEMENT},$predicate->{NODE});
+  my $rc=&RDF::Redland::CORE::librdf_statement_set_predicate($self->{STATEMENT},$predicate->{NODE});
   # Zap the incoming librdf node object since it is now owned by the
   # librdf statement object $self->{STATEMENT}
   $predicate->{NODE}=undef;
@@ -214,19 +214,19 @@ sub predicate ($;$) {
 
 =item object [OBJECT]
 
-Get/set the statement object.  When RDF::Node I<OBJECT> is given, sets
+Get/set the statement object.  When RDF::Redland::Node I<OBJECT> is given, sets
 the object of the statement, otherwise returns a reference to the
-statement RDF::Node object which must be copied if used elsewhere.
+statement RDF::Redland::Node object which must be copied if used elsewhere.
 
 =cut
 
 sub object ($;$) {
   my($self,$object)=@_;
 
-  return RDF::Node->_new_from_object(&Redland::librdf_statement_get_object(shift->{STATEMENT}), 0)
+  return RDF::Redland::Node->_new_from_object(&RDF::Redland::CORE::librdf_statement_get_object(shift->{STATEMENT}), 0)
     unless $object;
 
-  my $rc=&Redland::librdf_statement_set_object($self->{STATEMENT},$object->{NODE});
+  my $rc=&RDF::Redland::CORE::librdf_statement_set_object($self->{STATEMENT},$object->{NODE});
 
   # Zap the incoming librdf node object since it is now owned by the
   # librdf statement object $self->{STATEMENT}
@@ -242,7 +242,7 @@ Return the statement formatted as a string (UTF-8 encoded).
 =cut
 
 sub as_string ($) {
-  &Redland::librdf_statement_to_string(shift->{STATEMENT});
+  &RDF::Redland::CORE::librdf_statement_to_string(shift->{STATEMENT});
 }
 
 =pod
@@ -251,7 +251,7 @@ sub as_string ($) {
 
 =head1 SEE ALSO
 
-L<RDF::Node>
+L<RDF::Redland::Node>
 
 =head1 AUTHOR
 

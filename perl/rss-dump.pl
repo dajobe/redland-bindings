@@ -22,8 +22,8 @@
 
 use strict;
 
-use RDF;
-use RDF::RSS;
+use RDF::Redland;
+use RDF::Redland::RSS;
 
 my(%namespaces)=(
 # Built in modules
@@ -41,8 +41,8 @@ my(%namespaces)=(
 die <<"EOT" if @ARGV < 1 || @ARGV > 2;
 Usage: $0 <RSS URI> [BASE URI>]
 
-This program excercises the Redland Perl RDF:RSS module which supports
-the RSS 1.0 specification http://purl.org/rss/1.0/
+This program excecises the Redland Perl RDF:Redland::RSS module
+which supports the RSS 1.0 specification http://purl.org/rss/1.0/
 
 Further information on this format can be found at the RSS-Dev list
 page at http://groups.yahoo.com/group/rss-dev/
@@ -78,8 +78,8 @@ my $base_uri=$uri;
 $base_uri=$ARGV[1] if @ARGV ==2;
 
 
-my $rss=new RDF::RSS($source_uri, $base_uri);
-die "Failed to create RDF::RSS for URI $uri\n" unless $rss;
+my $rss=new RDF::Redland::RSS($source_uri, $base_uri);
+die "Failed to create RDF::Redland::RSS for URI $uri\n" unless $rss;
 
 for my $channel ($rss->channels) {
   print "Found channel with URI ",$channel->uri->as_string,"\n";
@@ -93,7 +93,7 @@ for my $channel ($rss->channels) {
       print "  $ns_label properties from $ns_prefix found:\n";
       for my $property (@props) {
 	my $value=$channel->property($property);
-	if($value->type == $RDF::Node::Type_Resource) {
+	if($value->type == $RDF::Redland::Node::Type_Resource) {
 	  print "    ",$property->uri->as_string," : URI ",$value->uri->as_string,"\n";
 	} else {
 	  print "    ",$property->uri->as_string," : ",$value->literal_value_as_latin1,"\n";
@@ -121,7 +121,7 @@ for my $channel ($rss->channels) {
 	print "    $ns_label properties from $ns_prefix found:\n";
 	for my $property (@props) {
 	  my $value=$item->property($property);
-	  if($value->type == $RDF::Node::Type_Resource) {
+	  if($value->type == $RDF::Redland::Node::Type_Resource) {
 	    print "      ",$property->uri->as_string," : URI ",$value->uri->as_string,"\n";
 	  } else {
 	    print "      ",$property->uri->as_string," : ",$value->literal_value_as_latin1,"\n";

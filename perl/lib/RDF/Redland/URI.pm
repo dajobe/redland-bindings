@@ -1,6 +1,6 @@
 # -*- Mode: Perl -*-
 #
-# RDF.pm - Redland Perl RDF URI module
+# URI.pm - Redland Perl RDF URI module
 #
 # $Id$
 #
@@ -20,7 +20,7 @@
 # 
 #
 
-package RDF::URI;
+package RDF::Redland::URI;
 
 use strict;
 
@@ -28,15 +28,15 @@ use strict;
 
 =head1 NAME
 
-RDF::URI - Redland RDF URI Class
+RDF::Redland::URI - Redland RDF URI Class
 
 =head1 SYNOPSIS
 
-  use RDF;
+  use RDF::Redland;
 
-  my $uri=new RDF::URI("http://example.com/");
+  my $uri=new RDF::Redland::URI("http://example.com/");
 
-  my $uri2=RDF::URI->new_from_uri($uri);
+  my $uri2=RDF::Redland::URI->new_from_uri($uri);
 
   print $uri2->as_string,"\n";
 
@@ -44,7 +44,7 @@ RDF::URI - Redland RDF URI Class
 
 Represents a URI as a mostly-opaque object for identifying things
 in the RDF world.  The URIs are also used for identifying features
-for the RDF::Parser class. 
+for the RDF::Redland::Parser class. 
 
 =cut
 
@@ -58,7 +58,7 @@ for the RDF::Parser class.
 
 =item new STRING
 
-Create a new RDF::URI object from a URI string.
+Create a new RDF::Redland::URI object from a URI string.
 
 =cut
 
@@ -67,9 +67,9 @@ sub new ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
 
-  warn "RDF::URI->new('$string')\n" if $RDF::Debug;
+  warn "RDF::Redland::URI->new('$string')\n" if $RDF::Redland::Debug;
 
-  $self->{URI}=&Redland::librdf_new_uri($RDF::World->{WORLD},$string);
+  $self->{URI}=&RDF::Redland::CORE::librdf_new_uri($RDF::Redland::World->{WORLD},$string);
   return undef if !$self->{URI};
 
   bless ($self, $class);
@@ -78,7 +78,7 @@ sub new ($$) {
 
 =item new_from_uri URI
 
-Create a new RDF::URI object from RDF::URI I<URI> (copy constructor)
+Create a new RDF::Redland::URI object from RDF::Redland::URI I<URI> (copy constructor)
 
 =cut
 
@@ -87,14 +87,14 @@ sub new_from_uri ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
 
-  warn "RDF::URI->new_from_uri($uri)\n" if $RDF::Debug;
+  warn "RDF::Redland::URI->new_from_uri($uri)\n" if $RDF::Redland::Debug;
 
   # If the URI is a perl URI, use the above constructor
   if (UNIVERSAL::isa($uri, 'URI::http')) {
     return new($proto, $uri->as_string);
   }
 
-  $self->{URI}=&Redland::librdf_new_uri_from_uri($uri->{URI});
+  $self->{URI}=&RDF::Redland::CORE::librdf_new_uri_from_uri($uri->{URI});
   return undef if !$self->{URI};
 
   bless ($self, $class);
@@ -107,7 +107,7 @@ sub _new_from_object ($$) {
   my $class = ref($proto) || $proto;
   my $self  = {};
 
-  warn "RDF::URI->_new_from_object from object $object\n" if $RDF::Debug;
+  warn "RDF::Redland::URI->_new_from_object from object $object\n" if $RDF::Redland::Debug;
 
   $self->{URI}=$object;
   $self->{DONT_FREE_ME}=1;
@@ -124,10 +124,10 @@ sub _new_from_object ($$) {
 
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::URI DESTROY\n" if $RDF::Debug;
+  warn "RDF::Redland::URI DESTROY\n" if $RDF::Redland::Debug;
   if($self->{URI}) {
     if(!$self->{DONT_FREE_ME}) {
-      &Redland::librdf_free_uri($self->{URI});
+      &RDF::Redland::CORE::librdf_free_uri($self->{URI});
     }
   }
 }
@@ -143,7 +143,7 @@ Return the statement formatted as a string (UTF-8 encoded).
 =cut
 
 sub as_string ($) {
-  &Redland::librdf_uri_to_string(shift->{URI});
+  &RDF::Redland::CORE::librdf_uri_to_string(shift->{URI});
 }
 
 =item equals URI
@@ -154,7 +154,7 @@ Return non zero if this uri is equal to URI
 
 sub equals ($$) {
   my($self,$uri)=@_;
-  &Redland::librdf_uri_equals($self->{URI}, $uri->{URI});
+  &RDF::Redland::CORE::librdf_uri_equals($self->{URI}, $uri->{URI});
 }
 
 =pod
@@ -163,7 +163,7 @@ sub equals ($$) {
 
 =head1 SEE ALSO
 
-L<RDF::Parser>
+L<RDF::Redland::Parser>
 
 =head1 AUTHOR
 

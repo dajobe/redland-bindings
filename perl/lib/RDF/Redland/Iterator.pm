@@ -1,6 +1,6 @@
 # -*- Mode: Perl -*-
 #
-# RDF.pm - Redland Perl RDF Iterator module
+# Iterator.pm - Redland Perl RDF Iterator module
 #
 # $Id$
 #
@@ -20,7 +20,7 @@
 # 
 #
 
-package RDF::Iterator;
+package RDF::Redland::Iterator;
 
 use strict;
 
@@ -28,11 +28,11 @@ use strict;
 
 =head1 NAME
 
-RDF::Iterator - Redland RDF Iterator Class
+RDF::Redland::Iterator - Redland RDF Iterator Class
 
 =head1 SYNOPSIS
 
-  use RDF;
+  use RDF::Redland;
 
   ...
   my $iterator=$model->targets_iterator($source_node, $arc_node);
@@ -43,14 +43,14 @@ RDF::Iterator - Redland RDF Iterator Class
 
 =head1 DESCRIPTION
 
-This class is used to return lists of RDF::Node objects from a method
-that returns an RDF::Iterator - commonly one of the
+This class is used to return lists of RDF::Redland::Node objects from a method
+that returns an RDF::Redland::Iterator - commonly one of the
 get_sources_iterator, get_targets_iterator or get_arcs_iterator
-methods of the RDF::Model class.
+methods of the RDF::Redland::Model class.
 
-This allows efficient retrieval of long lists of RDF::Node objects
+This allows efficient retrieval of long lists of RDF::Redland::Node objects
 but isn't really very Perl-friendly.  The get_sources, get_targets or
-get_arcs methods of RDF::Model class return Perl lists and the
+get_arcs methods of RDF::Redland::Model class return Perl lists and the
 get_source, get_target and get_arc methods return single arbitrary
 results.
 
@@ -63,7 +63,7 @@ results.
 =head1 CONSTRUCTORS
 
 No public constructors - are created and returned from various methods
-of classes including RDF::Model
+of classes including RDF::Redland::Model
 
 =cut
 
@@ -73,7 +73,7 @@ sub new ($$@) {
   my($proto,$object,@creators)=@_;
   return undef if !$object;
 
-  warn "RDF::Iterator->new($object,@creators)\n" if $RDF::Debug;
+  warn "RDF::Redland::Iterator->new($object,@creators)\n" if $RDF::Redland::Debug;
 
   my $class = ref($proto) || $proto;
   my $self  = {};
@@ -89,8 +89,8 @@ sub new ($$@) {
 # DESTRUCTOR
 sub DESTROY ($) {
   my $self=shift;
-  warn "RDF::Iterator DESTROY\n" if $RDF::Debug;
-  &Redland::librdf_free_iterator($self->{ITERATOR});
+  warn "RDF::Redland::Iterator DESTROY\n" if $RDF::Redland::Debug;
+  &RDF::Redland::CORE::librdf_free_iterator($self->{ITERATOR});
   $self->{CREATORS}=undef;
 }
 
@@ -106,12 +106,12 @@ Return non 0 if the iterator has finished
 =cut
 
 sub end ($) {
-  &Redland::librdf_iterator_end(shift->{ITERATOR});
+  &RDF::Redland::CORE::librdf_iterator_end(shift->{ITERATOR});
 }
 
 =item have_elements
 
-Return non 0 if the iterator has more RDF::Node objects - deprecated,
+Return non 0 if the iterator has more RDF::Redland::Node objects - deprecated,
 please use !$iterator->end instead.
 
 =cut
@@ -119,14 +119,14 @@ please use !$iterator->end instead.
 # FIXME - remove this function in future release
 use vars qw($have_elements_warning);
 sub have_elements ($) {
-  warn "RDF::Iterator::have_elements is deprecated, please use \!RDF::Iterator::end\n" 
+  warn "RDF::Redland::Iterator::have_elements is deprecated, please use \!RDF::Redland::Iterator::end\n" 
     if $have_elements_warning++ == 0;
   return !shift->end;
 }
 
 =item next
 
-Returns the next RDF::Node object from iteration or undef if
+Returns the next RDF::Redland::Node object from iteration or undef if
 the iteration is finished.
 
 =cut
@@ -135,11 +135,11 @@ sub next ($) {
   # return a new (1) node (2)owned by the librdf iterator object
   # Reasons: (1) at the user API level the iterator only returns nodes
   #          (2) the node returned is shared with the iterator
-  my $object=&Redland::librdf_iterator_get_next(shift->{ITERATOR});
+  my $object=&RDF::Redland::CORE::librdf_iterator_get_next(shift->{ITERATOR});
   return undef if !$object;
 
-  warn "RDF::Iterator::next object is $object\n" if $RDF::Debug;
-  RDF::Node->_new_from_object($object,0);
+  warn "RDF::Redland::Iterator::next object is $object\n" if $RDF::Redland::Debug;
+  RDF::Redland::Node->_new_from_object($object,0);
 }
 
 =pod
@@ -148,7 +148,7 @@ sub next ($) {
 
 =head1 SEE ALSO
 
-L<RDF::Model> and L<RDF::Node>
+L<RDF::Redland::Model> and L<RDF::Redland::Node>
 
 =head1 AUTHOR
 
