@@ -88,7 +88,13 @@
 
 	* examples/.cvsignore: ignore example tests
 
-	* Redland.cs, Serializer.cs, Statement.cs, Storage.cs, Stream.cs, Uri.cs, Util.cs, World.cs, examples/GetsTest.cs, examples/ModelGeneralTest.cs, examples/ModelTest.cs, examples/SimpleGetsTest.cs, examples/StreamTest.cs, examples/example1.cs, examples/example2.cs, examples/example3.cs, examples/example4.cs, test.cs, HashStorage.cs, IWrapper.cs, Iterator.cs, MemoryStorage.cs, Model.cs, Node.cs, Parser.cs:
+	* Redland.cs, Serializer.cs, Statement.cs, Storage.cs, Stream.cs,
+	Uri.cs, Util.cs, World.cs, examples/GetsTest.cs,
+	examples/ModelGeneralTest.cs, examples/ModelTest.cs,
+	examples/SimpleGetsTest.cs, examples/StreamTest.cs,
+	examples/example1.cs, examples/example2.cs, examples/example3.cs,
+	examples/example4.cs, test.cs, HashStorage.cs, IWrapper.cs,
+	Iterator.cs, MemoryStorage.cs, Model.cs, Node.cs, Parser.cs:
 	namespace from Rdf to Redland
 
 	* examples/example3.cs, examples/example2.cs, examples/example1.cs:
@@ -125,9 +131,9 @@
 	* Serializer.cs, Parser.cs: Use (Object)foo == null
 
 	* Statement.cs:
-	private Statement (World world, Node subject, Node predicate, Node obj):
-	Compare Node pointers for nullness as Object to prevent trying to invoke
-	null.opEquality(foo)
+	private Statement (World world, Node subject, Node predicate, Node
+	obj): Compare Node pointers for nullness as Object to prevent
+	trying to invoke null.opEquality(foo)
 
 	* Parser.cs: remove debug msg
 
@@ -207,12 +213,14 @@
 	Add install-mono, install-pnet
 
 	* Makefile.am:
-	Switch to always using ' -' options not mixture of that and ' /' options.
+	Switch to always using ' -' options not mixture of that and ' /'
+	options.
 	Added install-mono target
 
 	* examples/Makefile.am:
 	Make nunit-console.exe here (maintainer mode) and ship it.
-	Switch to always using ' -' options not mixture of that and ' /' options.
+	Switch to always using ' -' options not mixture of that and ' /'
+	options.
 
 	* examples/AssemblyInfo.cs, examples/ConsoleUi.cs:
 	nunit-console source unchanged
@@ -223,10 +231,10 @@
 
 	* examples/dc.rdf: deleted, use data copy
 
-	* Uri.cs, Storage.cs, Statement.cs, Serializer.cs, Parser.cs, Node.cs, Model.cs:
-	For P/Invoke where a string is passed in or return, switch to IntPtr
-	and manage the strings with Marshal.StringToHGlobalAuto and
-	Marshal.FreeHGlobal.
+	* Uri.cs, Storage.cs, Statement.cs, Serializer.cs, Parser.cs,
+	Node.cs, Model.cs: For P/Invoke where a string is passed in or
+	return, switch to IntPtr and manage the strings with
+	Marshal.StringToHGlobalAuto and Marshal.FreeHGlobal.
 
 	* examples/Makefile.am: more CLEANFILES
 
@@ -245,8 +253,17 @@
 
 	* Node.cs (Equals): Return false if o is null.
 
-	* examples/example2.cs, examples/example3.cs, examples/example4.cs, examples/GetsTest.cs, examples/Makefile.am, examples/ModelGeneralTest.cs, examples/ModelTest.cs, examples/SimpleGetsTest.cs, examples/StreamTest.cs, examples/TemplateTest.cs, examples/dc.rdf, examples/example1.cs, Parser.cs, README, Redland.cs, Serializer.cs, Statement.cs, Storage.cs, Stream.cs, TODO, Uri.cs, World.cs, examples/.cvsignore, test.cs, util.cs, AUTHORS, HACKING, HashStorage.cs, IWrapper.cs, Iterator.cs, LICENSE, Makefile.am, MemoryStorage.cs, Model.cs, Node.cs:
-	Imported redland-csharp by Cesar Lopez Nataren
+	* examples/example2.cs, examples/example3.cs,
+	examples/example4.cs, examples/GetsTest.cs, examples/Makefile.am,
+	examples/ModelGeneralTest.cs, examples/ModelTest.cs,
+	examples/SimpleGetsTest.cs, examples/StreamTest.cs,
+	examples/TemplateTest.cs, examples/dc.rdf, examples/example1.cs,
+	Parser.cs, README, Redland.cs, Serializer.cs, Statement.cs,
+	Storage.cs, Stream.cs, TODO, Uri.cs, World.cs,
+	examples/.cvsignore, test.cs, util.cs, AUTHORS, HACKING,
+	HashStorage.cs, IWrapper.cs, Iterator.cs, LICENSE, Makefile.am,
+	MemoryStorage.cs, Model.cs, Node.cs: Imported redland-csharp by
+	Cesar Lopez Nataren
 
 2004-05-05  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
