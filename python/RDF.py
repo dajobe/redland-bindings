@@ -47,6 +47,8 @@
 # 
 #
 
+from __future__ import generators
+
 # TODO:
 # * express failure conditions with Exceptions -- create a class hierarchy
 #   of exceptions for Redland
@@ -67,7 +69,7 @@ The Python interface to the Redland RDF library.  See
 for full details.
 
 The main class that is used is Model which represents the RDF graph
-formed from triples or Statement s.  These statements consist of
+formed from triples or Statements.  These statements consist of
 three Node objects for resource or literals and can be stored in
 a Storage (persistent or in-memory) as well as serialized to/from
 syntaxes via the Serializer or Parser classes.
@@ -77,8 +79,7 @@ syntaxes via the Serializer or Parser classes.
 import sys
 import string
 
-__all__ = [ "World",
-            "Node",
+__all__ = [ "Node",
             "Statement",
             "Model",
             "Iterator",
@@ -88,15 +89,14 @@ __all__ = [ "World",
             "MemoryStorage",
             "HashStorage",
             "Uri",
-            "Parser"]
+            "Parser",
+            "debug"]
 
-__version__ = "0.8"
+__version__ = "0.9"
 
 # For pydoc
 __date__ = '$Date$'
-__author__ = 'Dave Beckett - http://purl.org/net/dajobe'
-__credits__ = """Edd Dumbill and Matt Biddulph for properly
-                 Pythonisising my Perl translation"""
+__author__ = 'Dave Beckett - http://purl.org/net/dajobe, Edd Dumbill <edd@usefulinc.com> and Matt Biddulph <mb@picdiary.com>'
 
 # Package variables [globals]
 #   Python style says to use _ to prevent exporting
@@ -114,35 +114,36 @@ _node_types={
     'NODE_TYPE_LITERAL'   : 2,
     'NODE_TYPE_BLANK'     : 4}
 
-import Redland;
+import Redland
+
 
 class RedlandError(Exception):
-    """Redland Runtime errors"""
-    def __init__(self, value):
-        self.value = value
+  """Redland Runtime errors"""
+  def __init__(self, value):
+    self.value = value
 
-    def __str__(self):
-        return `self.value`
+  def __str__(self):
+    return `self.value`
 
 class NodeTypeError(RedlandError):
-    pass
+  pass
 
 class RedlandWarning(RedlandError):
-    pass
+  pass
 
 def node_type(name):
-    """Return the Redland node type of a node name"""
-    if _node_types.has_key(name):
-        return _node_types[name]
-    else:
-        raise NodeTypeError('Unknown node type %s' % name)
+  """Return the Redland node type of a node name"""
+  if _node_types.has_key(name):
+    return _node_types[name]
+  else:
+    raise NodeTypeError('Unknown node type %s' % name)
 
 def node_type_name(num):
-    """Return the name of a Redland node type"""
-    for n in _node_types.keys():
-        if num==_node_types[n]:
-            return n
-    raise NodeTypeError('Unknown node type number %d' % num)
+  """Return the name of a Redland node type"""
+  for n in _node_types.keys():
+    if num==_node_types[n]:
+      return n
+  raise NodeTypeError('Unknown node type number %d' % num)
 
 def message_handler (type, message):
   """Internal message dispatcher from Redland to python"""
@@ -157,7 +158,8 @@ def message_handler (type, message):
 def set_message_handler(handler):
   """Set the Redland message handler for Python.  It takes
      a single function that takes (integer, string) arguments."""
-  import Redland_python;
+  import Redland_python
+
   Redland_python.set_callback(handler)
 
 
@@ -172,8 +174,9 @@ class World(object):
     """Create new RDF World object (constructor)"""
     self._world=Redland.librdf_new_world()
     Redland.librdf_world_open(self._world)
+
     Redland.librdf_python_world_init(self._world)
-    import Redland_python;
+    import Redland_python
     Redland_python.set_callback(message_handler)
 
   def __del__(self):
@@ -186,55 +189,85 @@ class World(object):
 # end class World
 
 
-def debug(value=-1):
+def debug(value = None):
+  """Get/set Redland debugging output status.
+
+  RDF.debug (1)   # enable debugging
+  if RDF.debug(): # test for debug mode
+  """
   global _debug
-  if value >= 0:
-    _debug=value
+  if value is not None:
+      _debug = value
   else:
-    return _debug
+      return _debug
 
 
 class Node(object):
   """Redland Node (RDF Resource, Property, Literal) Class
 
     import RDF
+
     node1=RDF.Node()
-    node2=RDF.Node(uri_string="http://example.com/")
-    node3=RDF.Node(uri=RDF.Uri("http://example.com/"))
-    node4=RDF.Node(literal="Hello, World!")
+
+    node2=RDF.Node(RDF.Uri("http://example.com/"))
+    node3=RDF.Node("Hello, World!")
+
+    node4=RDF.Node(uri_string="http://example.com/")
     node5=RDF.Node(literal="<tag>content</tag>", is_wf_xml=1)
-    node5=RDF.Node(blank="abc")
-    node7=RDF.Node(node=node5)
+    node6=RDF.Node(blank="abc")
+    node7=RDF.Node(node5)
   ...
 
     print node2
     if node7.is_resource():
-      print "Resource with URI", node7.uri()
+      print "Resource with URI", node7.uri
 
     if node5.is_blank():
-      print "Resource with blank node name ", node5.get_blank_identifier()
+      print "Resource with blank node name ", node5.blank_identifier
 
   """
 
-  def __init__(self, **args):
+  def __init__(self, arg = None, **args):
     """Create an RDF Node (constructor).
 
-Creates a new RDF Node using the following fields:
-  uri_string  - create a resource node from a string URI
-  uri         - create a resource node from a URI object
-  literal     - create a literal node from a literal string   
-    datatype     - the datatype URI
-    is_wf_xml    - the literal is XML (alternative to datatype)
-    xml_language - the literal XML language
-  blank       - create a resource node from with a blank node identiifer
-  node        - copy a node
+    Resource or Property node creation:
 
+      n1 = Node(Uri("http://example.com/foo"))
+
+    String literal node creation (see below for more complex
+    ways of building literals.)
+
+      n2 = Node("foo")
+
+    Node copying:
+
+      n3 = Node(n1)
+
+    Or create a new RDF Node using the following named parameters:
+
+      uri_string  - create a resource node from a string URI
+      uri         - create a resource node from a URI object
+      literal     - create a literal node from a literal string   
+        datatype     - the datatype URI
+        is_wf_xml    - the literal is XML (alternative to datatype)
+        xml_language - the literal XML language
+      blank       - create a resource node from with a blank node identiifer
+      node        - copy a node
     """
+
     global _world
     global _debug
     if _debug:
       print "Creating RDF.Node args=",args
     self._node=None
+
+    if arg is not None:
+      if type(arg) is str:
+        args['literal'] = arg
+      elif type(arg) is Uri:
+        args['uri'] = arg
+      elif type(arg) is Node:
+        args['node'] = arg
 
     if args.has_key('uri_string'):
       self._node=Redland.librdf_new_node_from_uri_string(_world._world,
@@ -243,7 +276,8 @@ Creates a new RDF Node using the following fields:
     elif args.has_key('uri'):
       # no need to copy the underlying uri as the redland C api does
       # this on node construction
-      self._node=Redland.librdf_new_node_from_uri(args['uri']._reduri)
+      self._node = Redland.librdf_new_node_from_uri(_world._world,
+              args['uri']._reduri)
 
     elif args.has_key('literal'):
       if args.has_key('xml_language'):
@@ -276,6 +310,9 @@ Creates a new RDF Node using the following fields:
     else:
       self._node=Redland.librdf_new_node(_world._world)
 
+    if self._node is None:
+        raise RedlandError("Node construction failed")
+
   def __del__(self):
     """Free an RDF Node (destructor)."""
     global _debug    
@@ -288,20 +325,22 @@ Creates a new RDF Node using the following fields:
 
   def _get_uri(self):
     # we return a copy of our internal uri
-    if self._get_type()==node_type('NODE_TYPE_RESOURCE'):
-        return Uri(from_object=Redland.librdf_node_get_uri(self._node))
+    if self.is_resource():
+      return Uri(from_object=Redland.librdf_node_get_uri(self._node))
     else:
-        raise NodeTypeError("Can't get URI for node type %s (%d)" % \
-            (node_type_name(self._get_type()), self._get_type()))
+      raise NodeTypeError("Can't get URI for node type %s (%d)" % \
+                          (node_type_name(self.type), self.type))
 
   def _get_type(self):
     return Redland.librdf_node_get_type(self._node)
 
-  uri = property (_get_uri)
-  type = property (_get_type)
+  uri = property(_get_uri, doc = "The URI of a resource node")
+  type = property(_get_type, doc = "The node type, an integer")
 
-  def get_literal_value (self):
-    """Get a dictionary containing the value of the Node literal"""
+  def _get_literal_value (self):
+    if not self.is_literal():
+      raise NodeTypeError("Can't get literal value for node type %s (%d)" % \
+            (node_type_name(self.type), self.type))
     dt_uri=Redland.librdf_node_get_literal_value_datatype_uri(self._node)
     if dt_uri:
       dt_uri=Uri(uri_string=Redland.librdf_uri_to_string(dt_uri))
@@ -312,36 +351,42 @@ Creates a new RDF Node using the following fields:
         }
     return val
 
-  def get_blank_identifier(self):
-    """Get the blank node identifier of the Node"""
-    if self.type != _node_types['NODE_TYPE_BLANK']:
-      return ""
+  literal_value = property(_get_literal_value,
+          doc = "A dictionary containing the value of the node literal")
+
+  def _get_blank_identifier(self):
+    if not self.is_blank():
+      raise NodeTypeError("Can't get blank identifier for node type %s (%d)" % \
+            (node_type_name(self.type), self.type))
     else:
       return Redland.librdf_node_get_blank_identifier(self._node)
 
+  blank_identifier = property(_get_blank_identifier, 
+          doc = "The node identifier of a blank node")
+
   def __str__(self):
     """Get a string representation of an RDF Node."""
-    if self._node == None:
-        return ""
+    if self._node is None:
+      raise RedlandError("Node is invalid") 
     else:
-        return Redland.librdf_node_to_string(self._node)
+      return Redland.librdf_node_to_string(self._node)
 
-  def __eq__ (self,other):
+  def __eq__(self,other):
     """Equality of an RDF Node compared to another RDF Node."""
-    if type(other)==type(None):
-        if type(self)==type(None):
-            return 1
-        else:
-            return 0
+    if other is None:
+      if self is None:
+        return 1
+      else:
+        return 0
     return (Redland.librdf_node_equals(self._node, other._node) != 0)
 
-  def __ne__ (self,other):
+  def __ne__(self,other):
     """Inequality of an RDF Node compared to another RDF Node."""
-    if type(other)==type(None):
-        if type(self)==type(None):
-            return 0
-        else:
-            return 1
+    if other is None:
+      if self is None:
+        return 0
+      else:
+        return 1
     return (Redland.librdf_node_equals(self._node, other._node) == 0)
 
   def __hash__(self):
@@ -363,81 +408,78 @@ Creates a new RDF Node using the following fields:
 
 
 class Statement(object):
-  """Redland Statement (triple) class
+  """Redland Statement (triple) class.  The main means of manipulating
+  statements is by the subject, predicate and object properties.
 
     import RDF
-    statement1=RDF.Statement(subject=node1, predicate=node2, object=node3)
-    statement2=RDF.Statement(statement=statement1)
+    statement1 = RDF.Statement(node1, node2, node3)
+    statement2 = RDF.Statement(statement = statement1)
 
-    if statement2.subject.is_resource:
+    if statement2.subject.is_resource():
       print "statement2 subject is URI ",statement2.subject.uri
 
-    Statements can also be used as if they are Python lists:
-
-    for statement in parser.parse_as_stream(source):
-      model.add_statement(statement)
-
-    for statement in model.find_statements(s):
-      print statement
-
-    If you need the context, use the context_iter() method which
-    returns a 2-tuple of (statement, context node):
-
-    for s,c in m.find_statements(s):
-      print c
-
-    
+    statement.object = Node("hello, world")
   """
 
-  def __init__(self, **args):
-    """Create an RDF Statement (constructor).
+  def __init__(self, subject = None, predicate = None,
+          object = None, **args):
+    """Constructor for Statement.
 
-Creates a new RDF Statement from either of the two forms:
+    Create a Statement from three Node objects.
 
-    s1=RDF.Statement(subject=node1, predicate=node2, object=node3)
-Create a Statement from three Node objects.
+        s1 = RDF.Statement(subjnode, prednode, objnode)
 
-    s2=RDF.Statement(statement=s1)
-Copy an existing Statement s1.
+    A Node argument can be replaced with Uri or string to
+    shortcut Node creation.
 
+        s2 = RDF.Statement(Uri("http://foo"), Uri("http://bar"), "baz")
+
+    Copy an existing Statement s1.
+
+        s3 = RDF.Statement(statement=s1)
     """
     global _world
     global _debug    
     if _debug:
       print "Creating RDF.Statement object args",args
-    self._statement=None
+
+    self._statement = None
 
     if args.has_key('statement'):
-        self._statement=Redland.librdf_new_statement_from_statement(
-            args['statement']._statement)
-
-    elif args.has_key('subject'):
-        subject=args['subject']
-        predicate=args['predicate']
-        object=args['object']
-
-        if subject==None:
-            s=None
-        else:
-            s=Redland.librdf_new_node_from_node(subject._node)
-
-        if predicate==None:
-            p=None
-        else:
-            p=Redland.librdf_new_node_from_node(predicate._node)
-
-        if object==None:
-            o=None
-        else:
-            o=Redland.librdf_new_node_from_node(object._node)
-
-        self._statement=Redland.librdf_new_statement_from_nodes(
-            _world._world, s, p, o)
+      self._statement=Redland.librdf_new_statement_from_statement(
+          args['statement']._statement)
 
     elif args.has_key('from_object'):
-      self._statement=Redland.librdf_new_statement_from_statement(args['from_object'])
+      self._statement = Redland.librdf_new_statement_from_statement(
+          args['from_object'])
+
     else:
-      self._statement=Redland.librdf_new_statement(_world._world)
+      if subject is None:
+        s = None
+      else:
+        if type(subject) is Uri or type(subject) is str:
+          subject = Node(subject)
+        s = Redland.librdf_new_node_from_node(subject._node)
+
+      if predicate is None:
+        p = None
+      else:
+        if type(predicate) is Uri or type(predicate) is str:
+          predicate = Node(predicate)
+        p = Redland.librdf_new_node_from_node(predicate._node)
+
+      if object is None:
+        o = None
+      else:
+        if type(object) is Uri or type(object) is str:
+          object = Node(object)
+        o = Redland.librdf_new_node_from_node(object._node)
+
+      self._statement=Redland.librdf_new_statement_from_nodes(
+          _world._world, s, p, o)
+
+    if self._statement is None:
+        raise RedlandError("Statement construction failed")
 
   def __del__(self):
     global _debug    
@@ -453,85 +495,107 @@ Copy an existing Statement s1.
 
   def _get_subject(self):
     return self._wrap_node(
-        Redland.librdf_statement_get_subject(self._statement))
+      Redland.librdf_statement_get_subject(self._statement))
 
   def _get_object(self):
     return self._wrap_node(
-        Redland.librdf_statement_get_object(self._statement))
+      Redland.librdf_statement_get_object(self._statement))
 
   def _get_predicate(self):
     return self._wrap_node(
-        Redland.librdf_statement_get_predicate(self._statement))
+      Redland.librdf_statement_get_predicate(self._statement))
 
   def _set_subject(self, value):
-    if value==None:
-        Redland.librdf_statement_set_subject(self._statement, None)
+    if value is None:
+      Redland.librdf_statement_set_subject(self._statement, None)
     else:
-        Redland.librdf_statement_set_subject(self._statement,
-            Redland.librdf_new_node_from_node(value._node))
+      Redland.librdf_statement_set_subject(self._statement,
+          Redland.librdf_new_node_from_node(value._node))
 
   def _set_object(self, value):
-    if value==None:
-        Redland.librdf_statement_set_object(self._statement, None)
+    if value is None:
+      Redland.librdf_statement_set_object(self._statement, None)
     else:
-        Redland.librdf_statement_set_object(self._statement,
-            Redland.librdf_new_node_from_node(value._node))
+      Redland.librdf_statement_set_object(self._statement,
+          Redland.librdf_new_node_from_node(value._node))
 
   def _set_predicate(self, value):
-    if value==None:
-        Redland.librdf_statement_set_predicate(self._statement, None)
+    if value is None:
+      Redland.librdf_statement_set_predicate(self._statement, None)
     else:
-        Redland.librdf_statement_set_predicate(self._statement,
-            Redland.librdf_new_node_from_node(value._node))
+      Redland.librdf_statement_set_predicate(self._statement,
+          Redland.librdf_new_node_from_node(value._node))
 
-  object = property (_get_object, _set_object)
-  subject = property (_get_subject, _set_subject)
-  predicate = property (_get_predicate, _set_predicate)
+  object = property(_get_object, _set_object, 
+          doc = "The object node of the statement.")
+  subject = property(_get_subject, _set_subject, 
+          doc = "The subject node of the statement.")
+  predicate = property(_get_predicate, _set_predicate,
+          doc = "The predicate node of the statement.")
   
-  def __str__ (self):
-    if self._statement == None:
-        return ""
+  def __str__(self):
+    if self._statement is None:
+      raise RedlandError("Statement is invalid")
     else:
-        return Redland.librdf_statement_to_string(self._statement)
+      return Redland.librdf_statement_to_string(self._statement)
 
 # end class Statement
+
 
 class Model(object):
   """Redland Graph class
 
     import RDF
-    m1=RDF.Model(storage=s)
+    model = RDF.Model(storage)
 
   The main interface to the Redland RDF graph (formed from triples, or
   RDF statements).  There are many methods for adding, removing, querying
   statements and serializing them to/from syntaxes using the Serializer
   or Parser classes.
 
-  Models can also be used as Python lists to give every triple in the
-  model (via the serialise() method):
+  Models can also be used as Python sequences to give every triple in the
+  model:
 
-  for statement in model:
-    print statement
+    for statement in model:
+      print statement
+
+  Models have other aspects of sequence types.  The following also works:
+
+    if statement in model:            # do whatever
+    if (statement, context) in model: # do whatever
+
+    del model[statement]              # remove statement from model
+    del model[statement, context]     # ditto for context-aware model
+
+    model.append(statement)           # append a statement
+    model.append(statement, context)  # append statement with context
+
+    num_items = len(model) # get number of statements in the model
+                           # works only with countable storages
+    
 
   """
 
-  def __init__(self, storage=None, **args):
+  def __init__(self, storage = None, **args):
     """Create an RDF Model (constructor).
 
-Create a new RDF Model using any of these forms
-
-  m1=RDF.Model(storage=s1)
 Create a Model from an existing Storage (most common use).  
-Optional fields:
+
+Optional parameters:
+
   options_string - A string of options for the Model
   options_hash   - A Hash of options for the Model
 
-  m2=RDF.Model(model=m1)
+  m1 = RDF.Model(s1)
+  m1 = RDF.Model(storage = s1)
+
 Copy an existing model m1, copying the underlying Storage of m1
 
-  m3=RDF.Model()
-Create a model using an in memory storage.
+  m2 = RDF.Model(model = m1)
 
+Create a model using an in-memory storage.
+
+  m3 = RDF.Model()
     """
     global _world
     global _debug    
@@ -555,15 +619,15 @@ Create a model using an in memory storage.
     else:
       self._model=Redland.librdf_new_model(_world._world, storage._storage, "")
 
-    if self._model == "NULL" or self._model == None:
+    if self._model is None or self._model == "NULL":
       self._model=None
-      raise "new RDF.Model failed"
+      raise RedlandError("Creating new Model failed")
     else:
       # keep a reference around so storage object is destroyed after this
       self._storage=storage
 
   def __iter__(self):
-    return self.serialise().__iter__()
+    return self.as_stream()
 
   def __del__(self):
     global _debug    
@@ -573,195 +637,321 @@ Create a model using an in memory storage.
       Redland.librdf_free_model(self._model)
 
   def __len__(self):
-    return self.size()
+    s = self.size()
+    if s < 0:
+      raise RedlandError("Attempt to get size when using non-countable storage.")
+    return s
 
   def size(self):
-    """Return the size of the Model in number of statements (<0 if not countabl)"""
+    """Return the size of the Model in number of statements.
+       Returns a value < 0 if number of statements not countable."""
     return Redland.librdf_model_size(self._model)
 
   def add(self,subject,predicate,object):
-    """Add the statement (subject,predicate,object) to the model"""
+    """Add the statement (subject,predicate,object) to the model.
+    DEPRECATED. Use Model.append(Statement(s,p,o)) instead."""
+    # the reason to deprecate this method is that the Node constructors
+    # will do a lot more checking.  This wanton calling of underlying
+    # C methods is a recipe for unexplained core dumps if any of the
+    # nodes are null or invalid.
     return Redland.librdf_model_add(self._model, 
         Redland.librdf_new_node_from_node(subject._node),
         Redland.librdf_new_node_from_node(predicate._node),
         Redland.librdf_new_node_from_node(object._node));
 
-  def add_typed_literal_statement (self,subject,predicate,
-                                   string,xml_language=None,datatype=None):
+  def add_typed_literal_statement(self,subject,predicate,
+                                  string,xml_language=None,datatype=None):
     """Add the Statement (subject,predicate, typed literal) to the Model
        where the typed literal is constructed from the
-       literal string, optional XML language and optional datatype URI."""
-    if datatype !=None:
-        datatype=datatype._reduri
-    subject_copy=Redland.librdf_new_node_from_node(subject._node)
-    predicate_copy=Redland.librdf_new_node_from_node(predicate._node)
+       literal string, optional XML language and optional datatype URI.
+       DEPRECATED. Use Model.append(Statement(s,p,o)) instead."""
+    # the reason to deprecate this method is that the Node constructors
+    # will do a lot more checking.  This wanton calling of underlying
+    # C methods is a recipe for unexplained core dumps if any of the
+    # nodes are null or invalid.
+    if datatype is not None:
+      datatype = datatype._reduri
+    subject_copy = Redland.librdf_new_node_from_node(subject._node)
+    predicate_copy = Redland.librdf_new_node_from_node(predicate._node)
     return Redland.librdf_model_add_typed_literal_statement(self._model,
         subject_copy, predicate_copy, string, xml_language, datatype)
 
-  def add_statement (self,statement,context=None):
-    """Add the Statement to the Model with optional context Node"""
+  def add_statement(self,statement,context=None):
+    """Add the Statement to the Model with optional context Node.
+    For Python idiom you should use Model.append() instead, which does
+    the same thing."""
     # adding a statement means it gets *copied* into the model
     # we are free to re-use the statement after adding it
-    if context != None:
+    if context is not None:
       return Redland.librdf_model_context_add_statement(self._model,
-                                                        context._node,
-                                                        statement._statement)
+              context._node, statement._statement)
     else:
       return Redland.librdf_model_add_statement(self._model,
                                                 statement._statement)
 
-  def add_statements (self,statement_stream,context=None):
-    """Add the Stream of Statements to the Model with the optional context Node"""
-    if context != None:
+  def add_statements(self,statement_stream,context=None):
+    """Add the Stream of Statements to the Model with the optional
+    context Node"""
+    if context is not None:
       return Redland.librdf_model_context_add_statements(self._model,
-                                                         context._node,
-                                                         statement_stream._stream)
+              context._node, statement_stream._stream)
     else:
       return Redland.librdf_model_add_statements(self._model,
                                                  statement_stream.stream)
 
-  def remove_statement (self,statement,context=None):
-    """Remove the Statement from the Model with the optional context Node"""
-    if context != None:
+  def append(self, statement, context = None):
+      """Append a Statement to the Model, with optional context Node.
+      
+        model.append(Statement(s, p, o)"""
+      self.add_statement(statement, context)
+
+  def remove_statement(self, statement, context = None):
+    """Remove the Statement from the Model with the optional context Node.
+    This is used by the __delitem__ method.  Preferred way of removing a
+    Statement is:
+        
+        del model[statement]
+        del model[statement, context]
+    """
+    if context is not None:
       return Redland.librdf_model_context_remove_statement(self._model,
-                                                           context._node,
-                                                           statement._statement)
+              context._node, statement._statement)
     else:
       return Redland.librdf_model_remove_statement(self._model,
                                                    statement._statement)
 
-  def context_remove_statements (self,context):
-    """Remove all Statement s from the Model with the given context Node"""
-    return Redland.librdf_model_context_remove_statements(self._model,
-                                                          context._node),
+  def __delitem__(self, arg):
+    if type(arg) is tuple:
+      try:
+        (s, c) = arg
+        self.remove_statement(s, c)
+      except ValueError:
+        raise TypeError("can only del statement or (statement,context) tuple")
+    else:
+        self.remove_statement(arg)
 
-  def contains_statement (self,statement):
+  def remove_statements_with_context(self, context):
+    """Remove all Statements from the Model with the given context Node"""
+    return Redland.librdf_model_context_remove_statements(self._model,
+                                                          context._node)
+
+  context_remove_statements = remove_statements_with_context
+
+  def contains_statement(self, statement):
     """Return true if the Statement is in the Model"""
     return Redland.librdf_model_contains_statement(self._model,
         statement._statement)
 
-  def serialise (self,context=None):
-    """Return the Model as a Stream of Statements"""
-    if context is None:
-        my_stream=Redland.librdf_model_serialise(self._model)
+  def contains_statement_context(self, statement, context):
+    """Return true if the Statement is in the Model with the specified
+    context.  Note that the implementation is pretty inefficient."""
+    for (s, c) in self.find_statements_context(statement):
+      if c == context:
+        return 1
+    return 0
+
+  def __contains__(self, arg):
+    # provided here for efficiency, otherwise Python
+    # would iterate through the contents of the model
+    if type(arg) is tuple:
+      try:
+        (s, c) = arg
+        return self.contains_statement_context(s, c)
+      except ValueError:
+        raise TypeError("requires statement or (statement,context) tuple")
     else:
-        my_stream=Redland.librdf_model_context_serialize(self._model,context._node)
-    return Stream(my_stream,self)
+      return self.contains_statement(arg)
 
-  def find_statements (self,statement):
-    """Return a Stream of Statements matching the given
-       partial Statement - the missing nodes of the
-       partial statement match any node in the Model."""
-    my_stream=Redland.librdf_model_find_statements(self._model,
-        statement._statement)
-    return Stream(my_stream,self)
 
-  def sources (self,arc,target):
+  def as_stream(self, context = None):
+    """Return the Model as a Stream of Statements.  No need to use
+    this explicitly, instead do:
+        
+        for statement in model:
+            # process statement
+    """
+    if context is None:
+      my_stream = Redland.librdf_model_serialise(self._model)
+    else:
+      my_stream = Redland.librdf_model_context_serialize(self._model,
+                                                         context._node)
+    return Stream(my_stream, self)
+
+  serialise = as_stream
+
+  def as_stream_context(self, context = None):
+    """Return the Model as a Stream of (statement, context) tuples.
+        
+        for (s, c) in model.as_stream_context():
+            # do whatever
+
+       Specify the optional argument context if you want to hardwire
+       the stream's context.
+    """
+    return StreamWithContextIter(self.as_stream(context))
+
+  def find_statements(self,statement):
+    """Return a Stream of Statements matching the given Statement --
+       any nodes with value None of the statement match any Node in
+       the Model.
+       
+       qs = RDF.Statement(subject = None,
+           predicate = RDF.Node(uri_string = "http://example.com/pred"),
+           object = None)
+       for statement in model.find_statements(qs):
+           # do whatever
+       
+    """
+    my_stream = Redland.librdf_model_find_statements(self._model,
+                                                     statement._statement)
+    return Stream(my_stream, self)
+
+  def find_statements_context(self,statement):
+    """Return a Stream of Statements with context, matching the given
+       Statement -- any nodes with value None of the statement match
+       any Node in the Model.
+       
+       qs = RDF.Statement(subject = None,
+           predicate = RDF.Node(uri_string = "http://example.com/pred"),
+           object = None)
+       for (statement, context) in model.find_statements_context(qs):
+           # do whatever
+     """
+    return StreamWithContextIter(self.find_statements(statement))
+
+  def get_sources(self, predicate, target):
     """Return a sequence of Node s that are the source
-       of Statements in the Model matching (?, arc, target)."""
-    my_iterator=Redland.librdf_model_get_sources(self._model, arc._node,
-        target._node)
+       of Statements in the Model matching (?, predicate, target).
+
+       Instead of specifying a Node for predicate, you can shortcut with
+       a Uri, and with a Uri or string for target.
+
+       e.g.
+         model.get_sources(Uri("http://example.com/name"), "Fred")
+    """
+    if type(predicate) is Uri:
+      predicate = Node(predicate)
+    if type(target) is Uri or type(target) is str:
+      target = Node(target)
+
+    my_iterator = Redland.librdf_model_get_sources(self._model,
+                                                   predicate._node,
+                                                   target._node)
     if my_iterator is None:
-      return []
+      raise RedlandError("Unable to create iterator")
 
-    user_iterator=Iterator(my_iterator,self,arc,target)
-    if user_iterator is None:
-      return []
+    return Iterator(my_iterator, self, predicate, target)
 
-    results=[]
-    while not user_iterator.end():
-      results.append(user_iterator.current())
-      user_iterator.next()
+  sources = get_sources
 
-    user_iterator=None
-    return results
+  def get_sources_context(self, predicate, target):
+    """As for Model.get_sources but returns a list of 
+    (statement, context) tuples."""
+    return IteratorWithContextIter(self.get_sources(predicate, target))
 
-  def arcs (self,source,target):
-    """Return a sequence of Node s that are the arcs
-       of Statements in the Model matching (source, ?, target)."""
-    my_iterator=Redland.librdf_model_get_arcs(self._model, source._node,
-        target._node)
-    if my_iterator is None:
-      return []
-
-    user_iterator=Iterator(my_iterator,self,source,target)
-    if user_iterator is None:
-      return []
-
-    results=[]
-    while not user_iterator.end():
-      results.append(user_iterator.current())
-      user_iterator.next()
-
-    user_iterator=None
-    return results
-
-  def targets (self,source,arc):
-    """Return a sequence of Node s that are the targets
-       of Statements in the Model matching (source, arc, ?)."""
-    my_iterator=Redland.librdf_model_get_targets(self._model, source._node,
-        arc._node)
-    if my_iterator is None:
-      return []
-
-    user_iterator=Iterator(my_iterator,self,source,arc)
-    if user_iterator is None:
-      return []
-
-    results=[]
-    while not user_iterator.end():
-      results.append(user_iterator.current())
-      user_iterator.next()
-
-    user_iterator=None
-    return results
-
-  def get_sources_iterator (self,arc,target):
-    """Return an Iterator of Node s that are the sources
-       of Statements in the Model matching (?, arc, target).
-       The sources method is recommended in preference to this."""
-    my_iterator=Redland.librdf_model_get_sources(self._model, arc._node,
-        target._node)
-    return Iterator(my_iterator,self,arc,target)
-
-  def get_arcs_iterator (self,source,target):
-    """Return an Iterator of Node s that are the arcs
+  def get_predicates(self,source,target):
+    """Return a sequence of Nodes that are the predicates
        of Statements in the Model matching (source, ?, target).
-       The arcs method is recommended in preference to this."""
+       
+       Instead of specifying a Node for source, you can shortcut with
+       a Uri, and with a Uri or string for target.
+       
+       e.g.
+         model.get_predicates(Uri("http://example.com/me"), "Fred")
+    """
+    if type(source) is Uri:
+      source = Node(source)
+    if type(target) is Uri or type(target) is str:
+      target = Node(target)
+
     my_iterator=Redland.librdf_model_get_arcs(self._model, source._node,
-        target._node)
+                                              target._node)
+    if my_iterator is None:
+      raise RedlandError("Unable to create iterator")
+
     return Iterator(my_iterator,self,source,target)
 
-  def get_targets_iterator (self,source,arc):
-    """Return an Iterator of Node s that are the targets
-       of Statements in the Model matching (source, arc, ?).
-       The targets method is recommended in preference to this."""
-    my_iterator=Redland.librdf_model_get_targets(self._model, source._node,
-        arc._node)
-    return Iterator(my_iterator,self,source,arc)
+  arcs = get_predicates
+  get_arcs = get_predicates
+  predicates = get_predicates
 
-  def get_source (self,arc,target):
-    """Return one Node in the Model matching (?, arc, target)."""
-    my_node=Redland.librdf_model_get_source(self._model, arc._node,
-        target._node)
+  def get_predicates_context(self, source, target):
+    """As for Model.get_predicates but returns a list of 
+    (statement, context) tuples."""
+    return IteratorWithContextIter(self.get_predicates(source, target))
+
+  def get_targets(self, source, predicate):
+    """Return a sequence of Nodes that are the targets
+       of Statements in the Model matching (source, predicate, ?).
+       
+       Instead of specifying a Node for source or predicate, you
+       can shortcut with a Uri.
+       
+       e.g.
+
+         model.get_targets(Uri("http://example.com/me"), prednode)
+    """
+    if type(source) is Uri:
+      source = Node(source)
+    if type(predicate) is Uri:
+      predicate = Node(predicate)
+
+    my_iterator = Redland.librdf_model_get_targets(self._model, source._node,
+                                                   predicate._node)
+    if my_iterator is None:
+      raise RedlandError("Unable to create iterator")
+
+    return Iterator(my_iterator,self,source,predicate)
+
+  targets = get_targets
+
+  def get_targets_context(self, source, predicate):
+    """As for Model.get_targets but returns a list of 
+    (statement, context) tuples."""
+    return IteratorWithContextIter(self.get_targets(source, predicate))
+
+  def get_source(self, predicate, target):
+    """Return one Node in the Model matching (?, predicate, target).
+    The predicate can be a Node or Uri, the target a Node, Uri or string."""
+    if type(predicate) is Uri:
+      predicate = Node(predicate)
+    if type(target) is Uri or type(target) is str:
+      target = Node(target)
+
+    my_node=Redland.librdf_model_get_source(self._model, predicate._node,
+                                            target._node)
     if not my_node:
       return None
     else:
       return Node(from_object=my_node, do_not_copy=1)
 
-  def get_arc (self,source,target):
-    """Return one Node in the Model matching (source, ?, target)."""
+  def get_predicate(self,source,target):
+    """Return one Node in the Model matching (source, ?, target).
+    The source can be a Node or Uri, the target a Node, Uri or string."""
+    if type(source) is Uri:
+      source = Node(source)
+    if type(target) is Uri or type(target) is str:
+      target = Node(target)
+
     my_node=Redland.librdf_model_get_arc(self._model, source._node,
-        target._node)
+                                         target._node)
     if not my_node:
       return None
     else:
       return Node(from_object=my_node, do_not_copy=1)
 
-  def get_target (self,source,arc):
-    """Return one Node in the Model matching (source, arc, ?)."""
+  get_arc = get_predicate
+
+  def get_target(self, source, predicate):
+    """Return one Node in the Model matching (source, predicate, ?).
+    The source and predicate can be a Node or Uri."""
+    if type(source) is Uri:
+      source = Node(source)
+    if type(predicate) is Uri:
+      predicate = Node(predicate)
+
     my_node=Redland.librdf_model_get_target(self._model, source._node,
-        arc._node)
+                                            predicate._node)
     if not my_node:
       return None
     else:
@@ -788,7 +978,7 @@ class Iterator(object):
          iterator.next()
        iterator=None
 
-     """
+  """
 
   def __init__(self,object,creator1=None,creator2=None,creator3=None):
     """Create an RDF Iterator (constructor)."""
@@ -802,22 +992,25 @@ class Iterator(object):
     self._creator2=creator2
     self._creator3=creator3
 
+  def __iter__(self):
+    return IteratorIter(self)  
+
   def __del__(self):
     global _debug    
     if _debug:
       print "Destroying RDF.Iterator"
     Redland.librdf_free_iterator(self._iterator)
 
-  def end (self):
+  def end(self):
     """Return true if the iterator is exhausted"""
     return Redland.librdf_iterator_end(self._iterator)
 
-  def have_elements (self):
+  def have_elements(self):
     print """RDF.Iterator method have_elements is deprecated,
 please use 'not iterator.end' instead."""
     return Redland.librdf_iterator_have_elements(self._iterator)
 
-  def current (self):
+  def current(self):
     """Return the current object on the Iterator"""
     my_node=Redland.librdf_iterator_get_object(self._iterator)
     if my_node == "NULL" or my_node == None:
@@ -825,11 +1018,11 @@ please use 'not iterator.end' instead."""
 
     return Node(from_object=my_node)
 
-  def next (self):
+  def next(self):
     """Move to the next object on the Iterator"""
     Redland.librdf_iterator_next(self._iterator)
 
-  def context (self):
+  def context(self):
     """Return the context Node of the current object on the Iterator"""
     my_node=Redland.librdf_iterator_get_context(self._iterator)
     if my_node == "NULL" or my_node == None:
@@ -857,7 +1050,7 @@ class StreamWithContextIter(object):
       self.stream.next()
     if self.stream is None or self.stream.end():
       raise StopIteration
-    return (self.stream.current(),self.stream.context())
+    return (self.stream.current(), self.stream.context())
 
 class IteratorWithContextIter(object):
   def __init__(self,iterator):
@@ -878,9 +1071,9 @@ class IteratorWithContextIter(object):
     if self.iterator is None or self.iterator.end():
       raise StopIteration
     try:
-      return (self.iterator.current(),self.iterator.context())
+      return (self.iterator.current(), self.iterator.context())
     except AttributeError:
-      return (self.iterator.current(),None)
+      return (self.iterator.current(), None)
 
 class IteratorIter(object):
   def __init__(self,iterator):
@@ -925,29 +1118,25 @@ class StreamIter:
 class Stream(object):
   """Redland Statement Stream class
 
-     A class for iterating over a sequence of Statement s such as
-     those returned from a Model query.  Some methods return
-     Statement s or Python sequences.  If this is used, it works
-     as follows:
+     A class encapsulating a sequence of Statements, such as
+     those returned from a Model query.  Can be used as a Python
+     sequence.
+     
+     stream = model.find_statements(query_statement)
+     for statement in stream:
+        # do whatever with 'statement'
+        # note it is shared and will go out of scope, so you must
+        # copy it if you want it to stay around
 
-       stream=model.serialise()
-       while not stream.end():
-         # get the current Statement
-         statement=stream.current()
-         # do something with it
-         # (it is shared; you must copy it you want to keep it)
-         ...
-         stream.next()
-       stream=None
-
-     """
+     You should not normally find yourself needing to use this
+     class explicitly.
+   """
 
   def __init__(self, object, creator):
     """Create an RDF Stream (constructor)."""
     global _debug    
     if _debug:
-      print "Creating RDF.Stream for object",object, \
-        "creator",creator
+      print "Creating RDF.Stream for object",object, "creator",creator
 
     self._stream=object;
 
@@ -956,8 +1145,11 @@ class Stream(object):
     self.creator=creator;
 
   def context_iter(self):
-    """Return an iterator over this tstream that
-       returns (stream, context) tuples each time it is iterated."""
+    """Return an iterator over this stream that
+       returns (stream, context) tuples each time it is iterated.
+       DEPRECATED.  Instead use the context-aware method appropriate,
+       e.g.  Model.find_statements_context() or Model.as_stream_context()
+       """
     return StreamWithContextIter(self)
 
   def __iter__(self):
@@ -970,13 +1162,13 @@ class Stream(object):
     if self._stream:
       Redland.librdf_free_stream(self._stream)
 
-  def end (self):
+  def end(self):
     """Return true if the stream is exhausted"""
     if not self._stream:
       return 1
     return Redland.librdf_stream_end(self._stream)
 
-  def current (self):
+  def current(self):
     """Return the current Statement on the Stream"""
     if not self._stream:
       return None
@@ -986,14 +1178,14 @@ class Stream(object):
       return None
     return Statement(from_object=my_statement)
 
-  def next (self):
+  def next(self):
     """Move to the next Statement on the Stream"""
     if not self._stream:
       return 1
 
     return Redland.librdf_stream_next(self._stream)
 
-  def context (self):
+  def context(self):
     """Return the context Node of the current object on the Stream"""
     if not self._stream:
       return 1
@@ -1014,9 +1206,12 @@ class Storage(object):
      import RDF
      storage=RDF.Storage(storage_name="memory")
 
-  The Redland abstraction for storing RDF graphs as Statement s.
+  The Redland abstraction for storing RDF graphs as Statements.
 
   There are no user methods (can only be constructed).
+
+  You should normally use a specialized class such as MemoryStorage or
+  HashStorage in preference to this class.
 
   """
 
@@ -1044,7 +1239,7 @@ The other form is:
   s2=RDF.Storage(storage=s1)
 Copy an existing Storage s1.
 
-"""
+    """
     global _world
     global _debug    
     if _debug:
@@ -1060,11 +1255,11 @@ Copy an existing Storage s1.
       self._storage=Redland.librdf_new_storage_from_storage(
           args['storage']._storage);
     else:
-      raise "new RDF.Storage failed - illegal arguments"
+      raise RedlandError("Creating Storage failed - illegal arguments")
 
     if self._storage == "NULL" or self._storage == None:
       self._storage=None
-      raise "new RDF.Storage failed"
+      raise RedlandError("Creating Storage failed")
 
   def __del__(self):
     global _debug    
@@ -1085,8 +1280,9 @@ class HashStorage(Storage):
   Class of hashed Storage for a particular type of hash (typically
   hash-type is "memory" or "bdb") and any other options.
   """
-  def __init__(self,hash_name,options):
-    return Storage.__init__(self,name=hash_name,storage_name="hashes",options_string=options)
+  def __init__(self, hash_name, options):
+    return Storage.__init__(self, name = hash_name, storage_name = "hashes",
+            options_string = options)
 
 
 class MemoryStorage(Storage):
@@ -1099,46 +1295,57 @@ class MemoryStorage(Storage):
 
   Class of memory Storage with optional name, additional options.
   """
-  def __init__(self,mem_name="",options_string=""):
-    return Storage.__init__(self,name=mem_name,storage_name="memory",options_string=options_string)
+  def __init__(self, mem_name = "", options_string = ""):
+    return Storage.__init__(self, name = mem_name, storage_name = "memory",
+            options_string = options_string)
 
 
 class Uri(object):
   """Redland URI Class
 
   import RDF
-  uri1=RDF.Uri(string="http://example.com/")
-  uri2=RDF.Uri(uri=uri1)
+  uri1 = RDF.Uri("http://example.com/")
+  uri2 = RDF.Uri(uri1)
 
   """
   
-  def __init__(self, **args):
+  def __init__(self, arg = None, **args):
     """Create an RDF URI (constructor).
 
 Creates a new RDF URI from either of the following forms:
 
-  uri1=RDF.Uri(string="http://example.com/")
+  uri1 = RDF.Uri("http://example.com/")
+  
 Create a URI from the given string.
 
-  uri2=RDF.Uri(uri=uri1)
-Copy an existing URI uri1.
+  uri2 = RDF.Uri(uri1)
 
+Copy an existing URI uri1.
     """
     global _world
     global _debug    
     if _debug:
-      print "Creating RDF.Uri args=",args
+      print "Creating RDF.Uri arg,args=",arg,args
     self._reduri=None
 
-    if args.has_key('string') and args['string']!=None:
-        self._reduri=Redland.librdf_new_uri(_world._world, args['string'])
+    if arg is not None:
+      if type(arg) is str:
+        args['string'] = arg
+      elif type(arg) is Uri:
+        args['uri'] = arg
+
+    if args.has_key('string') and args['string'] is not None:
+      self._reduri=Redland.librdf_new_uri(_world._world, args['string'])
     elif args.has_key('uri'):
-        self._reduri=Redland.librdf_new_uri_from_uri(args['uri']._reduri)
+      self._reduri=Redland.librdf_new_uri_from_uri(args['uri']._reduri)
     elif args.has_key('from_object'):
-        if args['from_object']!=None:
-            self._reduri=Redland.librdf_new_uri_from_uri(args['from_object'])
-        else:
-            raise 'RDF.py: attempt to create new URI from null URI'
+      if args['from_object']!=None:
+        self._reduri=Redland.librdf_new_uri_from_uri(args['from_object'])
+      else:
+        raise RedlandError("Attempt to create new URI from null URI")
+
+    if self._reduri is None:
+      raise RedlandError("Uri construction failed")
 
   def __del__(self):
     global _debug    
@@ -1158,20 +1365,20 @@ Copy an existing URI uri1.
   
   def __eq__(self,other):
     """Equality of RDF URI to another RDF URI."""
-    if type(other)==type(None):
-        if type(self)==type(None):
-            return 1
-        else:
-            return 0
+    if other is None:
+      if self is None:
+        return 1
+      else:
+        return 0
     return (Redland.librdf_uri_equals(self._reduri, other._reduri) != 0)
 
   def __ne__(self,other):
     """Inequality of RDF URI to another RDF URI."""
-    if type(other)==type(None):
-        if type(self)==type(None):
-            return 0
-        else:
-            return 1
+    if other is None:
+      if self is None:
+        return 0
+      else:
+        return 1
     return (Redland.librdf_uri_equals(self._reduri, other._reduri) == 0)
 
 # end class Uri
@@ -1208,14 +1415,12 @@ optional.  When any are given, they must all match.
     global _world
     global _debug    
     if _debug:
-      print "Creating RDF.Parser name=",name,"mime_type=",mime_type, \
-        "uri=",uri
+      print "Creating RDF.Parser name=",name,"mime_type=",mime_type, "uri=",uri
 
-    if uri!=None:
-        uri=uri._reduri
+    if uri is not None:
+      uri=uri._reduri
 
-    self._parser=Redland.librdf_new_parser(_world._world, name,
-        mime_type, uri)
+    self._parser=Redland.librdf_new_parser(_world._world, name, mime_type, uri)
 
   def __del__(self):
     global _debug    
@@ -1224,51 +1429,64 @@ optional.  When any are given, they must all match.
     if self._parser:
       Redland.librdf_free_parser(self._parser)
 
-  def parse_as_stream (self, uri, base_uri=None):
+  def parse_as_stream(self, uri, base_uri=None):
     """"Return a Stream of Statements from parsing the content at
         (file: only at present) URI, for the optional base URI
-        or None if the parsing fails."""
+        or None if the parsing fails.
+        
+          for statement in parser.parse_as_stream("http://localhost/r.rdf"):
+              print statement
+    """
     if type(uri) is str:
-        uri = Uri(string=uri)
-    if base_uri==None:
-        base_uri=uri
+      uri = Uri(string=uri)
+    if base_uri is None:
+      base_uri=uri
     my_stream=Redland.librdf_parser_parse_as_stream(self._parser,
         uri._reduri, base_uri._reduri)
-    if my_stream==None:
+    if my_stream is None:
       return None
     return Stream(my_stream, self)
 
-  def parse_string_as_stream (self, string, base_uri):
+  def parse_string_as_stream(self, string, base_uri):
     """"Return a Stream of Statements from parsing the content in
-        string with the required base URI or None if the parsing fails."""
+        string with the required base URI or None if the parsing fails.
+
+          for statement in parser.parse_string_as_stream(rdfstring):
+              print statement
+    """
     if base_uri is None:
-      raise "RDF.py: A base URI is required when parsing a string"
+      raise RedlandError("A base URI is required when parsing a string")
     my_stream=Redland.librdf_parser_parse_string_as_stream(self._parser,
-        string, base_uri._reduri)
+      string, base_uri._reduri)
     if my_stream==None:
       return None
     return Stream(my_stream, self)
 
-  def parse_into_model (self, model, uri, base_uri=None):
+  def parse_into_model(self, model, uri, base_uri=None):
     """"Parse into the Model model from the content at
-        (file: only at present) URI, for the optional base URI"""
+        (file: only at present) URI, for the optional base URI.
+        
+          parser.parse_into_model(model, "file:./foo.rdf",
+                                  "http://example.com/foo.rdf")
+    """
+
     if type(uri) is str:
-        uri = Uri(string=uri)
-    if base_uri==None:
-        base_uri=uri
+      uri = Uri(string = uri)
+    if base_uri is None:
+      base_uri = uri
     try:
-        r = Redland.librdf_parser_parse_into_model(self._parser,
-          uri._reduri, base_uri._reduri, model._model)
+      r = Redland.librdf_parser_parse_into_model(self._parser,
+        uri._reduri, base_uri._reduri, model._model)
     except RedlandError, err:
-        print "Caught error",err
-        raise err
+      print "Caught error",err
+      raise err
     return 1
 
-  def parse_string_into_model (self, model, string, base_uri):
+  def parse_string_into_model(self, model, string, base_uri):
     """"Parse into the Model model from the content ain string
         with the required base URI"""
     if base_uri is None:
-      raise "RDF.py: A base URI is required when parsing a string"
+      raise RedlandError("A base URI is required when parsing a string")
     return Redland.librdf_parser_parse_string_into_model(self._parser,
       string, base_uri._reduri, model._model)
 
@@ -1305,11 +1523,11 @@ class Serializer(object):
       print "Creating RDF.Serializer name=",name,"mime_type=",mime_type, \
         "uri=",uri
 
-    if uri!=None:
-        uri=uri._reduri
+    if uri is not None:
+      uri = uri._reduri
 
     self._serializer=Redland.librdf_new_serializer(_world._world, name,
-        mime_type, uri)
+      mime_type, uri)
 
   def __del__(self):
     global _debug    
@@ -1318,25 +1536,35 @@ class Serializer(object):
     if self._serializer:
       Redland.librdf_free_serializer(self._serializer)
 
-  def serialize_model_to_file (self, name, model, base_uri=None):
+  def serialize_model_to_file(self, name, model, base_uri=None):
     """Serialize to filename name the Model model using the
        optional base URI."""
-    if base_uri !=None:
-        base_uri=base_uri._reduri
+    if base_uri is not None:
+      base_uri = base_uri._reduri
     return Redland.librdf_serializer_serialize_model_to_file(self._serializer,
       name, base_uri, model._model)
+
+  # TODO: features could usefully be implemented as a collection
 
   def get_feature(self, uri):
     """Return the value of Serializer feature URI uri"""
     if not isinstance(uri, Uri):
-      uri=Uri(string=uri)
+      if type(uri) is str:
+        uri = Uri(string=uri)
+      else:
+        raise TypeError("uri must be string or RDF.Uri")
+
     return Redland.librdf_serializer_get_feature(self._serializer,uri._reduri)
 
   def set_feature(self, uri, value):
     """Set the value of Serializer feature URI uri."""
     if not isinstance(uri, Uri):
-      uri=Uri(string=uri)
+      if type(uri) is str:
+        uri = Uri(string=uri)
+      else:
+        raise TypeError("uri must be string or RDF.Uri")
     Redland.librdf_serializer_set_feature(self._serializer,uri._reduri,value)
+
 
 # end class Serializer
 
