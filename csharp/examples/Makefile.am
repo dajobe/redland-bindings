@@ -35,7 +35,7 @@ GetsTest.dll StreamTest.dll ModelGeneralTest.dll
 CSHARP_TESTS=example1.exe example2.exe example3.exe example4.exe
 
 CLEANFILES=test*.db \
-example1.xml example2.xml test-example3.xml test-example4.xml \
+example1.xml example2.out example3.out example4.xml \
 $(CSHARP_TESTS) $(NUNIT_TESTS) TestResult.xml
 
 # These should work for Mono and pnet

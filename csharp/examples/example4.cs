@@ -17,9 +17,8 @@ public class Test {
 		parser.ParseIntoModel (uri, uri, model);
 
 		Serializer serializer = new Serializer ("rdfxml", null, null);
-		Rdf.Uri base_uri = new Rdf.Uri ("http://exampe.org/base.rdf");
+		Rdf.Uri base_uri = new Rdf.Uri ("http://example.org/base.rdf");
 
-		IntPtr stdout = Util.fopen ("test-example4.xml", "w+");
-		serializer.SerializeModel (stdout, base_uri, model);
+		serializer.SerializeModel ("example4.xml", base_uri, model);
 	}
 }

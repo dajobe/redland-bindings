@@ -33,7 +33,7 @@ public class Example2 {
 
 		model.AddStatement (stm);
 
-		IntPtr stdout = Util.fopen ("example2.xml", "a+");
+		IntPtr stdout = Util.fopen ("example2.out", "w+");
 
 		model.Print (stdout);
 

@@ -19,7 +19,8 @@ public class Test {
 		Statement stm = new Statement (n1, n2, n3);
 		model.AddStatement (stm);
 
-		IntPtr std_out = Util.fopen ("test-example3.xml", "w+");
-		model.Print (std_out);
+		IntPtr out = Util.fopen ("example3.out", "w+");
+		model.Print (out);
+		Util.fclose(out);
 	}
 }
