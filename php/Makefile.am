@@ -18,9 +18,7 @@
 # full license terms.
 #
 
-RELEASE=@VERSION_RELEASE@
-
-AM_CPPFLAGS=@CPPFLAGS@ @LIBRDF_CPPFLAGS@ @PHP_INCLUDES@
+AM_CPPFLAGS=@CPPFLAGS@ @LIBRDF_CPPFLAGS@ @PHP_INCLUDES@ -DREDLAND_BINDINGS_VERSION=\"@VERSION@\"
 AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
 PHP=php
@@ -46,7 +44,7 @@ RUN=@REDLAND_RUN@
 
 SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_INIT_I -DREDLAND_DECL_I -DREDLAND_TYPEMAP_I
 
-$(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i redland-typemap.i
+$(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i redland-typemap.i $(PHP_PACKAGE)_wrap.c.patch
 	swig -v -php4 $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ @REDLAND_SWIG@
 	cp $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.tmp
 	patch $(PHP_PACKAGE)_wrap.c < redland_wrap.c.patch
@@ -54,8 +52,8 @@ $(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post
 	rm -f $(PHP_PACKAGE).php
 
 if MAINTAINER_MODE
-$(PHP_PACKAGE)_wrap.c.patch: $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.orig 
-	-diff -u $(PHP_PACKAGE)_wrap.c.orig $(PHP_PACKAGE)_wrap.c > $@
+patch: $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.orig 
+	-diff -u $(PHP_PACKAGE)_wrap.c.orig $(PHP_PACKAGE)_wrap.c > $(PHP_PACKAGE)_wrap.c.patch
 endif
 
 # -UHAVE_CONFIG_H to stop PHP trying to include config.h which
