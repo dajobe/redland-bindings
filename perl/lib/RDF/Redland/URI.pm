@@ -105,6 +105,7 @@ sub new_from_uri ($$) {
 }
 
 sub DESTROY ($) {
+  warn "RDF::URI DESTROY\n" if $RDF::Debug;
   &Redland::librdf_free_uri(shift->{URI});
 }
 

@@ -91,6 +91,7 @@ sub new ($$) {
 }
 
 sub DESTROY ($) {
+  warn "RDF::Parser DESTROY\n" if $RDF::Debug;
   &Redland::librdf_free_parser(shift->{PARSER});
 }
 
