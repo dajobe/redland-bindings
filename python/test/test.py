@@ -57,7 +57,8 @@ del statement
 del stream
 
 
-parser=RDF.parser("raptor", "application/rdf+xml")
+# Use any rdf/xml parser that is available
+parser=RDF.parser("", "application/rdf+xml")
 if parser is None:
   raise "Could not find any rdf/xml parser"
 

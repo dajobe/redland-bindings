@@ -46,9 +46,9 @@ $model->add_statement($statement);
 warn "\nParsing URI (file) $test_file\n";
 my $uri=new RDF::Redland::URI("file:$test_file");
 
-my $parser=new RDF::Redland::Parser('repat');
+# Use any rdf/xml parser that is available
+my $parser=new RDF::Redland::Parser(undef, "application/rdf+xml");
 die "Failed to find parser\n" if !$parser;
-$parser->feature("http://www.w3.org/1999/02/22-rdf-syntax-ns#aboutEach", "yes");
 
 $stream=$parser->parse_as_stream($uri,$uri);
 my $count=0;
