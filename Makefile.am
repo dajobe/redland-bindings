@@ -32,8 +32,7 @@ README.html NEWS.html LICENSE.html TODO.html \
 RELEASE.html INSTALL.html \
 MPL.html \
 autogen.sh \
-Makefile.PL \
-$(man_MANS)
+Makefile.PL
 
 if MAINTAINER_MODE
 # Create some text files from HTML sources
