@@ -107,7 +107,7 @@ base RDF::Redland::URI I<BASE_URI> to file I<FILENAME>.
 
 sub serialize_model_to_file ($$$$) {
   my($self,$name,$base_uri,$model)=@_;
-  return &RDF::Redland::CORE::librdf_serializer_serialize_model($self->{SERIALIZER},$name, $base_uri->{URI},$model->{MODEL});
+  return &RDF::Redland::CORE::librdf_serializer_serialize_model_to_file($self->{SERIALIZER},$name, $base_uri->{URI},$model->{MODEL});
 }
 
 =item feature URI [VALUE]
