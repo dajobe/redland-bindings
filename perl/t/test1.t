@@ -46,7 +46,7 @@ my $storage=&RDF::Redland::CORE::librdf_new_storage($world, "hashes", "test", "n
 if(!$storage) {
   warn "Redland::librdf_new_storage failed\n";
   print "not ok $test\n";
-  last;
+  exit 1;
 }
 print "ok $test\n";
 $test++;
@@ -55,7 +55,7 @@ my $model=&RDF::Redland::CORE::librdf_new_model($world, $storage, "");
 if(!$model) {
   warn "Redland::librdf_new_model failed\n";
   print "not ok $test\n";
-  last;
+  exit 1;
 }
 print "ok $test\n";
 $test++;
@@ -68,7 +68,7 @@ my $statement=&RDF::Redland::CORE::librdf_new_statement_from_nodes($world,
 if(!$statement) {
   warn "Redland::librdf_new_statement_from_nodes failed\n";
   print "not ok $test\n";
-  last;
+  exit 1;
 }
 print "ok $test\n";
 $test++;
