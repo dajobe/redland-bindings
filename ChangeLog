@@ -1,3 +1,159 @@
+2005-01-18  author  <author@hoth.ilrt.bris.ac.uk>
+
+	* python/RDF.py: Update license to Apache style and for 2005
+
+2005-01-04  Edd Dumbill  <edd@usefulinc.com>
+
+	* csharp/Iterator.cs, csharp/Model.cs, csharp/Node.cs,
+	csharp/Parser.cs, csharp/Query.cs, csharp/QueryResults.cs,
+	csharp/Serializer.cs, csharp/Statement.cs, csharp/Storage.cs,
+	csharp/Stream.cs, csharp/Uri.cs: add a private member reference to
+	the World, which when assigned increments a refcount.
+	Corresponding refcount is decreased in Dispose(), ensuring world's
+	clients are counted. Also, move to HandleRef instead of IntPtr for
+	C-world pointers, which is more GC-safe.
+
+	* csharp/World.cs: take destruction of the C world out of the
+	destructor, and instead make it static depending on a ref count.
+	Ensure that the dynamic World, allocated in Redland.cs, also uses
+	this ref count so the world persists for as long as we run.
+
+	* csharp/test.cs: Fixed to use proper iterator syntax with query
+	results.
+
+	* csharp/Iterator.cs: (End ()): removed from API, vestige of
+	extinct iterator usage
+
+	* csharp/Stream.cs: (End ()): removed from API, vestige of extinct
+	iterator usage
+
+	* csharp/examples/example1.cs: Fixed up to use proper iterator
+	syntax.
+
+	* csharp/QueryResults.cs: (MoveNext ()): cleaned up iterator logic
+	so it works properly with foreach.
+	(End ()): removed from API, no longer needed
+
+2005-01-03  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/Serializer.pm:
+	(new) docs - defaults to ntriples, not random.
+
+2004-12-31  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* ruby/README.txt: 1.8.2 tested
+
+	* docs/ruby.html: update
+
+	* ruby/test/test_node.rb: require 'rdf/redland'
+
+	* ruby/test/test_model.rb (test_parse_and_merge):
+	Require memory HashStore to get contexts.
+
+	* ruby/test/test_model.rb (test_parse_and_merge): Requires store
+	with contexts.
+
+	* ruby/lib/rdf/redland.rb: require log4r require more load shared
+	lib
+
+	* ruby/test/Makefile.am, ruby/Makefile.am: Less -I
+
+	* ruby/lib/rdf/redland/uri.rb: don't require 'uri'
+
+	* ruby/lib/rdf/redland/stream.rb: re-add util
+
+	* ruby/lib/rdf/redland/stream.rb: require less
+
+	* ruby/lib/rdf/redland/store.rb: require 'rdf/redland'
+
+	* ruby/lib/rdf/redland/statement.rb: no need for util
+
+	* ruby/lib/rdf/redland/resource.rb: include Redland
+
+	* ruby/test/Makefile.am: tidy args
+
+	* ruby/lib/rdf/redland/serializer.rb: require 'rdf/redland'
+
+	* ruby/lib/rdf/redland/resource.rb (Resource.add_property):
+	default to nil context.
+
+	* ruby/lib/rdf/redland/constants.rb: Use Redland:: for Namespace
+
+	* ruby/lib/rdf/redland/model.rb (Model.create_resource):
+	default to nil context.
+
+2004-12-30  Edd Dumbill  <edd@usefulinc.com>
+
+	* csharp/Util.cs: (StringToHGlobalUTF8 ()): marshal .NET string to
+	UTF-8
+	(UTF8PtrToString ()): marshal unmanaged UTF-8 to .NET string
+
+	* csharp/Model.cs, csharp/Node.cs, csharp/Parser.cs,
+	csharp/Query.cs, csharp/QueryResults.cs, csharp/Serializer.cs,
+	csharp/Storage.cs, csharp/Uri.cs: replace calls to
+	StringToHGlobalAuto with StringToHGlobalUTF8
+
+	* csharp/Errors.cs, csharp/Node.cs, csharp/QueryResults.cs,
+	csharp/Statement.cs, csharp/Uri.cs: replace calls to
+	PtrToStringAuto with UTF8PtrToString
+
+	* csharp/examples/EncodingTest.cs: unit test for round tripped
+	encoding methods
+
+
+2004-12-30  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* ruby/test/Makefile.am: Note test/unit.rb is in 1.8.0+
+
+	* ruby/lib/rdf/redland/parser.rb: tidy
+
+	* ruby/Makefile.am: fix RUBYLIB
+
+	* ruby/lib/rdf/redland/schemas/foaf.rb, ruby/lib/rdf/redland/dc.rb:
+	require 'rdf/redland'
+
+	* ruby/lib/rdf/redland.rb: require resource Delete uri_hash - not
+	needed at this level.
+
+	* ruby/lib/rdf/redland/statement.rb: fix requires
+
+	* ruby/lib/rdf/redland/query.rb: Tried to fix syntax errors,
+	failed.
+
+	* ruby/lib/rdf/redland/schemas/foaf.rb: Update from
+	http://lists.w3.org/Archives/Public/www-archive/2004Dec/att-0053/foaf.rb
+	by Dan Brickley
+
+2004-12-22  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/test/test.py: Use RDFXMLSerializer explicitly
+
+	* python/RDF.py (class Serializer): Added more docs.
+	(Serializer.__init__): More docs.
+	(class NTriplesSerializer): Added
+	(class RDFXMLSerializer): Added
+
+	* python/RDF.py (Parser.parse_into_model, Parser.parse_string_into_model, Serializer.serialize_model_to_file):
+	Try to promote base_uri strings
+	to RDF.Uri
+
+2004-12-20  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/Query.pm: doc fix
+
+2004-12-12  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* configure.ac:
+	Added REDLAND_VERSION_VERBOSE separate from REDLAND_VERSION, the former for printing
+
+2004-11-26  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* configure.ac: AC_SUBST(REDLAND_VERSION)
+
+2004-11-25  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* redland-bindings.spec.in: Substitute @REDLAND_VERSION@
+
 2004-11-09  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* python/RDF.py:
