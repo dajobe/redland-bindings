@@ -893,7 +893,7 @@ class Stream:
     if not self.stream:
       return 1
 
-    my_node=Redland.librdf_stream_get_context(self._iterator)
+    my_node=Redland.librdf_stream_get_context(self.stream)
     if my_node == "NULL" or my_node == None:
       return None
 
