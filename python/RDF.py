@@ -1253,6 +1253,15 @@ optional.  When any are given, they must all match.
       return None
     return Stream(my_stream, self)
 
+  def parse_string_as_stream (self, string, base_uri=None):
+    """"Return a Stream of Statements from parsing the content in
+        string with the optional base URI or None if the parsing fails."""
+    my_stream=Redland.librdf_parser_parse_string_as_stream(self._parser,
+        string, base_uri._reduri)
+    if my_stream==None:
+      return None
+    return Stream(my_stream, self)
+
   def parse_into_model (self, model, uri, base_uri=None):
     """"Parse into the Model model from the content at
         (file: only at present) URI, for the optional base URI"""
@@ -1262,6 +1271,12 @@ optional.  When any are given, they must all match.
         base_uri=uri
     return Redland.librdf_parser_parse_into_model(self._parser,
       uri._reduri, base_uri._reduri, model._model)
+
+  def parse_string_into_model (self, model, string, base_uri=None):
+    """"Parse into the Model model from the content ain string
+        with the optional base URI"""
+    return Redland.librdf_parser_parse_string_into_model(self._parser,
+      string, base_uri._reduri, model._model)
 
   def get_feature(self, uri):
     """Return the value of Parser feature URI uri"""
