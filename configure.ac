@@ -513,7 +513,7 @@ fi
 
 AC_MSG_CHECKING(redland library source)
 if test $with_redland = system; then
-  REDLAND_VERSION="system $REDLAND_VERSION"
+  REDLAND_VERSION_VERBOSE="system $REDLAND_VERSION"
   REDLAND_RUN=
 else
   if test -x ../librdf/redland-src-config; then
@@ -525,10 +525,10 @@ else
   fi
   REDLAND_CONFIG=$dir/redland-src-config
   REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
-  REDLAND_VERSION="internal $REDLAND_VERSION in $dir"
+  REDLAND_VERSION_VERBOSE="internal $REDLAND_VERSION in $dir"
   REDLAND_RUN="$REDLAND_CONFIG --run "
 fi
-AC_MSG_RESULT($REDLAND_VERSION)
+AC_MSG_RESULT($REDLAND_VERSION_VERBOSE)
 
 AC_SUBST(REDLAND_VERSION)
 AC_SUBST(REDLAND_CONFIG)
@@ -608,6 +608,6 @@ AC_OUTPUT
 
 AC_MSG_RESULT([
 Redland build summary:
-  Redland:              $REDLAND_VERSION
+  Redland:              $REDLAND_VERSION_VERBOSE
   Language APIs built:   $languages
 ])
