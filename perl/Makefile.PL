@@ -35,7 +35,7 @@ if(-r '../redland-src-config') {
   $objects .= $redland_libs;
 }
 
-my $includes="-I$TOP_SRCDIR/librdf -I$TOP_SRCDIR/librdf/perl";
+my $includes="-I$TOP_SRCDIR/librdf -I../librdf -I$TOP_SRCDIR/librdf/perl";
 
 my $version=$ENV{VERSION};
 
