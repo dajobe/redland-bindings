@@ -5,16 +5,18 @@ require 'rdf/redland/statement'
 require 'rdf/redland/util'
 require 'rdf/redland/node'
 require 'rdf/redland/parser'
-# syntax error in query
-#require 'rdf/redland/query'
+require 'rdf/redland/query'
 require 'rdf/redland/resource'
 require 'rdf/redland/serializer'
 require 'rdf/redland/uri'
 require 'rdf/redland/resource'
 require 'rdf/redland/util'
-#require 'rdf/redland/constants'
+require 'rdf/redland/constants'
 
 require 'log4r'
+
+# This module initialises the Redland library and references all
+# resources from it.
 
 module Redland
 
@@ -23,12 +25,22 @@ module Redland
   require 'redland'
 
   include Redland
-
+  
+  # Error class specific to this package
+  
   class RedlandError < RuntimeError
   end
 
+  # Incorrect node type
+  
   class NodeTypeError < RedlandError
   end
+
+  # The world object is the single global variable in Redland that 
+  # all the classes, their factories and implementations reference.
+  #
+  # In most programs there should be only one Redland world, using 
+  # multiple models although multiple worlds are possible.
 
   class World
      #include Singleton
