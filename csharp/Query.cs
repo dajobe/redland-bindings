@@ -21,14 +21,6 @@ namespace Redland {
 			get { return query; }
 		}
 
-		[DllImport ("librdf")]
-		static extern IntPtr librdf_new_query (IntPtr world);
-
-		public Query ()
-		{
-			query = librdf_new_query (Redland.World.Handle);
-		}
-
 		public Query (string s)
 			: this (Redland.World, s, null, "rdql")
 		{
@@ -37,13 +29,27 @@ namespace Redland {
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_new_query (IntPtr world, IntPtr query_language, IntPtr uri, IntPtr query_string);
 
-		private Query (World world, string s, Uri uri, string query_language)
+		private Query (World world, string s, Object uri, string query_language)
 		{
 			IntPtr iql = Marshal.StringToHGlobalAuto (query_language.ToString());
 			IntPtr iqs = Marshal.StringToHGlobalAuto (s.ToString());
-			query = librdf_new_query (Redland.World.Handle, iql, uri.Handle, iqs);
+                        IntPtr iuri=(IntPtr)null;
+                        
+                        if(uri is Uri)
+                          iuri=((Uri)uri).Handle;
+                        
+			query = librdf_new_query (Redland.World.Handle, iql, iuri, iqs);
                         Marshal.FreeHGlobal (iql);
                         Marshal.FreeHGlobal (iqs);
+		}
+
+		[DllImport ("librdf")]
+		static extern void librdf_free_query (IntPtr query);
+
+		~Query ()
+		{
+			if(query != (IntPtr)null)
+				librdf_free_query (query);
 		}
 
 		[DllImport ("librdf")]
