@@ -51,6 +51,9 @@ namespace Rdf {
 		
 		public override bool Equals (object o)
 		{
+			if(o == null)
+ 				return false;
+
 			int i = librdf_node_equals (node, ((Node) o).Handle);
 			if (i == 0)
 				return false;
