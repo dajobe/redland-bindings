@@ -102,9 +102,9 @@ uninstall-tclDATA: $(tcl_DATA)
 
 pkgIndex.tcl: $(TCL_PACKAGE).so
 	if test -r $(TCL_PACKAGE).dylib; then \
-	  echo "pkg_mkIndex . $(TCL_PACKAGE).dylib" | $(TCL); \
+	  echo "pkg_mkIndex -verbose . $(TCL_PACKAGE).dylib" | $(TCL); \
 	else \
-	  echo "pkg_mkIndex . $(TCL_PACKAGE).so" | $(TCL); \
+	  echo "pkg_mkIndex -verbose . $(TCL_PACKAGE).so" | $(TCL); \
 	fi
 
 check-local: test-tcl
