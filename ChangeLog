@@ -1,4 +1,10 @@
+2005-02-07  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/RDF.py (Storage.__init__): docs fix.
+
 2005-02-06  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* configure.ac: Bumped version to 1.0.0.2
 
 	* Snapshotted redland-bindings_1_0_0_1 for 1.0.0.1 release
 
