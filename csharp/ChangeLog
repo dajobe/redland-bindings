@@ -1,0 +1,309 @@
+2004-07-09  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* World.cs:
+	Move logging to use the new librdf logging API. (Edd Dumbill)
+	(Messages property): Added, an array of LogMessages accumulated since
+	the last ClearLog call.
+	(LogLevel method): Added, for getting and setting the logging level.
+
+	* Parser.cs: Use World.Messages as the basis of exceptions. 
+	(Edd Dumbill)
+
+	* Errors.cs: Added enums LogLevel and Facility.
+	Added class Locator to encapsulate locator part of a log message.
+	Added class LogMessage to encapsulate a returned log message from
+	librdf.
+	Changed RedlandFault and RedlandError to store an array of
+	LogMessages instead of strings. (Edd Dumbill)
+
+2004-07-08  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Parser.cs: Added ParseError, a RedlandError subclass.
+	(ParseStringIntoModel, ParseIntoModel, ParseStringAsStream): Check
+	for errors during parsing.
+
+	* World.cs: Added Errors, Warnings support
+	(ClearLog): Added to empty the errors and warnings lists.
+	(Enter): To lock world for gathering errors
+	(Exit): To unlock world after gathering errors
+	(setupHandlers): Use a delegate intErrorHandler (function pointer in C) to
+	register callbacks for errors and warnings.
+	(dispatchError, dispatchWarning): Added the error, warning gatherers.
+
+	* Errors.cs, Makefile.am: Added Errors.cs
+
+2004-07-06  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* QueryResults.cs: no need for first
+
+	* QueryResults.cs:
+	Handle first result special, always store current result.
+
+	* test.cs: print query results
+
+	* Node.cs: Destructor object checking works now, dunno why.
+
+	* test.cs: C# query test
+
+	* QueryResults.cs (Current): Return null when exhausted.
+
+	* Node.cs:
+	Added destructor object checking.  Comment it out since it hangs
+	mono and mono-debugger unless run mono -v.
+
+	* Iterator.cs, Statement.cs, Parser.cs:
+	Added destructor object checking
+
+	* Model.cs: Added destructor object checking
+	(Execute): Call librdf_model_query_execute
+
+	* Query.cs: Deleted no-args constructor - does not exist.
+	Fixed main constructor.
+	Added destructor.
+
+	* World.cs, Stream.cs, Storage.cs, Statement.cs, Serializer.cs,
+	Parser.cs, Node.cs, Model.cs, Iterator.cs: Added destructors for
+	all classes
+
+	* Makefile.am: Typo
+
+2004-07-05  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* QueryResults.cs: pos
+
+	* Model.cs: Added Execute method
+
+	* Makefile.am: Added Query.cs QueryResults.cs
+
+	* Query.cs, QueryResults.cs: redland csharp Query classes
+
+	* Model.cs: Added methods: GetContexts, GetFeature, SetFeature, Load
+
+	* Makefile.am: typo
+
+2004-06-17  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Makefile.am: added DESTDIR to install target
+
+	* test.cs: Redland namespace
+
+	* examples/.cvsignore: ignore example tests
+
+	* Redland.cs, Serializer.cs, Statement.cs, Storage.cs, Stream.cs, Uri.cs, Util.cs, World.cs, examples/GetsTest.cs, examples/ModelGeneralTest.cs, examples/ModelTest.cs, examples/SimpleGetsTest.cs, examples/StreamTest.cs, examples/example1.cs, examples/example2.cs, examples/example3.cs, examples/example4.cs, test.cs, HashStorage.cs, IWrapper.cs, Iterator.cs, MemoryStorage.cs, Model.cs, Node.cs, Parser.cs:
+	namespace from Rdf to Redland
+
+	* examples/example3.cs, examples/example2.cs, examples/example1.cs:
+	Use new Rdf.Uri to make Uris for nodes
+
+	* examples/StreamTest.cs (Contains):
+	Make sure a Uri or literal is used correctly.
+
+	* Node.cs: Added Node constructors with
+	just a System.Uri - making a URI node
+	just a string - making a literal node
+	Modified is_wf_xml arg to be bool.
+
+	* Model.cs: (Contains) opt bool
+
+	* examples/example3.cs: don't use token as a name
+
+	* examples/example4.cs, examples/example3.cs, examples/example2.cs:
+	tidy test filenames
+
+	* examples/example1.cs: Use serializer.SerializeModel direct to a file.
+
+	* examples/Makefile.am: tidy test filenames
+
+	* Util.cs: added fclose
+
+	* Serializer.cs (SerializeModel):
+	Added overloaded method taking a filename and using
+	librdf_serializer_serialize_model_to_file to avoid use of file
+	handles.
+
+	* examples/StreamTest.cs (Contains): actually test model.Contains
+
+	* Serializer.cs, Parser.cs: Use (Object)foo == null
+
+	* Statement.cs:
+	private Statement (World world, Node subject, Node predicate, Node obj):
+	Compare Node pointers for nullness as Object to prevent trying to invoke
+	null.opEquality(foo)
+
+	* Parser.cs: remove debug msg
+
+	* examples/StreamTest.cs (ParserStringAsStream):
+	Remove extra pairs of "s at start and end of
+	rdf/xml string.
+
+	* Statement.cs: remove debug msg
+
+	* Parser.cs: debug msg
+
+	* Statement.cs:
+	private Statement (World world, Node subject, Node predicate, Node
+	obj): Pass in Handles not C# object refs
+
+	* .cvsignore: \#ignore more
+
+	* Makefile.am: dist contains redland.pub
+
+	* Makefile.am: fix redland.pub rule
+
+	* redland.pub: Redland.dll public key
+
+	* Makefile.am: Add warning if redland.pub rule is run
+
+	* Makefile.am:
+	sign-mono rule not needed if AssemblyInfo.cs has redland.pub
+
+	* Makefile.am: DLL requires redland.pub
+
+	* AssemblyInfo.cs: Redland.dll Assembly info
+
+	* Makefile.am: Ship redland.pub (public key)
+	Add scary warnings for redland.snk, redland.pub rules.
+	Use public key to sign
+
+	* Makefile.am: Added AssemblyInfo.cs
+	Added strong name and signing for mono.
+
+	* util.cs, Makefile.am, Util.cs: Renamed util.cs to Util.cs
+
+	* test.cs: use Serializer
+
+	* Node.cs (Print): Remove Console.WriteLine
+
+	* util.cs: Added fputs
+
+	* test.cs: added printing out results of stream, iterator
+
+	* test.cs: Remove world, now Redland.dll private.
+
+	* examples/example4.cs: write, don't append
+
+	* AUTHORS: Merged into ../AUTHORS
+
+	* examples/example3.cs: write, don't append
+
+	* Statement.cs: syntax
+
+	* Statement.cs: remove set_pointer
+	Statement (World world, Node subject, Node predicate, Node obj): copy
+	nodes
+
+	* Node.cs: Added Node copy constructor
+
+	* examples/Makefile.am: clean just tests
+
+	* examples/Makefile.am: Require nunit-console.exe
+
+	* examples/StreamTest.cs: Use ../../data/dc.rdf
+
+	* examples/Makefile.am, Makefile.am: Remove dup CSHARPCFLAGS
+
+	* examples/Makefile.am: Add CSHARPCFLAGS
+
+	* Makefile.am: Add CSHARPCFLAGS, CLI_PREFIX
+	Add install-mono, install-pnet
+
+	* Makefile.am:
+	Switch to always using ' -' options not mixture of that and ' /' options.
+	Added install-mono target
+
+	* examples/Makefile.am:
+	Make nunit-console.exe here (maintainer mode) and ship it.
+	Switch to always using ' -' options not mixture of that and ' /' options.
+
+	* examples/AssemblyInfo.cs, examples/ConsoleUi.cs:
+	nunit-console source unchanged
+
+2004-06-14  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* examples/example4.cs: Use ../../data/dc.rdf
+
+	* examples/dc.rdf: deleted, use data copy
+
+	* Uri.cs, Storage.cs, Statement.cs, Serializer.cs, Parser.cs, Node.cs, Model.cs:
+	For P/Invoke where a string is passed in or return, switch to IntPtr
+	and manage the strings with Marshal.StringToHGlobalAuto and
+	Marshal.FreeHGlobal.
+
+	* examples/Makefile.am: more CLEANFILES
+
+	* examples/Makefile.am: unittests depends on ../Redland.dll
+
+	* Uri.cs, Node.cs: Debug messages
+
+	* Makefile.am: Make Redland.dll right
+
+	* examples/Makefile.am: Unit tests fix
+
+2004-06-13  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Statement.cs (Statement.Statement):
+	Do not call set_pointer with null pointers.
+
+	* Node.cs (Equals): Return false if o is null.
+
+	* examples/example2.cs, examples/example3.cs, examples/example4.cs, examples/GetsTest.cs, examples/Makefile.am, examples/ModelGeneralTest.cs, examples/ModelTest.cs, examples/SimpleGetsTest.cs, examples/StreamTest.cs, examples/TemplateTest.cs, examples/dc.rdf, examples/example1.cs, Parser.cs, README, Redland.cs, Serializer.cs, Statement.cs, Storage.cs, Stream.cs, TODO, Uri.cs, World.cs, examples/.cvsignore, test.cs, util.cs, AUTHORS, HACKING, HashStorage.cs, IWrapper.cs, Iterator.cs, LICENSE, Makefile.am, MemoryStorage.cs, Model.cs, Node.cs:
+	Imported redland-csharp by Cesar Lopez Nataren
+
+2004-05-05  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Makefile.am:
+	Apply CFLAGS, CPPFLAGS to pick up internal, external includes and
+	src/build dirs.
+
+2004-03-27  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Makefile.am: automake fixes for 1.7+ using newer macros
+
+2004-01-31  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Makefile.am:
+	Use redland-src-config --run COMMAND to run test programs with the
+	shared libraries built in the source tree.
+
+2004-01-17  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Makefile.am: touch stamp after build
+
+	* Makefile.am: Update clean
+
+	* Makefile.am: Update fakery
+
+2003-07-30  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* test.cs: works somewhat - look, it makes a node
+
+	* Makefile.am: ECMA CLR=>ECMI CLI since it's not just the runtime.
+	ECMA CLI= ECMA  Common  Language  Infrastructure.
+
+	* test.cs: Initial version
+
+	* Makefile.am: Run test.exe not test.cs
+
+	* Makefile.am: Fix clean
+
+	* Makefile.am: Remove extra ''s
+
+	* Makefile.am: Move CSHARP_COMPILE and CSHARP_LINK here.
+	Add .cs.exe rule
+	Make test.exe (or try)
+
+	* Makefile.am: No example.cs yet
+
+	* README: Initial version
+
+2003-07-29  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Makefile.am: fix run
+
+	* Makefile.am: fix install
+
+	* Makefile.am: Use CSHARP_COMPILE
+	Build shared lib
+
+	* Makefile.am: csharp stuff
+
