@@ -119,7 +119,7 @@ This class initialises the Redland RDF classes.
 Set I<SUB> as the subroutine to be called on a Redland error with
 the error message as the single argument.  For example:
 
-  RDF::Redland::World::set_error_handler(sub {
+  RDF::Redland::set_error_handler(sub {
     my $msg=shift;
     # Do something with $msg
   });
@@ -131,7 +131,7 @@ The default if this is not set, is to run die $msg
 Set I<SUB> as the subroutine to be called on a Redland warning with
 the warning message as the single argument.  For example:
 
-  RDF::Redland::World::set_warning_handler(sub {
+  RDF::Redland::set_warning_handler(sub {
     my $msg=shift;
     # Do something with $msg
   });
