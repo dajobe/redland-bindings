@@ -499,6 +499,8 @@ class Statement(object):
       Redland.librdf_free_statement(self._statement)
 
   def _wrap_node(self, rednode):
+    if rednode is None:
+      return None
     return Node(from_object=rednode)
 
   def _get_subject(self):
@@ -565,6 +567,15 @@ class Statement(object):
         return 1
     return (Redland.librdf_statement_equals(self._statement, other._statement) == 0)
 
+  def matches(self,other):
+    """Comparison of this potentially incomplete RDF Statement compared to another RDF Statement."""
+    if other is None:
+      if self is None:
+        return 0
+      else:
+        return 1
+    return (Redland.librdf_statement_match(other._statement, self._statement) != 0)
+ 
 # end class Statement
 
 
