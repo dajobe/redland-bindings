@@ -30,7 +30,7 @@ use RDF::Redland::Stream;
 
 =head1 NAME
 
-RDF::Redland::Query - Redland RDF Syntax Querys Class
+RDF::Redland::Query - Redland RDF Syntax Query Class
 
 =head1 SYNOPSIS
 
