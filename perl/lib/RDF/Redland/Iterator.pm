@@ -80,11 +80,14 @@ use Redland;
 
 # CONSTRUCTOR
 # (main)
-sub new ($$) {
-  my($proto,$object)=@_;
+sub new ($$$) {
+  my($proto,$object,$creator)=@_;
   my $class = ref($proto) || $proto;
   my $self  = {};
   $self->{ITERATOR}=$object;
+  # Keep around a reference to the object that created the iterator
+  # so that perl does not destroy us before them.
+  $self->{CREATOR}=$creator;
   bless ($self, $class);
   return $self;
 }
