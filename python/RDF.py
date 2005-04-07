@@ -1843,7 +1843,8 @@ class Query(object):
   import RDF
 
   q1 = RDF.Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
-  q2 = RDF.Query("- - -", name="triples")
+  q2 = RDF.Query("- - -", query_language="triples")
+  q3 = RDF.Query("select $a where ...", query_language="sparql")
 
   results=q1.execute(model)
   for result in results:
