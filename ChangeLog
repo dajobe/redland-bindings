@@ -1,3 +1,52 @@
+2005-04-08  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland.pm (set_log_handler, reset_log_handler):
+	Now public, document and prefer them.
+
+	* perl/lib/RDF/Redland.pm: Added perl convienence Node type
+	classes to see alsos
+
+	* docs/Makefile.am: Added perl convienence Node type classes.
+
+	* perl/Makefile.PL, perl/lib/RDF/Redland.pm,
+	perl/lib/RDF/Redland/URINode.pm,
+	perl/lib/RDF/Redland/XMLLiteralNode.pm,
+	perl/lib/RDF/Redland/BlankNode.pm,
+	perl/lib/RDF/Redland/LiteralNode.pm,
+	perl/lib/RDF/Redland/Makefile.am: Add convienience Node subclasses
+
+2005-04-06  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/Serializer.pm (set_namespace): Remove
+	duplicate subroutine, keep PREFIX, URI order
+
+2005-04-05  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* demos/query.pl: Added sparql noble gases query
+
+2005-03-17  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* docs/fix-rdoc-xhtml: Add links back to redland site only on
+	non-index files
+
+	* docs/fix-rdoc-xhtml: Add links back to redland sites outside of
+	the frames
+
+2005-03-16  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* docs/Makefile.am: Added fix-rdoc-xhtml and added rdoc output
+
+	* docs/fix-rdoc-xhtml: Fix RDoc xhtml output
+
+	* ruby/Makefile.am: Tidy rdoc generation, cleanup
+
+	* ruby/Makefile.am: rdoc-stamp
+
+	* ruby/Makefile.am: More rdoc fixes, added docs target
+
+	* ruby/lib/rdf/redland.rb: Ruby comment fixes for helping rdoc
+	plus query.pl syntax fix (Patch from Nikolas Coukouma)
+
 2005-03-16  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* docs/Makefile.am: Added fix-rdoc-xhtml and added rdoc output
@@ -242,8 +291,6 @@
 2004-12-31  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* ruby/README.txt: 1.8.2 tested
-
-	* docs/ruby.html: update
 
 	* ruby/test/test_node.rb: require 'rdf/redland'
 
