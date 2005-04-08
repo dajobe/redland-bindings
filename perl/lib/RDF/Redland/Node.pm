@@ -46,9 +46,15 @@ RDF::Redland::Node - Redland RDF Node (RDF Resource, Property, Literal) Class
 
   use RDF::Redland;
   my $node1=new RDF::Redland::Node("Hello, World!");
-  my $node2=new RDF::Redland::Node($uri);
+  my $node2=new RDF::Redland::Node($uri); # $uri is an RDF::Redland::URI
   my $node3=$node2->clone;
 
+  my $node4=new RDF::Redland::URINode("http://example.com/");
+  my $node5=new RDF::Redland::LiteralNode("Hello, World!");
+  my $node6=new RDF::Redland::XMLLiteral("<tag>content</tag>");
+  my $node7=new RDF::Redland::BlankNode("genid1");
+
+  # alternate more verbose ways:
   my $node4=RDF::Redland::Node->new_from_uri("http://example.com/");
   my $node5=RDF::Redland::Node->new_literal("Hello, World!");
   my $node6=RDF::Redland::Node->new_xml_literal("<tag>content</tag>");
@@ -135,6 +141,10 @@ sub new_from_uri_string ($$) {
 Create a new URI node.  I<URI> can be either a RDF::Redland::URI
 object, a perl URI class or a literal string.
 
+An alternative is:
+
+  new RDF::Redland::URINode("http://example.org/");
+
 =cut
 
 sub new_from_uri ($$) {
@@ -177,6 +187,11 @@ Create a new literal node for a literal value I<STRING>.
 Optional datatype URI I<DATATYPE> (RDF::Redland::URI, perl URI or string)
 and language (xml:lang attribute) I<XML_LANGUAGE> may also be given.
 
+An alternative is:
+   new RDF::Redland::LiteralNode("Hello, World!");
+   new RDF::Redland::LiteralNode("Bonjour monde!", undef, "fr");
+
+
 =cut
 
 sub new_literal ($$;$$) {
@@ -205,6 +220,9 @@ sub new_literal ($$;$$) {
 
 Create a new XML datatyped literal node for the XML in I<STRING>.
 
+An alternative is:
+  new RDF::Redland::XMLLiteral("<tag>content</tag>");
+
 =cut
 
 sub new_xml_literal ($$) {
@@ -216,6 +234,10 @@ sub new_xml_literal ($$) {
 =item new_from_blank_identifier IDENTIFIER
 
 Create a new blank node with blank node identifier I<IDENTIFIER>.
+
+An alternative is:
+
+  new RDF::Redland::BlankNode("id");
 
 =cut
 
