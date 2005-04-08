@@ -23,6 +23,10 @@
 use RDF::Redland::Iterator;
 use RDF::Redland::Model;
 use RDF::Redland::Node;
+use RDF::Redland::BlankNode;
+use RDF::Redland::URINode;
+use RDF::Redland::LiteralNode;
+use RDF::Redland::XMLLiteralNode;
 use RDF::Redland::Parser;
 use RDF::Redland::Query;
 use RDF::Redland::QueryResults;

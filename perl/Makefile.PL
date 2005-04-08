@@ -104,7 +104,12 @@ Redland/Query.pm
 Redland/QueryResults.pm
 Redland/Serializer.pm
 Redland/CORE.pm
-Redland/Node.pm)
+Redland/Node.pm
+Redland/BlankNode.pm
+Redland/URINode.pm
+Redland/LiteralNode.pm
+Redland/XMLLiteralNode.pm
+)
       },
 
 
