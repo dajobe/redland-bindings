@@ -29,7 +29,7 @@ csharp.html perl.html python.html tcl.html java.html ruby.html php.html \
 fix-pod-xhtml fix-python-xhtml fix-rdoc-xhtml \
 pod pydoc rdoc
 
-POD_MODULES=RDF/Redland RDF/Redland/Iterator RDF/Redland/Model RDF/Redland/Node RDF/Redland/Parser RDF/Redland/Query RDF/Redland/QueryResults RDF/Redland/RSS RDF/Redland/Serializer RDF/Redland/Statement RDF/Redland/Storage RDF/Redland/Stream RDF/Redland/URI
+POD_MODULES=RDF/Redland RDF/Redland/Iterator RDF/Redland/Model RDF/Redland/Node RDF/Redland/Parser RDF/Redland/Query RDF/Redland/QueryResults RDF/Redland/RSS RDF/Redland/Serializer RDF/Redland/Statement RDF/Redland/Storage RDF/Redland/Stream RDF/Redland/URI RDF/Redland/BlankNode RDF/Redland/URINode RDF/Redland/LiteralNode RDF/Redland/XMLLiteralNode
 
 DOC_C_FILES=$(DOC_CLASSES:%=$(srcdir)/../librdf/rdf_%.c)
 
