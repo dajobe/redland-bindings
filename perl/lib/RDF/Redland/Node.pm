@@ -46,7 +46,7 @@ RDF::Redland::Node - Redland RDF Node (RDF Resource, Property, Literal) Class
 
   use RDF::Redland;
   my $node1=new RDF::Redland::Node("Hello, World!");
-  my $node2=new RDF::Redland::Node($uri); # $uri is an L<RDF::Redland::URI>
+  my $node2=new RDF::Redland::Node($uri); # $uri is an RDF::Redland::URI
   my $node3=$node2->clone;
 
   my $node4=new RDF::Redland::URINode("http://example.com/");
@@ -61,7 +61,7 @@ RDF::Redland::Node - Redland RDF Node (RDF Resource, Property, Literal) Class
   my $node7=RDF::Redland::Node->new_from_blank_identifier("genid1");
   ...
 
-  print $node4->uri->as_string,"\n";  # Using L<RDF::Redland::URI>::as_string
+  print $node4->uri->as_string,"\n";  # Using RDF::Redland::URI::as_string
   print $node5->literal_value_as_latin1,"\n";
 
 =head1 DESCRIPTION
@@ -83,10 +83,10 @@ This class represents RDF URIs, literals and blank nodes in the RDF graph.
 Create a new URI node, literal node or copy an existing node.
 
 If a literal I<STRING> is given, make a plain literal node.  If a
-the argument is of type I<URI> (perl URI or L<RDF::Redland::URI>),
+the argument is of type I<URI> (perl URI or RDF::Redland::URI),
 make a resource node.
 
-Otherwise if the argument is an L<RDF::Redland::Node> I<NODE>, copy it.
+Otherwise if the argument is an RDF::Redland::Node I<NODE>, copy it.
 
 =cut
 
@@ -139,7 +139,7 @@ sub new_from_uri_string ($$) {
 
 =item new_from_uri URI
 
-Create a new URI node.  I<URI> can be either a L<RDF::Redland::URI>
+Create a new URI node.  I<URI> can be either a RDF::Redland::URI
 object, a perl URI class or a literal string.
 
 An alternative is:
@@ -185,7 +185,7 @@ sub new_from_literal ($$$$) {
 =item new_literal STRING [DATATYPE [XML_LANGUAGE]]
 
 Create a new literal node for a literal value I<STRING>.
-Optional datatype URI I<DATATYPE> (L<RDF::Redland::URI>, perl URI or string)
+Optional datatype URI I<DATATYPE> (RDF::Redland::URI, perl URI or string)
 and language (xml:lang attribute) I<XML_LANGUAGE> may also be given.
 
 An alternative is:
@@ -320,7 +320,7 @@ sub DESTROY ($) {
 
 =item uri
 
-Get the current URI of the node as an L<RDF::Redland::URI> object.
+Get the current URI of the node as an RDF::Redland::URI object.
 
 =cut
 
@@ -437,7 +437,7 @@ sub literal_value_is_wf_xml ($) {
 
 =item literal_datatype
 
-Return the L<RDF::Redland::URI> of the literal datatype or undef if it
+Return the RDF::Redland::URI of the literal datatype or undef if it
 is not a datatype.
 
 =cut
