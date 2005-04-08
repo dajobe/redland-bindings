@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2005 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -44,7 +44,7 @@ RDF::Redland::URI - Redland RDF URI Class
 
 Represents a URI as a mostly-opaque object for identifying things
 in the RDF world.  The URIs are also used for identifying features
-for the RDF::Redland::Parser class. 
+for the RDF::Redland::Parser and RDF::Redland::Serializer classes.
 
 =cut
 
@@ -179,9 +179,9 @@ sub equals ($$) {
 =item new_from_uri URI
 
 Create a new RDF::Redland::URI object from RDF::Redland::URI I<URI>
-(copy constructor)
+(copy constructor).  Instead use:
 
-Use $u=$uri->clone
+  $u=$uri->clone
 
 =back
 

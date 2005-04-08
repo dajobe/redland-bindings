@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2005 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -503,7 +503,9 @@ and if content is well formed XML, when I<IS_WF> is non
 0.  I<XML_LANGUAGE> is optional can can be set to undef.
 
 This method remains but using new_literal is prefered.
-For plain literals $node=new RDF::Redland::Node("blah") is simplest.
+Instead, for plain literals use:
+
+  $node=new RDF::Redland::Node("blah")
 
 =item new_from_typed_literal STRING [DATATYPE [XML_LANGUAGE]]
 
@@ -512,14 +514,17 @@ Renamed to new_literal with same arguments.
 =item new_from_uri_string URI_STRING
 
 Create a new RDF::Redland::Node object for a resource with URI I<URI_STRING>.
-It is equivalent to use the shorter
-$a=new RDF::Redland::Node->new_from_uri($uri_string)
+It is equivalent to use the shorter:
+
+  $a=new RDF::Redland::Node->new_from_uri($uri_string)
 
 =item new_from_node NODE
 
 Create a new RDF::Redland::Node object from existing
 RDF::Redland::Node I<NODE> (copy constructor).
-It is equivalent to use $new_node=$old_node->clone
+It is equivalent to use:
+
+  $new_node=$old_node->clone
 
 =back
 

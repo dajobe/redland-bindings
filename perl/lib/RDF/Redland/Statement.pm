@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2001 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2005 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -173,9 +173,9 @@ sub DESTROY ($) {
 
 =item subject [SUBJECT]
 
-Get/set the statement subject.  When RDF::Redland::Node I<SUBJECT> is given, sets
-the subject of the statement, otherwise returns a reference to the
-statement RDF::Redland::Node subject.
+Get/set the statement subject.  When a RDF::Redland::Node I<SUBJECT>
+is given, sets the subject of the statement, otherwise returns a
+reference to the statement RDF::Redland::Node subject.
 
 =cut
 
@@ -259,15 +259,17 @@ sub equals ($$) {
 
 Create a new RDF::Redland::Statement with the given
 RDF::Redland::Node objects as parts (or undef when empty for a
-I<partial> statement).
-Use $a=new RDF::Redland::Statement($subject, $predicate, $object);
+I<partial> statement).  Use instead:
+
+  $a=new RDF::Redland::Statement($subject, $predicate, $object);
 
 =item new_from_statement STATEMENT
 
 Create a new RDF::Redland::Statement object from
 RDF::Redland::Statement I<STATEMENT> (copy constructor).
+Use instead:
 
-Use $s=$old_statement->clone;
+  $s=$old_statement->clone;
 
 =cut
 

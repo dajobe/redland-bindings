@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2004 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2004-2005 David Beckett - http://purl.org/net/dajobe/
 # Institute for Learning and Research Technology - http://www.ilrt.org/
 # University of Bristol - http://www.bristol.ac.uk/
 # 
@@ -232,7 +232,7 @@ sub next_result ($) {
 
 =item as_stream
 
-Return a new RDF::Redland::Stream object returning the query results
+Return a new RDF::Redland::Stream object representing the query results
 as an RDF Graph.
 
 =cut
