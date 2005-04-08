@@ -164,7 +164,10 @@ The default if this is not set, is to run warn $msg
 
 =head1 SEE ALSO
 
-L<RDF::Redland::Node>, L<RDF::Redland::URI>,
+L<RDF::Redland::Node>, 
+L<RDF::Redland::BlankNode>, L<RDF::Redland::URINode>,
+L<RDF::Redland::LiteralNode>, L<RDF::Redland::XMLLiteralNode>,
+L<RDF::Redland::URI>,
 L<RDF::Redland::Statement>, L<RDF::Redland::Model>,
 L<RDF::Redland::Storage>, L<RDF::Redland::Parser>,
 L<RDF::Redland::Query>, L<RDF::Redland::QueryResults>,
