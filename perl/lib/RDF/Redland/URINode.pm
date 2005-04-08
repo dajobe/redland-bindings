@@ -43,7 +43,7 @@ RDF::Redland::URINode - Redland RDF URI Node Class
 =head1 DESCRIPTION
 
 This class represents URIs in the RDF graph.  See
-I<RDF::Redland::Node> for the methods on this object.
+L<RDF::Redland::Node> for the methods on this object.
 
 =cut
 

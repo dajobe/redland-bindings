@@ -43,7 +43,7 @@ RDF::Redland::BlankNode - Redland RDF Blank Node Class
 =head1 DESCRIPTION
 
 This class represents a blank nodes in the RDF graph.  See
-I<RDF::Redland::Node> for the methods on this object.
+L<RDF::Redland::Node> for the methods on this object.
 
 =cut
 

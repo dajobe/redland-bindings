@@ -44,7 +44,7 @@ RDF::Redland::LiteralNode - Redland RDF Literal Node Class
 =head1 DESCRIPTION
 
 This class represents RDF literal and Typed Literals in the RDF
-graph.  See I<RDF::Redland::Node> for the methods on this object.
+graph.  See L<RDF::Redland::Node> for the methods on this object.
 
 =cut
 

@@ -43,7 +43,7 @@ RDF::Redland::XMLLiteralNode - Redland RDF URI Node Class
 =head1 DESCRIPTION
 
 This class represents RDF Typed Literals for XML in the RDF graph.
-See I<RDF::Redland::Node> for the methods on this object.
+See L<RDF::Redland::Node> for the methods on this object.
 
 =cut
 
