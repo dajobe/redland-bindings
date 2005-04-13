@@ -67,6 +67,31 @@ librdf_free_uri($uri);
 
 librdf_free_parser($parser);
 
+
+$nulluri = librdf_new_uri ($world, '-');
+
+$query = librdf_new_query($world, 'sparql', $nulluri, "PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT ?a ?c WHERE (?a dc:title ?c)", $nulluri);
+print "Querying for dc:titles:\n";
+$results=librdf_model_query_execute($model, $query);
+$count=1;
+while(!librdf_query_results_finished($results)) {
+  print "result $count: {\n";
+  for ($i=0; $i < librdf_query_results_get_bindings_count($results); $i++)
+  {
+    $val=librdf_query_results_get_binding_value($results, $i);
+    if ($val != null) {
+      $nval=librdf_node_to_string($val);
+      print "  ".librdf_query_results_get_binding_name($results, $i)."=".$nval."\n";
+    }
+  }
+  print "}\n";
+  librdf_query_results_next($results);
+  $count++;
+}
+$results=null;
+print "Returned $count results\n";
+
+
 $serializer=librdf_new_serializer($world,'rdfxml','application/rdf+xml',librdf_new_uri($world,''));
 print "Redland serializer created\n";
 
