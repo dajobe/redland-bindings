@@ -91,6 +91,12 @@ while(!librdf_query_results_finished($results)) {
 $results=null;
 print "Returned $count results\n";
 
+print "\nExecuting query again\n";
+$results=librdf_model_query_execute($model, $query);
+$format_uri=librdf_new_uri($world, "http://www.w3.org/TR/2004/WD-rdf-sparql-XMLres-20041221/");
+$str=librdf_query_results_to_string($results, $format_uri, $nulluri);
+print "Query results serialized to an XML string size ".strlen($str)." bytes\n";
+
 
 $serializer=librdf_new_serializer($world,'rdfxml','application/rdf+xml',librdf_new_uri($world,''));
 print "Redland serializer created\n";
