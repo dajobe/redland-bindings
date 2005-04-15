@@ -386,15 +386,13 @@ class Node(object):
 
   def __eq__(self,other):
     """Equality of an RDF Node compared to another RDF Node."""
-    if other is None:
-      return (self is None)
+    if not isinstance(other, self.__class__):
+      return False
     return (Redland.librdf_node_equals(self._node, other._node) != 0)
 
   def __ne__(self,other):
     """Inequality of an RDF Node compared to another RDF Node."""
-    if other is None:
-      return (self is None)
-    return (Redland.librdf_node_equals(self._node, other._node) == 0)
+    return not self == other
 
   def __hash__(self):
     return hash(str(self))
@@ -565,15 +563,13 @@ class Statement(object):
 
   def __eq__(self,other):
     """Equality of an RDF Statement compared to another RDF Statement."""
-    if other is None:
-      return (self is None)
+    if not isinstance(other, self.__class__):
+      return False
     return (Redland.librdf_statement_equals(self._statement, other._statement) != 0)
 
   def __ne__(self,other):
     """Inequality of an RDF Statement compared to another RDF Statement."""
-    if other is None:
-      return (self is None)
-    return (Redland.librdf_statement_equals(self._statement, other._statement) == 0)
+    return not self == other
 
   def matches(self,other):
     """Comparison of this potentially incomplete RDF Statement compared to another RDF Statement."""
@@ -1624,15 +1620,13 @@ Copy an existing URI uri1.
   
   def __eq__(self,other):
     """Equality of RDF URI to another RDF URI."""
-    if other is None:
-      return (self is None)
+    if not isinstance(other, self.__class__):
+      return False
     return (Redland.librdf_uri_equals(self._reduri, other._reduri) != 0)
 
   def __ne__(self,other):
     """Inequality of RDF URI to another RDF URI."""
-    if other is None:
-      return (self is None)
-    return (Redland.librdf_uri_equals(self._reduri, other._reduri) == 0)
+    return not self == other
 
 # end class Uri
 
