@@ -31,6 +31,7 @@ fi
 program=`basename $0`
 
 # automake 1.8 requires autoconf 2.58
+# automake 1.9 requires autoconf 2.58
 # automake 1.7 requires autoconf 2.54
 automake_min_vers=1.7
 aclocal_min_vers=$automake_min_vers
@@ -53,13 +54,15 @@ IFS=":"
 set - $PATH
 IFS="$save_ifs"
 
-autoconf=autoconf
+autoconf=${AUTOCONF-autoconf}
 autoconf_vers=0
-automake=automake
+automake=${AUTOMAKE-automake}
 automake_vers=0
-aclocal=aclocal
+aclocal=${ACLOCAL-aclocal}
 aclocal_vers=0
-libtoolize=libtoolize
+autoheader=${AUTOHEADER-autoheader}
+autoheader_vers=0
+libtoolize=${LIBTOOLIZE-libtoolize}
 libtoolize_vers=0
 swig=swig
 swig_vers=0
@@ -279,14 +282,14 @@ do
 
       echo "$program: Running libtoolize --copy --automake"
       $DRYRUN rm -f ltmain.sh libtool
-      $DRYRUN libtoolize --copy --automake
+      $DRYRUN $libtoolize --copy --automake
 
       aclocalinclude="$ACLOCAL_FLAGS"
       echo "$program: Running aclocal $aclocalinclude"
       $DRYRUN $aclocal $aclocal_args
       if grep "^AM_CONFIG_HEADER" configure.ac >/dev/null; then
 	echo "$program: Running autoheader"
-	$DRYRUN autoheader
+	$DRYRUN $autoheader
       fi
       echo "$program: Running automake $am_opt"
       $DRYRUN $automake $automake_args $am_opt
