@@ -89,9 +89,10 @@ EEEEE
 { Q => <<EOT
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT ?name
-WHERE
-  (?x rdf:type foaf:Person)
-  (?x foaf:name ?name)
+WHERE {
+  ?x rdf:type foaf:Person
+  ?x foaf:name ?name
+}
 EOT
  , D => $example_foaf_uri
  , T => 'A FOAF query that finds the names of all the people in the graph'
@@ -100,7 +101,7 @@ EOT
 { Q => <<EOT
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT ?nick, ?name
-WHERE (?x rdf:type foaf:Person) (?x foaf:nick ?nick) (?x foaf:name ?name)
+WHERE { ?x rdf:type foaf:Person . ?x foaf:nick ?nick . ?x foaf:name ?name }
 EOT
  , D => $example_foaf_uri
  , T => 'A FOAF query that finds all people with a name and an IRC nick'
@@ -110,9 +111,9 @@ EOT
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX rss: <http://purl.org/rss/1.0/>
 SELECT ?title ?description
-WHERE ( ?item rdf:type rss:item )
-      ( ?item rss:title ?title )
-      ( ?item rss:description ?description )
+WHERE { ?item rdf:type rss:item .
+       ?item rss:title ?title .
+       ?item rss:description ?description }
 AAAAA
  , D => $example_rss_uri
  , T => 'An RSS 1.0 query that finds all the items in the feed'
@@ -122,12 +123,13 @@ PREFIX iemsr: <http://www.ukoln.ac.uk/projects/iemsr/terms/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
 SELECT $number $name $description
-WHERE
-  ($r rdf:type iemsr:RootDataElement)
-  ($n iemsr:isChildOf $r)
-  ($n iemsr:refNumber $number)
-  ($n rdfs:label $name)
-  ($n rdfs:comment $description)
+WHERE {
+  $r rdf:type iemsr:RootDataElement .
+  $n iemsr:isChildOf $r .
+  $n iemsr:refNumber $number .
+  $n rdfs:label $name .
+  $n rdfs:comment $description
+}
 CCCCC
  , D => 'http://www.ukoln.ac.uk/projects/iemsr/terms/LOM/'
  , T => 'Find all LOM root elements in the LOM encoded for the <a href="http://www.ukoln.ac.uk/projects/iemsr/">JISC IE Schema Registry</a> (my current project)'
@@ -137,11 +139,12 @@ PREFIX doap: <http://usefulinc.com/ns/doap#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
 SELECT $description $maintainerName
-WHERE
-  ($project rdf:type doap:Project)
-  ($project doap:description $description)
-  ($project doap:maintainer $m)
-  ($m foaf:name $maintainerName)
+WHERE {
+  $project rdf:type doap:Project .
+  $project doap:description $description .
+  $project doap:maintainer $m .
+  $m foaf:name $maintainerName
+}
 DDDDD
  , D => 'http://svn.usefulinc.com/svn/repos/trunk/doap/examples/gnome-bluetooth-doap.rdf'
  , T => 'Print the description of a project and maintainer(s) using <a href="http://usefulinc.com/doap">DOAP</a>'
@@ -150,12 +153,12 @@ DDDDD
 PREFIX doaml: <http://ns.balbinus.net/doaml#>
 
 SELECT ?name ?archives
-WHERE
-  (?list rdf:type doaml:MailingList)
-  (?list doaml:name ?name)
-  (?list doaml:archives ?archives)
-AND
-  ?name =~ /p3p/
+WHERE {
+  ?list rdf:type doaml:MailingList .
+  ?list doaml:name ?name .
+  ?list doaml:archives ?archives .
+FILTER
+  REGEX(?name, "p3p")
 EEEEE
  , D => 'http://www.doaml.net/doaml/w3ml/Lists.rdf'
  , T => 'Print the name and archive URIs of W3C mailing lists about P3P as described by <a href="http://www.doaml.net/">DOAML</a>'
@@ -164,9 +167,9 @@ EEEEE
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT ?name ?nick
 WHERE
-  (?x rdf:type foaf:Person)
-  (?x foaf:name ?name)
-  OPTIONAL (?x foaf:nick ?nick)
+  { ?x rdf:type foaf:Person .
+  { ?x foaf:name ?name .
+  OPTIONAL { ?x foaf:nick ?nick }
 optional-example1
  , D => $example_foaf_uri,
  , T => 'Print the names and optional nicks of people in my FOAF file where available'
@@ -176,14 +179,16 @@ PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX rss: <http://purl.org/rss/1.0/>
 PREFIX enc: <http://purl.oclc.org/net/rss_2.0/enc#>
 SELECT ?title ?enc ?len
-WHERE ( ?item rdf:type rss:item )
-      ( ?item rss:title ?title )
-      ( ?enclosure rdf:type enc:Enclosure )
-      ( ?item enc:enclosure ?enclosure )
-      ( ?enclosure enc:url ?enc )
-      ( ?enclosure enc:type ?type )
-      ( ?enclosure enc:length ?len )
-AND ?type =~ /audio\/mpeg/
+WHERE {
+      ?item rdf:type rss:item .
+      ?item rss:title ?title .
+      ?enclosure rdf:type enc:Enclosure .
+      ?item enc:enclosure ?enclosure .
+      ?enclosure enc:url ?enc .
+      ?enclosure enc:type ?type .
+      ?enclosure enc:length ?len .
+      FILTER regex(?type, "audio/mpeg")
+     }
 podcasts
 ,
 , D => 'http://B4mad.Net/datenbrei/feed/rdf',
@@ -192,14 +197,15 @@ podcasts
 { Q => <<'PERIODIC',
 PREFIX table: <http://www.daml.org/2003/01/periodictable/PeriodicTable#>
 PREFIX xsd:   <http://www.w3.org/2001/XMLSchema#>
-SELECT ?name, ?symbol, ?weight, ?number
-WHERE
-(?element table:group ?group)
-(?group table:name "Noble gas"^^xsd:string)
-(?element table:name ?name)
-(?element table:symbol ?symbol)
-(?element table:atomicWeight ?weight)
-(?element table:atomicNumber ?number)
+SELECT ?name ?symbol ?weight ?number
+WHERE {
+ ?element table:group ?group .
+ ?group table:name "Noble gas"^^xsd:string .
+ ?element table:name ?name .
+ ?element table:symbol ?symbol .
+ ?element table:atomicWeight ? .
+ ?element table:atomicNumber ?number
+}
 PERIODIC
 , D => 'http://www.daml.org/2003/01/periodictable/PeriodicTable.owl',
 , T => 'What are the Noble Gases?',
