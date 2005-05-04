@@ -695,7 +695,7 @@ Create a model using an in-memory storage.
     return Redland.librdf_model_add(self._model, 
         Redland.librdf_new_node_from_node(subject._node),
         Redland.librdf_new_node_from_node(predicate._node),
-        Redland.librdf_new_node_from_node(object._node));
+        Redland.librdf_new_node_from_node(object._node))
 
   def add_typed_literal_statement(self,subject,predicate,
                                   string,xml_language=None,datatype=None):
@@ -1091,7 +1091,7 @@ Create a model using an in-memory storage.
   def to_string(self, base_uri=None, name="", mime_type="", type_uri=None):
     """Serialize the Model to a syntax.
 
-       print model.to_string(base_uri="http://example.org/base");
+       print model.to_string(base_uri="http://example.org/base")
 
        If no serializer name is given, the default serializer RDF/XML is used.
    """
@@ -1319,11 +1319,11 @@ class Stream(object):
     if _debug:
       print "Creating RDF.Stream for object",object, "creator",creator
 
-    self._stream=object;
+    self._stream=object
 
     # Keep around a reference to the object that created the stream
     # so that Python does not destroy them before us.
-    self.creator=creator;
+    self.creator=creator
 
   def context_iter(self):
     """Return an iterator over this stream that
@@ -1479,10 +1479,10 @@ and Hash storage:
         args.has_key('name') and 
         args.has_key('options_string')):
       self._storage=Redland.librdf_new_storage(_world._world,
-          args['storage_name'], args['name'], args['options_string']);
+          args['storage_name'], args['name'], args['options_string'])
     elif args.has_key('storage'):
       self._storage=Redland.librdf_new_storage_from_storage(
-          args['storage']._storage);
+          args['storage']._storage)
     else:
       raise RedlandError("Creating Storage failed - illegal arguments")
 
