@@ -1513,8 +1513,8 @@ class HashStorage(Storage):
   hash-type is "memory" or "bdb") and any other options.
   """
   def __init__(self, hash_name, options=""):
-    return Storage.__init__(self, name = hash_name, storage_name = "hashes",
-            options_string = options)
+    Storage.__init__(self, name = hash_name, storage_name = "hashes",
+                     options_string = options)
 
 
 class MemoryStorage(Storage):
@@ -1531,8 +1531,8 @@ class MemoryStorage(Storage):
   Class of memory Storage with optional name, additional options.
   """
   def __init__(self, mem_name = "", options_string = ""):
-    return Storage.__init__(self, name = mem_name, storage_name = "memory",
-            options_string = options_string)
+    Storage.__init__(self, name = mem_name, storage_name = "memory",
+                     options_string = options_string)
 
 
 class FileStorage(Storage):
@@ -1544,8 +1544,8 @@ class FileStorage(Storage):
   Class of file Storage with required name, additional options.
   """
   def __init__(self, mem_name, options_string = ""):
-    return Storage.__init__(self, name = mem_name, storage_name = "file",
-            options_string = options_string)
+    Storage.__init__(self, name = mem_name, storage_name = "file",
+                     options_string = options_string)
 
 
 class Uri(object):
@@ -1816,19 +1816,19 @@ optional.  When any are given, they must all match.
 
 class RDFXMLParser(Parser):
   def __init__(self, uri = None):
-    return Parser.__init__(self, name = "rdfxml", mime_type="", uri=uri)
+    Parser.__init__(self, name = "rdfxml", mime_type="", uri=uri)
 
 class NTriplesParser(Parser):
   def __init__(self, uri = None):
-    return Parser.__init__(self, name = "ntriples", mime_type="text/plain", uri=uri)
+    Parser.__init__(self, name = "ntriples", mime_type="text/plain", uri=uri)
 
 class TurtleParser(Parser):
   def __init__(self, uri = None):
-    return Parser.__init__(self, name = "turtle", mime_type="application/x-turtle", uri=uri)
+    Parser.__init__(self, name = "turtle", mime_type="application/x-turtle", uri=uri)
 
 class RSSTagSoupParser(Parser):
   def __init__(self, uri = None):
-    return Parser.__init__(self, name = "rss-tag-soup", mime_type="", uri=uri)
+    Parser.__init__(self, name = "rss-tag-soup", mime_type="", uri=uri)
 
 
 class Query(object):
@@ -1888,14 +1888,14 @@ class Query(object):
 class RDQLQuery(Query):
   """Redland RDQL Query class"""
   def __init__(self, querystring, base_uri=None):
-    return Query.__init__(self, querystring = querystring, base_uri = base_uri,
-            query_language = "rdql")
+    Query.__init__(self, querystring = querystring, base_uri = base_uri,
+                   query_language = "rdql")
 
 class SPARQLQuery(Query):
   """Redland SPARQL Query class"""
   def __init__(self, querystring, base_uri=None):
-    return Query.__init__(self, querystring = querystring, base_uri = base_uri,
-            query_language = "sparql")
+    Query.__init__(self, querystring = querystring, base_uri = base_uri,
+                   query_language = "sparql")
 
 
 class QueryResults(object):
@@ -2190,8 +2190,7 @@ class NTriplesSerializer(Serializer):
      ser=RDF.NTriplesSerializer()
   """
   def __init__(self):
-    return Serializer.__init__(self, name = "ntriples", mime_type = "",
-            uri = None)
+    Serializer.__init__(self, name = "ntriples", mime_type = "", uri = None)
 
 
 class RDFXMLSerializer(Serializer):
@@ -2201,7 +2200,7 @@ class RDFXMLSerializer(Serializer):
      ser=RDF.RDFXMLSerializer()
   """
   def __init__(self):
-    return Serializer.__init__(self, name = "rdfxml", mime_type = "", uri = None)
+    Serializer.__init__(self, name = "rdfxml", mime_type = "", uri = None)
 
 class RDFXMLAbbrevSerializer(Serializer):
   """Redland RDF/XML with abbreviations Serializer class
@@ -2210,7 +2209,7 @@ class RDFXMLAbbrevSerializer(Serializer):
      ser=RDF.RDFXMLAbbrevSerializer()
   """
   def __init__(self):
-    return Serializer.__init__(self, name = "rdfxml-abbrev", mime_type = "", uri = None)
+    Serializer.__init__(self, name = "rdfxml-abbrev", mime_type = "", uri = None)
 
 class RSS10Serializer(Serializer):
   """Redland RSS 1.0 Serializer class
@@ -2219,7 +2218,7 @@ class RSS10Serializer(Serializer):
      ser=RDF.RSS10Serializer()
   """
   def __init__(self):
-    return Serializer.__init__(self, name = "rss-1.0", uri = None)
+    Serializer.__init__(self, name = "rss-1.0", uri = None)
 
 
 class NS(object):
