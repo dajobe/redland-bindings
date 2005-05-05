@@ -1,6 +1,6 @@
---- redland_wrap.c.orig	2005-02-08 20:19:58.000000000 +0000
-+++ redland_wrap.c	2005-02-08 21:16:05.000000000 +0000
-@@ -529,7 +529,7 @@
+--- redland_wrap.c.orig	2005-05-05 21:54:03.000000000 +0100
++++ redland_wrap.c	2005-05-05 21:54:17.000000000 +0100
+@@ -680,7 +680,7 @@
    p = value->ptr;
    if (type==-1) return -1;
  
@@ -9,7 +9,7 @@
  
    return SWIG_ZTS_ConvertResourceData(p,type,type_name,ptr,ty TSRMLS_CC);
  }
-@@ -1856,7 +1856,8 @@
+@@ -2035,7 +2035,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value(arg1);
@@ -19,7 +19,7 @@
      
      if(!result) {
          ZVAL_NULL(return_value);
-@@ -1887,6 +1888,8 @@
+@@ -2066,6 +2067,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value_as_latin1(arg1);
@@ -28,7 +28,7 @@
      
      
      if(!result) {
-@@ -1918,6 +1921,8 @@
+@@ -2097,6 +2100,8 @@
      }
      
      result = (char *)librdf_node_get_literal_value_language(arg1);
@@ -37,7 +37,16 @@
      
      
      if(!result) {
-@@ -5738,6 +5743,7 @@
+@@ -4886,6 +4891,8 @@
+     arg2 = (int) Z_LVAL_PP(args[1-argbase]);
+     
+     result = (librdf_node *)librdf_query_results_get_binding_value(arg1,arg2);
++    if(!result)
++      result="";
+     
+     
+     SWIG_SetPointerZval(return_value, (void *)result, SWIGTYPE_p_librdf_node_s, 0);
+@@ -6207,6 +6214,7 @@
  
  PHP_MSHUTDOWN_FUNCTION(redland)
  {
@@ -45,7 +54,7 @@
      return SUCCESS;
  }
  PHP_MINIT_FUNCTION(redland)
-@@ -5802,5 +5808,10 @@
+@@ -6275,5 +6283,10 @@
  }
  PHP_MINFO_FUNCTION(redland)
  {
