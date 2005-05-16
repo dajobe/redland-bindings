@@ -516,12 +516,16 @@ if test $with_redland = system; then
   REDLAND_VERSION_VERBOSE="system $REDLAND_VERSION"
   REDLAND_RUN=
 else
-  if test -x ../librdf/redland-src-config; then
-    dir=`cd ../librdf; pwd`
-  elif test -x ../redland-src-config; then
-    dir=`cd ..; pwd`
-  else
-    AC_MSG_ERROR(Redland sources missing in .. or ../librdf directory - cannot use internal)
+  dir=
+  redland_source_dirs="../redland ../librdf .."
+  for testdir in $redland_source_dirs; do 
+    if test -x $testdir/redland-src-config; then
+      dir=`cd $testdir; pwd`
+      break
+    fi
+  done
+  if test "X$dir" = X; then
+    AC_MSG_ERROR(internal redland sources not found in directories: $redland_source_dirs)
   fi
   REDLAND_CONFIG=$dir/redland-src-config
   REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
