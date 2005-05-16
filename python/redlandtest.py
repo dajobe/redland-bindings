@@ -275,20 +275,20 @@ class RasqalQueryTestCase (unittest.TestCase):
         self.parser.parse_into_model(self.model,a)
 
     def testCreate(self):
-        q = Query("SELECT ?a ?b ?c WHERE (?a ?b ?c)")
+        q = RDQLQuery("SELECT ?a ?b ?c WHERE (?a ?b ?c)")
         self.assert_(q is not None)
         q = Query("- - -",query_language="triples")
         self.assert_(q is not None)
 
     def testRDQLQueryCount(self):
-        q = Query("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
+        q = RDQLQuery("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
         results = q.execute(self.model)
         for result in results:
             pass
         self.assert_(len(results) == 3, "Query count should be 3 after query finished running")
 
     def testRDQLQueryRun(self):
-        q = Query("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
+        q = RDQLQuery("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
         results = q.execute(self.model)
         self.assert_(results is not None,"Query eval not OK")
 
@@ -304,7 +304,7 @@ class RasqalQueryTestCase (unittest.TestCase):
         self.assert_(first is None,"Triples queries shouldn't work as bindings - None should be returned from get_binding_name(0)")
 
     def testRDQLQueryAsStreamDontWork(self):
-        q = Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
+        q = RDQLQuery("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
 	failed = False
 	try:
           stream = q.execute(self.model).as_stream()
@@ -313,7 +313,7 @@ class RasqalQueryTestCase (unittest.TestCase):
         self.assert_(failed is True,"RDQL queries shouldn't work as streams - None should be returned from as_stream")
 
     #def testRDQLParseError(self):
-        #q = Query("SELECT WHERE")
+        #q = RDQLQuery("SELECT WHERE")
         #results = q.run_as_bindings(self.model)
         # TODO: This needs to fail somehow
 
@@ -329,7 +329,7 @@ class RasqalQueryTestCase (unittest.TestCase):
         self.assert_(count == 3, "Should have found three results in query")
 
     def testRDQLQueryRunOnModel(self):
-        q = Query("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
+        q = RDQLQuery("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
         bindings = self.model.execute(q)
         self.assert_(bindings is not None,"Query eval not OK")
 
@@ -350,19 +350,19 @@ class RasqalQueryTestCase (unittest.TestCase):
         self.assert_(count == 3, "Should have found three results in query")
 
     def testSPARQLQueryAsStream(self):
-        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT * WHERE (?a dc:title ?c)")
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT * WHERE {?a dc:title ?c}")
         s = q.execute(self.model).as_stream()
         self.assert_(s is not None, "execute as_stream should have succeeded")
         rc=self.model.add_statements(s)
         self.assert_(rc == 0, "add statements should have succeeded")
 
     def testSPARQLQueryAsk(self):
-        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> ASK WHERE (?x ?y ?z)")
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> ASK WHERE {?x ?y ?z}")
         rc = q.execute(self.model).get_boolean()
         self.assert_(rc is True, "execute get_boolean should have returned True")
 
     def testSPARQLQueryAsString(self):
-        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT * WHERE (?a dc:title ?c)")
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT * WHERE {?a dc:title ?c}")
         r = q.execute(self.model)
         self.assert_(r is not None, "execute to_string should have succeeded")
         s = r.to_string()
