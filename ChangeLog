@@ -1,3 +1,63 @@
+2005-05-23  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* php/test.php: Update sparql syntax, add an optional in order to
+	test null librdf_node* results.  Add a result serializing test.
+
+	* php/redland_wrap.c.patch: Simplify, all functions returning
+	librdf_node* will automatically return PHP null.
+
+	* php/redland-typemap.i: Add librdf_node* to returning NULL
+	typemap
+
+2005-05-18  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* configure.ac: Bump version to 1.0.1.1 for redland 1.0.1 (CVS)
+	Bugs to http://bugs.librdf.org/
+
+2005-05-16  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/redlandtest.py: Update to split rdql / sparql and update
+	to new sparql syntax
+
+	* configure.ac: Search in list of dirs for redland sources with
+	'internal'
+
+	* configure.ac: need swig 1.3.24 for known working python binding
+
+2005-05-05  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* php/redland_wrap.c.patch: Patch null return for
+	librdf_query_results_get_binding_value
+
+2005-05-04  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/RDF.py: Remove 'return' from __init__ constructors for
+	Storage, Parser and Serializer subclasses.
+
+	* python/RDF.py: remove ;s
+
+2005-05-03  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* demos/query.pl: Convert sparql examples to new { turtle/n3 }
+	triple syntax
+
+2005-04-17  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* autogen.sh: allow envariables to override the programs
+
+2005-04-15  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/RDF.py (Node.__eq__, Node.__ne__, Statement.__eq__,
+	Statement.__ne__): Do not assume in comparisons that the other
+	parameter is of the right type; check it first.  Rewrite __ne__ in
+	terms of __eq__ (Daniel Larsson)
+
+2005-04-13  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* php/test.php: Test query result as a string
+
+	* php/test.php: Added sparql query test
+
 2005-04-08  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* perl/lib/RDF/Redland.pm (set_log_handler, reset_log_handler):
