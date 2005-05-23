@@ -90,7 +90,7 @@ EEEEE
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT ?name
 WHERE {
-  ?x rdf:type foaf:Person
+  ?x rdf:type foaf:Person .
   ?x foaf:name ?name
 }
 EOT
@@ -166,10 +166,11 @@ EEEEE
 { Q => <<'optional-example1'
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT ?name ?nick
-WHERE
-  { ?x rdf:type foaf:Person .
-  { ?x foaf:name ?name .
+WHERE {
+  ?x rdf:type foaf:Person .
+  ?x foaf:name ?name .
   OPTIONAL { ?x foaf:nick ?nick }
+}
 optional-example1
  , D => $example_foaf_uri,
  , T => 'Print the names and optional nicks of people in my FOAF file where available'
