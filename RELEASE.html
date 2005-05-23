@@ -21,8 +21,67 @@ pre
 
 <h1>Redland RDF Application Framework Bindings</h1>
 
-<h2 id="rel1_0_0_2"><a name="rel1_0_0_2">Redland Bindings 1.0.0.2 Changes</a></h2>
+<h2 id="rel1_0_1_1"><a name="rel1_0_1_1">Redland Bindings 1.0.1.1 Changes</a></h2>
 
+<p>Not yet released</p>
+
+<h3>General Changes</h3>
+
+<p>The query demonstrations written in Perl now use the revised
+SPARQL syntax.</p>
+
+
+<h3>C# bindings changes</h3>
+
+<p>No changes.</p>
+
+
+<h3>Objective-C / Cocoa bindings changes</h3>
+
+<p>No changes.</p>
+
+
+<h3>Perl bindings changes</h3>
+
+<p>Perl. Added <code>RDF::Redland</code> methods
+<code>set_log_handler</code> and <code>reset_log_handler</code>
+to get structured error messages.  Prefer this to the older handler.</p>
+
+<p>Perl.  Added  convienience Node subclasses
+<code>RDF::Redland::URINode</code>,
+<code>RDF::Redland::XMLLiteralNode</code>,
+<code>RDF::Redland::BlankNode</code> and
+<code>RDF::Redland::LiteralNode</code>
+</p>
+
+
+<h3>PHP bindings changes</h3>
+
+<p>When returning NULL librdf_node* objects, convert them also
+to a PHP null.</p>
+
+
+<h3>Python bindings changes</h3>
+
+<p>Serializer class gains set_namespace method.</p>
+
+<p>Adjust Node, Statement class comparisons to not assume the other
+parameter is of the right type.  Remove 'return' from
+constructors. (Daniel Larsson).</p>
+
+
+<h3>Ruby bindings changes</h3>
+
+<p>Generate html documentation using rdoc (Nikolas Coukouma).</p>
+
+
+<h3>Tcl bindings changes</h3>
+
+<p>No changes.</p>
+
+
+
+<h2 id="rel1_0_0_2"><a name="rel1_0_0_2">Redland Bindings 1.0.0.2 Changes</a></h2>
 
 <h3>General Changes</h3>
 
