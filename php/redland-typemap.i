@@ -1,4 +1,4 @@
-%typemap(out) librdf_stream*, librdf_iterator* %{
+%typemap(out) librdf_node*, librdf_stream*, librdf_iterator* %{
   if(!$1) {
     ZVAL_NULL(return_value);
   } else {
