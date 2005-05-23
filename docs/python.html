@@ -31,6 +31,28 @@ sudo make install):</p>
   root# make install
 </pre>
 
+<p>If you do not want it installed system wide, or do not have write
+access to the system python area, you can install into any directory
+you like by setting the <code>DESTDIR</code> as follows:</p>
+
+<pre>
+  $ make install DESTDIR=/path/to/wherever
+</pre>
+
+<p>although you will likely need let python know about this area
+either by the <code>PYTHONPATH</code> environment variable or some
+other mechanism.  The shared library that provides the interface
+<code>Redland.so</code> (or similar name) will also be installed and
+the system will not find it unless that directory is pointed at.
+This is system specific but the choices are setting environment
+variables <code>DYLD_LIBRARY_PATH</code> (OSX),
+<code>LD_LIBRARY_PATH</code> (everyone else) or editing the
+<code>/etc/ld.so.conf</code> file (Linux, others?).  See your system
+documentation or manual pages about shared library linking such as
+<code>ld.so(1)</code>.
+</p>
+
+
 <p>The python interface for Redland is mature and requires Python 2.3
 (preferred) or 2.2.  It has been tested with the following
 versions:</p>
