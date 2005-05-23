@@ -54,7 +54,7 @@ print "Redland storage created\n";
 $model=librdf_new_model($world,$storage,'');
 print "Redland model created\n";
 
-$parser=librdf_new_parser($world,'raptor','application/rdf+xml',librdf_new_uri($world,''));
+$parser=librdf_new_parser($world,'raptor','application/rdf+xml',librdf_new_uri($world,'-'));
 print "Redland parser created\n";
 
 $uri=librdf_new_uri($world,'file:../data/dc.rdf');
@@ -70,35 +70,40 @@ librdf_free_parser($parser);
 
 $nulluri = librdf_new_uri ($world, '-');
 
-$query = librdf_new_query($world, 'sparql', $nulluri, "PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT ?a ?c WHERE (?a dc:title ?c)", $nulluri);
+$query = librdf_new_query($world, 'sparql', $nulluri, "PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT ?a ?c ?d WHERE { ?a dc:title ?c . OPTIONAL { ?a dc:related ?d } }", $nulluri);
 print "Querying for dc:titles:\n";
 $results=librdf_model_query_execute($model, $query);
 $count=1;
-while(!librdf_query_results_finished($results)) {
+while($results && !librdf_query_results_finished($results)) {
   print "result $count: {\n";
   for ($i=0; $i < librdf_query_results_get_bindings_count($results); $i++)
   {
     $val=librdf_query_results_get_binding_value($results, $i);
-    if ($val != null) {
+    if ($val)
       $nval=librdf_node_to_string($val);
-      print "  ".librdf_query_results_get_binding_name($results, $i)."=".$nval."\n";
-    }
+    else
+      $nval='(unbound)';
+    print "  ".librdf_query_results_get_binding_name($results, $i)."=".$nval."\n";
   }
   print "}\n";
   librdf_query_results_next($results);
   $count++;
 }
+if ($results)
+  print "Returned $count results\n";
 $results=null;
-print "Returned $count results\n";
 
 print "\nExecuting query again\n";
 $results=librdf_model_query_execute($model, $query);
-$format_uri=librdf_new_uri($world, "http://www.w3.org/TR/2004/WD-rdf-sparql-XMLres-20041221/");
-$str=librdf_query_results_to_string($results, $format_uri, $nulluri);
-print "Query results serialized to an XML string size ".strlen($str)." bytes\n";
+if ($results) {
+  $format_uri=librdf_new_uri($world, "http://www.w3.org/TR/2004/WD-rdf-sparql-XMLres-20041221/");
+  $str=librdf_query_results_to_string($results, $format_uri, $nulluri);
+  print "Query results serialized to an XML string size ".strlen($str)." bytes\n";
+} else
+  print "Query results couldn't be serialized to an XML string\n";
 
 
-$serializer=librdf_new_serializer($world,'rdfxml','application/rdf+xml',librdf_new_uri($world,''));
+$serializer=librdf_new_serializer($world,'rdfxml','application/rdf+xml',librdf_new_uri($world,'-'));
 print "Redland serializer created\n";
 
 $base=librdf_new_uri($world,'http://example.org/base.rdf');
