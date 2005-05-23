@@ -203,7 +203,7 @@ WHERE {
  ?group table:name "Noble gas"^^xsd:string .
  ?element table:name ?name .
  ?element table:symbol ?symbol .
- ?element table:atomicWeight ? .
+ ?element table:atomicWeight ?weight .
  ?element table:atomicNumber ?number
 }
 PERIODIC
