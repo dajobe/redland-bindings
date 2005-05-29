@@ -1,3 +1,7 @@
+2005-05-29  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* Snapshotted redland-bindings_1_0_1_1 for 1.0.1.1 release
+
 2005-05-23  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* demos/query.pl: update older sparql syntax
