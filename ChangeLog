@@ -1,5 +1,7 @@
 2005-05-23  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* demos/query.pl: update older sparql syntax
+
 	* php/test.php: Update sparql syntax, add an optional in order to
 	test null librdf_node* results.  Add a result serializing test.
 
