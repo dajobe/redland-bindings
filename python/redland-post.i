@@ -77,9 +77,6 @@ librdf_python_set_callback(PyObject *dummy, PyObject *args)
 static PyObject *
 librdf_python_reset_callback(PyObject *dummy, PyObject *args)
 {
-  PyObject *result = NULL;
-  PyObject *temp;
-  
   if(librdf_python_callback) {
     Py_XDECREF(librdf_python_callback);  /* Dispose of previous callback */
     librdf_python_callback = NULL;
@@ -235,9 +232,9 @@ librdf_python_message_handler(int is_warning, const char *message)
 
 
 static int
-librdf_python_logger_handler(void *user_data, librdf_log_message *log)
+librdf_python_logger_handler(void *user_data, librdf_log_message *log_msg)
 {
-  raptor_locator* locator = log->locator;
+  raptor_locator* locator = log_msg->locator;
   int line= -1;
   int column= -1;
   int byte= -1;
@@ -253,16 +250,16 @@ librdf_python_logger_handler(void *user_data, librdf_log_message *log)
   }
   
   if(librdf_python_callback)
-    return librdf_call_python_message(log->code, log->level, log->facility,
-                                      log->message,
+    return librdf_call_python_message(log_msg->code, log_msg->level, 
+                                      log_msg->facility, log_msg->message,
                                       line, column, byte, file, uri);
   
 
-  if(log->level < LIBRDF_LOG_WARN)
+  if(log_msg->level < LIBRDF_LOG_WARN)
     return 1;
   
-  return librdf_python_message_handler((log->level < LIBRDF_LOG_ERROR),
-                                       log->message);
+  return librdf_python_message_handler((log_msg->level < LIBRDF_LOG_ERROR),
+                                       log_msg->message);
 }
 
 
