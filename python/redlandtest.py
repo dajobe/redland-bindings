@@ -366,7 +366,7 @@ class RasqalQueryTestCase (unittest.TestCase):
         r = q.execute(self.model)
         self.assert_(r is not None, "execute to_string should have succeeded")
         s = r.to_string()
-        self.assert_(len(s) == 301, "to_string should have returned 2 bytes not")
+        self.assert_(len(s) == 542, "to_string should have returned 301 bytes not " + str(len(s)))
 
 
 if __name__ == '__main__':
