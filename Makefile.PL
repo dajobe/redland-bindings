@@ -63,15 +63,13 @@ my $version=$ENV{VERSION};
 if(!$version) {
   my $conf_in_file="$TOP_SRCDIR/configure.ac";
   open(CONF, $conf_in_file) or die "Cannot open $conf_in_file for version - $!\n";
-  my $v;
   while(<CONF>) {
-    if(/LIBRDF_VERSION_(MAJOR|MINOR|RELEASE)=(\d+)$/) {
-      $v{$1}=$2;
+    if(/^AC_INIT\(\[[^]]+\],\s*([^,]+)/) {
+      $version=$1;
     }
   }
   close(CONF);
-  $version=join(".",$v{MAJOR}, $v{MINOR}, $v{RELEASE});
-  die "Cannot find AM_INIT_AUTOMAKE in $conf_in_file for version\n"
+  die "Cannot find AC_INIT in $conf_in_file for version\n"
     unless $version;
 }
 
@@ -155,10 +153,6 @@ test: config
 	cd perl && \$(MAKE) \$(MFLAGS) -f Makefile.perl \$@
 
 install: config
-	\@if [ -f ${standalone_makefile} ]; then \\
-	  cd raptor && \$(MAKE) \$(MFLAGS) install-libLTLIBRARIES; cd ..; \\
-	  cd librdf && \$(MAKE) \$(MFLAGS) install-libLTLIBRARIES; cd ..; \\
-	fi
 	cd perl && \$(MAKE) \$(MFLAGS) -f Makefile.perl \$@
 
 # MakeMaker target
