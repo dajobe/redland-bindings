@@ -40,8 +40,6 @@ use RDF::Redland::CORE;
 
 package RDF::Redland::World;
 
-$VERSION= eval { my $v="@PACKAGE_VERSION@"; $v =~ s/\./_/g; $v };
-
 sub new ($) {
   my($proto)=@_;
   my $class = ref($proto) || $proto;
@@ -86,7 +84,9 @@ sub message ($$$$$$$$$) {
 
 package RDF::Redland;
 
-use vars qw($Debug $World $Error_Sub $Warning_Sub);
+use vars qw($VERSION $Debug $World $Error_Sub $Warning_Sub);
+
+$VERSION= sprintf("%s.%02d_%02d_%02d", split(/\./, "@PACKAGE_VERSION@"));
 
 $Debug=0;
 
