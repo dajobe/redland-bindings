@@ -105,7 +105,7 @@ sub new ($;$) {
         return $arg->clone;
       } elsif(UNIVERSAL::isa($arg, 'RDF::Redland::URI')) {
         $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
-      } elsif (UNIVERSAL::isa($arg, 'URI::URL')) {
+      } elsif (UNIVERSAL::isa($arg, 'URI')) {
 	$self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
       } else {
 	die "RDF::Redland::Node::new - Cannot make a node from an object of class $arg_class\n";
@@ -155,7 +155,7 @@ sub new_from_uri ($$) {
   if(my $class=ref $arg) {
     if(UNIVERSAL::isa($arg, 'RDF::Redland::URI')) {
       $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri($RDF::Redland::World->{WORLD},$arg->{URI});
-    } elsif (UNIVERSAL::isa($arg, 'URI::URL')) {
+    } elsif (UNIVERSAL::isa($arg, 'URI')) {
       $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$arg->as_string);
     } else {
       die "RDF::Redland::Node::new_from_uri - Cannot make a Node from an object of class $class\n";
@@ -203,12 +203,13 @@ sub new_literal ($$;$$) {
   my $dt_uri=undef;
   if(defined $dt) {
     if(UNIVERSAL::isa($dt, 'RDF::Redland::URI')) {
-      $dt_uri=$dt;
-    } elsif (UNIVERSAL::isa($dt, 'URI::URL')) {
-      $dt_uri=new RDF::Redland::URI($dt->as_string);
+      # nop
+    } elsif (UNIVERSAL::isa($dt, 'URI')) {
+      $dt=RDF::Redland::URI->new($dt->as_string);
     } else {
-      $dt_uri=new RDF::Redland::URI($dt);
+      $dt=RDF::Redland::URI->new($dt);
     }
+    $dt_uri=$dt->{URI};
   }
 
   $self->{NODE}=&RDF::Redland::CORE::librdf_new_node_from_typed_literal($RDF::Redland::World->{WORLD},$string,$xml_language,$dt_uri);
@@ -478,7 +479,7 @@ sub _ensure ($) {
     $node=&RDF::Redland::CORE::librdf_new_node_from_node($node->{NODE});
   } elsif(UNIVERSAL::isa($node, 'RDF::Redland::URI')) {
     $node=&RDF::Redland::CORE::librdf_new_node_from_uri($RDF::Redland::World->{WORLD},$node->{URI});
-  } elsif (UNIVERSAL::isa($node, 'URI::URL')) {
+  } elsif (UNIVERSAL::isa($node, 'URI')) {
     $node=&RDF::Redland::CORE::librdf_new_node_from_uri_string($RDF::Redland::World->{WORLD},$node->as_string);	
   } else {
     $node=undef;
