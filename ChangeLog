@@ -1,9 +1,18 @@
 2005-06-06  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* perl/lib/RDF/Redland.pm.in:
+	Moved $VERSION to RDF::Redland package, add _s and leading 0s
+	Fixes issue #0000034 - http://bugs.librdf.org/mantis/view.php?id=34
+
+	* configure.ac: Make perl/lib/RDF/Redland.pm from prototype
+
+	* perl/lib/RDF/Makefile.am, perl/lib/RDF/Redland.pm,
+	perl/lib/RDF/Redland.pm.in: Rename Redland.pm as Redland.pm.in
+
 	* perl/lib/RDF/Redland/Node.pm:
 	Use ISA with 'URI' to catch several classes of perl URI.
 	(new_literal): Fix promotion of types, strings to a redland URI.
-	Fixes bug #0000033 - http://bugs.librdf.org/mantis/view.php?id=33
+	Fixes issue #0000033 - http://bugs.librdf.org/mantis/view.php?id=33
 
 2005-06-02  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
