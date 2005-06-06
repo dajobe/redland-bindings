@@ -1,5 +1,14 @@
 2005-06-06  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* python/redlandtest.py (testSPARQLQueryAsString): Fix serializing
+	query results test to XML result2 format answer.
+
+	* python/RDF.py, perl/lib/RDF/Redland/QueryResults.pm: Use result2
+	format by default in query results serializing
+
+	* Makefile.PL: Handle newer configure.ac autoconf versions
+	Don't try to cd raptor or cd librdf
+
 	* perl/lib/RDF/Redland.pm.in:
 	Moved $VERSION to RDF::Redland package, add _s and leading 0s
 	Fixes issue #0000034 - http://bugs.librdf.org/mantis/view.php?id=34
