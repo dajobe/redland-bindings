@@ -1,4 +1,24 @@
+2005-06-06  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/Node.pm:
+	Use ISA with 'URI' to catch several classes of perl URI.
+	(new_literal): Fix promotion of types, strings to a redland URI.
+	Fixes bug #0000033 - http://bugs.librdf.org/mantis/view.php?id=33
+
+2005-06-02  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* configure.ac: Bumped version to 1.0.2.1
+
+2005-06-01  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* python/redland-post.i (librdf_python_reset_callback): Remove
+	unused vars
+	(librdf_python_logger_handler): use log_msg as arg name to remove
+	a warning.
+
 2005-05-29  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* configure.ac: Bumped version to 1.0.1.2
 
 	* Snapshotted redland-bindings_1_0_1_1 for 1.0.1.1 release
 
