@@ -607,6 +607,7 @@ demos/Makefile
 data/Makefile
 ])
 AC_CONFIG_FILES([redland-bindings.spec])
+AC_CONFIG_FILES([perl/lib/RDF/Redland.pm])
 
 AC_OUTPUT
 
