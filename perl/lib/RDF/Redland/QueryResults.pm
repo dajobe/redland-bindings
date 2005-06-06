@@ -278,7 +278,7 @@ sub to_string($;$$) {
   if($format_uri && !ref($format_uri)) {
     $format_uri = RDF::Redland::URI->new($format_uri);
   }
-  $format_uri ||= RDF::Redland::URI->new("http://www.w3.org/TR/2004/WD-rdf-sparql-XMLres-20041221/");
+  $format_uri ||= RDF::Redland::URI->new("http://www.w3.org/2001/sw/DataAccess/rf1/result2");
 
   my $rformat_uri=$format_uri ? $format_uri->{URI} : undef;
 

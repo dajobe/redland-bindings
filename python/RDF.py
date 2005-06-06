@@ -2041,7 +2041,7 @@ class QueryResults(object):
       import Redland_python
       format_uri = Uri(string=Redland_python.unicode_to_bytes(format_uri))
     else:
-      format_uri = Uri(string="http://www.w3.org/TR/2004/WD-rdf-sparql-XMLres-20041221/")
+      format_uri = Uri(string="http://www.w3.org/2001/sw/DataAccess/rf1/result2")
     if format_uri is not None:
       rformat_uri = format_uri._reduri
     else:
