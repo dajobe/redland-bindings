@@ -151,7 +151,7 @@ module Redland
       case node
       when Node
         my_node = Redland.librdf_new_node_from_node(node.node)
-      when SWIG::TYPE_p_librdf_node
+      when SWIG::TYPE_p_librdf_node_s
         my_node = Redland.librdf_new_node_from_node(node)
       when Uri
         my_node = Redland.librdf_new_node_from_uri($world.world,node.uri)

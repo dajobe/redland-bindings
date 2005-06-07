@@ -18,7 +18,7 @@ module Redland
         @uri = Redland.librdf_new_uri($world.world,uri_string)
       when Uri
         @uri = Redland.librdf_new_uri_from_uri(uri_string.uri)
-      when SWIG::TYPE_p_librdf_uri 
+      when SWIG::TYPE_p_librdf_uri_s
         @uri = Redland.librdf_new_uri_from_uri(uri_string)
       end
       if not @uri then raise RedlandError.new("Unable to create Uri") end

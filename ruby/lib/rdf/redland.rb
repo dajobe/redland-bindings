@@ -11,7 +11,6 @@ require 'rdf/redland/serializer'
 require 'rdf/redland/uri'
 require 'rdf/redland/resource'
 require 'rdf/redland/util'
-require 'rdf/redland/constants'
 
 require 'log4r'
 
@@ -70,6 +69,7 @@ module Redland
 
 end
 
+require 'rdf/redland/constants'
 
 if $0 == __FILE__
   
