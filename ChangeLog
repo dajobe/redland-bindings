@@ -1,5 +1,14 @@
 2005-06-06  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* ruby/lib/rdf/redland/node.rb, ruby/lib/rdf/redland/resource.rb,
+	ruby/lib/rdf/redland/uri.rb, ruby/lib/rdf/redland.rb: Updates to
+	match newer SWIG.  Move constants in rdf/redland.rb to later after
+	$world exists.
+	Fixes issue #0000031 - http://bugs.librdf.org/mantis/view.php?id=31
+	based on attached patch from aredridel.
+
+2005-06-06  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
 	* python/redlandtest.py (testSPARQLQueryAsString): Fix serializing
 	query results test to XML result2 format answer.
 
