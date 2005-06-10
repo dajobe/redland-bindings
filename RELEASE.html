@@ -23,8 +23,34 @@ pre
 
 <h2 id="rel1_0_2_1"><a name="rel1_0_2_1">Redland Bindings 1.0.2.1 Changes</a></h2>
 
-<p>Not yet released.
+<p>This release is mainly to synchronise with Redland 1.0.2</p>
+
+<h3>Perl bindings changes</h3>
+
+<p>Query results are now serialized to the latest SPARQL XML format.</p>
+
+<p>A <code>$VERSION</code> variable is exported by the perl binding
+so that you can do <code>use RDF::Redland 1.00_02</code> to ensure you
+get a certain version or newer.
 </p>
+
+<p>Node class method <code>new_literal</code> modified to accept
+several classes of perl URI and fixed to promote them correctly to a
+redland URI.
+</p>
+
+
+<h3>Python bindings changes</h3>
+
+<p>Query results are now serialized to the latest SPARQL XML format.</p>
+
+
+<h3>Ruby bindings changes</h3>
+
+<p>Update the bindings for newer SWIG and re-order requires to make
+<code>irb -r rdf/redland</code> work (aredridel)
+</p>
+
 
 
 <h2 id="rel1_0_1_1"><a name="rel1_0_1_1">Redland Bindings 1.0.1.1 Changes</a></h2>

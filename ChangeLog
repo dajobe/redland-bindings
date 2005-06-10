@@ -1,5 +1,7 @@
 2005-06-10  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* Snapshotted redland-bindings_1_0_2_1 for 1.0.2.1 release
+
 	* perl/lib/RDF/Redland.pm.in: Use eval to ensure version gets
 	turned into a perl version thing like 1.00_02_01 and not a string
 	"1.00_02_01".
