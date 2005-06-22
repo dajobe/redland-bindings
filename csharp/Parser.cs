@@ -121,7 +121,7 @@ namespace Redland {
 
 		public int ParseIntoModel (Model model, string uri)
 		{			
-			return ParseIntoModel (new Redland.Uri (uri), new Redland.Uri (uri), model);
+			return ParseIntoModel (new Uri (uri), new Uri (uri), model);
 		}
 
 		[DllImport ("librdf")]
@@ -129,7 +129,7 @@ namespace Redland {
 
 		public Stream ParseAsStream (string uri)
 		{
-			Uri tmp_uri = new Redland.Uri (uri);
+			Uri tmp_uri = new Uri (uri);
 			world.Enter ();
 			IntPtr raw_stream = librdf_parser_parse_as_stream (handle, tmp_uri.Handle, IntPtr.Zero);
 			// FIXME: throw exception if raw_stream is zero ?

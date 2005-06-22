@@ -25,7 +25,7 @@ namespace Redland {
 
 		private bool disposed = false;
 		private bool started = false;
-		private Redland.World world = Redland.World.AddReference ();
+		private World world = Redland.World.AddReference ();
 
 		public HandleRef Handle {
 			get { return handle; }

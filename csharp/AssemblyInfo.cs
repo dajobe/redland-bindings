@@ -30,7 +30,7 @@ using System.Runtime.CompilerServices;
 //
 // You can specify all values by your own or you can build default build and revision
 // numbers with the '*' character (the default):
-[assembly: AssemblyVersion("0.9.17.0")]
+[assembly: AssemblyVersion("1.0.2.1")]
 
 // For assembly signing
 [assembly: AssemblyDelaySign(true)]

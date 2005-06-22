@@ -100,7 +100,7 @@ namespace Redland {
 
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_new_node_from_uri (HandleRef world, HandleRef uri);
-		public Node (Redland.Uri uri)
+		public Node (Uri uri)
 		{
  			// Console.WriteLine ("Making Node from Uri {0} with handle {1}", uri.ToString (), uri.Handle);
 			IntPtr node = librdf_new_node_from_uri (world.Handle, uri.Handle);
@@ -246,11 +246,11 @@ namespace Redland {
 		[DllImport ("librdf")]
 		static extern IntPtr librdf_node_get_uri (HandleRef node);
 
-		public Redland.Uri Uri {
+		public Uri Uri {
 			get {
 				if (! IsResource ())
 					throw new RedlandError ("Can't get URI of non-resource");
-				return new Redland.Uri (librdf_node_get_uri (handle));
+				return new Uri (librdf_node_get_uri (handle));
 			}
 		}
 	}
