@@ -1,3 +1,14 @@
+2005-06-22  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* csharp/AssemblyInfo.cs, csharp/Node.cs, csharp/Parser.cs,
+	csharp/Stream.cs: Patch for namespaces fixes from John Barstow.
+
+	* python/setup-win32.py: win32 python setup
+
+2005-06-17  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* redland-bindings.spec.in: License not Copyright header
+
 2005-06-10  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* configure.ac: Bumped version to 1.0.3.1
