@@ -88,11 +88,12 @@ EEEEE
   'sparql' => [
 { Q => <<EOT
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
-SELECT ?name
+SELECT DISTINCT ?name
 WHERE {
   ?x rdf:type foaf:Person .
   ?x foaf:name ?name
 }
+ORDER BY ?name
 EOT
  , D => $example_foaf_uri
  , T => 'A FOAF query that finds the names of all the people in the graph'
@@ -157,8 +158,8 @@ WHERE {
   ?list rdf:type doaml:MailingList .
   ?list doaml:name ?name .
   ?list doaml:archives ?archives .
-FILTER
-  REGEX(?name, "p3p")
+  FILTER REGEX(?name, "p3p")
+}
 EEEEE
  , D => 'http://www.doaml.net/doaml/w3ml/Lists.rdf'
  , T => 'Print the name and archive URIs of W3C mailing lists about P3P as described by <a href="http://www.doaml.net/">DOAML</a>'
@@ -207,6 +208,7 @@ WHERE {
  ?element table:atomicWeight ?weight .
  ?element table:atomicNumber ?number
 }
+ORDER BY ASC(?name)
 PERIODIC
 , D => 'http://www.daml.org/2003/01/periodictable/PeriodicTable.owl',
 , T => 'What are the Noble Gases?',
