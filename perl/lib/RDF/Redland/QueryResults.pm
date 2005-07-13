@@ -250,7 +250,8 @@ sub as_stream($) {
 =item to_string [FORMAT-URI [BASE-URI]]
 
 Serialize to a string syntax in format I<FORMAT-URI> using the optional
-I<BASE-URI>.
+I<BASE-URI>.  The default format when none is given is determined by
+librdf_query_results_to_string.
 
 =cut
 
@@ -267,18 +268,13 @@ sub to_string($;$$) {
     return $serializer->serialize_model_to_string($base_uri, $tmpmodel);
   }
 
-  if($self->is_boolean) {
-    return $self->get_boolean;
-  }
-
-  if(!$self->is_bindings) {
+  if(!$self->is_boolean && !$self->is_bindings) {
     die "Unknown query result format cannot be written as a string";
   }
   
   if($format_uri && !ref($format_uri)) {
     $format_uri = RDF::Redland::URI->new($format_uri);
   }
-  $format_uri ||= RDF::Redland::URI->new("http://www.w3.org/2001/sw/DataAccess/rf1/result2");
 
   my $rformat_uri=$format_uri ? $format_uri->{URI} : undef;
 
