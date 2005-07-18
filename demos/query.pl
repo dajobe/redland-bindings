@@ -709,25 +709,19 @@ if(!$storage && !$model) {
 }
 
 
-sub my_load ($$;$$$) {
-  my($self,$uri,$name,$type,$syntax_uri)=@_;
-  $syntax_uri=$syntax_uri ? $syntax_uri->{URI} : undef;
-
-  return &RDF::Redland::CORE::librdf_model_load($self->{MODEL},$uri->{URI}, $name, $type, $syntax_uri);
-}
-
-
 my $uri=undef;
 if($uri_string) {
   for my $u (split(/ /, $uri_string)) {
     $uri=new RDF::Redland::URI($u);
-    eval { my_load($model, $uri); };
+    my $parser=new RDF::Redland::Parser("guess");
+    eval { $parser->parse_into_model($uri, $uri, $model); };
     if($@ || @errors) {
       my $err=join("<br />", map {$_->[0]} @errors);
       print "\n\n<p><b>Loading URI $u failed with errors:</b><br />\n$err</p>\n";
       end_page($q);
       exit 0;
     }
+    $parser=undef;
   }
 }
 
