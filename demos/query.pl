@@ -213,6 +213,17 @@ PERIODIC
 , D => 'http://www.daml.org/2003/01/periodictable/PeriodicTable.owl',
 , T => 'What are the Noble Gases?',
 },
+{ Q => <<'DAWG',
+PREFIX collab: <http://www.w3.org/2000/10/swap/pim/collab@@#>
+SELECT ?desc ?R
+WHERE {
+  ?issue collab:shortDesc ?desc;
+  collab:resolveRecord ?R
+}
+DAWG
+, D => 'http://www.w3.org/2000/06/webdata/xslt?xslfile=http%3A%2F%2Fwww.w3.org%2F2003%2F11%2Frdf-in-xhtml-processor&xmlfile=http%3A%2F%2Fwww.w3.org%2F2001%2Fsw%2FDataAccess%2Fissues',
+, T => 'What are the DAWG issues??',
+},
   ]
 );
 
