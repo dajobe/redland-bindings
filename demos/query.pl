@@ -222,7 +222,21 @@ WHERE {
 }
 DAWG
 , D => 'http://www.w3.org/2000/06/webdata/xslt?xslfile=http%3A%2F%2Fwww.w3.org%2F2003%2F11%2Frdf-in-xhtml-processor&xmlfile=http%3A%2F%2Fwww.w3.org%2F2001%2Fsw%2FDataAccess%2Fissues',
-, T => 'What are the DAWG issues??',
+, T => 'What are the RDF DAWG issues?',
+},
+{ Q => <<'ATOM',
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX rss: <http://purl.org/rss/1.0/>
+PREFIX atom: <http://www.w3.org/2005/Atom>
+SELECT ?item ?title ?date
+WHERE { ?item rdf:type rss:item .
+        ?item rss:title ?title .
+        ?item atom:updated ?date }
+ORDER BY DESC(?date)
+LIMIT 10
+ATOM
+, D => 'http://www.tbray.org/ongoing/ongoing.atom',
+, T => 'What are the last 10 updated items in an atom feed?',
 },
   ]
 );
