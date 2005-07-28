@@ -240,17 +240,13 @@ ATOM
 },
 { Q => <<'BRUNEL',
 PREFIX : <http://www.commonobjects.example.org/gmlrss>
-PREFIX gml: <http://www.opengis.net/gml>
-PREFIX xsi: <http://www.w3.org/2001/XMLSchema-instance>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX bio: <http://purl.org/vocab/bio/0.1/>
-PREFIX cc: <http://web.resource.org/cc/>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
-PREFIX rel: <http://purl.org/vocab/relationship/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
 SELECT ?name ?birthDate ?deathDate
-WHERE { ?bridge a :Bridge;
+WHERE {
+ ?bridge a :Bridge;
    foaf:maker ?person [
      foaf:name ?name;
      bio:event [
