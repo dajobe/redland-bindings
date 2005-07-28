@@ -762,7 +762,10 @@ if(!$storage && !$model) {
 my $uri=undef;
 if($uri_string) {
   for my $u (split(/ /, $uri_string)) {
-    next unless $u =~ /^(ftp|http):/i;
+    if($u !~ /^(ftp|http):/i) {
+      push(@warnings, ["Ignored non-ftp/http URI $u", 0]);
+      next;
+    }
 
     $uri=new RDF::Redland::URI($u);
     my $parser=new RDF::Redland::Parser("guess");
