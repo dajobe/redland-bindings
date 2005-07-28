@@ -238,6 +238,34 @@ ATOM
 , D => 'http://www.tbray.org/ongoing/ongoing.atom',
 , T => 'What are the last 10 updated items in an atom feed?',
 },
+{ Q => <<'BRUNEL',
+PREFIX : <http://www.commonobjects.example.org/gmlrss>
+PREFIX gml: <http://www.opengis.net/gml>
+PREFIX xsi: <http://www.w3.org/2001/XMLSchema-instance>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX bio: <http://purl.org/vocab/bio/0.1/>
+PREFIX cc: <http://web.resource.org/cc/>
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX rel: <http://purl.org/vocab/relationship/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+SELECT ?name ?birthDate ?deathDate
+WHERE { ?bridge a :Bridge;
+   foaf:maker ?person [
+     foaf:name ?name;
+     bio:event [
+       a bio:Birth;
+       bio:date ?birthDate
+     ];
+     bio:event [
+       a bio:Death;
+       bio:date ?deathDate
+     ]
+   ]}
+BRUNEL
+, D => 'http://www.w3.org/2003/01/geo/rdfgml/tests/mixing-eg1.xml',
+, T => 'Who made a bridge in Bristol and what birth/death dates did they have?',
+},
   ]
 );
 
