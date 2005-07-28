@@ -246,18 +246,19 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
 SELECT ?name ?birthDate ?deathDate
 WHERE {
- ?bridge a :Bridge;
-   foaf:maker ?person [
-     foaf:name ?name;
-     bio:event [
-       a bio:Birth;
-       bio:date ?birthDate
-     ];
-     bio:event [
-       a bio:Death;
-       bio:date ?deathDate
-     ]
-   ]}
+  ?bridge a :Bridge;
+  foaf:maker ?person [
+    foaf:name ?name;
+    bio:event [
+      a bio:Birth;
+      bio:date ?birthDate
+    ];
+    bio:event [
+      a bio:Death;
+      bio:date ?deathDate
+    ]
+  ]
+}
 BRUNEL
 , D => 'http://www.w3.org/2003/01/geo/rdfgml/tests/mixing-eg1.xml',
 , T => 'Who made a bridge in Bristol and what birth/death dates did they have?',
