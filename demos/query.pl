@@ -241,23 +241,22 @@ ATOM
 { Q => <<'BRUNEL',
 PREFIX : <http://www.commonobjects.example.org/gmlrss>
 PREFIX bio: <http://purl.org/vocab/bio/0.1/>
-PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
 SELECT ?name ?birthDate ?deathDate
 WHERE {
   ?bridge a :Bridge;
-  foaf:maker ?person [
-    foaf:name ?name;
-    bio:event [
-      a bio:Birth;
-      bio:date ?birthDate
-    ];
-    bio:event [
-      a bio:Death;
-      bio:date ?deathDate
+    foaf:maker ?person [
+      foaf:name ?name;
+      bio:event [
+	a bio:Birth;
+	bio:date ?birthDate
+      ];
+      bio:event [
+	a bio:Death;
+	bio:date ?deathDate
+      ]
     ]
-  ]
 }
 BRUNEL
 , D => 'http://www.w3.org/2003/01/geo/rdfgml/tests/mixing-eg1.xml',
@@ -625,7 +624,7 @@ print "</p>\n\n<p><em>Query</em><br/>\n";
 print $q->textarea(-name=>'query',
 		    -default=>$examples->[0]->{Q},
 		    -columns=>100,
-		    -rows=>6);
+		    -rows=>10);
 
 print "</p>\n\n<p>in query language:\n";
 print $q->radio_group(-name=>'language', 
