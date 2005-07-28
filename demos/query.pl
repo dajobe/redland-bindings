@@ -613,7 +613,7 @@ or the W3C\'s RSS 1.0 file at:
 $example_rss_uri</p>
 
 EOT
-print $q->start_form(-method=>'GET', -action => $action_url),"\n";
+print $q->start_form(-method=>'GET', -action => $action_url, -name => 'myform'),"\n";
 print "<p><em>RDF content URIs</em><br/>\n";
 print $q->textfield(-name=>'uri',
 		      -default=>'',
@@ -642,6 +642,7 @@ print $q->checkbox(-name=>'raw',
 print "</p>\n\n<p>";
 
 print $q->submit('Run Query'),"\n";
+print qq{<input type="button" value="Clear Query" onclick="document.myform.query.value=''" />\n};
 
 print "</p>\n";
 print $q->endform,"\n";
