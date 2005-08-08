@@ -12,11 +12,11 @@ module Redland
     # query - the query string
     # language -  the name of the query language
     # uri -  the URI identifying the query language
-    def initialize(query,language=nil,uri=nil)
+    def initialize(query,language=nil,uri=nil,base_uri=nil)
       @query = query
       @language = language
       @uri = uri
-      @query = Redland.librdf_new_query($world.world,language,uri,query)
+      @query = Redland.librdf_new_query($world.world,language,uri,query,base_uri)
       return nil if not @query
       ObjectSpace.define_finalizer(self,Query.create_finalizer(@query))
     end
