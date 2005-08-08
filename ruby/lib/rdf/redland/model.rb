@@ -409,6 +409,16 @@ module Redland
 
     private :get_size
 
+    # execute a query
+    def query_execute(query)
+      results=Redland.librdf_model_query_execute(@model, query.query)
+      if not results
+        return nil
+      else
+        return QueryResults.new(results)
+      end
+    end
+
     
   end
 
