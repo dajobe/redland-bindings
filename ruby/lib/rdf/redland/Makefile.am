@@ -24,7 +24,7 @@ ruby_DATA=$(EXTRA_DIST)
 
 EXTRA_DIST=constants.rb convert_owl.rb convertfoaf.rb dc.rb model.rb \
 node.rb parser.rb query.rb resource.rb serializer.rb statement.rb \
-store.rb stream.rb uri.rb util.rb
+store.rb stream.rb uri.rb util.rb queryresults.rb
 
 SUBDIRS=schemas
 
