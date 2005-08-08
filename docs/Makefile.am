@@ -46,7 +46,7 @@ Redland/Node Redland/Model Redland/ContextParser Redland/Stream		\
 Redland/MemoryStore Redland/Statement Redland/Literal			\
 Redland/RedlandError Redland/NodeIterator Redland/FileStore		\
 Redland/Namespace Redland/World Redland/TripleStore Redland/Resource	\
-Redland/MergedModel Redland/BNode Redland/QueryResult
+Redland/MergedModel Redland/BNode Redland/QueryResults
 
 RUBY_HTML_SOURCE_FILES=$(RUBY_FILES:%=rdoc/files/rdf/redland/%_rb.html)
 RUBY_HTML_CLASS_FILES=$(RUBY_CLASSES:%=rdoc/classes/%.html)
