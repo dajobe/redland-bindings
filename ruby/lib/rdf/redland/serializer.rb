@@ -68,6 +68,11 @@ module Redland
       return (Redland::librdf_serializer_set_namespace(@serializer,uri.uri,prefix) == 0)
     end
       
+    # Serialize the RDF graph in model to a string
+    def model_to_string(base_uri, model)
+      base_uri = base_uri.uri unless base_uri == nil
+      return Redland.librdf_serializer_serialize_model_to_string(@serializer, base_uri, model.model)
+    end
     
   end
 
