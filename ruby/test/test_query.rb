@@ -83,6 +83,7 @@ class TestQuery < Test::Unit::TestCase
 
     query = Query.new("CONSTRUCT { ?a ?b ?c . ?b ?a ?c } WHERE { ?a ?b ?c }", "sparql", nil, nil)
     results = query.execute(model)
+    assert(results != nil)
 
     # Result should be a graph of two triples
 
@@ -101,6 +102,59 @@ class TestQuery < Test::Unit::TestCase
 
     assert(stream.end?)
   end
+
+  def test_model_query_serialize_bindings()
+    model = Model.new()
+
+    lit = Node.new("baz")
+    st = Statement.new(@exns['subject'], @exns['pred'], lit)
+    model.add_statement(st)
+
+    query = Query.new("SELECT ?a ?b ?c WHERE (?a ?b ?c)", "rdql", nil, nil)
+    results = query.execute(model)
+    assert(results != nil)
+
+    string = results.to_string()
+
+    # length of a SPARQL results format string - might change
+    assert_equal(string.length(), 465)
+  end
+
+  def test_model_query_serialize_ask()
+    model = Model.new()
+
+    lit = Node.new("baz")
+    st = Statement.new(@exns['subject'], @exns['pred'], lit)
+    model.add_statement(st)
+
+    query = Query.new("ASK WHERE { ?a ?b ?c }", "sparql", nil, nil)
+    results = query.execute(model)
+    assert(results != nil)
+
+    string = results.to_string()
+
+    # length of a SPARQL results format string - might change
+    assert_equal(string.length(), 133)
+  end
+
+  def test_model_query_serialize_construct()
+    model = Model.new()
+
+    @exns = Namespace.new('http://example.org/')
+    lit = Node.new("baz")
+    st = Statement.new(@exns['subject'], @exns['pred'], lit)
+    model.add_statement(st)
+
+    query = Query.new("CONSTRUCT { ?a ?b ?c . ?b ?a ?c } WHERE { ?a ?b ?c }", "sparql", nil, nil)
+    results = query.execute(model)
+    assert(results != nil)
+
+    string = results.to_string()
+
+    # length of an RDF/XML string - might change
+    assert_equal(string.length(), 401)
+  end
+
 
 end
 
