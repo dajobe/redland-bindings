@@ -1,5 +1,23 @@
 2005-08-08  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
+	* ruby/test/Makefile.am: Added test_query.rb
+
+	* ruby/test/test_query.rb: test_query
+
+	* ruby/lib/rdf/redland.rb: Added queryresults
+
+	* ruby/lib/rdf/redland/statement.rb: (==(other)) added
+
+	* ruby/lib/rdf/redland/query.rb: Moved query results code into
+	queryresults.rb and class.
+	(Query.execute): Return QueryResults
+
+	* ruby/lib/rdf/redland/model.rb (Model.query_execute): Added.
+
+	* ruby/lib/rdf/redland/Makefile.am: Added queryresults.rb
+
+	* ruby/lib/rdf/redland/queryresults.rb: queryresults class
+
 	* ruby/lib/rdf/redland/parser.rb (Parser.initialize):
 	Use 'rdfxml' as parser name.
 	(Parser.ntriples): Use a NULL mime type (empty string)
