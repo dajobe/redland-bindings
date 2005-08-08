@@ -8,12 +8,13 @@ module Redland
 
   class Query
 
+    attr_reader :query
+
     # Constructor - create a new Query object
     # query - the query string
     # language -  the name of the query language
     # uri -  the URI identifying the query language
     def initialize(query,language=nil,uri=nil,base_uri=nil)
-      @query = query
       @language = language
       @uri = uri
       @query = Redland.librdf_new_query($world.world,language,uri,query,base_uri)
@@ -23,7 +24,12 @@ module Redland
 
     # Execute a query on a model
     def execute(model)
-      return RDF::Redland::librdf_query_run_as_bindings(@query,model.model)
+      results=Redland.librdf_query_execute(@query,model.model)
+      if not results
+        return nil
+      else
+        return QueryResults.new(results)
+      end
     end
 
     # You shouldn't use this. Used internally for cleanup.
@@ -34,36 +40,6 @@ module Redland
       }
     end
     
-
-  end
-
-  class QueryResult
-
-    def initialize()
-    end
-
-    # Get an array of bindings (?? confirm)
-    def bindings
-      results = []
-      (0...self.size).each{|i| binding_value( i ) }
-    end
-
-    # Get binding name for the current result
-    def binding_name(index)
-      return Redland.librdf_query_results_get_binding_name(@query_results,index)
-    end
-
-    # Get one binding value for the current result
-    def binding_value(index)
-      node = Redland.librdf_query_results_get_binding_value(@query_results,index)
-      return Redland::Node.new_from_object(node)
-    end
-
-    # Get number of bindings so far
-    def size()
-      return Redland.librdf_query_results_get_bindings_count(@query_results)
-    end
-
   end
 
 end #Redland
