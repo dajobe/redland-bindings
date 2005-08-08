@@ -12,8 +12,6 @@ require 'rdf/redland/uri'
 require 'rdf/redland/resource'
 require 'rdf/redland/util'
 
-require 'log4r'
-
 # This module initialises the Redland library and references all
 # resources from it.
 
