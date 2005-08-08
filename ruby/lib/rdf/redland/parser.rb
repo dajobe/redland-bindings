@@ -6,10 +6,14 @@ require 'rdf/redland/stream'
 module Redland
 
   # The Parser class for rdf.  There are currently three types of parsers
-  # *'raptor'- a rdf parser
+  # *'rdfxml'- a rdf parser
   # *'ntriples' a An triples parser
   # *'turtle' - a parser for the turtle syntax as defined in
   #  http://www.ilrt.bris.ac.uk/discovery/2004/01/turtle/
+  # *'rss-tag-soup' - a parser for all RSS flavours and some atom
+  # *'grddl' - GRDDL
+  #
+  # The last two may or may not be available depending on systems.
   #
   #   model = Model.new()
   #   parser = Parser.ntriples()
@@ -17,8 +21,8 @@ module Redland
   class Parser
     attr_accessor :context
     
-    # create a new Parser. if no name is given, it defaults to parsing rdf syntax
-    def initialize(name='raptor',mime_type="application/rdf+xml",uri=nil,context=nil)
+    # create a new Parser. if no name is given, it defaults to parsing RDF/XML syntax
+    def initialize(name='rdfxml',mime_type="application/rdf+xml",uri=nil,context=nil)
       @context = nil
       @idents = []
       uri=uri.uri if uri
@@ -36,12 +40,12 @@ module Redland
 
     # create a parser for the ntriples syntax
     def Parser.ntriples(uri=nil)
-      return Parser.new('ntriples','text/plain',uri)
+      return Parser.new('ntriples',"",uri)
     end
 
     # create a parser for rdf syntax
     def Parser.raptor(uri=nil)
-      initialize('raptor','application/rdf+xml',uri)
+      initialize('rdfxml','application/rdf+xml',uri)
     end
     
     # Parse the given uri with optional base_uri and return a
