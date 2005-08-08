@@ -1,3 +1,21 @@
+2005-08-08  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* ruby/lib/rdf/redland/parser.rb (Parser.initialize):
+	Use 'rdfxml' as parser name.
+	(Parser.ntriples): Use a NULL mime type (empty string)
+	(Parser.raptor): Use 'rdfxml' as parser name.
+
+	* ruby/lib/rdf/redland/query.rb (Query.initialize):
+	librdf_new_query takes 5 args, so add a base_uri
+	arg to this.
+
+	* ruby/lib/rdf/redland.rb: Death to log4r
+
+2005-07-13  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+
+	* perl/lib/RDF/Redland/QueryResults.pm:
+	(to_string) return boolean as formats
+
 2005-06-22  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
 	* csharp/AssemblyInfo.cs, csharp/Node.cs, csharp/Parser.cs,
@@ -74,8 +92,6 @@
 
 2005-05-23  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
-	* demos/query.pl: update older sparql syntax
-
 	* php/test.php: Update sparql syntax, add an optional in order to
 	test null librdf_node* results.  Add a result serializing test.
 
@@ -111,11 +127,6 @@
 	Storage, Parser and Serializer subclasses.
 
 	* python/RDF.py: remove ;s
-
-2005-05-03  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
-
-	* demos/query.pl: Convert sparql examples to new { turtle/n3 }
-	triple syntax
 
 2005-04-17  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
@@ -155,10 +166,6 @@
 
 	* perl/lib/RDF/Redland/Serializer.pm (set_namespace): Remove
 	duplicate subroutine, keep PREFIX, URI order
-
-2005-04-05  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
-
-	* demos/query.pl: Added sparql noble gases query
 
 2005-03-17  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
 
