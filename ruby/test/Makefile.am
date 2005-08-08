@@ -21,7 +21,7 @@
 
 RUBY_TEST_FILES=test_model.rb test_node.rb test_parser.rb test_rdf.rb \
 test_rdfs_resource.rb test_resource.rb test_serializer.rb \
-test_statement.rb test_store.rb test_uri.rb
+test_statement.rb test_store.rb test_uri.rb test_query.rb
 
 EXTRA_DIST=$(RUBY_TEST_FILES) README ical.rdf triples.rdf
 
