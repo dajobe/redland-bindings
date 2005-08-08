@@ -37,7 +37,8 @@ PERL_HTML_POD_FILES=$(POD_MODULES:%=pod/%.html)
 PYTHON_HTML_PYDOC_FILES=pydoc/RDF.html
 
 RUBY_FILES= model node parser query resource serializer statement	\
-store stream uri schemas/foaf schemas/owl schemas/rdfs dc util
+store stream uri schemas/foaf schemas/owl schemas/rdfs dc util		\
+queryresults
 
 RUBY_CLASSES= FOAF DC Redland Redland/OWL Redland/Util Redland/RDFS	\
 Redland/Serializer Redland/NodeTypeError Redland/Uri			\
