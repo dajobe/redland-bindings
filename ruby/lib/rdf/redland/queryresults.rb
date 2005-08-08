@@ -63,7 +63,7 @@ module Redland
       return values
     end
 
-    # Get the value of the variable binding I<NAME> in the current query result.
+    # Get the value of the variable binding name in the current query result.
     def binding_value_by_name(name)
       node=Redland.librdf_query_results_get_binding_value_by_name(@results,name)
       return Node.new(node)
