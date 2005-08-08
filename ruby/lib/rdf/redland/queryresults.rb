@@ -90,14 +90,13 @@ module Redland
     # librdf_query_results_to_string
     def to_string(format_uri = nil, base_uri = nil)
       if self.is_graph?()
-        tmpstorage=Storage.new()
-        tmpmodel=Model.new(tmpstorage)
+        tmpmodel=Model.new()
         tmpmodel.add_statements(self.as_stream())
         serializer=Serializer.new()
         return serializer.model_to_string(base_uri, tmpmodel)
       end
 
-      if self.is_boolean?() and not self.is_bindings?()
+      if not self.is_boolean?() and not self.is_bindings?()
         raise RedlandError.new("Unknown query result format cannot be written as a string")
       end
 
