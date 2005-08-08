@@ -135,6 +135,12 @@ module Redland
         return Redland.librdf_statement_to_string(self.statement)
       end
     end
+
+    # Equivalency. Only works for comparing two Statements
+    def ==(other)
+      return (Redland.librdf_statement_equals(self.statement,other.statement) != 0)
+    end
+
   end
 
 end #module Redland
