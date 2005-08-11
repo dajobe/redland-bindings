@@ -7,11 +7,12 @@
 
 %define redland_version @REDLAND_VERSION@
 
-%define perlinstallsitearch @PERLINSTALLSITEARCH@
-%define perlman3dir @PERLMAN3DIR@
-
-%define ruby_dir @RUBY_DIR@
-%define ruby_libdir @RUBY_LIBDIR@
+# Installation directories for perl, python and ruby are host-specific
+%define perl_sitearch	%(eval "`perl -V:installsitearch`"; echo $installsitearch)
+# Not %{_libdir} as on FC4 x86_64 it is the wrong place
+%define python_libdir   %{_prefix}/lib
+%define ruby_dir	%(ruby -rrbconfig -e "puts Config::CONFIG['archdir']")
+%define ruby_libdir	%(ruby -rrbconfig -e "puts Config::CONFIG['rubylibdir']")
 
 Summary:   Redland RDF Application Framework API Bindings
 Name:      %{name}
@@ -20,13 +21,17 @@ Release:   %{release}
 Prefix:    %{_prefix}
 License:   LGPL/Apache 2
 Group:     Development/Libraries
-Source:    http://librdf.org/dist/source/%{name}-%{version}.tar.gz
+Source:    http://download.librdf.org/source/%{name}-%{version}.tar.gz
 URL:       http://librdf.org/
 BuildRoot: /tmp/%{name}-%{version}
-BuildRequires: redland-devel >= %{redland_version}, perl, python-devel, ruby-devel
+BuildRequires: redland-devel >= %{redland_version}
+BuildRequires: perl >= 5.8.0
+BuildRequires: python-devel >= 2.3.0
+BuildRequires: ruby-devel >= 1.8.0
 Packager:  Dave Beckett <Dave.Beckett@bristol.ac.uk>
 Docdir: %{prefix}/doc
 Requires:  redland >= %{redland_version}
+Requires:  ruby >= 1.8.0
 
 %description
 
@@ -68,20 +73,16 @@ an interface to Ruby.
 %setup
 
 %build
-# Force use of default python even if 2.0 is present
+# Force use of default python
 PYTHON=python
 export PYTHON
 
-if [ ! -f configure ]; then
-  CFLAGS="$RPM_OPT_FLAGS" ./autogen.sh --prefix=%{prefix} --enable-release --sysconfdir=/etc --mandir=%{_mandir} --libdir=%{_libdir}
-else
-  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix} --enable-release --sysconfdir=/etc --mandir=%{_mandir} --libdir=%{_libdir}
-fi
+%configure --enable-release
 
 cd perl
 
-make Makefile.perl MAKE_PL_OPTS="PREFIX=$RPM_BUILD_ROOT/%{_prefix} SYSCONFDIR=$RPM_BUILD_ROOT/%{_sysconfdir} INST_PREFIX=%{_prefix} INST_SYSCONFDIR=%{_sysconfdir}"
-make
+%{__make} Makefile.perl MAKE_PL_OPTS="PREFIX=$RPM_BUILD_ROOT/%{_prefix} SYSCONFDIR=$RPM_BUILD_ROOT/%{_sysconfdir} INST_PREFIX=%{_prefix} INST_SYSCONFDIR=%{_sysconfdir}"
+%{__make}
 
 cd ..
 
@@ -106,15 +107,17 @@ cd ..
 
 cd perl
 
-make prefix=$RPM_BUILD_ROOT%{prefix} exec_prefix=$RPM_BUILD_ROOT%{prefix} bindir=$RPM_BUILD_ROOT%{prefix}/bin sbindir=$RPM_BUILD_ROOT%{prefix}/sbin sysconfdir=$RPM_BUILD_ROOT/etc datadir=$RPM_BUILD_ROOT%{prefix}/share includedir=$RPM_BUILD_ROOT%{prefix}/include libdir=$RPM_BUILD_ROOT%{_libdir} libexecdir=$RPM_BUILD_ROOT%{prefix}/libexec localstatedir=$RPM_BUILD_ROOT/var sharedstatedir=$RPM_BUILD_ROOT%{prefix}/com mandir=$RPM_BUILD_ROOT%{_mandir} infodir=$RPM_BUILD_ROOT%{prefix}/share/info install
+%{__make} prefix=$RPM_BUILD_ROOT%{prefix} exec_prefix=$RPM_BUILD_ROOT%{prefix} bindir=$RPM_BUILD_ROOT%{prefix}/bin sbindir=$RPM_BUILD_ROOT%{prefix}/sbin sysconfdir=$RPM_BUILD_ROOT/etc datadir=$RPM_BUILD_ROOT%{prefix}/share includedir=$RPM_BUILD_ROOT%{prefix}/include libdir=$RPM_BUILD_ROOT%{_libdir} libexecdir=$RPM_BUILD_ROOT%{prefix}/libexec localstatedir=$RPM_BUILD_ROOT/var sharedstatedir=$RPM_BUILD_ROOT%{prefix}/com mandir=$RPM_BUILD_ROOT%{_mandir} infodir=$RPM_BUILD_ROOT%{prefix}/share/info install
 
 find $RPM_BUILD_ROOT -name perllocal.pod -exec rm -v {}  \;
+
+find $RPM_BUILD_ROOT%{perl_sitearch} -name \*.so -exec chmod 755 {} \;
 
 cd ..
 
 cd python
 
-make install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 find $RPM_BUILD_ROOT%{prefix} -name "*.py[co]" -exec rm -f {} \;
 
 cd ..
@@ -123,7 +126,7 @@ cd ruby
 
 mkdir -p $RPM_BUILD_ROOT%{ruby_dir}
 mkdir -p $RPM_BUILD_ROOT%{ruby_libdir}
-make install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 cd ..
 
@@ -133,21 +136,21 @@ cd ..
 %files -n redland-perl
 %defattr(-, bin, bin)
 
-%{perlinstallsitearch}/auto
-%{perlinstallsitearch}/RDF/Redland
-%{perlinstallsitearch}/RDF/Redland.pm
+%{perl_sitearch}/auto
+%{perl_sitearch}/RDF/Redland
+%{perl_sitearch}/RDF/Redland.pm
 
 %doc AUTHORS COPYING COPYING.LIB ChangeLog LICENSE.txt NEWS README
 %doc LICENSE-2.0.txt NOTICE
 
-%doc %{perlman3dir}/RDF::Redland*.3pm*
+%doc %{_mandir}/man3/RDF::Redland*.3pm*
 %doc perl/example.pl
 
 %files -n redland-python
 %defattr(-, bin, bin)
 
-%{_libdir}/python*/site-packages/RDF.py
-%{_libdir}/python*/site-packages/Redland.so*
+%{python_libdir}/python*/site-packages/RDF.py
+%{python_libdir}/python*/site-packages/Redland.so*
 
 %doc AUTHORS COPYING COPYING.LIB LICENSE-2.0.txt
 %doc README NEWS LICENSE.txt NOTICE
@@ -172,6 +175,12 @@ cd ..
 %postun
 
 %changelog
+* Thu Aug 11 2005  Dave Beckett <dave.beckett@bristol.ac.uk>
+- Define perl_sitearch, python_libdir, ruby_dir and ruby_libdir at
+  rpm build time.
+- Split build requirements out and declare minimum versions
+- Use %configure and %{__make}
+
 * Wed Nov 3 2004  Dave Beckett <dave.beckett@bristol.ac.uk>
 - Added redland-ruby include wrapper classes
 - BuildRequires: perl, python-devel, ruby-devel
