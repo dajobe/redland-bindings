@@ -16,7 +16,7 @@ using Redland;
 namespace Redland {
 
 	[TestFixture]
-	public class StreamTest : Assertion {
+	public class StreamTest {
 
 		MemoryStorage storage;
 		Model model;
@@ -45,7 +45,11 @@ namespace Redland {
 			string a = "file:../../data/dc.rdf";
 			parser.ParseIntoModel (model, a);
 			foreach (Statement s in model.ToStream ())
+                          {
+				NUnit.Framework.Assert.IsTrue (s != null);
 				i++;
+                          }
+                        
 
 			NUnit.Framework.Assert.IsTrue (i == 3, "../../data/dc.rdf should have 3 statements");
 		}
@@ -67,7 +71,10 @@ namespace Redland {
 			parser.ParseIntoModel (model, "file:../../data/dc.rdf");
 			Statement stm = new Statement (new Node (new Uri ("http://purl.org/net/dajobe/")), null, null);
 			foreach (Statement s in model.FindStatements (stm)) 
+                          {
+				NUnit.Framework.Assert.IsTrue (s != null);
 				i++;
+                          }
 
 			NUnit.Framework.Assert.IsTrue (i == 3, "Should have found_stms 3 statements");
 		}
@@ -87,7 +94,6 @@ namespace Redland {
 		[Test]
 		public void FindStatementsWithContext ()
 		{
-			int i = 0;
 			string a = "file:../../data/dc.rdf";
 			Node intended_context = new Node (new Uri ("http://example.org/"));
 			foreach (Statement s in parser.ParseAsStream (a))
@@ -95,6 +101,8 @@ namespace Redland {
 
 			Node subject = new Node (new Uri ("http://purl.org/net/dajobe/"));
 			Statement stm = new Statement (subject, null, null);
+
+                        NUnit.Framework.Assert.IsTrue (stm != null);
 
 			// FIXME: search with context			
 		}

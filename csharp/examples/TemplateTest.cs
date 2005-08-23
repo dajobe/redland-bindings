@@ -22,7 +22,7 @@ namespace MonoTests.{Namespace}
 // the class name should end with "Test" and start with the name of the class
 // you are testing, e.g. CollectionBaseTest
 [TestFixture]
-public class {Class to be tested}Test : Assertion {
+public class {Class to be tested}Test {
 	
 	// this method is run before each [Test] method is called. You can put
 	// variable initialization, etc. here that is common to each test.

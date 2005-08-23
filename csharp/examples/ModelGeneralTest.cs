@@ -14,7 +14,7 @@ using Redland;
 namespace Redland {
 
 	[TestFixture]
-	public class ModelGeneralTest : Assertion {
+	public class ModelGeneralTest {
 
 		HashStorage storage;
 		Model model;

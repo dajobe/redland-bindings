@@ -51,8 +51,8 @@ SUFFIXES=.cs .dll .exe
 .cs.exe:
 	$(CSHARP_LINK) 
 
-NUNIT_CONSOLE = nunit-console.exe
-NUNIT_FLAGS = -t:library -r:nunit.framework.dll -r:../Redland.dll 
+#NUNIT_CONSOLE = nunit-console.exe
+NUNIT_FLAGS = $(shell pkg-config nunit-framework --libs) -r:../Redland.dll
 
 
 check-local: $(CSHARP_TESTS) 
@@ -75,28 +75,28 @@ example1.exe: example1.cs ../Redland.dll
 	$(CSHARP_LINK) example1.cs -r:../Redland.dll -out:$@
 
 
-unittests: $(NUNIT_TESTS) ../Redland.dll nunit-console.exe
+unittests: $(NUNIT_TESTS) ../Redland.dll
 	@MONO_PATH=..; export MONO_PATH; \
-	$(ECHO) Running $(NUNIT_CONSOLE) $(NUNIT_TESTS); \
-	$(RUN) $(CLIRUN) $(NUNIT_CONSOLE) $(NUNIT_TESTS)
+	$(ECHO) Running nunit-console $(NUNIT_TESTS); \
+	$(RUN) nunit-console $(NUNIT_TESTS)
 
 ModelGeneralTest.dll: ModelGeneralTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) ModelGeneralTest.cs -out:$@
+	$(CSHARP_COMPILE) -target:library $(NUNIT_FLAGS) ModelGeneralTest.cs -out:$@
 
 StreamTest.dll: StreamTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) StreamTest.cs -out:$@
+	$(CSHARP_COMPILE) -target:library $(NUNIT_FLAGS) StreamTest.cs -out:$@
 
 GetsTest.dll: GetsTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) GetsTest.cs -out:$@
+	$(CSHARP_COMPILE) -target:library $(NUNIT_FLAGS) GetsTest.cs -out:$@
 
 SimpleGetsTest.dll: SimpleGetsTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) SimpleGetsTest.cs -out:$@
+	$(CSHARP_COMPILE) -target:library $(NUNIT_FLAGS) SimpleGetsTest.cs -out:$@
 
 ModelTest.dll: ModelTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) ModelTest.cs -out:$@
+	$(CSHARP_COMPILE) -target:library $(NUNIT_FLAGS) ModelTest.cs -out:$@
 
 EncodingTest.dll: EncodingTest.cs
-	$(CSHARP_LINK) $(NUNIT_FLAGS) EncodingTest.cs -out:$@
+	$(CSHARP_COMPILE) -target:library $(NUNIT_FLAGS) EncodingTest.cs -out:$@
 
 
 clean-local:
@@ -105,7 +105,3 @@ clean-local:
 ../Redland.dll:
 	@cd .. && $(MAKE) Redland.dll
 
-if MAINTAINER_MODE
-nunit-console.exe: AssemblyInfo.cs ConsoleUi.cs
-	$(CSHARP_LINK) -r:nunit.framework.dll -r:nunit.util.dll -r:nunit.core.dll AssemblyInfo.cs ConsoleUi.cs -out:$@
-endif

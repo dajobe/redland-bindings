@@ -15,7 +15,7 @@ using Redland;
 namespace Redland {
 
 	[TestFixture]
-	public class ModelTest : Assertion {
+	public class ModelTest {
 		
 		Storage storage_no_context;
 		Storage storage_context;

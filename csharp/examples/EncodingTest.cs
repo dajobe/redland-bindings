@@ -13,7 +13,7 @@ using Redland;
 namespace Redland {
 
 	[TestFixture]
-	public class EncodingTest : Assertion {
+	public class EncodingTest {
 		
 		static String [] unis = { "日本語", "mañana", "현재위치", "hello" };
 

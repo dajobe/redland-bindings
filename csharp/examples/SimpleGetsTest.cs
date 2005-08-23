@@ -15,11 +15,11 @@ using Redland;
 namespace Redland {
 
 	[TestFixture]
-	public class SimpleGetsTest : Assertion {
+	public class SimpleGetsTest {
 		
-		MemoryStorage storage, storage_c;
-		Model model, model_c;
-		Node node1, node2, node3, node4, node5, node6, nodeb, context_node;
+		MemoryStorage storage;
+		Model model;
+		Node node1, node2, node3;
 
 		[SetUp]
 		public void GetReady ()
