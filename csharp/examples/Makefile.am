@@ -51,7 +51,6 @@ SUFFIXES=.cs .dll .exe
 .cs.exe:
 	$(CSHARP_LINK) 
 
-#NUNIT_CONSOLE = nunit-console.exe
 NUNIT_FLAGS = $(shell pkg-config nunit-framework --libs) -r:../Redland.dll
 
 
@@ -77,8 +76,10 @@ example1.exe: example1.cs ../Redland.dll
 
 unittests: $(NUNIT_TESTS) ../Redland.dll
 	@MONO_PATH=..; export MONO_PATH; \
-	$(ECHO) Running nunit-console $(NUNIT_TESTS); \
-	$(RUN) nunit-console $(NUNIT_TESTS)
+	for test in  $(NUNIT_TESTS); do \
+	  $(ECHO) Running nunit-console $$test; \
+	  $(RUN) nunit-console $$test; \
+	done
 
 ModelGeneralTest.dll: ModelGeneralTest.cs
 	$(CSHARP_COMPILE) -target:library $(NUNIT_FLAGS) ModelGeneralTest.cs -out:$@
