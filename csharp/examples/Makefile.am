@@ -36,7 +36,7 @@ GetsTest.dll StreamTest.dll ModelGeneralTest.dll EncodingTest.dll
 
 CSHARP_TESTS=example1.exe example2.exe example3.exe example4.exe
 
-CLEANFILES=test*.db \
+CLEANFILES=test*.db *.mdb \
 example1.xml example2.out example3.out example4.xml \
 $(CSHARP_TESTS) $(NUNIT_TESTS) TestResult.xml
 
