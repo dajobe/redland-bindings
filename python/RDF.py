@@ -1125,7 +1125,6 @@ Create a model using an in-memory storage.
   def execute(self,query):
     results = Redland.librdf_model_query_execute(self._model,query._query)
     if results is not None:
-      self.been_run = True
       return QueryResults(query._query,results)
     else:
       return None
@@ -1866,7 +1865,6 @@ class Query(object):
 
     self._query = Redland.librdf_new_query(_world._world, query_language, ruri, querystring, rbase_uri)
     self.result_stream = None
-    self.been_run = False
 
   def __del__(self):
     global _debug    
@@ -1878,7 +1876,6 @@ class Query(object):
   def execute(self,model):
     results = Redland.librdf_query_execute(self._query,model._model)
     if results is not None:
-      self.been_run = True
       return QueryResults(self._query,results)
     else:
       return None
