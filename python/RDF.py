@@ -1050,6 +1050,7 @@ Create a model using an in-memory storage.
 
   def load(self, uri, name="", mime_type="", type_uri=None, handler=None):
     """Load triples into the Model from a URI in a syntax.
+       Returns a boolean success or failure.
 
        If no parser name is given, the parser to use is guessed.
 
@@ -1086,7 +1087,7 @@ Create a model using an in-memory storage.
       import Redland_python
       Redland_python.reset_callback()
 
-    return rc
+    return (rc != None)
 
   def to_string(self, base_uri=None, name="", mime_type="", type_uri=None):
     """Serialize the Model to a syntax.
@@ -1724,7 +1725,7 @@ optional.  When any are given, they must all match.
 
   def parse_into_model(self, model, uri, base_uri=None, handler=None):
     """Parse into the Model model from the content at the URI, for
-       the optional base URI.
+       the optional base URI.  Returns a boolean success or failure.
         
        If handler is given, an error handler with the signature
          def handler(code, level, facility, message, line, column, byte, file, uri)
@@ -1752,7 +1753,7 @@ optional.  When any are given, they must all match.
       Redland_python.set_callback(handler)
 
     try:
-      r = Redland.librdf_parser_parse_into_model(self._parser,
+      rc = Redland.librdf_parser_parse_into_model(self._parser,
         uri._reduri, base_uri._reduri, model._model)
     except RedlandError, err:
       print "Caught error",err
@@ -1762,11 +1763,11 @@ optional.  When any are given, they must all match.
       import Redland_python
       Redland_python.reset_callback()
 
-    return 1
+    return (rc != None)
 
   def parse_string_into_model(self, model, string, base_uri, handler = None):
     """Parse into the Model model from the content string
-        with the required base URI
+        with the required base URI.  Returns a boolean success or failure.
 
        If handler is given, an error handler with the signature
          def handler(code, level, facility, message, line, column, byte, file, uri)
@@ -1792,7 +1793,7 @@ optional.  When any are given, they must all match.
       import Redland_python
       Redland_python.reset_callback()
 
-    return rc
+    return (rc != None)
 
   def get_feature(self, uri):
     """Return the Node value of Parser feature URI uri"""
