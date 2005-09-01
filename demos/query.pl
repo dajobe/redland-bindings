@@ -87,6 +87,7 @@ EEEEE
 
   'sparql' => [
 { Q => <<EOT
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT DISTINCT ?name
 WHERE {
@@ -100,6 +101,7 @@ EOT
 }
   , 
 { Q => <<EOT
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT ?nick, ?name
 WHERE { ?x rdf:type foaf:Person . ?x foaf:nick ?nick . ?x foaf:name ?name }
@@ -109,6 +111,7 @@ EOT
 }
   , 
 { Q => <<AAAAA
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX rss: <http://purl.org/rss/1.0/>
 SELECT ?title ?description
@@ -120,6 +123,7 @@ AAAAA
  , T => 'An RSS 1.0 query that finds all the items in the feed'
 },
 { Q => <<'CCCCC'
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX iemsr: <http://www.ukoln.ac.uk/projects/iemsr/terms/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
@@ -136,6 +140,7 @@ CCCCC
  , T => 'Find all LOM root elements in the LOM encoded for the <a href="http://www.ukoln.ac.uk/projects/iemsr/">JISC IE Schema Registry</a> (my current project)'
 },
 { Q => <<'DDDDD'
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX doap: <http://usefulinc.com/ns/doap#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 
@@ -151,6 +156,7 @@ DDDDD
  , T => 'Print the description of a project and maintainer(s) using <a href="http://usefulinc.com/doap">DOAP</a>'
 },
 { Q => <<'EEEEE'
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX doaml: <http://ns.balbinus.net/doaml#>
 
 SELECT ?name ?archives
@@ -165,6 +171,7 @@ EEEEE
  , T => 'Print the name and archive URIs of W3C mailing lists about P3P as described by <a href="http://www.doaml.net/">DOAML</a>'
 },
 { Q => <<'optional-example1'
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX foaf: <http://xmlns.com/foaf/0.1/>
 SELECT ?name ?nick
 WHERE {
@@ -177,6 +184,7 @@ optional-example1
  , T => 'Print the names and optional nicks of people in my FOAF file where available'
 },
 { Q => <<'podcasts',
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX rss: <http://purl.org/rss/1.0/>
 PREFIX enc: <http://purl.oclc.org/net/rss_2.0/enc#>
@@ -225,6 +233,7 @@ DAWG
 , T => 'What are the RDF DAWG issues?',
 },
 { Q => <<'ATOM',
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX dc: <http://purl.org/dc/elements/1.1/>
 PREFIX rss: <http://purl.org/rss/1.0/>
 PREFIX atom: <http://www.w3.org/2005/Atom>
@@ -262,6 +271,21 @@ BRUNEL
 , D => 'http://www.w3.org/2003/01/geo/rdfgml/tests/mixing-eg1.xml',
 , T => 'Who made a bridge in Bristol and what birth/death dates did they have?',
 },
+{ Q => <<'REDLAND-NEWS',
+PREFIX dc: <http://purl.org/dc/elements/1.1/>
+PREFIX rss: <http://purl.org/rss/1.0/>
+SELECT ?item ?title ?date
+WHERE {
+  ?item a rss:item ;
+        rss:title ?title ;
+        dc:date ?date
+}
+ORDER BY DESC(?date)
+LIMIT 10
+REDLAND-NEWS
+  D => 'http://librdf.org/NEWS.rdf http://librdf.org/raptor/NEWS.rdf http://librdf.org/rasqal/NEWS.rdf http://librdf.org/bindings/NEWS.rdf',
+  T => 'Find the most recent 10 news items about Redland from multiple RSS 1.0 feeds',
+},
   ]
 );
 
@@ -275,7 +299,7 @@ EOT
   'sparql' => <<EOT
   <p>Documentation on SPARQL is available in the <a href="http://www.w3.org/TR/rdf-sparql-query/">SPARQL Query Language for RDF</a>, W3C Working Draft, 12 October 2004</p>
 
-  <p>See the <a href="http://librdf.org/rasqal/TODO.html#sparql">status of SPARQL support in Rasqal</a></p>
+  <p><b>NOTE</b> Not all of SPARQL is implemented. See the <a href="http://librdf.org/rasqal/TODO.html#sparql">status of SPARQL support in Rasqal</a>.  Current unimplemented features include <code>UNION</code> and full XSD datatype comparisons (dates, decimal) and promotions, <code>GRAPH</code> and deeply grouped graph patterns <code>{</code>...<code>}</code>.</p>
 EOT
 );
 
