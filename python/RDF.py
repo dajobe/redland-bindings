@@ -1816,20 +1816,20 @@ optional.  When any are given, they must all match.
 # end class Parser
 
 class RDFXMLParser(Parser):
-  def __init__(self, uri = None):
-    Parser.__init__(self, name = "rdfxml", mime_type="", uri=uri)
+  def __init__(self):
+    Parser.__init__(self, name = "rdfxml")
 
 class NTriplesParser(Parser):
-  def __init__(self, uri = None):
-    Parser.__init__(self, name = "ntriples", mime_type="text/plain", uri=uri)
+  def __init__(self):
+    Parser.__init__(self, name = "ntriples")
 
 class TurtleParser(Parser):
-  def __init__(self, uri = None):
-    Parser.__init__(self, name = "turtle", mime_type="application/x-turtle", uri=uri)
+  def __init__(self):
+    Parser.__init__(self, name = "turtle")
 
 class RSSTagSoupParser(Parser):
-  def __init__(self, uri = None):
-    Parser.__init__(self, name = "rss-tag-soup", mime_type="", uri=uri)
+  def __init__(self):
+    Parser.__init__(self, name = "rss-tag-soup")
 
 
 class Query(object):
@@ -2201,7 +2201,7 @@ class RDFXMLSerializer(Serializer):
      ser=RDF.RDFXMLSerializer()
   """
   def __init__(self):
-    Serializer.__init__(self, name = "rdfxml", mime_type = "", uri = None)
+    Serializer.__init__(self, name = "rdfxml")
 
 class RDFXMLAbbrevSerializer(Serializer):
   """Redland RDF/XML with abbreviations Serializer class
@@ -2210,7 +2210,7 @@ class RDFXMLAbbrevSerializer(Serializer):
      ser=RDF.RDFXMLAbbrevSerializer()
   """
   def __init__(self):
-    Serializer.__init__(self, name = "rdfxml-abbrev", mime_type = "", uri = None)
+    Serializer.__init__(self, name = "rdfxml-abbrev")
 
 class RSS10Serializer(Serializer):
   """Redland RSS 1.0 Serializer class
@@ -2219,7 +2219,7 @@ class RSS10Serializer(Serializer):
      ser=RDF.RSS10Serializer()
   """
   def __init__(self):
-    Serializer.__init__(self, name = "rss-1.0", uri = None)
+    Serializer.__init__(self, name = "rss-1.0")
 
 
 class NS(object):
