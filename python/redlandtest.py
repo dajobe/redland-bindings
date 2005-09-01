@@ -369,5 +369,20 @@ class RasqalQueryTestCase (unittest.TestCase):
         self.assert_(len(s) == 542, "to_string should have returned 301 bytes not " + str(len(s)))
 
 
+    def testSPARQLQueryTwice(self):
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT ?x ?y ?z WHERE {?x ?y ?z}")
+        results1 = q.execute(self.model)
+        count1 = 0
+        for result in results1:
+            count1 += 1
+        self.assert_(count1 == 3, "Should have found three results in execution 1")
+
+        results2 = q.execute(self.model)
+        count2 = 0
+        for result2 in results2:
+            count2 += 1
+        self.assert_(count2 == 3, "Should have found three results in execution 2")
+
+
 if __name__ == '__main__':
     unittest.main()
