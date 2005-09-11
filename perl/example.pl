@@ -57,6 +57,9 @@ warn "\nAdding statement (n,n,n) to model\n";
 $model->add_statement($n, $n, $n);
 $statement=undef;
 
+die "Data file $test_file not found - cannot parse it.\n  Try editing \$test_file variable to point to a file.\n"
+  unless -r $test_file;
+
 warn "\nParsing URI (file) $test_file\n";
 my $uri=new RDF::Redland::URI("file:$test_file");
 
