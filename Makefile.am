@@ -36,6 +36,7 @@ README      NEWS      LICENSE.txt  TODO \
 README.html NEWS.html LICENSE.html TODO.html \
 RELEASE.html INSTALL.html \
 LICENSE-2.0.txt NOTICE \
+bindings.rdf.in \
 autogen.sh \
 Makefile.PL \
 redland-bindings.spec redland-bindings.spec.in

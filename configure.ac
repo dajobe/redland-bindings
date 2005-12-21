@@ -581,6 +581,7 @@ abs_top_builddir=`pwd`
 AC_SUBST(abs_top_builddir)
 
 AC_CONFIG_FILES([Makefile
+bindings.rdf
 docs/Makefile
 perl/Makefile
 perl/t/Makefile
