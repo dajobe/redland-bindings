@@ -1,1 +1,3 @@
-EXTRA_DIST=demo.pl ntriples.pl parser-tests.pl rss-show.pl query.pl
+EXTRA_DIST=demo.pl ntriples.pl parser-tests.pl rss-show.pl query.pl \
+parse.pl
+
