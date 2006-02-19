@@ -364,9 +364,10 @@ class RasqalQueryTestCase (unittest.TestCase):
     def testSPARQLQueryAsString(self):
         q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT * WHERE {?a dc:title ?c}")
         r = q.execute(self.model)
+        expect = 559
         self.assert_(r is not None, "execute to_string should have succeeded")
         s = r.to_string()
-        self.assert_(len(s) == 542, "to_string should have returned 301 bytes not " + str(len(s)))
+        self.assert_(len(s) == expect, "to_string should have returned"+str(expect)+"not " + str(len(s)))
 
 
     def testSPARQLQueryTwice(self):
