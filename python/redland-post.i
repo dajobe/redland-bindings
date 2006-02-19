@@ -38,7 +38,7 @@ static PyObject *_wrap_librdf_version_major_get(void);
 static PyObject *_wrap_librdf_version_minor_get(void);
 static PyObject *_wrap_librdf_version_release_get(void);
 
-SWIGEXPORT(void) SWIG_init(void);
+void SWIG_init(void);
 
 static PyObject *librdf_python_callback = NULL;
 
