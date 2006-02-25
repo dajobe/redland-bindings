@@ -21,7 +21,7 @@ module Redland
       when String
         @node = Redland.librdf_new_node_from_uri_string($world.world,arg)
       when Uri
-        @node = Redland.librdf_new_node_from_uri($world.world,node.uri)
+        @node = Redland.librdf_new_node_from_uri($world.world,arg.uri)
       when Node
         @node = Redland.librdf_new_node_from_node(arg.node)
       when SWIG::TYPE_p_librdf_node_s
