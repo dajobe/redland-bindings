@@ -1619,7 +1619,7 @@ Copy an existing URI uri1.
     return unicode(Redland.librdf_uri_to_string(self._reduri), 'utf-8')
 
   def __hash__(self):
-    return hash(self._reduri)
+    return hash(str(self))
   
   def __eq__(self,other):
     """Equality of RDF URI to another RDF URI."""
