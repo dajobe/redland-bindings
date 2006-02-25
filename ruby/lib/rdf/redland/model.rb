@@ -44,7 +44,8 @@ module Redland
     # get a resource given by str.  If arg is a string it will create a
     # Resource from it.
     def get_resource(arg)
-      return self.find(Resource.new(arg),nil,nil)[0].subject
+      res = self.find(Resource.new(arg),nil,nil)
+      return (res.nil? || res[0].nil?) ? nil : res[0].subject
     end
 
     # Return the size of the Storage Model.  Raises a redland error if the model
