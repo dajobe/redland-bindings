@@ -185,7 +185,10 @@ class World(object):
     global _debug    
     if _debug:
       print "Destroying RDF.World"
-    Redland.librdf_free_world(self._world)
+    # Sometimes the global destructor messes up and deletes
+    # the Redland module before us
+    if Redland.librdf_free_world is not None:
+      Redland.librdf_free_world(self._world)
 
 # end class World
 
@@ -2006,8 +2009,20 @@ class QueryResults(object):
     if self._results:
       Redland.librdf_free_query_results(self._results)
 
-  def to_file(self, name, base_uri=None):
-    """Serialize to filename name using the optional base URI."""
+  def to_file(self, name, format_uri=None, base_uri=None):
+    """Serialize to filename name in syntax format_uri using the optional base URI."""
+    if type(format_uri) is str:
+      format_uri = Uri(string = format_uri)
+    elif type(format_uri) is unicode:
+      import Redland_python
+      format_uri = Uri(string=Redland_python.unicode_to_bytes(format_uri))
+    else:
+      format_uri = Uri(string="http://www.w3.org/2001/sw/DataAccess/rf1/result2")
+    if format_uri is not None:
+      rformat_uri = format_uri._reduri
+    else:
+      rformat_uri = None
+
     if type(base_uri) is str:
       base_uri = Uri(string = base_uri)
     elif type(base_uri) is unicode:
@@ -2017,7 +2032,7 @@ class QueryResults(object):
       rbase_uri = base_uri._reduri
     else:
       rbase_uri = None
-    return Redland.librdf_query_results_to_file(self._results, name, rbase_uri)
+    return Redland.librdf_query_results_to_file(self._results, name, rformat_uri, rbase_uri)
 
   def to_string(self, format_uri=None, base_uri=None):
     """Serialize to a string syntax format_uri using the optional base URI."""
