@@ -252,7 +252,7 @@ class RedlandStreamsCase(unittest.TestCase):
         self.assert_(count == 3, "Should have found 3 statements")
 
     def testParseStringAsStream(self):
-        content = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description rdf:about="http://www.redland.opensource.ac.uk/"><dc:title>Redland RDF</dc:title></rdf:Description></rdf:RDF>"""
+        content = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description rdf:about="http://librdf.org/"><dc:title>Redland RDF</dc:title></rdf:Description></rdf:RDF>"""
         base_uri = Uri("http://example.org/base#")
         s=self.parser.parse_string_as_stream(content, base_uri)
         self.assert_(s is not None, "parse_string_as_stream should have succeeded")
@@ -363,15 +363,16 @@ class RasqalQueryTestCase (unittest.TestCase):
 
     def testSPARQLQueryAsString(self):
         q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT * WHERE {?a dc:title ?c}")
+
         r = q.execute(self.model)
-        expect = 559
+        expect = 410
         self.assert_(r is not None, "execute to_string should have succeeded")
         s = r.to_string()
-        self.assert_(len(s) == expect, "to_string should have returned"+str(expect)+"not " + str(len(s)))
+        self.assert_(len(s) == expect, "to_string should have returned "+str(expect)+" not " + str(len(s)))
 
 
     def testSPARQLQueryTwice(self):
-        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT ?x ?y ?z WHERE {?x ?y ?z}")
+        q = SPARQLQuery("SELECT ?x ?y ?z WHERE {?x ?y ?z}")
         results1 = q.execute(self.model)
         count1 = 0
         for result in results1:
