@@ -1719,6 +1719,11 @@ optional.  When any are given, they must all match.
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
       raise RedlandError("A base URI is required when parsing a string")
+
+    if type(string) is unicode:
+      import Redland_python
+      string=Redland_python.unicode_to_bytes(string)
+
     my_stream=Redland.librdf_parser_parse_string_as_stream(self._parser,
       string, base_uri._reduri)
     if my_stream==None:
@@ -1787,6 +1792,10 @@ optional.  When any are given, they must all match.
     if handler is not None:
       import Redland_python
       Redland_python.set_callback(handler)
+
+    if type(string) is unicode:
+      import Redland_python
+      string=Redland_python.unicode_to_bytes(string)
 
     rc=Redland.librdf_parser_parse_string_into_model(self._parser, string,
                                            base_uri._reduri, model._model)
