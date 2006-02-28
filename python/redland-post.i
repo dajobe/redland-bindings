@@ -269,22 +269,34 @@ librdf_python_world_init(librdf_world *world)
   PyObject *module;
   PyObject *dict;
   PyObject *tuple;
-
+  PyObject* rdf_module;
+  const char *module_name="RDF";
+  
   module = Py_InitModule("Redland_python", librdf_python_methods);
-  dict = PyModule_GetDict(module);
+  dict = PyModule_GetDict(module); /* borrowed reference */
 
   tuple = Py_BuildValue ("(iii)", librdf_version_major, librdf_version_minor,
                          librdf_version_release);
   PyDict_SetItemString(dict, "version", tuple);
   Py_DECREF(tuple);
 
-  PyRedland_Warning = PyErr_NewException("RDF.RedlandWarning", 
-                                         PyExc_Warning, NULL);
-  PyDict_SetItemString(dict, "Warning", PyRedland_Warning);
+  rdf_module=PyImport_ImportModule(module_name);
+  if(rdf_module != NULL) {
+    PyObject* rdf_module_dict;
+    
+    rdf_module_dict = PyModule_GetDict(rdf_module); /* borrowed reference */
 
-  PyRedland_Error = PyErr_NewException("RDF.RedlandError",
-                                       PyExc_RuntimeError, NULL);
-  PyDict_SetItemString(dict, "Error", PyRedland_Error);
+    PyRedland_Warning = PyDict_GetItemString(rdf_module_dict,
+                                             "RedlandWarning");
+    
+    PyRedland_Error = PyDict_GetItemString(rdf_module_dict,
+                                           "RedlandError");
 
+    Py_DECREF(rdf_module);
+  } else {
+    PyErr_Print();
+    fprintf(stderr, "Failed to import module \"%s\"\n", module_name);
+  }
+  
   librdf_world_set_logger(world, NULL, librdf_python_logger_handler);
 }
