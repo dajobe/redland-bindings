@@ -1950,7 +1950,10 @@ class QueryResults(object):
     for i in range(c):
       n = Redland.librdf_query_results_get_binding_name(self._results,i)
       v = Redland.librdf_query_results_get_binding_value(self._results,i)
-      results[n] = Node(from_object=v)
+      if v is None:
+        results[n] = None
+      else:
+        results[n] = Node(from_object=v)
 
     return results
 
@@ -1981,7 +1984,10 @@ class QueryResults(object):
     if not self.is_bindings():
       raise RedlandError("Query result is not in variable bindings format")
     n=Redland.librdf_query_results_get_binding_value(self._results, offset)
-    return Node(from_object=n, do_not_copy=1)
+    if n is None:
+      return None
+    else:
+      return Node(from_object=n, do_not_copy=1)
 
   def get_binding_name(self, offset):
     """Get the name of a variable binding by offset"""
@@ -1994,7 +2000,10 @@ class QueryResults(object):
     if not self.is_bindings():
       raise RedlandError("Query result is not in variable bindings format")
     n=Redland.librdf_query_results_get_binding_value_by_name(self._results, name)
-    return Node(from_object=n, do_not_copy=1)
+    if n is None:
+      return None;
+    else:
+      return Node(from_object=n, do_not_copy=1)
 
   def get_bindings_count(self):
     """Get the number of variable bindings in the query result"""
