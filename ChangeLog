@@ -1,4 +1,139 @@
-2005-08-08  Dave Beckett  <Dave.Beckett@bristol.ac.uk>
+2006-02-28  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py (QueryResults.to_file, QueryResults.to_string):
+	Use default format with None.
+
+	* python/redlandtest.py: Tweak old urls.
+	(testSPARQLQueryAsString): Update for latest syntax.
+	(testSPARQLQueryTwice): Simplify query - no need for prefix.
+
+	* python/redland-post.i (librdf_python_world_init): Get
+	RedlandError and RedlandWarning from the RDF module by importing
+	them properly.  Fixes issue #0000068
+	http://bugs.librdf.org/mantis/view.php?id=68
+
+	* python/RDF.py:
+	(Parser.parse_string_as_stream, Parser.parse_string_into_model):
+	Convert a Python unicode string to UTF-8 bytes redland expects.
+	Fixes issue #0000061 http://bugs.librdf.org/mantis/view.php?id=61
+
+	* python/RDF.py (QueryResults.make_results_hash,
+	QueryResults.get_binding_value,
+	QueryResults.get_binding_value_by_name): Check for None value and
+	set it in the results.  Fixes issue #0000059
+	http://bugs.librdf.org/mantis/view.php?id=59
+
+2006-02-25  Dave Beckett <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/model.rb (get_resource): Handle find
+	returning nil Fixes issue #0000049
+	http://bugs.librdf.org/mantis/view.php?id=49
+
+	* ruby/lib/rdf/redland/resource.rb (initialize): With a Uri
+	argument, use correct argument name 'arg' Fixes issue #0000048
+	http://bugs.librdf.org/mantis/view.php?id=48
+
+	* python/RDF.py (URI.__hash__): Use hash of str(self) to make a
+	working URI hash.  Fixes issue #0000047
+	http://bugs.librdf.org/mantis/view.php?id=47
+
+	* python/RDF.py (World.__del__): Hack to prevent death if python
+	destroys the Redland module before RDF Fixes issue #0000044
+	http://bugs.librdf.org/mantis/view.php?id=44
+
+2006-02-19  Dave Beckett <dave@dajobe.org>
+
+	* python/redlandtest.py (testSPARQLQueryAsString): Update for
+	results syntax change.
+
+	* python/redland-post.i: Remove SWIGEXPORT macro, it breaks on
+	newer swigs and was a wrong usage.
+
+2006-01-16  Dave Beckett <dave@dajobe.org>
+
+	* bindings.rdf.in: use download.librdf.org
+
+2006-01-05  Dave Beckett <dave@dajobe.org>
+
+	* demos/Makefile.am: added parse.pl
+
+	* demos/parse.pl: Redland RDF Parsing demo
+
+2005-12-21  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac, Makefile.am: updated urls
+
+	* Makefile.am, configure.ac: Added bindings.rdf
+
+	* bindings.rdf.in: DOAP for bindings
+
+2005-09-11  Dave Beckett <dave@dajobe.org>
+
+	* perl/example.pl: die if data file not found
+
+2005-09-01  Dave Beckett <dave@dajobe.org>
+
+	* python/redlandtest.py (testSPARQLQueryTwiceOverwriteVar): Added,
+	which fails now
+
+	* python/RDF.py (Model, Query): Remove use of self.been_run -
+	never used
+
+	* python/redlandtest.py: Added testSPARQLQueryTwice
+
+	* python/RDF.py (Parser and Serializer convienience classes):
+	Remove mime_type="" and uri=None in params.
+
+	* python/RDF.py (Model.load): Document return is a boolean.
+	(Parser.parse_into_model, Parser.parse_string_into_model): Return
+	a boolean success/failure flag, document this.
+
+	* demos/query.pl: Add rdf: prefixes to examples Added REDLAND-NEWS
+	example Expand on not-implemented note
+
+2005-08-23  Dave Beckett <dave@dajobe.org>
+
+	* csharp/examples/Makefile.am: run nunit-console tests 1 at a time
+	to prevent crazy death
+
+	* csharp/examples/Makefile.am: clean *.mdb junk
+
+	* csharp/examples/ModelTest.cs, csharp/examples/SimpleGetsTest.cs,
+	csharp/examples/StreamTest.cs, csharp/examples/TemplateTest.cs,
+	csharp/examples/EncodingTest.cs, csharp/examples/GetsTest.cs,
+	csharp/examples/Makefile.am, csharp/examples/ModelGeneralTest.cs:
+	Update C# and nunit for Mono 1.8.x
+
+2005-08-11  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh: update autogen.sh again
+
+	* autogen.sh: Rewrite with functions, generalize to any redland
+	package.  Add docs.
+
+	* redland-bindings.spec.in: - Define perl_sitearch, python_libdir,
+	ruby_dir and ruby_libdir at rpm build time.  - Split build
+	requirements out and declare minimum versions - Use %configure and
+	%{__make}
+
+2005-08-08  Dave Beckett <dave@dajobe.org>
+
+	* ruby/test/test_query.rb: Added serializing tests:
+	test_model_query_serialize_bindings,
+	test_model_query_serialize_ask and
+	test_model_query_serialize_construct
+
+	* ruby/lib/rdf/redland/serializer.rb (model_to_string): Added and
+	tested.
+
+	* ruby/lib/rdf/redland/queryresults.rb (to_string): Debugged,
+	tested.
+
+	* docs/Makefile.am: Added ruby queryresults file
+
+	* ruby/lib/rdf/redland/queryresults.rb: remove perl doc
+
+	* docs/Makefile.am: Redland/QueryResults for ruby
 
 	* ruby/test/Makefile.am: Added test_query.rb
 
