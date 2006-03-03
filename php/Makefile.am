@@ -33,7 +33,7 @@ php_DATA=$(PHP_PACKAGE).so
 
 EXTRA_DIST=test.php example.php php.ini \
 redland-decl.i redland-init.i redland-post.i redland-typemap.i \
-$(SWIG_OUTPUTS) redland_wrap.c.patch
+$(SWIG_OUTPUTS)
 
 CLEANFILES=dmalloc.log *.db test-out.rdf \
 $(PHP_PACKAGE)_wrap.so $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
@@ -44,17 +44,9 @@ RUN=@REDLAND_RUN@
 
 SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_INIT_I -DREDLAND_DECL_I -DREDLAND_TYPEMAP_I
 
-$(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i redland-typemap.i $(PHP_PACKAGE)_wrap.c.patch
+$(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i redland-typemap.i
 	swig -v -php4 $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ @REDLAND_SWIG@
-	cp $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.tmp
-	patch $(PHP_PACKAGE)_wrap.c < redland_wrap.c.patch
-	mv $(PHP_PACKAGE)_wrap.c.tmp $(PHP_PACKAGE)_wrap.c.orig
 	rm -f $(PHP_PACKAGE).php
-
-if MAINTAINER_MODE
-patch: $(PHP_PACKAGE)_wrap.c $(PHP_PACKAGE)_wrap.c.orig 
-	-diff -u $(PHP_PACKAGE)_wrap.c.orig $(PHP_PACKAGE)_wrap.c > $(PHP_PACKAGE)_wrap.c.patch
-endif
 
 # -UHAVE_CONFIG_H to stop PHP trying to include config.h which
 # quite often just doesn't exist
