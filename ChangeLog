@@ -1,3 +1,21 @@
+2006-03-05  Dave Beckett <dave@dajobe.org>
+
+	* Updated many files for Copyright 2006, UB name and Turtle moving
+	site.
+
+2006-03-03  Dave Beckett <dave@dajobe.org>
+
+	* php/Makefile.am, php/redland-typemap.i,
+	php/redland_wrap.c.patch: Insert phpinfo and module shutdown using
+	SWIG alone.  Delete patch and patching process
+
+	* php/redland_wrap.c.patch: updated patch for swig 1.3.27
+
+	* perl/lib/RDF/Redland/Storage.pm (Storage.new):
+	Patch from Kjetil Kjernsmo to improve storage options
+	handling by allowing a perl hash options as well as the current
+	string of redland options.
+
 2006-02-28  Dave Beckett <dave@dajobe.org>
 
 	* python/RDF.py (QueryResults.to_file, QueryResults.to_string):
