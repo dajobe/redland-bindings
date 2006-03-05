@@ -4,9 +4,8 @@
 #
 # $Id$
 #
-# Copyright (C) 2004-2005, David Beckett http://purl.org/net/dajobe/
-# Institute for Learning and Research Technology http://www.ilrt.bristol.ac.uk/
-# University of Bristol, UK http://www.bristol.ac.uk/
+# Copyright (C) 2004-2006, David Beckett http://purl.org/net/dajobe/
+# Copyright (C) 2004-2005, University of Bristol, UK http://www.bristol.ac.uk/
 # 
 # This package is Free Software and part of Redland http://librdf.org/
 # 
@@ -48,7 +47,7 @@ my(%query_language_labels)=('rdql'  =>'RDQL',
 			    'sparql' =>'SPARQL');
 my $default_query_language='sparql';
 
-my $example_foaf_uri='http://www.ilrt.bristol.ac.uk/people/cmdjb/webwho.xrdf';
+my $example_foaf_uri='http://purl.org/net/dajobe/webwho.xrdf';
 my $example_rss_uri='http://www.w3.org/2000/08/w3c-synd/home.rss';
 
 my(%query_examples)=(

@@ -387,16 +387,18 @@ class RasqalQueryTestCase (unittest.TestCase):
 
 
     def testSPARQLQueryTwiceOverwriteVar(self):
-        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT ?x ?y ?z WHERE {?x ?y ?z}")
+        q = SPARQLQuery("SELECT ?x ?y ?z WHERE {?x ?y ?z}")
         results = q.execute(self.model)
         count = 0
         for result in results:
+	    print "result 1>",count,result
             count += 1
         self.assert_(count == 3, "Should have found three results in execution 1 not "+str(count))
 
         results = q.execute(self.model)
         count = 0
         for result in results:
+	    print "result 2>",count,result
             count += 1
         self.assert_(count == 3, "Should have found three results in execution 2 not "+str(count))
 
