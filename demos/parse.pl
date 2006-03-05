@@ -56,7 +56,7 @@ EOT
 EOT
   ,
   'turtle' => <<EOT
-  <p>Turtle is the <a href="http://www.ilrt.bris.ac.uk/discovery/2004/01/turtle/">Terse RDF Triple Language</a>
+  <p>Turtle is the <a href="http://www.dajobe.org/2004/01/turtle/">Terse RDF Triple Language</a>
 EOT
   ,
   'rss-tag-soup' => <<EOT
