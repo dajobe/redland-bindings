@@ -9,7 +9,7 @@ module Redland
   # *'rdfxml'- a rdf parser
   # *'ntriples' a An triples parser
   # *'turtle' - a parser for the turtle syntax as defined in
-  #  http://www.ilrt.bris.ac.uk/discovery/2004/01/turtle/
+  #  http://www.dajobe.org/2004/01/turtle/
   # *'rss-tag-soup' - a parser for all RSS flavours and some atom
   # *'grddl' - GRDDL
   #
