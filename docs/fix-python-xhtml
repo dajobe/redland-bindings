@@ -79,7 +79,7 @@ while(<IN>) {
   print OUT <<"EOT" if m%^</body>%;
 <hr />
 
-<p>Copyright 2000-$year <a href="http://purl.org/net/dajobe/">Dave Beckett</a>, <a href="http://www.ilrt.bristol.ac.uk/">Institute for Learning and Research Technology</a>, <a href="http://www.bristol.ac.uk/">University of Bristol</a></p>
+<p>(C) Copyright 2000-$year <a href="http://purl.org/net/dajobe/">Dave Beckett</a>, Copyright 2000-2005 <a href="http://www.bristol.ac.uk/">University of Bristol</a></p>
 
 EOT
 
