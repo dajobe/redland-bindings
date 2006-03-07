@@ -26,6 +26,131 @@ pre
 <p>Not yet released.
 </p>
 
+<h3>General changes</h3>
+
+<p>The main changes in this release are:</p>
+
+<p>Synchronises with 
+<a href="http://librdf.org/">Redland</a> 1.0.3
+(<a href="http://librdf.org/RELEASE.html#rel1_0_3">Redland 1.0.3 release Notes</a>)
+</p>
+
+<p>Many fixes across multiple binding languages.</p>
+
+<p>Version Control change: Redland Bindings will be switching to use
+<a href="http://subversion.tigris.org/">Subversion</a>
+for version control after the 1.0.2.1 release.  Please check the
+<a href="http://svn.librdf.org/">Redland Subversion site</a>
+for the latest status or the online
+<a href="http://librdf.org/bindings/INSTALL.html">Redland Bindings installation notes</a>
+for the Redland Bindings specific subversion installation information.
+</p>
+
+
+<h3>Packaging and Configuration Changes</h3>
+
+<p>The build now generates a bindings.rdf DOAP file.</p>
+
+<p>The autogen.sh script for building from a soruce code checkout was
+revamped to be more modular.</p>
+
+<p>RPM spec file was updated. It now defines perl_sitearch,
+python_libdir, ruby_dir and ruby_libdir at RPM build time.  The build
+requirements were split out and now declare minimum versions.  Uses
+newer %configure and %{__make} macros.</p>
+
+
+<h3>C# bindings changes</h3>
+
+<p>Namespace fixes patch from John Barstow.</p>
+<p>Update nunit console to newer.</p>
+<p>Update C# syntax for Mono 1.8.x+.</p>
+
+
+<h3>Java bindings changes</h3>
+
+<p>No changes.</p>
+
+
+<h3>Perl bindings changes</h3>
+
+
+<p><code>QueryResults.to_string</code>: return boolean format results.</p>
+
+<p><code>Storage</code> constructor: Improve storage options handling
+by allowing a perl hash options in addition to the current form of a
+string of redland options.  Patch from Kjetil Kjernsmo.</p>
+
+
+<h3>PHP bindings changes</h3>
+
+<p>Insert phpinfo and module shutdown using SWIG alone which might
+work better.</p>
+
+
+<h3>Python bindings changes</h3>
+
+<ul>
+<li>win32 fixes</li>
+<li><code>Model.load</code> returns a boolean</li>
+<li><code>Parser.parse_into_model</code> and
+<code>Parser.parse_string_into_model</code> now return boolean
+success/failure</li>
+<li>Improve default arguments for <code>Parser</code> and
+<code>Serializer</code> convienence classes, keeping the same
+defaults</li>
+<li>Added test <code>testSPARQLQueryTwiceOverwriteVar</code> which fails due to current Rasqal implementation.</li>
+<li>Remove use of <code>SWIGEXPORT</code> macro which breaks on newer <a href="http://www.swig.org/">SWIGs</a></li>
+<li><code>World.__del__</code>: Added hack to prevent death if python
+destroys the Redland module before the RDF module. Fixes
+<a href="http://bugs.librdf.org/mantis/view.php?id=44">Issue #0000044</a></li>
+<li><code>URI.__hash__</code>: Use hash of str(self) to make a working URI hash allowing
+Redland URIs to be stored in Python dicts.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=47">Issue #0000047</a></li>
+<li><code>QueryResults.make_results_hash</code>,
+<code>QueryResults.get_binding_value</code> and
+<code>QueryResults.get_binding_value_by_name</code>: Check for a None
+value and set it in the results correctly.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=59">Issue #0000059</a></li>
+<li><code>Parser.parse_string_as_stream</code> and
+<code>Parser.parse_string_into_model</code>: Convert a Python unicode
+string to the UTF-8 bytes Redland expects.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=61">Issue #0000061</a>
+</li>
+<li>Make Python exceptions <code>RedlandError</code> and
+<code>RedlandWarning</code> properly returned from the RDF module by
+importing them correctly from C.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=68">Issue #0000068</a>
+</li>
+<li><code>QueryResults.to_file</code> and
+<code>QueryResults.to_string</code> now use the default format when
+given None.</li>
+</ul>
+
+
+<h3>Ruby bindings changes</h3>
+
+<ul>
+<li>Remove mention of <code>log4r</code> not really ever used</li>
+<li><code>Serializer</code> class method <code>model_to_string</code> added.</li>
+<li><code>Query</code> class method initialize - add missing base_uri arg</li>
+<li><code>QueryResults</code> class: added, separate from query class.</li>
+<li><code>Statement</code> class method ==(other) added</li>
+<li><code>Model</code> class method <code>query_execute</code> added</li>
+<li><code>Parser</code> class: Use rdfxml as parser name</li>
+<li><code>Resource</code> class method initialize: Make it work with a <code>Uri</code> argument.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=48">Issue #0000048</a>.</li>
+<li><code>Model</code> class method get_resource): Handle find returning nil for no result.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=49">Issue #0000049</a>
+</li>
+</ul>
+
+
+<h3>Tcl bindings changes</h3>
+
+<p>No changes.</p>
+
+
 
 <h2 id="rel1_0_2_1"><a name="rel1_0_2_1">Redland Bindings 1.0.2.1 Changes</a></h2>
 
