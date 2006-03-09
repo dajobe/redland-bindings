@@ -33,6 +33,7 @@ RDOC_DIR=rdoc
 RDOC_STAMP=rdoc-stamp
 
 rubylib=@RUBY_LIB@
+librubyarg_shared=@LIBRUBYARG_SHARED@
 
 rubydir=/usr/lib/$(rubylib)
 rubyarchdir=@RUBY_DIR@
@@ -67,8 +68,8 @@ ruby-redland-stamp: $(RUBY_PACKAGE)_wrap.so
 	else \
 	  args=" -shared"; \
 	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so -l$(rubylib) `@REDLAND_CONFIG@ --libs` -o $(RUBY_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so -l$(rubylib) `@REDLAND_CONFIG@ --libs` -o $(RUBY_PACKAGE).so
+	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so $(LIBRUBYARG_SHARED) `@REDLAND_CONFIG@ --libs` -o $(RUBY_PACKAGE).so; \
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so $(LIBRUBYARG_SHARED) `@REDLAND_CONFIG@ --libs` -o $(RUBY_PACKAGE).so
 	if test `uname` = Darwin; then \
 	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle; \
 	fi

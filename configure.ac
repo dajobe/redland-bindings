@@ -215,6 +215,7 @@ if test "X$RUBY" != X; then
   changequote(<<, >>)dnl
   ruby_prefix=`$RUBY -rrbconfig -e "print Config::CONFIG['archdir']"`
   RUBY_LIB=`$RUBY -rrbconfig -e "puts Config::CONFIG['ruby_install_name']"`
+  LIBRUBYARG_SHARED=`$RUBY -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']"`
   RUBY_DIR=`$RUBY -rrbconfig -e "puts Config::CONFIG['archdir']"`
   RUBY_LIBDIR=`$RUBY -rrbconfig -e "puts Config::CONFIG['rubylibdir']"`
   changequote([, ])dnl
@@ -225,11 +226,13 @@ else
   # ruby isn't available
   RUBY=:
   RUBY_INCLUDES=
+  LIBRUBYARG_SHARED=
   RUBY_LIB=
   RUBY_DIR=
   RUBY_LIBDIR=
 fi
 AC_SUBST(RUBY_INCLUDES)
+AC_SUBST(LIBRUBYARG_SHARED)
 AC_SUBST(RUBY_LIB)
 AC_SUBST(RUBY_DIR)
 AC_SUBST(RUBY_LIBDIR)
