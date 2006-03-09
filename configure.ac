@@ -75,14 +75,14 @@ fi
 AC_SUBST(PERLINSTALLSITEARCH)
 AC_SUBST(PERLMAN3DIR)
 
-SWIG_MIN_VERSION=1.3.24
+SWIG_MIN_VERSION=1.3.26
 
 AC_MSG_CHECKING(SWIG support)
 if test "X$SWIG" != "X"; then
   SWIG_VERSION=`$SWIG -version 2>&1 |sed -ne 's/^SWIG Version //p'`
   SWIG_VERSION_DEC=`echo $SWIG_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
 
- if test $SWIG_VERSION_DEC -ge 010314; then
+ if test $SWIG_VERSION_DEC -ge 010326; then
    SWIG_PYTHON_ARGS=-noproxy
  fi
 
