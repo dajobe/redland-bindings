@@ -15,5 +15,8 @@
 "
 
 %mshutdown {
-   librdf_php_world_finish();
+  if(librdf_php_world) {
+    librdf_free_world(librdf_php_world);
+    librdf_php_world=NULL;
+  }
 }
