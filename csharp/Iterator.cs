@@ -28,9 +28,6 @@ namespace Redland {
 		}
 
 		[DllImport ("librdf")]
-		static extern int librdf_iterator_end (HandleRef iterator);
-		
-		[DllImport ("librdf")]
 		static extern IntPtr librdf_iterator_get_object (HandleRef iterator);
 
 		[DllImport ("librdf")]
