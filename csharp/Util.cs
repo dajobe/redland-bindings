@@ -31,15 +31,11 @@ namespace Redland {
 			return n;
 		}
 
-		[DllImport ("libc", EntryPoint="strlen")]
-		static extern int strlen (IntPtr s);
-
 		public static String UTF8PtrToString (IntPtr p)
 		{
 			if (p == IntPtr.Zero)
 				return "";
 
-			//int len = strlen (p);
 			int len = 0;
 			while (Marshal.ReadByte (p, len) != 0)
 				len++;
