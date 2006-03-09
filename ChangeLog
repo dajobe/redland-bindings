@@ -1,9 +1,28 @@
-2006-03-05  Dave Beckett <dave@dajobe.org>
+2006-03-09  Dave Beckett  <dave@dajobe.org>
+
+	* csharp/Util.cs: Remove unused DLLimport of strlen
+
+	* csharp/Iterator.cs:
+	Removed DllImport of librdf_iterator_end - never used.
+
+	* php/redland-post.i (librdf_php_world_finish):
+	Deleted, now inlined into %mshutdown
+
+	* php/redland-typemap.i (%mshutdown): Inline librdf_php_world_finish.
+
+	* ruby/Makefile.am, configure.ac:
+	Add LIBRUBYARG_SHARED to get the shared lib name.
+
+2006-03-07  Dave Beckett  <dave@dajobe.org>
+
+	* COPYING.LIB, COPYING: FSF moved again
+
+2006-03-05  Dave Beckett  <dave@dajobe.org>
 
 	* Updated many files for Copyright 2006, UB name and Turtle moving
 	site.
 
-2006-03-03  Dave Beckett <dave@dajobe.org>
+2006-03-03  Dave Beckett  <dave@dajobe.org>
 
 	* php/Makefile.am, php/redland-typemap.i,
 	php/redland_wrap.c.patch: Insert phpinfo and module shutdown using
@@ -16,7 +35,7 @@
 	handling by allowing a perl hash options as well as the current
 	string of redland options.
 
-2006-02-28  Dave Beckett <dave@dajobe.org>
+2006-02-28  Dave Beckett  <dave@dajobe.org>
 
 	* python/RDF.py (QueryResults.to_file, QueryResults.to_string):
 	Use default format with None.
@@ -41,7 +60,7 @@
 	set it in the results.  Fixes issue #0000059
 	http://bugs.librdf.org/mantis/view.php?id=59
 
-2006-02-25  Dave Beckett <dave@dajobe.org>
+2006-02-25  Dave Beckett  <dave@dajobe.org>
 
 	* ruby/lib/rdf/redland/model.rb (get_resource): Handle find
 	returning nil Fixes issue #0000049
@@ -59,7 +78,7 @@
 	destroys the Redland module before RDF Fixes issue #0000044
 	http://bugs.librdf.org/mantis/view.php?id=44
 
-2006-02-19  Dave Beckett <dave@dajobe.org>
+2006-02-19  Dave Beckett  <dave@dajobe.org>
 
 	* python/redlandtest.py (testSPARQLQueryAsString): Update for
 	results syntax change.
@@ -67,17 +86,17 @@
 	* python/redland-post.i: Remove SWIGEXPORT macro, it breaks on
 	newer swigs and was a wrong usage.
 
-2006-01-16  Dave Beckett <dave@dajobe.org>
+2006-01-16  Dave Beckett  <dave@dajobe.org>
 
 	* bindings.rdf.in: use download.librdf.org
 
-2006-01-05  Dave Beckett <dave@dajobe.org>
+2006-01-05  Dave Beckett  <dave@dajobe.org>
 
 	* demos/Makefile.am: added parse.pl
 
 	* demos/parse.pl: Redland RDF Parsing demo
 
-2005-12-21  Dave Beckett <dave@dajobe.org>
+2005-12-21  Dave Beckett  <dave@dajobe.org>
 
 	* configure.ac, Makefile.am: updated urls
 
@@ -85,11 +104,11 @@
 
 	* bindings.rdf.in: DOAP for bindings
 
-2005-09-11  Dave Beckett <dave@dajobe.org>
+2005-09-11  Dave Beckett  <dave@dajobe.org>
 
 	* perl/example.pl: die if data file not found
 
-2005-09-01  Dave Beckett <dave@dajobe.org>
+2005-09-01  Dave Beckett  <dave@dajobe.org>
 
 	* python/redlandtest.py (testSPARQLQueryTwiceOverwriteVar): Added,
 	which fails now
@@ -109,7 +128,7 @@
 	* demos/query.pl: Add rdf: prefixes to examples Added REDLAND-NEWS
 	example Expand on not-implemented note
 
-2005-08-23  Dave Beckett <dave@dajobe.org>
+2005-08-23  Dave Beckett  <dave@dajobe.org>
 
 	* csharp/examples/Makefile.am: run nunit-console tests 1 at a time
 	to prevent crazy death
@@ -122,7 +141,7 @@
 	csharp/examples/Makefile.am, csharp/examples/ModelGeneralTest.cs:
 	Update C# and nunit for Mono 1.8.x
 
-2005-08-11  Dave Beckett <dave@dajobe.org>
+2005-08-11  Dave Beckett  <dave@dajobe.org>
 
 	* autogen.sh: update autogen.sh again
 
@@ -134,7 +153,7 @@
 	requirements out and declare minimum versions - Use %configure and
 	%{__make}
 
-2005-08-08  Dave Beckett <dave@dajobe.org>
+2005-08-08  Dave Beckett  <dave@dajobe.org>
 
 	* ruby/test/test_query.rb: Added serializing tests:
 	test_model_query_serialize_bindings,

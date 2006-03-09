@@ -1,3 +1,38 @@
+2006-03-09  Dave Beckett  <dave@dajobe.org>
+
+	* Util.cs: Remove unused DLLimport of strlen
+
+	* Iterator.cs: Removed DllImport of librdf_iterator_end - never
+	used.
+
+2006-03-05  Dave Beckett  <dave@dajobe.org>
+
+	* examples/Makefile.am, AssemblyInfo.cs, Makefile.am, Query.cs,
+	QueryResults.cs: Copyright years and UB
+
+2005-08-23  Dave Beckett  <dave@dajobe.org>
+
+	* examples/Makefile.am: run nunit-console tests 1 at a time to
+	prevent crazy death
+
+	* examples/Makefile.am: clean *.mdb junk
+
+	* examples/ModelTest.cs, examples/SimpleGetsTest.cs,
+	examples/StreamTest.cs, examples/TemplateTest.cs,
+	examples/EncodingTest.cs, examples/GetsTest.cs,
+	examples/Makefile.am, examples/ModelGeneralTest.cs: Update C# and
+	nunit for Mono 1.8.x
+
+2005-06-22  Dave Beckett  <dave@dajobe.org>
+
+	* AssemblyInfo.cs, Node.cs, Parser.cs, Stream.cs: Patch for
+	namespaces fixes from John Barstow.
+
+2005-02-08  Dave Beckett  <dave@dajobe.org>
+
+	* Makefile.am: Remove linking to $(top_srcdir)../librdf - that's
+	not always right.
+
 2005-01-04  Edd Dumbill  <edd@usefulinc.com>
 
 	* Iterator.cs, Model.cs, Node.cs, Parser.cs, Query.cs,
