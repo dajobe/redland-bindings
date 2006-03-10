@@ -1,3 +1,11 @@
+2006-03-10  Dave Beckett  <dave@dajobe.org>
+
+	* python/redlandtest.py (testSPARQLQueryTwiceOverwriteVar):
+	Disable as it requires rasqal changes
+
+	* python/Makefile.am: Add -DSWIG_PYTHON_SILENT_MEMLEAK to prevent
+	wrong python warnings
+
 2006-03-09  Dave Beckett  <dave@dajobe.org>
 
 	* csharp/Util.cs: Remove unused DLLimport of strlen
