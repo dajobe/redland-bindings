@@ -14,8 +14,8 @@ class TestModel < Test::Unit::TestCase
   def test_initialize()
     model = Model.new()
     assert_equal(0,model.size)
-    st = Statement.new(Uri.new("http://foo"),Uri.new("http://bar"),"baz")
-    st2 = Statement.new(Uri.new("http://xmlns/"),Uri.new("http://name"),"bar")
+    st = Statement.new(Uri.new("http://example.org/foo"),Uri.new("http://example.org/bar"),"baz")
+    st2 = Statement.new(Uri.new("http://example.org/ns/"),Uri.new("http://example.org/name"),"bar")
     model.add_statement(st)
     model.add_statement(st2)
     assert_equal(2,model.size)
@@ -29,7 +29,7 @@ class TestModel < Test::Unit::TestCase
     model.add_statement Statement.new(@faa['kris'],@foaf['firstName'],"Kris")
     model.add_statement Statement.new(@faa['kris'],@foaf['phone'],"333-123-2387")
     model.add(@faa['kris'],@foaf['name'],"Kris Frame")
-    model.add( Uri.new('dom'),Uri.new('project'),'2334')
+    model.add( Uri.new('http://example.org/dom'),Uri.new('http://example.org/project'),'2334')
     domnode = model.subject(@foaf['name'],"Dominic")
     assert_equal(@faa['dom@some.gov'], domnode)
     assert_equal('333-123-2387',model.object(@faa['kris'],@foaf['phone']).to_s)
@@ -94,14 +94,14 @@ class TestModel < Test::Unit::TestCase
   def testcontext()
     store = HashStore.new('bdb','thestore')
     model = Model.new(store)
-    model.add_statement(Statement.new(Uri.new('dom'),Uri.new('project'),'10892'),Node.new(Uri.new('http://mycontext/dom')))
-    model.add(Uri.new('dom'),Uri.new('name'),'Dominic',Uri.new('http://mycontext/dom'))
+    model.add_statement(Statement.new(Uri.new('http://example.org/dom'),Uri.new('http://example.org/project'),'10892'),Node.new(Uri.new('http://example.org/mycontext/dom')))
+    model.add(Uri.new('http://example.org/dom'),Uri.new('http://example.org/name'),'Dominic',Uri.new('http://example.org/mycontext/dom'))
     model.statements(){|s| puts s}
     contexts = []
     model.contexts{|c| contexts << c}
     assert_equal(1,contexts.size)
     #assert_equal(contexts[0],model.create_resource('http://mycontext/dom'))
-    #model.add(Uri.new('dom'),Uri.new('surname'),'Sisneros',Uri.new('http://newcontext/dom'))
+    #model.add(Uri.new('http://example.org/dom'),Uri.new('http://example.org/surname'),'Sisneros',Uri.new('http://newcontext/dom'))
     #contexts = model.contexts()
     #puts "## CONTEXTS ARE #{contexts}"
     #assert_equal(2,contexts.size)    
@@ -126,7 +126,7 @@ class TestModel < Test::Unit::TestCase
     }
     assert_equal(2,subjects.size)
     model.smush(foaf['mbox'])
-    assert_equal(2,model.subjects(foaf['mbox'],Uri.new('mailto:dom@sisna.com')).size)        
+    assert_equal(1,model.subjects(foaf['mbox'],Uri.new('mailto:dom@sisna.com')).size)
     
   end
 
