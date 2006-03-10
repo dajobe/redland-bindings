@@ -76,24 +76,29 @@ module Redland
     # given then the content is parsed as if it was at the base_uri rather
     # than the uri.  If the optional context is given, the statement is added to the context
     def parse_into_model(model,uri,base_uri=nil,context=@context)
+      puts "parse_into_model context is #{context}"
+      if uri.class == String
+        uri = Uri.new(uri)
+      end
+      if base_uri
+        if base_uri.class == String
+          base_uri = Uri.new(base_uri)
+        end
+      else
+        base_uri=uri 
+      end
       if not context
-        if uri.class == String
-          uri = Uri.new(uri)
-        end
-        if base_uri
-          if base_uri.class == String
-            base_uri = Uri.new(base_uri)
-          end
-        else
-          base_uri=uri 
-        end
         begin
           r = Redland.librdf_parser_parse_into_model(@parser,uri.uri,base_uri.uri,model.model)
         rescue RedlandError => err
           print "caught error"+ err
         end
       else #context
-        self.parse_as_stream(uri,base_uri){|s| model.add_statement(s,context)}
+        raise RedlandError.new("Cannot make a Node from an object of #{context.class}") if not context
+        context = Node.ensure(context)
+ 	my_stream = Redland::librdf_parser_parse_as_stream(@parser,uri.uri,base_uri.uri)
+        Redland.librdf_model_context_add_statements(model.model,context,my_stream)
+        #self.parse_as_stream(uri,base_uri){|s| model.add_statement(s,context)}
       end
 
     end
