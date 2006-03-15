@@ -44,7 +44,7 @@ Parser.cs Node.cs Statement.cs Stream.cs Iterator.cs Serializer.cs	\
 Redland.cs MemoryStorage.cs HashStorage.cs Util.cs \
 Query.cs QueryResults.cs Errors.cs
 
-CSHARP_CRUFT=$(CSHARP_PACKAGE).dll
+CSHARP_CRUFT=$(CSHARP_PACKAGE).dll $(CSHARP_PACKAGE).dll.mdb
 
 fakedir=$(prefix)
 fake_DATA=build-csharp-stamp
