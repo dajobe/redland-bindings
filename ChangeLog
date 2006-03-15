@@ -1,5 +1,19 @@
 2006-03-15  Dave Beckett  <dave@dajobe.org>
 
+	* csharp/QueryResults.cs (MakeResultsHash): Zero test was backwards
+
+	* csharp/Makefile.am: clean up mdb cruft
+
+	* ruby/test/test_model.rb (test_parse_and_merge): Try to debug this.
+
+	* ruby/lib/rdf/redland/parser.rb: remove one more puts
+
+	* csharp/QueryResults.cs (QueryResults.MakeResultsHash,
+	QueryResults.BindingValue, QueryResults.BindingValueByName): Do
+	not try to make a new Node over a IntPtr.Zero / C NULL.
+
+	* docs/php.html: works with 5.1.2
+
 	* redland-bindings.spec.in: update me
 
 2006-03-10  Dave Beckett  <dave@dajobe.org>
