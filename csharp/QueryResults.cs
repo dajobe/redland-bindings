@@ -3,7 +3,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2004-2005 David Beckett - http://purl.org/net/dajobe/
+// Copyright (C) 2004-2006 David Beckett - http://purl.org/net/dajobe/
 // Copyright (C) 2004-2005 University of Bristol - http://www.bristol.ac.uk/
 //
 
@@ -45,7 +45,11 @@ namespace Redland {
 				IntPtr iname = librdf_query_results_get_binding_name (handle, i);
 				String name = Util.UTF8PtrToString (iname);
 				IntPtr v = librdf_query_results_get_binding_value (handle, i);
-				h.Add (name, new Node (v));
+				if (v != IntPtr.Zero) {
+					h.Add (name, null);
+                                } else {
+                                	h.Add (name, new Node (v));
+                                }
 			}
 
 			return h;
@@ -103,7 +107,10 @@ namespace Redland {
 		public Node BindingValue (int offset)
 		{
  			IntPtr v = librdf_query_results_get_binding_value (handle, offset);
-			return new Node (v); // do_not_copy=1 FIXME
+			if (v != IntPtr.Zero)
+				return new Node (v); // do_not_copy=1 FIXME
+			else
+				return null;
 		}
 
 		public string BindingName (int offset) 
@@ -120,7 +127,10 @@ namespace Redland {
 			IntPtr iname = Util.StringToHGlobalUTF8 (name.ToString());
  			IntPtr v = librdf_query_results_get_binding_value_by_name (handle, iname);
 			Marshal.FreeHGlobal (iname);
-			return new Node (v); // do_not_copy=1 FIXME
+			if (v != IntPtr.Zero)
+				return new Node (v); // do_not_copy=1 FIXME
+			else
+				return null;
 		}
 
 		public int BindingsCount ()
