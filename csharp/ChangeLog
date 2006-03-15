@@ -1,3 +1,9 @@
+2006-03-15  Dave Beckett  <dave@dajobe.org>
+
+	* QueryResults.cs (QueryResults.MakeResultsHash,
+	QueryResults.BindingValue, QueryResults.BindingValueByName): Do
+	not try to make a new Node over a IntPtr.Zero / C NULL.
+
 2006-03-09  Dave Beckett  <dave@dajobe.org>
 
 	* Util.cs: Remove unused DLLimport of strlen
