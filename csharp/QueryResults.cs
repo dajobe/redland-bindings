@@ -46,9 +46,9 @@ namespace Redland {
 				String name = Util.UTF8PtrToString (iname);
 				IntPtr v = librdf_query_results_get_binding_value (handle, i);
 				if (v != IntPtr.Zero) {
-					h.Add (name, null);
-                                } else {
                                 	h.Add (name, new Node (v));
+                                } else {
+					h.Add (name, null);
                                 }
 			}
 
