@@ -96,7 +96,7 @@ class TestModel < Test::Unit::TestCase
     model = Model.new(store)
     model.add_statement(Statement.new(Uri.new('http://example.org/dom'),Uri.new('http://example.org/project'),'10892'),Node.new(Uri.new('http://example.org/mycontext/dom')))
     model.add(Uri.new('http://example.org/dom'),Uri.new('http://example.org/name'),'Dominic',Uri.new('http://example.org/mycontext/dom'))
-    model.statements(){|s| puts s}
+    #model.statements(){|s| puts s}
     contexts = []
     model.contexts{|c| contexts << c}
     assert_equal(1,contexts.size)
@@ -137,9 +137,11 @@ class TestModel < Test::Unit::TestCase
     model.add(dom,FOAF::MBOX,Node.new(:uri_string=>'mailto:dominic@bogus.com'))
     model.add(dom,FOAF::NAME,'Dominic Sisneros')
     parser = Parser.new()
-    model.parse_and_merge(parser,'file:./triples.rdf',[FOAF::MBOX])
-    assert_equal('Electronic Engineer',model.object(dom,FOAF::TITLE).to_s)
-    assert_equal('Sisneros',model.object(dom,FOAF::SURNAME).to_s)
+    model.parse_and_merge(parser,'file:triples.rdf',[FOAF::MBOX])
+
+    domnode = model.subject(FOAF::MBOX,Node.new(:uri_string=>'mailto:dominic@bogus.com'))
+    assert_equal('Electronic Engineer',model.object(domnode,FOAF::TITLE).to_s)
+    assert_equal('Sisneros',model.object(domnode,FOAF::SURNAME).to_s)
   end
 end
 
