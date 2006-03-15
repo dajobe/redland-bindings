@@ -28,7 +28,7 @@ BuildRequires: redland-devel >= %{redland_version}
 BuildRequires: perl >= 5.8.0
 BuildRequires: python-devel >= 2.3.0
 BuildRequires: ruby-devel >= 1.8.0
-Packager:  Dave Beckett <Dave.Beckett@bristol.ac.uk>
+Packager:  Dave Beckett <dave@dajobe.org>
 Docdir: %{prefix}/doc
 Requires:  redland >= %{redland_version}
 Requires:  ruby >= 1.8.0
