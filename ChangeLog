@@ -1,3 +1,7 @@
+2006-03-15  Dave Beckett  <dave@dajobe.org>
+
+	* redland-bindings.spec.in: update me
+
 2006-03-10  Dave Beckett  <dave@dajobe.org>
 
 	* python/redlandtest.py (testSPARQLQueryTwiceOverwriteVar):
