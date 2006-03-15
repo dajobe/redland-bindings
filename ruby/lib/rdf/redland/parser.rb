@@ -76,7 +76,7 @@ module Redland
     # given then the content is parsed as if it was at the base_uri rather
     # than the uri.  If the optional context is given, the statement is added to the context
     def parse_into_model(model,uri,base_uri=nil,context=@context)
-      puts "parse_into_model context is #{context}"
+      #puts "parse_into_model context is #{context}"
       if uri.class == String
         uri = Uri.new(uri)
       end
