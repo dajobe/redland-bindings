@@ -1,8 +1,0 @@
-- Finish the binding
-	- Search in Model with context (Contains, GetTargetsContext,
-	  GetSourcesContext, GetPredicatesContext, see
-	  examples/redlandtest.py function testGetsC). 
-
-	- Implement Iterator.Contains? (see examples/GetsTest.cs)
-	
-Comments and questions: Cesar Lopez Nataren (cesar@ciencias.unam.mx).
