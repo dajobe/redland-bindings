@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2005, David Beckett http://purl.org/net/dajobe/
+# Copyright (C) 2000-2006, David Beckett http://purl.org/net/dajobe/
 # Copyright (C) 2000-2005  University of Bristol, UK http://www.bristol.ac.uk/
 # 
 # This package is Free Software and part of Redland http://librdf.org/
@@ -30,7 +30,8 @@ DIST_SUBDIRS=data docs \
 perl php python tcl java ruby csharp \
 demos
 
-EXTRA_DIST=ChangeLog \
+EXTRA_DIST=ChangeLog  ChangeLog.1 ChangeLog.2 \
+ChangeLog.3 ChangeLog.4 ChangeLog.5 \
 README      NEWS      LICENSE.txt  TODO \
 README.html NEWS.html LICENSE.html TODO.html \
 RELEASE.html INSTALL.html \
