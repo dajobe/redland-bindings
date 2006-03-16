@@ -23,10 +23,8 @@ or a sibling directory called 'librdf'.</p>
 
 <p>There are several ways to get the sources.  The most stable and
 tested versions are the sources shipped with each release and these
-are recommended as the first place to start.  If you want to get a
-newer set, then there are nightly snapshots made of the development
-sources, which may not yet be committed to the CVS.  For the latest
-developent sources, anonymous CVS access is available but this may
+are recommended as the first place to start.  For the latest
+developent sources, anonymous Subversion access is available but this may
 require some configuring of developer tools that are not needed for
 the snapshot releases.</p>
 
@@ -34,54 +32,28 @@ the snapshot releases.</p>
 documentation provided on the web site.</p>
 
 
-<h3>2.1. Getting released sources</h3>
+<h3>2.1. Getting the sources from releases</h3>
 
-<p>Every release comes with full sources and these are available from
+<p>The released sources and available from
 <a href="http://download.librdf.org/source/">http://download.librdf.org/source/</a> master site as well as the
 <a href="http://sourceforge.net/projects/librdf/">SourceForge site</a>.
 </p>
 
 
-<h3>2.2. Getting nightly source snapshots</h3>
+<h3>2.2. Getting the sources from Subversion</h3>
 
-<p>Each night a snapshot distribution is attempted using the current
-development sources (that may not even be in the CVS), using the
-<code>make dist</code> target of the automake system.  If this target
-completes, these snapshots are then made available from:
-<a href="http://download.librdf.org/snapshots/source/">http://download.librdf.org/snapshots/source/</a>
-(binary snapshot releases are also attempted each night from the
-same sources).
-</p>
-
-<h3>2.3. Getting the sources from CVS</h3>
-
-<p><strong>NOTE</strong>: Redland Bindings will be switching to use
+<p><strong>NOTE</strong>: Redland Bindings switched to use
 <a href="http://subversion.tigris.org/">Subversion</a>
-for version control after the 1.0.3.1 release.  Please check the
-<a href="http://svn.librdf.org/">Redland Subversion site</a>
-for the latest status or the online
-<a href="http://librdf.org/bindings/INSTALL.html">Redland Bindings installation notes</a>
-for the Redland Bindings-specific Subversion installation information.
-</p>
+for version control after the 1.0.3.1 release.  If you were
+using CVS, you will need to re-check out the sources.</p>
 
 <pre>
-  # sh, bash, ...
-  CVSROOT=:pserver:anonymous@cvs.librdf.org:/cvsroot
-  export CVSROOT
-  # csh, tcsh, ...
-  setenv CVSROOT :pserver:anonymous@cvs.librdf.org:/cvsroot
-
-  cvs login
-Logging in to :pserver:anonymous@cvs.librdf.org:2401/cvsroot
-CVS password: 
-  [return]
-
-  cvs checkout bindings
-
+  svn checkout http://svn.librdf.org/repository/bindings/trunk/
+  mv trunk bindings
   cd bindings
 </pre>
 
-<p>At this stage, or after a <code>cvs update</code> you will
+<p>At this stage, or after a <code>svn update</code> you will
 need to create the automake and autoconf derived files, as described
 below in <a href="#sec-create-configure">Create the configure program</a>
 by using the <code>autogen.sh</code> script.</p>
@@ -96,22 +68,22 @@ of the auto* tools and checks that they meet the minimum versions.</p>
 
 <h2>3. Configuring and building</h2>
 
-<p>Redland bindings uses the GNU automake and autoconf to handle system
-dependency checking.  It is developed and built on x86 Linux (Redhat),
-but is also used extensively locally on various versions of
-sparc Sun Solaris 2.x.  I also test it via
-<a href="http://sourceforge.net/">SourceForge</a>s'
-compile farm and it builds on Debian Linux (x86, Alpha, PPC and
-Sparc, IA64), FreeBSD (x86) and Apple OSX.</p>
+<p>Redland bindings uses the GNU automake and autoconf to handle
+system dependency checking.  <code>configure</code> tries very hard
+to find several programs and libraries that the Redland bindings
+need.  These include the binding binaries: perl, python, etc.,
+headers for the bindings such as the JDK, Python etc.  and various
+others.  A summary of the parts found is given at the end of the
+configure run.  Several options to configure given below can be used
+to point to locations or names of dependencies that cannot be
+automatically determined.</p>
 
-
-<p>Configure tries very hard to find several programs and libraries
-that the Redland bindings need.  These include the binding binaries:
-perl, python, etc., headers for the bindings such as the JDK, Python etc.
-and various others.  A summary of the parts found is given at
-the end of the configure run.  Several options to configure given
-below can be used to point to locations or names of dependencies that
-cannot be automatically determined.</p>
+<p>Redland Bindings is developed and built on x86 GNU/Linux
+(Redhat Fedora Core 4, Debian unstable) but is also regularly tested on
+sparc Sun Solaris, x86 FreeBSD, ppc Apple OSX 
+and as part of Redland on several other systems via the 
+<a href="http://sourceforge.net/">SourceForge</a> compile farm
+(typically AMD64, Alpha, Solaris x86, OpenBSD, NetBSD).</p>
 
 
 <h3><a id="sec-create-configure" name="sec-create-configure"></a>3.1. Create <code>configure</code> program</h3>
@@ -139,7 +111,7 @@ hand with:</p>
 <p>The automake and autoconf tools have many different versions and
 at present development is being done with automake 1.8.3 (minimum
 version 1.7), autoconf 2.59 (minimum version 2.54) and libtool 1.5.4
-(minimum version 1.4).  These are only needed when compiling from CVS
+(minimum version 1.4).  These are only needed when compiling from Subversion
 sources.  autogen.sh enforces the requirements.  In future
 development will move to require automake 1.8, autoconf 2.58 and
 libtool 1.5.</p>
