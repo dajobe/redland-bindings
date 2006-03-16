@@ -1,0 +1,1125 @@
+2003-12-29  Dave Beckett
+
+	* configure.ac: Add AC_DEFINE for local MD5, SHA1, RIPEMD160
+
+	* docs/Makefile.am: Added storage_mysql storage_tstore
+
+2003-12-18  Dave Beckett
+
+	* perl/Makefile.PL: OSX old perl before 5.8
+
+	* perl/Makefile.PL: Another attempt to handle MakeMaker changes
+	since perl5.8
+
+	* perl/Makefile.am: Compile perl without the -W flags; it's just
+	too noisy.
+
+2003-12-16  Dave Beckett
+
+	* perl/t/test1.t: Don't use last when not in a loop
+
+	* configure.ac: Added LIBRDF_EXTERNAL_CPPFLAGS,
+	LIBRDF_EXTERNAL_LIBS used for system raptor
+
+	* perl/Makefile.PL: Don't need MEM_LIBS in OBJECT
+
+	* demos/rss-show.pl: Add secret rss tag soup
+
+2003-12-15  Dave Beckett
+
+	* php/test.php: tidy prints
+
+	* php/test.php: Better test code.  Serializing crashes it - to fix
+	later.
+
+	* php/Makefile.am: Reorder compile args so PHP libs are first and
+	overridden if need be.
+
+	* configure.ac: AC_SUBST with_raptor
+
+	* php/Makefile.am: Apply redland_wrap.c.patch when building
+	redland_wrap.c Use -d extension_dir=. for test-php
+
+	* php/redland_wrap.c.patch: Patch to PHP wrapper to return empty
+	string not C NULL
+
+	* configure.ac: Added librdf/redland.pc
+
+	* configure.ac, Makefile.am: Split SD subdirs into SD_PRE (must be
+	made before librdf) and SD_POST (after).  raptor goes into PRE so
+	that it is both compiled and installed before librdf.
+
+2003-12-14  Dave Beckett
+
+	* perl/Makefile.am: Remove use of prefix; install where perl wants
+	it
+
+	* perl/Makefile.PL: Try again with the MakeMaker PM hash.  Remove
+	double RDF/RDF
+
+	* perl/Makefile.am: Remove old API updater
+
+2003-12-08  Dave Beckett
+
+	* configure.ac: mysql version reporting
+
+	* configure.ac: make --with-threestore, --with-mysql take
+	CONFIG|yes|no
+
+	* configure.ac: Add BDB 4.2 to the list.  Fixes for 3store
+	(--with-threestore) else search for 3store-config; add glib to
+	cflags/libs using pkg-config.  Report raptor version.  Report
+	triple stores found.
+
+2003-11-26  Dave Beckett
+
+	* perl/Makefile.PL: List the .pm files explicitly since perl 5.8.1
+	broke scanning
+
+2003-11-19  Dave Beckett
+
+	* demos/ntriples.pl: Style, HTML fixes.  Counting wasn't right.
+
+2003-11-03  Dave Beckett
+
+	* configure.ac: Added --with-mysql-config and automatic search for
+	mysql_config program.  Added STORAGE_OBJS
+
+	* autogen.sh: remove ltmain.sh libtool before libtoolize
+
+	* python/redlandtest.py (class RedlandGetsCase): Add test for
+	making a new anon (no arg) blank node
+
+2003-09-25  Dave Beckett
+
+	* configure.ac: word
+
+	* configure.ac: 3store linking fixes.
+
+	* configure.ac: Bumped raptor min to 1.1.0 Added
+	--with-threestore.
+
+2003-09-19  Dave Beckett
+
+	* configure.ac: Check for BDB DB->set_flags
+
+2003-09-11  Dave Beckett
+
+	* python/RDF.py (Model): Added sync() calling librdf_model_sync
+
+	* python/redlandtest.py (RedlandModelGeneral): Test model.sync()
+
+2003-09-08  Dave Beckett
+
+	* python/RDF.py:
+	(Node:_get_literal_value) Use dt_uri=Uri(string=... not
+	(uri_string=...
+
+	* configure.ac: Bumped version to 0.9.15
+
+	* configure.ac: Min raptor version is now 1.0.0
+
+	* configure.ac: With only --with-bdb=PREFIX given, set the lib &
+	include from that value.  Use 'unknown' rather than none when some
+	BDB bits given and no guessing.
+
+2003-09-04  Dave Beckett
+
+	* java/org/librdf/redland/World.java: Use
+	librdf_version/copyright*
+
+	* tcl/Makefile.am: clean more
+
+	* configure.ac: Remove a bunch of unused LIBRDF_VERSION_ AC_SUBST.
+	Remove LIBRDF_VERSION_INFO - not used Define
+	LIBRDF_VERSION_DECIMAL here and make it an AC_SUBST.
+
+	* configure.ac: Enable public domain getopt in getopt.c &
+	rdfproc_getopt.h for rdfproc if there is no getopt or getopt_long
+
+	* configure.ac: Look for getopt.h
+
+2003-09-03  Dave Beckett
+
+	* Makefile.PL: Updated for 0.9.13 Uses configure.ac Pick the perl
+	prefix to pass to configure.  make clean needs a little help else
+	it just returns 'exit 2'.  install: Installs just the shared
+	libraries for raptor and redland, then pelr.  Have a hand-crafted
+	MANIFEST and MANIFEST.SKIP now.
+
+2003-09-01  Dave Beckett
+
+	* Makefile.am: raptor subdirectory is now not always built
+
+	* configure.ac: TIdy some configure --with/--enable messages Added
+	RAPTOR_CONFIG program (default raptor-config) Added
+	--with-raptor=system or internal.  By default will pick the best.
+	Checks for minmum versions and warns if too old, but proceeds.
+	raptor subdirectory is now not always built.
+
+	* configure.ac: Added LIBRDF_LIBTOOLLIBS for compiling with librdf
+	using libtool.
+
+2003-08-31  Dave Beckett
+
+	* configure.ac: dmalloc enabled only if dmalloc.h is present
+
+2003-08-30  Dave Beckett
+
+	* configure.ac: Added --with-dmalloc option default auto for
+	maintainer, no otherwise.
+
+2003-08-29  Dave Beckett
+
+	* perl/lib/RDF/Redland/Parser.pm: Use raptor in the example. Add a
+	mime type example.
+
+	* demos/demo.pl: s/statement/triple/ in html
+
+	* demos/demo.pl: Update parser labels.  Add owl namespace.  Trim
+	rdf content whitespace.  Become read only if db is not writable to
+	this user.
+
+	* docs/Makefile.am: Added .pod.html rule
+
+2003-08-28  Dave Beckett
+
+	* docs/fix-python-xhtml: Remove remaining broken fragments,
+	example urls
+
+	* docs/fix-python-xhtml: Exclude __builtin__ class from links
+
+	* perl/lib/RDF/Redland/URI.pm, perl/lib/RDF/Redland/Node.pm: Use
+	URI::URL in the isa
+
+	* perl/lib/RDF/Redland/URI.pm, perl/lib/RDF/Redland/Node.pm: Fix
+	totally broken use of UNIVERSAL::isa
+
+	* perl/lib/RDF/Redland/URI.pm (new): Fix arg promotion from URI
+	objects.
+
+	* perl/lib/RDF/Redland/URI.pm (new): Fix cloning.
+
+	* configure.ac: Bumped version to 0.9.14
+
+	* tcl/example.tcl, ruby/example.rb: Use librdf_model_as_stream
+
+	* java/org/librdf/redland/Model.java (as_stream): Added - use Use
+	librdf_model_as_stream or with a context node, use
+	librdf_model_context_as_stream
+
+	* python/RDF.py (Model.as_stream): Use
+	librdf_model_context_as_stream
+
+	* perl/lib/RDF/Redland/Model.pm: Fix uses of
+	RDF::Redland::Node::_ensure($node) to use it as a redland node.
+	(as_stream): Take optional context node, promote as necessary,
+	using librdf_model_context_as_stream. Add documentation.
+
+	* perl/serialize.pl, demos/demo.pl, perl/example.pl: Use as_stream
+
+	* perl/lib/RDF/Redland/Model.pm (as_stream): Added, deprecating
+	serialise and serialise.
+
+	* tcl/Makefile.am: TCL_INCLUDES
+
+	* php/php.ini: load shared library from .
+
+	* php/Makefile.am: Remove libtool again.  Try "if OSX, else rest
+	of world" approach.
+
+	* configure.ac: TCL_INCLUDE now TCL_INCLUDES and blank if not
+	found, otherwise -Idir
+
+	* tcl/Makefile.am: Remove libtool again.  Try "if OSX, else rest
+	of world" approach.
+
+	* configure.ac: default TCL_INCLUDE to /usr/include
+
+	* ruby/Makefile.am: minor depends
+
+	* ruby/Makefile.am: Remove libtool again.  Try "if OSX, else rest
+	of world" approach.  Package now 'redland' to match ruby
+	convention.
+
+	* ruby/example.rb: Now redland
+
+	* tcl/Makefile.am: Don't -I-I@TCL_INCLUDE@
+
+	* configure.ac: tcl version tweak -nonewline since OSX does silly
+	things
+
+	* tcl/Makefile.am: Removed README
+
+	* tcl/Makefile.am: Use @TCL_VERSION@ for the library name and
+	-I@TCL_INCLUDE@
+
+	* configure.ac: --with-perl/python/java/tcl/php/ruby now either
+	enable the language or enable and set the binary.  Always try to
+	find the version of the language before building the API
+	automatically.  Hunt for Tcl tcl.h and Java JDK JNI headers in
+	various places.  Report the languages available and language APIs
+	built.
+
+	* php/Makefile.am: comments.  testing is optional, php program
+	might not exist
+
+	* php/Makefile.am: Very complex build and install using a
+	libfake.la so I don't have to care about details of building
+	shared object and dynamically loaded libraries.  No OSX specific
+	fixes here since I can't see what the convention is.
+
+	* tcl/Makefile.am: Be verbose in pkgIndex.tcl
+
+	* ruby/Makefile.am: docs
+
+	* tcl/Makefile.am: No -module here
+
+2003-08-27  Dave Beckett
+
+	* tcl/Makefile.am: Very complex build and install using a
+	libfake.la so I don't have to care about details of building
+	shared object and dynamically loaded libraries (such as on OSX).
+	The OSX specific naming is burnt in here since the dynamically
+	loaded library must be called Redland.dylib
+
+	* ruby/Makefile.am: Very complex build and install using a
+	libfake.la so I don't have to care about details of building
+	shared object and modules (such as on OSX).  OSX specific naming
+	have to be burnt in here since shared modules must be called
+	Redland.bundle
+
+	* ruby/Makefile.am, tcl/Makefile.am: Make build and installing
+	work again, without libtool.
+
+	* tcl/test.tcl: Back to auto_path .
+
+	* configure.ac: BDB check update again.  Report discovered BDB
+	version in summary
+
+	* configure.ac: Use bdbc_ for temporary variables in BDB checking
+	code.
+
+	* perl/Makefile.PL: Revert to working version.  No need for
+	builddir/srcdir things.
+
+	* perl/Makefile.am: Revert: Remove inplace editing of
+	PERL_MAKEFILE
+
+	* configure.ac: Another major BDB hunt and validate.  This time
+	check for db.h with version numbers.
+
+	* perl/Makefile.PL: Set FULLEXT to RDF/Redland
+
+	* perl/Makefile.am: Make sure PERL really uses the right FULLEXT,
+	BASEEXT and BOOTSTRAP values
+
+	* configure.ac: bdb_dbname test was inverted
+
+	* configure.ac: use "if test ...; then", not "if [ ... ]; then"
+
+	* configure.ac: I give up.  Put OSX fink hints here - look for
+	/sw/bin.  Add more Sleepycat/Berkeley DB checks, more guesswork
+	and hunting for BDB headers in /usr/include/db* subdirectories.
+
+	* perl/Makefile.am: Use CFLAGS, not MEM.
+
+	* perl/Makefile.PL: Use CFLAGS, not MEM.  Use redland-src-config
+	--libs not --static-libs
+
+2003-08-26  Dave Beckett
+
+	* configure.ac: Added AC_HEADER_TIME and checks for time.h,
+	sys/time.h for gettimeofday
+
+	* docs/fix-python-xhtml: +email
+
+	* docs/fix-python-xhtml: -email
+
+	* docs/fix-python-xhtml: words
+
+	* docs/fix-python-xhtml: New pydoc, new bad use of ID.  Skip the
+	huge #commented heading in the source.
+
+	* python/redlandtest.py (testIterateModel, testContains): Added.
+
+	* python/RDF.py (Model.__iter__): Fix to return an iter
+
+	* python/Makefile.am: Pass on CFLAGS and LDFLAGS to python
+	setup.py
+
+	* python/example.py: empty statement
+
+	* python/RDF.py: words in copyright
+
+	* python/test/test.py, python/example.py: Updated to use 0.9 api
+	features
+
+	* ruby/Makefile.am: test-ruby fix shared dir
+
+	* ruby/Makefile.am: LIBRUBYARG works 1.6-1.8
+
+	* python/redlandtest.py: Update by Edd Dumbill to test the 0.9
+	RDF.py changes.
+
+	* python/RDF.py: Major update to use Python 2.2+ idioms and
+	features by Edd Dumbill.
+
+	General remarks
+
+	  * Removed string exceptions and replaced with RedlandError ones
+
+	  * Where underlying Redland C objects were unexpectedly null,
+	    raise exceptions rather than returning None, "" or [] as
+	    appropriate.
+
+	  * Raise exceptions if Redland C constructors fail in Python
+	    constructors.
+
+	  * Did quite a lot of documentation updating, where possible
+	    demonstrating preferred Pythonic usages.
+
+	  * Added more unit tests to test changed functionality.
+
+	RDF.Node
+
+	  * Constructor now accepts Uri to make a resource/property node,
+	    or a string to make a string literal
+
+	  * Removed usage of node_type() in favour of is_resource(),
+	    is_blank() etc methods.
+
+	  * DEPRECATED get_blank_identifier() etc methods in favour of
+	    node.blank_identifier etc properties.  Raise exception if
+	    properties inconsistent with the node type are requested.
+
+	RDF.Statement
+
+	  * No need to name subject, predicate, object in constructor any
+	    more.  Uris or string literals accepted in place of nodes in
+	    constructor argument.
+
+	  * __getattr__ method deleted, using new-style property() for
+	    subject, predicate, object
+
+	RDF.Model
+
+	  * Deleted get_*_iterator methods
+
+	  * Renamed sources() to get_sources(), targets() to
+	    get_targets(), arcs() to get_predicates().  Retained old
+	    method names as aliases.
+
+	  * Added get_sources_context(), get_targets_context(),
+	    get_predicates_context() which return (node, context) tuples.
+
+	  * Amended get_source(), get_sources() etc methods so that Uri
+	    and string literals were acceptable as shortcut types for
+	    nodes.
+
+	  * Added find_statements_context() which returns (statement,
+	    context) tuples.
+
+	  * Renamed context_remove_statements() to
+	    remove_statements_with_context(). Retained old method name as
+	    an alias.
+
+	  * Added __delitem__ method so del[statement] and del[statement,
+	    context] work.
+
+	  * Added append() method so append(statement) and
+	    append(statement, context) work.  Suggest that append() is
+	    used in preference to add_statement() for Python idiomatic
+	    usage.
+
+	  * DEPRECATED serialise() in favour of as_stream().
+
+	  * Added as_stream_context() to serialise (statement, context)
+	  tuples.
+
+	  * Exception raised if len() is attempted on model with a
+	    non-countable storage.
+
+	  * DEPRECATED Model.add(), Model.add_typed_literal_statement()
+	    usages: now that constructing Statements is easier, it's
+	    incongruous to have these in the model.  Additionally it saves
+	    reproducing various bits of error checking that properly
+	    belong in the Node() constructor.
+
+	  * Implemented __contains__() so "if statement in model" and "if
+	    (statement, context) in model" work as expected using the more
+	    efficient Redland C methods where possible.
+
+	RDF.Stream
+
+	  * DEPRECATED Stream.context_iter().  Use in preference the
+	    _context variants of the appropriate Model methods.  This
+	    leads to fewer lines of code.
+
+	RDF.Uri
+
+	  * Amended constructor so strings or Uri instances can be passed
+	    as the first argument, without named parameters being
+	    required, and the right thing still happen.
+
+	---- I did some indenting and white space editing for consistency
+	with the existing code.
+
+	* java/Makefile.am: Use check-local again, since we don't actually
+	make programs called test1 and test2.
+
+	* python/Makefile.am: Pass in CFLAGS to python
+
+	* ruby/Makefile.am: Made an rubylib make definition
+
+	* tcl/Makefile.am: Made an tcllib make definition
+
+	* tcl/Makefile.am: Interrogate tclsh for versions, and then guess
+	include paths and library name.
+
+	* tcl/test.tcl, tcl/example.tcl: Back to redland
+
+	* tcl/test.tcl, tcl/example.tcl: Tcl package now Redland
+
+	* configure.ac: Look for tclsh for TCL
+
+	* ruby/Makefile.am: More libtool flags
+
+	* ruby/Makefile.am: Build shared objects again.
+
+	* ruby/Makefile.am: Don't depend on build-ruby
+
+2003-08-25  Dave Beckett
+
+	* java/Makefile.am: Added test-java again
+
+	* tcl/Makefile.am: Added test-tcl again
+
+	* ruby/Makefile.am: Added test-ruby again
+
+	* python/example.py: Modernise the python to 2.2+
+
+	* python/RDF.py: Throughout: Updated to use new Python classes
+	(2.2+) Replace __getattr__/__setattr__ with property() method.
+
+	* python/Makefile.am: check-local now also does unittest-python
+
+	* python/RDF.py (Statement._get_subject): Missed accidently when
+	updating to do more copies.
+
+	* configure.ac: No languages by default.
+
+2003-08-24  Dave Beckett
+
+	* perl/Makefile.PL: Include -I builddir librdf dir to get
+	rdf_config.h
+
+	* Makefile.am: make languages after core libs
+
+	* perl/Makefile.PL: More attempts at src/builddir fix.
+
+	* perl/Makefile.am: Fix src/builddir for output of MakeMaker
+
+	* tcl/Makefile.am: again
+
+	* tcl/Makefile.am: oops, -c to compile
+
+	* ruby/Makefile.am: This dir is now compiled and installed
+	conditional on ruby being enabled with --with-ruby (off by
+	default).  Move -local targets into standard 'make' and 'make
+	install' ones.  Try to compile with the right Ruby shared library
+	and install in the Ruby libs dir.
+
+	* tcl/Makefile.am: Use @TCL@
+
+	* tcl/Makefile.am: This dir is now compiled and installed
+	conditional on tcl being enabled with --with-tcl (off by default).
+	Move -local targets into standard 'make' and 'make install' ones.
+	Try to compile the Tcl shared library and install in the Tcl libs
+	dir.  Finding the tcl.h includes is impossible, so note that in
+	the README.
+
+	* php/Makefile.am: php installs now
+
+	* configure.ac: In checking for progs, hunt for perl, python
+	etc. rather than names.  Added
+	--with-perl/python/java/php/tcl/ruby with optional argument =PATH
+	to set the script.  This enables the particular language to be
+	built.  Present defaults are perl and python are enabled.  Move
+	--with-ecma-cli to be nearby and accept 'no' also.  Moved
+	--with-jdk to be nearby.  The subdirectories called with standard
+	'make' and 'make install' now are based on languages.  Report the
+	languages configured in the build summary.
+
+	* python/Makefile.am: This dir is now compiled and installed
+	conditional on python being enabled with --with-python (by
+	default).  Move -local targets into standard 'make' and 'make
+	install' ones and create a fake build and install to keep automake
+	happy, since we are using python's Distutils to do the real work.
+
+	* perl/Makefile.am: This dir is now compiled and installed
+	conditional on perl being enabled with --with-perl (by default).
+	Move -local targets into standard 'make' and 'make install' ones
+	and create a fake build and install to keep automake happy, since
+	we are using perl's MakeMaker to do the real work.
+
+	* java/Makefile.am: This dir is now compiled and installed
+	conditional on java being enabled with --with-java, so move -local
+	targets into standard 'make' and 'make install' ones.  Install
+	both the shared library and jar.
+
+	* java/Makefile.am: core_wrap.c without makefile variables
+
+	* java/Makefile.am: EXTRA_LTLIBRARIES is broke - it won't build
+	shared libraries.  So fake it using lib_LTLIBRARIES and then
+	override the installation for install-javalibLTLIBRARIES: to do
+	nothing.
+
+	* java/Makefile.am: Shared library now librdf-java and built using
+	libtool.
+
+	* java/org/librdf/redland/World.java, java/redland-fragment.java:
+	Now rdf-java (aka librdf-java under unixen)
+
+2003-08-23  Dave Beckett
+
+	* java/org/librdf/redland/Node.java:
+	(constructors) Update to always copy rather than deal with shared
+	nodes.
+	(isResource, isLiteral, isBlank): Added.
+
+	* java/org/librdf/redland/Statement.java:
+	(constructors, getSubject, getPredicate, getObject) Update node
+	and statements to always copy rather than deal with shared.
+
+	* java/org/librdf/redland/Stream.java: Returning copied statements
+	is default.
+
+	* java/org/librdf/redland/Iterator.java: Returning copied nodes is
+	default.
+
+	* configure.ac: For --with-jdk, hunt for the machine-dependent
+	subdir
+
+	* java/Makefile.am: Use JDK_INCLUDES
+
+	* java/org/librdf/redland/Parser.java:
+	(parse) Added methods parsing content ina string into a model or
+	as a stream of statements.
+
+	* java/org/librdf/redland/Model.java: sync has no return
+
+	* configure.ac: Added --with-jdk to specify where Java lives
+
+	* java/org/librdf/redland/Model.java,
+	perl/lib/RDF/Redland/Model.pm (sync): Added calling
+	librdf_model_sync
+
+	* python/Makefile.am, perl/Makefile.am: clean more
+
+	* perl/serialize.pl: Updated API tweaks
+
+	* perl/lib/RDF/Redland/Node.pm (new_from_literal): Ensure
+	is_wf_xml is an integer.
+
+	* perl/lib/RDF/Redland/Model.pm (remote_statement): Allow NODE
+	NODE NODE [CONTEXT] args
+
+	* perl/lib/RDF/Redland/Statement.pm (new): Promote node arguments
+	to redland nodes using RDF::Redland::Node::_ensure.
+
+	* perl/lib/RDF/Redland/Node.pm (_ensure): Added, to promote other
+	objects to redland nodes
+
+	* perl/lib/RDF/Redland/Model.pm (add): Now call add_statements.
+	(add_statements,remove_statement,add_statements,remove_statements,
+	remove_context_statements): Promote node arguments to redland
+	nodes using RDF::Redland::Node::_ensure.
+
+	* perl/lib/RDF/Redland/Statement.pm (new_from_nodes): Fix call to
+	constructor
+
+	* perl/example.pl: Test add_statement(NODE, NODE, NODE) form -
+	with same NODE
+
+	* perl/lib/RDF/Redland/Model.pm (add_statement): Accept NODE NODE
+	NODE [CONTEXT] as arguments too.
+
+2003-08-22  Dave Beckett
+
+	* perl/lib/RDF/Redland/Parser.pm:
+	(parse_string_as_stream, parse_string_into_model): Added for
+	parsing strings.  Note that the base_uri is required.
+
+	* python/RDF.py:
+	(Parser.parse_string_as_stream, Parser.parse_string_into_model):
+	Note base_uri is required in docs, raise an error if it isn't
+	there.
+
+	* python/RDF.py:
+	(Parser.parse_string_as_stream, Parser.parse_string_into_model):
+	Added.
+
+	* python/test/test.py: Added test with
+	parser.parse_string_as_stream
+
+2003-08-20  Dave Beckett
+
+	* perl/Makefile.PL: Use .. for redland-src-config and add check it
+	is there.
+
+	* python/redlandtest.py, python/example.py: Set #! to
+	/usr/bin/python
+
+	* python/RDF.py: Update classes to always return copies of Nodes,
+	Statements from streams, iterators such as model.find_statements.
+	The user should now not need care about shared versus copying of
+	returned values but just use them.
+
+	* python/Makefile.am: Pass MEM, MEM_LIBS to python compiling C
+
+	* perl/lib/RDF/Redland/Statement.pm:
+	(subject,predicate,object) Copy redland node for librdf set
+	methods.
+
+	* perl/lib/RDF/Redland/Node.pm: POD fixes
+
+	* perl/example.pl: Minor updates to use newer API calls.
+
+	* perl/lib/RDF/Redland/Statement.pm:
+	(subject,predicate,object) Docs - note no copying neeeded.
+	(predicate): Minor typo
+
+	* perl/lib/RDF/Redland/RSS.pm (Model.DESTROY): Call super to tidy
+	up
+	(Node.new): Debugging
+	(Node.DESTROY): Call super to tidy up
+	(properties): Do less work, no need to copy.
+
+	* perl/lib/RDF/Redland/Node.pm (new): Invoke clone properly.
+
+	* perl/lib/RDF/Redland/URI.pm (new): Constructor now copies as
+	well as building URIs.  Takes string literals or URIs by sniffing
+	for classes.
+	(new_from_uri): Replaced by new
+	(clone): Another way to copy a URI.  Document these changes
+
+	* perl/lib/RDF/Redland/Iterator.pm: Update for Node API change and
+	no need to copy here
+	(current, context): Do not copy returned node.
+
+	* perl/lib/RDF/Redland/Stream.pm: Update for Statement API change
+	and no need to copy here
+	(current, context): Do not copy returned statement.
+
+	* perl/lib/RDF/Redland/Model.pm: Update for Node, Statement API
+	changes and no need to copy here
+	(sources,targets,arcs): Don't copy statements to new lists.
+
+	* perl/lib/RDF/Redland/Statement.pm (new): Constructor now copies
+	as well as building statements.  Takes string literals, URIs by
+	sniffing for classes.
+	(new_from_statement,new_from_nodes): Replaced by new.
+	(clone): Another way to do new_from_statement
+	(subject,predicate,object): Do less work, always return a copy.
+	Document these changes
+
+	* perl/lib/RDF/Redland/Node.pm (new): Constructor now builds
+	resources, literals, URIs by sniffing for classes.
+	(new_from_literal,new_from_typed_literal): Replaced with
+	new_literal
+	(new_xml_litearl): Added
+	(new_from_node): Replaced with clone Document these changes
+
+	* perl/rss-dump.pl: Comment out (working) code that lets perl do
+	the URI retrieval, assume raptor has that.  Slight updates for
+	changed perl API.
+
+	* perl/Makefile.am, perl/Makefile.PL: Pass on MEM to CFLAGS when
+	building perl.
+
+2003-08-19  Dave Beckett
+
+	* java/org/librdf/redland/Node.java: Make nodes immutable - remove
+	set methods setURI, setType, setLiteralValue.
+
+	* perl/lib/RDF/Redland/Node.pm: Make nodes immutable.  Remove set
+	parts of methods uri, blank_identifier and type.  Remove method
+	set_literal_value.
+
+	* python/RDF.py (Class Node): Make nodes immutable - remove set
+	methods.
+
+2003-08-17  Dave Beckett
+
+	* configure.ac: Remove MEM=-DLIBRDF_MEMORY_DEBUG if no dmalloc
+	present.
+
+	* configure.ac: Added BDB 4.0 and 4.1 open interface support - 6
+	or 7 arguments.
+
+2003-08-07  Dave Beckett
+
+	* python/RDF.py (Model.serialise): Add optional contexts arg, to
+	serialise contexts as stream of statements.
+	(NS): New class to cache handy nodes from a namespace URI
+
+2003-08-03  Dave Beckett
+
+	* perl/Makefile.PL: Remove -Dbool=int - this can only cause
+	trouble
+
+	* perl/lib/RDF/Redland/Node.pm: Added methods is_resource,
+	is_literal, is_blank using librdf_node_is_resource,
+	librdf_node_is_literal, librdf_node_is_blank
+
+	* python/RDF.py: Removed NODE_TYPE_LI
+	(Node) is_resource, is_literal, is_blank now use
+	librdf_node_is_resource, librdf_node_is_literal,
+	librdf_node_is_blank
+
+2003-07-30  Dave Beckett
+
+	* csharp/test.cs: works somewhat - look, it makes a node
+
+	* csharp/Makefile.am, configure.ac: ECMA CLR=>ECMI CLI since it's
+	not just the runtime.  ECMA CLI= ECMA Common Language
+	Infrastructure.
+
+	* csharp/test.cs: Initial version
+
+	* csharp/Makefile.am: Run test.exe not test.cs
+
+	* csharp/Makefile.am: Fix clean
+
+	* csharp/Makefile.am: Remove extra ''s
+
+	* csharp/Makefile.am: Move CSHARP_COMPILE and CSHARP_LINK here.
+	Add .cs.exe rule Make test.exe (or try)
+
+	* configure.ac: No need for CSHARP_COMPILE, dotGNU compiler
+	accepts same args as mcs.
+
+	* csharp/Makefile.am: No example.cs yet
+
+	* csharp/README: Initial version
+
+2003-07-29  Dave Beckett
+
+	* csharp/Makefile.am: fix run
+
+	* csharp/Makefile.am: fix install
+
+	* csharp/Makefile.am: Use CSHARP_COMPILE Build shared lib
+
+	* configure.ac: Also substitute CSHARP_COMPILE for csharp
+
+	* csharp/Makefile.am: csharp stuff
+
+	* configure.ac: Added --with-ecma-clr for mono or dotgnu versions
+	of toolchain.  Sets CLRRUN and CSHARPCC for use in csharp dir
+
+	* Makefile.am: Added csharp dir
+
+2003-06-24  Dave Beckett
+
+	* configure.ac: Pick up any external CPPFLAGS, LDFLAGS, LIBS to
+	start with.
+
+2003-06-23  Dave Beckett
+
+	* python/RDF.py: Statements, Model: more docs, usage.
+
+	* python/Makefile.am: Added redlandtest.py
+
+	* python/redlandtest.py: Redland Python unit tests
+
+	* python/RDF.py: v0.8 Updates from Matt Biddulph.
+	(class Model) Now takes optional storage, if omitted, a memory
+	storage model is created
+	(class StreamWithContextIter, class IteratorWithContextIter, class
+	IteratorIter, class StreamIter): Internal classes to create python
+	iterators out of redland stream/iterators.
+	(class Stream): New method context_iter that returns a python
+	iterator returning (stream, context node) tuple on each iteration.
+	(class HashStorage): Simple class to simplify creating hashed
+	storage.
+	(class MemoryStorage): Simple class to simplify creating in-memory
+	storage.
+	(class Parser): Name is now optional, defaults to raptor and
+	RDF/XML.
+	(class Parser): Methods parse_as_stream, parse_into_model will
+	autoconvert uri arguments that are strings into redland URIs.
+
+	* python/test/test.py: s/if not thing/if thing is None/
+
+2003-06-04  Dave Beckett
+
+	* autogen.sh: Report min SWIG version
+
+2003-05-26  Dave Beckett
+
+	* demos/rss-show.pl: words
+
+2003-04-30  Dave Beckett
+
+	* perl/lib/RDF/Redland/Model.pm: Same as before but with right
+	package names
+	(find_statements): Return copies of shared statements
+	(sources,arcs,targets): Return copies of shared nodes
+
+	* perl/lib/RDF/Redland/Model.pm (find_statements): Return copies
+	of shared statemetns
+	(sources,arcs,targets): Return copies of shared nodes
+
+2003-04-22  Dave Beckett
+
+	* python/RDF.py: Added blank node is_blank() method example
+	(Node.__set_attr): Fix set_type
+	(Node.get_blank_identiifer, Node.set_blank_identiifer): Added
+
+	* python/RDF.py: some perlisms in the docs/comments
+
+	* python/RDF.py: this one file is now also under BSD without
+	advertising/MIT license
+
+2003-04-15  Dave Beckett
+
+	* docs/fix-pod-xhtml: and a newline
+
+	* docs/fix-pod-xhtml: added xml decl
+
+	* docs/fix-pod-xhtml: More fixing
+
+	* docs/fix-pod-xhtml: New style POD to html cleanup
+
+	* perl/lib/RDF/Redland/Storage.pm: add rest of storage options to
+	docs
+
+2003-04-02  Dave Beckett
+
+	* Makefile.am, configure.ac: debian dir elsewhere
+
+2003-03-29  Dave Beckett
+
+	* python/RDF.py, docs/Makefile.am, demos/parser-tests.pl,
+	demos/demo.pl, configure.ac, Makefile.am: Removed repat
+
+2003-03-28  Dave Beckett
+
+	* configure.ac: Initial locking for threads from Seth Ladd Added
+	--with-threads for POSIX threads
+
+2003-03-27  Dave Beckett
+
+	* demos/demo.pl: utf-8 output
+
+	* python/RDF.py (Stream.context): Use self.stream
+
+2003-03-25  Dave Beckett
+
+	* demos/rss-show.pl, demos/parser-tests.pl, demos/ntriples.pl,
+	demos/demo.pl: Updated to 0.9.12 API
+
+2003-03-20  Dave Beckett
+
+	* demos/rss-show.pl: sort feeds case insensitively
+
+	* demos/rss-show.pl: Added Annotate module
+
+2003-03-13  Dave Beckett
+
+	* python/RDF.py (Node.__init__): Add world arg to
+	librdf_new_node_from_blank_identifier
+
+2003-03-09  Dave Beckett
+
+	* Makefile.am: added demos dir
+
+	* demos/rss-show.pl, demos/ntriples.pl: absolutize some doc urls
+
+	* configure.ac, Makefile.am: added demos dir
+
+	* demos/rss-show.pl, demos/parser-tests.pl, demos/ntriples.pl,
+	demos/demo.pl: point to source code
+
+	* demos/rss-show.pl, demos/parser-tests.pl, demos/ntriples.pl,
+	demos/demo.pl: add source code
+
+	* demos/Makefile.am, demos/demo.pl, demos/ntriples.pl,
+	demos/parser-tests.pl, demos/rss-show.pl: Redland CGI demos
+
+2003-03-06  Dave Beckett
+
+	* perl/serialize.pl (format_element_content,format_attribute):
+	Added to escape &, <, > things etc.
+
+2003-03-05  Dave Beckett
+
+	* perl/serialize.pl: Whitespace tidying.
+	(emit_literal_element): Added, for doing 1-line literals Fix
+	datatypes.  Emit multiple rdf:type properties too.
+
+	* python/RDF.py:
+	(Node.get_literal_value) Correct datatype URI method call to only
+	operate if there is a datatype URI.
+	(Stream._del_): Work when there is no redland Stream.
+	(Parse.parse_as_stream): Return None if parsing fails, not an
+	empty Stream.
+
+	* perl/lib/RDF/Redland/Node.pm (literal_datatype): Added, return
+	the URI of the literal datatype or undef if not one.
+
+	* perl/lib/RDF/Redland/Parser.pm (parse_as_stream): Return undef
+	if parsing fails, don't return a stream
+
+	* perl/lib/RDF/Redland/Stream.pm (DESTROY): Handle wrapping an
+	empty stream - might happen when a search fails straight away.
+
+	* perl/serialize.pl (predicate_split): Fix
+	(emit_empty_element) Pull out some more element building stuff -
+	for now.  main - declare an OWL namespace just for testing
+
+	* perl/serialize.pl: added emit_start_element, emit_end_element
+	now rdf:RDF declares its namespaces
+
+	* perl/serialize.pl: Make blank node subject and objects work.
+
+2003-03-04  Dave Beckett
+
+	* Makefile.am: expat sources not included
+
+	* configure.ac: expat sources not included building against expat
+	/ libxml sources no longer supported.
+
+	* python/RDF.py: Bogus quotes
+
+	* java/org/librdf/redland/Model.java:
+	(add) (nodes, typed nodes versions) Copy redland nodes before
+	adding.
+
+	* perl/t/test2.t: Added test of Model method
+	add_typed_literal_statement Added test of Serializer method
+	serialize_model_to_file
+
+	* python/test/test.py: Added test of
+	model.add_typed_literal_statement
+
+	* python/RDF.py (Model.add_typed_literal_statement): Copy redland
+	nodes before adding.
+
+2003-03-03  Dave Beckett
+
+	* perl/Makefile.am: make clean targets run when perl isn't
+	enabled.
+
+	* perl/Makefile.PL: Grab version from redland-src-config
+
+	* perl/Makefile.am: Use $(srcdir)/Makefile.PL
+
+	* python/Makefile.am: Use $(srcdir)/setup.py
+
+	* java/Makefile.am: clean-java - don't leap down subdirs to clean
+	stuff too early - confuses autoconf.
+
+	* configure.ac: More AC_CONFIG_FILES tidying
+
+	* perl/lib/RDF/Redland/Node.pm (new_from_typed_literal): Added,
+	creating a datatyped literal.
+
+	* perl/lib/RDF/Redland/Model.pm (add,
+	add_typed_literal_statement): Copy the nodes before passing on -
+	more natural for perl.
+
+	* autogen.sh: Require autoconf 2.53+
+
+	* configure.ac: Require autoconf 2.53+ Update AC_OUTPUT to new
+	form
+
+2003-02-26  Dave Beckett
+
+	* python/RDF.py (RDF.set_message_handler): Added. Make a class
+	method
+	(message_handler): Moved out of RDF.World class.
+	(RDF.World): Use RDF.message_handler
+	(RDF.Stream): Docs.
+
+2003-02-25  Dave Beckett
+
+	* Makefile.am: Add man pages to dist
+
+2003-02-20  Dave Beckett
+
+	* autogen.sh: export autotools to configure
+
+	* autogen.sh: Tidying
+
+	* autogen.sh: run libtoolize in each configure.ac dir
+
+	* Makefile.am: acconfig.h not needed
+
+	* autogen.sh: Update to use automake 1.6, autoconf 2.52 min
+
+	* configure.ac: configure.ac replacing configure.in
+
+2003-02-15  Dave Beckett
+
+	* docs/fix-python-xhtml: Emit XML declaration
+
+	* python/RDF.py: typo
+
+2003-02-14  Dave Beckett
+
+	* Makefile.am: added redland-config.1
+
+2003-02-12  Dave Beckett
+
+	* Makefile.am: No RELEASE, TODO
+
+	* java/org/librdf/redland/Makefile.am: Add Hash.ajva to dist
+
+2003-01-31  Dave Beckett
+
+	* Makefile.am: utils now has buildable stuff
+
+	* Makefile.am: scripts now utils
+
+2003-01-29  Dave Beckett
+
+	* tcl/Makefile.am: Fix so it doesn't compile over the input file.
+	Bad $? / $< again
+
+	* java/org/librdf/redland/Model.java:
+	(add/remove) Added contexts version of methods
+	(context_remove): Added, remove all statements with given context.
+
+	* java/Makefile.am: $< wrong for build jars, add all files
+
+	* python/RDF.py:
+	(Model) Added contexts methods, as optional args to add/remove
+	statements methods.  New method: context_remove_statements
+
+	* perl/lib/RDF/Redland/Model.pm
+	(add_statement,add_statements,remove_statement): Add optional
+	context arg.
+	(remove_context_statements): Added.
+
+	* php/php.ini: added safe_mode = Off, says Ron
+
+	* autogen.sh: require swig 1.3.14 min
+
+	* docs/fix-python-xhtml, docs/fix-pod-xhtml: dates
+
+	* Makefile.am: Renamed aux dir to scripts
+
+2003-01-27  Dave Beckett
+
+	* tcl/Makefile.am, ruby/Makefile.am, python/Makefile.am,
+	perl/Makefile.am, java/Makefile.am, docs/Makefile.am,
+	php/Makefile.am: Remove $? and replace with $< or full
+	dependencies
+
+2003-01-03  Dave Beckett
+
+	* Makefile.am: Added RELEASE.html RELEASE
+

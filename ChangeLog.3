@@ -1,0 +1,605 @@
+2002-12-28  Dave Beckett
+
+	* python/RDF.py, perl/lib/RDF/Redland/Stream.pm,
+	perl/lib/RDF/Redland/Iterator.pm,
+	java/org/librdf/redland/Stream.java,
+	java/org/librdf/redland/Iterator.java: Updated Stream, Iterator
+	classes with context methods returning a Node
+
+2002-12-22  Dave Beckett
+
+	* Makefile.am: Added acconfig.h to dist - some automake versions
+	don't do this automatically such as 1.4-p5 which comes with Redhat
+	7.3
+
+	* java/org/librdf/redland/Makefile.am, java/Makefile.am:
+	coreJNI.java is not for dist
+
+	* perl/Makefile.am: Fix for 5.8 install
+
+2002-12-12  Dave Beckett
+
+	* java/Makefile.am: die, extra ;
+
+	* php/Makefile.am: _ not -
+
+	* perl/lib/RDF/Redland.pm (DESTROY): call librdf_perl_world_finish
+	at exit.
+
+	* php/Makefile.am: Tidy clean
+
+	* php/test.php, php/Makefile.am: PHP updates.  Still not working
+	yet.
+
+	* php/php.ini: testing php.ini config
+
+	* tcl/example.tcl: fix stream typo
+
+	* tcl/test.tcl: comment out non-working serializer test
+
+	* python/example.py: fix arg
+
+	* python/example.py: Added serializer code
+
+	* tcl/Makefile.am: tidy clean
+
+	* python/RDF.py: consistency things
+
+	* python/RDF.py: Added yet more pydoc
+
+	* python/RDF.py: Added more pydoc
+
+	* docs/fix-python-xhtml: Fix exceptions.html
+
+	* docs/Makefile.am: Added pydoc and pydoc/RDF.html
+
+	* docs/fix-python-xhtml: Fix pydoc output to be xhtml
+
+	* docs/fix-pod-xhtml: minor changes
+
+	* python/example.py: Fixed for stream updates
+
+	* docs/Makefile.am: Added perl POD Serializer
+
+	* perl/example.pl: Tidy, add serializer example.
+
+	* perl/Makefile.am: clean test-out.rdf
+
+	* java/Makefile.am: More javac fixes
+
+	* java/example.java: Tidy up
+
+	* java/Makefile.am: Build redland-java.jar for tests and
+	-classpath to use it.
+
+	* java/test2.java: Replaced finalize() method with finished() that
+	apps should call to release resources since Java never guarantees
+	it is.
+
+	* java/skeleton.java: Added Serializer
+
+	* java/org/librdf/redland/World.java,
+	java/org/librdf/redland/URI.java,
+	java/org/librdf/redland/Stream.java,
+	java/org/librdf/redland/Storage.java,
+	java/org/librdf/redland/Statement.java,
+	java/org/librdf/redland/Serializer.java,
+	java/org/librdf/redland/Parser.java,
+	java/org/librdf/redland/Node.java,
+	java/org/librdf/redland/Model.java,
+	java/org/librdf/redland/Iterator.java: Replaced finalize() method
+	with finished() that apps should call to release resources since
+	Java never guarantees it is.
+
+	* java/test1.java: free uri after finishing with it
+
+	* java/Makefile.am: Added lots of bodges to get around SWIG
+	1.3.15+ broken Java API.  sed editing of the generated files to
+	remove the stupid coreJNI class.
+
+	* java/org/librdf/redland/Model.java (add - literal): Use
+	librdf_model_add_typed_literal_statement
+
+	* java/org/librdf/redland/Stream.java: Updated for stream changes
+
+	* java/org/librdf/redland/Iterator.java: Updated for iterator
+	changes
+
+2002-12-11  Dave Beckett
+
+	* python/RDF.py: More docs.
+
+	* python/RDF.py: More docs
+
+	* python/RDF.py: Big update, lots of new docucomments, encouraged
+	by pydoc.
+
+	* python/Makefile.am: Added build target for RDF.html; should work
+	if pydoc is around.
+
+	* perl/lib/RDF/Redland/Model.pm (add_typed_literal_statement):
+	Replacing add_string_literal_statement.
+
+	* perl/Makefile.am: test.pl now in t/* tests dir.
+
+	* perl/lib/RDF/Redland/Node.pm: Updated node types
+
+	* python/test/test.py: add some more output messages
+
+	* python/Makefile.am: tidy cleanfiles
+
+	* perl/t/test1.t: Test updates, fixes.
+
+	* perl/t/Makefile.am, perl/t/test1.t, perl/t/test2.t,
+	perl/t/test3.t: perl test ftest.pl split into t/test1-3.t
+
+2002-12-10  Dave Beckett
+
+	* python/test/test.py: test Serializer class
+
+	* python/Makefile.am: Add clean for serializer output
+
+	* python/RDF.py: Serializer class fix
+
+	* java/org/librdf/redland/Makefile.am: Added Serializer.java
+
+	* java/org/librdf/redland/Serializer.java: Java Serializer class
+
+	* python/RDF.py: Added Serializer class (not tested)
+
+	* perl/lib/RDF/Redland/Serializer.pm: call
+	librdf_serializer_serialize_model_to_file properly
+
+	* python/RDF.py: When building sequences from iterated nodes, copy
+	them.
+
+	* perl/lib/RDF/Redland/Serializer.pm: method serialize_model now
+	serialize_model_to_file
+
+	* docs/Makefile.am: Deleted old parsers: libwww, java
+	sirpac-stanford, java sirpac-w3c
+
+2002-12-09  Dave Beckett
+
+	* perl/lib/RDF/Redland/RSS.pm (properties_with_ns_prefix): Updated
+	pod
+
+	* perl/serialize.pl: More playing, still incomplete.
+
+2002-11-24  Dave Beckett
+
+	* perl/lib/Makefile.am, perl/lib/RDF.pm: RDF.pm removed as
+	promised
+
+2002-11-21  Dave Beckett
+
+	* ruby/example.rb, tcl/test.tcl, tcl/example.tcl,
+	python/test/test.py, python/example.py, python/RDF.py,
+	perl/lib/RDF/Redland/Stream.pm, perl/lib/RDF/Redland/Model.pm,
+	perl/lib/RDF/Redland/Iterator.pm: Updated for stream and iterator
+	method changes.
+
+	* perl/serialize.pl, perl/example.pl: Updated for stream method
+	changes.
+
+2002-11-20  Dave Beckett
+
+	* php/test.php, php/example.php: Do nothing
+
+	* php/Makefile.am: Run test (does nothing so far apart from import
+	Redland)
+
+	* docs/Makefile.am: Added php.html (no API in release though)
+
+2002-11-12  Dave Beckett
+
+	* perl/lib/RDF/Redland/RSS.pm (inchannel): Delete; never part of
+	RSS 1.0
+
+2002-11-11  Dave Beckett
+
+	* perl/lib/RDF/Makefile.am, perl/lib/RDF/Stream.pm,
+	perl/lib/RDF/URI.pm, perl/lib/RDF/Model.pm, perl/lib/RDF/Node.pm,
+	perl/lib/RDF/Parser.pm, perl/lib/RDF/RSS.pm,
+	perl/lib/RDF/Statement.pm, perl/lib/RDF/Storage.pm,
+	perl/lib/RDF/Iterator.pm: Removed old perl namespaced modules
+
+2002-09-30  Dave Beckett
+
+	* php/Makefile.am: PHP interface
+
+	* Makefile.am: Added php interface
+
+2002-09-27  Dave Beckett
+
+	* perl/Makefile.am: Updates to make swig re-run and build
+	lib/RDF/Redland/CORE.pm when it is needed.
+
+	* python/RDF.py: Check for == None as well as == "NULL" as return
+	from SWIG methods.
+	(Change to the SWIG calling convention in newer version)
+
+2002-09-05  Dave Beckett
+
+	* python/Makefile.am: Use SWIG_PYTHON_ARGS
+
+	* autogen.sh: Remove config.cache before running new configure
+
+2002-09-04  Dave Beckett
+
+	* python/RDF.py: Add some defensive checks for __str__ calls on
+	null nodes/statements
+
+2002-09-03  Dave Beckett
+
+	* autogen.sh: Fix swig check
+
+	* python/test/test.py: test with raptor parser
+
+	* autogen.sh: Require swig, min 1.3.10
+
+	* autogen.sh: Move copying of local copies of config.guess,
+	config.sub to after automake, libtool to ensure it overwrides.
+
+2002-08-19  Dave Beckett
+
+	* python/RDF.py: Added Python message callback support - generate
+	raise on error or warnings.
+
+	* perl/lib/RDF/Redland.pm: fix docs
+
+	* perl/lib/RDF/Redland.pm: Move subroutines to documented package
+
+	* docs/fix-pod-xhtml: Fix relative URIs
+
+	* perl/lib/RDF/Redland.pm: Call new librdf_perl_world_init method
+	to init perl callbacks.
+	(message): Added, to dispatch callbacks.
+	(set_error_handler,set_warning_handler): Allow users to change
+	handlers
+
+2002-08-16  Dave Beckett
+
+	* perl/lib/RDF/Redland/Model.pm (sources,arcs,targets): Use new
+	Iterator methods.
+
+2002-08-13  Dave Beckett
+
+	* perl/lib/RDF/Redland/Node.pm (blank_identifier): Added to
+	get/set blank node ids
+
+	* perl/serialize.pl: More stuff
+
+2002-08-11  Dave Beckett
+
+	* perl/lib/RDF/Redland/Iterator.pm (next): Replaced with get, next
+	methods
+
+	* python/RDF.py: Change iterator methods from get to get/next
+
+2002-08-01  Dave Beckett
+
+	* docs/Makefile.am: added kernel-doc to the dist
+
+2002-07-29  Dave Beckett
+
+	* ruby/Makefile.am: s/repat/raptor/
+
+	* ruby/example.rb: s/repat/raptor/ in instructions
+
+	* ruby/Makefile.am: use mkdir -p for installdir
+
+2002-07-28  Dave Beckett
+
+	* docs/Makefile.am: Fix #comment in rule (portability)
+
+	* autogen.sh: Fix use of srcdir/find
+
+2002-07-26  Dave Beckett
+
+	* perl/serialize.pl: test pretty xml serializing code
+
+2002-07-23  Dave Beckett
+
+	* Makefile.am: Added aux dir
+
+	* perl/example.pl: Update perl literal calls
+
+	* perl/lib/RDF/Redland/Node.pm: Fix docs
+
+	* ruby/Makefile.am: Fix cflags
+
+	* java/Makefile.am: Append to (Linux? only) dynamic lib search
+	path var LD_LIBRARY_PATH
+
+	* tcl/Makefile.am: Fix cflags
+
+	* tcl/test.tcl, python/RDF.py: Update
+	librdf_node_set_literal_value calls
+
+	* java/org/librdf/redland/Model.java,
+	java/org/librdf/redland/Node.java, python/RDF.py,
+	perl/lib/RDF/Redland/Model.pm, perl/lib/RDF/Redland/Node.pm: zap
+	former xml_space args entirely
+
+	* python/RDF.py: Zap xml_space
+
+2002-07-22  Dave Beckett
+
+	* autogen.sh: zap ltconfig too - generated if needed.
+
+2002-07-20  Dave Beckett
+
+	* python/Makefile.am: clean-python isn't good enough
+
+	* perl/Makefile.PL: Use redland-src-config --static-libs
+
+	* tcl/Makefile.am, ruby/Makefile.am, perl/Makefile.PL,
+	java/Makefile.am: Update for using ../redland-src-config
+
+	* Makefile.am: zap 'finish' stuff
+
+2002-07-16  Dave Beckett
+
+	* Makefile.am: Moved redland-config to top dir
+
+2002-07-14  Dave Beckett
+
+	* Makefile.am: Added redland-src-config.in More rules to build
+	various things in subdirs, not really working yet.
+
+	* python/RDF.py: Updates from Edd Dumbill:
+	(class RedlandError): Added, an Exception class
+	(class NodeTypeError): Added, an RedlandError exception class
+	(node_type): Added package function to turn a node name to a
+	Redland
+	(node_type_name): Added package function to get the node name for
+	a Redland node type
+	(_get_uri): Now throw an NodeTypeError exception if node has no
+	URI
+	(is_resource): Added, returns true if node is a resource
+	(is_literal): Added, returns true if node is a literal
+	(class Storage, __init__): Raise exception if a null URI given to
+	constructor.
+
+2002-07-05  Dave Beckett
+
+	* Makefile.am: Update CPPFLAGS, LDFLAGS, LIBS to have external,
+	internal versions and ones just for xml parsers (expat, libxml)
+	used by internal RDF/XML parsers
+
+	* Makefile.am: Add more subdirs, tidy
+
+2002-06-26  Dave Beckett
+
+	* Makefile.am, docs/Makefile.am: Updated for moved sources
+
+	* autogen.sh: Remove raptor source hunting
+
+	* perl/MANIFEST: Added RDF::Redland::Serializer
+
+	* perl/example.pl: Added (comment out) serializer test
+
+	* perl/lib/RDF/Redland/Makefile.am: Added Serializer i/f
+
+	* perl/lib/RDF/Redland/Serializer.pm: RDF::Redland::Serializer
+	class
+
+	* perl/lib/RDF/Redland.pm: Added RDF::Redland::Serializer
+
+2002-06-19  Dave Beckett
+
+	* autogen.sh: Import nearby fresh autoconf config.* files
+
+2002-06-10  Dave Beckett
+
+	* perl/lib/RDF/Redland/Node.pm, perl/lib/RDF/Redland/Model.pm,
+	perl/lib/RDF/Redland/Iterator.pm: Remove deprecated methods
+
+	* docs/Makefile.am: For maintainer, don't clean generated sgml, do
+	that on distclean
+
+2002-06-08  Dave Beckett
+
+	* perl/lib/RDF/Redland/Node.pm: Updated node types; restrict
+	public ones to resource, literal, blank
+
+	* perl/lib/RDF/Node.pm: Define some node type vars for legacy
+
+2002-06-06  Dave Beckett
+
+	* perl/README.txt: Tidied. link to update script
+
+	* perl/lib/RDF/Redland/Model.pm:
+	(serialize) Added, synonym for serialise method
+
+	* perl/MANIFEST: Added README.txt Removed duplicate
+
+	* perl/Makefile.am: Added README.txt notes and update-perl-api.pl
+	to dist
+
+	* perl/README.txt: Perl API notes
+
+2002-06-04  Dave Beckett
+
+	* Makefile.am: remove rdf_serializer_raptor.h
+
+	* autogen.sh: Add raptor_uri.c to symlink mess
+
+2002-06-03  Dave Beckett
+
+	* python/RDF.py:
+	(Node) __hash__ - return hash based on string representation
+	(Uri) __hash__ - return hash based on redland object (which is
+	same for same URI)
+
+2002-06-01  Dave Beckett
+
+	* python/test/test.py, python/example.py: Changes for updated
+	python 2.2+ API
+
+	* python/RDF.py: Improved python API by Edd Dumbill.  Requires
+	python 2.2 Classes renamed e.g. RDF.node to RDF.Node
+	(some) set/get methods use python __getattr__ and __setattr__
+	Remove all user reference to world object
+	(RDF.Parser): parse_into_model method now has model as first
+	argument
+
+2002-05-29  Dave Beckett
+
+	* java/test1.java, java/test2.java: Add node constructor test
+
+	* java/org/librdf/redland/Node.java: Added some javadoc Amend
+	constructor taking a string to also build blank nodes; added extra
+	parameter.
+
+	* perl/lib/RDF/Redland/Node.pm: Added constructor
+	new_from_blank_identifier
+
+	* docs/Makefile.am: Added serializer to api docs
+
+2002-05-28  Dave Beckett
+
+	* Makefile.am: Added rdf_serializer_test to TESTS
+
+	* Makefile.am: Added rdf_serializer_test
+
+	* Makefile.am: Added serializer modules
+
+	* perl/lib/RDF/Redland/Parser.pm (new): Note that name is also
+	optional and if all fields blank, gives an application/rdf+xml
+	parser
+
+2002-05-23  Dave Beckett
+
+	* docs/Makefile.am: Add query, query_triples modules to the api
+	docs
+
+	* Makefile.am: Added query module - sources, headers and test
+
+2002-04-27  Dave Beckett
+
+	* python/test/test.py, perl/example.pl: Use any available rdf/xml
+	parser
+
+	* python/RDF.py: Update API to get add more python standard bits
+	such as __eq__ and __ne__ and generating python sequences
+	(node): Remove equals method, added __eq__, __ne__
+	(model) Added sources, targets, arcs methods returning python
+	sequences
+	(iterator) Various changes to get it working
+	(uri) Remove equals method, added __eq__, __ne__ Made method
+	feature handle string uris
+
+	* python/test/test.py: Expanded to print out model, parse into it,
+	query model by statements and nodes and generally exercise most of
+	the API techniques
+
+2002-04-26  Dave Beckett
+
+	* docs/Makefile.am: Added ruby.html
+
+	* ruby/example.rb: Use ARGV
+
+	* ruby/Makefile.am: Call test/example program with args
+
+	* ruby/example.rb: Added header.  Fixed typo
+
+	* ruby/example.rb: Filled in the example and it now works (had to
+	hard code some arguments)
+
+	* ruby/Makefile.am: install-ruby copies the Redland.so into
+	probably the right place
+
+2002-04-25  Dave Beckett
+
+	* perl/lib/RDF/URI.pm, perl/lib/RDF/Stream.pm,
+	perl/lib/RDF/Storage.pm, perl/lib/RDF/Statement.pm,
+	perl/lib/RDF/RSS.pm, perl/lib/RDF/Parser.pm, perl/lib/RDF/Node.pm,
+	perl/lib/RDF/Model.pm, perl/lib/RDF/Iterator.pm: End modules with
+	1;
+
+2002-04-24  Dave Beckett
+
+	* autogen.sh: really get ln -s right
+
+	* autogen.sh: get ln -s right
+
+	* autogen.sh: for syntax
+
+	* autogen.sh: sh syntax
+
+	* autogen.sh: Find and link in raptor sources when nearby
+
+	* docs/Makefile.am: Try to fix missing redland.3 problem for
+	non-maintainer
+
+2002-04-23  Dave Beckett
+
+	* ruby/Makefile.am: No README yet
+
+2002-04-22  Dave Beckett
+
+	* python/README: Point to skeleton docs
+
+	* python/RDF.py: Fixes for Python 2.2 due to change in __ meaning
+	(not tested much)
+
+2002-04-03  Dave Beckett
+
+	* ruby/Makefile.am, ruby/example.rb: Initial ruby stuff from
+	danbri (not complete)
+
+	* Makefile.am: Updates for ruby (not working)
+
+2002-03-07  Dave Beckett
+
+	* docs/fix-pod-xhtml: Updates for pod2html changing Handle perl
+	module names changing, new POD dirs
+
+	* docs/Makefile.am: Added redland.3 (made from redland.pod via
+	pod2man) manual page Added redland.pod; mostly generated from
+	source files.  Add manual pages to distribution.
+
+2002-02-12  Dave Beckett
+
+	* perl/MANIFEST.SKIP, perl/MANIFEST: Updated for new files (old
+	api and new)
+
+	* perl/Makefile.PL: Updates for new perl module names Ghastly
+	hacks to get ExtUtils::MakeMaker to use RDF::Redland::CORE
+
+	* perl/Makefile.am: Updates for new perl module names Change to
+	build SWIG outputs here and move the generated perl to the right
+	place lower down the tree.
+
+	* perl/rss-dump.pl, perl/example.pl: Updates for new perl module
+	names
+
+	* perl/lib/RDF/Redland/Makefile.am: Added CORE.pm (from SWIG) to
+	distribution; clean it too.
+
+	* perl/lib/RDF/Redland/URI.pm, perl/lib/RDF/Redland/Stream.pm,
+	perl/lib/RDF/Redland/Storage.pm,
+	perl/lib/RDF/Redland/Statement.pm, perl/lib/RDF/Redland/RSS.pm,
+	perl/lib/RDF/Redland/Parser.pm, perl/lib/RDF/Redland/Node.pm,
+	perl/lib/RDF/Redland/Model.pm, perl/lib/RDF/Redland/Iterator.pm,
+	perl/lib/RDF/Redland.pm: Updates for new perl module names
+
+	* perl/lib/RDF/URI.pm, perl/lib/RDF/Stream.pm,
+	perl/lib/RDF/Storage.pm, perl/lib/RDF/Statement.pm,
+	perl/lib/RDF/RSS.pm, perl/lib/RDF/Parser.pm, perl/lib/RDF/Node.pm,
+	perl/lib/RDF/Model.pm, perl/lib/RDF/Makefile.am,
+	perl/lib/RDF/Iterator.pm, perl/lib/RDF.pm: Trampoline modules for
+	old->new perl APIs Contains warning with a promise that these
+	files go away next version
+
+2002-01-02  Dave Beckett
+
+	* perl/Makefile.PL: Pass -I and -L,-l flags to right config
+
+	* Makefile.am: Added Makefile.PL to distribution
+
+	* Makefile.PL: Fake MakeMaker Makefile.PL - top level Makefile.PL
+	for Redland
+

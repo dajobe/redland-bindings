@@ -1,0 +1,1454 @@
+2004-12-31  Dave Beckett
+
+	* ruby/README.txt: 1.8.2 tested
+
+	* ruby/test/test_node.rb: require 'rdf/redland'
+
+	* ruby/test/test_model.rb (test_parse_and_merge):
+	Require memory HashStore to get contexts.
+
+	* ruby/test/test_model.rb (test_parse_and_merge): Requires store
+	with contexts.
+
+	* ruby/lib/rdf/redland.rb: require log4r require more load shared
+	lib
+
+	* ruby/test/Makefile.am, ruby/Makefile.am: Less -I
+
+	* ruby/lib/rdf/redland/uri.rb: don't require 'uri'
+
+	* ruby/lib/rdf/redland/stream.rb: re-add util
+
+	* ruby/lib/rdf/redland/stream.rb: require less
+
+	* ruby/lib/rdf/redland/store.rb: require 'rdf/redland'
+
+	* ruby/lib/rdf/redland/statement.rb: no need for util
+
+	* ruby/lib/rdf/redland/resource.rb: include Redland
+
+	* ruby/test/Makefile.am: tidy args
+
+	* ruby/lib/rdf/redland/serializer.rb: require 'rdf/redland'
+
+	* ruby/lib/rdf/redland/resource.rb (Resource.add_property):
+	default to nil context.
+
+	* ruby/lib/rdf/redland/constants.rb: Use Redland:: for Namespace
+
+	* ruby/lib/rdf/redland/model.rb (Model.create_resource):
+	default to nil context.
+
+2004-12-30  Edd Dumbill  <edd@usefulinc.com>
+
+	* csharp/Util.cs: (StringToHGlobalUTF8 ()): marshal .NET string to
+	UTF-8
+	(UTF8PtrToString ()): marshal unmanaged UTF-8 to .NET string
+
+	* csharp/Model.cs, csharp/Node.cs, csharp/Parser.cs,
+	csharp/Query.cs, csharp/QueryResults.cs, csharp/Serializer.cs,
+	csharp/Storage.cs, csharp/Uri.cs: replace calls to
+	StringToHGlobalAuto with StringToHGlobalUTF8
+
+	* csharp/Errors.cs, csharp/Node.cs, csharp/QueryResults.cs,
+	csharp/Statement.cs, csharp/Uri.cs: replace calls to
+	PtrToStringAuto with UTF8PtrToString
+
+	* csharp/examples/EncodingTest.cs: unit test for round tripped
+	encoding methods
+
+
+2004-12-30  Dave Beckett
+
+	* ruby/test/Makefile.am: Note test/unit.rb is in 1.8.0+
+
+	* ruby/lib/rdf/redland/parser.rb: tidy
+
+	* ruby/Makefile.am: fix RUBYLIB
+
+	* ruby/lib/rdf/redland/schemas/foaf.rb, ruby/lib/rdf/redland/dc.rb:
+	require 'rdf/redland'
+
+	* ruby/lib/rdf/redland.rb: require resource Delete uri_hash - not
+	needed at this level.
+
+	* ruby/lib/rdf/redland/statement.rb: fix requires
+
+	* ruby/lib/rdf/redland/query.rb: Tried to fix syntax errors,
+	failed.
+
+	* ruby/lib/rdf/redland/schemas/foaf.rb: Update from
+	http://lists.w3.org/Archives/Public/www-archive/2004Dec/att-0053/foaf.rb
+	by Dan Brickley
+
+2004-12-22  Dave Beckett
+
+	* python/test/test.py: Use RDFXMLSerializer explicitly
+
+	* python/RDF.py (class Serializer): Added more docs.
+	(Serializer.__init__): More docs.
+	(class NTriplesSerializer): Added
+	(class RDFXMLSerializer): Added
+
+	* python/RDF.py (Parser.parse_into_model, Parser.parse_string_into_model, Serializer.serialize_model_to_file):
+	Try to promote base_uri strings
+	to RDF.Uri
+
+2004-12-20  Dave Beckett
+
+	* perl/lib/RDF/Redland/Query.pm: doc fix
+
+2004-12-12  Dave Beckett
+
+	* configure.ac:
+	Added REDLAND_VERSION_VERBOSE separate from REDLAND_VERSION, the former for printing
+
+2004-11-26  Dave Beckett
+
+	* configure.ac: AC_SUBST(REDLAND_VERSION)
+
+2004-11-25  Dave Beckett
+
+	* redland-bindings.spec.in: Substitute @REDLAND_VERSION@
+
+2004-11-09  Dave Beckett
+
+	* python/RDF.py:
+	Use Redland_python.librdf_python_unicode_to_bytes to turn any
+	passed-in Python Unicode into UTF-8 strings for Redland API calls.
+	(Node.__unicode__, Statement.__unicode__, Model.__unicode__,
+	URI.__unicode__): Added to return Unicode representations,
+
+	* python/redland-post.i: Added a copyright header.
+	(librdf_python_unicode_to_bytes): Added, to turn a Python Unicode
+	string like u"foo" into the UTF-8 string equivalent.  Uses raptor's
+	raptor_unicode_char_to_utf8.
+
+	* perl/lib/RDF/Redland/Query.pm (new): better docs
+
+	* csharp/Query.cs: Query (World world, string s, Uri uri, string
+	query_language): Gains another argument, query_uri and the first
+	uri becomes base_uri as originally defined.
+
+	* python/RDF.py (Query.__init__):
+	Added query_uri argumetn and use base_uri correctly.
+
+	* perl/lib/RDF/Redland/Query.pm (new): Add base_uri argumemt
+
+	* configure.ac, RELEASE.html, NEWS.html: 0.9.20.1
+
+2004-11-04  Dave Beckett
+
+	* ruby/test.rb, ruby/example.rb:
+	swap example.rb/test.rb so that example.rb uses the rich interface
+
+	* docs/objc.html: Objective-C/Cocoa for OSX (shipped externally)
+
+2004-11-03  Dave Beckett
+
+	* ruby/lib/rdf/redland.rb: remove log4r, not part of standard ruby
+	distribution.
+
+	* ruby/README.txt: updated
+
+	* ruby/Makefile.am, ruby/test.rb: Added test.rb
+
+	* configure.ac: Check redland version matches this package version.
+
+	* redland-bindings.spec.in: more ruby fixes
+
+	* ruby/lib/rdf/Makefile.am, ruby/lib/rdf/redland/Makefile.am,
+	ruby/lib/rdf/redland/schemas/Makefile.am: update rubydir
+
+	* configure.ac: Get RUBY_LIBDIR
+
+	* ruby/test/README, ruby/test/triples.rdf, ruby/test/Makefile.am:
+	Ignore test failures since Test::Unit seems old
+
+	* configure.ac: Fixes for updated Ruby rdf-redland 0.5.3.1
+
+	* ruby dir updated to rdf-redland 0.5.3.1
+
+	* redland-bindings.spec.in: Added redland-ruby
+
+	* configure.ac: Bumped version to 0.9.18.2
+
+2004-11-02  Dave Beckett
+
+	* Snapshotted redland-bindings_0_9_19_1 for 0.9.19.1 release
+
+	* perl/example.pl: Added to_string tests
+
+	* perl/lib/RDF/Redland/Serializer.pm (serialize_model_to_string):
+	Added.
+
+	* perl/example.pl: Added model->to_string check
+
+	* perl/lib/RDF/Redland/Model.pm (to_string):
+	Added to serialize to a string.
+
+	* Makefile.am, LICENSE.html, NOTICE, README.html,
+	redland-bindings.spec.in, LICENSE-2.0.txt, MPL.html: LGPL / Apache
+	2.0 license - remove MPL MPL.html add Apache2 LICENSE-2.0.txt NOTICE
+
+	* Switched to LGPL / Apache 2.0 license in the sources
+	CVS tags before: redland_bindings_license_lgpl_mpl,
+	and after: redland_bindings_license_lgpl_apache2
+
+	* php/redland_wrap.c.patch: update patch
+
+	* perl/lib/RDF/Redland/Query.pm: docs
+
+	* csharp/AssemblyInfo.cs: Less boilerplate
+
+2004-10-26  Dave Beckett
+
+	* perl/lib/RDF/Redland/Query.pm, perl/lib/RDF/Redland/Parser.pm:
+	Don't do $uri=$uri->{URI} to ensure object ref lives.
+
+2004-10-22  Dave Beckett
+
+	* redland-bindings.spec.in: based on redland 0.9.19
+
+2004-10-21  Dave Beckett
+
+	* python/RDF.py:
+	General python fix.  Do not do uri = uri._reduri where uri is an
+	RDF.Uri() since that causes Python to delete the RDF.Uri object,
+	making the redland uri object useless.
+
+	* python/example.py: Added serialize example
+
+	* configure.ac: 0.9.19.1
+
+2004-10-20  Dave Beckett
+
+	* python/RDF.py (Model.to_string): Added.
+	(Model.__str__): Added.
+
+2004-10-09  Dave Beckett
+
+	* ruby/Makefile.am, python/Makefile.am, php/Makefile.am,
+	perl/Makefile.am, java/Makefile.am: Remove use of $< with
+	@REDLAND_SWIG@ since BSD make sucks^w doesn't support it.
+
+2004-10-01  Dave Beckett
+
+	* perl/lib/RDF/Redland/Model.pm: (load) Added using librdf_model_load
+
+2004-10-01 Edd Dumbill  <edd@usefulinc.com>
+
+	* csharp/World.cs: (World ()): assign logging delegate to private
+	member to stop it being prematurely GC'd
+
+2004-09-29  Dave Beckett
+
+	* php/redland_wrap.c.patch: updated
+
+	* php/redland-typemap.i: typemaps for php
+
+	* php/Makefile.am: Added redland-typemap.i
+	Use REDLAND_TYPEMAP_I
+
+	* php/test.php: url typo
+
+2004-09-24  Dave Beckett
+
+	* python/Makefile.am:
+	Use PYTHON_LDFLAGS for OSX/rest of world shared library flags
+
+	* configure.ac: Make PYTHON_LDFLAGS
+
+	* python/RDF.py (Node.__init__):
+	document 'language' for literal language, while
+	allowing xml_language to continue working.
+	(Node.literal_value): document keys of the dictionary.
+
+2004-08-25  Dave Beckett
+
+	* demos/rss-show.pl: Made 'box' param a checkbox.
+	Added 'hide' into a checkbox param to not print out the content.
+	Tidy messages to be more strident.
+
+2004-08-13  Dave Beckett
+
+	* perl/lib/RDF/Redland/Query.pm (execute):
+	Wrap any return object as a perl QueryResults
+
+	* perl/README.txt: Removed.  Described 2 year old API update
+
+	* perl/Makefile.am: Remove README.txt for old api update
+
+	* perl/lib/RDF/Redland/Query.pm: doc typo
+
+	* docs/perl.html: link to POD QueryResults.html correctly.
+
+	* perl/lib/RDF/Redland/QueryResults.pm: Update documentation.
+
+	* perl/lib/RDF/Redland/Query.pm:
+	Fix example, use $results->bindings_count
+
+2004-08-12  Dave Beckett
+
+	* python/example.py: update to final 0.9.18 redland query api
+
+2004-08-11  Dave Beckett
+
+	* configure.ac: Look in $JAVA_HOME for the JDK.  Duh!
+
+	* configure.ac: Don't muck about with the PATH (for OSX fink in
+	this case). This might make things fail to build later when
+	programs found on the customised path aren't available.  Users
+	should edit the PATH before calling configure.
+
+2004-08-10  Dave Beckett
+
+	* configure.ac: --with-jdk with an ARG now looks for the
+	includes/headers subdir using the existing search code.
+	Use head -n 1
+
+2004-08-05  Edd Dumbill  <edd@usefulinc.com>
+
+	* csharp/TODO: * TODO: remove completed tasks.
+
+2004-08-03  Dave Beckett
+
+	* configure.ac: Bumped version to 0.9.18.2
+
+	* Snapshotted redland-bindings_0_9_18_1 for 0.9.18.1 release
+
+	* configure.ac: Bumped version to 0.9.18.1
+
+	* Snapshotted redland-bindings_0_9_17_1 for 0.9.17.1 release
+
+	* java/Makefile.am: Add run-java to dist
+
+2004-07-28  Dave Beckett
+
+	* autogen.sh: move 'rm's inside configure.ac loop
+
+	* autogen.sh: Ensure subdirs get config.guess, config.sub
+
+	* php/Makefile.am: maint clean the orig file
+
+	* perl/lib/RDF/Redland.pm: Added links to Query and QueryResults
+
+2004-07-27  Dave Beckett
+
+	* php/Makefile.am:
+	Oops, use -DREDLAND_INIT_I to get init of redland world by PHP
+
+	* php/redland-post.i: declare static function prototypes
+
+	* php/Makefile.am: Added redland_wrap.c.patch to dist
+
+2004-07-26  Dave Beckett
+
+	* Makefile.am: bindings in html
+
+	* ruby/README.txt: grammar
+
+2004-07-23  Dave Beckett
+
+	* AUTHORS: Dominic Sisneros email
+
+	* configure.ac: 0.9.17.1
+
+	* python/test/test.py, python/RDF.py,
+	perl/lib/RDF/Redland/Parser.pm, perl/serialize.pl,
+	perl/example.pl, java/test2.java, java/test1.java,
+	java/skeleton.java, csharp/examples/example4.cs,
+	csharp/examples/example2.cs, csharp/examples/example1.cs,
+	csharp/test.cs, csharp/Parser.cs: Replace parser name "raptor"
+	with "rdfxml"
+
+2004-07-20  Edd Dumbill  <edd@usefulinc.com>
+
+	* csharp/Node.cs: Added my name to header.
+
+2004-07-20  Dave Beckett
+
+	* php/Makefile.am:
+	redland-pre.i wasn't helping remove multiple defines warnings
+
+	* php/redland-pre.i: undef things via command line
+
+	* tcl/Makefile.am: Use TCL_DIR to remove use of backticks
+
+	* configure.ac: Added TCL_DIR to remove use of backticks in a makefile
+
+	* ruby/Makefile.am: Use RUBY_LIB, RUBY_DIR to remove use of backticks
+
+	* configure.ac:
+	Added RUBY_LIB, RUBY_DIR to remove use of backticks in a makefile
+	Tidy
+
+	* php/Makefile.am:
+	Use PHP_EXTENSION_DIR to remove use of backticks in a makefile
+
+	* configure.ac:
+	Added PHP_EXTENSION_DIR to remove use of backticks in a makefile
+	Tidy
+
+	* ruby/Makefile.am, python/Makefile.am, php/Makefile.am,
+	perl/Makefile.am, java/Makefile.am, csharp/examples/Makefile.am,
+	csharp/Makefile.am: Re-added REDLAND_RUN for running tests when
+	compiling against librdf in source (not installed) form.
+
+	* configure.ac: Added REDLAND_RUN with a space
+
+	* configure.ac: convert an internal REDLAND_CONFIG into an
+	absolute path
+
+2004-07-20  Edd Dumbill  <edd@usefulinc.com>
+
+	* examples/StreamTest.cs: (ParseAsStream ()): fix for streams.
+	(IterateModel ()): fix for iterators.
+	(FindStatements1 ()): fix for iterators.
+	(FindStatementsWithContext ()): fix for iterators.
+
+	* Iterator.cs: (MoveNext ()): handle case where iterator is empty.
+
+	* Stream.cs: (MoveNext ()): handle case where stream is empty.
+
+	* Uri.cs: (Uri (IntPtr)): add internal constructor to build Uri
+	from a Redland URI.
+
+	* Node.cs: (Uri): add property to get underlying Redland URI.
+
+	* Errors.cs: (RedlandError): new constructor with no log messages.
+
+	* Node.cs: Add NodeType enumeration.
+	(Type): add new property to get type
+	(IsResource ()): return true if resource.
+	(IsLiteral ()): return true if literal.
+	(IsBlank ()): return true if blank.
+
+2004-07-20  Edd Dumbill  <edd@usefulinc.com>
+
+	* Stream.cs: (GetEnumerator ()): Implement IEnumerable.
+	(MoveNext ()): Properly implement: at start, position should be
+	before the first element, not on it.
+
+	* Iterator.cs: (GetEnumerator ()): Implement IEnumerable.
+	(MoveNext ()): Properly implement: at start, position should be
+	before the first element, not on it.
+
+	* test.cs: Fix to work with iterator fixes.
+
+2004-07-19  Dave Beckett
+
+	* redland-bindings.spec.in: core docs in all packages
+
+	* redland-bindings.spec.in:
+	no need to configure loads of redland things
+	no need to make install librdf
+
+	* configure.ac, Makefile.am: remove redland-bindings.pc.in
+
+	* redland-bindings.spec.in: full package names
+
+	* configure.ac: 0.9.17.0.1
+
+	* redland-bindings.spec.in: fix package names
+
+	* redland-bindings.spec.in: redland-bindings spec
+
+	* Makefile.am, configure.ac: added redland-bindings.spec
+
+	* Makefile.am: zap man_MANS
+
+	* php/Makefile.am, python/Makefile.am: backticks
+
+	* python/Makefile.am, ruby/Makefile.am, ruby/test/Makefile.am,
+	tcl/Makefile.am, csharp/Makefile.am, csharp/examples/Makefile.am,
+	docs/Makefile.am, java/Makefile.am, perl/Makefile.PL,
+	perl/Makefile.am, php/Makefile.am, ChangeLog, Makefile.am,
+	configure.ac: redland-bindings fixes
+
+	* AUTHORS, autogen.sh: redland-bindings
+
+	* java/run-java: run java test programs in source tree
+
+	* ruby/README.txt: Point to rdf-redland at RubyForge
+
+2004-07-14  Dave Beckett
+
+	* csharp/Serializer.cs:
+	(Serializer (World world, string name, string mime_type, Uri
+	type_uri)): Replace cast to Object with use of Uri.operator==
+
+	* csharp/Uri.cs (Equals, operator ==, operator !=, GetHashCode): Added.
+
+	* csharp/Statement.cs:
+	(Statement (World world, Node subject, Node predicate, Node obj)):
+	Removed casts to Object and allow calls to Node.operator!=
+
+	* csharp/Node.cs (operator ==, operator !=):
+	Added tests for null using Object.Equals
+	written by Edd Dumbill.
+
+	* csharp/Redland.cs, csharp/MemoryStorage.cs, csharp/Iterator.cs,
+	csharp/IWrapper.cs, csharp/HashStorage.cs, csharp/URI.cs: Added
+	CVS IDs to the header.
+
+2004-07-14  Edd Dumbill  <edd@usefulinc.com>
+
+	* csharp/examples/example2.cs:
+	write to console when Exiting: helpswith debugging GC snafus.
+
+	* csharp/Makefile.am:
+	ensure MONO_PATH=. for running the test prog
+
+	* csharp/Uri.cs:
+	general indenting fixes.
+	uri: initialise to IntPtr.Zero
+	(Dispose): added, implemented IDisposable.
+
+	* csharp/Stream.cs:
+	general indenting fixes.
+	Implement IDisposable.
+	stream: init to IntPtr.Zero.
+	(Current): remove tmp var, add FIXME note.
+	(MoveNext): remove tmp var dance.
+	(End): remove tmp var.
+	(CurrentStatement): Added, which is (Statement) Current.
+
+	* csharp/Storage.cs:
+	general indenting fixes.
+	Implement IDisposable.
+	storage: init to IntPtr.Zero
+
+	* csharp/Statement.cs:
+	general indenting fixes.
+	stm: intialise to IntPtr.Zero
+	(Subject, Predicate, Object properties): added get accessors.
+	(Statement (IntPtr)): copy underlying statement with
+	librdf_statement_new_from_statement
+	(~Statement): test for IntPtr.Zero
+	(Dispose): Renamed from ~Statement(). Implement IDisposable.
+
+	* csharp/Serializer.cs:
+	Implement IDisposable.
+	serializer: init to IntPtr.Zero.
+
+	* csharp/QueryResults.cs:
+	general indenting fixes.
+	query_results: init to IntPtr.Zero;
+	Implement IDisposable.
+	(MoveNext): remove tmp var.
+	(End): remove tmp var.
+	(AsStream): remove tmp var, add FIXME note.
+	(BindingValue): remove tmp var.
+	(BindingValueByName): remove tmp var.
+	Implement IEnumerable.
+	(QueryResults): remove need to pass original query, make
+	constructor internal.
+
+	* csharp/Query.cs:
+	general indenting fixes.
+	Implement IDisposable.
+	query: init to IntPtr.Zero.
+	(Query (Word, string, Object, string)): init iuri to IntPtr.Zero,
+	not null.  Change third parameter to Uri type, not Object.
+	(Query (string)): use constified name for RDQL.
+	(Execute): adjust to new form of QueryResults ctor.
+
+	* csharp/Parser.cs:
+	general indenting fixes.
+	Implement IDisposable.
+	parser: init to IntPtr.Zero
+	(Parser (World, string, string, Uri)): remove ability to construct
+	with null World.
+	(ParseIntoModel): add FIXME note.
+	(ParseAsStream): add FIXME note.
+	(ParseStringAsStream): add FIXME note.
+
+	* csharp/Model.cs:
+	general indenting fixes.
+	model: initialize to IntPtr.Zero.
+	(Dispose). Renamed from ~Model. Implement IDisposable, test for
+	IntPtr.Zero.
+	(FindStatements): remove unneeded temp var.
+	(GetSources): add FIXME item.
+	(GetTarget): drop exception and make look like GetPredicate, GetSource.
+	(GetTargets): make look like GetSources, GetPredicates. Add FIXME.
+	(ToStream): add FIXME note.
+	(GetFeature): return null on failure, like GetSource and friends.
+	(QueryResults): add FIXME note.
+	(Model (World, Storage, string)): keep a reference around to the
+	storage, as we must not be GC'd before it is. Future thought: do
+	we really need Model and Storage to be separate classes?
+	(Execute): adjust to new form of QueryResults ctor (see ChangeLog)
+
+	* csharp/Node.cs:
+	general indenting fixes.
+	node: initialise to IntPtr.Zero
+	(~Node): test for IntPtr.Zero, not == null
+	(Node (IntPtr)): use librdf_new_node_from_node to copy underlying
+	node.
+	(Dispose): Renamed from Move ~Node. Implement IDisposable.
+
+	* csharp/Iterator.cs:
+	general indenting fixes.
+	Implement IDisposable.
+	iterator: init to IntPtr.Zero.
+	(Current): remove tmp var, add FIXME note.
+	(MoveNext()): remove tmp var, add explanatory comment.
+	(End): remove tmp var.
+	Remove unused field pos.
+	(CurrentNode): Added, which is (Node) Current.
+
+2004-07-13  Dave Beckett
+
+	* perl/Makefile.am: Added MAKE_PL_OPTS for "perl Makefile.PL"
+	target
+
+	* docs/Makefile.am: Added RDF::Redland::Query and QueryResults
+	perl docs
+
+2004-07-12  Dave Beckett
+
+	* Makefile.am: Install Redland.i in $(pkgdata)
+
+	* python/Makefile.am, ruby/Makefile.am, ruby/redland-pre.i,
+	ruby/redland-types.i, tcl/Makefile.am, tcl/redland-init.i,
+	tcl/redland-pre.i, php/Makefile.am, php/redland-decl.i,
+	php/redland-init.i, php/redland-post.i, php/redland-pre.i,
+	php/redland_wrap.c.patch, python/redland-decl.i,
+	python/redland-post.i, perl/Makefile.am, perl/redland-decl.i,
+	perl/redland-post.i, perl/redland-pre.i: Split SWIG bits into
+	general and language-specific parts
+
+2004-07-09  Dave Beckett
+
+	* docs/Makefile.am: Dont ship old pictures overview.png
+	overview.ps overview.pdf
+
+	* csharp/ChangeLog: ChangeLog in CVS now
+
+2004-07-09  Edd Dumbill <edd@usefulinc.com>
+
+	* csharp/World.cs:
+	Move logging to use the new librdf logging API.
+	(Messages property): Added, an array of LogMessages accumulated since
+	the last ClearLog call.
+	(LogLevel method): Added, for getting and setting the logging level.
+
+	* csharp/Parser.cs:
+	Use World.Messages as the basis of exceptions.
+
+	* csharp/Errors.cs: Added enums LogLevel and Facility.
+	Added class Locator to encapsulate locator part of a log message.
+	Added class LogMessage to encapsulate a returned log message from
+	librdf.
+	Changed RedlandFault and RedlandError to store an array of
+	LogMessages instead of strings. (Edd Dumbill)
+
+2004-07-08  Dave Beckett
+
+	* csharp/Parser.cs: Added ParseError, a RedlandError subclass.
+	(ParseStringIntoModel, ParseIntoModel, ParseStringAsStream): Check
+	for errors during parsing.
+
+	* csharp/World.cs: Added Errors, Warnings support
+	(ClearLog): Added to empty the errors and warnings lists.
+	(Enter): To lock world for gathering errors
+	(Exit): To unlock world after gathering errors
+	(setupHandlers): Use a delegate intErrorHandler (function pointer
+	in C) to register callbacks for errors and warnings.
+	(dispatchError, dispatchWarning): Added the error, warning
+	gatherers.
+
+	* csharp/Errors.cs, csharp/Makefile.am: Added Errors.cs
+
+	* docs/Makefile.am: Re-add query_results to DOC_CLASSES
+
+	* docs/Makefile.am: remove query_results
+
+	* docs/Makefile.am: added query_results to DOC_CLASSES
+
+2004-07-07  Dave Beckett
+
+	* perl/lib/RDF/Redland.pm: Added QueryResults.pm
+
+	* perl/example.pl: Added Query and QueryResults test
+
+	* perl/lib/RDF/Redland/QueryResults.pm: working
+
+	* perl/lib/RDF/Redland/Query.pm: Split into query and results
+	classes.
+
+	* perl/lib/RDF/Redland/Model.pm (query_execute): Added.
+
+	* perl/Makefile.PL: Added QueryResults.pm
+
+	* perl/lib/RDF/Redland/QueryResults.pm: QueryResults class
+
+	* perl/lib/RDF/Redland/Makefile.am: Added QueryResults.pm
+
+2004-07-06  Dave Beckett
+
+	* csharp/QueryResults.cs: no need for first
+
+	* csharp/QueryResults.cs: Handle first result special, always
+	store current result.
+
+	* csharp/test.cs: print query results
+
+	* csharp/Node.cs: Destructor object checking works now, dunno why.
+
+	* csharp/test.cs: C# query test
+
+	* csharp/QueryResults.cs (Current): Return null when exhausted.
+
+	* csharp/Node.cs: Added destructor object checking.  Comment it
+	out since it hangs mono and mono-debugger unless run mono -v.
+
+	* csharp/Iterator.cs, csharp/Statement.cs, csharp/Parser.cs: Added
+	destructor object checking
+
+	* csharp/Model.cs: Added destructor object checking
+	(Execute): Call librdf_model_query_execute
+
+	* csharp/Query.cs: Deleted no-args constructor - does not exist.
+	Fixed main constructor.  Added destructor.
+
+	* csharp/World.cs, csharp/Stream.cs, csharp/Storage.cs,
+	csharp/Statement.cs, csharp/Serializer.cs, csharp/Parser.cs,
+	csharp/Node.cs, csharp/Model.cs, csharp/Iterator.cs: Added
+	destructors for all classes
+
+	* configure.ac: formatting
+
+	* configure.ac: Added GACUTIL, SN, ILGAC and report ECMA CLI in
+	languages available
+
+	* csharp/Makefile.am: Typo
+
+	* python/Makefile.am: Use mkinstalldirs to make python install
+	dest
+
+	* configure.ac: Added ilgac, gacutil, sn
+
+	* python/Makefile.am: Remove mkdir_p - automake 1.8 only.
+	Packaging can fix
+
+2004-07-05  Dave Beckett
+
+	* csharp/QueryResults.cs: pos
+
+	* csharp/Model.cs: Added Execute method
+
+	* csharp/Makefile.am: Added Query.cs QueryResults.cs
+
+	* csharp/Query.cs, csharp/QueryResults.cs: redland csharp Query
+	classes
+
+	* csharp/Model.cs: Added methods: GetContexts, GetFeature,
+	SetFeature, Load
+
+	* csharp/Makefile.am: typo
+
+2004-06-30  Dave Beckett
+
+	* docs/Makefile.am: Added csharp.html
+
+2004-06-29  Dave Beckett
+
+	* python/RDF.py: debug msgs
+
+	* python/RDF.py (NS.node): Mint a new node each time, don't try to
+	share.
+
+2004-06-28  Dave Beckett
+
+	* python/RDF.py (message_handler): Invoke warnings.warn to try to
+	get a warning that doesn't disturb the program and shows something
+	like the right stack level.
+
+2004-06-23  Dave Beckett
+
+	* python/Makefile.am: Remove MANIFEST.in
+
+2004-06-22  Dave Beckett
+
+	* configure.ac: removed --with-libwww - has not been used for
+	anything for a long while.
+
+	* python/Makefile.am: Add AM_LDFLAGS to get MEM_LIBS
+
+2004-06-17  Dave Beckett
+
+	* csharp/Makefile.am: added DESTDIR to install target
+
+	* csharp/test.cs: Redland namespace
+
+	* python/test/test.py: test model.matches
+
+	* python/RDF.py (Node.__eq__, Node.__ne__, Statement.__eq__,
+	Statement.__ne__, Model.matches, Uri.__eq__, Uri.__ne__): Simpler
+	boolean return.
+
+	* csharp/Redland.cs, csharp/Serializer.cs, csharp/Statement.cs,
+	csharp/Storage.cs, csharp/Stream.cs, csharp/Uri.cs,
+	csharp/Util.cs, csharp/World.cs, csharp/examples/GetsTest.cs,
+	csharp/examples/ModelGeneralTest.cs, csharp/examples/ModelTest.cs,
+	csharp/examples/SimpleGetsTest.cs, csharp/examples/StreamTest.cs,
+	csharp/examples/example1.cs, csharp/examples/example2.cs,
+	csharp/examples/example3.cs, csharp/examples/example4.cs,
+	csharp/test.cs, csharp/HashStorage.cs, csharp/IWrapper.cs,
+	csharp/Iterator.cs, csharp/MemoryStorage.cs, csharp/Model.cs,
+	csharp/Node.cs, csharp/Parser.cs: namespace from Rdf to Redland
+
+	* csharp/examples/example3.cs, csharp/examples/example2.cs,
+	csharp/examples/example1.cs: Use new Rdf.Uri to make Uris for
+	nodes
+
+	* csharp/examples/StreamTest.cs (Contains): Make sure a Uri or
+	literal is used correctly.
+
+	* csharp/Node.cs: Added Node constructors with just a System.Uri -
+	making a URI node just a string - making a literal node Modified
+	is_wf_xml arg to be bool.
+
+	* csharp/Model.cs: (Contains) opt bool
+
+	* csharp/examples/example3.cs: don't use token as a name
+
+	* csharp/examples/example4.cs, csharp/examples/example3.cs,
+	csharp/examples/example2.cs: tidy test filenames
+
+	* csharp/examples/example1.cs: Use serializer.SerializeModel
+	direct to a file.
+
+	* csharp/examples/Makefile.am: tidy test filenames
+
+	* csharp/Util.cs: added fclose
+
+	* csharp/Serializer.cs (SerializeModel): Added overloaded method
+	taking a filename and using
+	librdf_serializer_serialize_model_to_file to avoid use of file
+	handles.
+
+	* csharp/examples/StreamTest.cs (Contains): actually test
+	model.Contains
+
+	* csharp/Serializer.cs, csharp/Parser.cs: Use (Object)foo == null
+
+	* csharp/Statement.cs: private Statement (World world, Node
+	subject, Node predicate, Node obj): Compare Node pointers for
+	nullness as Object to prevent trying to invoke
+	null.opEquality(foo)
+
+	* csharp/Parser.cs: remove debug msg
+
+	* csharp/examples/StreamTest.cs (ParserStringAsStream): Remove
+	extra pairs of "s at start and end of rdf/xml string.
+
+	* csharp/Statement.cs: remove debug msg
+
+	* csharp/Parser.cs: debug msg
+
+	* csharp/Statement.cs: private Statement (World world, Node
+	subject, Node predicate, Node obj): Pass in Handles not C# object
+	refs
+
+	* configure.ac: PKG_CONFIG
+
+	* csharp/Makefile.am: dist contains redland.pub
+
+	* csharp/Makefile.am: fix redland.pub rule
+
+	* csharp/redland.pub: Redland.dll public key
+
+	* csharp/Makefile.am: Add warning if redland.pub rule is run
+
+	* csharp/Makefile.am: sign-mono rule not needed if AssemblyInfo.cs
+	has redland.pub
+
+	* csharp/Makefile.am: DLL requires redland.pub
+
+	* csharp/AssemblyInfo.cs: Redland.dll Assembly info
+
+	* csharp/Makefile.am: Ship redland.pub (public key) Add scary
+	warnings for redland.snk, redland.pub rules.  Use public key to
+	sign
+
+	* csharp/Makefile.am: Added AssemblyInfo.cs Added strong name and
+	signing for mono.
+
+	* csharp/Makefile.am, csharp/Util.cs: Renamed util.cs to Util.cs
+
+	* csharp/test.cs: use Serializer
+
+	* csharp/Node.cs (Print): Remove Console.WriteLine
+
+	* csharp/test.cs: added printing out results of stream, iterator
+
+	* csharp/test.cs: Remove world, now Redland.dll private.
+
+	* csharp/examples/example4.cs, csharp/examples/example3.cs: write,
+	don't append
+
+	* csharp/Statement.cs: syntax
+
+	* csharp/Statement.cs: remove set_pointer Statement (World world,
+	Node subject, Node predicate, Node obj): copy nodes
+
+	* csharp/Node.cs: Added Node copy constructor
+
+	* csharp/examples/Makefile.am: clean just tests
+
+	* csharp/examples/Makefile.am: Require nunit-console.exe
+
+	* csharp/examples/StreamTest.cs: Use ../../data/dc.rdf
+
+	* csharp/examples/Makefile.am, csharp/Makefile.am: Remove dup
+	CSHARPCFLAGS
+
+	* csharp/examples/Makefile.am: Add CSHARPCFLAGS
+
+	* csharp/Makefile.am: Add CSHARPCFLAGS, CLI_PREFIX Add
+	install-mono, install-pnet
+
+	* configure.ac: Add CSHARPCFLAGS, CLI_PREFIX
+
+	* csharp/Makefile.am: Switch to always using ' -' options not
+	mixture of that and ' /' options.  Added install-mono target
+
+	* csharp/examples/Makefile.am: Make nunit-console.exe here
+	(maintainer mode) and ship it.  Switch to always using ' -'
+	options not mixture of that and ' /' options.
+
+	* csharp/examples/AssemblyInfo.cs, csharp/examples/ConsoleUi.cs:
+	nunit-console source unchanged
+
+2004-06-14  Dave Beckett
+
+	* csharp/examples/example4.cs: Use ../../data/dc.rdf
+
+	* csharp/examples/dc.rdf: deleted, use data copy
+
+	* csharp/Uri.cs, csharp/Storage.cs, csharp/Statement.cs,
+	csharp/Serializer.cs, csharp/Parser.cs, csharp/Node.cs,
+	csharp/Model.cs: For P/Invoke where a string is passed in or
+	return, switch to IntPtr and manage the strings with
+	Marshal.StringToHGlobalAuto and Marshal.FreeHGlobal.
+
+	* python/RDF.py (Statement._wrap_node): Protect from null rednode
+	(Statement.matches): Added to compare an incomplete statement with
+	None values against a complete one, using
+	Redland.librdf_statement_match
+
+	* csharp/examples/Makefile.am: more CLEANFILES
+
+	* csharp/examples/Makefile.am: unittests depends on ../Redland.dll
+
+	* csharp/Uri.cs, csharp/Node.cs: Debug messages
+
+	* csharp/Makefile.am: Make Redland.dll right
+
+	* csharp/examples/Makefile.am: Unit tests fix
+
+2004-06-13  Dave Beckett
+
+	* csharp/Statement.cs (Statement.Statement): Do not call
+	set_pointer with null pointers.
+
+	* csharp/Node.cs (Equals): Return false if o is null.
+
+	* configure.ac: Added csharp/examples dir
+
+	* csharp/examples/example2.cs, csharp/examples/example3.cs,
+	csharp/examples/example4.cs, csharp/examples/GetsTest.cs,
+	csharp/examples/Makefile.am, csharp/examples/ModelGeneralTest.cs,
+	csharp/examples/ModelTest.cs, csharp/examples/SimpleGetsTest.cs,
+	csharp/examples/StreamTest.cs, csharp/examples/TemplateTest.cs,
+	csharp/examples/dc.rdf, csharp/examples/example1.cs,
+	csharp/Parser.cs, csharp/README, csharp/Redland.cs,
+	csharp/Serializer.cs, csharp/Statement.cs, csharp/Storage.cs,
+	csharp/Stream.cs, csharp/TODO, csharp/Uri.cs, csharp/World.cs,
+	csharp/test.cs, csharp/HACKING, csharp/HashStorage.cs,
+	csharp/IWrapper.cs, csharp/Iterator.cs, csharp/LICENSE,
+	csharp/Makefile.am, csharp/MemoryStorage.cs, csharp/Model.cs,
+	csharp/Node.cs: Imported redland-csharp by Cesar Lopez Nataren
+
+	* configure.ac: Only muck about with removing -O2 from flags in
+	maintainer mode.
+
+2004-06-02  Dave Beckett
+
+	* python/redlandtest.py: Updated tests to match query to
+	query+query_results split and removal of run_as_bindings style.
+
+	* python/RDF.py (Model): Removed run_as_bindings.  Replaced
+	run_as_statements with execute and wrapping of stream.  Added
+	execute.
+	(Query): Removed __len__ Removed run_as_bindings.  Replaced
+	run_as_statements with as_stream.  Added execute.
+	(QueryResults): Renamed from QueryResultIterator Added more
+	methods from the librdf_query API: as_stream, finished,
+	get_binding_value, get_binding_name, get_binding_value_by_name,
+	get_bindings_count.  Added __del__ to tidy up.
+
+2004-06-01  Dave Beckett
+
+	* configure.ac: require Rasqal 0.9.1
+
+2004-05-30  Dave Beckett
+
+	* python/RDF.py (set_message_handler): docs
+
+	* python/RDF.py: Make this 1.0
+
+	* perl/t/test3.t, perl/lib/RDF/Redland.pm (message): Return a
+	handled value
+
+	* perl/lib/RDF/Redland/Query.pm: more missing ;s Use $self not
+	$query
+
+	* perl/lib/RDF/Redland/Query.pm: missing ;s
+
+	* python/test/test.py: dc.rdf now in data
+
+	* python/redlandtest.py: dc.ttl
+
+	* Makefile.am: Add data to dist subdirs
+
+	* python/redlandtest.py: Patch from Matt Biddulph adding unit
+	tests for the new Query class and the new NtriplesParser,
+	TurtleParser parsing classes.  Amended to move the test data files
+	into ../data.
+
+	* python/RDF.py: Patch from Matt Biddulph adding:
+	(Model.run_as_bindings): Added to run a querying giving variable
+	binding results.
+	(Model.run_as_statements): Added to run a querying giving triple
+	results.
+	(TurtleParser, NTriplesParser): New convenience classes to create
+	parsers for the Turtle and N-Triples syntaxes.
+	(Query class): New class for querying using the new librdf_query
+	Redland class.
+	(QueryResultIterator class): New class for iterativing over
+	variable binding results.
+
+	* python/example.py: last change from Matt Biddulph
+
+	* python/example.py: dc.rdf now in data dir Add RDF.Query test
+
+	* ruby/example.rb, ruby/Makefile.am, php/test.php,
+	perl/example.pl, perl/Makefile.am, perl/MANIFEST, java/test2.java,
+	java/test1.java: dc.rdf now in data dir
+
+	* data/Makefile.am: dc.ttl
+
+	* configure.ac, Makefile.am: Added data dir
+
+2004-05-29  Dave Beckett
+
+	* autogen.sh: Add --enable-maintainer-mode
+
+	* configure.ac: Made RASQAL_MIN_VERSION 0.9.0 Added
+	LIBRDF_PKGCONFIG_LIBS for redland.pc
+
+	* configure.ac: Remove use of LIBRDF_LIBS - merge into
+	LIBRDF_EXTERNAL_LIBS and do not AC_SUBST.  Always append to
+	LIBRDF_LIBS, LIBRDF_CPPFLAGS rather than prepend, append mixtures.
+
+2004-05-28  Dave Beckett
+
+	* configure.ac: Look for BDB in /usr/local/BerkeleyDB.$version
+
+	* configure.ac: typo: RASQAL_CONFIG
+
+	* docs/Makefile.am: do not overwrite redland.3 if not in
+	maintainer mode
+
+	* configure.ac: Use automakefile conditionals MEMCMP and GETOPT
+
+2004-05-18  Dave Beckett
+
+	* perl/lib/RDF/Redland/Makefile.am: Added Query.pm
+
+	* perl/lib/RDF/Redland/Query.pm: RDF query api
+
+	* perl/Makefile.PL, perl/lib/RDF/Redland.pm: Added Query.pm
+
+2004-05-13  Dave Beckett
+
+	* configure.ac: Turn assert enable options into positive form.
+
+2004-05-11  Dave Beckett
+
+	* ruby/test/Makefile.am: Use stamp rule to ensure module is built.
+
+	* ruby/Makefile.am: Rename stamp rule to be indep of the package
+	name.
+
+	* ruby/test/Makefile.am: echo failure line
+
+	* ruby/README.txt: words
+
+	* ruby/test/ical.rdf, ruby/test/triples.rdf: Ruby RDF test data
+
+	* ruby/test/Makefile.am: Move rdf example data here.  Add clean
+	target.  Tidy test running target.
+
+	* ruby/Makefile.am: Remove test.rb
+
+	* ruby/test/Makefile.am: Set -I paths right
+
+	* configure.ac: use = not == in test
+
+	* configure.ac: Make rasqal build internal and external.  Add ruby
+	test, lib dirs.
+
+	* ruby/lib/rdfs/Makefile.am, ruby/test/Makefile.am,
+	ruby/lib/Makefile.am, ruby/lib/rdf/Makefile.am, ruby/Makefile.am:
+	Import more of Ruby RDF for Redland
+
+2004-05-07  Dave Beckett
+
+	* java/org/librdf/redland/Statement.java: Added equals method.
+
+	* ruby/lib/rdf/statement.rb: Added == operator
+
+	* perl/lib/RDF/Redland/Statement.pm: Added equals method.
+
+	* python/RDF.py (Model.__eq__, Model.__ne__): Added for statement
+	equality, inequality.
+
+	* python/redlandtest.py: Added tests for statement equality,
+	inequality.
+
+2004-05-06  Dave Beckett
+
+	* docs/Makefile.am: less doc classes; no real need for the
+	implementation classes.
+
+	* docs/Makefile.am: Added query_rasqal for docs
+
+	* python/RDF.py: document using contexts
+
+2004-05-05  Dave Beckett
+
+	* configure.ac: make PHP_INCLUDES even without --with-php (ie PHP)
+
+	* tcl/Makefile.am, ruby/Makefile.am, python/Makefile.am,
+	php/Makefile.am, perl/Makefile.am, java/Makefile.am,
+	csharp/Makefile.am: Apply CFLAGS, CPPFLAGS to pick up internal,
+	external includes and src/build dirs.
+
+	* configure.ac: assign rasqal_dir for SD_PRE
+
+	* Makefile.am: Added ChangeLog.4
+
+	* configure.ac: SUBST raptor, rasqal min versions and use in
+	build, packaging files.
+
+	* configure.ac: SUBST with_rasqal
+
+	* configure.ac: report rasqal source in summary
+
+	* configure.ac: added rasqal
+
+	* Makefile.am: Added rasqal
+
+2004-04-28  Dave Beckett
+
+	* ruby/README.txt: README.txt
+
+	* ruby/test/test_serializer.rb, ruby/test/test_statement.rb,
+	ruby/test/test_store.rb, ruby/test/test_uri.rb,
+	ruby/lib/rdf/util.rb, ruby/lib/rdfs/class.rb,
+	ruby/lib/rdfs/property.rb, ruby/lib/rdfs/rdfs_resource.rb,
+	ruby/test/test_model.rb, ruby/test/test_node.rb,
+	ruby/test/test_parser.rb, ruby/test/test_rdf.rb,
+	ruby/test/test_rdfs_resource.rb, ruby/test/test_resource.rb,
+	ruby/lib/rdf/parser.rb, ruby/lib/rdf/resource.rb,
+	ruby/lib/rdf/serializer.rb, ruby/lib/rdf/statement.rb,
+	ruby/lib/rdf/store.rb, ruby/lib/rdf/stream.rb,
+	ruby/lib/rdf/uri.rb, ruby/lib/rdf/constants.rb,
+	ruby/lib/rdf/convert_owl.rb, ruby/lib/rdf/convertfoaf.rb,
+	ruby/lib/rdf/dc.rb, ruby/lib/rdf/foaf.rb, ruby/lib/rdf/model.rb,
+	ruby/lib/rdf/node.rb, ruby/lib/rdf.rb, ruby/rdf-redland.gemspec:
+	Import from rdf-redland-0.5.tgz from
+	http://rubyforge.org/projects/ruby-rdf/
+
+2004-04-12  Dave Beckett
+
+	* python/Makefile.am: Apply local cppflags to building wrapper
+
+2004-04-11  Dave Beckett
+
+	* python/test/test.py: test model.load
+
+	* python/RDF.py (model.load): Added calling librdf_model_load
+
+2004-04-08  Dave Beckett
+
+	* configure.ac: require raptor 1.3.0
+
+2004-03-27  Dave Beckett
+
+	* tcl/Makefile.am: automake fixes for 1.7+ using newer macros
+
+	* configure.ac: Do not -Wall automake, override is needed in
+	language dirs.  List specific warnings.
+
+	* ruby/Makefile.am, python/Makefile.am, php/Makefile.am,
+	csharp/Makefile.am: automake fixes for 1.7+ using newer macros
+
+	* configure.ac, autogen.sh: Use some AM_INIT_AUTOMAKE options.
+	Require automake1.7, which requires autoconf 2.54
+
+2004-03-16  Dave Beckett
+
+	* php/test.php: Add some PHP 4.3 compatible defines, and use them
+	to find the right shared lib prefix, suffixes to load.
+
+	* php/php.ini: Use False for bool
+
+	* php/Makefile.am: try php -c .
+
+2004-03-15  Dave Beckett
+
+	* php/Makefile.am: Use -c php.ini rather than -d
+	extension_dir=. which might prevent loading (wrong) global
+	configuration.
+
+2004-03-12  Dave Beckett
+
+	* python/redlandtest.py: Added testParseStringAsStream
+
+	* python/RDF.py: years
+
+	* python/RDF.py (Model.add_statements): Use
+	statement_stream._stream.
+
+	* python/RDF.py (parser.parse_string_as_stream): Add base_uri to
+	example - it's required.
+
+2004-02-26  Dave Beckett
+
+	* configure.ac: Subsitute LIBRDF_VERSION_DECIMAL
+
+2004-02-24  Dave Beckett
+
+	* configure.ac: Bumped version to 0.9.17
+
+	* Snapshotted redland_0_9_16 for 0.9.16 release (on branch
+	redland_0_9_15-patches)
+
+2004-02-23  Dave Beckett
+
+	* configure.ac: Bumped version to 0.9.16
+
+	* Snapshotted redland_0_9_15 for 0.9.15 release
+
+2004-02-16  Dave Beckett
+
+	* python/RDF.py (Node.__init__): Use ._reduri for datatype uri arg
+
+2004-02-02  Dave Beckett
+
+	* perl/Makefile.am: fix test-perl
+
+	* perl/Makefile.am: delete first test-perl
+
+	* docs/Makefile.am: Add api.html and fragments
+
+2004-01-31  Dave Beckett
+
+	* configure.ac: Bumped version to 0.9.16
+
+	* tcl/Makefile.am, ruby/Makefile.am, python/Makefile.am,
+	php/Makefile.am, perl/Makefile.am, java/Makefile.am,
+	csharp/Makefile.am: Use redland-src-config --run COMMAND to run
+	test programs with the shared libraries built in the source tree.
+
+	* configure.ac, Makefile.am, Makefile.PL, docs/fix-python-xhtml,
+	docs/fix-pod-xhtml, docs/Makefile.am: Restore "Redland RDF
+	Application Framework" not "Library"
+
+	* python/Makefile.am: PYTHON_INCLUDES
+
+	* configure.ac: Improve python includes, libs checking.  Report
+	what's found.
+
+2004-01-30  Dave Beckett
+
+	* docs/Makefile.am: Added storage.html
+
+	* python/Makefile.am: Make install dir
+
+	* python/Makefile.am: nn
+
+	* python/Makefile.am: hunt for redland-src-config
+
+	* python/Makefile.am: another -I
+
+	* python/Makefile.am: add a srcdir
+
+	* python/Makefile.am: uninstall RDF.py
+
+	* python/Makefile.am: Install RDF.py
+
+	* python/Makefile.am: gah!
+
+	* python/Makefile.am: more bits
+
+	* python/Makefile.am: Restore unittest to make check
+
+	* python/Makefile.am: Junk distutils.
+
+	* configure.ac: Get python_include, python_lib and substitute.
+
+2004-01-29  Dave Beckett
+
+	* java/org/librdf/redland/Model.java (findStatements): Added with
+	context_node.
+	(getContexts): Added.
+
+2004-01-25  Dave Beckett
+
+	* configure.ac: Added --disable-assert and
+	--disable-assert-messages to prevent (default) compilation of
+	assertion code and outputing of messages when the assertions fail.
+
+	* perl/lib/RDF/Redland/Storage.pm, perl/lib/RDF/Redland/Model.pm
+	(DESTROY): Remove debug message fixme.
+
+2004-01-24  Dave Beckett
+
+	* configure.ac: RAPTOR_MIN_VERSION=1.2.0
+
+	* Makefile.am: Add Changelog.1-3 to dist
+
+2004-01-21  Dave Beckett
+
+	* configure.ac: If /sw/bin, add to END of PATH for OSX
+
+2004-01-17  Dave Beckett
+
+	* python/RDF.py: Added FileStorage
+
+	* csharp/Makefile.am: touch stamp after build
+
+	* csharp/Makefile.am: Update clean
+
+	* csharp/Makefile.am: Update fakery
+
+	* perl/Makefile.PL: Stop perl linking to destdir
+
+2004-01-15  Dave Beckett
+
+	* java/Makefile.am: More OSX-only things; the JNI libs install
+	with a different name!
+
+	* python/RDF.py (Model.get_contexts): Fix Iterator call.
+
+	* java/Makefile.am: Add DYLD_LIBRARY_PATH to try to make 'make
+	check' work on OSX.
+
+	* configure.ac: Add OSX dirs to JDK search guesses
+
+	* ruby/Makefile.am: Try to find the right libruby another way
+
+	* python/RDF.py: Export NS class.
+	(Parser. parse_string_as_stream): Promote string URI to a Redland
+	Uri.
+
+2004-01-14  Dave Beckett
+
+	* configure.ac: help message consistency again
+
+	* configure.ac: help message consistency.
+
+	* php/redland_wrap.c.patch: Add librdf_php_world_finish() to
+	PHP_MSHUTDOWN_FUNCTION(redland)
+
+	* php/test.php: Remove world startup/shutdown, now handled by the
+	module.  use $world=librdf_php_get_world()
+
+	* php/Makefile.am: Ensure the .orig is around for patching.
+
+2004-01-13  Dave Beckett
+
+	* java/org/librdf/redland/Serializer.java,
+	java/org/librdf/redland/Parser.java,
+	java/org/librdf/redland/Model.java: Updated
+	Model/Parser/Serializer get/setFeature methods to use Node not
+	String.
+
+	* php/redland_wrap.c.patch: offsets
+
+	* python/RDF.py (Model.find_statements): Add optional context arg.
+
+	* perl/lib/RDF/Redland/Model.pm (find_statements): Add optional
+	CONTEXT arg and call librdf_model_find_statements_in_context if
+	given.
+
+	* perl/lib/RDF/Redland/Model.pm: Added contexts method.
+
+	* python/RDF.py (Model): Added get_contexts
+
+	* python/RDF.py (Model): Added get_feature, set_feature
+	(Parser): Updated get_feature, set_feature for using node values.
+
+	* perl/lib/RDF/Redland/Model.pm: (feature) Added
+
+	* perl/Makefile.PL: Add CFLAGS to dynamic_lib to get -g when it is
+	enabled.
+
+	* perl/Makefile.PL: CORE_PACKAGE must be in main namespace
+
+	* perl/lib/RDF/Redland/Parser.pm (feature): Use/return nodes.
+
+	* configure.ac: check for getenv
+
+2004-01-12  Dave Beckett
+
+	* configure.ac: MySQL store works with V3.23.58 and maybe others?
+
+2004-01-07  Dave Beckett
+
+	* perl/lib/RDF/Redland/Parser.pm (parse_string_into_model): Fix to
+	call the right function librdf_parser_parse_string_into_model
+
+	* configure.ac: Restore u64 tests
+
+2004-01-05  Dave Beckett
+
+	* perl/Makefile.am: Don't pass on PACKAGE variable, Makefile.PL
+	doesn't use it
+
+	* perl/Makefile.PL: Don't use PACKAGE envariable; the name isn't
+	changing now!  Hard code CORE name also.
+
+	* php/redland_wrap.c.patch: offsets again
+
+2004-01-04  Dave Beckett
+
+	* docs/Makefile.am: correctly substitute version in redland.3
+
+	* docs/Makefile.am, Makefile.PL, Makefile.am, configure.ac: dates
+
+	* Makefile.am: Make generated text files keep their links.  Only
+	do the generation in maintainer mode.
+
+	* php/redland_wrap.c.patch: Updated
+
+	* php/Makefile.am: Put the patching rules in the Makefile,
+	maintainer mode
+
+	* perl/Makefile.PL: Perl 5.8 is $]=5.008
+
+2004-01-03  Dave Beckett
+
+	* docs/fix-python-xhtml, docs/fix-pod-xhtml: TODO.html,
+	LICENSE.html, INSTALL.html: XHTML 1.0 strict and xhtml fixes
+
+	* Makefile.am: Make TODO up to date
+

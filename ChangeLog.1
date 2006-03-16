@@ -1,0 +1,519 @@
+2000-12-29  Dave Beckett
+
+	* docs/Makefile.am: Extra 'a' in api-big.html rule
+
+2000-12-01  Dave Beckett
+
+	* perl/Makefile.am: Added dc.rdf test file to dist
+
+2000-11-30  Dave Beckett
+
+	* perl/Makefile.am: Added example.pl to the release
+
+2000-11-27  Dave Beckett
+
+	* Makefile.am: Added rdf_utf8.c, rdf_utf8.h
+
+2000-11-21  Dave Beckett
+
+	* perl/rss-dump.pl: Show namespaced-properties off channel.
+
+	* perl/lib/RDF/Redland/RSS.pm (items): Return channel items in
+	correct order (from rdf:_<n> properties)
+
+2000-11-17  Dave Beckett
+
+	* perl/rss-dump.pl: Updated to dump all & particular namespaced
+	properties off nodes.
+
+	* perl/lib/RDF/Redland/Node.pm: Defined node type constants for
+	use with type method.
+
+	* perl/lib/RDF/Redland/RSS.pm (property): Added, returns value of
+	a property off a node.
+	(properties): Added, returns all properties off a node.
+	(properties_with_ns_prefix): Added, returns NS-prefixed properties
+	off a node.
+
+2000-11-15  Dave Beckett
+
+	* perl/lib/RDF/Redland/RSS.pm: Removed accessors since RDF::RSS is
+	a RDF::Model and can use methods from there.  Renamed method
+	RDF::RSS::Node method url to image_url to less confusion with uri
+	method on RDF::Node
+
+2000-11-14  Dave Beckett
+
+	* perl/lib/RDF/Redland/RSS.pm: RDF::RSS ISA RDF::Model now - makes
+	code tidied too.
+
+2000-11-12  Dave Beckett
+
+	* perl/Makefile.am: How did python references get in here?
+
+2000-11-08  Dave Beckett
+
+	* perl/MANIFEST: Added RDF::RSS and rss-dump.pl
+
+	* perl/rss-dump.pl: RSS 1.0 test program for RDF::RSS
+
+	* perl/lib/RDF/Redland/URI.pm (_new_from_object): Created.
+
+	* perl/lib/RDF/Redland/Node.pm (new_from_uri_string): Die if no
+	URI is given.
+	(uri): Return an RDF::URI object
+
+	* perl/lib/RDF/Redland/Model.pm
+	(find_statements,get_arcs,get_sources,get_targets): Retrieve all
+	results if evaluated in a Perl list context.  Makes this common
+	thing easy to do.  In scalar context return a Rdf::Stream of
+	RDF::Statement-s or RDF::Iterator of RDF::Node-s as before.
+
+	* perl/lib/RDF/Redland/Makefile.am: Added RSS.pm
+
+	* perl/lib/RDF/Redland/Iterator.pm (new): Take a list of creators
+	for the nodes that were used to create the iteration.
+
+	* perl/lib/RDF/Redland/RSS.pm: Redland Perl RSS 1.0 module
+
+2000-11-05  Dave Beckett
+
+	* docs/Makefile.am: Worked out a way to make 1 big HTML API
+	document
+
+2000-11-04  Dave Beckett
+
+	* docs/Makefile.am: Reordered doc sections Added documentation for
+	perl, python interfaces.
+
+	* Makefile.am: Added SWIG 1.3a5 common perl/python interface file
+
+	* python/RDF.py: Updates for SWIG 1.3a5
+
+	* python/Makefile.am, perl/MANIFEST, perl/Makefile.PL,
+	perl/Makefile.am: Updates for SWIG 1.3a5 and common perl/python
+	interface file
+
+	* perl/lib/RDF/Redland/Statement.pm
+	(new,new_from_statement,_new_from_object,new_from_nodes): Return
+	undef on failure to create an librdf_statement
+
+	* perl/lib/RDF/Redland/Node.pm
+	(new,new_from_uri_string,new_from_uri,new_from_literal,new_from_node,_new_from_object):
+	Return undef on failure to create an librdf_node
+
+	* perl/lib/RDF/Redland/URI.pm (new,new_from_uri): Return undef on
+	failure to create an librdf_uri
+
+	* perl/lib/RDF/Redland/Parser.pm (feature): Use $uri consistently.
+
+	* perl/example.pl: Use repat as test parser since it's always
+	included.
+
+2000-11-03  Dave Beckett
+
+	* Makefile.am: Don't compile java classes here for the moment
+
+2000-11-02  Dave Beckett
+
+	* python/Makefile.am: Remove obsolete fake lib stuff - not
+	compiling separate C module
+
+	* python/Makefile.am: Need to use includes in top srcdir
+
+	* python/test/Makefile.am: Added to make autoconf-able
+
+	* perl/example.pl: Updated for new parser constructor api
+
+	* perl/Makefile.am: Pass installation prefix on to perl commands
+
+	* perl/lib/RDF/Redland/Parser.pm (new): Updated for parser
+	constructor args
+	(feature): Added to get/set parser features
+
+	* python/test/test.py, python/Makefile.am, python/RDF.py,
+	python/README: Python interface
+
+2000-10-26  Dave Beckett
+
+	* perl/example.pl: Updated to have parsing too.  Tidied message
+	output
+
+	* perl/Makefile.PL, perl/Makefile.am: Zap redland_perl.c - can do
+	in perl land.
+
+	* perl/lib/RDF/Redland/Iterator.pm (next): Document why the
+	returned librdf_node-s are wrapped this way.
+
+	* perl/lib/RDF/Redland/Model.pm (serialise): Return stream of
+	librdf_statement-s that should freed
+	(find_statements): Return stream of librdf_statement-s that should
+	NOT be freed
+
+	* perl/lib/RDF/Redland/Parser.pm
+	(parse_as_stream,parse_into_model): Update for base uris
+
+	* perl/lib/RDF/Redland/Statement.pm (new_from_nodes): Use undef
+	for C-land NULLs.
+	(_new_from_object): Allow control over freedom of wrapped
+	librdf_statement object.
+	(subject,predicate,object): Fixed using these to set a statment
+	part which didn't work at all.
+
+	* perl/lib/RDF/Redland/Stream.pm (new,next): Track if streamed
+	librdf_statement objects should be freed as you go or left
+	(shared, handled by librdf_stream destruction)
+
+	* perl/lib/RDF/Redland/Node.pm (new_from_node): Use internal
+	object reference not RDF:::Node one to get copy of node
+	(_new_from_object): Don't free librdf_nodes attached this way, at
+	present they are shared.
+	(DESTROY): Support for freeing protection
+
+2000-10-24  Dave Beckett
+
+	* perl/lib/RDF/Redland.pm: Call librdf_init_world with "" for
+	empty char* field, swig is happier that way.
+
+	* perl/lib/RDF/Redland/Parser.pm (new): Return undef when object
+	creation fails
+	(parse_into_model): Use correct internal reference
+
+	* perl/lib/RDF/Redland/Stream.pm (end, next): Return empty stream
+	when stream object undef
+
+2000-10-20  Dave Beckett
+
+	* Makefile.am: Added rdf_parser_repat.c to distribution
+
+2000-10-13  Dave Beckett
+
+	* Makefile.am: Added concepts, removed contexts
+
+2000-10-10  Dave Beckett
+
+	* perl/example.pl: Exercise the methods for retrieving statement
+	parts and the as_string methods
+
+	* perl/lib/RDF/Redland/Statement.pm (object): Extra return
+	removed, oops.
+
+2000-10-06  Dave Beckett
+
+	* perl/lib/RDF/Redland/Statement.pm (subject,predicate,object):
+	Return new RDF::Node objects
+
+2000-10-02  Dave Beckett
+
+	* perl/Makefile.am: make clean now tidies everything generated
+	except for swig-derived output
+
+2000-10-01  Dave Beckett
+
+	* perl/Makefile.PL: Add all remaining libs to linkin from output
+	of redland --libs
+
+	* perl/lib/RDF/Redland/Statement.pm: Add flag to avoid freeing a
+	'wrapped' object created and owned by librdf
+
+	* perl/lib/RDF/Redland/Model.pm: When creating streams or
+	iterators, return a reference to this model so that the objects
+	can keep a reference to this object preventing premature
+	destruction before this object.
+
+	* perl/lib/RDF/Redland/URI.pm (as_string): Use
+	librdf_uri_to_string to prevent sharing a char* pointer.
+
+	* perl/lib/RDF/Redland/Stream.pm: Track the object that created
+	the RDF::Stream object so we don't get freed before it does.
+
+	* perl/lib/RDF/Redland/Iterator.pm: Track the object that created
+	the RDF::Iterator object so we don't get freed before it does.
+
+2000-09-29  Dave Beckett
+
+	* perl/example.pl: Redland eaxmple Perl program
+
+	* perl/Makefile.PL: Convert output of redland-config --libs into
+	absolute dirs - hack.
+
+	* perl/Makefile.am: Added redland_perl.c
+
+	* perl/lib/RDF/Redland/URI.pm: Use $RDF::Debug
+
+	* perl/lib/RDF/Redland/Stream.pm: Use $RDF::Debug
+	(next) Fixed to return RDF::Statement objects
+
+	* perl/lib/RDF/Redland/Storage.pm: Use $RDF::Debug Make
+	constructors return undef on failure
+
+	* perl/lib/RDF/Redland/Statement.pm: Use $RDF::Debug
+	(new_from_nodes) Replace undef node references with NULL
+	librdf_node pointers and tidy up more carefully.
+	(_new_from_object): Created to make perl objects from
+	librdf_statement objects created by librdf
+
+	* perl/lib/RDF/Redland/Parser.pm: Use $RDF::Debug
+
+	* perl/lib/RDF/Redland/Node.pm: Use $RDF::Debug
+	(_new_from_object): Created to make perl objects from librdf_node
+	objects created by librdf
+
+	* perl/lib/RDF/Redland/Model.pm: Use $RDF::Debug Make constructors
+	return undef on failure
+	(add_statement): Don't zap things that don't exist.
+
+	* perl/lib/RDF/Redland/Iterator.pm: Use $RDF::Debug
+	(next) Renamed from get_next, fixed to return RDF::Node objects
+
+	* perl/lib/RDF/Redland.pm: Added $RDF::Debug variable.
+
+2000-09-28  Dave Beckett
+
+	* Makefile.am: Added rdf_parser_redland.c
+
+	* Makefile.am: Added XML_OBJS to allow XML parser objects to be in
+	librdf.a when necessary
+
+	* perl/Makefile.PL: Receive configuration values (package,
+	version, top src dir) from environment
+
+	* perl/Makefile.am: Added perl build, check, install, clean etc
+	support
+
+	* perl/lib/RDF/Redland/Makefile.am, perl/Makefile.am,
+	perl/lib/Makefile.am: Added automake for perl
+
+	* perl/Makefile.PL: Output to Makefile.perl Ensure only .pm files
+	are installed
+
+	* perl/MANIFEST, perl/MANIFEST.SKIP,
+	perl/lib/RDF/Redland/Storage.pm, perl/lib/RDF/Redland/Stream.pm,
+	perl/lib/RDF/Redland/URI.pm, perl/lib/RDF/Redland/Iterator.pm,
+	perl/lib/RDF/Redland/Model.pm, perl/lib/RDF/Redland/Node.pm,
+	perl/lib/RDF/Redland/Parser.pm, perl/lib/RDF/Redland/Statement.pm,
+	perl/Makefile.PL, perl/lib/RDF/Redland.pm: Added perl interface
+
+2000-09-27  Dave Beckett
+
+	* Makefile.am: Reorganised header macros Added LICENSE.txt to dist
+
+2000-08-30  Dave Beckett
+
+	* docs/Makefile.am: Tidy order of junk
+
+	* Makefile.am: Added autogen.sh to distribution.
+
+	* autogen.sh: Generates the initial makefiles from a pristine CVS
+	tree
+
+	* Makefile.am: Maintainer - compile the java classes Add the
+	sources and classes to the release
+
+2000-08-28  Dave Beckett
+
+	* Makefile.am: clean test databases
+
+	* docs/Makefile.am: Added hash cursor, storage hashes, heuristics
+	sections Amended rules to build HTML api automatically when SGML
+	changes
+
+2000-08-27  Dave Beckett
+
+	* Makefile.am: Added examples target
+
+2000-08-26  Dave Beckett
+
+	* Makefile.am: Added example4
+
+2000-08-25  Dave Beckett
+
+	* Makefile.am: rdf_heuristics_test test added
+
+2000-08-22  Dave Beckett
+
+	* Makefile.am: Added example3, renamed example to example1
+
+2000-08-21  Dave Beckett
+
+	* docs/Makefile.am: Add api directory to distribution, remove it
+	when really cleaning
+
+	* docs/Makefile.am: Tidy up before building SGML file
+
+	* docs/Makefile.am: Added overview.pdf, some make targets for
+	overview.*
+
+2000-08-18  Dave Beckett
+
+	* docs/Makefile.am: Added API overview files
+
+	* Makefile.am: Make 'make test' work
+
+	* Makefile.am: Moved headers around, tried to put correct ones
+	installed.  No promises.
+
+	* Makefile.am: libredland -> librdf
+
+2000-08-17  Dave Beckett
+
+	* Makefile.am: librdf.h->redland.h
+
+	* Makefile.am: librdf->redland
+
+	* Makefile.am: Put MPL.html in distribution.
+
+	* docs/Makefile.am: Added README, README.html and build it
+
+	* Makefile.am: librdf->redland
+
+2000-08-16  Dave Beckett
+
+	* Makefile.am: Added rdf_storage_hashes.[ch]
+
+2000-08-14  Dave Beckett
+
+	* Makefile.am: Added MEM, MEM_LIBS defines for memory debugging
+
+2000-08-12  Dave Beckett
+
+	* Makefile.am: Added rdf_hash_cursor.c
+
+2000-08-11  Dave Beckett
+
+	* docs/Makefile.am: Remove hash_gdbm, since not possible to use at
+	present Invoke perl on build-docs so doesn't matter where perl is
+
+	* Makefile.am: Clean example2
+
+	* Makefile.am: Compile rdf_parser_test Added rdf_heuristics.c
+	module
+
+2000-08-09  Dave Beckett
+
+	* Makefile.am: Merge BUGS.html into TODO.html
+
+	* Makefile.am: Send BUGS.html
+
+	* docs/Makefile.am: Create docbook SGML and HTML
+
+	* Makefile.am: Removed rdf_config.h from dist
+
+	* Makefile.am: Renamed md5.c to rdf_digest_md5.c
+
+2000-08-03  Dave Beckett
+
+	* Makefile.am: Use new in memory hash code
+
+	* Makefile.am: Added rdf_uri_test
+
+	* Makefile.am: Added example2
+
+2000-08-02  Dave Beckett
+
+	* Makefile.am: example.c is not part of the library!
+
+	* Makefile.am: Put rdf parser sources in dist
+
+	* Makefile.am: Added full header Added STANDARD_CFLAGS for
+	compiling (external) code that won't work with loads of gcc
+	warning options.
+
+2000-07-31  Dave Beckett
+
+	* Makefile.am: example is not a test
+
+	* Makefile.am: Update tests
+
+	* Makefile.am: install a binary - librdf-config, and a header file
+	- librdf.h
+
+2000-07-28  Dave Beckett
+
+	* Makefile.am: Added configurable rdf_parser_sirpac
+
+	* Makefile.am: Added rdf_storage_list and rdf_stream bits Added
+	example.c - sirpac output filter
+
+2000-07-17  Dave Beckett
+
+	* Makefile.am: Added rdf_storage.[ch]
+
+2000-07-15  Dave Beckett
+
+	* Makefile.am: Added TODO.html, TODO and renamed context
+
+2000-07-12  Dave Beckett
+
+	* Makefile.am: Added CC line
+
+	* Makefile.am: Added rdf_memory.c Define -DLIBRDF_DEBUG for
+	maintainer CFLAGS
+
+2000-07-11  Dave Beckett
+
+	* Makefile.am: Don't need LICENSE.h rule
+
+2000-07-06  Dave Beckett
+
+	* Makefile.am: Added memcmp.c to dist, not library sources
+
+	* Makefile.am: Define SUBDIRS from configured content Added
+	(optional) memcmp.c for systems with broken libc
+
+2000-07-05  Dave Beckett
+
+	* Makefile.am: Added librdf-config.in
+
+	* Makefile.am: Added rdf_hash_bdb.[ch] to distribution
+
+2000-07-04  Dave Beckett
+
+	* Makefile.am: Rule to create LICENSE.h for including in sources.
+
+	* Makefile.am: Use -DSTANDALONE to trigger tests
+
+2000-07-03  Dave Beckett
+
+	* Makefile.am: Added rdf_list and rdf_iterator implementations
+
+	* Makefile.am: Added docs subdir
+
+	* COPYING.LIB: GNU LESSER GENERAL PUBLIC LICENSE
+
+	* docs/Makefile.am: Added comment header
+
+	* docs/Makefile.am: Documentation
+
+	* Makefile.am: Added maintainer rules for setting extra CFLAGS
+
+	* Makefile.am: Added rules to build text files from HTML sources
+
+2000-06-30  Dave Beckett
+
+	* acinclude.m4: Restored
+
+	* Makefile.am: Fix \ing problem
+
+	* acinclude.m4: No longer needed
+
+	* Makefile.am: Removed GPLed sources
+
+	* Makefile.am: Added rdf_assertion_context.h Added ChangeLog to
+	dist
+
+2000-06-29  Dave Beckett
+
+	* Makefile.am: Renamed rmd* to ripemd160* Added $(LIBS) to link
+	lines Added rdf_digest_openssl.c (optional) Boosed gcc -W options
+
+2000-06-28  Dave Beckett
+
+	* Makefile.am: Added proto-model code, rdf_model_storage.h and
+	rdf_iterator.h
+
+	* Makefile.am: CVS IDs
+
+	* COPYING, Makefile.am, acinclude.m4: Created directory structure
+
+	* COPYING, Makefile.am, acinclude.m4: New file.
