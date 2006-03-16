@@ -1,6 +1,0 @@
-Makefile
-Makefile.in
-php_redland.h
-redland.so
-redland_wrap*
-test*db

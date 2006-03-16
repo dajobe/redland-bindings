@@ -1,6 +1,0 @@
-.cvsignore
-Makefile
-Makefile.in
-*.class
-core.java
-core.java.in

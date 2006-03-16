@@ -1,6 +1,0 @@
-Makefile
-Makefile.in
-Redland.so
-Redland_wrap*
-pkgIndex.tcl
-test*db
