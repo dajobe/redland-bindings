@@ -174,6 +174,9 @@ class World(object):
 
   def __init__(self,digest_name="",uri_hash=None):
     """Create new RDF World object (constructor)"""
+    #trick to ensure function exists during module cleanup
+    self._cleanup = Redland.librdf_free_world
+
     self._world=Redland.librdf_new_world()
     Redland.librdf_world_open(self._world)
 
@@ -184,10 +187,7 @@ class World(object):
     global _debug    
     if _debug:
       print "Destroying RDF.World"
-    # Sometimes the global destructor messes up and deletes
-    # the Redland module before us
-    if Redland.librdf_free_world is not None:
-      Redland.librdf_free_world(self._world)
+    self._cleanup(self._world)
 
 # end class World
 
