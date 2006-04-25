@@ -1,3 +1,26 @@
+2006-04-24  Dave Beckett  <dave@dajobe.org>
+
+	* csharp/Stream.cs: (Stream.Current): Return null when raw_ret is 0
+
+	* csharp/QueryResults.cs: (Query.AsStream): Return null when
+	raw_ret is 0
+
+	* csharp/Query.cs: (Query.Execute): Return null when raw_ret is 0
+
+	* csharp/Model.cs: (Model.Dispose): Hack to use storage to prevent
+	a mono warning
+	(Model.FindStatements, Model.GetSource, Model.Sources,
+	Model.GetPredicate, Model.GetPredicates, Model.GetTarget,
+	Model.GetTargets, Model.ToStream, Model.GetContexts,
+	Model.Execute): Return null when raw_ret is 0
+
+	* csharp/Iterator.cs: (Iterator.Current): Return null when raw_ret is 0
+
+2006-04-19  Dave Beckett  <dave@dajobe.org>
+
+	* python/RDF.py: (World.__init__,World.__del__): Fix module
+	cleanup to ensure Redland.librdf_free_world lives till the end
+
 2006-03-15  Dave Beckett  <dave@dajobe.org>
 
 	* Switched to Subversion version control.
