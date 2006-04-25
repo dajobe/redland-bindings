@@ -38,7 +38,10 @@ namespace Redland {
 			get {
 				IntPtr raw_ret = librdf_stream_get_object (handle);
 				// FIXME: throw exception if raw_ret is zero
-				return new Statement (raw_ret);
+				if(raw_ret != IntPtr.Zero)
+					return new Statement (raw_ret);
+	                        else 
+        	                  	return null;
 			}
 		}
 
