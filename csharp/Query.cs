@@ -91,7 +91,11 @@ namespace Redland {
 		{
 			IntPtr raw_qr = librdf_query_execute (handle, model.Handle);
 			// FIXME: throw exception if raw_qr is zero
-			QueryResults qr = new QueryResults (raw_qr);
+			QueryResults qr;
+			if (raw_qr != IntPtr.Zero)
+				qr = new QueryResults (raw_qr);
+			else
+				qr = null;
 			return qr;
 		}
 	}
