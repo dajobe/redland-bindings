@@ -12,8 +12,12 @@ module Redland
       when "memory";
       when "hashes";
       when "file";
+      when "uri";
+      when "mysql";
+      when "sqlite";
+      when "postgresql";
       else
-        raise RedlandError.new('Failed to initialize storage')
+        raise RedlandError.new("Failed to initialize storage, unknown storage type [#{store_type}]")
       end
       @name = name
       @store_type = store_type
