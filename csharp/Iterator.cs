@@ -38,7 +38,10 @@ namespace Redland {
 			get { 
 				IntPtr raw_ret = librdf_iterator_get_object (handle);
 				// FIXME: throw exception if zero?
-				return new Node (raw_ret);
+				if(raw_ret != IntPtr.Zero)
+					return new Node (raw_ret);
+				else
+					return null;
 			}
 		}
 
