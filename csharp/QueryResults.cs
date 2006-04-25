@@ -97,8 +97,11 @@ namespace Redland {
 		public Stream AsStream ()
 		{
 			IntPtr raw_ret = librdf_query_results_as_stream (handle);
-			// FIXME: throw exception if zero?
-			return new Stream (raw_ret);
+                        // FIXME: throw exception if zero?
+			if(raw_ret != IntPtr.Zero)
+                        	return new Stream (raw_ret);
+                        else 
+                          	return null;
 		}
 
 		// These Binding* methods apply to the current position in the
