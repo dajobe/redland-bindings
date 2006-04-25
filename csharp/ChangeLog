@@ -1,3 +1,20 @@
+2006-04-24  Dave Beckett  <dave@dajobe.org>
+
+	* Stream.cs: (Stream.Current): Return null when raw_ret is 0
+
+	* QueryResults.cs: (Query.AsStream): Return null when raw_ret is 0
+
+	* Query.cs: (Query.Execute): Return null when raw_ret is 0
+
+	* Model.cs: (Model.Dispose): Hack to use storage to prevent a mono
+	warning
+	(Model.FindStatements, Model.GetSource, Model.Sources,
+	Model.GetPredicate, Model.GetPredicates, Model.GetTarget,
+	Model.GetTargets, Model.ToStream, Model.GetContexts,
+	Model.Execute): Return null when raw_ret is 0
+
+	* Iterator.cs: (Iterator.Current): Return null when raw_ret is 0
+
 2006-03-15  Dave Beckett  <dave@dajobe.org>
 
 	* QueryResults.cs (QueryResults.MakeResultsHash,
