@@ -60,6 +60,11 @@ namespace Redland {
 					librdf_free_model (handle);
 					handle = new HandleRef (this, IntPtr.Zero);
 				}
+                                // This is mostly to use storage and
+                                // prevent a Mono compile warning
+                                if(this.storage != null)
+                                  this.storage = null;
+                                
 				world.RemoveReference ();
 				world = null;
 				disposed = true;
@@ -109,7 +114,12 @@ namespace Redland {
 		public Stream FindStatements (Statement stm)
 		{
 			IntPtr raw_ret = librdf_model_find_statements (handle, stm.Handle);
-			return new Stream (raw_ret);
+			Stream stream;
+			if (raw_ret != IntPtr.Zero)
+				stream = new Stream (raw_ret);
+			else
+				stream = null;
+			return stream;
 		}
 		
 		[DllImport ("librdf")]
@@ -133,7 +143,11 @@ namespace Redland {
 		{
 			IntPtr raw_ret = librdf_model_get_sources (handle, arc.Handle, target.Handle);
 			// FIXME: throw exception if raw_ret == IntPtr.Zero?
-			Iterator it = new Iterator (raw_ret);
+			Iterator it;
+			if (raw_ret != IntPtr.Zero)
+				it = new Iterator (raw_ret);
+			else
+				it = null;
 			return it;
 		}
 
@@ -172,7 +186,11 @@ namespace Redland {
 		{
 			IntPtr raw_ret = librdf_model_get_targets (handle, source.Handle, arc.Handle);
 			// FIXME: throw exception if raw_ret is zero?
-			Iterator it = new Iterator (raw_ret);
+			Iterator it;
+			if (raw_ret != IntPtr.Zero)
+				it = new Iterator (raw_ret);
+			else
+				it = null;
 			return it;
 		}
 
@@ -183,7 +201,11 @@ namespace Redland {
 		{
 			IntPtr raw_ret = librdf_model_get_arcs (handle, source.Handle, target.Handle);
 			// FIXME: throw exception if raw_ret is zero?
-			Iterator it = new Iterator (raw_ret);
+			Iterator it;
+			if (raw_ret != IntPtr.Zero)
+				it = new Iterator (raw_ret);
+			else
+				it = null;
 			return it;
 		}
 
@@ -226,7 +248,11 @@ namespace Redland {
 		{
 			IntPtr raw_ret = librdf_model_as_stream (handle);
 			// FIXME: throw exception if raw_ret == zero?
-			Stream stream = new Stream (raw_ret);
+			Stream stream;
+			if (raw_ret != IntPtr.Zero)
+				stream = new Stream (raw_ret);
+			else
+				stream = null;
 			return stream;
 		}
 
@@ -253,7 +279,11 @@ namespace Redland {
 		{
 			IntPtr raw_ret = librdf_model_get_contexts (handle);
 			// FIXME: throw exception if raw_ret == zero?
-			Iterator it = new Iterator (raw_ret);
+			Iterator it;
+			if (raw_ret != IntPtr.Zero)
+				it = new Iterator (raw_ret);
+			else
+				it = null;
 			return it;
 		}
 
@@ -296,7 +326,11 @@ namespace Redland {
 		{
 			IntPtr raw_ret = librdf_model_query_execute (handle, query.Handle);
 			// FIXME: throw exception if raw_ret == zero?
-			QueryResults qr = new QueryResults (raw_ret);
+			QueryResults qr;
+			if (raw_ret != IntPtr.Zero)
+				qr = new QueryResults (raw_ret);
+			else
+				qr = null;
 			return qr;
 		}
 
