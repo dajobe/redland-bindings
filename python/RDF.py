@@ -2257,7 +2257,7 @@ class NS(object):
   """ Redland Namespace Utility Class
 
   import RDF
-  nspace = RDF.NS("http://example.com/foo")
+  nspace = RDF.NS("http://example.com/foo#")
 
   # creates an RDF Node for http://example.com/foo#blah   
   node1 = nspace.blah
@@ -2272,19 +2272,19 @@ class NS(object):
   """
 
   def __init__(self,prefix):
-    self.prefix = prefix
-    self.nodecache = {}
+    self._prefix = prefix
+    self._nodecache = {}
 
-  def node(self,localName):
-    if localName not in self.nodecache:
-      self.nodecache[localName] = Redland.librdf_new_node_from_uri_string(_world._world, self.prefix+localName)
-    return Node(from_object=self.nodecache[localName])
+  def _node(self,localName):
+    if localName not in self._nodecache:
+      self._nodecache[localName] = Redland.librdf_new_node_from_uri_string(_world._world, self._prefix+localName)
+    return Node(from_object=self._nodecache[localName])
 
   def __getitem__(self,localName):
-    return self.node(localName)
+    return self._node(localName)
 
   def __getattr__(self,localName):
-    return self.node(localName)
+    return self._node(localName)
 
 
 # global init, create our world.
