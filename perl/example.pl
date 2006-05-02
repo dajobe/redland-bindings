@@ -112,7 +112,7 @@ for my $node (@nodes) {
 $iterator=undef;
 
 
-my $q = new RDF::Redland::Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>");
+my $q = new RDF::Redland::Query("PREFIX dc: <http://purl.org/dc/elements/1.1/>\nSELECT ?a ?c WHERE { ?a dc:title ?c }", undef, undef, "sparql");
 print "Querying for dc:titles:\n";
 my $results=$model->query_execute($q);
 my $count=1;
@@ -137,7 +137,7 @@ my $str=$results->to_string;
 print "Query results serialized to an XML string size ".length($str)." bytes\n";
 
 print "\nExecuting SPARQL construct query\n";
-my $q2 = new RDF::Redland::Query("CONSTRUCT * WHERE (?a ?b ?c)", undef, undef, "sparql");
+my $q2 = new RDF::Redland::Query("CONSTRUCT * WHERE { ?a ?b ?c }", undef, undef, "sparql");
 my $results=$model->query_execute($q2);
 $stream=$results->as_stream;
 $count=0;
