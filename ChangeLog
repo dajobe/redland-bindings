@@ -1,4 +1,26 @@
+2006-05-01  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/redland-types.i: Remove ruby param, it's only called in
+	ruby context
+
+	* ruby/redland-types.i: Added SWIGRUBY around typemaps
+
+	* java/org/librdf/redland/World.java: (versionString,copyrightString):
+	Rename the SWIG accessor java functions for the constants.
+
+2006-04-29  Dave Beckett  <dave@dajobe.org>
+
+	* redland-bindings.spec.in: Added ruby req
+
+	* python/RDF.py: (NS): Rename method node and local vars to
+	__-prefixed names less likely to be used in a namaespace
+
 2006-04-24  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/store.rb: (Redland.TripleStore.initialize):
+	Added lots more storage types.  There should be a programatic way
+	to do this at run time.  Fixess Issue#0000076
+	http://bugs.librdf.org/mantis/view.php?id=76
 
 	* csharp/Stream.cs: (Stream.Current): Return null when raw_ret is 0
 
