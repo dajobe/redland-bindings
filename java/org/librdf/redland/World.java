@@ -46,12 +46,12 @@ public class World
 
   public String versionString() 
     {
-      return core.get_librdf_version_string();
+      return core.librdf_version_string_get();
     }
 
   public String copyrightString() 
     {
-      return core.get_librdf_copyright_string();
+      return core.librdf_copyright_string_get();
     }
 
 /*
