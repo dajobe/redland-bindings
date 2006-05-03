@@ -1,3 +1,15 @@
+2006-05-02  Dave Beckett  <dave@dajobe.org>
+
+	* tcl/redland-init.i: Nothing needed here now
+
+	* tcl/Makefile.am: Invoke swig with -pkgversion @REDLAND_VERSION@
+
+	* ruby/test/Makefile.am: do not ignore test failures
+
+	* ruby/test/test_query.rb: Updates for query results syntax changes
+
+	* perl/example.pl: update sparql
+
 2006-05-01  Dave Beckett  <dave@dajobe.org>
 
 	* ruby/redland-types.i: Remove ruby param, it's only called in
