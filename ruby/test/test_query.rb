@@ -117,7 +117,7 @@ class TestQuery < Test::Unit::TestCase
     string = results.to_string()
 
     # length of a SPARQL results format string - might change
-    assert_equal(string.length(), 465)
+    assert_equal(string.length(), 482)
   end
 
   def test_model_query_serialize_ask()
@@ -134,7 +134,7 @@ class TestQuery < Test::Unit::TestCase
     string = results.to_string()
 
     # length of a SPARQL results format string - might change
-    assert_equal(string.length(), 133)
+    assert_equal(string.length(), 150)
   end
 
   def test_model_query_serialize_construct()
