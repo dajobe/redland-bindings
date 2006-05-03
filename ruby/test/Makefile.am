@@ -47,8 +47,6 @@ check-ruby: ../ruby-redland-stamp $(RUBY_TEST_FILES)
 	done; \
 	if test $$result = 1 ; then \
 	  echo "FAILED tests:$$fails"; \
-	  echo "NOTE: Ignoring failures - likely caused by missing test/unit.rb (ships with ruby 1.8.0+)"; \
-	  result=0; \
 	fi; \
 	exit $$result
 
