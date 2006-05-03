@@ -49,7 +49,7 @@ RUN=@REDLAND_RUN@
 SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_INIT_I
 
 $(TCL_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-init.i redland-pre.i
-	swig -v -tcl8 $(SWIG_OPTS) -module $(TCL_PACKAGE) -o $@ $<
+	swig -v -tcl8 -pkgversion @REDLAND_VERSION@ $(SWIG_OPTS) -module $(TCL_PACKAGE) -o $@ $<
 
 $(TCL_PACKAGE)_wrap.so: $(TCL_PACKAGE)_wrap.c
 	$(CC) $(DEFS) $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(TCL_PACKAGE)_wrap.c -c -o $@
