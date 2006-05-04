@@ -291,7 +291,7 @@ class Node(object):
       elif args.has_key('language'):
         xml_language=args['language']
       else:
-        xml_language=""
+        xml_language=None
       if args.has_key('is_wf_xml'):
         is_wf_xml=args['is_wf_xml']
       else:
