@@ -26,6 +26,63 @@ pre
 <p>Not yet released.
 </p>
 
+<p>The main change in this release is to synchronise with 
+<a href="http://librdf.org/">Redland</a> 1.0.4
+(<a href="http://librdf.org/RELEASE.html#rel1_0_4">Redland 1.0.4 release Notes</a>)
+and provide some other minor fixes.
+</p>
+
+
+<h3>Packaging and Configuration Changes</h3>
+
+<p>Now using <a href="http://subversion.tigris.org/">Subversion</a>
+for version control and the <a href="INSTALL.html">Redland bindings installation instructions</a> explain how to get Redland from Subversion.</p>
+
+
+<h3>C# bindings changes</h3>
+
+<p>Return <code>null</code> in more cases when a redland function
+returns 0/NULL for a function result..</p>
+
+
+<h3>Java bindings changes</h3>
+
+<p>Rename the SWIG accessor java functions for the constants which
+changed in some previous SWIG verison.</p>
+
+
+<h3>Perl bindings changes</h3>
+
+<p>No changes.</p>
+
+
+<h3>PHP bindings changes</h3>
+
+<p>No changes.</p>
+
+
+<h3>Python bindings changes</h3>
+
+<p>Fix module cleanup to ensure Redland.librdf_free_world lives till the end.</p>
+
+<p><code>NS</code> Class: Rename method <code>node</code> and local
+variables to <code>__</code>-prefixed names less likely to be used in a namespace.
+</p>
+
+<p>Edit to allow omitting a literal language and make the default work with
+the updated typed literal fix in Redland 1.0.3</p>
+
+
+<h3>Ruby bindings changes</h3>
+
+<p>Build fixes for newer SWIG.</p>
+
+
+<h3>Tcl bindings changes</h3>
+
+<p>Update build configuration to record redland name/version correctly.</p>
+
+
 
 <h2 id="rel1_0_3_1"><a name="rel1_0_3_1">Redland Bindings 1.0.3.1 Changes</a></h2>
 
