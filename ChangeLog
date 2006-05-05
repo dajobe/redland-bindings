@@ -1,3 +1,7 @@
+2006-05-05  Dave Beckett  <dave@dajobe.org>
+
+	* Snapshotted redland_bindings_1_0_4_1 for 1.0.4.1 release
+
 2006-05-03  Dave Beckett  <dave@dajobe.org>
 
 	* python/RDF.py: (None.__init__): Default to xml_language=None
