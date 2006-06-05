@@ -200,6 +200,19 @@ public class Model
     return new Iterator(this.world, core.librdf_model_get_contexts(this.object), this, null, null);
   }
 
+
+  public QueryResults queryExecute(Query q)
+  {
+    long result=core.librdf_model_query_execute (this.object, q.__get_object());
+    
+    if (result == 0)
+      return null;
+    
+    QueryResults qr = new QueryResults (result);
+    return (qr);
+  }
+  
+
   protected long __get_object() 
   {
     return this.object;
