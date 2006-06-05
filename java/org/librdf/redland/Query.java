@@ -41,7 +41,7 @@ public class Query
       this.object=core.librdf_new_query (world.__get_object(), query_language, iquery_uri, s, ibase_uri);	
     }
 
-  public QueryResults Execute (Model model)
+  public QueryResults execute(Model model)
     {
       long result=core.librdf_query_execute (this.object, model.__get_object());
 
