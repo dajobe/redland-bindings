@@ -73,7 +73,7 @@ example.java skeleton.java \
 $(SWIG_OUTPUTS) \
 run-java
 
-CLEANFILES=test*db $(JAVA_CRUFT)
+CLEANFILES=*.db test-out.rdf $(JAVA_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
 RUN=@REDLAND_RUN@
