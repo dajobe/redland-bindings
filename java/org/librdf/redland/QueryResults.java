@@ -65,22 +65,22 @@ public class QueryResults implements java.util.Iterator
       return h;
     }
 
-  public int BindingsCount ()
+  public int bindingsCount ()
     {
       return core.librdf_query_results_get_bindings_count (this.object);
     }
 
-  public int ResultsCount ()
+  public int resultsCount ()
     {
       return core.librdf_query_results_get_count (this.object);
     }
 
-  public String BindingName (int offset)
+  public String bindingName (int offset)
     {
       return core.librdf_query_results_get_binding_name (this.object, offset);
     }
 
-  public Node BindingValue (int offset)
+  public Node bindingValue (int offset)
     {
       long v = core.librdf_query_results_get_binding_value (this.object, offset);
 
@@ -90,7 +90,7 @@ public class QueryResults implements java.util.Iterator
         return null;
     }
 
-  public Node BindingValueByName (String name)
+  public Node bindingValueByName (String name)
     {
       long v = core.librdf_query_results_get_binding_value_by_name (this.object, name);
 
@@ -130,7 +130,7 @@ public class QueryResults implements java.util.Iterator
       	return false;
     }
 
-  public Stream AsStream ()
+  public Stream asStream ()
     {
       long raw_ret = core.librdf_query_results_as_stream (this.object);
       // FIXME: throw exception if zero?
