@@ -189,9 +189,9 @@ class example {
     }
 
     serializer.setNamespace("dc", new URI(world, "http://purl.org/dc/elements/1.1/"));
-    serializer.serialize_to_file("test-out.rdf", uri, model);
+    serializer.toFile("test-out.rdf", uri, model);
 
-    String str1=serializer.serialize_to_string(uri, model);
+    String str1=serializer.toString(uri, model);
     System.out.println("Serialized to RDF/XML as a string size "+str1.length()+" bytes");
     serializer=null;
 
