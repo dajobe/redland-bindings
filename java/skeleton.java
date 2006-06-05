@@ -4,7 +4,7 @@
 //
 // $Id$
 //
-// Copyright (C) 2001-2004 David Beckett - http://purl.org/net/dajobe/
+// Copyright (C) 2001-2006 David Beckett - http://purl.org/net/dajobe/
 // Copyright (C) 2001-2004 University of Bristol - http://www.bristol.ac.uk/
 // 
 // This package is Free Software or Open Source available under the
@@ -30,6 +30,8 @@ import org.librdf.redland.Stream;
 import org.librdf.redland.Storage;
 import org.librdf.redland.Hash;
 import org.librdf.redland.Parser;
+import org.librdf.redland.Query;
+import org.librdf.redland.QueryResults;
 import org.librdf.redland.Model;
 
 class skeleton {
@@ -48,6 +50,8 @@ class skeleton {
     org.librdf.redland.Storage storage=new org.librdf.redland.Storage(world, "memory", "name", "");
     org.librdf.redland.Model model=new org.librdf.redland.Model(world, storage, "");
     org.librdf.redland.Parser parser=new org.librdf.redland.Parser(world, "rdfxml", "", uri);
+    org.librdf.redland.Query query=new org.librdf.redland.Query(world, "query string", uri, "sparql", uri);
+    org.librdf.redland.QueryResults queryResults=new org.librdf.redland.QueryResults(0L);
     org.librdf.redland.Serializer serializer=new org.librdf.redland.Serializer(world, "rdfxml", "", uri);
   }
   
