@@ -200,6 +200,23 @@ public class Model
     return new Iterator(this.world, core.librdf_model_get_contexts(this.object), this, null, null);
   }
 
+  public String toString(URI base_uri, String name, String mime_type, URI type_uri) 
+  {
+    long rbase_uri=0L;
+    if(base_uri !=null)
+      rbase_uri=base_uri.__get_object();
+
+    long rtype_uri=0L;
+    if(type_uri !=null)
+      rtype_uri=type_uri.__get_object();
+    
+    return core.librdf_model_to_string(this.object, rbase_uri, name, mime_type, rtype_uri);
+  }
+
+  public String toString()
+  {
+    return this.toString(null, "", "", null);
+  }
 
   public QueryResults queryExecute(Query q)
   {
