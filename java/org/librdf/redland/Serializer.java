@@ -47,13 +47,13 @@ public class Serializer
     }
 
 
-  public boolean serialize_to_file(String filename, URI base_uri, Model model) 
+  public boolean toFile(String filename, URI base_uri, Model model) 
     {
       int result=core.librdf_serializer_serialize_model_to_file(this.object, filename, base_uri.__get_object(), model.__get_object());
       return (result != 0);
     }
 
-  public String serialize_to_string(URI base_uri, Model model)
+  public String toString(URI base_uri, Model model)
     {
       return core.librdf_serializer_serialize_model_to_string(this.object, base_uri.__get_object(), model.__get_object());
     }
