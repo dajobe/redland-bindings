@@ -4,7 +4,7 @@
 #
 # $Id$
 #
-# Copyright (C) 2000-2005 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2006 David Beckett - http://purl.org/net/dajobe/
 # Copyright (C) 2000-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -51,6 +51,7 @@ JAVA_SOURCE_FILES=$(JAVA_PATH)/Iterator.java $(JAVA_PATH)Hash.java	\
 $(JAVA_PATH)Parser.java $(JAVA_PATH)URI.java $(JAVA_PATH)Node.java	\
 $(JAVA_PATH)World.java $(JAVA_PATH)Serializer.java			\
 $(JAVA_PATH)Statement.java $(JAVA_PATH)Model.java			\
+$(JAVA_PATH)Query.java $(JAVA_PATH)QueryResults.java			\
 $(JAVA_PATH)Storage.java $(JAVA_PATH)core.java				\
 $(JAVA_PATH)Stream.java
 
@@ -58,6 +59,7 @@ JAVA_CLASS_FILES=$(JAVA_PATH)/Iterator.class $(JAVA_PATH)Hash.class	\
 $(JAVA_PATH)Parser.class $(JAVA_PATH)URI.class $(JAVA_PATH)Node.class	\
 $(JAVA_PATH)World.class $(JAVA_PATH)Serializer.class			\
 $(JAVA_PATH)Statement.class $(JAVA_PATH)Model.class			\
+$(JAVA_PATH)Query.class $(JAVA_PATH)QueryResults.class			\
 $(JAVA_PATH)Storage.class $(JAVA_PATH)core.class			\
 $(JAVA_PATH)Stream.class
 
