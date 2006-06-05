@@ -53,6 +53,10 @@ public class Serializer
       return (result != 0);
     }
 
+  public String serialize_to_string(URI base_uri, Model model)
+    {
+      return core.librdf_serializer_serialize_model_to_string(this.object, base_uri.__get_object(), model.__get_object());
+    }
   
   public Node getFeature(URI feature) 
     {
@@ -63,6 +67,11 @@ public class Serializer
   public int setFeature(URI feature, Node value) 
     {
       return core.librdf_serializer_set_feature(this.object, feature.__get_object(), value.__get_object());
+    }
+  
+  public int setNamespace(String prefix, URI namespace) 
+    {
+      return core.librdf_serializer_set_namespace(this.object, namespace.__get_object(), prefix);
     }
   
 }
