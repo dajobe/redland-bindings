@@ -1,3 +1,39 @@
+2006-06-04  Dave Beckett  <dave@dajobe.org>
+
+	* java/example.java: Update for more java-like names
+
+	* java/org/librdf/redland/Serializer.java: more java-like names
+
+	* java/org/librdf/redland/Serializer.java: (serialize_to_string):
+	Added (setNamespace): Added
+
+	* java/org/librdf/redland/Model.java: (toString): Added,
+	defaulting to RDF/XML out
+
+	* java/example.java: Updated to a complete example including
+	querying, getting string results from queries, triple results and
+	serializing.
+
+	* java/Makefile.am: Clean test-out.rdf
+
+	* java/org/librdf/redland/QueryResults.java: More java-like method
+	names
+
+	* java/org/librdf/redland/Query.java: More java-like method names
+
+	* java/run-java: Append to paths
+
+	* java/skeleton.java: Added Query and QueryResults classes
+
+	* java/Makefile.am: Added Query and QueryResults
+
+	* java/org/librdf/redland/Model.java: (Model.queryExecute): Added
+
+	* java/org/librdf/redland/Makefile.am: Added Query and QueryResults
+
+	* java/org/librdf/redland/Query.java,
+	java/org/librdf/redland/QueryResults.java: Query and QueryResults
+
 2006-05-05  Dave Beckett  <dave@dajobe.org>
 
 	* Snapshotted redland_bindings_1_0_4_1 for 1.0.4.1 release
