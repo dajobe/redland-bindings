@@ -30,12 +30,12 @@ namespace Redland {
 		}
 
 		public Parser ()
-			: this ("rdfxml", "application/rdf+xml", new Uri ("http://www.w3.org/TR/rdf-testcases/#ntriples"))
+			: this ("rdfxml", null, null)
 		{
 		}
 
 		public Parser (string name)
-			: this (name, "application/rdf+xml", new Uri ("http://www.w3.org/TR/rdf-testcases/#ntriples"))
+			: this (name, null, null)
 		{
 		}
 
