@@ -171,17 +171,29 @@ public class Model
 
   public Node getSource(Node arc, Node target) 
   {
-    return new Node(this.world, core.librdf_model_get_source(this.object, arc.__get_object(), target.__get_object()), true);
+    long node = core.librdf_model_get_source(this.object, arc.__get_object(), target.__get_object());
+    if (node == 0)
+      return null;
+    else
+      return new Node(this.world, node);
   }
 
   public Node getArc(Node source, Node target) 
   {
-    return new Node(this.world, core.librdf_model_get_arc(this.object, source.__get_object(), target.__get_object()), true);
+    long node = core.librdf_model_get_arc(this.object, source.__get_object(), target.__get_object());
+    if (node == 0)
+      return null;
+    else
+      return new Node(this.world, node);
   }
 
   public Node getTarget(Node source, Node arc) 
   {
-    return new Node(this.world, core.librdf_model_get_target(this.object, source.__get_object(), arc.__get_object()), true);
+    long node = core.librdf_model_get_target(this.object, source.__get_object(), arc.__get_object());
+    if (node == 0)
+      return null;
+    else
+      return new Node(this.world, node);
   }
 
   public Node getFeature(URI feature) 
