@@ -81,7 +81,7 @@ public class Model
   {
     long subject_copy=core.librdf_new_node_from_node(subject.__get_object());
     long predicate_copy=core.librdf_new_node_from_node(predicate.__get_object());
-    long object_copy=core.librdf_new_node_from_node(predicate.__get_object());
+    long object_copy=core.librdf_new_node_from_node(object.__get_object());
     return core.librdf_model_add(this.object, subject_copy, predicate_copy, object_copy);
   }
 
