@@ -146,6 +146,13 @@ An absolute path could alternatively be given such as
 <code>--with-python=/opt/mypython/bin/python</code> 
 to use a python installation in a different location.</p></dd>
 
+<dt><code>--with-python-ldflags</code>(=<em>FLAGS</em>)<br /></dt>
+<dd><p>Set the linker flags for linking Python.  This can also be
+done by setting the environment variable <code>PYTHON_LDFLAGS</code>.
+If neither is set, <code>configure</code> will guess an appropriate
+set for the current system.
+</p></dd>
+
 <dt><code>--with-jdk=</code><em>DIR</em><br /></dt>
 <dd><p>Choose the location of the Java JDK to use for building
 the Java API with Java JNI.  If omitted, Redland will guess likely
