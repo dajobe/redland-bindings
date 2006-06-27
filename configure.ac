@@ -153,6 +153,11 @@ AC_SUBST(PERL_VERSION)
 
 
 AC_ARG_WITH(python, [  --with-python(=PYTHON)  Enable the Python interface], with_python="$withval", with_python="no")
+AC_ARG_WITH(python_ldflags, [  --with-python_ldflags(=FLAGS)  Set the Python linker flags], with_python_ldflags="$withval", with_python_ldflags="")
+if test "X$with_python_ldflags" != X; then
+  PYTHON_LDFLAGS=$with_python_ldflags
+fi
+
 AC_MSG_CHECKING(Enable Python API)
 if test "X$with_python" != Xno; then
   if test "X$with_python" != Xyes; then
@@ -190,15 +195,22 @@ if test "X$PYTHON" != X; then
   AC_SUBST(PYTHON_LIB)
   AC_MSG_RESULT($PYTHON_LIB)
 
-  if test `uname` = Darwin; then
-    PYTHON_LDFLAGS="-Wl,-F. -Wl,-F. -bundle"
-    if $PYTHON -c 'import sys, string; sys.exit(string.find(sys.prefix,"Framework")+1)'; then
-      :
-    else
-      PYTHON_LDFLAGS="$PYTHON_LDFLAGS -framework Python"
-    fi
+  AC_MSG_CHECKING(Python LDFLAGS)
+  if test "X$PYTHON_LDFLAGS" != X; then
+    AC_MSG_RESULT(using user flags: $PYTHON_LDFLAGS)
   else
-    PYTHON_LDFLAGS="-shared"
+    # Guess PYTHON_LDFLAGS if not passed in
+    if test `uname` = Darwin; then
+      PYTHON_LDFLAGS="-Wl,-F. -Wl,-F. -bundle"
+      if $PYTHON -c 'import sys, string; sys.exit(string.find(sys.prefix,"Framework")+1)'; then
+	:
+      else
+	PYTHON_LDFLAGS="$PYTHON_LDFLAGS -framework Python"
+      fi
+    else
+      PYTHON_LDFLAGS="-shared"
+    fi
+    AC_MSG_RESULT(guessed flags: $PYTHON_LDFLAGS)
   fi
   AC_SUBST(PYTHON_LDFLAGS)
 
