@@ -131,7 +131,7 @@ test2.class: test2.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH) test2.java
 
 example: example.class $(JAVA_JAR)
-	$(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) example
+	$(RUN)$(srcdir)/run-java $(JAVA) -classpath $(CLASSPATH):$(JAVA_JAR) example
 
 example.class: example.java $(JAVA_JAR)
 	$(JAVAC) -classpath $(CLASSPATH):$(JAVA_JAR) example.java
