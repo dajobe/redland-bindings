@@ -1,3 +1,42 @@
+2006-07-04  Dave Beckett  <dave@dajobe.org>
+
+	* java/org/librdf/redland/QueryResults.java: (hasNext): Replace
+	with 1 line call.
+
+	* java/org/librdf/redland/QueryResults.java: Removed started field
+	flag
+	(next): Simplify to just 1 call without using started.
+
+	* java/Makefile.am: fix example running config
+
+	* java/example.java: start counting from 0
+
+2006-06-26  Dave Beckett  <dave@dajobe.org>
+
+	* INSTALL.html: Document --with-python-ldflags for working around
+	installing python in odd places.
+
+	* configure.ac: Added --with-python-ldflags for working around
+	installing python in odd places.
+
+2006-06-22  Dave Beckett  <dave@dajobe.org>
+
+	* java/org/librdf/redland/Model.java: (add): copy the *object* not
+	the predicate twice.
+
+2006-06-18  Dave Beckett  <dave@dajobe.org>
+
+	* java/org/librdf/redland/Model.java: (getSource, getArc,
+	getTarget): Return null rather than try to create a Node with null
+	value.
+
+	* java/Makefile.am: Remove extra / that stopped Iterator getting
+	into the jar.
+
+	* csharp/Parser.cs: (Parser): 0 and 1-argument constructors were
+	broke; make them work again, defaulting to rdfxml parser in the
+	default case.
+
 2006-06-04  Dave Beckett  <dave@dajobe.org>
 
 	* java/example.java: Update for more java-like names
