@@ -30,12 +30,10 @@ public class QueryResults implements java.util.Iterator
 {
   private long object;
   private World world;
-  private boolean started;
   
   public QueryResults(long object)
     {
       this.object=object;
-      this.started=false;
     }
 
   public void finished()
@@ -102,24 +100,12 @@ public class QueryResults implements java.util.Iterator
 
   public Object next()
     {
-      if (started == true) {
-        core.librdf_query_results_next (this.object);
-      }
-      else
-        started = true;
-
-      if (core.librdf_query_results_finished(this.object) == 0)
+      if(core.librdf_query_results_next (this.object) == 0)
         return MakeResultsHash ();
       else
         return null;
     }
 
-  /* I think this is superflous, as you can cycle thru results with
-   * while ( (result = (Map)results.next()) != null) {
-   * ...
-   * }
-   * without using hasNext()
-   */
   public boolean hasNext() 
     {
       int is_end_int=core.librdf_query_results_finished(this.object);
