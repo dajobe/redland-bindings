@@ -139,7 +139,7 @@ class example {
     Query q = new Query(world, "PREFIX dc: <http://purl.org/dc/elements/1.1/>\nSELECT ?a ?c WHERE { ?a dc:title ?c }", null, "sparql", null);
     System.out.println("Querying for dc:titles:");
     QueryResults results=model.queryExecute(q);
-    count=1;
+    count=0;
     while(results.hasNext()) {
       System.out.println("result count: {");
       for(int i=0; i < results.bindingsCount(); i++) {
