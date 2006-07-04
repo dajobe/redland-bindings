@@ -108,12 +108,7 @@ public class QueryResults implements java.util.Iterator
 
   public boolean hasNext() 
     {
-      int is_end_int=core.librdf_query_results_finished(this.object);
-      
-      if (is_end_int == 0)
-      	return true;
-      else
-      	return false;
+      return (core.librdf_query_results_finished(this.object) == 0);
     }
 
   public Stream asStream ()
