@@ -100,6 +100,13 @@ module Redland
         raise RedlandError.new("Unknown query result format cannot be written as a string")
       end
 
+      if format_uri
+        format_uri = format_uri.uri
+      end
+      if base_uri
+        base_uri = base_uri.uri
+      end
+
       return Redland.librdf_query_results_to_string(@results, format_uri, base_uri)
     end
 
