@@ -155,6 +155,23 @@ class TestQuery < Test::Unit::TestCase
     assert_equal(string.length(), 401)
   end
 
+  def test_model_query_serialize_bindings_json()
+    model = Model.new()
+
+    lit = Node.new("baz")
+    st = Statement.new(@exns['subject'], @exns['pred'], lit)
+    model.add_statement(st)
+
+    query = Query.new("SELECT ?a ?b ?c WHERE (?a ?b ?c)", "rdql", nil, nil)
+    results = query.execute(model)
+    assert(results != nil)
+
+    string = results.to_string(Uri.new("http://www.w3.org/2001/sw/DataAccess/json-sparql/"), Uri.new("http://example.org/"))
+
+    # length of a SPARQL results format string in JSON - might change
+    assert_equal(string.length(), 351)
+  end
+
 
 end
 
