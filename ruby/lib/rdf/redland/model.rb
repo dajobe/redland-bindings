@@ -420,6 +420,12 @@ module Redland
       end
     end
 
+    def to_string(name="", base_uri=nil, mime_type="", type_uri=nil)
+      rbase_uri = base_uri.nil? ? nil : base_uri.uri
+      rtype_uri = type_uri.nil? ? nil : type_uri.uri
+
+      return Redland.librdf_model_to_string(@model, rbase_uri, name, mime_type, rtype_uri)
+    end
     
   end
 
