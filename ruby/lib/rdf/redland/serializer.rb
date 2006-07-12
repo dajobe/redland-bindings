@@ -63,7 +63,7 @@ module Redland
     end
     
     #Set a serializer namepace to the desired prefix
-    def set_namespace(uri,prefix)
+    def set_namespace(prefix, uri)
       uri = Uri.new(uri) unless uri.class == Uri
       return (Redland::librdf_serializer_set_namespace(@serializer,uri.uri,prefix) == 0)
     end
