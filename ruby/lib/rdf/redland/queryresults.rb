@@ -27,6 +27,11 @@ module Redland
       return (Redland.librdf_query_results_finished(@results) != 0)
     end
 
+    # Get number of binding variables
+    def bindings_count
+      return Redland.librdf_query_results_get_bindings_count(@results)
+    end
+
     # Get binding name for the current result
     def binding_name(index)
       return Redland.librdf_query_results_get_binding_name(@results,index)
@@ -50,7 +55,7 @@ module Redland
     # Get one binding value for the current result
     def binding_value(index)
       node = Redland.librdf_query_results_get_binding_value(@results,index)
-      return Node.new(node)
+      return node.nil? ? nil : Node.new(node)
     end
 
     # Get an array of all the values of all of the variable bindings in the current query result.
@@ -66,7 +71,7 @@ module Redland
     # Get the value of the variable binding name in the current query result.
     def binding_value_by_name(name)
       node=Redland.librdf_query_results_get_binding_value_by_name(@results,name)
-      return Node.new(node)
+      return node.nil? ? nil : Node.new(node)
     end
 
     # Get an array of binding values
