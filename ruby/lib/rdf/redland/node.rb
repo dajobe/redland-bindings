@@ -239,7 +239,7 @@ module Redland
       lang = Redland.librdf_node_get_literal_value_language(node) if Redland.librdf_node_get_literal_value_language(node)
       str = Redland.librdf_node_get_literal_value(node)
       hash_uri = Redland.librdf_node_get_literal_value_datatype_uri(node)
-      hash_uri = Uri(Redland.librdf_uri_to_string(hash_uri)) if hash_uri
+      hash_uri = Uri.new(Redland.librdf_uri_to_string(hash_uri)) if hash_uri
       return Literal.new(str,lang,hash_uri)
     end
 
