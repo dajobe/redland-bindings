@@ -84,7 +84,6 @@ module Redland
       end
       
       options = "hash-type='#{hash_type}',new='#{want_new}', dir='#{dir}', write='#{write}',contexts='#{contexts}'"
-      puts options
       super('hashes',name,options)
     end
 
