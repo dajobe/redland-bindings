@@ -79,7 +79,7 @@ results=q.execute(model)
 size=results.to_string(Redland::Uri.new("http://www.w3.org/2001/sw/DataAccess/json-sparql/")).length()
 puts "Serialized query results to JSON as a string size #{size} bytes"
 
-print "Writing model to test-out.rdf as rdf/xml"
+puts "Writing model to test-out.rdf as rdf/xml"
 # Use any rdf/xml parser that is available
 serializer=Redland::Serializer.new()
 serializer.set_namespace("dc", Redland::Uri.new("http://purl.org/dc/elements/1.1/"))
