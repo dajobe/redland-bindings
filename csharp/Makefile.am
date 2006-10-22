@@ -86,7 +86,8 @@ test.exe: test.cs Redland.dll
 	$(CSHARP_LINK) test.cs -target:exe -r:Redland.dll -out:$@
 
 install-csharp: build-csharp-stamp
-	$(INSTALL_PROGRAM) $(CSHARP_DLL) @libdir@
+	$(mkinstalldirs) $(DESTDIR)$(libdir)
+	$(INSTALL_PROGRAM) $(CSHARP_DLL) $(libdir)
 
 clean-local:
 	rm -f build-csharp-stamp $(CSHARP_DLL)

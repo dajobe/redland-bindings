@@ -70,6 +70,7 @@ $(TCL_PACKAGE)-stamp: $(TCL_PACKAGE)_wrap.so
 	touch $(TCL_PACKAGE)-stamp
 
 install-tclDATA: $(tcl_DATA)
+	$(mkinstalldirs) $(DESTDIR)$(tcldir)
 	if test -r $(TCL_PACKAGE).dylib; then \
 	  $(INSTALL_PROGRAM) $(TCL_PACKAGE).dylib $(DESTDIR)$(tcldir)/$(TCL_PACKAGE).dylib; \
 	else \
