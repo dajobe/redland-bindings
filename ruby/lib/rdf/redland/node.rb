@@ -72,7 +72,7 @@ module Redland
     end
 
     # Sets this node's value to a blank node with the specified ID (?? confirm)
-    def Node.bnode(id=nil)
+    def bnode(id=nil)
       @node = Redland.librdf_new_node_from_blank_identifier($world.world,id)
     end
 
@@ -83,9 +83,9 @@ module Redland
 
     # Creates a new blank node with the specified ID (?? confirm)
     def Node.anon(id)
-      self.initialize()
-      super(id)
-      @node = Redland.librdf_new_node_from_blank_identifier($world.world,id)
+      n = Node.new('')
+      n.bnode(id)
+      n
     end
 
     # Return true if node is a literal
