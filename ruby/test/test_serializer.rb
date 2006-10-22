@@ -12,7 +12,7 @@ class TestSerializer < Test::Unit::TestCase
     model.add_statement Statement.new(faa['kris'],foaf['firstName'],"Kris")
     model.add_statement Statement.new(faa['kris'],foaf['phone'],"333-123-2387")
     model.add(faa['kris'],foaf['name'],"Kris Frame")
-    model.add( Uri.new('dom'),Uri.new('project'),'2334')
+    model.add(faa['dom'],faa['project'],'2334')
     domnode = model.subject(foaf['name'],"Dominic")
     assert_equal(faa['dom@some.gov'], domnode)
     assert_equal('333-123-2387',model.object(faa['kris'],foaf['phone']).to_s)
@@ -22,12 +22,12 @@ class TestSerializer < Test::Unit::TestCase
     #model.triples{|s,p,o| puts "subject: #{s}, pred: #{p}, object: #{o}"}
     model.find( nil,foaf['name'],nil){|s,p,o| puts o }
     
-    #model.save('out3.rdf')
+    model.save('out3.rdf')
 
     serializer = Serializer.new()
     #To Do This doesn't work.
-    #assert(serializer.set_namespace('http://xmlns.com/foaf/0.1/','foaf')) #returns true if succeeds
-    #assert(serializer.set_namespace(Uri.new('http://www.faa.gov/people#'),'faa')) #returns true if succeeds
+    assert(serializer.set_namespace('foaf', 'http://xmlns.com/foaf/0.1/')) #returns true if succeeds
+    assert(serializer.set_namespace('faa', Uri.new('http://www.faa.gov/people#'))) #returns true if succeeds
     serializer.to_file('out_namespace.rdf',model,Uri.new("http://www.faa.gov/people#"))
     #  serializer.namespace(foaf,'foaf')
   end
