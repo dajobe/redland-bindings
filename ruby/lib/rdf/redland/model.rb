@@ -172,7 +172,6 @@ module Redland
 
     # Returns true if the given Triple is in the model
     def include?(s,p,o)
-      puts "In include"
       statement = Statement.new(s,p,o)
       self.include_statement?(statement)
     end
@@ -365,10 +364,8 @@ module Redland
 
     # saves this model to the specified filename
     def save(filename)
-      serializer = Serializer.new(filename)
-      puts serializer
+      serializer = Serializer.new()
       serializer.to_file(filename,self)
-      puts serializer
     end
 
     # a screen dump of the triples, if context is included a screen dump
@@ -389,7 +386,6 @@ module Redland
         parser.parse_as_stream(uri){|s|temp_model.add_statement(s)}
       end
       temp_model.find_canonical(predlist)
-      puts temp_model.canonical
       temp_model.rewrite(context)
       if temp_model.global_rewrites.size > 0
         print "***** GLOBAL REWRITES UNDERWAY ***"
@@ -400,7 +396,6 @@ module Redland
     # clears the transactions (?? confirm)
     def rewrite(change_hash)
       transactions = []
-      #puts change_hash
     end
 
     # Get the number of statements in the model    
@@ -467,7 +462,6 @@ module Redland
     def find_canonical(predlist)
       predlist.each do |pred|
         identifier = {}
-        puts "For pred #{pred}"
         self.find(nil,pred,nil) do |subj,pred,obj|
           master_id = self.find_subject_in_master(pred,obj)
           if not master_id
