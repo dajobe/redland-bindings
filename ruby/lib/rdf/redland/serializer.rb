@@ -9,11 +9,10 @@ module Redland
     # name -  the serializer factory name
     # mime_type -  the MIME type of the syntax
     # uri -  URI of syntax
-    def initialize(name="",mime_type="application/rdf+xml",uri=nil)
-      if uri
-        uri = uri.uri
-      end
+    def initialize(name='rdfxml',mime_type="application/rdf+xml",uri=nil)
+      uri = uri.uri if uri
       @serializer = Redland.librdf_new_serializer($world.world,name,mime_type,uri)
+      raise RedlandError.new("Serializer construction failed") if !@serializer
       ObjectSpace.define_finalizer(self,Serializer.create_finalizer(@serializer))
     end
 
