@@ -25,7 +25,7 @@ test_statement.rb test_store.rb test_uri.rb test_query.rb
 EXTRA_DIST=$(RUBY_TEST_FILES) README ical.rdf triples.rdf
 
 
-CLEANFILES=*.db out_namespace.rdf
+CLEANFILES=*.db out*.rdf
 
 check-local: check-ruby
 
