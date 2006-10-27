@@ -43,9 +43,14 @@ module Redland
       return Parser.new('ntriples',"",uri)
     end
 
+    # create a parser for the turtle syntax
+    def Parser.turtle(uri=nil)
+      return Parser.new('turtle',"",uri)
+    end
+
     # create a parser for rdf syntax
     def Parser.raptor(uri=nil)
-      initialize('rdfxml','application/rdf+xml',uri)
+      return Parser.new('rdfxml','application/rdf+xml',uri)
     end
     
     # Parse the given uri with optional base_uri and return a
