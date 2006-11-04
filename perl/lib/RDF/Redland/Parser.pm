@@ -117,7 +117,8 @@ undef on failure.
 
 sub parse_as_stream ($$$) {
   my($self,$uri,$base_uri)=@_;
-  my $stream=&RDF::Redland::CORE::librdf_parser_parse_as_stream($self->{PARSER},$uri->{URI}, $base_uri->{URI});
+  my $rbase_uri=$base_uri ? $base_uri->{URI} : undef;
+  my $stream=&RDF::Redland::CORE::librdf_parser_parse_as_stream($self->{PARSER},$uri->{URI}, $rbase_uri);
   return undef if !$stream;
   return new RDF::Redland::Stream($stream,$self);
 }
@@ -143,7 +144,8 @@ sub parse_into_model ($$$$;$) {
   if($handler) {
     &RDF::Redland::set_log_handler($handler);
   }
-  my $rc=&RDF::Redland::CORE::librdf_parser_parse_into_model($self->{PARSER},$uri->{URI},$base_uri->{URI},$model->{MODEL});
+  my $rbase_uri=$base_uri ? $base_uri->{URI} : undef;
+  my $rc=&RDF::Redland::CORE::librdf_parser_parse_into_model($self->{PARSER},$uri->{URI},$rbase_uri,$model->{MODEL});
   if($handler) {
     &RDF::Redland::reset_log_handler();
   }
@@ -162,7 +164,8 @@ undef on failure.
 
 sub parse_string_as_stream ($$$) {
   my($self,$string,$base_uri)=@_;
-  my $stream=&RDF::Redland::CORE::librdf_parser_parse_string_as_stream($self->{PARSER},$string, $base_uri->{URI});
+  my $rbase_uri=$base_uri ? $base_uri->{URI} : undef;
+  my $stream=&RDF::Redland::CORE::librdf_parser_parse_string_as_stream($self->{PARSER},$string, $rbase_uri);
   return undef if !$stream;
   return new RDF::Redland::Stream($stream,$self);
 }
@@ -186,7 +189,8 @@ sub parse_string_into_model ($$$$;$) {
   if($handler) {
     &RDF::Redland::set_log_handler($handler);
   }
-  my $rc=&RDF::Redland::CORE::librdf_parser_parse_string_into_model($self->{PARSER},$string,$base_uri->{URI},$model->{MODEL});
+  my $rbase_uri=$base_uri ? $base_uri->{URI} : undef;
+  my $rc=&RDF::Redland::CORE::librdf_parser_parse_string_into_model($self->{PARSER},$string,$rbase_uri,$model->{MODEL});
   if($handler) {
     &RDF::Redland::reset_log_handler();
   }
