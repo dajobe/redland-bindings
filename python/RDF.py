@@ -1403,7 +1403,7 @@ class Storage(object):
 
     Create a new RDF Storage using any of these forms
 
-  s1=RDF.Storage(storage_name="name")
+  s1=RDF.Storage(storage_name="name",options_string="")
 
 Create a Storage of the given type.  Currently the built in storage
 names that are always present are 'memory', 'hashes', 'file' and
@@ -1414,14 +1414,14 @@ compiled in.  If storage_name is omitted, it defaults to 'memory'.
 The argument 'name' can be used when the storage needs a name
 to operate, such as used for a filename or URI:
 
-  s1=RDF.Storage(storage_name="file", name='/filename')
+  s1=RDF.Storage(storage_name="file", name='/filename',options_string="")
 
-  s2=RDF.Storage(storage_name="uri", name='http://rdf.example.org/')
+  s2=RDF.Storage(storage_name="uri", name='http://rdf.example.org/',options_string="")
 
 
-The argument options_string allows additional store-specific options
-to be given, some of which are required by certain stores.  This uses
-the following form:
+The required argument options_string allows additional store-specific
+options to be given, some of which are required by certain stores.
+This uses the following form:
 
   s3=RDF.Storage(storage_name="name", name='abc',
                  options_string="key1='value1', key2='value2', ...")
@@ -1454,6 +1454,9 @@ storage_name 'mysql' has options:
   database - required MySQL database name
   user - required MySQL database user
   password - required MySQL database password
+
+stoage name 'sqlite' has options:
+  synchronous - optional value off, normal or full
       
 The other form is:
   s4=RDF.Storage(storage=s1)
@@ -1486,7 +1489,7 @@ and Hash storage:
       self._storage=Redland.librdf_new_storage_from_storage(
           args['storage']._storage)
     else:
-      raise RedlandError("Creating Storage failed - illegal arguments")
+      raise RedlandError("Creating Storage failed - missing storage_name, name or options_string arguments")
 
     if self._storage == "NULL" or self._storage == None:
       self._storage=None
