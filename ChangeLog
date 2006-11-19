@@ -1,3 +1,92 @@
+2006-11-18  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/resource.rb, ruby/lib/rdf/redland.rb:
+	Remove recursive include of Redland
+
+2006-11-03  Dave Beckett  <dave@dajobe.org>
+
+	* python/RDF.py: docs for Storage class
+
+	* perl/lib/RDF/Redland/Parser.pm: Allow undef args
+
+2006-10-26  Dave Beckett  <dave@dajobe.org>
+
+	* NEWS.html, RELEASE.html: Updated for 1.0.5.1
+
+	* ruby/lib/rdf/redland/parser.rb: Add constructor for turtle
+	parser.
+
+2006-10-22  Dave Beckett  <dave@dajobe.org>
+
+	* configure.ac: Bump version to 1.0.5.1
+
+2006-10-21  Dave Beckett  <dave@dajobe.org>
+
+	* csharp/Makefile.am, tcl/Makefile.am: Add before installing
+	Fixes Issue#0000126 http://bugs.librdf.org/mantis/view.php?id=126
+
+	* ruby/test/test_serializer.rb: fix uris to be legal
+
+	* ruby/example.rb: fix serializer puts
+
+	* ruby/test/Makefile.am: clean out*rdf
+
+	* ruby/lib/rdf/redland/model.rb: (include?, parse_and_merge,
+	rewrite, find_canonical): Remove puts
+	(save): Works now when using default serializer not filename.
+
+	* ruby/lib/rdf/redland/serializer.rb: (initialize): Default to
+	rdfxml, error out on failure
+
+	* ruby/example.rb: Added query and serializer test code
+
+	* ruby/lib/rdf/redland/node.rb: Define bnode and anon to match docs
+	Fixes Issue#0000122 http://bugs.librdf.org/mantis/view.php?id=122
+
+	* ruby/lib/rdf/redland/schemas/owl.rb: Added OWLNS
+	Fixes Issue#0000121 http://bugs.librdf.org/mantis/view.php?id=121
+
+	* python/RDF.py: Subclass class Warning defined in C for making a
+	RedlandWarning
+	Fixes Issue#0000109 http://bugs.librdf.org/mantis/view.php?id=109
+
+2006-10-05  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/store.rb: Do not echo storage options on
+	connection
+
+2006-08-27  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/node.rb: (Literal.from_node): Call Uri
+	constructor correctly
+
+2006-08-20  Dave Beckett  <dave@dajobe.org>
+
+	* autogen.sh: Track where programs are discovered.
+
+2006-08-18  Dave Beckett  <dave@dajobe.org>
+
+	* configure.ac: Patch configure.ac to remove un-necessary tests
+	for C++ or F77++ compilers that libtool stupidly insists on
+
+2006-07-11  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/model.rb: doc
+
+	* ruby/lib/rdf/redland/model.rb: (to_string): Added.
+
+	* ruby/lib/rdf/redland/serializer.rb: (set_namespace): Switch to
+	more natural prefix, uri ordering
+
+	* ruby/lib/rdf/redland/queryresults.rb: (bindings_count): Added.
+	(binding_value, binding_value_by_name): Handle nil values.
+
+	* ruby/lib/rdf/redland/queryresults.rb: (to_string): Allow null
+	URIs and use redland uri objects in args
+
+	* ruby/test/test_query.rb: (test_model_query_serialize_bindings_json):
+	Added to test JSON output
+
 2006-07-04  Dave Beckett  <dave@dajobe.org>
 
 	* java/org/librdf/redland/QueryResults.java: (hasNext): Replace
