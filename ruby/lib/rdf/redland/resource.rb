@@ -2,7 +2,7 @@ require 'rdf/redland'
 
 module Redland
 
-  include Redland
+  #include Redland
 
   class Resource < Node
     # The internal librdf_node

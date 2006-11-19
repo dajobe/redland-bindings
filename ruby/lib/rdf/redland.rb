@@ -22,7 +22,7 @@ module Redland
   # Load the interface to the C shared library
   require 'redland'
 
-  include Redland
+  #include Redland
   
   # Error class specific to this package
   
