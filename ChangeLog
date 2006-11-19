@@ -1,3 +1,7 @@
+2006-11-19  Dave Beckett  <dave@dajobe.org>
+
+	* Snapshotted redland-bindings_1_0_5_1 for 1.0.5.1 release
+
 2006-11-18  Dave Beckett  <dave@dajobe.org>
 
 	* ruby/lib/rdf/redland/resource.rb, ruby/lib/rdf/redland.rb:
