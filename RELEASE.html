@@ -26,6 +26,99 @@ pre
 <p>Not yet released.
 </p>
 
+<p>The main change in this release is to synchronise with 
+<a href="http://librdf.org/">Redland</a> 1.0.5
+(<a href="http://librdf.org/RELEASE.html#rel1_0_5">Redland 1.0.5 release Notes</a>)
+and provide several fixes and improvements.
+</p>
+
+<h3>Packaging and Configuration Changes</h3>
+
+<p>Patched <code>configure</code> to remove un-necessary tests for
+C++ or F77++ compilers that <code>libtool</code> stupidly insists
+on.</p>
+
+<p>Added <code>--with-python-ldflags</code> for working around
+installing python in odd places.
+</p>
+
+<p>Create directories before make install.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=126">Issue #0000126</a>
+</p>
+
+<h3>C# bindings changes</h3>
+
+<p>Model class methods getSource, getArc and getTarget now return
+null rather than try to create a Node with null value.
+</p>
+
+<p>Parser class constructors now working again, defaulting to RDF/XML
+parser.</p>
+
+<h3>Java bindings changes</h3>
+
+<p>Add Java Query and QueryResults classes and example of using them.
+Added Serializer method setNamespace.
+</p>
+
+<h3>Perl bindings changes</h3>
+
+<p>Parser class now allows undef arguments for base URIs.</p>
+
+<h3>PHP bindings changes</h3>
+
+<p>None.</p>
+
+<h3>Python bindings changes</h3>
+
+<p>Subclass python class <code>Warning</code> defined in C for making
+a <code>RedlandWarning</code>.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=109">Issue #0000109</a>
+</p>
+
+<p>Storage class gained some update docs.</p>
+
+<h3>Ruby bindings changes</h3>
+
+<p>Model class added method to_string.  Removed several puts in methods.
+Method save now works when using default serializer and not filename.
+</p>
+
+<p>Node class method from_node now calls Uri constructor properly.</p>
+
+<p>Node class now defines bnode and anon to match docs
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=122">Issue #0000122</a>
+</p>
+
+<p>Parser class now has constructor for a turtle parser.</p>
+
+<p>QueryResults class added method bindings_count.</p>
+
+<p>QueryResults class methods binding_value, binding_value_by_name
+now handle nil values.</p>
+
+<p>Serializer class modified method set_namespace to use prefix, uri_ordering.
+Constructor now defaults to rdfxml syntax.
+</p>
+
+<p>Storage class no longer echos storage options to stdout.
+</p>
+
+<p>Added OWL_NS to owl.rb.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=121">Issue#0000121</a>
+</p>
+
+<p>Example gains query and serializer test code.
+</p>
+
+<p>Removed some recursive includes of <code>Redland</code>.</p>
+
+
+<h3>Tcl bindings changes</h3>
+
+None
+
+
 
 <h2 id="rel1_0_4_1"><a name="rel1_0_4_1">Redland Bindings 1.0.4.1 Changes</a></h2>
 
