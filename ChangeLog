@@ -63,6 +63,7 @@
 
 	* ruby/lib/rdf/redland/node.rb: (Literal.from_node): Call Uri
 	constructor correctly
+	Fixes Issue#0000120 http://bugs.librdf.org/mantis/view.php?id=120
 
 2006-08-20  Dave Beckett  <dave@dajobe.org>
 
@@ -211,7 +212,8 @@
 
 	* ruby/lib/rdf/redland/store.rb: (Redland.TripleStore.initialize):
 	Added lots more storage types.  There should be a programatic way
-	to do this at run time.  Fixess Issue#0000076
+	to do this at run time.
+	Fixes Issue#0000076
 	http://bugs.librdf.org/mantis/view.php?id=76
 
 	* csharp/Stream.cs: (Stream.Current): Return null when raw_ret is 0
