@@ -30,6 +30,9 @@ class TestSerializer < Test::Unit::TestCase
     assert(serializer.set_namespace('faa', Uri.new('http://www.faa.gov/people#'))) #returns true if succeeds
     serializer.to_file('out_namespace.rdf',model,Uri.new("http://www.faa.gov/people#"))
     #  serializer.namespace(foaf,'foaf')
+    string = serializer.model_to_string(Uri.new("http://www.faa.gov/people#"), model)
+    fdata = IO::read('out_namespace.rdf')
+    assert(fdata == string)
   end
   
 
