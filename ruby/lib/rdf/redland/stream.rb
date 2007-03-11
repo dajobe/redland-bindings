@@ -21,8 +21,8 @@ module Redland
     # You shouldn't use this. Used internally for cleanup.
     def Stream.create_finalizer(stream)
       proc {|id| "Finalizer on #{id}"
-        #      puts "closing model"
-        Redland::librdf_free_model(stream)
+        #puts "closing stream"
+        Redland::librdf_free_stream(stream)
       }
     end
 
