@@ -54,6 +54,8 @@ module Redland
     def World.create_finalizer(world)
       proc {|id| "Finalizer on #{id}"
 #        log_final.info "closing world"
+        # This is commented out because Ruby fails to guarantee this
+	# is called after all other redland destructors
         #Redland::librdf_free_world world
       }
     end
