@@ -10,8 +10,17 @@ module Redland
     # this is not a public constructor
     def initialize(object)
       @results = object
+      ObjectSpace.define_finalizer(self,QueryResults.create_finalizer(@results))
     end
 
+    # You shouldn't use this. Used internally for cleanup.
+    def QueryResults.create_finalizer(results)
+      proc{|id| "Finalizer on #{id}"
+        #$log_final.info "closing results"
+        Redland::librdf_free_query_results(results)
+      }
+    end
+    
     # Get the number of results so far
     def size
       return Redland.librdf_query_results_get_count(@results)
