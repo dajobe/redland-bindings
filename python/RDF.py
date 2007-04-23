@@ -1947,8 +1947,10 @@ class QueryResults(object):
     return self
 
   def __len__(self):
-    """Get the number of query results returned so far"""
-    return Redland.librdf_query_results_get_count(self._results)
+    """Get the number of query results returned so far (bindings results)"""
+    if self.is_bindings:
+      return Redland.librdf_query_results_get_count(self._results)
+    return 0
 
   # Iterator method
   def next(self):
