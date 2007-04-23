@@ -32,7 +32,7 @@ module Redland
     # You shouldn't use this. Used internally for cleanup.
     def TripleStore.create_finalizer(store)
       proc {|id| "Finalizer on #{id}"
-        $log_final.info "closing store"
+        #$log_final.info "closing store"
         Redland::librdf_free_storage(store) if store
       }
     end

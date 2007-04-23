@@ -33,7 +33,7 @@ module Redland
 
     def Parser.create_finalizer(parser)
       proc {|id| "Finalizer on #{id}"
-        $log_final.info "closing parser"
+        #$log_final.info "closing parser"
         Redland::librdf_free_parser(parser)
       }
     end

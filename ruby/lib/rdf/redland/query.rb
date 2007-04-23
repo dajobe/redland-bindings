@@ -35,7 +35,7 @@ module Redland
     # You shouldn't use this. Used internally for cleanup.
     def Query.create_finalizer(query)
       proc{|id| "Finalizer on #{id}"
-        $log_final.info "closing query"
+        #$log_final.info "closing query"
         Redland::librdf_free_query(query)
       }
     end
