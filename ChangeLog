@@ -1,4 +1,56 @@
+2007-04-22  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland.rb: Do not run librdf_free_world
+
+	* ruby/lib/rdf/redland/uri.rb: Add Uri finalizer
+
+	* ruby/lib/rdf/redland/queryresults.rb: Add QueryResults finalizer
+
+	* ruby/lib/rdf/redland/stream.rb: Add NodeIterator finalizer
+
+	* ruby/lib/rdf/redland/model.rb, ruby/lib/rdf/redland/parser.rb,
+	ruby/lib/rdf/redland/query.rb, ruby/lib/rdf/redland/serializer.rb,
+	ruby/lib/rdf/redland/store.rb: Apply patch to comment out .info
+	calls.
+	Fixes Issue#0000170 http://bugs.librdf.org/mantis/view.php?id=170
+
+	* python/RDF.py: (QueryResults.__len__): Return 0 when the count
+	is not 0
+	Fixes Issue#0000166 http://bugs.librdf.org/mantis/view.php?id=166
+
+	* python/RDF.py: (Node.__init__): Convert literals from Unicode to
+	UTF-8 for redland n=RDF.Node(literal= u'this is unicode') now works
+	Fixes Issue#0000147 http://bugs.librdf.org/mantis/view.php?id=147
+
+	* python/RDF.py: (Model.add_statement): raise error if adding
+	statement fails.
+
+	* python/RDF.py: (Query): Raise error if construction fails.
+	(Serializer): Default to none name, mime_type. Raise error if
+	construction fails.
+
+	* ruby/lib/rdf/redland/parser.rb,
+	ruby/lib/rdf/redland/serializer.rb: Replace
+	Node.new(:from_object=>'value') with Node.new(:from_object=>value)
+	in feature calls.  Replace def feature=(uri,value) with def
+	setFeature(uri,value).  Fixes Issue#0000140
+	http://bugs.librdf.org/mantis/view.php?id=140
+
+	* autogen.sh: Update autogen.sh
+
+2007-03-10  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/stream.rb: (Stream.create_finalizer) free
+	stream, not model
+
+2007-02-17  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/serializer.rb,
+	ruby/test/test_serializer.rb: (serializer.model_to_string): Fix
+	null base_uri (Patch from Jeff Dutton)
+
 2006-11-19  Dave Beckett  <dave@dajobe.org>
+
 
 	* Snapshotted redland-bindings_1_0_5_1 for 1.0.5.1 release
 
