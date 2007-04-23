@@ -27,8 +27,10 @@ module Redland
 
     # You shouldn't use this. Used internally for cleanup.
     def Uri.create_finalizer(uri)
-      proc {|id| 
-        Redland::librdf_free_uri uri if $world }
+      proc {|id| "Finalizer on #{id}"
+        #puts "closing uri"
+        Redland::librdf_free_uri(uri)
+      }
     end
 
     # Returns a string for this URI
