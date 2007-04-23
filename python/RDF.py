@@ -725,11 +725,13 @@ Create a model using an in-memory storage.
     # adding a statement means it gets *copied* into the model
     # we are free to re-use the statement after adding it
     if context is not None:
-      return Redland.librdf_model_context_add_statement(self._model,
+      rc = Redland.librdf_model_context_add_statement(self._model,
               context._node, statement._statement)
     else:
-      return Redland.librdf_model_add_statement(self._model,
+      rc = Redland.librdf_model_add_statement(self._model,
                                                 statement._statement)
+    if rc != 0:
+      raise RedlandError("Adding statement failed")
 
   def add_statements(self,statement_stream,context=None):
     """Add the Stream of Statements to the Model with the optional
