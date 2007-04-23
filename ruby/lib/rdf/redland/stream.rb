@@ -107,6 +107,16 @@ module Redland
         my_node=Redland.librdf_iterator_next(@iterator)
       end
 
+      ObjectSpace.define_finalizer(self,NodeIterator.create_finalizer(@iterator))
     end
+
+    # You shouldn't use this. Used internally for cleanup.
+    def NodeIterator.create_finalizer(iterator)
+      proc {|id| "Finalizer on #{id}"
+        #puts "closing iterator"
+        Redland::librdf_free_iterator(iterator)
+      }
+    end
+
   end
 end
