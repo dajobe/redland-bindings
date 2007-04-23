@@ -146,15 +146,15 @@ module Redland
       if value == "NULL" or value == nil
         return nil
       else
-        return Node.new(:from_object=>'value')
+        return Node.new(:from_object=>value)
       end
     end
 
     # Set a parser feature.  The feature is named Uri
     # uri and the value is a Node.
-    def feature=(uri,value)
+    def setFeature(uri,value)
       if uri.class == String then uri = Uri.new(uri) end
-      if value.class == String then value = Node.new(:literal=>'value') end
+      if value.class == String then value = Node.new(:literal=>value) end
       return (Redland::librdf_parser_set_feature(@parser,uri.uri,value.node) == 0)
     end
 

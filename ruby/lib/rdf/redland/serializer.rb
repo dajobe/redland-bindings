@@ -49,15 +49,15 @@ module Redland
       if value == "NULL" or value==nil
         return nil
       else
-        return Node.new(:from_object=>'value')
+        return Node.new(:from_object=>value)
       end
     end
 
     #Set a serializer feature.  The feature is named via RDF::Redland::URI
     #I<URI> and the value is a RDF::Redland::Node.
-    def feature=(uri,value)
+    def setFeature(uri,value)
       uri = Uri.new(uri) unless uri.class == Uri
-      if value.class == String then value = Node.new(:literal=>'value') end
+      if value.class == String then value = Node.new(:literal=>value) end
       return (Redland::librdf_serializer_set_feature(@serializer,uri.uri,value.node) == 0)
     end
     
