@@ -1676,7 +1676,7 @@ optional.  When any are given, they must all match.
 
     self._parser=Redland.librdf_new_parser(_world._world, name, mime_type, ruri)
     if self._parser is None:
-      raise RedlandError("Failed to create parser "+name)
+      raise RedlandError("Parser construction failed")
 
   def __del__(self):
     global _debug    
@@ -1879,6 +1879,8 @@ class Query(object):
 
     self._query = Redland.librdf_new_query(_world._world, query_language, ruri, querystring, rbase_uri)
     self.result_stream = None
+    if self._query is None:
+      raise RedlandError("Query construction failed")
 
   def __del__(self):
     global _debug    
@@ -2115,7 +2117,7 @@ class Serializer(object):
   only to local files).
   """
   
-  def __init__(self, name="", mime_type="", uri=None):
+  def __init__(self, name=None, mime_type=None, uri=None):
     """Create an RDF Serializer (constructor).
 
     The arguments name, mime_type and uri are all optional and
@@ -2139,6 +2141,8 @@ class Serializer(object):
 
     self._serializer=Redland.librdf_new_serializer(_world._world, name,
       mime_type, ruri)
+    if self._serializer is None:
+      raise RedlandError("Serializer construction failed")
 
   def __del__(self):
     global _debug    
