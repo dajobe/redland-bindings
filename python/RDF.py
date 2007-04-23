@@ -275,6 +275,10 @@ class Node(object):
       elif type(arg) is Node:
         args['node'] = arg
 
+    if args.has_key('literal') and type(args['literal']) is unicode:
+        import Redland_python
+        args['literal'] = Redland_python.unicode_to_bytes(args['literal'])
+
     if args.has_key('uri_string'):
       self._node=Redland.librdf_new_node_from_uri_string(_world._world,
         args['uri_string'])
