@@ -76,6 +76,13 @@ while(!$stream->end) {
 $stream=undef;
 warn "Parsing added $count statements\n";
 
+
+warn "\nNamespace declarations seen during parsing:\n";
+my(%namespaces)=$parser->namespaces_seen();
+while(my($prefix,$uri)=each %namespaces) {
+  warn "  prefix '$prefix' URI ".$uri->as_string."\n";
+}
+
 warn "\nPrinting all statements\n";
 $stream=$model->as_stream;
 while(!$stream->end) {
