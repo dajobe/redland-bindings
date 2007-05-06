@@ -54,7 +54,7 @@ of namespace prefix/uris seen during a parse.</p>
 <h3>Python bindings changes</h3>
 
 <p>QueryResults class method __len__: Return 0 when the count is not 0
-Fixes Issue#0000166 http://bugs.librdf.org/mantis/view.php?id=166
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=166">Issue #0000166</a>
 </p>
 
 <p>Model class method add_statement now raises an error if adding
@@ -63,7 +63,7 @@ statement fails.
 
 <p>Node class constructor: Convert literals from Unicode to
 UTF-8 for redland n=RDF.Node(literal= u'this is unicode') now works
-Fixes Issue#0000147 http://bugs.librdf.org/mantis/view.php?id=147
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=147">Issue #0000147</a>
 </p>
 
 <p>Query class now raises an error if construction fails.
@@ -87,6 +87,7 @@ to close and free up the redland objects on destruction.</p>
 <p>Model, Parser, Query, Serializer and Store classes: Apply patch to
 comment out log .info calls.
 Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=170">Issue #0000170</a>
+and <a href="http://bugs.librdf.org/mantis/view.php?id=172">Issue #0000172</a>
 </p>
 
 <p>Serializer class feature methods: Fix use of Node constructor.
@@ -95,6 +96,10 @@ Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=140">Issue #0000140</a>
 
 <p>Serializer class method model_to_string: Fix null base_uri (Patch
 from Jeff Dutton)</p>
+
+<p>Strem class fixed incorect call to librdf_free_model(stream)
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=171">Issue #0000171</a>
+</p>
 
 <h3>Tcl bindings changes</h3>
 
