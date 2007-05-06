@@ -1,5 +1,7 @@
 2007-05-05  Dave Beckett  <dave@dajobe.org>
 
+	* Snapshotted redland-bindings_1_0_6_1 for 1.0.6.1 release (SVN 12239)
+
 	* perl/example.pl: Call parser method namespaces_seen
 
 	* perl/lib/RDF/Redland/Parser.pm: Added namespaces_seen
