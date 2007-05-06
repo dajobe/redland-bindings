@@ -221,6 +221,29 @@ sub feature ($$;$) {
 }
 
 
+=item namespaces_seen
+
+Get the set of namespace declarations seen during parsing as a
+hash of key:prefix string (may be ''), value: RDF::Redland::URI objects.
+
+=cut
+
+sub namespaces_seen($) {
+  my $self=shift;
+
+  my $count=&RDF::Redland::CORE::librdf_parser_get_namespaces_seen_count($self->{PARSER});
+  my(%namespaces)=();
+  for (my $offset=0; $offset < $count; $offset++) {
+    my $prefix=&RDF::Redland::CORE::librdf_parser_get_namespaces_seen_prefix($self->{PARSER}, $offset);
+    $prefix ||= '';
+    my $uri=&RDF::Redland::CORE::librdf_parser_get_namespaces_seen_uri($self->{PARSER}, $offset);
+    my $ruri=$uri ?  RDF::Redland::URI->_new_from_object($uri) : undef;
+    $namespaces{$prefix}=$ruri;
+    }
+  return %namespaces;
+}
+
+
 =pod
 
 =back
