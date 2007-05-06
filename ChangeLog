@@ -1,4 +1,13 @@
+2007-05-05  Dave Beckett  <dave@dajobe.org>
+
+	* perl/example.pl: Call parser method namespaces_seen
+
+	* perl/lib/RDF/Redland/Parser.pm: Added namespaces_seen
+
 2007-04-22  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/schemas/owl.rb: Apply patch from #0000121
+	again to fix issue http://bugs.librdf.org/mantis/view.php?id=121
 
 	* ruby/lib/rdf/redland.rb: Do not run librdf_free_world
 
