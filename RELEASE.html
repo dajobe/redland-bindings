@@ -21,6 +21,87 @@ pre
 
 <h1>Redland RDF Application Framework Bindings</h1>
 
+<h2 id="rel1_0_6_1"><a name="rel1_0_6_1">Redland Bindings 1.0.6.1 Changes</a></h2>
+
+<p>Not yet released.</p>
+
+<p>The main change in this release is to synchronise with 
+<a href="http://librdf.org/">Redland</a> 1.0.6
+(<a href="http://librdf.org/RELEASE.html#rel1_0_6">Redland 1.0.6 release Notes</a>)
+and provide several other fixes and improvements.
+</p>
+
+
+<h3>Packaging and Configuration Changes</h3>
+
+<h3>C# bindings changes</h3>
+
+<p>None</p>
+
+<h3>Java bindings changes</h3>
+
+<p>None</p>
+
+<h3>Perl bindings changes</h3>
+
+<p>Parser class gains namespaces_seen method to return hash
+of namespace prefix/uris seen during a parse.</p>
+
+<h3>PHP bindings changes</h3>
+
+<p>None</p>
+
+<h3>Python bindings changes</h3>
+
+<p>QueryResults class method __len__: Return 0 when the count is not 0
+Fixes Issue#0000166 http://bugs.librdf.org/mantis/view.php?id=166
+</p>
+
+<p>Model class method add_statement now raises an error if adding
+statement fails.
+</p>
+
+<p>Node class constructor: Convert literals from Unicode to
+UTF-8 for redland n=RDF.Node(literal= u'this is unicode') now works
+Fixes Issue#0000147 http://bugs.librdf.org/mantis/view.php?id=147
+</p>
+
+<p>Query class now raises an error if construction fails.
+</p>
+
+<p>Serializer class constructor now defaults to none name,
+mime_type and raises an error if construction fails.
+</p>
+
+
+<h3>Ruby bindings changes</h3>
+
+<p>Apply patch from #0000121 again not properly fixed in previous
+patching owl.rb
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=121">Issue #0000121</a>
+</p>
+
+<p>Uri, NodeIterator and QueryResults classes gain a finalizer
+to close and free up the redland objects on destruction.</p>
+
+<p>Model, Parser, Query, Serializer and Store classes: Apply patch to
+comment out log .info calls.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=170">Issue #0000170</a>
+</p>
+
+<p>Serializer class feature methods: Fix use of Node constructor.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=140">Issue #0000140</a>
+</p>
+
+<p>Serializer class method model_to_string: Fix null base_uri (Patch
+from Jeff Dutton)</p>
+
+<h3>Tcl bindings changes</h3>
+
+<p>None</p>
+
+
+
 <h2 id="rel1_0_5_1"><a name="rel1_0_5_1">Redland Bindings 1.0.5.1 Changes</a></h2>
 
 <p>The main change in this release is to synchronise with 
@@ -716,7 +797,7 @@ functions.</p>
 
 <hr />
 
-<p>Copyright (C) 2004-2006 <a href="http://purl.org/net/dajobe/">Dave Beckett</a><br />Copyright (C) 2004-2005 <a href="http://www.bristol.ac.uk/">University of Bristol</a></p>
+<p>Copyright (C) 2004-2007 <a href="http://purl.org/net/dajobe/">Dave Beckett</a><br />Copyright (C) 2004-2005 <a href="http://www.bristol.ac.uk/">University of Bristol</a></p>
 
 </body>
 </html>
