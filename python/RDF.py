@@ -1656,18 +1656,18 @@ class Parser(object):
   for the RDF/XML syntax.
   """
   
-  def __init__(self, name="rdfxml", mime_type="", uri=None):
+  def __init__(self, name=None, mime_type=None, uri=None):
     """Create an RDF Parser (constructor).
 
 Create a new RDF Parser for a particular syntax.  The parser is
 chosen by the fields given to the constructor, all of which are
-optional.  When any are given, they must all match.
+optional.  When any are given, they must all match.  The default
+parser is chosen if none are given, which is RDF/XML in the
+standard configuration of Raptor.
 
-  name      - parser name (currently "rdfxml", "ntriples", "turtle" and "rss-tag-soup")
-  mime_type - currently "application/rdf+xml" (default) or "text/plain" (ntriples)
+  name      - parser syntax name
+  mime_type - syntax mime type
   uri       - URI identifying the syntax
-              currently only "http://www.w3.org/TR/rdf-testcases/#ntriples"
-
     """
     #"
     global _world
