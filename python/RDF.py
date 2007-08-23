@@ -1865,6 +1865,10 @@ class RSSTagSoupParser(Parser):
   def __init__(self):
     Parser.__init__(self, name = "rss-tag-soup")
 
+class GRDDLParser(Parser):
+  def __init__(self):
+    Parser.__init__(self, name = "grddl")
+
 
 class Query(object):
   """Redland Query interface class
