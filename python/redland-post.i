@@ -43,6 +43,8 @@ static PyObject *librdf_python_callback = NULL;
 
 static PyObject * librdf_python_set_callback(PyObject *dummy, PyObject *args);
 static PyObject * librdf_python_reset_callback(PyObject *dummy, PyObject *args);
+static PyObject * librdf_python_set_parser_uri_filter(PyObject *dummy, PyObject *args);
+
 
 /*
  * set the Python function object callback
@@ -158,7 +160,8 @@ librdf_python_unicode_to_bytes(PyObject *dummy, PyObject *args)
     
     j=0;
     for(i=0; i < len; i++) {
-      int size=raptor_unicode_char_to_utf8((unsigned long)input[i], &output[j]);
+      int size=raptor_unicode_char_to_utf8((unsigned long)input[i], 
+                                           (unsigned char*)&output[j]);
       if(size <= 0)
         goto failure;
       j+= size;
@@ -175,6 +178,86 @@ librdf_python_unicode_to_bytes(PyObject *dummy, PyObject *args)
 }
 
 
+static int
+librdf_call_python_uri_filter(void* user_data, librdf_uri* uri) 
+{
+  PyObject *arglist;
+  PyObject *result;
+  int rc=0;
+  PyObject *callback=(PyObject*)user_data;
+  
+  /* call the callback */
+  arglist = Py_BuildValue("(s)", librdf_uri_as_string(uri));
+  if(!arglist) {
+    fprintf(stderr, "librdf_call_python_uri_filter: Out of memory\n");
+    return 0;
+  }
+  result = PyEval_CallObject(callback, arglist);
+  Py_DECREF(arglist);
+  if(result) {
+    if(PyInt_Check(result))
+      rc=(int)PyInt_AS_LONG(result);
+    
+    Py_DECREF(result);
+  } else
+    rc=1;
+
+  return rc;
+}
+
+
+/*
+ * set the parser URI filter callback
+ */
+static PyObject *
+librdf_python_set_parser_uri_filter(PyObject *dummy, PyObject *args)
+{
+  PyObject *result = NULL;
+  PyObject *temp;
+  PyObject * obj0 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  librdf_parser* parser=NULL;
+  librdf_uri_filter_func current_filter;
+  void* current_filter_user_data;
+  
+  if (PyArg_ParseTuple(args, "OO:set_parser_uri_filter", &obj0, &temp)) {
+    /* first argument: SWIG wrapped librdf_parser* */
+    res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_librdf_parser_s, 0 |  0 );
+    if (!SWIG_IsOK(res1)) {
+      SWIG_exception_fail(SWIG_ArgError(res1), "in 'librdf_python_set_parser_uri_filter', argument 1 of type 'librdf_parser *'"); 
+    }
+    parser = (librdf_parser *)(argp1);
+
+    /* second argument: PyObject* callback function */
+    if (!PyCallable_Check(temp)) {
+      PyErr_SetString(PyExc_TypeError, "parameter must be callable");
+      return NULL;
+    }
+
+    /* Add a reference to new callback */
+    Py_XINCREF(temp);
+
+    /* Check for any existing callback to discard */
+    current_filter=librdf_parser_get_uri_filter(parser,
+                                                &current_filter_user_data);
+    if(current_filter) {
+      Py_XDECREF((PyObject*)current_filter_user_data);
+    }
+
+    /* Set new callback */
+    librdf_parser_set_uri_filter(parser, librdf_call_python_uri_filter, temp);
+
+    /* Boilerplate to return "None" */
+    Py_INCREF(Py_None);
+    result = Py_None;
+  }
+  return result;
+fail:
+  return NULL;
+}
+
+
 /* Declare a table of methods that python can call */
 static PyMethodDef librdf_python_methods [] = {
   {"set_callback",  librdf_python_set_callback, METH_VARARGS, 
@@ -183,6 +266,8 @@ static PyMethodDef librdf_python_methods [] = {
    "Set python message callback."},
   {"unicode_to_bytes",  librdf_python_unicode_to_bytes, METH_VARARGS,
    "Turn a python Unicode string into the UTF-8 bytes."},
+  {"set_parser_uri_filter",  librdf_python_set_parser_uri_filter, METH_VARARGS, 
+   "Set a parser's URI filter function"},
   {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
@@ -279,7 +364,7 @@ librdf_python_world_init(librdf_world *world)
   PyDict_SetItemString(dict, "version", tuple);
   Py_DECREF(tuple);
 
-  rdf_module=PyImport_ImportModule(module_name);
+  rdf_module=PyImport_ImportModule((char*)module_name);
   if(rdf_module != NULL) {
     PyObject* rdf_module_dict;
     
