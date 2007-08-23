@@ -238,6 +238,10 @@ librdf_python_set_parser_uri_filter(PyObject *dummy, PyObject *args)
     /* Add a reference to new callback */
     Py_XINCREF(temp);
 
+    /* FIXME: The above object reference should be remembered and
+     * Py_XDECREFed when the parser is destroyed
+     */
+
     /* Check for any existing callback to discard */
     current_filter=librdf_parser_get_uri_filter(parser,
                                                 &current_filter_user_data);
