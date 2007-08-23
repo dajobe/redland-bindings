@@ -1832,6 +1832,21 @@ standard configuration of Raptor.
       value=Node(literal=value)
     Redland.librdf_parser_set_feature(self._parser,uri._reduri,value._node)
 
+  def set_uri_filter(self, filter):
+    """Set a function for rejecting retrieval of URIs seen during parsing.
+
+   Return False or 0 to not reject the URI
+
+   def reject(uri):
+     if "bad" == uri:
+       return True
+     return False
+
+   parser.set_uri_filter(reject)
+"""
+    import Redland_python
+    Redland_python.set_parser_uri_filter(self._parser, filter)
+
 # end class Parser
 
 class RDFXMLParser(Parser):
