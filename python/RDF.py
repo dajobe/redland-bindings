@@ -1850,22 +1850,47 @@ standard configuration of Raptor.
 # end class Parser
 
 class RDFXMLParser(Parser):
+  """Redland RDF/XML Parser class
+
+     import RDF
+     parser=RDF.RDFXMLParser()
+  """
   def __init__(self):
     Parser.__init__(self, name = "rdfxml")
 
 class NTriplesParser(Parser):
+  """Redland N-Triples Parser class
+
+     import RDF
+     parser=RDF.NTriplesParser()
+  """
   def __init__(self):
     Parser.__init__(self, name = "ntriples")
 
 class TurtleParser(Parser):
+  """Redland Turtle Parser class
+
+     import RDF
+     parser=RDF.TurtleParser()
+  """
   def __init__(self):
     Parser.__init__(self, name = "turtle")
 
 class RSSTagSoupParser(Parser):
+  """Redland RSS Tag Soup Parser class
+
+     import RDF
+     parser=RDF.RSSTagSoupParser()
+  """
   def __init__(self):
     Parser.__init__(self, name = "rss-tag-soup")
 
 class GRDDLParser(Parser):
+  """Redland GRDDL Parser class
+
+     import RDF
+     parser=RDF.GRDDLParser()
+  """
   def __init__(self):
     Parser.__init__(self, name = "grddl")
 
@@ -2285,6 +2310,15 @@ class RSS10Serializer(Serializer):
   """
   def __init__(self):
     Serializer.__init__(self, name = "rss-1.0")
+
+class TurtleSerializer(Serializer):
+  """Redland Turtle Serializer class
+
+     import RDF
+     ser=RDF.TurtleSerializer()
+  """
+  def __init__(self):
+    Serializer.__init__(self, name = "turtle")
 
 
 class NS(object):
