@@ -2114,7 +2114,7 @@ class QueryResults(object):
     if self.is_graph():
       tmpmodel = Model(MemoryStorage())
       tmpmodel.add_statements(self.as_stream())
-      serializer = RDF.Serializer()
+      serializer = Serializer()
       return serializer.serialize_model_to_string(tmpmodel, base_uri)
 
     if self.is_boolean():
