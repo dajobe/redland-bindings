@@ -402,6 +402,16 @@ class RasqalQueryTestCase (unittest.TestCase):
 #            count += 1
 #        self.assert_(count == 3, "Should have found three results in execution 2 not "+str(count))
 
+    def testSPARQLQueryTriplesToString(self):
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT * WHERE {?a dc:title ?c}")
+
+        r = q.execute(self.model)
+        expect = 294
+        self.assert_(r is not None, "execute to_string should have succeeded")
+        s = r.to_string()
+        self.assert_(len(s) == expect, "to_string should have returned "+str(expect)+" not " + str(len(s)))
+
+
 
 if __name__ == '__main__':
     unittest.main()
