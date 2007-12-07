@@ -144,7 +144,7 @@ my $str=$results->to_string;
 print "Query results serialized to an XML string size ".length($str)." bytes\n";
 
 print "\nExecuting SPARQL construct query\n";
-my $q2 = new RDF::Redland::Query("CONSTRUCT * WHERE { ?a ?b ?c }", undef, undef, "sparql");
+my $q2 = new RDF::Redland::Query("CONSTRUCT { ?a ?b ?c } WHERE { ?a ?b ?c }", undef, undef, "sparql");
 my $results=$model->query_execute($q2);
 $stream=$results->as_stream;
 $count=0;
