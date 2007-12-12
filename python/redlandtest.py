@@ -350,7 +350,7 @@ class RasqalQueryTestCase (unittest.TestCase):
         self.assert_(count == 3, "Should have found three results in query")
 
     def testSPARQLQueryAsStream(self):
-        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT * WHERE {?a dc:title ?c}")
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT {?a dc:title ?c} WHERE {?a dc:title ?c}")
         s = q.execute(self.model).as_stream()
         self.assert_(s is not None, "execute as_stream should have succeeded")
         rc=self.model.add_statements(s)
@@ -403,7 +403,7 @@ class RasqalQueryTestCase (unittest.TestCase):
 #        self.assert_(count == 3, "Should have found three results in execution 2 not "+str(count))
 
     def testSPARQLQueryTriplesToString(self):
-        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT * WHERE {?a dc:title ?c}")
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT {?a dc:title ?c} WHERE {?a dc:title ?c}")
 
         r = q.execute(self.model)
         expect = 294
