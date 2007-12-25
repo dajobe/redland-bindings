@@ -23,11 +23,39 @@ pre
 
 <h2 id="rel1_0_7_1"><a name="rel1_0_7_1">Redland Bindings 1.0.7.1 Changes</a></h2>
 
+<p>NOT YET RELEASED</p>
+
 <p>The main change in this release is to synchronise with 
 <a href="http://librdf.org/">Redland</a> 1.0.7
 (<a href="http://librdf.org/RELEASE.html#rel1_0_7">Redland 1.0.7 release Notes</a>)
-and provide several other fixes and improvements.
+and provide a few other fixes and improvements.
 </p>
+
+<h3>Python Bindings Changes</h3>
+
+<p>Parser class: Do not set rdfxml as default parser, let Redland
+figure that out.</p>
+
+<p>Parser class: add method set_uri_filter to set the URI rejection
+filter function.
+</p>
+
+<p>GRDDLParser class: added as a convenience class to create a parser
+of name 'grddl'.</p>
+
+<p>Fixed <a href="http://bugs.librdf.org/mantis/view.php?id=212">Issue#0000212 </a>: QueryResults.to_string is not working
+</p>
+
+<h3>Other changes</h3>
+
+<p>Updated SPARQL <code>CONSTRUCT</code> in perl example and test code 
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=247">Issue#0000247</a>: Actuall v is 1.0.6.1 ; example.pl ends with an error
+</p>
+
+<p>Updated <code>autogen.sh</code> to handle better vesioning, OSX
+glibtoolize and ltdl.
+</p>
+
 
 
 <h2 id="rel1_0_6_1"><a name="rel1_0_6_1">Redland Bindings 1.0.6.1 Changes</a></h2>
