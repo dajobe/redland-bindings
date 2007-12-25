@@ -83,16 +83,16 @@ rdoc: $(RUBY_HTML_RDOC_FILES) $(RUBY_EXTRA_RDOC_FILES)
 
 @MAINT@$(PERL_HTML_POD_FILES): pod/%.html: $(srcdir)/../perl/lib/%.pm $(srcdir)/fix-pod-xhtml
 @MAINT@	mkdir -p pod/RDF/Redland
-@MAINT@	-pod2html --noindex --htmlroot /docs/pod --infile=$< | tidy -asxml -wrap 1000 2>/dev/null | perl $(srcdir)/fix-pod-xhtml $@
+@MAINT@	-pod2html --noindex --htmlroot /docs/pod --infile=$< | tidy -asxml -wrap 1000 2>/dev/null | $(PERL) $(srcdir)/fix-pod-xhtml $@
 @MAINT@	rm -f pod2htm*
 @MAINT@
 @MAINT@$(srcdir)/../python/RDF.html: $(srcdir)/../python/RDF.py
 @MAINT@	cd $(srcdir)/../python && make RDF.html
 @MAINT@$(PYTHON_HTML_PYDOC_FILES): pydoc/%.html: $(srcdir)/../python/RDF.html $(srcdir)/fix-python-xhtml
 @MAINT@	mkdir -p pydoc
-@MAINT@	-tidy -asxml -wrap 1000 $< 2>/dev/null | perl $(srcdir)/fix-python-xhtml $@
+@MAINT@	-tidy -asxml -wrap 1000 $< 2>/dev/null | $(PERL) $(srcdir)/fix-python-xhtml $@
 @MAINT@.pod.html: $(srcdir)/fix-pod-xhtml
-@MAINT@	-pod2html --noindex --htmlroot /docs/pod --infile=$< | tidy -asxml -wrap 1000 2>/dev/null | perl $(srcdir)/fix-pod-xhtml $@
+@MAINT@	-pod2html --noindex --htmlroot /docs/pod --infile=$< | tidy -asxml -wrap 1000 2>/dev/null | $(PERL) $(srcdir)/fix-pod-xhtml $@
 @MAINT@	rm -f pod2htm*
 @MAINT@
 @MAINT@$(srcdir)/../ruby/rdoc-stamp:
@@ -100,7 +100,7 @@ rdoc: $(RUBY_HTML_RDOC_FILES) $(RUBY_EXTRA_RDOC_FILES)
 @MAINT@rdoc-dirs-stamp:
 @MAINT@	mkdir -p rdoc rdoc/classes rdoc/classes/Redland rdoc/files rdoc/files/rdf rdoc/files/rdf/redland rdoc/files/rdf/redland/schemas && touch $@
 @MAINT@$(RUBY_HTML_RDOC_FILES): rdoc/%.html: $(srcdir)/../ruby/rdoc-stamp $(srcdir)/fix-rdoc-xhtml rdoc-dirs-stamp
-@MAINT@	-tidy -asxml -wrap 1000 $(srcdir)/../ruby/$@ 2>/dev/null | perl $(srcdir)/fix-rdoc-xhtml $@
+@MAINT@	-tidy -asxml -wrap 1000 $(srcdir)/../ruby/$@ 2>/dev/null | $(PERL) $(srcdir)/fix-rdoc-xhtml $@
 @MAINT@$(RUBY_EXTRA_RDOC_FILES): $(srcdir)/../ruby/rdoc-stamp rdoc-dirs-stamp
 @MAINT@	$(INSTALL_DATA) $(srcdir)/../ruby/$@ $@
 
