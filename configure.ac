@@ -142,7 +142,7 @@ if test "X$PHP_CONFIG" != X ; then
     else
       php_linking=so
     fi
-    AC_ARG_WITH(php-linking, [  --with-php-linking=TYPE      Set PHP dynamic linking (so, dylib, bundle)], php_linking="$withval")
+    AC_ARG_WITH(php-linking, [  --with-php-linking=TYPE Set PHP module linking type (so, dylib, bundle)], php_linking="$withval")
     case $php_linking in
       so)
 	PHP_LDFLAGS="-shared"
