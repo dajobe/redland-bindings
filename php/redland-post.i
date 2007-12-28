@@ -24,6 +24,18 @@ librdf_php_get_world(void)
 }
 
 
+static librdf_node*
+librdf_php_get_null_node(void)
+{
+  return NULL;
+}
+
+static librdf_uri*
+librdf_php_get_null_uri(void)
+{
+  return NULL;
+}
+
 static raptor_locator librdf_php_locator;
 static int librdf_php_log_code=0;
 static char* librdf_php_log_message=NULL;
