@@ -104,3 +104,13 @@ librdf_php_world_init(void)
     librdf_world_set_logger(librdf_php_world, NULL, librdf_php_logger_handler);
   }
 }
+
+
+void
+librdf_php_world_finish(void)
+{
+  if(librdf_php_world) {
+    librdf_free_world(librdf_php_world);
+    librdf_php_world=NULL;
+  }
+}
