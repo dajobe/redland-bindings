@@ -1,0 +1,525 @@
+2005-12-21  Dave Beckett  <dave@dajobe.org>
+
+	* configure.ac, Makefile.am: updated urls
+
+	* Makefile.am, configure.ac: Added bindings.rdf
+
+	* bindings.rdf.in: DOAP for bindings
+
+2005-09-11  Dave Beckett  <dave@dajobe.org>
+
+	* perl/example.pl: die if data file not found
+
+2005-09-01  Dave Beckett  <dave@dajobe.org>
+
+	* python/redlandtest.py (testSPARQLQueryTwiceOverwriteVar): Added,
+	which fails now
+
+	* python/RDF.py (Model, Query): Remove use of self.been_run -
+	never used
+
+	* python/redlandtest.py: Added testSPARQLQueryTwice
+
+	* python/RDF.py (Parser and Serializer convienience classes):
+	Remove mime_type="" and uri=None in params.
+
+	* python/RDF.py (Model.load): Document return is a boolean.
+	(Parser.parse_into_model, Parser.parse_string_into_model): Return
+	a boolean success/failure flag, document this.
+
+	* demos/query.pl: Add rdf: prefixes to examples Added REDLAND-NEWS
+	example Expand on not-implemented note
+
+2005-08-23  Dave Beckett  <dave@dajobe.org>
+
+	* csharp/examples/Makefile.am: run nunit-console tests 1 at a time
+	to prevent crazy death
+
+	* csharp/examples/Makefile.am: clean *.mdb junk
+
+	* csharp/examples/ModelTest.cs, csharp/examples/SimpleGetsTest.cs,
+	csharp/examples/StreamTest.cs, csharp/examples/TemplateTest.cs,
+	csharp/examples/EncodingTest.cs, csharp/examples/GetsTest.cs,
+	csharp/examples/Makefile.am, csharp/examples/ModelGeneralTest.cs:
+	Update C# and nunit for Mono 1.8.x
+
+2005-08-11  Dave Beckett  <dave@dajobe.org>
+
+	* autogen.sh: update autogen.sh again
+
+	* autogen.sh: Rewrite with functions, generalize to any redland
+	package.  Add docs.
+
+	* redland-bindings.spec.in: - Define perl_sitearch, python_libdir,
+	ruby_dir and ruby_libdir at rpm build time.  - Split build
+	requirements out and declare minimum versions - Use %configure and
+	%{__make}
+
+2005-08-08  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/test/test_query.rb: Added serializing tests:
+	test_model_query_serialize_bindings,
+	test_model_query_serialize_ask and
+	test_model_query_serialize_construct
+
+	* ruby/lib/rdf/redland/serializer.rb (model_to_string): Added and
+	tested.
+
+	* ruby/lib/rdf/redland/queryresults.rb (to_string): Debugged,
+	tested.
+
+	* docs/Makefile.am: Added ruby queryresults file
+
+	* ruby/lib/rdf/redland/queryresults.rb: remove perl doc
+
+	* docs/Makefile.am: Redland/QueryResults for ruby
+
+	* ruby/test/Makefile.am: Added test_query.rb
+
+	* ruby/test/test_query.rb: test_query
+
+	* ruby/lib/rdf/redland.rb: Added queryresults
+
+	* ruby/lib/rdf/redland/statement.rb: (==(other)) added
+
+	* ruby/lib/rdf/redland/query.rb: Moved query results code into
+	queryresults.rb and class.
+	(Query.execute): Return QueryResults
+
+	* ruby/lib/rdf/redland/model.rb (Model.query_execute): Added.
+
+	* ruby/lib/rdf/redland/Makefile.am: Added queryresults.rb
+
+	* ruby/lib/rdf/redland/queryresults.rb: queryresults class
+
+	* ruby/lib/rdf/redland/parser.rb (Parser.initialize):
+	Use 'rdfxml' as parser name.
+	(Parser.ntriples): Use a NULL mime type (empty string)
+	(Parser.raptor): Use 'rdfxml' as parser name.
+
+	* ruby/lib/rdf/redland/query.rb (Query.initialize):
+	librdf_new_query takes 5 args, so add a base_uri
+	arg to this.
+
+	* ruby/lib/rdf/redland.rb: Death to log4r
+
+2005-07-13  Dave Beckett
+
+	* perl/lib/RDF/Redland/QueryResults.pm:
+	(to_string) return boolean as formats
+
+2005-06-22  Dave Beckett
+
+	* csharp/AssemblyInfo.cs, csharp/Node.cs, csharp/Parser.cs,
+	csharp/Stream.cs: Patch for namespaces fixes from John Barstow.
+
+	* python/setup-win32.py: win32 python setup
+
+2005-06-17  Dave Beckett
+
+	* redland-bindings.spec.in: License not Copyright header
+
+2005-06-10  Dave Beckett
+
+	* configure.ac: Bumped version to 1.0.3.1
+
+	* Snapshotted redland-bindings_1_0_2_1 for 1.0.2.1 release
+
+	* perl/lib/RDF/Redland.pm.in: Use eval to ensure version gets
+	turned into a perl version thing like 1.00_02_01 and not a string
+	"1.00_02_01".
+	Addresses re-opened
+	Issue #0000034 - http://bugs.librdf.org/mantis/view.php?id=34
+
+2005-06-07  Dave Beckett
+
+	* ruby/lib/rdf/redland/node.rb, ruby/lib/rdf/redland/resource.rb,
+	ruby/lib/rdf/redland/uri.rb, ruby/lib/rdf/redland.rb: Updates to
+	match newer SWIG.  Move constants in rdf/redland.rb to later after
+	$world exists.
+	Fixes issue #0000031 - http://bugs.librdf.org/mantis/view.php?id=31
+	based on attached patch from aredridel.
+
+2005-06-06  Dave Beckett
+
+	* python/redlandtest.py (testSPARQLQueryAsString): Fix serializing
+	query results test to XML result2 format answer.
+
+	* python/RDF.py, perl/lib/RDF/Redland/QueryResults.pm: Use result2
+	format by default in query results serializing
+
+	* Makefile.PL: Handle newer configure.ac autoconf versions
+	Don't try to cd raptor or cd librdf
+
+	* perl/lib/RDF/Redland.pm.in:
+	Moved $VERSION to RDF::Redland package, add _s and leading 0s
+	Fixes issue #0000034 - http://bugs.librdf.org/mantis/view.php?id=34
+
+	* configure.ac: Make perl/lib/RDF/Redland.pm from prototype
+
+	* perl/lib/RDF/Makefile.am, perl/lib/RDF/Redland.pm,
+	perl/lib/RDF/Redland.pm.in: Rename Redland.pm as Redland.pm.in
+
+	* perl/lib/RDF/Redland/Node.pm:
+	Use ISA with 'URI' to catch several classes of perl URI.
+	(new_literal): Fix promotion of types, strings to a redland URI.
+	Fixes issue #0000033 - http://bugs.librdf.org/mantis/view.php?id=33
+
+2005-06-02  Dave Beckett
+
+	* configure.ac: Bumped version to 1.0.2.1
+
+2005-06-01  Dave Beckett
+
+	* python/redland-post.i (librdf_python_reset_callback): Remove
+	unused vars
+	(librdf_python_logger_handler): use log_msg as arg name to remove
+	a warning.
+
+2005-05-29  Dave Beckett
+
+	* configure.ac: Bumped version to 1.0.1.2
+
+	* Snapshotted redland-bindings_1_0_1_1 for 1.0.1.1 release
+
+2005-05-23  Dave Beckett
+
+	* php/test.php: Update sparql syntax, add an optional in order to
+	test null librdf_node* results.  Add a result serializing test.
+
+	* php/redland_wrap.c.patch: Simplify, all functions returning
+	librdf_node* will automatically return PHP null.
+
+	* php/redland-typemap.i: Add librdf_node* to returning NULL
+	typemap
+
+2005-05-18  Dave Beckett
+
+	* configure.ac: Bump version to 1.0.1.1 for redland 1.0.1 (CVS)
+	Bugs to http://bugs.librdf.org/
+
+2005-05-16  Dave Beckett
+
+	* python/redlandtest.py: Update to split rdql / sparql and update
+	to new sparql syntax
+
+	* configure.ac: Search in list of dirs for redland sources with
+	'internal'
+
+	* configure.ac: need swig 1.3.24 for known working python binding
+
+2005-05-05  Dave Beckett
+
+	* php/redland_wrap.c.patch: Patch null return for
+	librdf_query_results_get_binding_value
+
+2005-05-04  Dave Beckett
+
+	* python/RDF.py: Remove 'return' from __init__ constructors for
+	Storage, Parser and Serializer subclasses.
+
+	* python/RDF.py: remove ;s
+
+2005-04-17  Dave Beckett
+
+	* autogen.sh: allow envariables to override the programs
+
+2005-04-15  Dave Beckett
+
+	* python/RDF.py (Node.__eq__, Node.__ne__, Statement.__eq__,
+	Statement.__ne__): Do not assume in comparisons that the other
+	parameter is of the right type; check it first.  Rewrite __ne__ in
+	terms of __eq__ (Daniel Larsson)
+
+2005-04-13  Dave Beckett
+
+	* php/test.php: Test query result as a string
+
+	* php/test.php: Added sparql query test
+
+2005-04-08  Dave Beckett
+
+	* perl/lib/RDF/Redland.pm (set_log_handler, reset_log_handler):
+	Now public, document and prefer them.
+
+	* perl/lib/RDF/Redland.pm: Added perl convienence Node type
+	classes to see alsos
+
+	* docs/Makefile.am: Added perl convienence Node type classes.
+
+	* perl/Makefile.PL, perl/lib/RDF/Redland.pm,
+	perl/lib/RDF/Redland/URINode.pm,
+	perl/lib/RDF/Redland/XMLLiteralNode.pm,
+	perl/lib/RDF/Redland/BlankNode.pm,
+	perl/lib/RDF/Redland/LiteralNode.pm,
+	perl/lib/RDF/Redland/Makefile.am: Add convienience Node subclasses
+
+2005-04-06  Dave Beckett
+
+	* perl/lib/RDF/Redland/Serializer.pm (set_namespace): Remove
+	duplicate subroutine, keep PREFIX, URI order
+
+2005-03-17  Dave Beckett
+
+	* docs/fix-rdoc-xhtml: Add links back to redland site only on
+	non-index files
+
+	* docs/fix-rdoc-xhtml: Add links back to redland sites outside of
+	the frames
+
+2005-03-16  Dave Beckett
+
+	* docs/Makefile.am: Added fix-rdoc-xhtml and added rdoc output
+
+	* docs/fix-rdoc-xhtml: Fix RDoc xhtml output
+
+	* ruby/Makefile.am: Tidy rdoc generation, cleanup
+
+	* ruby/Makefile.am: rdoc-stamp
+
+	* ruby/Makefile.am: More rdoc fixes, added docs target
+
+	* ruby/lib/rdf/redland.rb: Ruby comment fixes for helping rdoc
+	plus query.pl syntax fix (Patch from Nikolas Coukouma)
+
+2005-03-16  Dave Beckett
+
+	* docs/Makefile.am: Added fix-rdoc-xhtml and added rdoc output
+
+	* docs/fix-rdoc-xhtml: Fix RDoc xhtml output
+
+	* ruby/Makefile.am: Tidy rdoc generation, cleanup
+
+	* ruby/Makefile.am: rdoc-stamp
+
+	* ruby/Makefile.am: More rdoc fixes, added docs target
+
+2005-03-15  Dave Beckett
+
+	* ruby/Makefile.am: rdoc rule attempt
+
+	* ruby/lib/rdf/redland.rb, ruby/lib/rdf/redland/resource.rb,
+	ruby/lib/rdf/redland/serializer.rb,
+	ruby/lib/rdf/redland/statement.rb, ruby/lib/rdf/redland/store.rb,
+	ruby/lib/rdf/redland/stream.rb, ruby/lib/rdf/redland/uri.rb,
+	ruby/lib/rdf/redland/util.rb, ruby/lib/rdf/redland/model.rb,
+	ruby/lib/rdf/redland/node.rb, ruby/lib/rdf/redland/parser.rb,
+	ruby/lib/rdf/redland/query.rb: Ruby comment fixes for helping rdoc
+	plus query.pl syntax fix (Patch from Nikolas Coukouma)
+
+
+2005-03-14  Dave Beckett
+
+	* perl/example.pl: Use serializer->set_namespace
+
+	* perl/lib/RDF/Redland/Serializer.pm (set_namespace):
+	Added to set a prefix/namespace for output
+
+	* python/example.py: Added serializer.set_namespace
+
+	* python/RDF.py (Serializer.set_namespace):
+	Added to set a namespace for output
+
+2005-03-10  Dave Beckett
+
+	* perl/lib/RDF/Redland/Serializer.pm:
+	(Serializer) Add set_namespace (Michael Nachbaur)
+
+2005-03-07  Dave Beckett
+
+	* demos/Makefile.am: Added query.pl
+
+	* demos/query.pl: RDF query demo
+
+2005-02-27  Dave Beckett
+
+	* configure.ac: Bumped version to 1.0.0.3
+
+	* Snapshotted redland-bindings_1_0_0_2 for 1.0.0.2 release
+
+2005-02-24  Dave Beckett
+
+	* python/RDF.py (Storage.__init__): More documentation.
+
+	* python/RDF.py (Storage.__init__): Fix documentation confusion
+	between storage_name and options.
+
+	* perl/example.pl: handle optionals in query results when testing.
+
+	* perl/lib/RDF/Redland/Model.pm (load):
+	Make ruri and rsyntax_uri from perl objects.
+
+2005-02-22  Dave Beckett
+
+	* perl/lib/RDF/Redland/Parser.pm (parse_into_model,
+	parse_string_into_model): Use set_log_handler, reset_log_handler
+	when $handler is given as a final arg.
+
+	* perl/lib/RDF/Redland/Model.pm (load): Use set_log_handler,
+	reset_log_handler when $handler is given as a final arg.
+
+	* perl/lib/RDF/Redland.pm (set_log_handler, reset_log_handler):
+	Internal.
+
+	* perl/t/test3.t (message): Take full log args.
+
+	* perl/lib/RDF/Redland.pm (message): Take full log args.
+	Added Log_Sub
+	(set_log_handler): Added to set redland log handler callback.
+
+	* perl/redland-post.i (librdf_call_perl_message):
+	Update to handle full log args.
+	(librdf_perl_logger_handler): Added to take redland log message.
+	(librdf_perl_world_init): Set librdf_perl_logger_handler.
+
+	* python/redland-post.i: Another way to do error reports.
+	Use librdf_world_set_logger to grab structured log messages rather
+	than just warning or error strings.
+	If the callback handler is set, call a python callback with signature
+	  def handler(code, level, facility, message, line, column, byte, file, uri)
+	and reset it afterwards.
+	Add set_callback and reset_callback to set/restore these.
+	(librdf_call_python_message): Restored, removing varargs use but
+	taking the args above.
+	(librdf_python_message_handler): Removed need for varargs.
+	(librdf_python_logger_handler): Use structured log messages and pass
+	on to python either via callback or delivering an exception/warning.
+
+	* python/RDF.py: V1.1 another new error reporting method.
+	(Model.load, Parser.parse_into_model,
+	Parser.parse_string_into_model): Gain an optional 'handler' arg that
+	receives error callbacks with signature
+	   def handler(code, level, facility, message, line, column, byte, file, uri)
+
+2005-02-16  Dave Beckett
+
+	* perl/lib/RDF/Redland/QueryResults.pm (to_string):
+	Correct serialize_model_to_string args order.
+
+2005-02-10  Dave Beckett
+
+	* python/Makefile.am: Added redland-typemap.i
+
+	* python/RDF.py (message_handler, set_message_handler):
+	Obsolete; Use SWIG to throw exceptions.
+
+	* python/redland-post.i: Change the error/warning handling code.
+	Warnings are emited immediately.  1 error is stored and used with
+	%exception later; later errors are not handled and passed back.
+
+	* python/redland-typemap.i: Declare %exception
+
+2005-02-08  Dave Beckett
+
+	* php/Makefile.am: Define REDLAND_BINDINGS_VERSION for use in
+	module info.  Change patch rules so only maintainer makes them on
+	demand.
+
+	* php/redland_wrap.c.patch: Fix call to
+	zend_rsrc_list_get_rsrc_type to use TSRMLS_CC Change
+	PHP_MINFO_FUNCTION to report Redland loaded, redland librdf
+	version and redland php bindings version
+
+	* perl/lib/RDF/Redland/QueryResults.pm,
+	perl/lib/RDF/Redland/Query.pm: docs
+
+	* java/Makefile.am, perl/Makefile.am, php/Makefile.am,
+	python/Makefile.am, ruby/Makefile.am, tcl/Makefile.am,
+	csharp/Makefile.am: Remove linking to $(top_srcdir)../librdf -
+	that's not always right.
+
+	* perl/lib/RDF/Redland/Storage.pm (new):
+	allow NAME, OPTIONS_STRING to be optional if undef
+
+	* perl/example.pl: Added SPARQL CONSTRUCT
+
+	* perl/lib/RDF/Redland/QueryResults.pm (as_stream):
+	Added to return graph results.
+
+	* perl/lib/RDF/Redland/QueryResults.pm (to_string):
+	Added to write query results in a syntax.
+	(is_bindings, is_boolean, is_graph): Added boolean tests
+	of query results format.
+	(get_boolean): Added to get boolean query result.
+
+2005-02-07  Dave Beckett
+
+	* python/RDF.py (Storage.__init__): docs fix.
+
+2005-02-06  Dave Beckett
+
+	* configure.ac: Bumped version to 1.0.0.2
+
+	* Snapshotted redland-bindings_1_0_0_1 for 1.0.0.1 release
+
+	* configure.ac: 1.0.0.1
+
+2005-02-04  Dave Beckett
+
+	* python/redlandtest.py (testSPARQLQueryAsString): Added.
+
+	* python/RDF.py (QueryResults.to_file, QueryResults.to_string):
+	Added
+	(Serializer.serialize_model_to_string): Added
+
+	* configure.ac: AM_PROG_LIBTOOL to AC_PROG_LIBTOOL seems to make
+	things happier
+
+	* autogen.sh: Add libtoolize and swig to the path search.
+
+2005-02-02  Dave Beckett
+
+	* python/redlandtest.py (testRDQLQueryAsStreamDontWork):
+	Handle catching a bad format exception.
+	(testSPARQLQueryAsStream): Added, testing SPARQL CONSTRUCT.
+	(testSPARQLQueryAsk): Added, testing SPARQL ASK.
+
+	* python/RDF.py (class RDQLQuery): Added
+	(class SPARQLQuery): Added
+	(QueryResult.is_bindings, QueryResult.is_boolean,
+	QueryResult.is_graph): Added, testing type of query result
+	(QueryResult): Document more methods and raise errors when wrong
+	format result is asked for.
+	(QueryResult.get_boolean): Added, returning a boolean result.
+
+2005-01-18  Dave Beckett
+
+	* python/RDF.py: Update license to Apache style and for 2005
+
+2005-01-04  Edd Dumbill  <edd@usefulinc.com>
+
+	* csharp/Iterator.cs, csharp/Model.cs, csharp/Node.cs,
+	csharp/Parser.cs, csharp/Query.cs, csharp/QueryResults.cs,
+	csharp/Serializer.cs, csharp/Statement.cs, csharp/Storage.cs,
+	csharp/Stream.cs, csharp/Uri.cs: add a private member reference to
+	the World, which when assigned increments a refcount.
+	Corresponding refcount is decreased in Dispose(), ensuring world's
+	clients are counted. Also, move to HandleRef instead of IntPtr for
+	C-world pointers, which is more GC-safe.
+
+	* csharp/World.cs: take destruction of the C world out of the
+	destructor, and instead make it static depending on a ref count.
+	Ensure that the dynamic World, allocated in Redland.cs, also uses
+	this ref count so the world persists for as long as we run.
+
+	* csharp/test.cs: Fixed to use proper iterator syntax with query
+	results.
+
+	* csharp/Iterator.cs: (End ()): removed from API, vestige of
+	extinct iterator usage
+
+	* csharp/Stream.cs: (End ()): removed from API, vestige of extinct
+	iterator usage
+
+	* csharp/examples/example1.cs: Fixed up to use proper iterator
+	syntax.
+
+	* csharp/QueryResults.cs: (MoveNext ()): cleaned up iterator logic
+	so it works properly with foreach.
+	(End ()): removed from API, no longer needed
+
+2005-01-03  Dave Beckett
+
+	* perl/lib/RDF/Redland/Serializer.pm:
+	(new) docs - defaults to ntriples, not random.
+
