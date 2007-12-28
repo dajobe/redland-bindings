@@ -3,8 +3,6 @@ dnl
 dnl configure.in - top level autoconf file for Redland API bindings
 dnl (Process this file with autoconf to produce a configure script.)
 dnl
-dnl $Id$
-dnl
 dnl Copyright (C) 2000-2007, David Beckett http://purl.org/net/dajobe/
 dnl Copyright (C) 2000-2005 Copyright (C) 2000-2005, University of Bristol, UK http://www.bristol.ac.uk/
 dnl 
@@ -125,17 +123,66 @@ dnl Checks for languages
 AC_CHECK_PROG(PHP_CONFIG, php-config, php-config)
 if test "X$PHP_CONFIG" != X ; then
 
+  PHP_VERSION=`$PHP_CONFIG --version`
   PHP_INCLUDES=`$PHP_CONFIG --includes`
   PHP_EXTENSION_DIR=`$PHP_CONFIG --extension-dir`
+
+  if test $PHP_VERSION '>' 5.0.0; then
+    PHP_SWIG="-php5"
+  else
+    PHP_SWIG="-php4"
+  fi
+
+  # Configure these if PHP_SO_SUFFIX is missing
+  if test "X$PHP_SO_SUFFIX" = "X"; then 
+    # OSX/Darwin default is bundle
+    if test `uname` = Darwin; then
+      # FIXME - how to decide between bundle and dylib?
+      php_linking=bundle
+    else
+      php_linking=so
+    fi
+    AC_ARG_WITH(php-linking, [  --with-php-linking=TYPE      Set PHP dynamic linking (so, dylib, bundle)], php_linking="$withval")
+    case $php_linking in
+      so)
+	PHP_LDFLAGS="-shared"
+	PHP_CFLAGS=
+	;;
+      dylib)
+	PHP_LDFLAGS="-flat_namespace -undefined suppress"
+	PHP_CFLAGS="-fno-common"
+	;;
+      bundle)
+	PHP_LDFLAGS="-bundle -flat_namespace -undefined suppress"
+	PHP_CFLAGS="-fno-common"
+	;;
+      *)
+	AC_MSG_ERROR(No such PHP linking type $php_linking)
+	;;
+    esac
+    PHP_SO_SUFFIX=$php_linking
+  fi
+  AC_MSG_CHECKING(PHP Linking)
+  AC_MSG_RESULT(compile '$PHP_CFLAGS' link '$PHP_LDFLAGS' suffix $PHP_SO_SUFFIX)
+
 else
-  # This allows 'make clean' in the python directory to work when
-  # python isn't available
+  # This allows 'make clean' in the php directory to work when
+  # php isn't available
   PHP=:
+  PHP_SWIG=
   PHP_INCLUDES=
   PHP_EXTENSION_DIR=
+  PHP_CFLAGS=
+  PHP_LDFLAGS=
+  PHP_SO_SUFFIX=
 fi
 AC_SUBST(PHP_INCLUDES)
 AC_SUBST(PHP_EXTENSION_DIR)
+AC_SUBST(PHP_CFLAGS)
+AC_SUBST(PHP_LDFLAGS)
+AC_SUBST(PHP_SO_SUFFIX)
+AC_SUBST(PHP_SWIG)
+
 
 AC_ARG_WITH(perl, [  --with-perl(=PERL)      Enable the Perl interface], with_perl="$withval", with_perl="no")
 AC_MSG_CHECKING(Enable Perl API)
