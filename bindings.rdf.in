@@ -10,9 +10,8 @@
     <created>2004-07-19</created>
 
     <shortdesc xml:lang="en">
-      Language bindings in C#, Java, Perl, PHP, Obj-C, Python, Ruby
-      and Tcl to the Redland Resource Description Framework (RDF)
-      library.
+      Language bindings in Perl, PHP, Python and Ruby
+      to the Redland Resource Description Framework (RDF) library.
     </shortdesc>
 
     <description xml:lang="en">
@@ -21,7 +20,7 @@
       to be parsed from XML, stored, queried and manipulated. Redland
       implements each of the RDF concepts in its own class via an
       object based API, reflected into the language APIs, currently
-      C#, Java, Objective-C, Perl, PHP, Python, Ruby and Tcl. Several
+      Perl, PHP, Python and Ruby. Several
       classes providing functionality such as for parsers, storage,
       serializers and query languages are built as modules that can
       be loaded at compile or run-time as required.
