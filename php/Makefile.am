@@ -18,25 +18,30 @@
 #
 
 AM_CPPFLAGS=@CPPFLAGS@ @LIBRDF_CPPFLAGS@ @PHP_INCLUDES@ -DREDLAND_BINDINGS_VERSION=\"@VERSION@\"
-AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
+AM_CFLAGS=@STANDARD_CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
 PHP=php
 
 PHP_PACKAGE=redland
 
+PHP_CFLAGS=@PHP_CFLAGS@
+PHP_LDFLAGS=@PHP_LDFLAGS@
+PHP_SO_SUFFIX=@PHP_SO_SUFFIX@
+PHP_SWIG=@PHP_SWIG@
+
 SWIG_OUTPUTS=$(PHP_PACKAGE)_wrap.c php_$(PHP_PACKAGE).h
 SWIG_CRUFT=$(PHP_PACKAGE).php
 
 phpdir=@PHP_EXTENSION_DIR@
-php_DATA=$(PHP_PACKAGE).so
+php_DATA=$(PHP_PACKAGE).$(PHP_SO_SUFFIX)
 
 EXTRA_DIST=test.php example.php php.ini \
 redland-decl.i redland-init.i redland-post.i redland-typemap.i \
 $(SWIG_OUTPUTS)
 
 CLEANFILES=dmalloc.log *.db test-out.rdf \
-$(PHP_PACKAGE)_wrap.so $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
-$(PHP_PACKAGE).so $(PHP_PACKAGE).bundle
+$(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
+$(PHP_PACKAGE).$(PHP_SO_SUFFIX) $(PHP_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT) $(PHP_PACKAGE)_wrap.c.orig
 
 RUN=@REDLAND_RUN@
@@ -44,27 +49,17 @@ RUN=@REDLAND_RUN@
 SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_INIT_I -DREDLAND_DECL_I -DREDLAND_TYPEMAP_I
 
 $(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i redland-typemap.i
-	swig -v -php4 $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ @REDLAND_SWIG@
+	swig -v $(PHP_SWIG) $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ @REDLAND_SWIG@
 	rm -f $(PHP_PACKAGE).php
 
 # -UHAVE_CONFIG_H to stop PHP trying to include config.h which
 # quite often just doesn't exist
-$(PHP_PACKAGE)_wrap.so: $(PHP_PACKAGE)_wrap.c
-	$(CC) $(DEFS) $(SWIG_OPTS) -UHAVE_CONFIG_H $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(PHP_PACKAGE)_wrap.c -c -o $@
+$(PHP_PACKAGE)_wrap.o: $(PHP_PACKAGE)_wrap.c
+	$(CC) $(DEFS) $(PHP_CFLAGS) $(SWIG_OPTS) -UHAVE_CONFIG_H -UPACKAGE_NAME -UPACKAGE_BUGREPORT -UPACKAGE_STRING -UPACKAGE_TARNAME -UPACKAGE_VERSION $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(PHP_PACKAGE)_wrap.c -c -o $@
 
-$(PHP_PACKAGE).so: $(PHP_PACKAGE)-stamp
-$(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.so
-	@if test `uname` = Darwin; then \
-	  args=" -bundle -flat_namespace -undefined suppress"; \
-	else \
-	  args=" -shared"; \
-	fi; \
-	cmd="$(CC) $(AM_CFLAGS) $(CFLAGS) `@REDLAND_CONFIG@ --libs` $(AM_LDFLAGS) $(LDFLAGS) $$args $(PHP_PACKAGE)_wrap.so -o $(PHP_PACKAGE).so"; \
-	echo $$cmd; \
-	$$cmd
-	if test `uname` = Darwin; then \
-	  $(INSTALL_PROGRAM) $(PHP_PACKAGE).so $(PHP_PACKAGE).bundle; \
-	fi
+$(PHP_PACKAGE).$(PHP_SO_SUFFIX): $(PHP_PACKAGE)-stamp
+$(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.o
+	$(CC) $(STANDARD_CFLAGS) `@REDLAND_CONFIG@ --libs` $(AM_LDFLAGS) $(LDFLAGS) $(PHP_LDFLAGS) $(PHP_PACKAGE)_wrap.o -o $(PHP_PACKAGE).$(PHP_SO_SUFFIX)
 	touch $(PHP_PACKAGE)-stamp
 
 check-local: test-php
@@ -77,5 +72,5 @@ check-local: test-php
 #
 # See the manual for the php command:
 #  http://www.php.net/manual/en/features.commandline.php
-test-php: $(PHP_PACKAGE).so $(srcdir)/test.php
+test-php: $(PHP_PACKAGE).$(PHP_SO_SUFFIX) $(srcdir)/test.php
 	$(RUN)$(PHP) -c $(srcdir) $(srcdir)/test.php
