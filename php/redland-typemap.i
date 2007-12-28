@@ -35,10 +35,7 @@
 "
 
 %mshutdown {
-  if(librdf_php_world) {
-    librdf_free_world(librdf_php_world);
-    librdf_php_world=NULL;
-  }
+  librdf_php_world_finish();
 }
 
 #if PHP_MAJOR_VERSION >= 5
