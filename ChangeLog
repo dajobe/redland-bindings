@@ -1,5 +1,20 @@
 2007-12-27  Dave Beckett <dave@dajobe.org>
 
+	* php/Makefile.am: No need for all the -UPACKAGE_* since they are
+	in an (unused) bindings_config.h
+
+	* csharp/examples/Makefile.am: Use NUNIT_LIBS to set get rid of
+	$(shell)
+
+	* csharp/Makefile.am: Set MONO_SN
+
+	* configure.ac: Update AM_INIT_AUTOMAKE to add warnings
+	Generate a bindings_config.h header just in order to reduce
+	compile lines length.
+	Allow Mono to be found without 'sn' available since it's
+	maintainer only anyway.
+	Set NUNIT_LIBS here since $(shell) is a gnu makeism
+
 	* php/test.php: update to use null, not $nulluri
 	Load the dlls from a fixed list of names, not what PHP might tell us
 
