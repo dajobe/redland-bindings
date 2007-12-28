@@ -1,4 +1,14 @@
 2007-12-27  Dave Beckett <dave@dajobe.org>
+	* tcl: move bindings tcl dir to top level tcl trunk dir
+
+	* csharp: Move bindings csharp dir to top level csharp trunk dir
+
+	* java: Move bindings java dir to top level java trunk dir
+
+	* INSTALL.html, Makefile.am, README.html, RELEASE.html,
+	configure.ac, docs/Makefile.am: Removed tcl java csharp (and
+	mention of objc) as promised in
+	http://lists.usefulinc.com/pipermail/redland-announce/2007q1/000067.html
 
 	* php/Makefile.am: No need for all the -UPACKAGE_* since they are
 	in an (unused) bindings_config.h
