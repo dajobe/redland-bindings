@@ -1,4 +1,31 @@
+2007-12-27  Dave Beckett <dave@dajobe.org>
+
+	* php/test.php: update to use null, not $nulluri
+	Load the dlls from a fixed list of names, not what PHP might tell us
+
+	* php/Makefile.am: Use PHP_* automake vars and loose hard-coded
+	darwin stuff
+
+	* php/redland-typemap.i: Add incoming typemaps for librdf_uri*,
+	librdf_node* to set real null objects. For PHP5, check for errors
+	after calling a function and throw an exception.
+
+	* php/redland-post.i: Add exceptions for PHP5
+
+	* php/redland-init.i: Put all init into librdf_php_world_init()
+
+	* php/redland-decl.i: Add librdf_php_get_null_node and
+	librdf_php_get_null_uri prototypes.
+
+	* configure.ac: Add PHP_SWIG, PHP_CFLAGS, PHP_LDFLAGS and
+	PHP_SO_SUFFIX defines
+	Add --with-php-linking=so/dylib/bundle option to pick some of these.
+
 2007-12-24  Dave Beckett <dave@dajobe.org>
+
+	* docs/Makefile.am: Use $(PERL) not perl
+
+	* ruby/test/test_query.rb: Update sparql results format expected
 
 	* NEWS.html, RELEASE.html, python/filter.py, configure.ac: 1.0.7.1
 
