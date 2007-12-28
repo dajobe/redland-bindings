@@ -34,6 +34,14 @@
    php_info_print_table_end();
 "
 
+%pragma(php5) phpinfo="
+   php_info_print_table_start();
+   php_info_print_table_header(2, \"Redland RDF Support\", \"enabled\");
+   php_info_print_table_row(2, \"redland librdf version\", librdf_version_string);
+   php_info_print_table_row(2, \"redland php bindings version\", REDLAND_BINDINGS_VERSION);
+   php_info_print_table_end();
+"
+
 %mshutdown {
   librdf_php_world_finish();
 }
