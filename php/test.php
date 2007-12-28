@@ -3,11 +3,8 @@
  *
  * test.php - Redland PHP Interface test program
  *
- * $Id$
- *
+ * Copyright (C) 2002-2007 David Beckett - http://purl.org/net/dajobe/
  * Copyright (C) 2003 Morten Frederiksen - http://purl.org/net/morten/
- *
- * Copyright (C) 2002-2004 David Beckett - http://purl.org/net/dajobe/
  * Copyright (C) 2002-2004 University of Bristol - http://www.bristol.ac.uk/
  *
  * This package is Free Software or Open Source available under the
@@ -25,25 +22,12 @@
 /* ------------------------------------------------------------------------ */
 
 print "Testing Redland...\n";
-
-global $REDLAND_LOADED__;
-if ($REDLAND_LOADED__) return;
-if (!extension_loaded("redland")) {
-
-  /* PHP 4.3 provides PHP_SHLIB_PREFIX and PHP_SHLIB_SUFFIX */
-  if (!defined('PHP_SHLIB_SUFFIX')) {
-    define('PHP_SHLIB_SUFFIX', strtoupper(substr(PHP_OS, 0,3)) == 'WIN' ? 'dll' : 'so');
-  }
-  if (!defined('PHP_SHLIB_PREFIX')) {
-    define('PHP_SHLIB_PREFIX',PHP_SHLIB_SUFFIX == 'dll' ? 'php_' : '');
-  }
-
-  if (!dl(PHP_SHLIB_PREFIX . "redland" . "." . PHP_SHLIB_SUFFIX )){
-    die('no redland?');
-    exit;
+$dlls = array("redland.so", "php_redland.dll", "redland.dylib", "redland.bundle");
+foreach ($dlls as $dll) {
+  if(file_exists($dll)) {
+    dl($dll);
   }
 }
-$REDLAND_LOADED__ = true;
 
 $world=librdf_php_get_world();
 
@@ -55,7 +39,7 @@ print "Redland storage created\n";
 $model=librdf_new_model($world,$storage,'');
 print "Redland model created\n";
 
-$parser=librdf_new_parser($world,'raptor','application/rdf+xml',librdf_new_uri($world,'-'));
+$parser=librdf_new_parser($world,'rdfxml','application/rdf+xml',null);
 print "Redland parser created\n";
 
 $uri=librdf_new_uri($world,'file:../data/dc.rdf');
@@ -69,9 +53,7 @@ librdf_free_uri($uri);
 librdf_free_parser($parser);
 
 
-$nulluri = librdf_new_uri ($world, '-');
-
-$query = librdf_new_query($world, 'sparql', $nulluri, "PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT ?a ?c ?d WHERE { ?a dc:title ?c . OPTIONAL { ?a dc:related ?d } }", $nulluri);
+$query = librdf_new_query($world, 'sparql', null, "PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT ?a ?c ?d WHERE { ?a dc:title ?c . OPTIONAL { ?a dc:related ?d } }", null);
 print "Querying for dc:titles:\n";
 $results=librdf_model_query_execute($model, $query);
 $count=1;
@@ -97,14 +79,13 @@ $results=null;
 print "\nExecuting query again\n";
 $results=librdf_model_query_execute($model, $query);
 if ($results) {
-  $format_uri=librdf_new_uri($world, "http://www.w3.org/TR/2004/WD-rdf-sparql-XMLres-20041221/");
-  $str=librdf_query_results_to_string($results, $format_uri, $nulluri);
+  $str=librdf_query_results_to_string($results, null, null);
   print "Query results serialized to an XML string size ".strlen($str)." bytes\n";
 } else
   print "Query results couldn't be serialized to an XML string\n";
 
 
-$serializer=librdf_new_serializer($world,'rdfxml','application/rdf+xml',librdf_new_uri($world,'-'));
+$serializer=librdf_new_serializer($world,'rdfxml',null, null);
 print "Redland serializer created\n";
 
 $base=librdf_new_uri($world,'http://example.org/base.rdf');
