@@ -50,7 +50,7 @@ SUFFIXES=.cs .dll .exe
 .cs.exe:
 	$(CSHARP_LINK) 
 
-NUNIT_FLAGS = $(shell pkg-config nunit-framework --libs) -r:../Redland.dll
+NUNIT_FLAGS = @NUNIT_LIBS@ -r:../Redland.dll
 
 
 check-local: $(CSHARP_TESTS) 
