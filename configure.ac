@@ -28,8 +28,8 @@ AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(perl/example.pl)
 AC_REVISION($Revision$)dnl
 
-#AM_INIT_AUTOMAKE([1.7 check-news std-options -Wobsolete -Wportability -Wsyntax -Wunsupported])
-AM_INIT_AUTOMAKE([1.7 check-news])
+AM_INIT_AUTOMAKE([1.7 check-news std-options -Wobsolete -Wportability -Wsyntax -Wunsupported])
+AM_CONFIG_HEADER(bindings_config.h)
 AM_MAINTAINER_MODE
 
 dnl Checks for programs.
@@ -415,7 +415,7 @@ AC_ARG_WITH(ecma-cli, [  --with-ecma-cli=SYSTEM  Enable ECMA CLI interface - mon
 
 AC_MSG_CHECKING(ECMA CLI implementations available)
 result=
-if test "X$MONO" != X -a "X$MCS" != X -a "X$GACUTIL" != X -a "X$SN" != X; then
+if test "X$MONO" != X -a "X$MCS" != X -a "X$GACUTIL" != X; then
   result="$result Mono"
   languages_available="$languages_available C#(Mono)"
 fi
@@ -461,6 +461,12 @@ for name in $ecma_cli_name mono dotgnu no; do
 esac
 done
 AC_MSG_RESULT($ecma_cli)
+
+NUNIT_LIBS=
+if test "$with_ecma_cli" != no; then
+  NUNIT_LIBS=`pkg-config nunit-framework --libs`
+fi
+AC_SUBST(NUNIT_LIBWS)
 AC_SUBST(CLIRUN)
 AC_SUBST(CSHARPC)
 AC_SUBST(CSHARPCFLAGS)
