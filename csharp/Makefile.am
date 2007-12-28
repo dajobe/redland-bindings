@@ -100,7 +100,6 @@ install-fakeDATA: install-csharp
 MONO_GACUTIL=$(GACUTIL)
 PNET_GACUTIL=$(ILGAC)
 
-#MONO_SN=$(CLIRUN) $(CLI_PREFIX)/sn.exe
 MONO_SN=$(SN)
 
 if MAINTAINER_MODE
