@@ -125,12 +125,10 @@ such as <code>--prefix</code> etc.</p>
 
 <dl>
 
-<dt><code>--with-java</code>(=<em>JAVA-COMMAND</em>)<br /></dt>
 <dt><code>--with-perl</code>(=<em>PERL-COMMAND</em>)<br /></dt>
 <dt><code>--with-php</code>(=<em>PHP-COMMAND</em>)<br /></dt>
 <dt><code>--with-python</code>(=<em>PYTHON-COMMAND</em>)<br /></dt>
 <dt><code>--with-ruby</code>(=<em>RUBY-COMMAND</em>)<br /></dt>
-<dt><code>--with-tcl</code>(=<em>TCL-COMMAND</em>)<br /></dt>
 <dd><p>Enable the given language APIs - the default is to build
 no language APIs automatically.  If the option value is omitted or
 <em>yes</em>, configure will guess the location of the language
@@ -152,13 +150,6 @@ done by setting the environment variable <code>PYTHON_LDFLAGS</code>.
 If neither is set, <code>configure</code> will guess an appropriate
 set for the current system.
 </p></dd>
-
-<dt><code>--with-jdk=</code><em>DIR</em><br /></dt>
-<dd><p>Choose the location of the Java JDK to use for building
-the Java API with Java JNI.  If omitted, Redland will guess likely
-locations but this is not guaranteed to work.
-</p></dd>
-
 
 <dt><code>--with-redland=</code> <code>system</code> or <code>internal</code><br /></dt>
 <dd><p>
@@ -253,38 +244,15 @@ full information on installing and using Redland from Perl.</p>
 <p>See the <a href="docs/python.html">Redland Python Interface</a> document for
 full information on installing and using Redland from Python.</p>
 
-<h2>7. Using the Tcl interface</h2>
-
-<p>See the <a href="docs/tcl.html">Redland Tcl Interface</a> document for
-full information on installing and using Redland from Tcl, and/or Tcl/Tk.</p>
-
-<h2>8. Using the Java interface</h2>
-
-<p>See the <a href="docs/java.html">Redland Java Interface</a> document for
-full information on installing and using Redland from Java.</p>
-
-<h2>9. Using the Ruby interface</h2>
+<h2>7. Using the Ruby interface</h2>
 
 <p>See the <a href="docs/ruby.html">Redland Ruby Interface</a> document for
 full information on installing and using Redland from Ruby.</p>
 
-<h2>10. Using the PHP interface</h2>
+<h2>8. Using the PHP interface</h2>
 
 <p>See the <a href="docs/php.html">Redland PHP Interface</a> document for
 full information on installing and using Redland from PHP.</p>
-
-<h2>11. Using the C# interface</h2>
-
-<p>See the <a href="docs/csharp.html">Redland C# Interface</a> document for
-full information on installing and using Redland from C# or an ECMA CLI
-language.</p>
-
-<h2>12. Using the Obj-C interface</h2>
-
-<p>See the <a href="docs/objc.html">Redland Obj-C Interface</a> document for
-information on obtaining and installing the Objective-C bindings for OSX
-which are maintained separately.</p>
-
 
 
 <hr />

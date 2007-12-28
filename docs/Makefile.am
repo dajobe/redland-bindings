@@ -24,7 +24,7 @@
 # 
 
 EXTRA_DIST=README.html README \
-csharp.html perl.html python.html tcl.html java.html ruby.html php.html \
+perl.html python.html ruby.html php.html \
 fix-pod-xhtml fix-python-xhtml fix-rdoc-xhtml \
 pod pydoc rdoc
 

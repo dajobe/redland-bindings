@@ -48,23 +48,11 @@ AC_PROG_LIBTOOL
 # Find a tar command for 'make dist'
 AC_CHECK_PROGS(TAR, gnutar gtar tar)
 
-AC_CHECK_PROGS(JAVA, java jre)
-AC_CHECK_PROGS(JAVAC, javac)
 AC_CHECK_PROGS(PYTHON, python)
 AC_CHECK_PROGS(PERL, perl)
 AC_CHECK_PROGS(PHP, php)
-AC_CHECK_PROGS(TCL, tclsh)
 AC_CHECK_PROGS(RUBY, ruby)
 AC_CHECK_PROGS(SWIG, swig)
-# dotGNU
-AC_CHECK_PROGS(ILRUN, ilrun)
-AC_CHECK_PROGS(CSCC, cscc)
-AC_CHECK_PROGS(ILGAC, ilgac)
-# Mono
-AC_CHECK_PROGS(MONO, mono)
-AC_CHECK_PROGS(MCS, mcs)
-AC_CHECK_PROGS(GACUTIL, gacutil)
-AC_CHECK_PROGS(SN, sn)
 # Gnome
 AC_CHECK_PROGS(PKG_CONFIG, pkg-config)
 
@@ -302,71 +290,6 @@ AC_SUBST(RUBY_DIR)
 AC_SUBST(RUBY_LIBDIR)
 
 
-AC_ARG_WITH(java, [  --with-java(=JAVA)      Enable the java interface], with_java="$withval", with_java="no")
-AC_MSG_CHECKING(Enable Java API)
-if test "X$with_java" != Xno ; then
-  if test "X$with_java" != Xyes; then
-    JAVA=$with_java
-  fi
-  with_java=yes
-fi
-
-dnl need to change quotes to allow square brackets
-changequote(<<, >>)dnl
-JAVA_VERSION=`$JAVA -version 2>&1 | $SED -ne 's/java version "\([^"]*\)".*/\1/p' 2>/dev/null`
-changequote([, ])dnl
-if test "X$JAVA_VERSION" != X; then
-  languages_available="$languages_available java($JAVA_VERSION)"
-  if test $with_java = yes; then
-    languages="$languages java"
-  fi
-fi
-AC_MSG_RESULT($with_java)
-AC_SUBST(JAVA_VERSION)
-
-
-AC_ARG_WITH(tcl, [  --with-tcl(=TCL)        Enable the Tcl interface], with_tcl="$withval", with_tcl="no")
-AC_MSG_CHECKING(Enable Tcl API)
-if test "X$with_tcl" != Xno ; then
-  if test "X$with_tcl" != Xyes; then
-    TCL=$with_tcl
-  fi
-  with_tcl=yes
-fi
-
-changequote(<<, >>)dnl
-TCL_VERSION=`echo 'puts -nonewline [info tclversion]' | $TCL 2>/dev/null`
-TCL_DIR=`echo 'puts $tcl_library' | $TCL 2>/dev/null`
-changequote([, ])dnl
-if test "X$TCL_VERSION" != X; then
-  languages_available="$languages_available tcl($TCL_VERSION)"
-  if test $with_tcl = yes; then
-    languages="$languages tcl"
-  fi
-fi
-AC_MSG_RESULT($with_tcl)
-AC_SUBST(TCL_VERSION)
-AC_SUBST(TCL_DIR)
-
-AC_ARG_WITH(tcl_include, [  --with-tcl-include=DIR  Tcl include directory], tcl_include="$withval", tcl_include="")
-AC_MSG_CHECKING(TCL include)
-TCL_INCLUDES=
-if test "X$TCL_VERSION" != X; then
-  if test "X$tcl_include" = X ; then
-    for dir in /usr/include/tcl$TCL_VERSION /usr/local/include/tcl$TCL_VERSION; do
-      if test -r $dir/tcl.h; then
-	TCL_INCLUDES="-I$dir"
-	break
-      fi
-    done
-  elif test "X$tcl_include" != X -a -r $tcl_include/tcl.h; then
-    TCL_INCLUDES="-I$tcl_include"
-  fi
-fi
-AC_MSG_RESULT($TCL_INCLUDES)
-AC_SUBST(TCL_INCLUDES)
-
-
 AC_ARG_WITH(php, [  --with-php(=PHP)        Enable the PHP interface], with_php="$withval", with_php="no")
 AC_MSG_CHECKING(Enable PHP API)
 if test "X$with_php" != Xno ; then
@@ -406,106 +329,6 @@ fi
 AC_MSG_RESULT($with_ruby)
 AC_SUBST(RUBY_VERSION)
 
-
-
-with_ecma_cla=
-dnl Pick an ECMA CLI implementation
-AC_ARG_WITH(ecma-cli, [  --with-ecma-cli=SYSTEM  Enable ECMA CLI interface - mono, dotgnu (default=no)], ecma_cli_name="$withval", ecma_cli_name="no")
-
-
-AC_MSG_CHECKING(ECMA CLI implementations available)
-result=
-if test "X$MONO" != X -a "X$MCS" != X -a "X$GACUTIL" != X; then
-  result="$result Mono"
-  languages_available="$languages_available C#(Mono)"
-fi
-if test "X$ILRUN" != X -a "X$CSCC" != X -a "X$ILGAC" != X; then
-  result="$result dotGNU"
-  languages_available="$languages_available C#(dotGNU)"
-fi
-AC_MSG_RESULT($result)
-
-AC_MSG_CHECKING(ECMA CLI implementations to use)
-with_ecma_cli=no
-CLIRUN=
-CSHARPC=
-CSHARPCFLAGS=
-CLI_PREFIX=
-for name in $ecma_cli_name mono dotgnu no; do
-  case $name in
-    mono)
-      if test "X$MONO" != X -a "X$MCS" != X -a "X$GACUTIL" != X -a "X$SN" != X; then
-        CLIRUN=$MONO
-        CSHARPC=$MCS
-        CSHARPCFLAGS="-debug+"
-        CLI_PREFIX=`$PKG_CONFIG mono --variable=prefix`
-        ecma_cli=Mono
-      fi
-      ;;
-
-    dotgnu)
-      if test "X$ILRUN" != X -a "X$CSCC" != X -a "X$ILGAC" != X; then
-        CLIRUN=$ILRUN
-        CSHARPC=$CSCC
-        CSHARPCFLAGS="-g"
-        CLI_PREFIX=/usr
-        ecma_cli=dotGNU
-      fi
-      ;;
-
-    no)
-      ;;
-    *)
-      AC_MSG_ERROR(No such ECMA CLI implementation $name)
-      ;;
-esac
-done
-AC_MSG_RESULT($ecma_cli)
-
-NUNIT_LIBS=
-if test "$with_ecma_cli" != no; then
-  NUNIT_LIBS=`pkg-config nunit-framework --libs`
-fi
-AC_SUBST(NUNIT_LIBWS)
-AC_SUBST(CLIRUN)
-AC_SUBST(CSHARPC)
-AC_SUBST(CSHARPCFLAGS)
-AC_SUBST(CLI_PREFIX)
-
-if test "$with_ecma_cli" != no; then
-  languages="$languages C#($ecma_cli)"
-fi
-
-
-jdk=
-jdkinc=
-AC_ARG_WITH(jdk, [  --with-jdk=DIR          Java JDK location (default=auto)], user_jdk="$withval", user_jdk="")
-AC_MSG_CHECKING(Java JDK includes)
-if test "X$JAVA_VERSION" != X; then
-  for jdkdir in $user_jdk $JAVA_HOME `ls -1dr /usr/local/jdk* 2>/dev/null` /usr/j2se `ls -1dr /usr/lib/java* 2>/dev/null` /System/Library/Frameworks/JavaVM.framework /usr/local/packages/j2sdk /opt/blackdown-jdk-*; do
-    if test ! -d $jdkdir; then
-      continue
-    fi
-    for idir in include Headers; do
-      if test -r $jdkdir/$idir/jni.h ; then
-        jdk=$jdkdir
-        jdkinc=$jdkdir/$idir
-        break 2
-      fi
-    done
-  done
-fi
-
-if test "X$jdk" != X -a -r $jdkinc/jni.h; then
-  inc2=`find $jdkinc -type d | grep -v "$jdkinc\$" | head -n 1`
-  JDK_INCLUDES="-I$jdkinc"
-  if test -r $inc2/jni_md.h; then
-    JDK_INCLUDES="$JDK_INCLUDES -I$inc2"
-  fi
-fi
-
-AC_SUBST(JDK_INCLUDES)
-AC_MSG_RESULT($JDK_INCLUDES)
 
 
 AM_MISSING_PROG(ACLOCAL, aclocal, $missing_dir)
@@ -663,19 +486,12 @@ perl/lib/RDF/Redland/Makefile
 php/Makefile
 python/Makefile
 python/test/Makefile
-tcl/Makefile
-java/Makefile
-java/org/Makefile
-java/org/librdf/Makefile
-java/org/librdf/redland/Makefile
 ruby/Makefile
 ruby/test/Makefile
 ruby/lib/Makefile
 ruby/lib/rdf/Makefile
 ruby/lib/rdf/redland/Makefile
 ruby/lib/rdf/redland/schemas/Makefile
-csharp/Makefile
-csharp/examples/Makefile
 demos/Makefile
 data/Makefile
 ])

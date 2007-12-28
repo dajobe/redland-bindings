@@ -27,7 +27,7 @@
 SUBDIRS=@SD@ demos data
 # Subdirectories to use for distribution
 DIST_SUBDIRS=data docs \
-perl php python tcl java ruby csharp \
+perl php python ruby \
 demos
 
 EXTRA_DIST=ChangeLog  ChangeLog.1 ChangeLog.2 \
