@@ -1,4 +1,7 @@
-2007-12-28  Dave Beckett  <dave@dajobe.org>
+2007-12-28  Dave Beckett <dave@dajobe.org>
+
+	* Makefile.am, NEWS.html, RELEASE.html, configure.ac: Bump version
+	to 1.0.8.1
 
 	* Snapshotted redland-bindings_1_0_7_1 for 1.0.7.1 release (SVN 13372)
 
