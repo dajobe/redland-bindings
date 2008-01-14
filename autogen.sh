@@ -58,6 +58,7 @@ if grep "^AC_LIBLTDL_" $confs >/dev/null; then
 fi
 
 # Some dependencies for autotools:
+# automake 1.10 requires autoconf 2.60
 # automake 1.9 requires autoconf 2.58
 # automake 1.8 requires autoconf 2.58
 # automake 1.7 requires autoconf 2.54
@@ -114,7 +115,7 @@ for my \$varg (qw(--version -version)) {
   while(<PIPE>) {
     chomp;
     next if @vnums; # drain pipe if we got a vnums
-    next unless /^\$mname/i;
+    next unless /^\$mname/;
     my(\$v)=/(\S+)\$/i; \$v =~ s/-.*\$//;
     @vnums=grep { defined \$_ && !/^\s*\$/} map { s/\D//g; \$_; } split(/\./, \$v);
   }
