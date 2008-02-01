@@ -197,6 +197,10 @@ AC_ARG_WITH(python_ldflags, [  --with-python_ldflags(=FLAGS)  Set the Python lin
 if test "X$with_python_ldflags" != X; then
   PYTHON_LDFLAGS=$with_python_ldflags
 fi
+AC_ARG_WITH(python_libext, [  --with-python_libext(=EXT) Python shared library file ext. (default .so)], with_python_libext="$withval", with_python_libext=".so")
+if test "X$with_python_libext" != X; then
+  PYTHON_LIBEXT=$with_python_libext
+fi
 
 AC_MSG_CHECKING(Enable Python API)
 if test "X$with_python" != Xno; then
@@ -254,6 +258,9 @@ if test "X$PYTHON" != X; then
   fi
   AC_SUBST(PYTHON_LDFLAGS)
 
+  AC_MSG_CHECKING(Python shared library file extension)
+  AC_MSG_RESULT($PYTHON_LIBEXT)
+  AC_SUBST(PYTHON_LIBEXT)
 else
   # This allows 'make clean' in the python directory to work when
   # python isn't available
