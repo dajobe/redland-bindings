@@ -153,14 +153,23 @@ is returned.
 sub feature ($$;$) {
   my($self,$uri,$value)=@_;
 
-  warn "RDF::Redland::Serializer->feature('$uri', '$value')\n" if $RDF::Redland::Debug;
+  warn "RDF::Redland::Serializer->feature('$uri', '$value')\n"
+    if $RDF::Redland::Debug;
   $uri=RDF::Redland::URI->new($uri)
     unless ref $uri;
 
-  return &RDF::Redland::CORE::librdf_serializer_get_feature($self->{SERIALIZER},$uri->{URI})
-    unless $value;
+  if(!defined $value) {
+    $value=&RDF::Redland::CORE::librdf_serializer_get_feature($self->{SERIALIZER},
+							      $uri->{URI});
+    return $value ? RDF::Redland::Node->_new_from_object($value,1) : undef;
+  }
 
-  return &RDF::Redland::CORE::librdf_serializer_set_feature($self->{SERIALIZER},$uri->{URI},$value);
+  $value=RDF::Redland::LiteralNode->new($value)
+    unless ref $value;
+
+  return &RDF::Redland::CORE::librdf_serializer_set_feature($self->{SERIALIZER},
+							    $uri->{URI},
+							    $value->{NODE});
 }
 
 

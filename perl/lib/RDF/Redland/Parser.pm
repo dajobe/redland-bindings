@@ -209,15 +209,24 @@ returned.
 sub feature ($$;$) {
   my($self,$uri,$value)=@_;
 
-  warn "RDF::Redland::Parser->feature('$uri', '$value')\n" if $RDF::Redland::Debug;
+  warn "RDF::Redland::Parser->feature('$uri', '$value')\n"
+    if $RDF::Redland::Debug;
   $uri=RDF::Redland::URI->new($uri)
     unless ref $uri;
 
-  return &RDF::Redland::CORE::librdf_parser_set_feature($self->{PARSER},$uri->{URI},$value->{NODE})
-      if $value;
+  if(!defined $value) {
+    $value=&RDF::Redland::CORE::librdf_parser_get_feature($self->{PARSER},
+							  $uri->{URI});
+    return $value ? RDF::Redland::Node->_new_from_object($value,1) : undef;
+  }
 
-  $value=&RDF::Redland::CORE::librdf_parser_get_feature($self->{PARSER},$uri->{URI});
-  return $value ? RDF::Redland::Node->_new_from_object($value,1) : undef;
+  $value=RDF::Redland::LiteralNode->new($value)
+    unless ref $value;
+
+  return &RDF::Redland::CORE::librdf_parser_set_feature($self->{PARSER},
+							$uri->{URI},
+							$value->{NODE})
+
 }
 
 
