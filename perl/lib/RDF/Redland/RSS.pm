@@ -2,9 +2,7 @@
 #
 # RSS.pm - Redland Perl RSS 1.0 module
 #
-# $Id$
-#
-# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2003 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2003 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -840,7 +838,7 @@ L<RDF::Redland::Model> and RSS 1.0 web pages at http://purl.org/rss/1.0/
 
 =head1 AUTHOR
 
-Dave Beckett - http://purl.org/net/dajobe/
+Dave Beckett - http://www.dajobe.org/
 
 =cut
 

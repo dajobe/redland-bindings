@@ -2,9 +2,7 @@
 #
 # example.py - Redland Python 2.0 example code
 #
-# $Id$
-#
-# Copyright (C) 2000-2005 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2005 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -33,7 +31,7 @@ model=RDF.Model(storage)
 if model is None:
   raise "new RDF.model failed"
 
-statement=RDF.Statement(RDF.Uri("http://purl.org/net/dajobe/"),
+statement=RDF.Statement(RDF.Uri("http://www.dajobe.org/"),
                         RDF.Uri("http://purl.org/dc/elements/1.1/creator"),
                         RDF.Node("Dave Beckett"))
 if statement is None:

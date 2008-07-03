@@ -2,9 +2,7 @@
 #
 # serialize.pl - Redland serialize test program
 #
-# $Id$
-#
-# Copyright (C) 2002-2004 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2002-2004 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2002-2004 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the

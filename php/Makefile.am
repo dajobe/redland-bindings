@@ -2,9 +2,7 @@
 #
 # Makefile.am - automake file for PHP interface to Redland
 #
-# $Id$
-#
-# Copyright (C) 2002-2006 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2002-2006 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2002-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the

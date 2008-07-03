@@ -1,9 +1,7 @@
 #
 # test.py - Redland Python 2.0 test code
 #
-# $Id$
-#
-# Copyright (C) 2000-2004 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2004 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2004 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -31,7 +29,7 @@ model=RDF.Model(storage)
 if model is None:
   raise "new RDF.model failed"
 
-statement=RDF.Statement(RDF.Uri("http://purl.org/net/dajobe/"),
+statement=RDF.Statement(RDF.Uri("http://www.dajobe.org/"),
                         RDF.Uri("http://purl.org/dc/elements/1.1/creator"),
                         RDF.Node("Dave Beckett"))
 if statement is None:
@@ -62,7 +60,7 @@ for s in parser.parse_as_stream(uri, uri):
 rdfxml_string="""<?xml version='1.0'?>
 <rdf:RDF xmlns:rdf='http://www.w3.org/1999/02/22-rdf-syntax-ns#'
      xmlns:dc='http://purl.org/dc/elements/1.1/'>
-  <rdf:Description rdf:about='http://purl.org/net/dajobe/'
+  <rdf:Description rdf:about='http://www.dajobe.org/'
                dc:title='Home Page of David Beckett' />
 </rdf:RDF>"""
 
@@ -87,7 +85,7 @@ for s in model.find_statements(RDF.Statement(None, RDF.Uri("http://purl.org/dc/e
 
 
 print "searching model for node targets"
-n1=RDF.Uri("http://purl.org/net/dajobe/")
+n1=RDF.Uri("http://www.dajobe.org/")
 n2=RDF.Uri("http://purl.org/dc/elements/1.1/title")
 for node in model.targets(n1,n2):
   print "  found node:",node

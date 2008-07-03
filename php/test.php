@@ -3,7 +3,7 @@
  *
  * test.php - Redland PHP Interface test program
  *
- * Copyright (C) 2002-2007 David Beckett - http://purl.org/net/dajobe/
+ * Copyright (C) 2002-2007 David Beckett - http://www.dajobe.org/
  * Copyright (C) 2003 Morten Frederiksen - http://purl.org/net/morten/
  * Copyright (C) 2002-2004 University of Bristol - http://www.bristol.ac.uk/
  *

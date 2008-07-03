@@ -2,9 +2,7 @@
 #
 # Model.pm - Redland Perl RDF Model module
 #
-# $Id$
-#
-# Copyright (C) 2000-2005 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2005 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -650,7 +648,7 @@ L<RDF::Redland::Storage>, L<RDF::Redland::Node> and L<RDF::Redland::Statement>
 
 =head1 AUTHOR
 
-Dave Beckett - http://purl.org/net/dajobe/
+Dave Beckett - http://www.dajobe.org/
 
 =cut
 

@@ -1,9 +1,7 @@
 # 
 # RDF.py - Redland Python RDF module
 #
-# $Id$
-#
-# Copyright (C) 2000-2006 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2006 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software and part of Redland http://librdf.org/
@@ -110,7 +108,7 @@ __version__ = "1.1"
 
 # For pydoc
 __date__ = '$Date$'
-__author__ = 'Dave Beckett - http://purl.org/net/dajobe, Edd Dumbill <edd@usefulinc.com> and Matt Biddulph <mb@picdiary.com>'
+__author__ = 'Dave Beckett - http://www.dajobe.org/, Edd Dumbill <edd@usefulinc.com> and Matt Biddulph <mb@picdiary.com>'
 
 # Package variables [globals]
 #   Python style says to use _ to prevent exporting

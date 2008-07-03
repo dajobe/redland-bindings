@@ -2,9 +2,7 @@
 #
 # test2.t - Redland perl test 2 - general RDF::Redland coverage
 #
-# $Id$
-#
-# Copyright (C) 2000-2003 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2003 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2003 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -55,7 +53,7 @@ if(!$model) {
 print "ok $test\n";
 $test++;
 
-my $statement=RDF::Redland::Statement->new_from_nodes(RDF::Redland::Node->new_from_uri_string("http://purl.org/net/dajobe/"),
+my $statement=RDF::Redland::Statement->new_from_nodes(RDF::Redland::Node->new_from_uri_string("http://www.dajobe.org/"),
 					     RDF::Redland::Node->new_from_uri_string("http://purl.org/dc/elements/1.1/creator"),
 					     RDF::Redland::Node->new_from_literal("Dave Beckett", "", 0));
 if(!$statement) {
@@ -86,7 +84,7 @@ while(!$stream->end) {
 }
 last if $failed;
 
-my $source_node=RDF::Redland::Node->new_from_uri_string("http://purl.org/net/dajobe/");
+my $source_node=RDF::Redland::Node->new_from_uri_string("http://www.dajobe.org/");
 my $target_node=RDF::Redland::Node->new_from_uri_string("http://purl.org/dc/elements/1.1/creator");
 
 my $iterator=$model->targets_iterator($source_node,$target_node);

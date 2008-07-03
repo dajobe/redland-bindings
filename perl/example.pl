@@ -2,9 +2,7 @@
 #
 # example.pl - Redland eaxmple Perl program
 #
-# $Id$
-#
-# Copyright (C) 2000-2005 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2005 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -36,7 +34,7 @@ die "Failed to create RDF::Redland::Model for storage\n" unless $model;
 my $creator_uri=new RDF::Redland::URI("http://purl.org/dc/elements/1.1/creator");
 
 warn "\nCreating statement\n";
-my $statement=new RDF::Redland::Statement(RDF::Redland::Node->new_from_uri("http://purl.org/net/dajobe/"),
+my $statement=new RDF::Redland::Statement(RDF::Redland::Node->new_from_uri("http://www.dajobe.org/"),
 					  $creator_uri,
 					  new RDF::Redland::Node("Dave Beckett"));
 die "Failed to create RDF::Redland::Statement\n" unless $statement;
@@ -108,7 +106,7 @@ $stream=undef;
 $statement=undef;
 
 
-my $home=RDF::Redland::Node->new_from_uri("http://purl.org/net/dajobe/");
+my $home=RDF::Redland::Node->new_from_uri("http://www.dajobe.org/");
 warn "\nSearching model for targets of subject ",$home->uri->as_string," predicate ", $creator_uri->as_string, "\n";
 my(@nodes)=$model->targets($home, new RDF::Redland::Node($creator_uri));
 die "Failed to find any targets matching\n"

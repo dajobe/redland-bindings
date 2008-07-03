@@ -2,8 +2,6 @@
 # 
 # redlandtest.py - Redland Python RDF model unit tests
 #
-# $Id$
-#
 # Authors:
 #   Matt Biddulph <mb@picdiary.com>
 #   Edd Dumbill <edd@usefulinc.com>
@@ -206,7 +204,7 @@ class RedlandStreamsCase(unittest.TestCase):
     def testFindStatements1(self):
         self.parser.parse_into_model(self.model,"file:../data/dc.rdf")
         statement = Statement(
-                Uri("http://purl.org/net/dajobe/"),
+                Uri("http://www.dajobe.org/"),
                 None, None)
 
         count = 0
@@ -218,7 +216,7 @@ class RedlandStreamsCase(unittest.TestCase):
     def testContains(self):
         self.parser.parse_into_model(self.model,"file:../data/dc.rdf")
         statement = Statement(
-                Uri("http://purl.org/net/dajobe/"),
+                Uri("http://www.dajobe.org/"),
                 Uri("http://purl.org/dc/elements/1.1/creator"), 
                 "Dave Beckett")
 
@@ -235,7 +233,7 @@ class RedlandStreamsCase(unittest.TestCase):
         for s in self.parser.parse_as_stream(a):
             self.model.append (s, intended_context)
 
-        subject = Node(Uri("http://purl.org/net/dajobe/"))
+        subject = Node(Uri("http://www.dajobe.org/"))
         statement = Statement(subject, None, None)
 
         count = 0
