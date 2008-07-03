@@ -1,11 +1,45 @@
+2008-03-27  Dave Beckett <dave@dajobe.org>
+
+	* perl/lib/RDF/Redland/Parser.pm,
+	perl/lib/RDF/Redland/Serializer.pm: (Parser.feature,
+	Serializer.Feature): Cast values to Node if needed and return
+	value to new Node if needed
+
+2008-02-16  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh, autogen.sh, autogen.sh, autogen.sh, autogen.sh:
+	autogen checks when env prog version is empty. Update all packages
+	to latest autogen.sh
+
+2008-02-01  Lauri Aalto <laalto@iki.fi>
+
+	* configure.ac, python, python/Makefile.am: Fixed issues related
+	to building Redland Python bindings on Cygwin.
+
+	Added --with-python_libext for configuring shared library
+	extension for the Python bindings. Useful on systems where .so
+	does not work as a shared library extension. Cygwin example:
+	--with-python_libext=.dll
+
+	Modified Redland Python library linking order: Moved
+	PYTHON_LDFLAGS after Redland_wrap.so object file. Enables proper
+	linking order when flags for libpython are supplied with
+	--with-python_ldflags. Cygwin example:
+	--with-python_ldflags='-shared -L/usr/lib/python2.5/config
+	-lpython2.5'
+
+2008-01-13  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh: Restore //i
+
+	* autogen.sh: automake 1.0 docs
+
 2007-12-28  Dave Beckett <dave@dajobe.org>
 
 	* Makefile.am, NEWS.html, RELEASE.html, configure.ac: Bump version
 	to 1.0.8.1
 
 	* Snapshotted redland-bindings_1_0_7_1 for 1.0.7.1 release (SVN 13372)
-
-2007-12-28  Dave Beckett <dave@dajobe.org>
 
 	* docs/README.html, docs/csharp.html, docs/java.html,
 	docs/objc.html, docs/tcl.html: Remove java, csharp, objc, tcl
