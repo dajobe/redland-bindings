@@ -169,7 +169,7 @@ class TestQuery < Test::Unit::TestCase
     string = results.to_string(Uri.new("http://www.w3.org/2001/sw/DataAccess/json-sparql/"), Uri.new("http://example.org/"))
 
     # length of a SPARQL results format string in JSON - might change
-    assert_equal(string.length(), 351)
+    assert_equal(string.length(), 353)
   end
 
 
