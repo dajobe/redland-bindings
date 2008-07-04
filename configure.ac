@@ -372,10 +372,8 @@ fi
 # Externally linked libraries - appear in redland-config
 # -Dfoo -Idir
 LIBRDF_CPPFLAGS=$CPPFLAGS
-# -Ldir
-LIBRDF_LDFLAGS=$LDFLAGS
-# -llib
-LIBRDF_LIBS=$LIBS
+# -Ldir -llib
+LIBRDF_LDFLAGS="$LDFLAGS $LIBS"
 
 
 
@@ -388,11 +386,24 @@ changequote(<<, >>)dnl
 OUR_REDLAND_VERSION=`echo $PACKAGE_VERSION | sed -e 's,\.[0-9]$,,'`
 changequote([, ])dnl
 
-AC_SUBST(REDLAND_MIN_VERSION)
+REDLAND_VERSION=
+REDLAND_CONFIG_FROM=redland-config
+
+# Preference is to get redland config from pkg-config
+if test -n "$PKG_CONFIG"; then
+   if $PKG_CONFIG --exists redland; then
+     REDLAND_CONFIG="$PKG_CONFIG redland"
+     REDLAND_VERSION=`$REDLAND_CONFIG --modversion`
+     REDLAND_CONFIG_FROM=pkg-config
+   fi
+fi
+
 if test "X$REDLAND_CONFIG" = X; then
   with_redland=internal
 else
-  REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
+  if test "X$REDLAND_VERSION" = X; then
+    REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
+  fi
 
   if test "X$with_redland" = Xauto; then
     if test "X$REDLAND_VERSION" = X; then
@@ -433,19 +444,26 @@ else
   REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
   REDLAND_VERSION_VERBOSE="internal $REDLAND_VERSION in $dir"
   REDLAND_RUN="$REDLAND_CONFIG --run "
+  REDLAND_CONFIG_FROM=source
 fi
 AC_MSG_RESULT($REDLAND_VERSION_VERBOSE)
 
-AC_SUBST(REDLAND_VERSION)
+AC_MSG_CHECKING(Redland configuration source)
+AC_MSG_RESULT($REDLAND_CONFIG_FROM)
+
 AC_SUBST(REDLAND_CONFIG)
+AC_SUBST(REDLAND_VERSION)
 AC_SUBST(REDLAND_RUN)
 
-REDLAND_SWIG=`$REDLAND_CONFIG --swig`
+if test $REDLAND_CONFIG_FROM = "pkg-config"; then
+  REDLAND_SWIG=`$PKG_CONFIG redland --variable=swig`
+else
+  REDLAND_SWIG=`$REDLAND_CONFIG --swig`
+fi
 AC_SUBST(REDLAND_SWIG)
 
-
 LIBRDF_CPPFLAGS="$LIBRDF_CPPFLAGS `$REDLAND_CONFIG --cflags`"
-LIBRDF_LIBS="$LIBRDF_LIBS `$REDLAND_CONFIG --libs`"
+LIBRDF_LDFLAGS="$LIBRDF_LDFLAGS `$REDLAND_CONFIG --libs`"
 
 
 dnl Checks for building sub-packages in sub directories
@@ -466,9 +484,6 @@ fi
 LIBS=
 CPPFLAGS=
 LDFLAGS=
-
-LIBRDF_LIBTOOLLIBS=`$REDLAND_CONFIG --libtool-libs`
-AC_SUBST(LIBRDF_LIBTOOLLIBS)
 
 AC_SUBST(LIBRDF_CPPFLAGS)
 AC_SUBST(LIBRDF_LDFLAGS)
