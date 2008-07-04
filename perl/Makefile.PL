@@ -2,9 +2,7 @@
 #
 # Makefile.PL - Makefile for Perl 5 interface to Redland
 #
-# $Id$
-#
-# Copyright (C) 2000-2005 David Beckett - http://purl.org/net/dajobe/
+# Copyright (C) 2000-2008 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -20,33 +18,54 @@
 
 use ExtUtils::MakeMaker;
 
-$REDLAND_CONFIG=$ENV{REDLAND_CONFIG} || 'redland-config';
-$CFLAGS=$ENV{CFLAGS} || "";
-$MEM_LIBS=$ENV{MEM_LIBS} || "";
+$PKG_CONFIG=$ENV{PKG_CONFIG} || 'pkg-config';
+
+if(`$PKG_CONFIG redland --exists 2>/dev/null`) {
+  $REDLAND_CONFIG="$PKG_CONFIG redland";
+} else {
+  $REDLAND_CONFIG=$ENV{REDLAND_CONFIG} || 'redland-config';
+  undef $PKG_CONFIG;
+}
 
 $CORE_PACKAGE="CORE";
 
-my $objects="${CORE_PACKAGE}_wrap.o ";
-
-my $redland_libs=`$REDLAND_CONFIG --libs 2>/dev/null`;
-if ($redland_libs ne "") {
-  chomp $redland_libs;
-  $objects .= $redland_libs;
-}
-
 my $version=$ENV{VERSION};
-
-if(!$version) {
-  $version=`$REDLAND_CONFIG --version`;
+if(!defined $version) {
+  my $varg=$PKG_CONFIG ? "--modversion" : "--version";
+  $version=`$REDLAND_CONFIG $varg`;
   chomp $version;
   die "Cannot find Redland version via $REDLAND_CONFIG\n"
     unless $version;
 }
 
+my $redland_cflags=$ENV{CFLAGS};
+if(!defined $redland_cflags) {
+  $redland_cflags = `$REDLAND_CONFIG --cflags`;
+  chomp $redland_cflags;
+}
+
+my $redland_ldflags=$ENV{LDFLAGS};
+if(!defined $redland_ldflags) {
+  $redland_ldflags = `$REDLAND_CONFIG --libs`;
+  chomp $redland_ldflags;
+}
+
+my $swig=$ENV{SWIG};
+if(!defined $swig) {
+  my $swig_arg=$PKG_CONFIG ? "--variable=swig" : "--swig";
+  $swig=`$REDLAND_CONFIG $swig_arg`;
+  chomp $swig;
+  die "cannot find redland SWIG file via $REDLAND_CONFIG\n"
+    unless $swig;
+}
+
+
+my $objects="${CORE_PACKAGE}_wrap.o $redland_libs";
+
+
 sub MY::postamble {
-  my $swig_path=`$REDLAND_CONFIG --swig`;
   return <<"EOT";
-${CORE_PACKAGE}_wrap.c: $swig_path
+${CORE_PACKAGE}_wrap.c: $swig
 	\$(MAKE) ${CORE_PACKAGE}_wrap.c
 EOT
 }
@@ -81,13 +100,13 @@ sub MY::init_main {
 WriteMakefile(
     'DISTNAME'	=> "Redland",
     'NAME'	=> "RDF::Redland",
-    'AUTHOR'    => 'Dave Beckett <Dave.Beckett@bristol.ac.uk>',
+    'AUTHOR'    => 'Dave Beckett <dave@dajobe.org>',
     'ABSTRACT'  => "Redland RDF library",
     'VERSION'   => $version,
 
-    'DEFINE'    => "-DHAVE_CONFIG_H $CFLAGS",
+    'DEFINE'    => "-DHAVE_CONFIG_H $redland_cflags",
     'OBJECT'    => "$objects",
-    'dynamic_lib' => {'OTHERLDFLAGS' => "$MEM_LIBS $CFLAGS"},
+    'dynamic_lib' => {'OTHERLDFLAGS' => "$redland_ldflags"},
 
     'PM' => { map { ("lib/RDF/$_", "\$(INST_LIBDIR)/$_") }
  qw(Redland.pm
