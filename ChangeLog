@@ -1,3 +1,26 @@
+2008-07-04  Dave Beckett <dave@dajobe.org>
+
+	* ruby/test/test_store.rb: (test_read_store): Do not call GC.start
+	before it is necessary - may cause crash
+
+	* perl/Makefile.am, php/Makefile.am, python/Makefile.am,
+	ruby/Makefile.am: Update to use LIBRDF_LDFLAGS via AM_LDFLAGS,
+	REDLAND_SWIG for the swig file and not use REDLAND_CONFIG direct
+
+	* perl/Makefile.PL: Rewrite to prefer pkg-config redland over
+	redland-config and get everything from ENVariables
+
+	* configure.ac: Prefer pkg-config redland over redland-config.
+	It makes things work better on OSX for one.
+
+	* perl/Makefile.am: quote REDLAND_CONFIG arg
+
+2008-07-03  Dave Beckett <dave@dajobe.org>
+
+	* ruby/test/test_query.rb: Updates for newer rasqal
+
+	* python/redlandtest.py: Updates for newer sparql and raptor
+
 2008-03-27  Dave Beckett <dave@dajobe.org>
 
 	* perl/lib/RDF/Redland/Parser.pm,
