@@ -35,16 +35,10 @@ class TestStore < Test::Unit::TestCase
     parser = Parser.new()
     parser.parse_into_model(model,"file:./out2.rdf")
     model.triples(){|s,p,o| puts "#{s}:#{p}:#{o}"}
-    store = nil
-    model = nil
-    world = nil
-    world = nil
-    
   end
 
   def test_read_store()
     make_store()
-    GC.start
     store = HashStore.read_store('thestore')
     model = Model.new(store)
     model.triples(){|s,p,o| puts "#{s}:#{p}:#{o}"}
