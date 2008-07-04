@@ -193,11 +193,11 @@ AC_SUBST(PERL_VERSION)
 
 
 AC_ARG_WITH(python, [  --with-python(=PYTHON)  Enable the Python interface], with_python="$withval", with_python="no")
-AC_ARG_WITH(python_ldflags, [  --with-python_ldflags(=FLAGS)  Set the Python linker flags], with_python_ldflags="$withval", with_python_ldflags="")
+AC_ARG_WITH(python_ldflags, [  --with-python-ldflags(=FLAGS)  Set the Python linker flags], with_python_ldflags="$withval", with_python_ldflags="")
 if test "X$with_python_ldflags" != X; then
   PYTHON_LDFLAGS=$with_python_ldflags
 fi
-AC_ARG_WITH(python_libext, [  --with-python_libext(=EXT) Python shared library file ext. (default .so)], with_python_libext="$withval", with_python_libext=".so")
+AC_ARG_WITH(python-libext, [  --with-python-libext(=EXT) Python shared library file extension (default .so)], with_python_libext="$withval", with_python_libext=".so")
 if test "X$with_python_libext" != X; then
   PYTHON_LIBEXT=$with_python_libext
 fi

@@ -148,8 +148,20 @@ to use a python installation in a different location.</p></dd>
 <dd><p>Set the linker flags for linking Python.  This can also be
 done by setting the environment variable <code>PYTHON_LDFLAGS</code>.
 If neither is set, <code>configure</code> will guess an appropriate
-set for the current system.
-</p></dd>
+set for the current system.  Cygwin example:</p>
+<pre>
+  -with-python-ldflags='-shared -L/usr/lib/python2.5/config -lpython2.5'
+</pre>
+</dd>
+
+<dt><code>--with-python-libext</code>=<em>.EXT</em><br /></dt>
+<dd><p>Set the python shared library link extension (default <code>.so</code>).
+Useful on systems where .so does not work as a shared library extension.
+Cygwin example:</p>
+<pre>
+  -with-python-libext=.dll
+</pre>
+</dd>
 
 <dt><code>--with-redland=</code> <code>system</code> or <code>internal</code><br /></dt>
 <dd><p>
