@@ -20,6 +20,8 @@ RELEASE=@VERSION_RELEASE@
 AM_CPPFLAGS=@CPPFLAGS@ @LIBRDF_CPPFLAGS@  @RUBY_INCLUDES@
 AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
+AM_LDFLAGS=@LIBRDF_LDFLAGS@ $(MEM_LIBS)
+
 RUBY=@RUBY@
 
 RUBY_PACKAGE=redland
@@ -66,8 +68,8 @@ ruby-redland-stamp: $(RUBY_PACKAGE)_wrap.so
 	else \
 	  args=" -shared"; \
 	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so $(LIBRUBYARG_SHARED) `@REDLAND_CONFIG@ --libs` -o $(RUBY_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so $(LIBRUBYARG_SHARED) `@REDLAND_CONFIG@ --libs` -o $(RUBY_PACKAGE).so
+	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so $(LIBRUBYARG_SHARED) -o $(RUBY_PACKAGE).so; \
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so $(LIBRUBYARG_SHARED) -o $(RUBY_PACKAGE).so
 	if test `uname` = Darwin; then \
 	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle; \
 	fi

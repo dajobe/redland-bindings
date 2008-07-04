@@ -57,7 +57,7 @@ $(PHP_PACKAGE)_wrap.o: $(PHP_PACKAGE)_wrap.c
 
 $(PHP_PACKAGE).$(PHP_SO_SUFFIX): $(PHP_PACKAGE)-stamp
 $(PHP_PACKAGE)-stamp: $(PHP_PACKAGE)_wrap.o
-	$(CC) $(STANDARD_CFLAGS) `@REDLAND_CONFIG@ --libs` $(AM_LDFLAGS) $(LDFLAGS) $(PHP_LDFLAGS) $(PHP_PACKAGE)_wrap.o -o $(PHP_PACKAGE).$(PHP_SO_SUFFIX)
+	$(CC) $(STANDARD_CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $(PHP_LDFLAGS) $(PHP_PACKAGE)_wrap.o -o $(PHP_PACKAGE).$(PHP_SO_SUFFIX)
 	touch $(PHP_PACKAGE)-stamp
 
 check-local: test-php
