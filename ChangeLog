@@ -1,4 +1,12 @@
+2008-07-05  Dave Beckett  <dajobe@yahoo-inc.com>
+
+	* Snapshotted redland-bindings_1_0_8_1 for 1.0.8.1 release (SVN 14222)
+
 2008-07-04  Dave Beckett <dave@dajobe.org>
+
+	* INSTALL.html, configure.ac: Renamed --with-python link options
+	to match rest - all '-' not mixed '-' and '_'.  Updated docs with
+	examples of use for cygwin
 
 	* ruby/test/test_store.rb: (test_read_store): Do not call GC.start
 	before it is necessary - may cause crash
