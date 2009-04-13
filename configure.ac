@@ -1,9 +1,9 @@
 dnl -*- Mode: autoconf -*-
 dnl
-dnl configure.in - top level autoconf file for Redland API bindings
+dnl configure.ac - top level autoconf file for Redland API bindings
 dnl (Process this file with autoconf to produce a configure script.)
 dnl
-dnl Copyright (C) 2000-2007, David Beckett http://www.dajobe.org/
+dnl Copyright (C) 2000-2009, David Beckett http://www.dajobe.org/
 dnl Copyright (C) 2000-2005 Copyright (C) 2000-2005, University of Bristol, UK http://www.bristol.ac.uk/
 dnl 
 dnl This package is Free Software and part of Redland http://librdf.org/
@@ -23,7 +23,7 @@ dnl
 dnl 
 
 
-AC_INIT([Redland RDF Application Framework bindings], 1.0.8.1, http://bugs.librdf.org/, redland-bindings)
+AC_INIT([Redland RDF Application Framework bindings], 1.0.9.1, http://bugs.librdf.org/, redland-bindings)
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(perl/example.pl)
 AC_REVISION($Revision$)dnl
@@ -33,8 +33,9 @@ AM_CONFIG_HEADER(bindings_config.h)
 AM_MAINTAINER_MODE
 
 dnl Checks for programs.
-AM_PROG_CC
 AM_SANITY_CHECK
+AC_PROG_CC
+AM_PROG_CC_C_O
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
