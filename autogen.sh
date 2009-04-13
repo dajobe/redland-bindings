@@ -53,7 +53,7 @@ if grep "^AC_CHECK_PROGS.SWIG" $confs >/dev/null; then
   programs="$programs swig"
 fi
 ltdl=
-if grep "^AC_LIBLTDL_" $confs >/dev/null; then
+if grep "^LTDL_INIT" $confs >/dev/null; then
   ltdl="--ltdl"
 fi
 
@@ -66,7 +66,7 @@ automake_min_vers=010700
 aclocal_min_vers=$automake_min_vers
 autoconf_min_vers=025400
 autoheader_min_vers=$autoconf_min_vers
-libtoolize_min_vers=010400
+libtoolize_min_vers=020200
 gtkdocize_min_vers=010300
 swig_min_vers=010324
 
@@ -257,9 +257,9 @@ done
 
 echo "$program: Dependencies satisfied"
 
-if test -d $SRCDIR/libltdl; then
-  touch $SRCDIR/libltdl/NO-AUTO-GEN
-fi
+# Delete this libtoolize- generated directory now so that it is never
+# considered by autogen.sh
+$DRURUN rm -rf libltdl
 
 config_dir=
 if test -d $CONFIG_DIR; then
