@@ -68,6 +68,8 @@ for s in parser.parse_string_as_stream(rdfxml_string, uri):
   print "found parsed statement from string:",s
   model.add_statement(s)
 
+print parser.namespaces_seen()
+
 # add it again just to get some more statements
 print "adding statements again with model.load"
 model.load(uri)
