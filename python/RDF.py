@@ -1845,6 +1845,21 @@ standard configuration of Raptor.
     import Redland_python
     Redland_python.set_parser_uri_filter(self._parser, filter)
 
+  def namespaces_seen(self):
+    """Get a dictionary of prefix/URI pairs for namespaces seen during parsing.
+"""
+    count = Redland.librdf_parser_get_namespaces_seen_count(self._parser)
+    nspaces={}
+    for index in range(0, count-1):
+      prefix=Redland.librdf_parser_get_namespaces_seen_prefix(self._parser, index)
+      uri_obj=Redland.librdf_parser_get_namespaces_seen_uri(self._parser, index)
+      if uri_obj is None:
+        uri=None
+      else:
+        uri=Uri(from_object=uri_obj)
+      nspaces[prefix]=uri
+    return nspaces
+
 # end class Parser
 
 class RDFXMLParser(Parser):
