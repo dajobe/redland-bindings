@@ -423,6 +423,12 @@ module Redland
       return Redland.librdf_model_to_string(@model, rbase_uri, name, mime_type, rtype_uri)
     end
     
+    def load(uri, name="", mime_type="", type_uri=nil)
+      ruri = uri.uri
+      rtype_uri = type_uri.nil? ? nil : type_uri.uri
+      return Redland.librdf_model_load(@model, ruri, name, mime_type, rtype_uri)
+    end
+
   end
 
   # A non-context-aware model used for the purpose of merging
