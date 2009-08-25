@@ -2,7 +2,7 @@
 #
 # Makefile.am - automake file for PHP interface to Redland
 #
-# Copyright (C) 2002-2006 David Beckett - http://www.dajobe.org/
+# Copyright (C) 2002-2009 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2002-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -17,6 +17,8 @@
 
 AM_CPPFLAGS=@CPPFLAGS@ @LIBRDF_CPPFLAGS@ @PHP_INCLUDES@ -DREDLAND_BINDINGS_VERSION=\"@VERSION@\"
 AM_CFLAGS=@STANDARD_CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
+
+AM_LDFLAGS=@LIBRDF_LDFLAGS@ $(MEM_LIBS)
 
 PHP=php
 
