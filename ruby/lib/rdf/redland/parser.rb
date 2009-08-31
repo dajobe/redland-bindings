@@ -80,6 +80,8 @@ module Redland
     # Uri base_uri  into Model model.  If the base_uri is
     # given then the content is parsed as if it was at the base_uri rather
     # than the uri.  If the optional context is given, the statement is added to the context
+    #
+    # NOTE: The order of the arguments to this method is different from the C API and other language bindings.
     def parse_into_model(model,uri,base_uri=nil,context=@context)
       #puts "parse_into_model context is #{context}"
       if uri.class == String
@@ -129,6 +131,8 @@ module Redland
     # Parse the syntax in String string with required Uri
     # base_uri into Model model.
     # if context is given then the context information is stored as well
+    #
+    # NOTE: The order of the arguments to this method is different from the C API and other language bindings.
     def parse_string_into_model(model,string,base_uri=nil,context=@context)
       if base_uri.class == String then base_uri = Uri.new(base_uri)end
       if not base_uri then raise RedlandError.new("A base URI is required when parsing a string") end
