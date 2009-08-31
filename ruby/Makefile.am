@@ -46,7 +46,7 @@ redland-pre.i redland-types.i $(SWIG_OUTPUTS)
 SUBDIRS=lib test
 
 CLEANFILES=*.db test-out.rdf core* \
-$(RUBY_PACKAGE)_wrap.so $(RUBY_PACKAGE)_wrap.o ruby-redland-stamp \
+$(RUBY_PACKAGE)_wrap.o ruby-redland-stamp \
 $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT) $(RDOC_DIR) $(RDOC_STAMP)
 
@@ -57,19 +57,19 @@ SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_TYPES_I
 $(srcdir)/$(RUBY_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-pre.i redland-types.i
 	swig -v -ruby $(SWIG_OPTS) -module $(RUBY_PACKAGE) -o $@ @REDLAND_SWIG@
 
-$(RUBY_PACKAGE)_wrap.so: $(srcdir)/$(RUBY_PACKAGE)_wrap.c
+$(RUBY_PACKAGE)_wrap.o: $(srcdir)/$(RUBY_PACKAGE)_wrap.c
 	$(CC) $(DEFS)  $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(rubyarchdir) $(RUBY_PACKAGE)_wrap.c -c -o $@
 
 
 $(RUBY_PACKAGE).so: ruby-redland-stamp
-ruby-redland-stamp: $(RUBY_PACKAGE)_wrap.so
+ruby-redland-stamp: $(RUBY_PACKAGE)_wrap.o
 	@if test `uname` = Darwin; then \
 	  args=" -bundle -flat_namespace -undefined suppress"; \
 	else \
 	  args=" -shared"; \
 	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so $(LIBRUBYARG_SHARED) -o $(RUBY_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) $$args $(RUBY_PACKAGE)_wrap.so $(LIBRUBYARG_SHARED) -o $(RUBY_PACKAGE).so
+	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(RUBY_PACKAGE)_wrap.o $(AM_LDFLAGS) $(LDFLAGS) $$args $(LIBRUBYARG_SHARED) -o $(RUBY_PACKAGE).so; \
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(RUBY_PACKAGE)_wrap.o $(AM_LDFLAGS) $(LDFLAGS) $$args $(LIBRUBYARG_SHARED) -o $(RUBY_PACKAGE).so
 	if test `uname` = Darwin; then \
 	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle; \
 	fi
