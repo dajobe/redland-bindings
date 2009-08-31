@@ -1,4 +1,25 @@
+2009-08-31  Dave Beckett <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/parser.rb: (Parser.parse_into_model,
+	Parser.parse_string_into_model): Add warning about different
+	argument order to rdoc documentation
+
 2009-08-25  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh: 2 lines shorter
+
+	* autogen.sh: Use FOO_args for default args for feature FOO
+	Add --enable-gkt-doc only if it is a needed feature
+	Automatically look for glibtoolize on Darwin/OSX
+
+	* configure.ac: AC_SUBST(ECHO) so messages print ok
+
+	* php/Makefile.am: Put PHP linking args at end
+
+	* autogen.sh: Add autogen.sh from raptor with optional shave
+
+	* php/Makefile.am: Restore AM_LDFLAGS using LIBRDF_LDFLAGS to make
+	php bindings link again.
 
 	* ruby/lib/rdf/redland/model.rb: Added Model.load
 
