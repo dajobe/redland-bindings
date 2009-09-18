@@ -188,6 +188,13 @@ which binding or bindings are wanted:</p>
    ./configure --with-python
 </pre>
 
+<p>NOTE: It is usually safe to use older redland bindings with newer
+redland releases, it will just omit any new functions added.
+<code>configure</code> may warn about this and stop, and if this is
+the case, you can override it with <code>--with-redland=system</code>
+to let configuration continue.
+</p>
+
 <p>If you are having problems with configuring several times when
 adding or removing options, you may have to tidy up first with either
 of these:</p>
