@@ -147,10 +147,13 @@ librdf_python_unicode_to_bytes(PyObject *dummy, PyObject *args)
 
   if (PyArg_ParseTuple(args, "U:unicode_to_bytes", &unicod)) {
     Py_UNICODE* input=(Py_UNICODE*)PyUnicode_AS_DATA(unicod);
-    size_t len=PyUnicode_GET_DATA_SIZE(unicod);
+    /* turn size of Python Unicode string - UCS2 encoded into size
+     * needed for UTF-8 encoded C-string 
+     */
+    size_t len = (3 * PyUnicode_GET_DATA_SIZE(unicod)) >> 1;
     int i, j;
     
-    output=(char*)malloc(len+1); /* too long but saves double-scanning */
+    output = (char*)malloc(len+1); /* too long but saves double-scanning */
     if(!output)
       goto failure;
     
