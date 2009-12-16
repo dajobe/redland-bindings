@@ -1,5 +1,17 @@
 2009-12-15  Dave Beckett <dave@dajobe.org>
 
+	* ChangeLog, ChangeLog.8, ChangeLog.9, Makefile.am: Add Changelogs
+	for 2007 2008
+
+	* NEWS.html, RELEASE.html, configure.ac: Bump version to 1.0.10.1
+	- note 1.0.9.1 was never eleased.  oops
+
+	* ruby/lib/rdf/redland/resource.rb: (resource.type?): Use return
+	value of model.find - a sequence and count it's size rather than
+	just compare value to nil. Addresses
+	Issue#000292 http://bugs.librdf.org/mantis/view.php?id=292
+	but may not fix it.
+
 	* configure.ac: Added PYTHON_LDFLAGS, PYTHON_LIBEXT,
 	PYTHON_INCLUDES and PYTHON_LIB envariables to override/set the
 	python build parameters.  Thanks to 'normang' for inspring this
