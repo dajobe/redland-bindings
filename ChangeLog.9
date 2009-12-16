@@ -1,0 +1,70 @@
+2008-09-14  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac: AM_PROG_CC_STDC is obsolete (automake 1.8)
+
+2008-07-05  Dave Beckett <dave@dajobe.org>
+
+	* Snapshotted redland-bindings_1_0_8_1 for 1.0.8.1 release (SVN 14226)
+
+2008-07-04  Dave Beckett <dave@dajobe.org>
+
+	* INSTALL.html, configure.ac: Renamed --with-python link options
+	to match rest - all '-' not mixed '-' and '_'.  Updated docs with
+	examples of use for cygwin
+
+	* ruby/test/test_store.rb: (test_read_store): Do not call GC.start
+	before it is necessary - may cause crash
+
+	* perl/Makefile.am, php/Makefile.am, python/Makefile.am,
+	ruby/Makefile.am: Update to use LIBRDF_LDFLAGS via AM_LDFLAGS,
+	REDLAND_SWIG for the swig file and not use REDLAND_CONFIG direct
+
+	* perl/Makefile.PL: Rewrite to prefer pkg-config redland over
+	redland-config and get everything from ENVariables
+
+	* configure.ac: Prefer pkg-config redland over redland-config.
+	It makes things work better on OSX for one.
+
+	* perl/Makefile.am: quote REDLAND_CONFIG arg
+
+2008-07-03  Dave Beckett <dave@dajobe.org>
+
+	* ruby/test/test_query.rb: Updates for newer rasqal
+
+	* python/redlandtest.py: Updates for newer sparql and raptor
+
+2008-03-27  Dave Beckett <dave@dajobe.org>
+
+	* perl/lib/RDF/Redland/Parser.pm,
+	perl/lib/RDF/Redland/Serializer.pm: (Parser.feature,
+	Serializer.Feature): Cast values to Node if needed and return
+	value to new Node if needed
+
+2008-02-16  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh, autogen.sh, autogen.sh, autogen.sh, autogen.sh:
+	autogen checks when env prog version is empty. Update all packages
+	to latest autogen.sh
+
+2008-02-01  Lauri Aalto <laalto@iki.fi>
+
+	* configure.ac, python, python/Makefile.am: Fixed issues related
+	to building Redland Python bindings on Cygwin.
+
+	Added --with-python_libext for configuring shared library
+	extension for the Python bindings. Useful on systems where .so
+	does not work as a shared library extension. Cygwin example:
+	--with-python_libext=.dll
+
+	Modified Redland Python library linking order: Moved
+	PYTHON_LDFLAGS after Redland_wrap.so object file. Enables proper
+	linking order when flags for libpython are supplied with
+	--with-python_ldflags. Cygwin example:
+	--with-python_ldflags='-shared -L/usr/lib/python2.5/config
+	-lpython2.5'
+
+2008-01-13  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh: Restore //i
+
+	* autogen.sh: automake 1.0 docs

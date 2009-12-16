@@ -1,0 +1,201 @@
+2007-12-28  Dave Beckett <dave@dajobe.org>
+
+	* Makefile.am, NEWS.html, RELEASE.html, configure.ac: Bump version
+	to 1.0.8.1
+
+	* Snapshotted redland-bindings_1_0_7_1 for 1.0.7.1 release (SVN 13372)
+
+	* docs/README.html, docs/csharp.html, docs/java.html,
+	docs/objc.html, docs/tcl.html: Remove java, csharp, objc, tcl
+	htmls
+
+	* Makefile.am, configure.ac: Moved demos elsewhere
+
+	* demos: Move bindings/demos to demos trunk
+
+2007-12-27  Dave Beckett <dave@dajobe.org>
+
+	* NEWS.html: Removed Tcl, Java, C#
+
+	* bindings.rdf.in: Removed Tcl, Java, C#
+
+	* tcl: move bindings tcl dir to top level tcl trunk dir
+
+	* csharp: Move bindings csharp dir to top level csharp trunk dir
+
+	* java: Move bindings java dir to top level java trunk dir
+
+	* INSTALL.html, Makefile.am, README.html, RELEASE.html,
+	configure.ac, docs/Makefile.am: Removed tcl java csharp (and
+	mention of objc) as promised in
+	http://lists.usefulinc.com/pipermail/redland-announce/2007q1/000067.html
+
+	* php/Makefile.am: No need for all the -UPACKAGE_* since they are
+	in an (unused) bindings_config.h
+
+	* csharp/examples/Makefile.am: Use NUNIT_LIBS to set get rid of
+	$(shell)
+
+	* csharp/Makefile.am: Set MONO_SN
+
+	* configure.ac: Update AM_INIT_AUTOMAKE to add warnings
+	Generate a bindings_config.h header just in order to reduce
+	compile lines length.
+	Allow Mono to be found without 'sn' available since it's
+	maintainer only anyway.
+	Set NUNIT_LIBS here since $(shell) is a gnu makeism
+
+	* php/test.php: update to use null, not $nulluri
+	Load the dlls from a fixed list of names, not what PHP might tell us
+
+	* php/Makefile.am: Use PHP_* automake vars and loose hard-coded
+	darwin stuff
+
+	* php/redland-typemap.i: Add incoming typemaps for librdf_uri*,
+	librdf_node* to set real null objects. For PHP5, check for errors
+	after calling a function and throw an exception.
+
+	* php/redland-post.i: Add exceptions for PHP5
+
+	* php/redland-init.i: Put all init into librdf_php_world_init()
+
+	* php/redland-decl.i: Add librdf_php_get_null_node and
+	librdf_php_get_null_uri prototypes.
+
+	* configure.ac: Add PHP_SWIG, PHP_CFLAGS, PHP_LDFLAGS and
+	PHP_SO_SUFFIX defines
+	Add --with-php-linking=so/dylib/bundle option to pick some of these.
+
+2007-12-24  Dave Beckett <dave@dajobe.org>
+
+	* docs/Makefile.am: Use $(PERL) not perl
+
+	* ruby/test/test_query.rb: Update sparql results format expected
+
+	* NEWS.html, RELEASE.html, python/filter.py, configure.ac: 1.0.7.1
+
+2007-12-12  Lauri Aalto <laalto@iki.fi>
+
+	* python/redlandtest.py: Fix SPARQL CONSTRUCT query form syntax in
+	python bindings test.
+
+2007-12-07  Lauri Aalto <laalto@iki.fi>
+
+	* perl/example.pl: Update SPARQL CONSTRUCT query form in example.pl.
+	Fixes Issue#0000247 http://bugs.librdf.org/mantis/view.php?id=247
+
+2007-11-30  Lauri Aalto <laalto@iki.fi>
+
+	* autogen.sh: Make autogen-get-version.pl program version getter
+	case insensitive on program name. E.g. "swig" will find the
+	version number from "SWIG Version x.y.z" output.
+
+2007-11-26  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh: Update to handle OSX glibtoolize and optional ltdl
+
+2007-09-26  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh: autogen.sh with perl version grep script
+
+2007-08-24  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py: (QueryResults.to_string): Call Serializer
+	constructor correctly
+	Fixes Issue#0000212 http://bugs.librdf.org/mantis/view.php?id=212
+
+	* python/redlandtest.py: (testSPARQLQueryTriplesToString): Added
+	for testing
+	Issue#0000212 http://bugs.librdf.org/mantis/view.php?id=212
+
+2007-08-22  Dave Beckett <dave@dajobe.org>
+
+	* python/redland-post.i: fixme
+
+	* python/filter.py: GRDDL parsing with URI filtering
+
+	* python/RDF.py: Docs
+	Added class TurtleSerializer
+
+	* python/RDF.py: (class GRDDLParser): Added
+
+	* python/RDF.py: (Parser.set_uri_filter): Added to set the URI
+	rejection filter.
+
+	* python/redland-post.i: (librdf_call_python_uri_filter): Added as
+	the librdf callback for URI filtering during parsing, invoking a
+	saved python callback in the user data.
+	(librdf_python_set_parser_uri_filter): Added to set the per-parser
+	URI filter to invoke librdf_call_python_uri_filter to call a user
+	callback function. librdf_python_methods: Added
+	set_parser_uri_filter method.
+
+	* python/redlandtest.py: (testSPARQLQueryAsString): srx format
+	changed again
+
+2007-08-18  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py: (Parser.__init__): Do not set rdfxml as default
+	parser, let Redland figure that out.
+
+2007-05-05  Dave Beckett  <dave@dajobe.org>
+
+	* Snapshotted redland-bindings_1_0_6_1 for 1.0.6.1 release (SVN 12239)
+
+	* perl/example.pl: Call parser method namespaces_seen
+
+	* perl/lib/RDF/Redland/Parser.pm: Added namespaces_seen
+
+2007-04-22  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/schemas/owl.rb: Apply patch from #0000121
+	again to fix issue http://bugs.librdf.org/mantis/view.php?id=121
+
+	* ruby/lib/rdf/redland.rb: Do not run librdf_free_world
+
+	* ruby/lib/rdf/redland/uri.rb: Add Uri finalizer
+
+	* ruby/lib/rdf/redland/queryresults.rb: Add QueryResults finalizer
+
+	* ruby/lib/rdf/redland/stream.rb: Add NodeIterator finalizer
+
+	* ruby/lib/rdf/redland/model.rb, ruby/lib/rdf/redland/parser.rb,
+	ruby/lib/rdf/redland/query.rb, ruby/lib/rdf/redland/serializer.rb,
+	ruby/lib/rdf/redland/store.rb: Apply patch to comment out .info
+	calls.
+	Fixes Issue#0000170 http://bugs.librdf.org/mantis/view.php?id=170
+
+	* python/RDF.py: (QueryResults.__len__): Return 0 when the count
+	is not 0
+	Fixes Issue#0000166 http://bugs.librdf.org/mantis/view.php?id=166
+
+	* python/RDF.py: (Node.__init__): Convert literals from Unicode to
+	UTF-8 for redland n=RDF.Node(literal= u'this is unicode') now works
+	Fixes Issue#0000147 http://bugs.librdf.org/mantis/view.php?id=147
+
+	* python/RDF.py: (Model.add_statement): raise error if adding
+	statement fails.
+
+	* python/RDF.py: (Query): Raise error if construction fails.
+	(Serializer): Default to none name, mime_type. Raise error if
+	construction fails.
+
+	* ruby/lib/rdf/redland/parser.rb,
+	ruby/lib/rdf/redland/serializer.rb: Replace
+	Node.new(:from_object=>'value') with Node.new(:from_object=>value)
+	in feature calls.  Replace def feature=(uri,value) with def
+	setFeature(uri,value).  Fixes Issue#0000140
+	http://bugs.librdf.org/mantis/view.php?id=140
+
+	* autogen.sh: Update autogen.sh
+
+2007-03-10  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/stream.rb: (Stream.create_finalizer) free
+	stream, not model
+
+2007-02-17  Dave Beckett  <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/serializer.rb,
+	ruby/test/test_serializer.rb: (serializer.model_to_string): Fix
+	null base_uri (Patch from Jeff Dutton)
