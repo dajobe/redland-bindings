@@ -111,7 +111,7 @@ module Redland
 
     # Determine if this resource is of a given type
     def type?(type)
-      self.model.find(self,TYPE,type) != nil
+      self.model.find(self,TYPE,type).size != 0
     end
 
     # Change the value of the given property
