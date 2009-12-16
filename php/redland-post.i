@@ -83,7 +83,7 @@ librdf_php_check_exception(void)
 #if PHP_MAJOR_VERSION >= 5
   zend_throw_exception(redland_exception_ptr,
                        librdf_php_log_message, 
-                       librdf_php_log_code TSRMLS_DC);
+                       librdf_php_log_code TSRMLS_CC);
 #endif
   
   librdf_php_log_code=0;
