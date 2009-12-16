@@ -1,4 +1,36 @@
+2009-12-15  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac: Added PYTHON_LDFLAGS, PYTHON_LIBEXT,
+	PYTHON_INCLUDES and PYTHON_LIB envariables to override/set the
+	python build parameters.  Thanks to 'normang' for inspring this
+	change from the patch in the issue.
+	Fixes Issue#0000257 http://bugs.librdf.org/mantis/view.php?id=257
+
+2009-11-29  Lauri Aalto <laalto@iki.fi>
+
+	* autogen.sh: Reduce autogen noise on systems where uname is not
+	in /usr/bin
+
+2009-09-29  Dave Beckett <dave@dajobe.org>
+
+	* python/redland-post.i: (librdf_python_unicode_to_bytes):
+	Allocate enough bytes for storing an UTF-8 encoded version of a
+	python UCS-2 encoded Unicode string - up to 3 bytes per codepoint.
+	Fixes Issue#000313 http://bugs.librdf.org/mantis/view.php?id=313
+
+2009-09-17  Dave Beckett <dave@dajobe.org>
+
+	* INSTALL.html: Add note about using older bindings with newer redland
+
 2009-08-31  Dave Beckett <dave@dajobe.org>
+
+	* ruby/Makefile.am: Alter linking to put LDFLAGS at end of line so
+	that they can be overridden by user/distro.  Patch from Aria
+	Stewart.  Thanks
+
+	* ruby/lib/rdf/redland/model.rb: (Model.delete): Allow wildcards
+	in s,p,o to delete a set of statements from a Model.find
+	call. Patch from Aria Stewart.  Thanks
 
 	* ruby/lib/rdf/redland/parser.rb: (Parser.parse_into_model,
 	Parser.parse_string_into_model): Add warning about different
