@@ -194,14 +194,12 @@ AC_SUBST(PERL_VERSION)
 
 
 AC_ARG_WITH(python, [  --with-python(=PYTHON)  Enable the Python interface], with_python="$withval", with_python="no")
-AC_ARG_WITH(python_ldflags, [  --with-python-ldflags(=FLAGS)  Set the Python linker flags], with_python_ldflags="$withval", with_python_ldflags="")
-if test "X$with_python_ldflags" != X; then
-  PYTHON_LDFLAGS=$with_python_ldflags
-fi
-AC_ARG_WITH(python-libext, [  --with-python-libext(=EXT) Python shared library file extension (default .so)], with_python_libext="$withval", with_python_libext=".so")
-if test "X$with_python_libext" != X; then
-  PYTHON_LIBEXT=$with_python_libext
-fi
+
+# envariable override --with-python-ldflags and --with-libext
+AC_ARG_VAR(PYTHON_LDFLAGS, [Python shared library link lines])
+AC_ARG_VAR(PYTHON_LIBEXT, [Python shared library file extension])
+AC_ARG_VAR(PYTHON_INCLUDES, [Install location of python includes])
+AC_ARG_VAR(PYTHON_LIB, [Install location of python libraries])
 
 AC_MSG_CHECKING(Enable Python API)
 if test "X$with_python" != Xno; then
@@ -221,28 +219,50 @@ if test "X$PYTHON_VERSION" != X; then
     languages="$languages python"
   fi
 fi
-AC_MSG_RESULT($with_python)
+AC_MSG_RESULT($with_python $PYTHON_VERSION)
 AC_SUBST(PYTHON_VERSION)
 
 if test "X$PYTHON" != X; then
+
+  if test "X$PYTHON_LDFLAGS" = X; then
+    AC_ARG_WITH(python_ldflags, [  --with-python-ldflags(=FLAGS)  Set the Python linker flags], with_python_ldflags="$withval", with_python_ldflags="")
+    if test "X$with_python_ldflags" != X; then
+      PYTHON_LDFLAGS=$with_python_ldflags
+    fi
+  fi
+
+  if test "X$PYTHON_LIBEXT" = X; then
+    AC_ARG_WITH(python-libext, [  --with-python-libext(=EXT) Python shared library file extension (default .so)], with_python_libext="$withval", with_python_libext=".so")
+    if test "X$with_python_libext" != X; then
+      PYTHON_LIBEXT=$with_python_libext
+    fi
+  fi
+
   AC_MSG_CHECKING(Python includes)
   python_prefix=`$PYTHON -c 'import sys; print sys.prefix' 2>/dev/null`
   python_exec_prefix=`$PYTHON -c "import sys; print sys.exec_prefix"`
-  PYTHON_INCLUDES="-I${python_prefix}/include/python${PYTHON_VERSION}"
-  if test "$python_prefix" != "$python_exec_prefix"; then
-    PYTHON_INCLUDES="$PYTHON_INCLUDES -I${python_exec_prefix}/include/python${PYTHON_VERSION}"
+
+  if test "X$PYTHON_INCLUDES" != X; then
+    AC_MSG_RESULT(using user includes: $PYTHON_INCLUDES)
+  else
+    PYTHON_INCLUDES="-I${python_prefix}/include/python${PYTHON_VERSION}"
+    if test "$python_prefix" != "$python_exec_prefix"; then
+      PYTHON_INCLUDES="$PYTHON_INCLUDES -I${python_exec_prefix}/include/python${PYTHON_VERSION}"
+    fi
+    AC_MSG_RESULT($PYTHON_INCLUDES)
   fi
-  AC_SUBST(PYTHON_INCLUDES)
-  AC_MSG_RESULT($PYTHON_INCLUDES)
 
   AC_MSG_CHECKING(Python libs)
-  PYTHON_LIB="${python_prefix}/lib/python${PYTHON_VERSION}/site-packages"
-  AC_SUBST(PYTHON_LIB)
-  AC_MSG_RESULT($PYTHON_LIB)
+  if test "X$PYTHON_LIB" != X; then
+    AC_MSG_RESULT(using user lib: $PYTHON_LIB)
+  else
+    PYTHON_LIB="${python_prefix}/lib/python${PYTHON_VERSION}/site-packages"
+    AC_MSG_RESULT($PYTHON_LIB)
+  fi
 
   AC_MSG_CHECKING(Python LDFLAGS)
   if test "X$PYTHON_LDFLAGS" != X; then
-    AC_MSG_RESULT(using user flags: $PYTHON_LDFLAGS)
+    AC_MSG_RESULT(using user ldflags: $PYTHON_LDFLAGS)
   else
     # Guess PYTHON_LDFLAGS if not passed in
     if test `uname` = Darwin; then
@@ -257,11 +277,9 @@ if test "X$PYTHON" != X; then
     fi
     AC_MSG_RESULT(guessed flags: $PYTHON_LDFLAGS)
   fi
-  AC_SUBST(PYTHON_LDFLAGS)
 
   AC_MSG_CHECKING(Python shared library file extension)
   AC_MSG_RESULT($PYTHON_LIBEXT)
-  AC_SUBST(PYTHON_LIBEXT)
 else
   # This allows 'make clean' in the python directory to work when
   # python isn't available
