@@ -1,10 +1,18 @@
+2009-12-16  Dave Beckett  <dave@dajobe.org>
+
+	* Snapshotted redland-bindings_1_0_10_1 for 1.0.10.1 release (SVN 15922)
+
+2009-12-16  Dave Beckett <dave@dajobe.org>
+
+	* php/redland-post.i: (librdf_php_check_exception): Use TSRMLS_CC
+
 2009-12-15  Dave Beckett <dave@dajobe.org>
 
 	* ChangeLog, ChangeLog.8, ChangeLog.9, Makefile.am: Add Changelogs
 	for 2007 2008
 
 	* NEWS.html, RELEASE.html, configure.ac: Bump version to 1.0.10.1
-	- note 1.0.9.1 was never eleased.  oops
+	- note 1.0.9.1 was never released.  oops
 
 	* ruby/lib/rdf/redland/resource.rb: (resource.type?): Use return
 	value of model.find - a sequence and count it's size rather than
