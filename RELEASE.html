@@ -23,8 +23,65 @@ pre
 
 <h2 id="rel1_0_10_1"><a name="rel1_0_10_1">Redland Bindings 1.0.10.1 Changes</a></h2>
 
-<p>Not yet released.
+<p>Issues Fixed:</p>
+<ul>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=257">0000257: Make PYTHON_LIB installation directory configurable</a></li>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=313">0000313: Unicode to UTF8 buffer overflows</a></li>
+</ul>
+
+<h3>PHP binding changes</h3>
+
+<p>Make PHP bindings link again by restoring LDFLAGS.</p>
+
+<p>Fix PHP C interface librdf_php_check_exception to work when
+compiled with "ZTS mode".  Whatever that is!</p>
+
+
+<h3>Python binding changes</h3>
+
+<p>Added Parser class method namespaces_seen</p>
+
+<p>Allocate enough bytes for storing an UTF-8 encoded version of a
+python UCS-2 encoded Unicode string - up to 3 bytes per codepoint.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=313">Issue#000313</a>
 </p>
+
+<p>Added PYTHON_LDFLAGS, PYTHON_LIBEXT, PYTHON_INCLUDES and
+PYTHON_LIB <code>configure</code>envariables to override/set the
+python build parameters.  Thanks to 'normang' for inspring this
+change from the patch in the 
+<a href="http://bugs.librdf.org/mantis/view.php?id=257">Issue#0000257</a>
+that it fixes.</p>
+
+
+<h3>Ruby binding changes</h3>
+
+<p>Model class method <code>delete</code>: allow wildcards in s,p,o
+to delete a set of statements from a Model.find call. Patch from Aria
+Stewart.
+</p>
+
+<p>Model class method <code>load</code>: added</p>
+
+<p>Parser class methods <code>parse_into_model</code> and
+<code>parse_string_into_model</code>: add documentation to note
+argument orders are different.</p>
+
+<p>Resource class method <code>type?</code>: Use return value of
+model.find - a sequence and count it's size rather than just compare
+value to nil. Addresses 
+<a href="http://bugs.librdf.org/mantis/view.php?id=292">Issue#000292</a>
+but may not fix it.
+</p>
+
+<p>Alter linking to put LDFLAGS at end of line so
+that they can be overridden by user/distro.  Patch from Aria Stewart.
+</p>
+
+
+<h3>Other changes</h3>
+
+<p></p>
 
 
 <h2 id="rel1_0_9_1"><a name="rel1_0_9_1">Redland Bindings 1.0.9.1 Changes</a></h2>
