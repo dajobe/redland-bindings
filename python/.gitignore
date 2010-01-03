@@ -1,0 +1,17 @@
+*.pyc
+.deps
+.gdb_history
+MANIFEST
+RDF.html
+Redland-stamp
+Redland.so
+Redland.dll
+Redland_wrap*
+build
+dist
+dmalloc.log
+lib
+not-used
+test*db
+test-out.rdf
+

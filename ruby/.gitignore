@@ -1,0 +1,7 @@
+*.db
+.deps
+html
+rdoc-stamp
+redland.bundle
+redland_wrap*
+ruby-redland-stamp
