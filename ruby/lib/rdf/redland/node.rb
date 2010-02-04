@@ -36,7 +36,6 @@ module Redland
     # sets this node's value using a blank or URI extracted from a Hash
     # (?? confirm)
     def node_from_hash(hash)
-      h = {:blank,:uri_string}
       if hash.key?(:blank)
         node = Redland.librdf_new_node_from_blank_identifier($world.world,hash[:blank])
       end
