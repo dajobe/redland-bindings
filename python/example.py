@@ -23,19 +23,19 @@ storage=RDF.Storage(storage_name="hashes",
                     name="test",
                     options_string="new='yes',hash-type='memory',dir='.'")
 if storage is None:
-  raise "new RDF.Storage failed"
+  raise Exception("new RDF.Storage failed")
 
 #RDF.debug(1)
 
 model=RDF.Model(storage)
 if model is None:
-  raise "new RDF.model failed"
+  raise Exception("new RDF.model failed")
 
 statement=RDF.Statement(RDF.Uri("http://www.dajobe.org/"),
                         RDF.Uri("http://purl.org/dc/elements/1.1/creator"),
                         RDF.Node("Dave Beckett"))
 if statement is None:
-  raise "new RDF.Statement failed"
+  raise Exception("new RDF.Statement failed")
 
 model.add_statement(statement)
 
@@ -50,7 +50,7 @@ uri=RDF.Uri(string="file:"+test_file)
 
 parser=RDF.Parser('raptor')
 if parser is None:
-  raise "Failed to create RDF.Parser raptor"
+  raise Exception("Failed to create RDF.Parser raptor")
 
 count=0
 for s in parser.parse_as_stream(uri,uri):
