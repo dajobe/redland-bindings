@@ -150,26 +150,35 @@ librdf_python_unicode_to_bytes(PyObject *dummy, PyObject *args)
     /* turn size of Python Unicode string - UCS2 encoded into size
      * needed for UTF-8 encoded C-string 
      */
-    size_t len = (3 * PyUnicode_GET_DATA_SIZE(unicod)) >> 1;
+    size_t input_len = PyUnicode_GET_SIZE(unicod);
+    size_t output_len;
     int i, j;
     
-    output = (char*)malloc(len+1); /* too long but saves double-scanning */
-    if(!output)
-      goto failure;
-    
-    len/=sizeof(Py_UNICODE);
-    
-    j=0;
-    for(i=0; i < len; i++) {
-      int size=raptor_unicode_char_to_utf8((unsigned long)input[i], 
-                                           (unsigned char*)&output[j]);
-      if(size <= 0)
-        goto failure;
-      j+= size;
-    } 
-    output[j]='\0';
+    /* Turn Unicode string length into max possible UTF-8 length (1-3
+     * bytes/char)
+     */
+    output_len = (3 * input_len);
 
-    result=PyString_FromStringAndSize(output, j+1);
+    output = (char*)malloc(output_len + 1);
+    if(!output) {
+      PyErr_SetString(PyExc_TypeError, "Out of memory");
+      goto failure;
+    }
+
+    j = 0;
+    for(i=0; i < input_len; i++) {
+      int size = raptor_unicode_char_to_utf8((unsigned long)input[i], 
+                                             (unsigned char*)&output[j]);
+      if(size <= 0) {
+        PyErr_SetString(PyExc_TypeError, "Invalid input Unicode");
+        goto failure;
+      }
+
+      j += size;
+    } 
+    output[j] = '\0';
+
+    result = PyString_FromStringAndSize(output, j + 1);
   }
 
  failure:
