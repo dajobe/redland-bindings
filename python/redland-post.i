@@ -161,7 +161,7 @@ librdf_python_unicode_to_bytes(PyObject *dummy, PyObject *args)
 
     output = (char*)malloc(output_len + 1);
     if(!output) {
-      PyErr_SetString(PyExc_TypeError, "Out of memory");
+      PyErr_SetString(PyExc_MemoryError, "Out of memory");
       goto failure;
     }
 
@@ -170,7 +170,7 @@ librdf_python_unicode_to_bytes(PyObject *dummy, PyObject *args)
       int size = raptor_unicode_char_to_utf8((unsigned long)input[i], 
                                              (unsigned char*)&output[j]);
       if(size <= 0) {
-        PyErr_SetString(PyExc_TypeError, "Invalid input Unicode");
+        PyErr_SetString(PyExc_ValueError, "Invalid input Unicode");
         goto failure;
       }
 
