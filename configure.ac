@@ -267,10 +267,9 @@ if test "X$PYTHON" != X; then
     # Guess PYTHON_LDFLAGS if not passed in
     if test `uname` = Darwin; then
       PYTHON_LDFLAGS="-Wl,-F. -Wl,-F. -bundle"
-      if $PYTHON -c 'import sys, string; sys.exit(string.find(sys.prefix,"Framework")+1)'; then
-	:
-      else
-	PYTHON_LDFLAGS="$PYTHON_LDFLAGS -framework Python"
+      if echo $python_prefix | grep Frameworks >/dev/null; then
+        fpath=`echo $python_prefix | sed -e 's,Frameworks/.*$,Frameworks,'`
+	PYTHON_LDFLAGS="$PYTHON_LDFLAGS -F$fpath -framework Python"
       fi
     else
       PYTHON_LDFLAGS="-shared"
