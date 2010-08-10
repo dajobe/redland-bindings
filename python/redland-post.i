@@ -27,7 +27,6 @@
 #else
 /* raptor 1 API */
 #define raptor_unicode_utf8_string_put_char(in,out,out_len) raptor_unicode_char_to_utf8(in,out)
-#define raptor_locator_uri_string(locator) raptor_locator_uri(locator) 
 #endif
 
 void librdf_python_world_init(librdf_world *world);
@@ -353,7 +352,7 @@ librdf_python_logger_handler(void *user_data, librdf_log_message *log_msg)
     column = raptor_locator_column(locator);
     byte = raptor_locator_byte(locator);
     file = raptor_locator_file(locator);
-    uri = raptor_locator_uri_string(locator);
+    uri = raptor_locator_uri(locator);
   }
   
   if(librdf_python_callback)
