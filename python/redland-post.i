@@ -22,6 +22,14 @@
  * 
  */
 
+#if REDLAND_HAVE_RAPTOR2_API == 1
+/* raptor 2 API */
+#else
+/* raptor 1 API */
+#define raptor_unicode_utf8_string_put_char(in,out,out_len) raptor_unicode_char_to_utf8(in,out)
+#define raptor_locator_uri_string(locator) raptor_locator_uri(locator) 
+#endif
+
 void librdf_python_world_init(librdf_world *world);
 
 
@@ -167,8 +175,9 @@ librdf_python_unicode_to_bytes(PyObject *dummy, PyObject *args)
 
     j = 0;
     for(i=0; i < input_len; i++) {
-      int size = raptor_unicode_char_to_utf8((unsigned long)input[i], 
-                                             (unsigned char*)&output[j]);
+      int size = raptor_unicode_utf8_string_put_char((unsigned long)input[i], 
+                                                     (unsigned char*)&output[j],
+                                                     output_len - j);
       if(size <= 0) {
         PyErr_SetString(PyExc_ValueError, "Invalid input Unicode");
         goto failure;
@@ -340,11 +349,11 @@ librdf_python_logger_handler(void *user_data, librdf_log_message *log_msg)
   const char *file=NULL;
   
   if(locator) {
-    line=raptor_locator_line(locator);
-    column=raptor_locator_column(locator);
-    byte=raptor_locator_byte(locator);
-    file=raptor_locator_file(locator);
-    uri=raptor_locator_uri(locator);
+    line = raptor_locator_line(locator);
+    column = raptor_locator_column(locator);
+    byte = raptor_locator_byte(locator);
+    file = raptor_locator_file(locator);
+    uri = raptor_locator_uri_string(locator);
   }
   
   if(librdf_python_callback)
