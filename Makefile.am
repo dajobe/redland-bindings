@@ -25,7 +25,7 @@
 SUBDIRS=@SD@ data
 # Subdirectories to use for distribution
 DIST_SUBDIRS=data docs \
-perl php python ruby
+lua perl php python ruby
 
 EXTRA_DIST=ChangeLog  ChangeLog.1 ChangeLog.2 \
 ChangeLog.3 ChangeLog.4 ChangeLog.5 ChangeLog.6 ChangeLog.7 \

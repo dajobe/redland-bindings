@@ -49,6 +49,7 @@ AC_PROG_LIBTOOL
 # Find a tar command for 'make dist'
 AC_CHECK_PROGS(TAR, gnutar gtar tar)
 
+AC_CHECK_PROGS(LUA, lua)
 AC_CHECK_PROGS(PYTHON, python)
 AC_CHECK_PROGS(PERL, perl)
 AC_CHECK_PROGS(PHP, php)
@@ -109,6 +110,39 @@ languages_available=
 
 
 dnl Checks for languages
+
+AC_ARG_WITH(lua, [  --with-lua(=LUA)      Enable the Lua interface], with_lua="$withval", with_lua="no")
+AC_MSG_CHECKING(Enable LUA API)
+if test "X$with_lua" != Xno ; then
+  if test "X$with_lua" != Xyes; then
+    LUA=$with_lua
+  fi
+  with_lua=yes
+fi
+AC_MSG_RESULT($with_lua)
+
+LUA_VERSION=
+LUA_CFLAGS=
+LUA_LDFLAGS=
+if test "X$with_lua" = Xyes -a -n "$PKG_CONFIG"; then
+  AC_MSG_CHECKING(LUA Version)
+  LUA_PKGCONFIG=$LUA
+  LUA_VERSION=`$PKG_CONFIG $LUA_PKGCONFIG --modversion`
+  LUA_CFLAGS=`$PKG_CONFIG $LUA_PKGCONFIG --cflags`
+  LUA_LDFLAGS=`$PKG_CONFIG $LUA_PKGCONFIG --libs`
+  AC_MSG_RESULT($LUA_VERSION)
+fi
+AC_SUBST(LUA_CFLAGS)
+AC_SUBST(LUA_LDFLAGS)
+
+if test "X$LUA_VERSION" != X; then
+  languages_available="$languages_available lua($LUA_VERSION)"
+  if test $with_lua = yes; then
+    languages="$languages lua"
+  fi
+fi
+
+
 AC_CHECK_PROG(PHP_CONFIG, php-config, php-config)
 if test "X$PHP_CONFIG" != X ; then
 
@@ -538,6 +572,7 @@ perl/t/Makefile
 perl/lib/Makefile
 perl/lib/RDF/Makefile
 perl/lib/RDF/Redland/Makefile
+lua/Makefile
 php/Makefile
 python/Makefile
 python/test/Makefile
