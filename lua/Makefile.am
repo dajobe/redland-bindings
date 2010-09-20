@@ -33,7 +33,7 @@ SWIG_CRUFT=
 luadir=@LUA_EXTENSION_DIR@
 lua_DATA=$(LUA_PACKAGE).$(LUA_SO_SUFFIX)
 
-EXTRA_DIST= \
+EXTRA_DIST= test.lua \
 $(SWIG_OUTPUTS)
 
 CLEANFILES=*.db test-out.rdf \
@@ -55,5 +55,8 @@ $(LUA_PACKAGE).$(LUA_SO_SUFFIX): $(LUA_PACKAGE)-stamp
 $(LUA_PACKAGE)-stamp: $(LUA_PACKAGE)_wrap.o
 	$(CC) $(STANDARD_CFLAGS) $(LUA_PACKAGE)_wrap.o $(AM_LDFLAGS) -fPIC -shared $(LDFLAGS) $(LUA_LDFLAGS) -o $(LUA_PACKAGE).$(LUA_SO_SUFFIX)
 	touch $(LUA_PACKAGE)-stamp
+
+test-lua:
+	$(LUA) test.lua
 
 check-local: test-lua
