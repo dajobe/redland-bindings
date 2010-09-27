@@ -36,6 +36,21 @@ version.  This same name will be used with <code>pkg-config(1)</code>
 to get the include and link lines.
 </p>
 
+<h3>Python binding</h3>
+
+<p>Fix Unicode conversion for strings to use correct functions and throw
+better runtime errors exceptions.
+</p>
+
+<p>Fix linking parameter order for python to help with newer GCC that
+force <code>-Wl,--as-needed</code> link args.
+</p>
+
+<h3>Ruby binding</h3>
+
+<p>Fixed method Redland::Resource.type? to not always return true:
+<a href="http://bugs.librdf.org/mantis/view.php?id=292">Issue #0000292</a>
+</p>
 
 
 <h2 id="rel1_0_10_1"><a name="rel1_0_10_1">Redland Bindings 1.0.10.1 Changes</a></h2>
