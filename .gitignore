@@ -15,6 +15,7 @@ autom4te.cache
 bindings.rdf
 bindings_config.h
 bindings_config.h.in
+bugs/
 config.cache
 config.guess
 config.log
