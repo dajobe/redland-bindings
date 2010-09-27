@@ -5,4 +5,4 @@ redland.dylib
 redland.so
 redland_wrap*
 test*db
-
+test-out.rdf
