@@ -17,16 +17,10 @@ bindings_config.h
 bindings_config.h.in
 bugs/
 config.cache
-config.guess
 config.log
 config.status
-config.sub
 configure
-depcomp
-install-sh
 libtool
-ltmain.sh
-missing
 mkinstalldirs
 not-used
 old
