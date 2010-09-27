@@ -72,5 +72,7 @@ check-local: test-php
 #
 # See the manual for the php command:
 #  http://www.php.net/manual/en/features.commandline.php
+#
+# 1.0.11.1: Added -d enable_dl=On because sometimes this test gives a warning"
 test-php: $(PHP_PACKAGE).$(PHP_SO_SUFFIX) $(srcdir)/test.php
-	$(RUN)$(PHP) -c $(srcdir) $(srcdir)/test.php
+	$(RUN)$(PHP) -d enable_dl=On -c $(srcdir) $(srcdir)/test.php
