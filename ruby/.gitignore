@@ -3,5 +3,6 @@
 html
 rdoc-stamp
 redland.bundle
+redland.so
 redland_wrap*
 ruby-redland-stamp
