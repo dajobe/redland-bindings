@@ -14,7 +14,7 @@
 %define ruby_dir	%(ruby -rrbconfig -e "puts Config::CONFIG['archdir']")
 %define ruby_libdir	%(ruby -rrbconfig -e "puts Config::CONFIG['rubylibdir']")
 
-Summary:   Redland RDF Application Framework API Bindings
+Summary:   Redland librdf Language Bindings
 Name:      %{name}
 Version:   %{version}
 Release:   %{release}
@@ -36,38 +36,36 @@ Requires:  ruby >= 1.8.0
 
 %description
 
-Redland is a library that provides a high-level interface for RDF
-(Resource Description Framework) implemented in an object-based API.
-It is modular and supports different RDF/XML parsers, storage
-mechanisms and other elements. Redland is designed for applications
-developers to provide RDF support in their applications as well as
-for RDF developers to experiment with the technology.
+Redland librdf Language bindings provide high-level interfaces for
+RDF (Resource Description Framework) implemented on top of the
+Redland librdf library which provides an object-based RDF API,
+supports for syntaxes and triple stores.
 
 %package -n redland-perl
-Summary: Perl modules for the Redland RDF library
+Summary: Perl modules for the Redland librdf RDF library
 Group: Development/Libraries
 Requires: redland = %{redland_version}
 
 %description -n redland-perl
-The redland-perl package contains the parts of Redland that provide
+The redland-perl package contains the parts of Redland librdf that provide
 an interface to Perl.
 
 %package -n redland-python
-Summary: Python modules for the Redland RDF library
+Summary: Python modules for the Redland librdf RDF library
 Group: Development/Libraries
 Requires: redland = %{redland_version}
 
 %description -n redland-python
-The redland-python package contains the parts of Redland that provide
+The redland-python package contains the parts of Redland librdf that provide
 an interface to Python.
 
 %package -n redland-ruby
-Summary: Ruby modules for the Redland RDF library
+Summary: Ruby modules for the Redland librdf RDF library
 Group: Development/Libraries
 Requires: redland = %{redland_version}
 
 %description -n redland-ruby
-The redland-ruby package contains the parts of Redland that provide
+The redland-ruby package contains the parts of Redland librdf that provide
 an interface to Ruby.
 
 %prep
