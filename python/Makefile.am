@@ -47,7 +47,7 @@ redland-post.i redland-decl.i redland-typemap.i $(SWIG_OUTPUTS)
 
 SUBDIRS=test
 
-CLEANFILES=dmalloc.log *.db *.pyc test-out.rdf \
+CLEANFILES=*.db *.pyc test-out.rdf \
 $(PYTHON_PACKAGE)_wrap.so $(PYTHON_PACKAGE)_wrap.o $(PYTHON_PACKAGE)-stamp \
 $(PYTHON_PACKAGE)$(PYTHON_LIBEXT) $(PYTHON_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)

@@ -39,7 +39,7 @@ EXTRA_DIST=test.php example.php php.ini \
 redland-decl.i redland-init.i redland-post.i redland-typemap.i \
 $(SWIG_OUTPUTS)
 
-CLEANFILES=dmalloc.log *.db test-out.rdf \
+CLEANFILES=*.db test-out.rdf \
 $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
 $(PHP_PACKAGE).$(PHP_SO_SUFFIX) $(PHP_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT) $(PHP_PACKAGE)_wrap.c.orig

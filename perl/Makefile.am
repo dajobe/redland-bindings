@@ -49,11 +49,10 @@ redland-pre.i redland-post.i redland-decl.i $(SWIG_OUTPUTS)
 
 SUBDIRS=lib t
 
-CLEANFILES=dmalloc.log *.db test-out.rdf core* $(PERL_CRUFT)
+CLEANFILES=*.db test-out.rdf core* $(PERL_CRUFT)
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS)
 
 MEM_LIBS=@MEM_LIBS@
-#MEM_LIBS=-ldmalloc
 
 $(perlshareRDFdir)/Redland.pm: build-perl
 
