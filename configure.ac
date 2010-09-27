@@ -27,10 +27,13 @@ AC_INIT([Redland RDF Application Framework bindings], 1.0.11.1, http://bugs.libr
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(perl/example.pl)
 AC_REVISION($Revision$)dnl
-
-AM_INIT_AUTOMAKE([1.7 check-news std-options -Wobsolete -Wportability -Wsyntax -Wunsupported])
 AM_CONFIG_HEADER(bindings_config.h)
+AC_CONFIG_AUX_DIR(build)
+AC_CONFIG_MACRO_DIR(build)
+AM_INIT_AUTOMAKE([1.11 check-news std-options -Wobsolete -Wportability -Wsyntax -Wunsupported])
 AM_MAINTAINER_MODE
+
+AC_CANONICAL_HOST
 
 dnl Checks for programs.
 AM_SANITY_CHECK
