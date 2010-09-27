@@ -1,5 +1,33 @@
 2010-09-26  Dave Beckett <dave@dajobe.org>
 
+	* lua/Makefile.am:
+	 lua_$(LUA_PACKAGE).h is not an output of swig for lua
+
+	* lua/.gitignore: GIT: ignore lua outputs
+
+	* AUTHORS:
+	C# gone
+
+	* autogen.sh: Use latest autogen.sh - automake 1.11 required, uses
+	silent rules etc.
+
+	* perl/Makefile.am, php/Makefile.am, python/Makefile.am: Remove
+	junk for obsolete dmalloc configuration
+
+	* .gitignore, acinclude.m4, build/.gitignore: Update config for
+	build/ dir.  remove unused acinclude.m4
+
+	* configure.ac: Automake 1.11 and use build/ dir for aux and
+	macros like rest of Redland
+
+	* docs/.gitignore: GIT: ignore generated doc file dirs
+
+	* .gitignore: GIT: ignore bugs dir
+
+	* ruby/.gitignore: GIT: ignore redland.so binary
+
+	* perl/lib/RDF/.gitignore: GIT: Ignore generated Redland.pm
+
 	* INSTALL.html, LICENSE.html, NEWS.html, README.html,
 	RELEASE.html, TODO.html: html
 
