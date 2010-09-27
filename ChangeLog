@@ -1,12 +1,18 @@
 2010-09-26  Dave Beckett <dave@dajobe.org>
 
+	* python/Makefile.am: Add redland-pre.i
+
+	* php/Makefile.am: Added -d enable_dl=On to test to maybe help
+	reduce warnings See http://us2.php.net/dl
+
+	* RELEASE.html, bindings.rdf.in, configure.ac,
+	redland-bindings.spec.in:
+	#words - Redland librdf language bindings
+
 	* lua/Makefile.am:
 	 lua_$(LUA_PACKAGE).h is not an output of swig for lua
 
-	* lua/.gitignore: GIT: ignore lua outputs
-
-	* AUTHORS:
-	C# gone
+	* AUTHORS: C# gone
 
 	* autogen.sh: Use latest autogen.sh - automake 1.11 required, uses
 	silent rules etc.
@@ -19,17 +25,6 @@
 
 	* configure.ac: Automake 1.11 and use build/ dir for aux and
 	macros like rest of Redland
-
-	* docs/.gitignore: GIT: ignore generated doc file dirs
-
-	* .gitignore: GIT: ignore bugs dir
-
-	* ruby/.gitignore: GIT: ignore redland.so binary
-
-	* perl/lib/RDF/.gitignore: GIT: Ignore generated Redland.pm
-
-	* INSTALL.html, LICENSE.html, NEWS.html, README.html,
-	RELEASE.html, TODO.html: html
 
 	* LICENSE.html: Use 'or any newer versions' in titles too. Link to
 	specific LGPL 2.1
