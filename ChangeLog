@@ -1,3 +1,59 @@
+2010-09-20  Dave Beckett <dave@dajobe.org>
+
+	* lua/Makefile.am, lua/test.lua: Add test.lua and make 'make
+	check' work
+
+	* Makefile.am, configure.ac, lua/Makefile.am: Add skeleton config
+	for LUA bindings
+
+2010-08-09  Dave Beckett <dave@dajobe.org>
+
+	* python/redland-post.i:
+	Revert raptor_locator_uri_string to
+	raptor_locator_uri
+
+	* python/Makefile.am, python/redland-post.i, python/redland-pre.i:
+	Update for raptor2 API
+
+	* configure.ac: Check if Redland uses Raptor2 API and set/define
+	REDLAND_HAVE_RAPTOR2_API
+
+2010-08-07  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac: 1.0.11
+
+2010-08-05  Dave Beckett <dave@dajobe.org>
+
+	* python/example.py: Turn raised exceptions into objects
+
+	* configure.ac: For OSX Python, add -F$fpath to set framework path
+	for the given python
+
+	* python/redland-post.i:
+	(librdf_python_unicode_to_bytes): Throw exceptions with better
+	runtime error types
+
+	* python/redland-post.i:
+	(librdf_python_unicode_to_bytes): Fix calculation of input string
+	length and output buffer size.  Set exceptions on errors - using a
+	bogus type for now
+
+2010-02-04  Dave Beckett <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/node.rb:
+	(node_from_hash): removed unused var h
+
+2010-01-02  Dave Beckett <dave@dajobe.org>
+
+	* .gitignore, perl/.gitignore, php/.gitignore, python/.gitignore,
+	ruby/.gitignore:
+	Add .gitignore to replace SVN prop svn:ignore
+
+2009-12-19  Dave Beckett <dave@dajobe.org>
+
+	* python/Makefile.am: reordering link flags so PYTHON_LDFLAGS is
+	first and after object, to try to help with -Wl,--as-needed
+
 2009-12-16  Dave Beckett  <dave@dajobe.org>
 
 	* Snapshotted redland-bindings_1_0_10_1 for 1.0.10.1 release (SVN 15922)
