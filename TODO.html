@@ -2,56 +2,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-  <title>Redland RDF Application Framework Bindings - To Do List</title>
+  <title>Redland librdf Language Bindings - To Do List</title>
 </head>
 <body>
 
-<h1>Redland RDF Application Framework Bindings - To Do list</h1>
+<h1>Redland librdf Language Bindings - To Do list</h1>
 
 <p>Bugs should be reported at the
 <a href="http://bugs.librdf.org/">Redland Issue Tracker</a>.
 </p>
 
-
-<h2>Bugs, Features, Requests For Enhancement</h2>
-
-<p>In no real order.  Help wanted.</p>
-
-<ul>
-<li>Python. Reported the code needs to be:
-<pre>
-[foo = RDF.Parser("turtle", "application/x-turtle")]
-</pre> "Leaving out the mime_type argument does not work."
-</li>
-<li>Python: Add factories for all parsers</li>
-<li>All: remove "raptor" parser name in any examples, replace with syntax names such as "rdfxml"</li>
-<li>Python: In RDF.py, parse_into_model, allow promotion of base_uri arg.
-<pre>
-if type(base_uri) is str:
-  base_uri = Uri(string=base_uri)
-</pre>
-like the other methods, and as documented (BUG)</li>
-<li>Docs: it was hard to find the legal (parser) feature URIs in
-the documentation, or what values to use.</li>
-<li>Python: RFE api, add __nonzero__ (check this) so you can do things
-like <code>if redland-stream: do things...</code> to check for
-empty streams before iterating. 
-<code>def __nonzero__(self): return !self.end()</code></li>
-<li>PHP: May need to include php_config.h not config.h for new php versions</li>
-</ul>
-
-<h2>Done</h2>
-
-<p>The most recent changes are at the top, with the first
-release version where appropriate.</p>
-
-<ul>
-<li>None</li>
-</ul>
-
 <hr />
 
-<p>Copyright (C) 2004-2008 <a href="http://www.dajobe.org/">Dave Beckett</a><br />Copyright (C) 2004-2005 <a href="http://www.bristol.ac.uk/">University of Bristol</a></p>
+<p>Copyright (C) 2004-2010 <a href="http://www.dajobe.org/">Dave Beckett</a><br />Copyright (C) 2004-2005 <a href="http://www.bristol.ac.uk/">University of Bristol</a></p>
 
 </body>
 </html>

@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-  <title>Redland RDF Application Framework Bindings</title>
+  <title>Redland librdf Language Bindings</title>
   <style type="text/css">
 <!--
 pre
@@ -19,14 +19,31 @@ pre
 </head>
 <body>
 
-<h1>Redland RDF Application Framework Bindings</h1>
+<h1>Redland librdf Language Bindings</h1>
+
+<h2 id="rel1_0_11_1"><a name="rel1_0_11_1">Redland librdf Language Bindings 1.0.11.1 Changes</a></h2>
+
+<p>Issues Fixed:</p>
+<ul>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=292">0000292</a>: Method Redland::Resource.type? always return true</li>
+</ul>
+
+<h3>Lua binding</h3>
+
+<p>Added experimental Lua language binding.  Use
+<code>--with-lua=lua5.1</code> etc. to select a particular binary and
+version.  This same name will be used with <code>pkgconfig(1)</code>
+to get the include and link lines.
+</p>
+
+
 
 <h2 id="rel1_0_10_1"><a name="rel1_0_10_1">Redland Bindings 1.0.10.1 Changes</a></h2>
 
 <p>Issues Fixed:</p>
 <ul>
-<li><a href="http://bugs.librdf.org/mantis/view.php?id=257">0000257: Make PYTHON_LIB installation directory configurable</a></li>
-<li><a href="http://bugs.librdf.org/mantis/view.php?id=313">0000313: Unicode to UTF8 buffer overflows</a></li>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=257">0000257</a>: Make PYTHON_LIB installation directory configurable</li>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=313">0000313</a>: Unicode to UTF8 buffer overflows</li>
 </ul>
 
 <h3>PHP binding changes</h3>
