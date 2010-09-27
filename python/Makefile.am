@@ -43,7 +43,7 @@ python_DATA=RDF.py Redland$(PYTHON_LIBEXT)
 
 EXTRA_DIST=README RDF.py \
 example.py redlandtest.py \
-redland-post.i redland-decl.i redland-typemap.i $(SWIG_OUTPUTS)
+redland-pre.i redland-post.i redland-decl.i redland-typemap.i $(SWIG_OUTPUTS)
 
 SUBDIRS=test
 
