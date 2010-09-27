@@ -1,3 +1,11 @@
+2010-09-26  Dave Beckett <dave@dajobe.org>
+
+	* INSTALL.html, LICENSE.html, NEWS.html, README.html,
+	RELEASE.html, TODO.html: html
+
+	* LICENSE.html: Use 'or any newer versions' in titles too. Link to
+	specific LGPL 2.1
+
 2010-09-20  Dave Beckett <dave@dajobe.org>
 
 	* lua/Makefile.am, lua/test.lua: Add test.lua and make 'make
