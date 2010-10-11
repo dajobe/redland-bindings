@@ -467,7 +467,7 @@ else
       with_redland=internal
     elif test $REDLAND_VERSION = $OUR_REDLAND_VERSION; then
       with_redland=system
-    elif test $REDLAND_VERSION_DEC -gt $OUR_REDLAND_VERSION; then
+    elif test $REDLAND_VERSION_DEC -gt $OUR_REDLAND_VERSION_DEC; then
       AC_MSG_WARN(System redland $REDLAND_VERSION is newer than our version $OUT_REDLAND_VERSION - this should be OK)
       with_redland=system
     else
