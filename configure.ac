@@ -440,6 +440,7 @@ AC_ARG_WITH(redland, [  --with-redland=SOURCE   Pick redland source - system/int
 changequote(<<, >>)dnl
 OUR_REDLAND_VERSION=`echo $PACKAGE_VERSION | sed -e 's,\.[0-9]$,,'`
 changequote([, ])dnl
+OUR_REDLAND_VERSION_DEC=`echo $OUR_REDLAND_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
 
 REDLAND_VERSION=
 REDLAND_CONFIG_FROM=redland-config
@@ -459,15 +460,18 @@ else
   if test "X$REDLAND_VERSION" = X; then
     REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
   fi
+  REDLAND_VERSION_DEC=`echo $REDLAND_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
 
   if test "X$with_redland" = Xauto; then
     if test "X$REDLAND_VERSION" = X; then
       with_redland=internal
     elif test $REDLAND_VERSION = $OUR_REDLAND_VERSION; then
       with_redland=system
+    elif test $REDLAND_VERSION_DEC -gt $OUR_REDLAND_VERSION; then
+      AC_MSG_WARN(System redland $REDLAND_VERSION is newer than our version $OUT_REDLAND_VERSION - this should be OK)
+      with_redland=system
     else
-      AC_MSG_WARN(System redland $REDLAND_VERSION does not match - need $OUR_REDLAND_VERSION)
-      with_redland=internal
+      AC_MSG_ERROR(System redland $REDLAND_VERSION is older than our version - need $OUR_REDLAND_VERSION)
     fi
   elif test $with_redland = system; then
     if test $REDLAND_VERSION != $OUR_REDLAND_VERSION; then
