@@ -38,8 +38,8 @@ class TestStore < Test::Unit::TestCase
   def test_read_store()
     store = HashStore.new('bdb','thestore')
     model = Model.new(store)
-    parser = Parser.new()
-    parser.parse_into_model(model,"file:./out2.rdf")
+    parser = Parser.new(name="ntriples",mime_type=nil)
+    parser.parse_into_model(model,"file:./one.nt")
     st = Statement.new(
       Uri.new("http://example.org/dom"),
       Uri.new("http://example.org/project"),
