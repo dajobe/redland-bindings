@@ -11,13 +11,12 @@ class TestResource < Test::Unit::TestCase
     @faa = Namespace.new("http://www.faa.gov/faa#")
   end
 
-
   def test_intitialize_from_model()
     model = Model.new()
     resource = model.create_resource("http://www.faa.gov/DominicSisneros")
     resource.add_property(@foaf['name'],'Dominic').
              add_property(@foaf['phone'],'801-320-2377').
-                                                         add_property(@foaf['surname'],'Sisneros')
+             add_property(@foaf['surname'],'Sisneros')
     resource.add_property(@foaf['nick'],'Dom')
     resource.add_property(@foaf['nick'],'Domster')
     assert_equal(5,resource.get_properties.size)
@@ -34,7 +33,7 @@ class TestResource < Test::Unit::TestCase
     resource = model.create_resource("http://www.faa.gov/DominicSisneros")
     resource.add_property(@foaf['name'],'Dominic').
              add_property(@foaf['phone'],'801-320-2377').
-                                                         add_property(@foaf['surname'],'Sisneros')
+             add_property(@foaf['surname'],'Sisneros')
     assert_equal(3,resource.get_properties.size)
     resource = model.get_resource("http://www.faa.gov/DominicSisneros")
     assert_instance_of(Resource,resource)
@@ -46,7 +45,7 @@ class TestResource < Test::Unit::TestCase
     resource = model.create_resource("http://www.faa.gov/DominicSisneros")
     resource.add_property(@foaf['name'],'Dominic').
              add_property(@foaf['phone'],'801-320-2377').
-                                                         add_property(@foaf['surname'],'Sisneros')
+             add_property(@foaf['surname'],'Sisneros')
     resource.add_property(@foaf['nick'],'Dom')
     resource.add_property(@foaf['nick'],'Domster')
     return resource
@@ -72,30 +71,30 @@ class TestResource < Test::Unit::TestCase
     assert_equal(@foaf['Person'],resource.type)
     resource.type = @faa['Project']
     assert_equal(Node.new(:uri_string=>'http://www.faa.gov/faa#Project'),resource.type)
-    puts resource.model.triples()
+    #puts resource.model.triples()
   end
   
   def test_object_of_predicate()
-  	model =  Model.new
-  	dom = model.create_resource()
-  	dom.type = @foaf['Person']
-  	dom.add_property(@foaf['name'],'Dominic Sisneros')
-  	proj = model.create_resource()
-  	proj.add_property(@faa['jcn'],'108269')
-  	proj.type = @faa['Project']
-  	proj.add_property(@faa['electronic'],dom)
-  	proj2 = model.create_resource()
-  	proj2.add_property(@faa['jcn'],'10834')
-  	proj2.type = @faa['Project']
-  	proj2.add_property(@faa['electronic'],dom)
-  	p = model.create_resource()
-  	p.add_property(@foaf['knows'],dom)
-  	assert_equal(3, dom.object_of_predicate().size)
-  	assert_equal(2,dom.object_of_predicate(@faa['electronic']).size)
-	puts proj.model.triples()
-	puts "dom is object of #{dom.object_of_predicate}"
-	#assert_equal(proj,dom.object_of_predicate(@faa['electronic']))
-	puts "dom.object_of_predicate=> #{dom.object_of_predicate(@faa['electronic'])}"
+    model =  Model.new
+    dom = model.create_resource()
+    dom.type = @foaf['Person']
+    dom.add_property(@foaf['name'],'Dominic Sisneros')
+    proj = model.create_resource()
+    proj.add_property(@faa['jcn'],'108269')
+    proj.type = @faa['Project']
+    proj.add_property(@faa['electronic'],dom)
+    proj2 = model.create_resource()
+    proj2.add_property(@faa['jcn'],'10834')
+    proj2.type = @faa['Project']
+    proj2.add_property(@faa['electronic'],dom)
+    p = model.create_resource()
+    p.add_property(@foaf['knows'],dom)
+    assert_equal(3, dom.object_of_predicate().size)
+    assert_equal(2,dom.object_of_predicate(@faa['electronic']).size)
+    #puts proj.model.triples()
+    #puts "dom is object of #{dom.object_of_predicate}"
+    #assert_equal(proj,dom.object_of_predicate(@faa['electronic']))
+    #puts "dom.object_of_predicate=> #{dom.object_of_predicate(@faa['electronic'])}"
   end
   
 end

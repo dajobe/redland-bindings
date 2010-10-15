@@ -154,16 +154,16 @@ module Redland
 
     # Remove the statement made of the triples (s,p,o) with the optional context Node
     def delete(s,p,o,context=nil)
-			if [s,p,o].all? { |e| e }
-				statement = Statement.new(s,p,o)
-				self.delete_statement(statement,context)
-			else
-				self.find(s,p,o,context) do |ds, dp, d_o|
-					st = Statement.new(ds, dp, d_o)
-					Kernel.p st
-					self.delete_statement(st, context)
-				end
-			end
+      if [s,p,o].all? { |e| e }
+        statement = Statement.new(s,p,o)
+        self.delete_statement(statement,context)
+      else
+        self.find(s,p,o,context) do |ds, dp, d_o|
+          st = Statement.new(ds, dp, d_o)
+          Kernel.p st
+          self.delete_statement(st, context)
+        end
+      end
     end
 
     # Remove the Statements from the Model with the given context Node

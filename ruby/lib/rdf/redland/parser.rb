@@ -103,7 +103,7 @@ module Redland
       else #context
         raise RedlandError.new("Cannot make a Node from an object of #{context.class}") if not context
         context = Node.ensure(context)
- 	my_stream = Redland::librdf_parser_parse_as_stream(@parser,uri.uri,base_uri.uri)
+        my_stream = Redland::librdf_parser_parse_as_stream(@parser,uri.uri,base_uri.uri)
         Redland.librdf_model_context_add_statements(model.model,context,my_stream)
         #self.parse_as_stream(uri,base_uri){|s| model.add_statement(s,context)}
       end

@@ -29,10 +29,9 @@ class TestNode < Test::Unit::TestCase
     assert(node3.blank?)
     assert(node4.blank?)
     assert_not_equal(node3,node4)
-    
   end
 
-def test_equality()
+  def test_equality()
     node = Node.new("Dominic")
     assert_equal(node,Node.new("Dominic"))
     assert_not_equal(node,Node.new("NotDominic"))
@@ -55,6 +54,7 @@ def test_equality()
     node = Node.new(Uri.new("http://xmlns.com/"))
     assert_equal(Uri, node.uri.class)
     assert_equal('http://xmlns.com/',node.uri.to_s)
+    assert_equal('http://xmlns.com/',node.to_s)
   end
 
   def test_get_literal()
@@ -67,6 +67,7 @@ def test_equality()
   def test_literal()
     literal = Literal.new('this is a literal','en')
     assert_equal('this is a literal',literal.value)
+    assert_equal('this is a literal',literal.to_s)
     assert_equal('en',literal.language)
     literal = Literal.from_xml('<em>chat<em>')
     assert_equal('<em>chat<em>',literal.value)

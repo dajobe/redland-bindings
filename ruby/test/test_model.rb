@@ -33,19 +33,10 @@ class TestModel < Test::Unit::TestCase
     domnode = model.subject(@foaf['name'],"Dominic")
     assert_equal(@faa['dom@some.gov'], domnode)
     assert_equal('333-123-2387',model.object(@faa['kris'],@foaf['phone']).to_s)
-    
 
     #model.predicates(@faa['kris'],"Kris"){|p| puts p }
     #model.triples{|s,p,o| puts "subject: #{s}, pred: #{p}, object: #{o}"}
-    model.find( nil,@foaf['name'],nil){|s,p,o| puts o }
-    
-    #model.save('out3.rdf')
-
-    serializer = Serializer.new()
-    serializer.to_file('out2.rdf',model,Uri.new("http://www.faa.gov/people#"))
-    #  serializer.namespace(@foaf,'foaf')
-    
-
+    #model.find( nil,@foaf['name'],nil){|s,p,o| puts o }
   end
 
   def test_delete()

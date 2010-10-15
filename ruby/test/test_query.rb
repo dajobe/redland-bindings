@@ -38,6 +38,8 @@ class TestQuery < Test::Unit::TestCase
 
     # Result should be a single variable binding result with three values
 
+    p results.binding_value(0).to_s
+
     assert(results.is_bindings?)
     assert_equal(results.binding_value(0), @exns['subject'])
     assert_equal(results.binding_value(1), @exns['pred'])

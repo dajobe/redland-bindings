@@ -158,6 +158,6 @@ TRIPLES
     parser.add_ident(@foaf['mbox'])
     parser.smush_file(model,'file:./triples.rdf')
     smush_tester(model,dom)
-    model.statements{|s| puts s}
+    #model.statements{|s| puts s}
   end
 end

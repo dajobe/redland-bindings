@@ -85,7 +85,7 @@ module Redland
         statements = @model.find(nil,nil,self)
         return statements if not block_given?
         statements.each { |st| yield st.subject,st.predicate}
-      end    		
+      end
     end
 
     # Adds a statement to the model with the subject as the 
