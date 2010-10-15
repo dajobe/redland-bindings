@@ -109,7 +109,16 @@ module Redland
 
     # Convert this to a string
     def to_s
-      return Redland.librdf_node_to_string(self.node)
+      if self.literal?
+        Redland.librdf_node_get_literal_value(self.node)
+      elsif self.blank?
+        Redland.librdf_node_get_blank_identifier(self.node)
+      elsif self.resource?
+        uri = Redland.librdf_node_get_uri(self.node)
+        Redland.librdf_uri_to_string(uri) unless uri.nil?
+      else
+        nil
+      end
     end
 
     # Get the type of this node as a string (Node.node_types)
