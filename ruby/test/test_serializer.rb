@@ -20,7 +20,7 @@ class TestSerializer < Test::Unit::TestCase
 
     #model.predicates(faa['kris'],"Kris"){|p| puts p }
     #model.triples{|s,p,o| puts "subject: #{s}, pred: #{p}, object: #{o}"}
-    model.find( nil,foaf['name'],nil){|s,p,o| puts o }
+    #model.find( nil,foaf['name'],nil){|s,p,o| puts o }
     
     model.save('out3.rdf')
 
