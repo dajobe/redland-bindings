@@ -2157,8 +2157,9 @@ class QueryResults(object):
       rbase_uri = base_uri._reduri
     else:
       rbase_uri = None
-      return Redland.librdf_query_results_to_string(self._results,
-                                                    rformat_uri, rbase_uri)
+
+    return Redland.librdf_query_results_to_string(self._results,
+                                                  rformat_uri, rbase_uri)
 
   def __str__(self):
     """Serialize to string syntax format."""
