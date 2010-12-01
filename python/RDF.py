@@ -347,19 +347,39 @@ class Node(object):
   uri = property(_get_uri, doc = "The URI of a resource node")
   type = property(_get_type, doc = "The node type, an integer")
 
+  def _get_literal (self):
+    if not self.is_literal():
+      raise NodeTypeError("Can't get literal value for node type %s (%d)" % \
+            (node_type_name(self.type), self.type))
+
+    dt_uri = Redland.librdf_node_get_literal_value_datatype_uri(self._node)
+
+    if dt_uri:
+      dt_uri = Uri(string=Redland.librdf_uri_to_string(dt_uri))
+
+    return (unicode(Redland.librdf_node_get_literal_value(self._node), 'utf-8'),
+            Redland.librdf_node_get_literal_value_language(self._node),
+            dt_uri)
+
   def _get_literal_value (self):
     if not self.is_literal():
       raise NodeTypeError("Can't get literal value for node type %s (%d)" % \
             (node_type_name(self.type), self.type))
-    dt_uri=Redland.librdf_node_get_literal_value_datatype_uri(self._node)
+
+    dt_uri = Redland.librdf_node_get_literal_value_datatype_uri(self._node)
+
     if dt_uri:
-      dt_uri=Uri(string=Redland.librdf_uri_to_string(dt_uri))
+      dt_uri = Uri(string=Redland.librdf_uri_to_string(dt_uri))
+
     val={
         'string': unicode(Redland.librdf_node_get_literal_value(self._node), 'utf-8'),
         'language': Redland.librdf_node_get_literal_value_language(self._node),
         'datatype': dt_uri
         }
     return val
+
+  literal = property(_get_literal,
+          doc = "A tuple of the string, language and datatype values of the node")
 
   literal_value = property(_get_literal_value,
           doc = "A dictionary containing the value of the node literal with keys string, language and datatype")
