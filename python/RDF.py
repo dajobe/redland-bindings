@@ -389,7 +389,10 @@ class Node(object):
       raise NodeTypeError("Can't get blank identifier for node type %s (%d)" % \
             (node_type_name(self.type), self.type))
     else:
-      return Redland.librdf_node_get_blank_identifier(self._node)
+      return unicode(Redland.librdf_node_get_blank_identifier(self._node), 'utf-8')
+
+  blank = property(_get_blank_identifier, 
+          doc = "The blank node identifier")
 
   blank_identifier = property(_get_blank_identifier, 
           doc = "The node identifier of a blank node")
