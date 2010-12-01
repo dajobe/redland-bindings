@@ -399,17 +399,18 @@ class Node(object):
 
   def __str__(self):
     """Get a string representation of an RDF Node."""
-    if self._node is None:
-      raise RedlandError("Node is invalid") 
-    else:
-      return Redland.librdf_node_to_string(self._node)
+    return unicode(self).encode('utf-8')
 
   def __unicode__(self):
     """Get a Unicode string representation of an RDF Node."""
     if self._node is None:
       raise RedlandError("Node is invalid") 
+    elif self.is_literal():
+      return unicode(Redland.librdf_node_get_literal_value(self._node), 'utf-8')
+    elif self.is_blank():
+      return self.__get_blank_identifier()
     else:
-      return unicode(Redland.librdf_node_to_string(self._node), 'utf-8')
+      return unicode(self.uri)
 
   def __eq__(self,other):
     """Equality of an RDF Node compared to another RDF Node."""
