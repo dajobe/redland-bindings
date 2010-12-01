@@ -408,7 +408,7 @@ class Node(object):
     elif self.is_literal():
       return unicode(Redland.librdf_node_get_literal_value(self._node), 'utf-8')
     elif self.is_blank():
-      return self.__get_blank_identifier()
+      return self._get_blank_identifier()
     else:
       return unicode(self.uri)
 
