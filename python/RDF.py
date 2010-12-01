@@ -183,9 +183,10 @@ class World(object):
   def __del__(self):
     """Destroy RDF World object (destructor)."""
     global _debug    
-    if _debug:
-      print "Destroying RDF.World"
-    self._cleanup(self._world)
+    if self._world:
+      if _debug:
+        print "Destroying RDF.World"
+      self._cleanup(self._world)
 
 # end class World
 
@@ -1210,7 +1211,8 @@ class Iterator(object):
     global _debug    
     if _debug:
       print "Destroying RDF.Iterator"
-    Redland.librdf_free_iterator(self._iterator)
+    if self._iterator:
+      Redland.librdf_free_iterator(self._iterator)
 
   def end(self):
     """Return true if the iterator is exhausted"""
