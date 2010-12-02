@@ -175,7 +175,9 @@ class World(object):
     #trick to ensure function exists during module cleanup
     self._cleanup = Redland.librdf_free_world
 
-    self._world=Redland.librdf_new_world()
+    self._world = None
+
+    self._world = Redland.librdf_new_world()
     Redland.librdf_world_open(self._world)
 
     Redland.librdf_python_world_init(self._world)
@@ -1197,6 +1199,7 @@ class Iterator(object):
     global _debug    
     if _debug:
       print "Creating RDF.Iterator object=",object,"creator=",creator1
+
     self._iterator=object
     # keep references to the things we're iterating over so they
     # don't get destroyed before we're done with them.
@@ -1699,6 +1702,8 @@ standard configuration of Raptor.
     if _debug:
       print "Creating RDF.Parser name=",name,"mime_type=",mime_type, "uri=",uri
 
+    self._parser = None
+
     if uri is not None:
       ruri=uri._reduri
     else:
@@ -1953,21 +1958,27 @@ class Query(object):
 
   """
   def __init__(self, querystring, base_uri=None, query_language="rdql", query_uri=None):
+    self._query = None
+
     if query_uri is not None:
       ruri = query_uri._reduri
     else:
       ruri = None
+
     if base_uri is not None:
       rbase_uri = base_uri._reduri
     else:
       rbase_uri = None
+
     global _world
     global _debug    
     if _debug:
       print "Creating query for language '"+query_language+"', base '"+str(rbase_uri)+"': "+querystring
 
+
     self._query = Redland.librdf_new_query(_world._world, query_language, ruri, querystring, rbase_uri)
     self.result_stream = None
+
     if self._query is None:
       raise RedlandError("Query construction failed")
 
@@ -2225,6 +2236,8 @@ class Serializer(object):
     if _debug:
       print "Creating RDF.Serializer name=",name,"mime_type=",mime_type, \
         "uri=",uri
+
+    self._serializer = None
 
     if uri is not None:
       ruri = uri._reduri
