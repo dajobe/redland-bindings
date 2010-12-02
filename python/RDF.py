@@ -1960,6 +1960,12 @@ class Query(object):
   def __init__(self, querystring, base_uri=None, query_language="rdql", query_uri=None):
     self._query = None
 
+    if querystring is None:
+      raise RedlandError("No query string given")
+
+    if type(querystring) is unicode: 
+      querystring = querystring.encode('utf-8')
+
     if query_uri is not None:
       ruri = query_uri._reduri
     else:
@@ -1971,10 +1977,9 @@ class Query(object):
       rbase_uri = None
 
     global _world
-    global _debug    
+    global _debug
     if _debug:
       print "Creating query for language '"+query_language+"', base '"+str(rbase_uri)+"': "+querystring
-
 
     self._query = Redland.librdf_new_query(_world._world, query_language, ruri, querystring, rbase_uri)
     self.result_stream = None
