@@ -22,13 +22,6 @@
  * 
  */
 
-#if REDLAND_HAVE_RAPTOR2_API == 1
-/* raptor 2 API */
-#else
-/* raptor 1 API */
-#define raptor_unicode_utf8_string_put_char(in,out,out_len) raptor_unicode_char_to_utf8(in,out)
-#endif
-
 void librdf_python_world_init(librdf_world *world);
 
 
