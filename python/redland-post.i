@@ -32,16 +32,6 @@
 void librdf_python_world_init(librdf_world *world);
 
 
-/* swig doesn't seem to declare prototypes of get accessors for statics */
-static PyObject *_wrap_librdf_copyright_string_get(void);
-static PyObject *_wrap_librdf_version_string_get(void);
-static PyObject *_wrap_librdf_short_copyright_string_get(void);
-static PyObject *_wrap_librdf_version_decimal_get(void);
-
-static PyObject *_wrap_librdf_version_major_get(void);
-static PyObject *_wrap_librdf_version_minor_get(void);
-static PyObject *_wrap_librdf_version_release_get(void);
-
 void SWIG_init(void);
 
 static PyObject *librdf_python_callback = NULL;
