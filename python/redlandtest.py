@@ -275,8 +275,6 @@ class RasqalQueryTestCase (unittest.TestCase):
     def testCreate(self):
         q = RDQLQuery("SELECT ?a ?b ?c WHERE (?a ?b ?c)")
         self.assert_(q is not None)
-        q = Query("- - -",query_language="triples")
-        self.assert_(q is not None)
 
     def testRDQLQueryCount(self):
         q = RDQLQuery("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
@@ -295,12 +293,6 @@ class RasqalQueryTestCase (unittest.TestCase):
             count += 1
         self.assert_(count == 3, "Should have found three results in query")
 
-    def testTripleQueryAsBindingsDontWork(self):
-        q = Query("- - -",query_language="triples")
-        results = q.execute(self.model)
-	first = results.get_binding_name(0)
-        self.assert_(first is None,"Triples queries shouldn't work as bindings - None should be returned from get_binding_name(0)")
-
     def testRDQLQueryAsStreamDontWork(self):
         q = RDQLQuery("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
 	failed = False
@@ -315,17 +307,6 @@ class RasqalQueryTestCase (unittest.TestCase):
         #results = q.run_as_bindings(self.model)
         # TODO: This needs to fail somehow
 
-    def testTripleQuery(self):
-        q = Query("- - -",query_language="triples")
-        results = q.execute(self.model)
-        stream = results.as_stream()
-        self.assert_(stream is not None,"Query eval not OK")
-
-        count = 0
-        for result in stream:
-            count += 1
-        self.assert_(count == 3, "Should have found three results in query")
-
     def testRDQLQueryRunOnModel(self):
         q = RDQLQuery("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
         bindings = self.model.execute(q)
@@ -333,17 +314,6 @@ class RasqalQueryTestCase (unittest.TestCase):
 
         count = 0
         for result in bindings:
-            count += 1
-        self.assert_(count == 3, "Should have found three results in query")
-
-    def testTripleQueryOnModel(self):
-        q = Query("- - -",query_language="triples")
-        results = self.model.execute(q)
-        stream = results.as_stream()
-        self.assert_(results is not None,"Query eval not OK")
-
-        count = 0
-        for result in stream:
             count += 1
         self.assert_(count == 3, "Should have found three results in query")
 
