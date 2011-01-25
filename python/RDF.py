@@ -2046,10 +2046,8 @@ class QueryResults(object):
     return self
 
   def __len__(self):
-    """Get the number of query results returned so far (bindings results)"""
-    if self.is_bindings:
-      return Redland.librdf_query_results_get_count(self._results)
-    return 0
+    """Returns an exception since len() of an iterable is undefined."""
+    raise ValueError("Cannot take the length of iterable query results")
 
   # Iterator method
   def next(self):
