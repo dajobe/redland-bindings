@@ -279,9 +279,10 @@ class RasqalQueryTestCase (unittest.TestCase):
     def testRDQLQueryCount(self):
         q = RDQLQuery("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
         results = q.execute(self.model)
+        count = 0
         for result in results:
-            pass
-        self.assert_(len(results) == 3, "Query count should be 3 after query finished running")
+            count += 1
+        self.assert_(count == 3, "count should be 3 after query finished running")
 
     def testRDQLQueryRun(self):
         q = RDQLQuery("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
