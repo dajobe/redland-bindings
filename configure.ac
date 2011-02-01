@@ -293,7 +293,7 @@ if test "X$PYTHON" != X; then
   if test "X$PYTHON_LIB" != X; then
     AC_MSG_RESULT(using user lib: $PYTHON_LIB)
   else
-    PYTHON_LIB="${python_prefix}/lib/python${PYTHON_VERSION}/site-packages"
+    PYTHON_LIB=`$PYTHON -c "import distutils.sysconfig; print distutils.sysconfig.get_python_lib(1,1)"`
     AC_MSG_RESULT($PYTHON_LIB)
   fi
 
