@@ -2,7 +2,7 @@
 #
 # Makefile.PL - Makefile for Perl 5 interface to Redland
 #
-# Copyright (C) 2000-2008 David Beckett - http://www.dajobe.org/
+# Copyright (C) 2000-2011 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software or Open Source available under the
@@ -18,44 +18,40 @@
 
 use ExtUtils::MakeMaker;
 
-$PKG_CONFIG=$ENV{PKG_CONFIG} || 'pkg-config';
+my $pkg_config=$ENV{PKG_CONFIG} || 'pkg-config';
 
-if(`$PKG_CONFIG redland --exists 2>/dev/null`) {
-  $REDLAND_CONFIG="$PKG_CONFIG redland";
-} else {
-  $REDLAND_CONFIG=$ENV{REDLAND_CONFIG} || 'redland-config';
-  undef $PKG_CONFIG;
-}
+my $redland_config = "$pkg_config redland";
+
+die "Cannot find Redland via $pkg_config\n"
+  unless !`$redland_config --exists 2>/dev/null`;
 
 $CORE_PACKAGE="CORE";
 
 my $version=$ENV{VERSION};
 if(!defined $version) {
-  my $varg=$PKG_CONFIG ? "--modversion" : "--version";
-  $version=`$REDLAND_CONFIG $varg`;
+  $version=`$redland_config --modversion`;
   chomp $version;
-  die "Cannot find Redland version via $REDLAND_CONFIG\n"
+  die "Cannot find Redland version via $redland_config\n"
     unless $version;
 }
 
 my $redland_cflags=$ENV{CFLAGS};
 if(!defined $redland_cflags) {
-  $redland_cflags = `$REDLAND_CONFIG --cflags`;
+  $redland_cflags = `$redland_config --cflags`;
   chomp $redland_cflags;
 }
 
 my $redland_ldflags=$ENV{LDFLAGS};
 if(!defined $redland_ldflags) {
-  $redland_ldflags = `$REDLAND_CONFIG --libs`;
+  $redland_ldflags = `$redland_config --libs`;
   chomp $redland_ldflags;
 }
 
 my $swig=$ENV{SWIG};
 if(!defined $swig) {
-  my $swig_arg=$PKG_CONFIG ? "--variable=swig" : "--swig";
-  $swig=`$REDLAND_CONFIG $swig_arg`;
+  $swig=`$redland_config --variable=swig`;
   chomp $swig;
-  die "cannot find redland SWIG file via $REDLAND_CONFIG\n"
+  die "cannot find redland SWIG file via $redland_config\n"
     unless $swig;
 }
 

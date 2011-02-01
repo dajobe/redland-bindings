@@ -434,91 +434,41 @@ LIBRDF_LDFLAGS="$LDFLAGS $LIBS"
 
 
 # redland is REQUIRED
-AC_CHECK_PROG(REDLAND_CONFIG, redland-config, redland-config)
-AC_ARG_WITH(redland, [  --with-redland=SOURCE   Pick redland source - system/internal (default auto)], with_redland="$withval", with_redland="auto")
-
 changequote(<<, >>)dnl
 OUR_REDLAND_VERSION=`echo $PACKAGE_VERSION | sed -e 's,\.[0-9]$,,'`
 changequote([, ])dnl
 OUR_REDLAND_VERSION_DEC=`echo $OUR_REDLAND_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
 
 REDLAND_VERSION=
-REDLAND_CONFIG_FROM=redland-config
 
-# Preference is to get redland config from pkg-config
-if test -n "$PKG_CONFIG"; then
-   if $PKG_CONFIG --exists redland; then
-     REDLAND_CONFIG="$PKG_CONFIG redland"
-     REDLAND_VERSION=`$REDLAND_CONFIG --modversion`
-     REDLAND_CONFIG_FROM=pkg-config
-   fi
-fi
-
-if test "X$REDLAND_CONFIG" = X; then
-  with_redland=internal
-else
-  if test "X$REDLAND_VERSION" = X; then
-    REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
-  fi
+AC_MSG_CHECKING(for redland)
+if $PKG_CONFIG --exists redland; then
+  REDLAND_CONFIG="$PKG_CONFIG redland"
+  REDLAND_VERSION=`$PKG_CONFIG redland --modversion`
   REDLAND_VERSION_DEC=`echo $REDLAND_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
 
-  if test "X$with_redland" = Xauto; then
-    if test "X$REDLAND_VERSION" = X; then
-      with_redland=internal
-    elif test $REDLAND_VERSION = $OUR_REDLAND_VERSION; then
-      with_redland=system
-    elif test $REDLAND_VERSION_DEC -gt $OUR_REDLAND_VERSION_DEC; then
-      AC_MSG_WARN(System redland $REDLAND_VERSION is newer than our version $OUT_REDLAND_VERSION - this should be OK)
-      with_redland=system
-    else
-      AC_MSG_ERROR(System redland $REDLAND_VERSION is older than our version - need $OUR_REDLAND_VERSION)
-    fi
-  elif test $with_redland = system; then
-    if test $REDLAND_VERSION != $OUR_REDLAND_VERSION; then
-      AC_MSG_WARN(System redland $REDLAND_VERSION does not match - need $OUR_REDLAND_VERSION)
-      AC_MSG_WARN(Proceeding anyway since --with-redland=system was given)
-      AC_MSG_WARN(To use the internal redland use --with-redland=internal)
-      AC_MSG_WARN(or omit any --with-redland argument.)
-    fi
-  fi
-fi
-
-AC_MSG_CHECKING(redland library source)
-if test $with_redland = system; then
-  REDLAND_VERSION_VERBOSE="system $REDLAND_VERSION"
-  REDLAND_RUN=
+  AC_MSG_RESULT($REDLAND_VERSION)
 else
-  dir=
-  redland_source_dirs="../redland ../librdf .."
-  for testdir in $redland_source_dirs; do 
-    if test -x $testdir/redland-src-config; then
-      dir=`cd $testdir; pwd`
-      break
-    fi
-  done
-  if test "X$dir" = X; then
-    AC_MSG_ERROR(internal redland sources not found in directories: $redland_source_dirs)
-  fi
-  REDLAND_CONFIG=$dir/redland-src-config
-  REDLAND_VERSION=`$REDLAND_CONFIG --version 2>/dev/null`
-  REDLAND_VERSION_VERBOSE="internal $REDLAND_VERSION in $dir"
-  REDLAND_RUN="$REDLAND_CONFIG --run "
-  REDLAND_CONFIG_FROM=source
-fi
-AC_MSG_RESULT($REDLAND_VERSION_VERBOSE)
+  AC_MSG_RESULT(not found)
 
-AC_MSG_CHECKING(Redland configuration source)
-AC_MSG_RESULT($REDLAND_CONFIG_FROM)
+  AC_MSG_ERROR(Redland is not installed - see http://librdf.org/ to get a version $OUR_REDLAND_VERSION or newer)
+fi
+
+
+if $PKG_CONFIG --atleast-version=$OUR_REDLAND_VERSION redland; then
+  :
+else
+  AC_MSG_ERROR(Redland version $REDLAND_VERSION found. $OUR_REDLAND_VERSION or newer is required - see http://librdf.org/)
+fi
+
+
+REDLAND_RUN=
 
 AC_SUBST(REDLAND_CONFIG)
 AC_SUBST(REDLAND_VERSION)
 AC_SUBST(REDLAND_RUN)
 
-if test $REDLAND_CONFIG_FROM = "pkg-config"; then
-  REDLAND_SWIG=`$PKG_CONFIG redland --variable=swig`
-else
-  REDLAND_SWIG=`$REDLAND_CONFIG --swig`
-fi
+REDLAND_SWIG=`$PKG_CONFIG redland --variable=swig`
 AC_SUBST(REDLAND_SWIG)
 
 AC_MSG_CHECKING(if redland was built with raptor2)
@@ -529,13 +479,22 @@ if test "X$REDLAND_HAVE_RAPTOR2_API" = X1; then
 else
   AC_MSG_RESULT(no)
   REDLAND_HAVE_RAPTOR2_API=0
+
+  AC_MSG_ERROR(Redland bindings requires a Redland built with Raptor 2 APIs.  see http://librdf.org/)
 fi
 AC_SUBST(REDLAND_HAVE_RAPTOR2_API)
 
 
-LIBRDF_CPPFLAGS="$LIBRDF_CPPFLAGS `$REDLAND_CONFIG --cflags`"
-LIBRDF_LDFLAGS="$LIBRDF_LDFLAGS `$REDLAND_CONFIG --libs`"
+LIBRDF_CPPFLAGS="$LIBRDF_CPPFLAGS `$PKG_CONFIG redland --cflags`"
+LIBRDF_LDFLAGS="$LIBRDF_LDFLAGS `$PKG_CONFIG redland --libs`"
 
+if test $REDLAND_VERSION_DEC -lt 10014; then
+  # These should have been added to redland.pc in 1.0.13
+
+  LIBRDF_CPPFLAGS="$LIBRDF_CPPFLAGS `$PKG_CONFIG rasqal --cflags`"
+  LIBRDF_LDFLAGS="$LIBRDF_LDFLAGS `$PKG_CONFIG rasqal --libs`"
+
+fi
 
 dnl Checks for building sub-packages in sub directories
 SD="$languages"
@@ -598,6 +557,6 @@ AC_OUTPUT
 
 AC_MSG_RESULT([
 Redland build summary:
-  Redland:              $REDLAND_VERSION_VERBOSE
+  Redland:              $REDLAND_VERSION
   Language APIs built:   $languages
 ])
