@@ -1,7 +1,7 @@
 # 
 # RDF.py - Redland Python RDF module
 #
-# Copyright (C) 2000-2006 David Beckett - http://www.dajobe.org/
+# Copyright (C) 2000-2011 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software and part of Redland http://librdf.org/
@@ -17,8 +17,6 @@
 #      from http://www.opensource.org/licenses/mit-license.html
 #
 #      -------------------------------------------------------------------
-#      Copyright (c) 2000-2005, David Beckett, ILRT, University of Bristol
-#
 #      Permission is hereby granted, free of charge, to any person
 #      obtaining a copy of this software and associated documentation
 #      files (the "Software"), to deal in the Software without
@@ -44,9 +42,8 @@
 # the above four licenses.
 # 
 # See LICENSE.html or LICENSE.txt at the top of this package for the
-# complete terms and further detail along with the license texts for
-# the licenses in COPYING.LIB, COPYING and LICENSE-2.0.txt respectively.
-# 
+# full license terms.
+#
 #
 
 from __future__ import generators
