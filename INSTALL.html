@@ -144,6 +144,17 @@ An absolute path could alternatively be given such as
 <code>--with-python=/opt/mypython/bin/python</code> 
 to use a python installation in a different location.</p></dd>
 
+<dt><code>--with-python-get-python-lib-args</code>=<em>ARGS</em><br /></dt>
+<dd><p>Set the arguments for the Python
+<code>distutils.sysconfig</code> function
+<a href="http://docs.python.org/distutils/apiref.html#module-distutils.sysconfig"><code>get_python_lib()</code></a> which determines the install directory
+for the shared object for the python binding. The default value is ''
+which puts the installed objects in the general library dir for
+third-party extensions.  Other useful values are probably '1' which
+returns the platform-dependent library dir and '1,1' which returns
+the standard library directory for platform-dependent libraries.
+</p></dd>
+
 <dt><code>--with-python-ldflags</code>(=<em>FLAGS</em>)<br /></dt>
 <dd><p>Set the linker flags for linking Python.  This can also be
 done by setting the environment variable <code>PYTHON_LDFLAGS</code>.
