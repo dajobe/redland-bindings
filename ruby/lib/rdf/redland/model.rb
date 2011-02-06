@@ -223,11 +223,10 @@ module Redland
 
     # Yield the triples as well as the context
     def triples_with_context(context=nil)
-      mystream = self.as_stream(context)
-      stream = Stream.new(mystream,self)
+      stream = self.as_stream(context)
       while not stream.end?
-        my_statement = mystream.current
-        yield my_statement.subject,my_statement.predicate,my_statement.object,mystream.context
+        statement = stream.current
+        yield statement.subject, statement.predicate, statement.object, stream.context
         stream.next
       end
     end
