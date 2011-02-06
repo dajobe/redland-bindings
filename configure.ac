@@ -289,11 +289,13 @@ if test "X$PYTHON" != X; then
     AC_MSG_RESULT($PYTHON_INCLUDES)
   fi
 
+  AC_ARG_WITH(python-get-python-lib-args, [  --with-python-get-python-lib-args=ARGS Set args for Python distutils.sysconfig.get_python_lib() function (default '')], get_python_lib_args="$withval", get_python_lib_args="")
+
   AC_MSG_CHECKING(Python libs)
   if test "X$PYTHON_LIB" != X; then
     AC_MSG_RESULT(using user lib: $PYTHON_LIB)
   else
-    PYTHON_LIB=`$PYTHON -c "import distutils.sysconfig; print distutils.sysconfig.get_python_lib(1,1)"`
+    PYTHON_LIB=`$PYTHON -c "import distutils.sysconfig; print distutils.sysconfig.get_python_lib($get_python_lib_args)"`
     AC_MSG_RESULT($PYTHON_LIB)
   fi
 
