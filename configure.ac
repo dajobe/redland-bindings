@@ -329,9 +329,13 @@ else
 fi
 
 
-AC_ARG_WITH(ruby-install-dir-variable, [  --with-ruby-install-dir-variable=NAME Set Ruby install directory config variable (default 'archdir')], ruby_install_dir_variable="$withval", ruby_install_dir_variable="archdir")
+AC_ARG_WITH(ruby-arch-install-dir-variable, [  --with-ruby-arch-install-dir-variable=NAME Set Ruby arch install directory config variable (default 'archdir')], ruby_arch_install_dir_variable="$withval", ruby_arch_install_dir_variable="archdir")
 
 dnl Setting this overrides the above
+AC_ARG_WITH(ruby-arch-install-dir, [  --with-ruby-arch-install-dir=NAME Set Ruby install directory (default 'auto')], ruby_arch_install_dir="$withval", ruby_arch_install_dir="auto")
+
+dnl Variable name cannot be overridden at this time
+ruby_install_dir_variable='rubylibdir'
 AC_ARG_WITH(ruby-install-dir, [  --with-ruby-install-dir=NAME Set Ruby install directory (default 'auto')], ruby_install_dir="$withval", ruby_install_dir="auto")
 
 if test "X$RUBY" != X; then
@@ -339,6 +343,7 @@ if test "X$RUBY" != X; then
   changequote(<<, >>)dnl
   RUBY_ARCHDIR=`$RUBY -rrbconfig -e "print Config::CONFIG['archdir']"`
   ruby_install_dir_config=`$RUBY -rrbconfig -e "puts Config::CONFIG['$ruby_install_dir_variable']"`
+  ruby_arch_install_dir_config=`$RUBY -rrbconfig -e "puts Config::CONFIG['$ruby_arch_install_dir_variable']"`
   LIBRUBYARG_SHARED=`$RUBY -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']"`
   changequote([, ])dnl
 
@@ -351,6 +356,15 @@ if test "X$RUBY" != X; then
     AC_MSG_RESULT($RUBY_INSTALLDIR from Config::CONFIG $ruby_install_dir_variable)
   fi
 
+  AC_MSG_CHECKING(Ruby arch installation dir)
+  if test "X$ruby_arch_install_dir" != "Xauto"; then
+    RUBY_ARCH_INSTALLDIR=$ruby_arch_install_dir
+    AC_MSG_RESULT($RUBY_ARCH_INSTALLDIR from user)
+  else
+    RUBY_ARCH_INSTALLDIR=$ruby_arch_install_dir_config
+    AC_MSG_RESULT($RUBY_ARCH_INSTALLDIR from Config::CONFIG $ruby_arch_install_dir_variable)
+  fi
+
   RUBY_INCLUDES="-I$RUBY_ARCHDIR"
 else
   # This allows 'make clean' in the ruby directory to work when
@@ -359,10 +373,12 @@ else
   RUBY_INCLUDES=
   LIBRUBYARG_SHARED=
   RUBY_INSTALLDIR=
+  RUBY_ARCH_INSTALLDIR=
 fi
 AC_SUBST(RUBY_INCLUDES)
 AC_SUBST(LIBRUBYARG_SHARED)
 AC_SUBST(RUBY_INSTALLDIR)
+AC_SUBST(RUBY_ARCH_INSTALLDIR)
 
 
 AC_ARG_WITH(php, [  --with-php(=PHP)        Enable the PHP interface], with_php="$withval", with_php="no")

@@ -196,19 +196,29 @@ prefered, and if none is available, configure will stop.
 
 <dt><code>--with-ruby-install-dir</code>=<em>DIR</em><br /></dt>
 <dd><p>
-Set the directory to  install the Ruby bindings.
+Set the directory to  install the archhitecture-independent Ruby bindings files.
 The default value is '' which will use the value of the variable
 configured by <code>--with-ruby-install-dir-variable</code> to get
 the the installation directory.
 Setting this configuration overrides setting the variable name. 
 </p></dd>
 
-<dt><code>--with-ruby-install-dir-variable</code>=<em>NAME</em><br /></dt>
+<dt><code>--with-ruby-arch-install-dir</code>=<em>DIR</em><br /></dt>
+<dd><p>
+Set the directory to  install the architecture-specific Ruby bindings files.
+The default value is '' which will use the value of the variable
+configured by <code>--with-ruby-arch-install-dir-variable</code> to get
+the the installation directory.
+Setting this configuration overrides setting the variable name. 
+</p></dd>
+
+<dt><code>--with-ruby-arch-install-dir-variable</code>=<em>NAME</em><br /></dt>
 <dd><p>
 Set the <code>Config::CONFIG['sitearchdir']</code> variable name
-to get the the installation directory.  The default variable is 'archdir'.
+to get the the installation directory for installing architecture-specific Ruby
+bindings files.  The default variable is 'archdir'.
 Other useful values are probably 'sitearchdir'.
-This is overridden if <code>--with-ruby-install-dir</code> is set.
+This is overridden if <code>--with-ruby-arch-install-dir</code> is set.
 </p></dd>
 </dl>
 

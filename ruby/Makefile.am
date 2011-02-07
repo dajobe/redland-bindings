@@ -38,9 +38,9 @@ RDOC_STAMP=rdoc-stamp
 
 librubyarg_shared=@LIBRUBYARG_SHARED@
 
-rubyinstalldir=@RUBY_INSTALLDIR@
+rubyarchinstalldir=@RUBY_ARCH_INSTALLDIR@
 
-rubyinstall_DATA=redland.so
+rubyarchinstall_DATA=redland.so
 
 EXTRA_DIST=example.rb test.rb \
 redland-pre.i redland-types.i $(SWIG_OUTPUTS)
@@ -77,19 +77,19 @@ ruby-redland-stamp: $(RUBY_PACKAGE)_wrap.o
 	fi
 	touch ruby-redland-stamp
 
-install-rubyarchDATA: $(rubyinstall_DATA)
-	$(mkinstalldirs) $(DESTDIR)$(rubyinstalldir)
+install-rubyarchDATA: $(rubyarchinstall_DATA)
+	$(mkinstalldirs) $(DESTDIR)$(rubyarchinstalldir)
 	if test -r $(RUBY_PACKAGE).bundle; then \
-	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).bundle $(DESTDIR)$(rubyinstalldir)/$(RUBY_PACKAGE).bundle; \
+	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).bundle $(DESTDIR)$(rubyarchinstalldir)/$(RUBY_PACKAGE).bundle; \
 	else \
-	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(DESTDIR)$(rubyinstalldir)/$(RUBY_PACKAGE).so; \
+	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(DESTDIR)$(rubyarchinstalldir)/$(RUBY_PACKAGE).so; \
 	fi
 
-uninstall-rubyarchDATA: $(rubyinstall_DATA)
+uninstall-rubyarchDATA: $(rubyarchinstall_DATA)
 	if test -r $(RUBY_PACKAGE).bundle; then \
-	  rm -f $(DESTDIR)$(rubyinstalldir)/$(RUBY_PACKAGE).bundle; \
+	  rm -f $(DESTDIR)$(rubyarchinstalldir)/$(RUBY_PACKAGE).bundle; \
 	else \
-	  rm -f $(DESTDIR)$(rubyinstalldir)/$(RUBY_PACKAGE).so; \
+	  rm -f $(DESTDIR)$(rubyarchinstalldir)/$(RUBY_PACKAGE).so; \
 	fi
 
 check-local: test-ruby
