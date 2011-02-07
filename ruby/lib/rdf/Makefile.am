@@ -19,9 +19,9 @@
 # full license terms.
 #
 
-rubydir=@RUBY_LIBDIR@/rdf
+rubyinstalldir=@RUBY_INSTALLDIR@/rdf
 
-ruby_DATA=redland.rb
+rubyinstall_DATA=redland.rb
 
 EXTRA_DIST=redland.rb
 

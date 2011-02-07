@@ -19,9 +19,9 @@
 # full license terms.
 #
 
-rubydir=@RUBY_LIBDIR@/rdf/redland/schemas
+rubyinstalldir=@RUBY_INSTALLDIR@/rdf/redland/schemas
 
-ruby_DATA=$(EXTRA_DIST)
+rubyinstall_DATA=$(EXTRA_DIST)
 
 EXTRA_DIST=foaf.rb owl.rb rdfs.rb
 

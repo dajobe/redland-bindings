@@ -36,13 +36,11 @@ SWIG_CRUFT=
 RDOC_DIR=rdoc
 RDOC_STAMP=rdoc-stamp
 
-rubylib=@RUBY_LIB@
 librubyarg_shared=@LIBRUBYARG_SHARED@
 
-rubydir=/usr/lib/$(rubylib)
-rubyarchdir=@RUBY_DIR@
+rubyinstalldir=@RUBY_INSTALLDIR@
 
-rubyarch_DATA=redland.so
+rubyinstall_DATA=redland.so
 
 EXTRA_DIST=example.rb test.rb \
 redland-pre.i redland-types.i $(SWIG_OUTPUTS)
@@ -62,7 +60,7 @@ $(srcdir)/$(RUBY_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-pre.i redland-types.i
 	swig -v -ruby $(SWIG_OPTS) -module $(RUBY_PACKAGE) -o $@ @REDLAND_SWIG@
 
 $(RUBY_PACKAGE)_wrap.o: $(srcdir)/$(RUBY_PACKAGE)_wrap.c
-	$(CC) $(DEFS)  $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC -I$(rubyarchdir) $(RUBY_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS)  $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(RUBY_PACKAGE)_wrap.c -c -o $@
 
 
 $(RUBY_PACKAGE).so: ruby-redland-stamp
@@ -79,19 +77,19 @@ ruby-redland-stamp: $(RUBY_PACKAGE)_wrap.o
 	fi
 	touch ruby-redland-stamp
 
-install-rubyarchDATA: $(rubyarch_DATA)
-	$(mkinstalldirs) $(DESTDIR)$(rubyarchdir)
+install-rubyarchDATA: $(rubyinstall_DATA)
+	$(mkinstalldirs) $(DESTDIR)$(rubyinstalldir)
 	if test -r $(RUBY_PACKAGE).bundle; then \
-	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).bundle $(DESTDIR)$(rubyarchdir)/$(RUBY_PACKAGE).bundle; \
+	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).bundle $(DESTDIR)$(rubyinstalldir)/$(RUBY_PACKAGE).bundle; \
 	else \
-	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(DESTDIR)$(rubyarchdir)/$(RUBY_PACKAGE).so; \
+	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(DESTDIR)$(rubyinstalldir)/$(RUBY_PACKAGE).so; \
 	fi
 
-uninstall-rubyarchDATA: $(rubyarch_DATA)
+uninstall-rubyarchDATA: $(rubyinstall_DATA)
 	if test -r $(RUBY_PACKAGE).bundle; then \
-	  rm -f $(DESTDIR)$(rubyarchdir)/$(RUBY_PACKAGE).bundle; \
+	  rm -f $(DESTDIR)$(rubyinstalldir)/$(RUBY_PACKAGE).bundle; \
 	else \
-	  rm -f $(DESTDIR)$(rubyarchdir)/$(RUBY_PACKAGE).so; \
+	  rm -f $(DESTDIR)$(rubyinstalldir)/$(RUBY_PACKAGE).so; \
 	fi
 
 check-local: test-ruby

@@ -329,33 +329,40 @@ else
 fi
 
 
-if test "X$RUBY" != X; then
+AC_ARG_WITH(ruby-install-dir-variable, [  --with-ruby-install-dir-variable=NAME Set Ruby install directory config variable (default 'archdir')], ruby_install_dir_variable="$withval", ruby_install_dir_variable="archdir")
 
+dnl Setting this overrides the above
+AC_ARG_WITH(ruby-install-dir, [  --with-ruby-install-dir=NAME Set Ruby install directory (default 'auto')], ruby_install_dir="$withval", ruby_install_dir="auto")
+
+if test "X$RUBY" != X; then
   dnl need to change quotes to allow square brackets
   changequote(<<, >>)dnl
-  ruby_prefix=`$RUBY -rrbconfig -e "print Config::CONFIG['archdir']"`
-  RUBY_LIB=`$RUBY -rrbconfig -e "puts Config::CONFIG['ruby_install_name']"`
+  RUBY_ARCHDIR=`$RUBY -rrbconfig -e "print Config::CONFIG['archdir']"`
+  ruby_install_dir_config=`$RUBY -rrbconfig -e "puts Config::CONFIG['$ruby_install_dir_variable']"`
   LIBRUBYARG_SHARED=`$RUBY -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']"`
-  RUBY_DIR=`$RUBY -rrbconfig -e "puts Config::CONFIG['archdir']"`
-  RUBY_LIBDIR=`$RUBY -rrbconfig -e "puts Config::CONFIG['rubylibdir']"`
   changequote([, ])dnl
 
-  RUBY_INCLUDES="-I$ruby_prefix"
+  AC_MSG_CHECKING(Ruby installation dir)
+  if test "X$ruby_install_dir" != "Xauto"; then
+    RUBY_INSTALLDIR=$ruby_install_dir
+    AC_MSG_RESULT($RUBY_INSTALLDIR from user)
+  else
+    RUBY_INSTALLDIR=$ruby_install_dir_config
+    AC_MSG_RESULT($RUBY_INSTALLDIR from Config::CONFIG $ruby_install_dir_variable)
+  fi
+
+  RUBY_INCLUDES="-I$RUBY_ARCHDIR"
 else
   # This allows 'make clean' in the ruby directory to work when
   # ruby isn't available
   RUBY=:
   RUBY_INCLUDES=
   LIBRUBYARG_SHARED=
-  RUBY_LIB=
-  RUBY_DIR=
-  RUBY_LIBDIR=
+  RUBY_INSTALLDIR=
 fi
 AC_SUBST(RUBY_INCLUDES)
 AC_SUBST(LIBRUBYARG_SHARED)
-AC_SUBST(RUBY_LIB)
-AC_SUBST(RUBY_DIR)
-AC_SUBST(RUBY_LIBDIR)
+AC_SUBST(RUBY_INSTALLDIR)
 
 
 AC_ARG_WITH(php, [  --with-php(=PHP)        Enable the PHP interface], with_php="$withval", with_php="no")

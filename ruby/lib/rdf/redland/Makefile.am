@@ -19,9 +19,9 @@
 # full license terms.
 #
 
-rubydir=@RUBY_LIBDIR@/rdf/redland
+rubyinstalldir=@RUBY_INSTALLDIR@/rdf/redland
 
-ruby_DATA=$(EXTRA_DIST)
+rubyinstall_DATA=$(EXTRA_DIST)
 
 EXTRA_DIST=constants.rb convert_owl.rb convertfoaf.rb dc.rb model.rb \
 node.rb parser.rb query.rb resource.rb serializer.rb statement.rb \
