@@ -1,6 +1,250 @@
-2010-09-27  Dave Beckett  <dave@dajobe.org>
+2011-02-07  Dave Beckett <dave@dajobe.org>
 
-	* Snapshotted redland-bindings_1_0_11_1 for 1.0.11.1 release (GIT 46c21d201277766c7d6afe9c8e5c3876ab7c5571)
+	* INSTALL.html: words
+
+2011-02-06  Dave Beckett <dave@dajobe.org>
+
+	* INSTALL.html:
+	--with-redland has gone
+
+	* INSTALL.html, configure.ac, ruby/Makefile.am: Allow
+	configuration of Ruby arch/arch-independent install dirs
+
+	Add --with-ruby-arch-install-dir and
+	--with-ruby-arch-install-dir-variable.  Use
+	--with-ruby-install-dir just for arch independent files.  Adjust
+	installation to install shared object into arch dir, .rb files
+	into the arch independent dir.
+
+	Updates Fixes Issue#0000412
+	http://bugs.librdf.org/mantis/view.php?id=412
+
+	* LICENSE.html: Add BSD license for python/RDF.py here.  Make GPL
+	V2 or newer explicit.
+
+	* INSTALL.html, configure.ac, ruby/Makefile.am,
+	ruby/lib/rdf/Makefile.am, ruby/lib/rdf/redland/Makefile.am,
+	ruby/lib/rdf/redland/schemas/Makefile.am: Enable ruby installation
+	to be configured
+
+	Add --with-ruby-install-dir and --with-ruby-install-dir-variable
+	to configure.
+
+	The former allows any installation path to be used, the
+	latter sets the configuration variable to use, defaulting to
+	'archdir' (the current config).
+
+	Replaced rubyarch_dir with rubyinstall_dir in Makefile.am for ruby
+	bindings since it may or may not be the Ruby 'archdir'.
+
+	Added documentation for the new options
+
+	Fixes Issue#0000412
+	http://bugs.librdf.org/mantis/view.php?id=412
+
+	* INSTALL.html, configure.ac, perl/Makefile.am: Added
+	--with-perl-makemaker-args to configure perl installation
+
+	Allows builder/packager to configure the perl build/installation
+	using standard ExtUtils::MakeMaker options.
+
+	Fixes Issue#0000411
+	http://bugs.librdf.org/mantis/view.php?id=411
+
+2011-02-05  Dave Beckett <dave@dajobe.org>
+
+	* INSTALL.html: Added --with-python-get-python-lib-args
+
+	* configure.ac: Added --with-python-get-python-lib-args for
+	setting python install dir
+
+	Fixes Issue#0000398
+	http://bugs.librdf.org/mantis/view.php?id=398
+
+	* ruby/lib/rdf/redland/model.rb:
+	(triples_with_context): Return statement and context properly
+
+	Fixes Issue#0000390
+	http://bugs.librdf.org/mantis/view.php?id=390
+
+2011-02-03  Dave Beckett <dave@dajobe.org>
+
+	* lua/Makefile.am, lua/test.lua, perl/Makefile.PL,
+	perl/Makefile.am, perl/example.pl, perl/lib/RDF/Redland.pm.in,
+	perl/lib/RDF/Redland/BlankNode.pm,
+	perl/lib/RDF/Redland/Iterator.pm,
+	perl/lib/RDF/Redland/LiteralNode.pm,
+	perl/lib/RDF/Redland/Model.pm, perl/lib/RDF/Redland/Node.pm,
+	perl/lib/RDF/Redland/Parser.pm, perl/lib/RDF/Redland/Query.pm,
+	perl/lib/RDF/Redland/QueryResults.pm, perl/lib/RDF/Redland/RSS.pm,
+	perl/lib/RDF/Redland/Serializer.pm,
+	perl/lib/RDF/Redland/Statement.pm,
+	perl/lib/RDF/Redland/Storage.pm, perl/lib/RDF/Redland/Stream.pm,
+	perl/lib/RDF/Redland/URI.pm, perl/lib/RDF/Redland/URINode.pm,
+	perl/lib/RDF/Redland/XMLLiteralNode.pm, perl/redland-post.i,
+	perl/rss-dump.pl, perl/serialize.pl, perl/t/test1.t,
+	perl/t/test2.t, perl/t/test3.t, php/Makefile.am, php/test.php,
+	python/Makefile.am, python/RDF.py, python/example.py,
+	python/redland-post.i, python/test/test.py, ruby/Makefile.am,
+	ruby/example.rb, ruby/lib/Makefile.am, ruby/lib/rdf/Makefile.am,
+	ruby/lib/rdf/redland/Makefile.am,
+	ruby/lib/rdf/redland/schemas/Makefile.am, ruby/test.rb,
+	ruby/test/Makefile.am: Clarify license text in files to match
+	LICENSE.html text
+
+	All files are now recorded that they are available under the three
+	license alternatives (or any newer version) using the current text
+	from LICENSE.html at the root of this package.
+
+	In addition python/RDF.py is also available under the BSD License
+	without advertising (aka MIT license), the license text is
+	included in the file.
+
+	Fixes Issue#0000413
+	http://bugs.librdf.org/mantis/view.php?id=413
+
+2011-02-01  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac, perl/Makefile.PL:
+	Remove redland-config support
+
+	configure changed to
+	- Use pkg-config redland only
+	- Remove support for compiling against a non-installed redland
+	- Add pkg-config rasqal output to compile/link flags.
+
+2011-01-31  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac: Get PYTHON_LIB from distutils
+
+	Use distutils.sysconfig function get_python_lib() to get the
+	library binary directory.  distutils is a standard package so this
+	should be portable.
+
+	(Although it does not seem to be in distutils2 whenever
+	that gets standard may be some time)
+
+	Fixes Issue#0000398
+	http://bugs.librdf.org/mantis/view.php?id=398
+
+2011-01-31  Dave Beckett <dave@dajobe.org>
+
+	* NEWS.html, RELEASE.html: 1.0.13.1
+
+2011-01-24  Dave Beckett <dave@dajobe.org>
+
+	* python/redlandtest.py:
+	(RasqalQueryTestCase): Count without using len()
+
+	* python/RDF.py: Throw an exception when trying to take len() of
+	iterable query results
+
+	(QueryResults.__len__): Return a ValueError
+
+	Fixes Issue#0000401
+	http://bugs.librdf.org/mantis/view.php?id=401
+
+2011-01-23  Dave Beckett <dave@dajobe.org>
+
+	* python/redland-post.i: remove raptor V1 support
+
+	* python/redland-post.i: Remove static prototypes for consts no
+	longer needed for SWIG
+
+	* python/redlandtest.py: Remove tests for query language triples,
+	now removed.
+
+	* configure.ac: 1.0.13.1
+
+2010-12-02  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py: Allow querystring parameter to Query objects to
+	be unicode
+
+	(Query.__init__): Check querystring is not None and convert
+	unicode to string (UTF-8 bytes)
+
+	Fixes Issue #0000403
+	http://bugs.librdf.org/mantis/view.php?id=403
+
+2010-12-01  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py: In constructors, set all attributes to None
+	before any exceptions can be thrown
+
+	* python/RDF.py: Protect World and Iterator destructors from use
+	of maybe undefined attribute.
+
+	* python/RDF.py: typo
+
+	* python/RDF.py: Node class __str__ and __unicode__ methods return
+	simple results
+
+	(Node.__str__): Just calls __unicode__ and converts
+
+	(Node.__unicode__): No longer returns a formatted result (in
+	N-Triples) but grabs a simple string value for literal, blank and
+	uri.
+
+	* python/RDF.py: Node class gains a blank property
+
+	(Node.__get_blank_): Return a unicode ID (Node.blank): Added
+	property with shorter name than blank_identifier.
+
+	* python/RDF.py: Node class gains literal property returning a
+	tuple of str, lang, dt
+
+	(Node._get_literal): Added to return a tuple-valued property which
+	is shorter and nicer to deal with than a dictionary.
+
+	(Node.literal): Added property that uses above internal function.
+
+2010-11-14  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py:
+	(QueryResults.to_string): Return bindings results with base URI
+
+	Only returns bindings results in cases when the base_uri was None
+	due to indenting the return statement.
+
+2010-10-16  Nicholas J Humfrey <njh@aelius.com>
+
+	* ruby/test/test_query.rb, ruby/test/test_serializer.rb: Improved
+	Ruby serialiser tests by checking output using regular expressions
+	instead of stream lengths.
+
+2010-10-15  Dave Beckett <dave@dajobe.org>
+
+	* ruby/test/Makefile.am, ruby/test/one.nt,
+	ruby/test/test_store.rb: Make test_store.rb work
+
+	* ruby/lib/rdf/redland/node.rb: Fixed a number of Ruby tests by
+	restoring Redland::Node#to_s to it's old behavior of returning
+	string values without quotes.
+
+	* ruby/lib/rdf/redland.rb, ruby/lib/rdf/redland/model.rb,
+	ruby/lib/rdf/redland/parser.rb, ruby/lib/rdf/redland/resource.rb,
+	ruby/test/test_model.rb, ruby/test/test_node.rb,
+	ruby/test/test_parser.rb, ruby/test/test_query.rb,
+	ruby/test/test_rdfs_resource.rb, ruby/test/test_resource.rb,
+	ruby/test/test_statement.rb, ruby/test/test_store.rb,
+	ruby/test/test_uri.rb: Cleaned up inconsistent whitespace in the
+	Ruby code and tests.
+
+	Made the Ruby tests less noisy by commenting out a number of
+	'puts' debug statements.
+
+2010-10-10  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac: Compare versions in decimal
+
+	* configure.ac: Just warn if system redland is newer than our
+	version.  Error out if it is older.
+
+2010-09-27  Dave Beckett <dave@dajobe.org>
+
+	* Snapshotted redland-bindings_1_0_11_1 for 1.0.11.1 release (GIT
+	46c21d201277766c7d6afe9c8e5c3876ab7c5571)
 
 2010-09-26  Dave Beckett <dave@dajobe.org>
 
