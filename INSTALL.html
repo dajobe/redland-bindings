@@ -197,10 +197,8 @@ prefered, and if none is available, configure will stop.
 <dt><code>--with-ruby-install-dir</code>=<em>DIR</em><br /></dt>
 <dd><p>
 Set the directory to  install the archhitecture-independent Ruby bindings files.
-The default value is '' which will use the value of the variable
-configured by <code>--with-ruby-install-dir-variable</code> to get
-the the installation directory.
-Setting this configuration overrides setting the variable name. 
+The default value is '' which will install the files to directory given
+by the the value of the <code>Config::CONFIG['rubylibdir']</code> variable
 </p></dd>
 
 <dt><code>--with-ruby-arch-install-dir</code>=<em>DIR</em><br /></dt>
