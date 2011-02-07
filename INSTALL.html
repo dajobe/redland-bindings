@@ -144,6 +144,17 @@ An absolute path could alternatively be given such as
 <code>--with-python=/opt/mypython/bin/python</code> 
 to use a python installation in a different location.</p></dd>
 
+<dt><code>--with-perl-makemaker-args</code>=<em>ARGS</em><br /></dt>
+<dd><p>Set the arguments for the Perl
+<a href="http://perldoc.perl.org/ExtUtils/MakeMaker.html">ExtUtils::MakeMaker</a>
+Makefile.PL invocation.  The default arguments is ''.  This is useful
+to set the set of installation directories such as with
+<code>--with-perl-makemaker-args=INSTALLDIRS=vendor</code>
+to move the installation to the vendor directories, the default set
+of installation directories is 'site'.  See the ExtUtils::MakeMaker docs
+above for more information on the options.
+</p></dd>
+
 <dt><code>--with-python-get-python-lib-args</code>=<em>ARGS</em><br /></dt>
 <dd><p>Set the arguments for the Python
 <code>distutils.sysconfig</code> function

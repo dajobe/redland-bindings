@@ -229,6 +229,10 @@ fi
 AC_MSG_RESULT($with_perl)
 AC_SUBST(PERL_VERSION)
 
+AC_ARG_WITH(perl-makemaker-args, [  --with-perl-makemaker-options=ARGS Set args for Perl Makefile.PL invocation (default '')], perl_makemaker_args="$withval", perl_makemaker_args="")
+PERL_MAKEMAKER_ARGS="$perl_makemaker_args"
+AC_SUBST(PERL_MAKEMAKER_ARGS)
+
 
 AC_ARG_WITH(python, [  --with-python(=PYTHON)  Enable the Python interface], with_python="$withval", with_python="no")
 
