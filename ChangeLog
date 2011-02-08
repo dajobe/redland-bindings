@@ -1,7 +1,7 @@
 2011-02-08  Dave Beckett  <dave@dajobe.org>
 
 	* Snapshotted redland-bindings_1_0_13_1 for 1.0.13.1 release (GIT
-	c7c4c93e5d00987a41e65196e728ed44e5fe644b)
+	4007c4c50c1106fc0f8f231326f4b7a6b760ce3b)
 
 	* redland-bindings.spec.in: Use PERL_MAKEMAKER_ARGS instead of
 	MAKE_PL_OPTS - untested!
