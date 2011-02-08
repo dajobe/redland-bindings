@@ -26,6 +26,129 @@ pre
 <p>Not yet released.
 </p>
 
+<p>Issues Fixed:</p>
+<ul>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=390">Issue #0000390</a>: Ruby Redland::Model#triples_with_context exception</li>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=398">Issue #0000398</a>: configure.ac hardcodes part of the python module path, which breaks 64 bit</li>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=401">Issue #0000401</a>: behaviour of RDF.QuerySet has changed since 1.0.7.1 or later</li>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=403">Issue #0000403</a>: destructor for RDF.Query throws an exception</li>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=411">Issue #0000411</a>: Perl installs to /usr/lib/perl5/site_perl/ openSUSE want's it under /usr/lib/perl5/vendor_perl</li>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=412">Issue #0000412</a>: when building packages, ruby gems should go in sitearchdir</li>
+<li><a href="http://bugs.librdf.org/mantis/view.php?id=413">Issue #0000413</a>: Licensing of source code is unclear to distributions</li>
+</ul>
+
+<h3>General changes</h3>
+
+<p>Raptor V1 support was removed.
+</p>
+
+
+<h3>Python changes</h3>
+
+<p>Validate all constructors set attributes to None so that early
+destruction does not give undefined attribute errors.</p>
+
+<p><code>Node</code> class methods <code>__str__()</code> and
+<code>__unicode__()</code> methods now return simple string results.
+</p>
+
+<p><code>Node</code> class method <code>__unicode__()</code> no
+longer returns a formatted result (in N-Triples) but grabs a simple
+string value for literal, blank and uri.
+</p>
+
+<p><code>Node</code> class gains a <code>blank</code> property
+returning a Unicode blank node ID.
+</p>
+
+<p><code>Node</code> class gains a <code>literal</code> property
+returning a tuple of (string, language, datatype URI).
+</p>
+
+<p><code>Query</code> constructor now accepts Unicode
+<code>querystrings</code> argument values.
+<a href="http://bugs.librdf.org/mantis/view.php?id=403">Issue #0000403</a>
+</p>
+
+<p><code>QueryResults</code> method <code>to_string()</code>
+was fixed to return bindings results when given a base URI.
+</p>
+
+<p>Using <code>len()</code> on an iterable <code>QueryResults</code>
+now returns an exception since this breaks the idea of an iterable
+object; it has no well defined length.
+<a href="http://bugs.librdf.org/mantis/view.php?id=401">Issue#0000401</a>
+</p>
+
+<h3>Ruby changes</h3>
+
+<p>Model class method <code>triples_with_context()</code> now returns
+both the statement and context properly.
+<a href="http://bugs.librdf.org/mantis/view.php?id=390">Issue #0000390</a>
+</p>
+
+<p>Fixed a number of Ruby tests by restoring
+<code>Redland::Node#to_s</code> to it's old behavior of returning
+string values without quotes.
+</p>
+
+<p>Made the Ruby tests less noisy.
+</p>
+
+<p> Improved Ruby serialiser tests.
+</p>
+
+
+<h3>Configuration changes</h3>
+
+<p>Removed <code>redland-config</code> support; use only
+<code>pkg-config redland</code>.
+</p>
+
+<p>Removed <code>--with-redland</code> option and support for
+compiling against a non-installed redland.</p>
+
+<p><code>configure</code> now warns if the system redland is newer
+than our version and errors out if it is older.
+</p>
+
+<p>The python configuration in <code>configure</code> now uses
+<code>distutils.sysconfig</code> function
+<code>get_python_lib()</code> to get the library binary directory.
+Added option <code>--with-python-get-python-lib-args</code> to set the
+parameters if necessary.
+<a href="http://bugs.librdf.org/mantis/view.php?id=398">Issue#0000398</a>
+</p>
+
+<p>The perl configuration in <code>configure</code> was updated
+to use a new <code>--with-perl-makemaker-args</code> option to allow the
+builder or packager to configure the perl build and installation
+using standard <code>ExtUtils::MakeMaker</code> options.
+<a href="http://bugs.librdf.org/mantis/view.php?id=411">Issue #0000411</a>
+</p>
+
+<p>The ruby configuration in <code>configure</code> was updated
+to add <code>--with-ruby-install-dir</code>,
+<code>--with-ruby-arch-install-dir</code> and
+<code>--with-ruby-arch-install-dir-variable</code> options
+to configure Ruby installation paths for architecture independent
+and architecture-dependent files.
+<a href="http://bugs.librdf.org/mantis/view.php?id=412">Issue #0000412</a>
+</p>
+
+
+<h3>Other changes</h3>
+
+<p>All files are now recorded that they are available under the three
+license alternatives (or any newer version) using the current text
+from LICENSE.html at the root of this package.  In addition
+python/RDF.py is also available under the BSD License without
+advertising (aka MIT license), the license text is included in the
+file.
+<a href="http://bugs.librdf.org/mantis/view.php?id=413">Issue #0000413</a>
+</p>
+
+
 <h2 id="rel1_0_11_1"><a name="rel1_0_11_1">Redland librdf Language Bindings 1.0.11.1 Changes</a></h2>
 
 <p>Issues Fixed:</p>
