@@ -80,7 +80,7 @@ export PYTHON
 
 cd perl
 
-%{__make} Makefile.perl MAKE_PL_OPTS="PREFIX=$RPM_BUILD_ROOT/%{_prefix} SYSCONFDIR=$RPM_BUILD_ROOT/%{_sysconfdir} INST_PREFIX=%{_prefix} INST_SYSCONFDIR=%{_sysconfdir}"
+%{__make} Makefile.perl PERL_MAKEMAKER_ARGS="PREFIX=$RPM_BUILD_ROOT/%{_prefix} SYSCONFDIR=$RPM_BUILD_ROOT/%{_sysconfdir} INST_PREFIX=%{_prefix} INST_SYSCONFDIR=%{_sysconfdir}"
 %{__make}
 
 cd ..

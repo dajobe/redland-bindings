@@ -1,6 +1,12 @@
-2011-02-07  Dave Beckett <dave@dajobe.org>
+2011-02-08  Dave Beckett <dave@dajobe.org>
 
-	* INSTALL.html: words
+	* redland-bindings.spec.in: Use PERL_MAKEMAKER_ARGS instead of
+	MAKE_PL_OPTS - untested!
+
+	* bindings.rdf.in: #ws and github
+
+	* ChangeLog, INSTALL.html, README.html, RELEASE.html, TODO.html:
+	2011 and 1.0.13.1
 
 2011-02-06  Dave Beckett <dave@dajobe.org>
 
@@ -119,10 +125,8 @@
 
 	Use distutils.sysconfig function get_python_lib() to get the
 	library binary directory.  distutils is a standard package so this
-	should be portable.
-
-	(Although it does not seem to be in distutils2 whenever
-	that gets standard may be some time)
+	should be portable.  (Although it does not seem to be in
+	distutils2 whenever that gets standard may be some time)
 
 	Fixes Issue#0000398
 	http://bugs.librdf.org/mantis/view.php?id=398
@@ -188,8 +192,10 @@
 
 	* python/RDF.py: Node class gains a blank property
 
-	(Node.__get_blank_): Return a unicode ID (Node.blank): Added
-	property with shorter name than blank_identifier.
+	(Node.__get_blank_): Return a unicode ID
+
+	(Node.blank): Added property with shorter name than
+	blank_identifier.
 
 	* python/RDF.py: Node class gains literal property returning a
 	tuple of str, lang, dt
