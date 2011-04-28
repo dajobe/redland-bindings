@@ -103,6 +103,7 @@ WriteMakefile(
     'AUTHOR'    => 'Dave Beckett <dave@dajobe.org>',
     'ABSTRACT'  => "Redland RDF library",
     'VERSION'   => $version,
+    'MIN_PERL_VERSION' => '5.007003',
 
     'DEFINE'    => "-DHAVE_CONFIG_H $redland_cflags",
     'OBJECT'    => "$objects",
