@@ -24,6 +24,7 @@
 package RDF::Redland::URI;
 
 use strict;
+use Encode;
 
 =pod
 
@@ -155,7 +156,7 @@ Return the statement formatted as a string (UTF-8 encoded).
 =cut
 
 sub as_string ($) {
-  &RDF::Redland::CORE::librdf_uri_to_string(shift->{URI});
+  return decode_utf8(&RDF::Redland::CORE::librdf_uri_to_string(shift->{URI}));
 }
 
 =item equals URI
