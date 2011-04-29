@@ -24,6 +24,7 @@
 package RDF::Redland::Node;
 
 use strict;
+use Encode;
 
 use vars qw($Type_Resource $Type_Property $Type_Literal
 	    $Type_Statement $Type_Blank);
@@ -401,7 +402,7 @@ $RDF::Redland::Node::Type_Literal)
 =cut
 
 sub literal_value ($) {
-  &RDF::Redland::CORE::librdf_node_get_literal_value(shift->{NODE});
+  return decode_utf8(&RDF::Redland::CORE::librdf_node_get_literal_value(shift->{NODE}));
 }
 
 =item literal_value_as_latin1
@@ -457,7 +458,8 @@ Return the RDF::Redland::Node formatted as a string (UTF-8 encoded).
 =cut
 
 sub as_string ($) {
-  &RDF::Redland::CORE::librdf_node_to_string(shift->{NODE});
+  my $v = decode_utf8(&RDF::Redland::CORE::librdf_node_to_string(shift->{NODE}));
+  return $v;
 }
 
 =item equals NODE
