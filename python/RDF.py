@@ -2283,7 +2283,20 @@ class Serializer(object):
     else:
       rbase_uri = None
     return Redland.librdf_serializer_serialize_model_to_string(self._serializer, rbase_uri, model._model)
-
+  
+  def serialize_stream_to_string(self, stream, base_uri=None):
+    """Serialize a stream to a string using the optional base URI."""
+    if type(base_uri) is str:
+      base_uri = Uri(string = base_uri)
+    elif type(base_uri) is unicode:
+      import Redland_python
+      base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
+    if base_uri is not None:
+      rbase_uri = base_uri._reduri
+    else:
+      rbase_uri = None
+    return Redland.librdf_serializer_serialize_stream_to_string(self._serializer, rbase_uri, stream._stream)
+  
   # TODO: features could usefully be implemented as a collection
 
   def get_feature(self, uri):
