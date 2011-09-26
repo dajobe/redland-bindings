@@ -1,3 +1,28 @@
+2011-07-23  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac, python/Makefile.am: Link python bindings with
+	rasqal and raptor
+
+	* NEWS.html, RELEASE.html, configure.ac: Bumped version to
+	1.0.14.1
+
+2011-07-15  Dave Beckett <dave@dajobe.org>
+
+	* Merge pull request #2 from slok/master
+	(Serializer.serialize_stream_to_string): Added to serialize stream
+	to string
+
+2011-04-29  Dave Beckett <dave@dajobe.org>
+
+	* Merged pull request #1 from kasei/master.
+	Properly set utf8 flag on perl scalars for URI and Node object
+	values.  Perl 5.7.3 or newer is required now.
+
+2011-04-28  Gregory Todd Williams <greg@evilfunhouse.com>
+
+	* perl/lib/RDF/Redland/Node.pm, perl/lib/RDF/Redland/URI.pm: Set
+	utf8 flag on scalars in Node->literal_value and URI->as_string.
+
 2011-02-08  Dave Beckett  <dave@dajobe.org>
 
 	* Snapshotted redland-bindings_1_0_13_1 for 1.0.13.1 release (GIT
