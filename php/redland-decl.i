@@ -8,3 +8,4 @@ static librdf_uri* librdf_php_get_null_uri(void);
 static int librdf_php_last_log_level(void);
 static int librdf_php_last_log_code(void);
 static char* librdf_php_last_log_message(void);
+static void librdf_php_free_last_log(void);
