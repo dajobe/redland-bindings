@@ -61,6 +61,16 @@ librdf_php_last_log_message(void)
   return librdf_php_log_message;
 }
 
+void
+librdf_php_free_last_log(void)
+{
+  librdf_php_log_level=0;
+  librdf_php_log_code=0;
+  if(librdf_php_log_message)
+    free(librdf_php_log_message);
+  librdf_php_log_message=NULL;
+}
+
 static int
 librdf_php_logger_handler(void *user_data, librdf_log_message *log_msg)
 {
