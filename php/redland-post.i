@@ -37,19 +37,44 @@ librdf_php_get_null_uri(void)
 }
 
 static raptor_locator librdf_php_locator;
+static int librdf_php_log_level=0;
 static int librdf_php_log_code=0;
 static char* librdf_php_log_message=NULL;
 
 static zend_class_entry* redland_exception_ptr=NULL;
 
+static int
+librdf_php_last_log_level(void)
+{
+  return librdf_php_log_level;
+}
+
+static int
+librdf_php_last_log_code(void)
+{
+  return librdf_php_log_code;
+}
+
+static char*
+librdf_php_last_log_message(void)
+{
+  return librdf_php_log_message;
+}
+
+void
+librdf_php_free_last_log(void)
+{
+  librdf_php_log_level=0;
+  librdf_php_log_code=0;
+  if(librdf_php_log_message)
+    free(librdf_php_log_message);
+  librdf_php_log_message=NULL;
+}
 
 static int
 librdf_php_logger_handler(void *user_data, librdf_log_message *log_msg)
 {
   raptor_locator* locator = log_msg->locator;
-  
-  if(log_msg->level < LIBRDF_LOG_WARN)
-    return 1;
 
   if(librdf_php_locator.file)
     free((char*)librdf_php_locator.file);
@@ -67,6 +92,7 @@ librdf_php_logger_handler(void *user_data, librdf_log_message *log_msg)
   } else
     memset(&librdf_php_locator, '\0', sizeof(raptor_locator));
 
+  librdf_php_log_level=log_msg->level;
   librdf_php_log_code=log_msg->code;
   librdf_php_log_message=strdup(log_msg->message);
   
@@ -81,9 +107,10 @@ librdf_php_check_exception(void)
     return;
   
 #if PHP_MAJOR_VERSION >= 5
-  zend_throw_exception(redland_exception_ptr,
-                       librdf_php_log_message, 
-                       librdf_php_log_code TSRMLS_CC);
+  if(librdf_php_log_level >= LIBRDF_LOG_WARN)
+    zend_throw_exception(redland_exception_ptr,
+                         librdf_php_log_message,
+                         librdf_php_log_code TSRMLS_CC);
 #endif
   
   librdf_php_log_code=0;
@@ -117,6 +144,11 @@ librdf_php_world_init(void)
   }
 }
 
+void
+librdf_php_world_set_logger(librdf_world *world)
+{
+  librdf_world_set_logger(world, NULL, librdf_php_logger_handler);
+}
 
 void
 librdf_php_world_finish(void)
