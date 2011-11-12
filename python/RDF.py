@@ -263,17 +263,17 @@ class Node(object):
     self._node=None
 
     if arg is not None:
-      if type(arg) is str:
+      if isinstance(arg, str):
         args['literal'] = arg
-      elif type(arg) is unicode:
+      elif isinstance(arg, unicode):
         import Redland_python
         args['literal'] = Redland_python.unicode_to_bytes(arg)
-      elif type(arg) is Uri:
+      elif isinstance(arg, Uri):
         args['uri'] = arg
-      elif type(arg) is Node:
+      elif isinstance(arg, Node):
         args['node'] = arg
 
-    if args.has_key('literal') and type(args['literal']) is unicode:
+    if args.has_key('literal') and isinstance(args['literal'], unicode):
         import Redland_python
         args['literal'] = Redland_python.unicode_to_bytes(args['literal'])
 
@@ -490,9 +490,9 @@ class Statement(object):
       if subject is None:
         s = None
       else:
-        if type(subject) is Uri or type(subject) is str:
+        if isinstance(subject, Uri) or isinstance(subject, str):
           subject = Node(subject)
-        elif type(subject) is unicode:
+        elif isinstance(subject, unicode):
           import Redland_python
           subject = Node(Redland_python.unicode_to_bytes(subject))
         s = Redland.librdf_new_node_from_node(subject._node)
@@ -500,9 +500,9 @@ class Statement(object):
       if predicate is None:
         p = None
       else:
-        if type(predicate) is Uri or type(predicate) is str:
+        if isinstance(predicate, Uri) or isinstance(predicate, str):
           predicate = Node(predicate)
-        elif type(predicate) is unicode:
+        elif isinstance(predicate, unicode):
           import Redland_python
           predicate = Node(Redland_python.unicode_to_bytes(predicate))
         p = Redland.librdf_new_node_from_node(predicate._node)
@@ -510,9 +510,9 @@ class Statement(object):
       if object is None:
         o = None
       else:
-        if type(object) is Uri or type(object) is str:
+        if isinstance(object, Uri) or isinstance(object, str):
           object = Node(object)
-        elif type(object) is unicode:
+        elif isinstance(object, unicode):
           import Redland_python
           object = Node(Redland_python.unicode_to_bytes(object))
         o = Redland.librdf_new_node_from_node(object._node)
@@ -791,7 +791,7 @@ Create a model using an in-memory storage.
                                                    statement._statement)
 
   def __delitem__(self, arg):
-    if type(arg) is tuple:
+    if isinstance(arg, tuple):
       try:
         (s, c) = arg
         self.remove_statement(s, c)
@@ -823,7 +823,7 @@ Create a model using an in-memory storage.
   def __contains__(self, arg):
     # provided here for efficiency, otherwise Python
     # would iterate through the contents of the model
-    if type(arg) is tuple:
+    if isinstance(arg, tuple):
       try:
         (s, c) = arg
         return self.contains_statement_context(s, c)
@@ -907,11 +907,11 @@ Create a model using an in-memory storage.
        e.g.
          model.get_sources(Uri("http://example.com/name"), "Fred")
     """
-    if type(predicate) is Uri:
+    if isinstance(predicate, Uri):
       predicate = Node(predicate)
-    if type(target) is Uri or type(target) is str:
+    if isinstance(target, Uri) or isinstance(target, str):
       target = Node(target)
-    elif type(target) is unicode:
+    elif isinstance(target, unicode):
       import Redland_python
       target = Node(Redland_python.unicode_to_bytes(target))
 
@@ -940,11 +940,11 @@ Create a model using an in-memory storage.
        e.g.
          model.get_predicates(Uri("http://example.com/me"), "Fred")
     """
-    if type(source) is Uri:
+    if isinstance(source, Uri):
       source = Node(source)
-    if type(target) is Uri or type(target) is str:
+    if isinstance(target, Uri) or isinstance(target, str):
       target = Node(target)
-    elif type(target) is unicode:
+    elif isinstance(target, unicode):
       import Redland_python
       target = Node(Redland_python.unicode_to_bytes(target))
 
@@ -975,9 +975,9 @@ Create a model using an in-memory storage.
 
          model.get_targets(Uri("http://example.com/me"), prednode)
     """
-    if type(source) is Uri:
+    if isinstance(source, Uri):
       source = Node(source)
-    if type(predicate) is Uri:
+    if isinstance(predicate, Uri):
       predicate = Node(predicate)
 
     my_iterator = Redland.librdf_model_get_targets(self._model, source._node,
@@ -997,11 +997,11 @@ Create a model using an in-memory storage.
   def get_source(self, predicate, target):
     """Return one Node in the Model matching (?, predicate, target).
     The predicate can be a Node or Uri, the target a Node, Uri or string."""
-    if type(predicate) is Uri:
+    if isinstance(predicate, Uri):
       predicate = Node(predicate)
-    if type(target) is Uri or type(target) is str:
+    if isinstance(target, Uri) or isinstance(target, str):
       target = Node(target)
-    elif type(target) is unicode:
+    elif isinstance(target, unicode):
       import Redland_python
       target = Node(Redland_python.unicode_to_bytes(target))
 
@@ -1015,11 +1015,11 @@ Create a model using an in-memory storage.
   def get_predicate(self,source,target):
     """Return one Node in the Model matching (source, ?, target).
     The source can be a Node or Uri, the target a Node, Uri or string."""
-    if type(source) is Uri:
+    if isinstance(source, Uri):
       source = Node(source)
-    if type(target) is Uri or type(target) is str:
+    if isinstance(target, Uri) or isinstance(target, str):
       target = Node(target)
-    elif type(target) is unicode:
+    elif isinstance(target, unicode):
       import Redland_python
       target = Node(Redland_python.unicode_to_bytes(target))
 
@@ -1035,9 +1035,9 @@ Create a model using an in-memory storage.
   def get_target(self, source, predicate):
     """Return one Node in the Model matching (source, predicate, ?).
     The source and predicate can be a Node or Uri."""
-    if type(source) is Uri:
+    if isinstance(source, Uri):
       source = Node(source)
-    if type(predicate) is Uri:
+    if isinstance(predicate, Uri):
       predicate = Node(predicate)
 
     my_node=Redland.librdf_model_get_target(self._model, source._node,
@@ -1088,18 +1088,18 @@ Create a model using an in-memory storage.
          def handler(code, level, facility, message, line, column, byte, file, uri)
        is called.
    """
-    if type(uri) is str:
+    if isinstance(uri, str):
       uri = Uri(string=uri)
-    elif type(uri) is unicode:
+    elif isinstance(uri, unicode):
       import Redland_python
       uri = Uri(string=Redland_python.unicode_to_bytes(uri))
     if uri is None:
       raise TypeError("uri must be a string or RDF.Uri")
     ruri = uri._reduri
 
-    if type(type_uri) is str:
+    if isinstance(type_uri, str):
       type_uri = Uri(string=type_uri)
-    elif type(type_uri) is unicode:
+    elif isinstance(type_uri, unicode):
       import Redland_python
       type_uri = Uri(string=Redland_python.unicode_to_bytes(type_uri))
     if type_uri is not None:
@@ -1126,18 +1126,18 @@ Create a model using an in-memory storage.
 
        If no serializer name is given, the default serializer RDF/XML is used.
    """
-    if type(base_uri) is str:
+    if isinstance(base_uri, str):
       base_uri = Uri(string=base_uri)
-    elif type(base_uri) is unicode:
+    elif isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
       rbase_uri = base_uri._reduri
     else:
       rbase_uri = None
-    if type(type_uri) is str:
+    if isinstance(type_uri, str):
       type_uri = Uri(string=type_uri)
-    elif type(type_uri) is unicode:
+    elif isinstance(type_uri, unicode):
       import Redland_python
       type_uri = Uri(string=Redland_python.unicode_to_bytes(type_uri))
     if type_uri is not None:
@@ -1612,12 +1612,12 @@ Copy an existing URI uri1.
     self._reduri=None
 
     if arg is not None:
-      if type(arg) is str:
+      if isinstance(arg, str):
         args['string'] = arg
-      elif type(arg) is unicode:
+      elif isinstance(arg, unicode):
         import Redland_python
         args['string'] = Redland_python.unicode_to_bytes(arg)
-      elif type(arg) is Uri:
+      elif isinstance(arg, Uri):
         args['uri'] = arg
 
     if args.has_key('string') and args['string'] is not None:
@@ -1726,9 +1726,9 @@ standard configuration of Raptor.
           for statement in parser.parse_as_stream("http://localhost/r.rdf"):
               print statement
     """
-    if type(uri) is str:
+    if isinstance(uri, str):
       uri = Uri(string=uri)
-    elif type(uri) is unicode:
+    elif isinstance(uri, unicode):
       import Redland_python
       uri = Uri(string=Redland_python.unicode_to_bytes(uri))
     if base_uri is None:
@@ -1746,15 +1746,15 @@ standard configuration of Raptor.
           for statement in parser.parse_string_as_stream(rdfstring, base_uri):
               print statement
     """
-    if type(base_uri) is str:
+    if isinstance(base_uri, str):
       base_uri = Uri(string=base_uri)
-    elif type(base_uri) is unicode:
+    elif isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
       raise RedlandError("A base URI is required when parsing a string")
 
-    if type(string) is unicode:
+    if isinstance(string, unicode):
       import Redland_python
       string=Redland_python.unicode_to_bytes(string)
 
@@ -1776,14 +1776,14 @@ standard configuration of Raptor.
                                "http://example.com/foo.rdf")
     """
 
-    if type(uri) is str:
+    if isinstance(uri, str):
       uri = Uri(string = uri)
-    elif type(uri) is unicode:
+    elif isinstance(uri, unicode):
       import Redland_python
       uri = Uri(string=Redland_python.unicode_to_bytes(uri))
-    if type(base_uri) is str:
+    if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif type(base_uri) is unicode:
+    elif isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
@@ -1815,9 +1815,9 @@ standard configuration of Raptor.
        is called.
 
     """
-    if type(base_uri) is str:
+    if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif type(base_uri) is unicode:
+    elif isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
@@ -1827,7 +1827,7 @@ standard configuration of Raptor.
       import Redland_python
       Redland_python.set_callback(handler)
 
-    if type(string) is unicode:
+    if isinstance(string, unicode):
       import Redland_python
       string=Redland_python.unicode_to_bytes(string)
 
@@ -1960,7 +1960,7 @@ class Query(object):
     if querystring is None:
       raise RedlandError("No query string given")
 
-    if type(querystring) is unicode: 
+    if isinstance(querystring, unicode): 
       querystring = querystring.encode('utf-8')
 
     if query_uri is not None:
@@ -2135,9 +2135,9 @@ class QueryResults(object):
 
   def to_file(self, name, format_uri=None, base_uri=None):
     """Serialize to filename name in syntax format_uri using the optional base URI."""
-    if type(format_uri) is str:
+    if isinstance(format_uri, str):
       format_uri = Uri(string = format_uri)
-    elif type(format_uri) is unicode:
+    elif isinstance(format_uri, unicode):
       import Redland_python
       format_uri = Uri(string=Redland_python.unicode_to_bytes(format_uri))
     else:
@@ -2148,9 +2148,9 @@ class QueryResults(object):
     else:
       rformat_uri = None
 
-    if type(base_uri) is str:
+    if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif type(base_uri) is unicode:
+    elif isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -2173,9 +2173,9 @@ class QueryResults(object):
     if not self.is_bindings():
       raise RedlandError("Unknown query result format cannot be written as a string")
     
-    if type(format_uri) is str:
+    if isinstance(format_uri, str):
       format_uri = Uri(string = format_uri)
-    elif type(format_uri) is unicode:
+    elif isinstance(format_uri, unicode):
       import Redland_python
       format_uri = Uri(string=Redland_python.unicode_to_bytes(format_uri))
     else:
@@ -2185,9 +2185,9 @@ class QueryResults(object):
       rformat_uri = format_uri._reduri
     else:
       rformat_uri = None
-    if type(base_uri) is str:
+    if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif type(base_uri) is unicode:
+    elif isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -2259,9 +2259,9 @@ class Serializer(object):
   def serialize_model_to_file(self, name, model, base_uri=None):
     """Serialize to filename name the Model model using the
        optional base URI."""
-    if type(base_uri) is str:
+    if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif type(base_uri) is unicode:
+    elif isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -2273,9 +2273,9 @@ class Serializer(object):
 
   def serialize_model_to_string(self, model, base_uri=None):
     """Serialize to a string using the optional base URI."""
-    if type(base_uri) is str:
+    if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif type(base_uri) is unicode:
+    elif isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -2286,9 +2286,9 @@ class Serializer(object):
   
   def serialize_stream_to_string(self, stream, base_uri=None):
     """Serialize a stream to a string using the optional base URI."""
-    if type(base_uri) is str:
+    if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif type(base_uri) is unicode:
+    elif isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -2302,9 +2302,9 @@ class Serializer(object):
   def get_feature(self, uri):
     """Return the value of Serializer feature URI uri"""
     if not isinstance(uri, Uri):
-      if type(uri) is str:
+      if isinstance(uri, str):
         uri = Uri(string=uri)
-      elif type(uri) is unicode:
+      elif isinstance(uri, unicode):
         import Redland_python
         uri = Uri(string=Redland_python.unicode_to_bytes(uri))
       else:
@@ -2315,9 +2315,9 @@ class Serializer(object):
   def set_feature(self, uri, value):
     """Set the value of Serializer feature URI uri."""
     if not isinstance(uri, Uri):
-      if type(uri) is str:
+      if isinstance(uri, str):
         uri = Uri(string=uri)
-      elif type(uri) is unicode:
+      elif isinstance(uri, unicode):
         import Redland_python
         uri = Uri(string=Redland_python.unicode_to_bytes(uri))
       else:
@@ -2327,9 +2327,9 @@ class Serializer(object):
   def set_namespace(self, prefix, uri):
     """Set a namespace prefix and URI for the Serializer to use."""
     if not isinstance(uri, Uri):
-      if type(uri) is str:
+      if isinstance(uri, str):
         uri = Uri(string=uri)
-      elif type(uri) is unicode:
+      elif isinstance(uri, unicode):
         import Redland_python
         uri = Uri(string=Redland_python.unicode_to_bytes(uri))
       else:
