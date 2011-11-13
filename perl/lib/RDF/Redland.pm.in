@@ -46,7 +46,12 @@ sub new ($) {
   my $class = ref($proto) || $proto;
   my $self  = {};
 
-  $self->{WORLD}=&RDF::Redland::CORE::librdf_new_world();
+  # This line is needed because otherwise will perl will barf a
+  # warning (that CANNOT be disabled with no warnings 'once') about
+  # an unused variable.
+  $_p_librdf_world_s::OWNER = 1;
+
+  $self->{WORLD} = &RDF::Redland::CORE::librdf_new_world();
   &RDF::Redland::CORE::librdf_world_open($self->{WORLD});
 
   &RDF::Redland::CORE::librdf_perl_world_init($self->{WORLD});
