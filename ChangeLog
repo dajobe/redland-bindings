@@ -1,5 +1,8 @@
 2011-11-13  Dave Beckett <dave@dajobe.org>
 
+	* Snapshotted redland-bindings_1_0_14_1 for 1.0.14.1 release
+	(GIT 58ec9f8828575ec0344d4f1d69b7e13f2e81040c)
+
 	* perl/lib/RDF/Redland.pm.in: Hack to prevent a false Perl runtime
 	warning
 
