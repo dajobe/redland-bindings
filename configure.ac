@@ -72,6 +72,7 @@ AC_SUBST(PERLINSTALLSITEARCH)
 AC_SUBST(PERLMAN3DIR)
 
 SWIG_MIN_VERSION=1.3.26
+SWIG_RECOMMENDED_VERSION=2.0.0
 
 AC_MSG_CHECKING(SWIG support)
 if test "X$SWIG" != "X"; then
@@ -83,9 +84,14 @@ if test "X$SWIG" != "X"; then
  fi
 
   SWIG_MIN_VERSION_DEC=`echo $SWIG_MIN_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
+  SWIG_REC_VERSION_DEC=`echo $SWIG_RECOMMENDED_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
 
   if test $SWIG_VERSION_DEC -ge $SWIG_MIN_VERSION_DEC; then
-    AC_MSG_RESULT($SWIG_VERSION - OK)
+    if test $SWIG_VERSION_DEC -ge $SWIG_REC_VERSION_DEC; then
+      AC_MSG_RESULT($SWIG_VERSION - OK but version $SWIG_RECOMMENDED_VERSION is recommended)
+    else
+      AC_MSG_RESULT($SWIG_VERSION - OK)
+    fi
   else
     AC_MSG_RESULT($SWIG_VERSION - too old to generate language interfaces)
     if test -r $srcdir/perl/CORE_wrap.c ; then
