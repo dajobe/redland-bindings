@@ -1,3 +1,26 @@
+2011-11-13  Dave Beckett <dave@dajobe.org>
+
+	* perl/lib/RDF/Redland.pm.in: Hack to prevent a false Perl runtime
+	warning
+
+2011-11-12  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py: Change all 'type(arg) is T' to 'isinstance(arg,
+	T)'
+
+	Fixes Issue #00000473
+	http://bugs.librdf.org/mantis/view.php?id=473
+
+2011-11-03  Joe Presbrey <presbrey+git@gmail.com>
+
+	* php/redland-decl.i, php/redland-post.i: add
+	librdf_php_free_last_log
+
+2011-11-02  Dave Beckett <dave@dajobe.org>
+
+	* Merge pull request #3 from presbrey/master PHP logging (error
+	handling) enhancements
+
 2011-07-23  Dave Beckett <dave@dajobe.org>
 
 	* configure.ac, python/Makefile.am: Link python bindings with
