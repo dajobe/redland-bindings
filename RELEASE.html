@@ -26,6 +26,37 @@ pre
 <p>Not yet released.
 </p>
 
+<p>Synchronise with <a href="http://librdf.org/">Redland</a> 1.0.14
+(<a href="http://librdf.org/RELEASE.html#rel1_0_14">release notes</a>).
+This release requires Redland 1.0.14 which requires Rasqal 0.9.25
+and Raptor 2.0.0 or newer.
+</p>
+
+
+<h3>Perl changes</h3>
+
+<p>Perl 5.7.3 or newer is required now.</p>
+
+<p>Node and URI class: set utf8 flag on scalars in
+Node->literal_value and URI->as_string. (Gregory Todd Williams)
+</p>
+
+<p>Added a hack to prevent false runtime warnings about a variable
+used once.</p>
+
+<h3>PHP changes</h3>
+
+<p>PHP logging and error handling enhancements. (Joe Presbrey)
+</p>
+
+
+<h3>Python changes</h3>
+
+<p>Change all 'type(arg) is T' to 'isinstance(arg, T)' to allow
+subclassing of the Redland python classes.  
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=473">Issue #00000473</a>
+</p>
+
 
 <h2 id="rel1_0_13_1"><a name="rel1_0_13_1">Redland librdf Language Bindings 1.0.13.1 Changes</a></h2>
 
