@@ -139,7 +139,7 @@ module Redland
       if not context
         return (Redland::librdf_parser_parse_string_into_model(@parser,string,base_uri.uri,model.model)== 0)
       else
-        self.parse_string_as_stream(@parser,string,base_uri.uri){|s| model.add_statement(s,context)}
+        self.parse_string_as_stream(string,base_uri.uri){|s| model.add_statement(s,context)}
       end        
     end
 
