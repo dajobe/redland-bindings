@@ -272,52 +272,6 @@ class RasqalQueryTestCase (unittest.TestCase):
         a = "file:../data/dc.rdf"
         self.parser.parse_into_model(self.model,a)
 
-    def testCreate(self):
-        q = RDQLQuery("SELECT ?a ?b ?c WHERE (?a ?b ?c)")
-        self.assert_(q is not None)
-
-    def testRDQLQueryCount(self):
-        q = RDQLQuery("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
-        results = q.execute(self.model)
-        count = 0
-        for result in results:
-            count += 1
-        self.assert_(count == 3, "count should be 3 after query finished running")
-
-    def testRDQLQueryRun(self):
-        q = RDQLQuery("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
-        results = q.execute(self.model)
-        self.assert_(results is not None,"Query eval not OK")
-
-        count = 0
-        for result in results:
-            count += 1
-        self.assert_(count == 3, "Should have found three results in query")
-
-    def testRDQLQueryAsStreamDontWork(self):
-        q = RDQLQuery("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
-	failed = False
-	try:
-          stream = q.execute(self.model).as_stream()
-	except:
-          failed = True
-        self.assert_(failed is True,"RDQL queries shouldn't work as streams - None should be returned from as_stream")
-
-    #def testRDQLParseError(self):
-        #q = RDQLQuery("SELECT WHERE")
-        #results = q.run_as_bindings(self.model)
-        # TODO: This needs to fail somehow
-
-    def testRDQLQueryRunOnModel(self):
-        q = RDQLQuery("SELECT ?x ?y ?z WHERE (?x ?y ?z)")
-        bindings = self.model.execute(q)
-        self.assert_(bindings is not None,"Query eval not OK")
-
-        count = 0
-        for result in bindings:
-            count += 1
-        self.assert_(count == 3, "Should have found three results in query")
-
     def testSPARQLQueryAsStream(self):
         q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT {?a dc:title ?c} WHERE {?a dc:title ?c}")
         s = q.execute(self.model).as_stream()
