@@ -14,14 +14,14 @@ class TestQuery < Test::Unit::TestCase
   def test_model_query_api()
     model = Model.new()
 
-    query = Query.new("SELECT ?a ?b ?c WHERE (?a ?b ?c)", "rdql", nil, nil)
+    query = Query.new("SELECT ?a ?b ?c WHERE { ?a ?b ?c}", "sparql", nil, nil)
     results = query.execute(model)
   end
 
   def test_query_api()
     model = Model.new()
 
-    query = Query.new("SELECT ?a ?b ?c WHERE (?a ?b ?c)", "rdql", nil, nil)
+    query = Query.new("SELECT ?a ?b ?c WHERE { ?a ?b ?c} ", "sparql", nil, nil)
     results = model.query_execute(query)
   end
 
@@ -32,7 +32,7 @@ class TestQuery < Test::Unit::TestCase
     st = Statement.new(@exns['subject'], @exns['pred'], lit)
     model.add_statement(st)
 
-    query = Query.new("SELECT ?a ?b ?c WHERE (?a ?b ?c)", "rdql", nil, nil)
+    query = Query.new("SELECT ?a ?b ?c WHERE { ?a ?b ?c }", "sparql", nil, nil)
     results = query.execute(model)
     assert(results != nil)
 
@@ -175,7 +175,7 @@ class TestQuery < Test::Unit::TestCase
     st = Statement.new(@exns['subject'], @exns['pred'], lit)
     model.add_statement(st)
 
-    query = Query.new("SELECT ?a ?b ?c WHERE (?a ?b ?c)", "rdql", nil, nil)
+    query = Query.new("SELECT ?a ?b ?c WHERE { ?a ?b ?c }", "sparql", nil, nil)
     results = query.execute(model)
     assert(results != nil)
 
