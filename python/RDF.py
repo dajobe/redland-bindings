@@ -1954,7 +1954,7 @@ class Query(object):
     print statement
 
   """
-  def __init__(self, querystring, base_uri=None, query_language="rdql", query_uri=None):
+  def __init__(self, querystring, base_uri=None, query_language="sparql", query_uri=None):
     self._query = None
 
     if querystring is None:
