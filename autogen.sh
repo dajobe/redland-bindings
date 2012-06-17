@@ -12,6 +12,11 @@
 #  programs that would be run.
 #   e.g. DRYRUN=1 ./autogen.sh
 #
+# NOCONFIGURE
+#  If set to any value it will generate all files but not invoke the
+#  generated configure script.
+#   e.g. NOCONFIGURE=1 ./autogen.sh
+#
 # AUTOMAKE ACLOCAL AUTOCONF AUTOHEADER LIBTOOLIZE GTKDOCIZE
 #  If set (named after program) then this overrides any searching for
 #  the programs on the current PATH.
@@ -40,6 +45,9 @@ SRCDIR=${SRCDIR-.}
 # Where the GNU config.sub, config.guess might be found
 CONFIG_DIR=${CONFIG_DIR-../config}
 
+# GIT sub modules file
+GITMODULES='.gitmodules'
+
 # The programs required for configuring which will be searched for
 # in the current PATH.
 # Set an envariable of the same name in uppercase, to override scan
@@ -66,7 +74,7 @@ fi
 
 # Some dependencies for autotools:
 # automake 1.11 requires autoconf 2.62 (needed for AM_SILENT_RULES)
-automake_min_vers=011100
+automake_min_vers=011102
 aclocal_min_vers=$automake_min_vers
 autoconf_min_vers=026200
 autoheader_min_vers=$autoconf_min_vers
@@ -276,6 +284,21 @@ if test -d $CONFIG_DIR; then
 fi
 
 
+# Initialise and/or update GIT submodules
+if test -f $GITMODULES ; then
+  echo " "
+  modules=`sed -n -e 's/^.*path = \(.*\)/\1/p' $GITMODULES`
+  for module in $modules; do
+    if test `ls -1 $module | wc -l` -eq 0; then
+       echo "$program: Initializing git submodule in $module"
+       $DRYRUN git submodule init $module
+    fi
+  done
+  echo "$program: Updating git submodules: $modules"
+  $DRYRUN git submodule update
+fi
+
+
 for coin in `find $SRCDIR -name configure.ac -print | grep -v /releases/`
 do 
   dir=`dirname $coin`
@@ -351,17 +374,19 @@ AUTOCONF=$autoconf
 ACLOCAL=$aclocal
 export AUTOMAKE AUTOCONF ACLOCAL
 
-echo " "
-if test -z "$*"; then
-  echo "$program: WARNING: Running \`configure' with no arguments."
-  echo "If you wish to pass any to it, please specify them on the"
-  echo "\`$program' command line."
-fi
+if test "X$NOCONFIGURE" = X; then
+  echo " "
+  if test -z "$*"; then
+    echo "$program: WARNING: Running \`configure' with no arguments."
+    echo "If you wish to pass any to it, please specify them on the"
+    echo "\`$program' command line."
+  fi
 
-echo "$program: Running ./configure $configure_args $@"
-if test "X$DRYRUN" = X; then
-  $DRYRUN ./configure $configure_args "$@" \
-  && echo "$program: Now type \`make' to compile this package" || exit 1
-else
-  $DRYRUN ./configure $configure_args "$@"
+  echo "$program: Running ./configure $configure_args $@"
+  if test "X$DRYRUN" = X; then
+    $DRYRUN ./configure $configure_args "$@" \
+    && echo "$program: Now type \`make' to compile this package" || exit 1
+  else
+    $DRYRUN ./configure $configure_args "$@"
+  fi
 fi
