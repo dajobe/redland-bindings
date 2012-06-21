@@ -2129,7 +2129,7 @@ class QueryResults(object):
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.QueryResults"""
+      print "Destroying RDF.QueryResults"
     if self._results:
       Redland.librdf_free_query_results(self._results)
 
