@@ -347,10 +347,10 @@ AC_ARG_WITH(ruby-install-dir, [  --with-ruby-install-dir=NAME Set Ruby install d
 if test "X$RUBY" != X; then
   dnl need to change quotes to allow square brackets
   changequote(<<, >>)dnl
-  RUBY_ARCHDIR=`$RUBY -rrbconfig -e "print Config::CONFIG['archdir']"`
-  ruby_install_dir_config=`$RUBY -rrbconfig -e "puts Config::CONFIG['$ruby_install_dir_variable']"`
-  ruby_arch_install_dir_config=`$RUBY -rrbconfig -e "puts Config::CONFIG['$ruby_arch_install_dir_variable']"`
-  LIBRUBYARG_SHARED=`$RUBY -rrbconfig -e "puts Config::CONFIG['LIBRUBYARG_SHARED']"`
+  RUBY_ARCHDIR=`$RUBY -rrbconfig -e "print RbConfig::CONFIG['archdir']"`
+  ruby_install_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_install_dir_variable']"`
+  ruby_arch_install_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_arch_install_dir_variable']"`
+  LIBRUBYARG_SHARED=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['LIBRUBYARG_SHARED']"`
   changequote([, ])dnl
 
   AC_MSG_CHECKING(Ruby installation dir)
@@ -359,7 +359,7 @@ if test "X$RUBY" != X; then
     AC_MSG_RESULT($RUBY_INSTALLDIR from user)
   else
     RUBY_INSTALLDIR=$ruby_install_dir_config
-    AC_MSG_RESULT($RUBY_INSTALLDIR from Config::CONFIG $ruby_install_dir_variable)
+    AC_MSG_RESULT($RUBY_INSTALLDIR from RbConfig::CONFIG $ruby_install_dir_variable)
   fi
 
   AC_MSG_CHECKING(Ruby arch installation dir)
@@ -368,7 +368,7 @@ if test "X$RUBY" != X; then
     AC_MSG_RESULT($RUBY_ARCH_INSTALLDIR from user)
   else
     RUBY_ARCH_INSTALLDIR=$ruby_arch_install_dir_config
-    AC_MSG_RESULT($RUBY_ARCH_INSTALLDIR from Config::CONFIG $ruby_arch_install_dir_variable)
+    AC_MSG_RESULT($RUBY_ARCH_INSTALLDIR from RbConfig::CONFIG $ruby_arch_install_dir_variable)
   fi
 
   RUBY_INCLUDES="-I$RUBY_ARCHDIR"
