@@ -336,7 +336,7 @@ fi
 
 
 AC_ARG_WITH(ruby-arch-install-dir-variable, [  --with-ruby-arch-install-dir-variable=NAME Set Ruby arch install directory config variable (default 'archdir')], ruby_arch_install_dir_variable="$withval", ruby_arch_install_dir_variable="archdir")
-AC_ARG_WITH(ruby-header-dir-variable, [  --with-ruby-header-dir-variable=NAME Set Ruby header install directory config variable (default 'sitehdrdir')], ruby_header_dir_variable="$withval", ruby_header_dir_variable="sitehdrdir")
+AC_ARG_WITH(ruby-header-dir-variable, [  --with-ruby-header-dir-variable=NAME Set Ruby header install directory config variable (default 'rubyhdrdir')], ruby_header_dir_variable="$withval", ruby_header_dir_variable="rubyhdrdir")
 
 dnl Setting this overrides the above
 AC_ARG_WITH(ruby-arch-install-dir, [  --with-ruby-arch-install-dir=NAME Set Ruby install directory (default 'auto')], ruby_arch_install_dir="$withval", ruby_arch_install_dir="auto")
