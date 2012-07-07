@@ -59,8 +59,9 @@ SWIG_OPTS=-I$(srcdir) -DREDLAND_PRE_I -DREDLAND_TYPES_I
 $(srcdir)/$(RUBY_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-pre.i redland-types.i
 	swig -v -ruby $(SWIG_OPTS) -module $(RUBY_PACKAGE) -o $@ @REDLAND_SWIG@
 
+# -UHAVE_CONFIG_H to stop ruby trying to include config.h which won't exist
 $(RUBY_PACKAGE)_wrap.o: $(srcdir)/$(RUBY_PACKAGE)_wrap.c
-	$(CC) $(DEFS)  $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(RUBY_PACKAGE)_wrap.c -c -o $@
+	$(CC) $(DEFS) $(SWIG_OPTS) -UHAVE_CONFIG_H $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(RUBY_PACKAGE)_wrap.c -c -o $@
 
 
 $(RUBY_PACKAGE).so: ruby-redland-stamp
