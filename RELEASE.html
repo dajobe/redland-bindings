@@ -26,6 +26,28 @@ pre
 <p>Not yet released.
 </p>
 
+<p>Synchronise with <a href="http://librdf.org/">Redland</a> 1.0.16
+(<a href="http://librdf.org/RELEASE.html#rel1_0_16">release notes</a>).
+This release requires Redland 1.0.16 which requires Rasqal 0.9.25
+and Raptor 2.0.7 or newer.
+</p>
+
+<h3>Ruby bindings changes</h3>h3>
+
+<p>Make Parser class method <code>parse_string_into_model()</code>
+work properly.
+</p>
+
+<h3>Other changes</h3>
+
+<p>Remove all RDQL test queries since support is being removed from
+Rasqal.</p>
+
+<p>autogen.sh now supports the NOCONFIGURE variable like
+Lib{XML2,XSLT}, aborts the run if an progrma fails and creates the
+NEWS if it does not exist to aid building from GIT and 'make
+dist'.</p>
+
 
 <h2 id="rel1_0_14_1"><a name="rel1_0_14_1">Redland-bindings 1.0.14.1 changes</a></h2>
 

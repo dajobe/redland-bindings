@@ -1,7 +1,50 @@
+2012-07-07  Dave Beckett  <dave@dajobe.org>
+
+	* NEWS.html, RELEASE.html, configure.ac:
+	Bumped version to 1.0.16.1
+
+2012-06-26  Dave Beckett <dave@dajobe.org>
+
+	* Makefile.am: EXTRA_DIST: Remove ChangeLog NEWS since they are in
+	dist by default
+
+	* autogen.sh: autogen.sh updates
+	- Abort run if a configuring program fails.
+	- Generate NEWS with old timestamp if missing so automake can run
+	- small doc and message updates
+
+2012-06-21  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py: fix """
+
+	* autogen.sh: Support NOCONFIGURE variable, like Lib{XML2,XSLT}
+
+2012-05-20  Dave Beckett <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/parser.rb:
+	(Parser.parse_string_into_model): Call parse_string_as_stream
+	properly
+
+	* ruby/test/test_query.rb: Convert all old rdql queries to sparql
+
+	* python/RDF.py: Query language defaults to sparql
+
+	* python/redlandtest.py: Remove RDQL tests
+
 2011-11-13  Dave Beckett <dave@dajobe.org>
 
-	* Snapshotted redland-bindings_1_0_14_1 for 1.0.14.1 release
-	(GIT 58ec9f8828575ec0344d4f1d69b7e13f2e81040c)
+	* NEWS.html, RELEASE.html, configure.ac:
+	Bumped version to 1.0.14.2
+
+	* ChangeLog:
+	Snapshotted redland-bindings_1_0_14_1 for 1.0.14.1
+	release (GIT 58ec9f8828575ec0344d4f1d69b7e13f2e81040c)
+
+	* RELEASE.html:
+	SWIG 2
+
+	* configure.ac:
+	SWIG_RECOMMENDED_VERSION 2.0.0 just a warning
 
 	* perl/lib/RDF/Redland.pm.in: Hack to prevent a false Perl runtime
 	warning
