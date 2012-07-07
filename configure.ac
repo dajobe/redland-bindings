@@ -23,7 +23,7 @@ dnl
 dnl 
 
 
-AC_INIT([Redland librdf Language bindings], 1.0.14.2, http://bugs.librdf.org/, redland-bindings)
+AC_INIT([Redland librdf Language bindings], 1.0.16.1, http://bugs.librdf.org/, redland-bindings)
 AC_PREREQ(2.53)
 AC_CONFIG_SRCDIR(perl/example.pl)
 AC_REVISION($Revision$)dnl
