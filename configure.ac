@@ -336,6 +336,7 @@ fi
 
 
 AC_ARG_WITH(ruby-arch-install-dir-variable, [  --with-ruby-arch-install-dir-variable=NAME Set Ruby arch install directory config variable (default 'archdir')], ruby_arch_install_dir_variable="$withval", ruby_arch_install_dir_variable="archdir")
+AC_ARG_WITH(ruby-header-dir-variable, [  --with-ruby-header-dir-variable=NAME Set Ruby header install directory config variable (default 'sitehdrdir')], ruby_header_dir_variable="$withval", ruby_header_dir_variable="sitehdrdir")
 
 dnl Setting this overrides the above
 AC_ARG_WITH(ruby-arch-install-dir, [  --with-ruby-arch-install-dir=NAME Set Ruby install directory (default 'auto')], ruby_arch_install_dir="$withval", ruby_arch_install_dir="auto")
@@ -349,6 +350,7 @@ if test "X$RUBY" != X; then
   changequote(<<, >>)dnl
   RUBY_ARCHDIR=`$RUBY -rrbconfig -e "print RbConfig::CONFIG['archdir']"`
   ruby_install_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_install_dir_variable']"`
+  ruby_header_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_header_dir_variable']"`
   ruby_arch_install_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_arch_install_dir_variable']"`
   LIBRUBYARG_SHARED=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['LIBRUBYARG_SHARED']"`
   changequote([, ])dnl
@@ -371,7 +373,19 @@ if test "X$RUBY" != X; then
     AC_MSG_RESULT($RUBY_ARCH_INSTALLDIR from RbConfig::CONFIG $ruby_arch_install_dir_variable)
   fi
 
-  RUBY_INCLUDES="-I$RUBY_ARCHDIR"
+  RUBY_INCLUDES=
+  AC_MSG_CHECKING(Ruby headers dir)
+  if test "X$ruby_header_dir_config" != "Xnil" -a "X$ruby_header_dir_config" != "X"; then
+    RUBY_INCLUDES="-I$ruby_header_dir_config"
+    AC_MSG_RESULT($ruby_header_dir_config from variable $ruby_header_dir_variable)
+  else
+    if test -r "$RUBY_ARCHDIR/ruby.h"; then
+      RUBY_INCLUDES="-I$RUBY_ARCHDIR"
+      AC_MSG_RESULT($RUBY_ARCHDIR from arch dir)
+    else
+      AC_MSG_RESULT(ruby.h not found - unable to compile Redland ruby bindings)
+    fi
+  fi
 else
   # This allows 'make clean' in the ruby directory to work when
   # ruby isn't available
