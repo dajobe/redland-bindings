@@ -15,7 +15,7 @@ module Redland
 
     # You shouldn't use this. Used internally for cleanup.
     def QueryResults.create_finalizer(results)
-      proc{|id| "Finalizer on #{id}"
+      proc{|id| # "Finalizer on #{id}"
         #$log_final.info "closing results"
         Redland::librdf_free_query_results(results)
       }
@@ -39,11 +39,6 @@ module Redland
     # Get number of binding variables
     def bindings_count
       return Redland.librdf_query_results_get_bindings_count(@results)
-    end
-
-    # Get binding name for the current result
-    def binding_name(index)
-      return Redland.librdf_query_results_get_binding_name(@results,index)
     end
 
     # Get binding name for the current result
