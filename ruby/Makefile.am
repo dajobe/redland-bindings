@@ -92,7 +92,7 @@ $(RDOC_STAMP):
 	rm -rf $$outdir; \
 	here=`pwd`; \
 	cd $(srcdir)/lib; \
-	rdoc --quiet --fmt html --charset 'utf-8' --inline-source --image-format png --op $$outdir --title "Redland Ruby API RDoc" --exclude convert_owl.rb --exclude constants.rb --exclude convertfoaf.rb && touch $$here/$@
+	rdoc --quiet --fmt html --charset 'utf-8' --inline-source --op $$outdir --title "Redland Ruby API RDoc" --exclude convert_owl.rb --exclude constants.rb --exclude convertfoaf.rb && touch $$here/$@
 
 clean-local:
 	rm -rf $(RDOC_DIR) $(RDOC_STAMP)

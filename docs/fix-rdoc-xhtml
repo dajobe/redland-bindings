@@ -16,7 +16,7 @@ use File::Basename;
 
 my $progname=basename $0;
 
-my $main_title="Redland RDF Application Framework - Ruby RDoc";
+my $main_title="Redland RDF Language Bindings - Ruby RDoc";
 
 die "USAGE: $progname OUTPUT-FILE\n" if @ARGV < 1;
 
@@ -50,7 +50,7 @@ EOT
   next if /^<meta/i;
 
   if(m%<link%) {
-#    $_=qq{<link rel="stylesheet" href="/docs/rdoc/rdoc-style.css" type="text/css" media="screen" />\n};
+#    $_=qq{<link rel="stylesheet" href="/docs/rdoc/rdoc.css" type="text/css" media="screen" />\n};
   }
 
   if(m%"validator-badges"%) {
