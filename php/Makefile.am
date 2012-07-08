@@ -2,7 +2,7 @@
 #
 # Makefile.am - automake file for PHP interface to Redland
 #
-# Copyright (C) 2002-2009 David Beckett - http://www.dajobe.org/
+# Copyright (C) 2002-2012 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2002-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software and part of Redland http://librdf.org/
@@ -39,14 +39,17 @@ SWIG_CRUFT=$(PHP_PACKAGE).php
 phpdir=@PHP_EXTENSION_DIR@
 php_DATA=$(PHP_PACKAGE).$(PHP_SO_SUFFIX)
 
-EXTRA_DIST=test.php example.php php.ini \
+EXTRA_DIST=\
+test.php example.php php.ini \
 redland-decl.i redland-init.i redland-post.i redland-typemap.i \
 $(SWIG_OUTPUTS)
 
-CLEANFILES=*.db test-out.rdf \
+CLEANFILES=\
+*.db test-out.rdf \
 $(PHP_PACKAGE)_wrap.o $(PHP_PACKAGE)-stamp \
 $(PHP_PACKAGE).$(PHP_SO_SUFFIX) $(PHP_PACKAGE).bundle
-MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT) $(PHP_PACKAGE)_wrap.c.orig
+
+MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 RUN=@REDLAND_RUN@
 
