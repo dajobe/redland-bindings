@@ -344,6 +344,13 @@ dnl Variable name cannot be overridden at this time
 ruby_install_dir_variable='rubylibdir'
 AC_ARG_WITH(ruby-install-dir, [  --with-ruby-install-dir=NAME Set Ruby install directory (default 'auto')], ruby_install_dir="$withval", ruby_install_dir="auto")
 
+RUBY_PACKAGE=redland
+RUBY_CFLAGS=
+RUBY_LDFLAGS=
+RUBY_INCLUDES=
+RUBY_SO_SUFFIX=
+RUBY_INSTALLDIR=
+RUBY_ARCH_INSTALLDIR=
 if test "X$RUBY" != X; then
   dnl need to change quotes to allow square brackets
   changequote(<<, >>)dnl
@@ -352,7 +359,7 @@ if test "X$RUBY" != X; then
   ruby_header_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['rubyhdrdir']"`
   ruby_arch_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['arch']"`
   ruby_arch_install_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_arch_install_dir_variable']"`
-  LIBRUBYARG_SHARED=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['LIBRUBYARG_SHARED']"`
+  librubyarg_shared=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['LIBRUBYARG_SHARED']"`
   changequote([, ])dnl
 
   AC_MSG_CHECKING(Ruby installation dir)
@@ -373,10 +380,9 @@ if test "X$RUBY" != X; then
     AC_MSG_RESULT($RUBY_ARCH_INSTALLDIR from RbConfig::CONFIG $ruby_arch_install_dir_variable)
   fi
 
-  RUBY_INCLUDES=
   AC_MSG_CHECKING(Ruby headers dir)
   if test "X$ruby_header_dir_config" != "Xnil" -a "X$ruby_header_dir_config" != "X"; then
-    RUBY_INCLUDES="-I$ruby_header_dir_config"
+    RUBY_INCLUDES="$RUBY_INCLUDES -I$ruby_header_dir_config"
     if test "X$ruby_arch_config" != "Xnil" -a "X$ruby_arch_config" != "X"; then
       ruby_arch_hdrdir="$ruby_header_dir_config/$ruby_arch_config"
       if test -d "$ruby_arch_hdrdir"; then
@@ -386,23 +392,50 @@ if test "X$RUBY" != X; then
     AC_MSG_RESULT($RUBY_INCLUDES from RbConfig::CONFIG rubyhdrdir)
   else
     if test -r "$RUBY_ARCHDIR/ruby.h"; then
-      RUBY_INCLUDES="-I$RUBY_ARCHDIR"
+      RUBY_INCLUDES="$RUBY_INCLUDES -I$RUBY_ARCHDIR"
       AC_MSG_RESULT($RUBY_INCLUDES from arch dir)
     else
       AC_MSG_RESULT(ruby.h not found - unable to compile Redland ruby bindings)
     fi
   fi
+
+  # OSX/Darwin default is bundle
+  if test `uname` = Darwin; then
+    # FIXME - how to decide between bundle and dylib?
+    ruby_linking=bundle
+  else
+    ruby_linking=so
+  fi
+  AC_ARG_WITH(ruby-linking, [  --with-ruby-linking=TYPE Set Ruby module linking type (so, dylib, bundle)], ruby_linking="$withval")
+  case $ruby_linking in
+    so)
+	RUBY_LDFLAGS="$RUBY_LDFLAGS -shared $librubyarg_shared"
+	;;
+    dylib)
+	RUBY_LDFLAGS="$RUBY_LDFLAGS -flat_namespace -undefined suppress $librubyarg_shared"
+	RUBY_CFLAGS="$RUBY_CFLAGS -fno-common"
+	;;
+    bundle)
+	RUBY_LDFLAGS="$RUBY_LDFLAGS -bundle -flat_namespace -undefined suppress $librubyarg_shared"
+	RUBY_CFLAGS="$RUBY_CFLAGS -fno-common"
+	;;
+    *)
+	AC_MSG_ERROR(No such RUBY linking type $ruby_linking)
+	;;
+  esac
+  RUBY_SO_SUFFIX=$php_linking
+  AC_MSG_CHECKING(Ruby Linking)
+  AC_MSG_RESULT(compile '$RUBY_CFLAGS' link '$RUBY_LDFLAGS' suffix $RUBY_SO_SUFFIX)
 else
   # This allows 'make clean' in the ruby directory to work when
   # ruby isn't available
   RUBY=:
-  RUBY_INCLUDES=
-  LIBRUBYARG_SHARED=
-  RUBY_INSTALLDIR=
-  RUBY_ARCH_INSTALLDIR=
 fi
+AC_SUBST(RUBY_PACKAGE)
+AC_SUBST(RUBY_CFLAGS)
+AC_SUBST(RUBY_LDFLAGS)
 AC_SUBST(RUBY_INCLUDES)
-AC_SUBST(LIBRUBYARG_SHARED)
+AC_SUBST(RUBY_SO_SUFFIX)
 AC_SUBST(RUBY_INSTALLDIR)
 AC_SUBST(RUBY_ARCH_INSTALLDIR)
 

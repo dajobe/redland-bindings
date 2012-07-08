@@ -1,8 +1,8 @@
 *.db
+*-stamp
 .deps
 html
-rdoc-stamp
 redland.bundle
+redland.dylib
 redland.so
 redland_wrap*
-ruby-redland-stamp

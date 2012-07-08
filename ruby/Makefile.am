@@ -2,7 +2,7 @@
 #
 # Makefile.am - automake file for Ruby interface to Redland
 #
-# Copyright (C) 2000-2005 David Beckett - http://www.dajobe.org/
+# Copyright (C) 2000-2012 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2005 University of Bristol - http://www.bristol.ac.uk/
 # 
 # This package is Free Software and part of Redland http://librdf.org/
@@ -21,14 +21,17 @@
 
 RELEASE=@VERSION_RELEASE@
 
-AM_CPPFLAGS=@CPPFLAGS@ @LIBRDF_CPPFLAGS@  @RUBY_INCLUDES@
+AM_CPPFLAGS=@CPPFLAGS@ @LIBRDF_CPPFLAGS@ @RUBY_INCLUDES@
 AM_CFLAGS=@CFLAGS@ @LIBRDF_CPPFLAGS@ $(MEM)
 
 AM_LDFLAGS=@LIBRDF_LDFLAGS@ $(MEM_LIBS)
 
 RUBY=@RUBY@
 
-RUBY_PACKAGE=redland
+RUBY_PACKAGE=@RUBY_PACKAGE@
+RUBY_CFLAGS=@RUBY_CFLAGS@
+RUBY_LDFLAGS=@RUBY_LDFLAGS@
+RUBY_SO_SUFFIX=@RUBY_SO_SUFFIX@
 
 SWIG_OUTPUTS=$(RUBY_PACKAGE)_wrap.c
 SWIG_CRUFT=
@@ -36,20 +39,21 @@ SWIG_CRUFT=
 RDOC_DIR=rdoc
 RDOC_STAMP=rdoc-stamp
 
-librubyarg_shared=@LIBRUBYARG_SHARED@
-
 rubyarchinstalldir=@RUBY_ARCH_INSTALLDIR@
+rubyarchinstall_DATA=$(RUBY_PACKAGE).$(RUBY_SO_SUFFIX)
 
-rubyarchinstall_DATA=redland.so
-
-EXTRA_DIST=example.rb test.rb \
-redland-pre.i redland-types.i $(SWIG_OUTPUTS)
+EXTRA_DIST=\
+example.rb test.rb \
+redland-pre.i redland-types.i \
+$(SWIG_OUTPUTS)
 
 SUBDIRS=lib test
 
-CLEANFILES=*.db test-out.rdf core* \
-$(RUBY_PACKAGE)_wrap.o ruby-redland-stamp \
-$(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle
+CLEANFILES=\
+*.db test-out.rdf \
+$(RUBY_PACKAGE)_wrap.o $(RUBY_PACKAGE)-stamp \
+$(RUBY_PACKAGE).$(RUBY_SO_SUFFIX) $(RUBY_PACKAGE).bundle
+
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT) $(RDOC_DIR) $(RDOC_STAMP)
 
 RUN=@REDLAND_RUN@
@@ -64,44 +68,20 @@ $(RUBY_PACKAGE)_wrap.o: $(srcdir)/$(RUBY_PACKAGE)_wrap.c
 	$(CC) $(DEFS) $(SWIG_OPTS) -UHAVE_CONFIG_H $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(RUBY_PACKAGE)_wrap.c -c -o $@
 
 
-$(RUBY_PACKAGE).so: ruby-redland-stamp
-ruby-redland-stamp: $(RUBY_PACKAGE)_wrap.o
-	@if test `uname` = Darwin; then \
-	  args=" -bundle -flat_namespace -undefined suppress"; \
-	else \
-	  args=" -shared"; \
-	fi; \
-	echo $(CC) $(AM_CFLAGS) $(CFLAGS) $(RUBY_PACKAGE)_wrap.o $(AM_LDFLAGS) $(LDFLAGS) $$args $(LIBRUBYARG_SHARED) -o $(RUBY_PACKAGE).so; \
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(RUBY_PACKAGE)_wrap.o $(AM_LDFLAGS) $(LDFLAGS) $$args $(LIBRUBYARG_SHARED) -o $(RUBY_PACKAGE).so
-	if test `uname` = Darwin; then \
-	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(RUBY_PACKAGE).bundle; \
-	fi
-	touch ruby-redland-stamp
-
-install-rubyarchDATA: $(rubyarchinstall_DATA)
-	$(mkinstalldirs) $(DESTDIR)$(rubyarchinstalldir)
-	if test -r $(RUBY_PACKAGE).bundle; then \
-	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).bundle $(DESTDIR)$(rubyarchinstalldir)/$(RUBY_PACKAGE).bundle; \
-	else \
-	  $(INSTALL_PROGRAM) $(RUBY_PACKAGE).so $(DESTDIR)$(rubyarchinstalldir)/$(RUBY_PACKAGE).so; \
-	fi
-
-uninstall-rubyarchDATA: $(rubyarchinstall_DATA)
-	if test -r $(RUBY_PACKAGE).bundle; then \
-	  rm -f $(DESTDIR)$(rubyarchinstalldir)/$(RUBY_PACKAGE).bundle; \
-	else \
-	  rm -f $(DESTDIR)$(rubyarchinstalldir)/$(RUBY_PACKAGE).so; \
-	fi
+$(RUBY_PACKAGE).$(RUBY_SO_SUFFIX): $(RUBY_PACKAGE)-stamp
+$(RUBY_PACKAGE)-stamp: $(RUBY_PACKAGE)_wrap.o
+	$(CC) $(STANDARD_CFLAGS) $(RUBY_PACKAGE)_wrap.o $(AM_LDFLAGS) $(LDFLAGS) $(RUBY_LDFLAGS) -o $(RUBY_PACKAGE).$(RUBY_SO_SUFFIX)
+	touch $(RUBY_PACKAGE)-stamp
 
 check-local: test-ruby
 
 test-ruby: test-simple test-example
 
-test-simple: $(RUBY_PACKAGE).so $(srcdir)/example.rb
+test-simple: $(RUBY_PACKAGE).$(RUBY_SO_SUFFIX) $(srcdir)/example.rb
 	$(RUN)$(RUBY) -I. -Ilib \
 	  $(srcdir)/test.rb file:$(srcdir)/../data/dc.rdf raptor
 
-test-example: $(RUBY_PACKAGE).so $(srcdir)/example.rb
+test-example: $(RUBY_PACKAGE).$(RUBY_SO_SUFFIX) $(srcdir)/example.rb
 	$(RUN)$(RUBY) -I. -Ilib \
 	  $(srcdir)/example.rb file:$(srcdir)/../data/dc.rdf raptor
 

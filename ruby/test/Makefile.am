@@ -19,19 +19,23 @@
 # full license terms.
 #
 
+RUBY_PACKAGE=@RUBY_PACKAGE@
 
-RUBY_TEST_FILES=test_model.rb test_node.rb test_parser.rb test_rdf.rb \
+RUBY_TEST_FILES=\
+test_model.rb test_node.rb test_parser.rb test_rdf.rb \
 test_rdfs_resource.rb test_resource.rb test_serializer.rb \
 test_statement.rb test_store.rb test_uri.rb test_query.rb
 
-EXTRA_DIST=$(RUBY_TEST_FILES) README ical.rdf triples.rdf one.nt
+EXTRA_DIST=\
+$(RUBY_TEST_FILES) README ical.rdf triples.rdf one.nt
 
 
-CLEANFILES=*.db out*.rdf
+CLEANFILES=\
+*.db out*.rdf
 
 check-local: check-ruby
 
-check-ruby: ../ruby-redland-stamp $(RUBY_TEST_FILES)
+check-ruby: ../$(RUBY_PACKAGE)-stamp $(RUBY_TEST_FILES)
 	@result=0; fails=; \
 	$(ECHO) "Testing Ruby"; \
 	for test in $(RUBY_TEST_FILES); do \
@@ -52,5 +56,5 @@ check-ruby: ../ruby-redland-stamp $(RUBY_TEST_FILES)
 	fi; \
 	exit $$result
 
-../ruby-redland-stamp:
-	cd .. && $(MAKE) ruby-redland-stamp
+../$(RUBY_PACKAGE)-stamp:
+	cd .. && $(MAKE) $(RUBY_PACKAGE)-stamp
