@@ -337,11 +337,12 @@ fi
 
 AC_ARG_WITH(ruby-arch-install-dir-variable, [  --with-ruby-arch-install-dir-variable=NAME Set Ruby arch install directory config variable (default 'archdir')], ruby_arch_install_dir_variable="$withval", ruby_arch_install_dir_variable="archdir")
 
-dnl Setting this overrides the above
+dnl Setting this overrides ruby-arch-install-dir-variable above
 AC_ARG_WITH(ruby-arch-install-dir, [  --with-ruby-arch-install-dir=NAME Set Ruby install directory (default 'auto')], ruby_arch_install_dir="$withval", ruby_arch_install_dir="auto")
 
-dnl Variable name cannot be overridden at this time
-ruby_install_dir_variable='rubylibdir'
+AC_ARG_WITH(ruby-install-dir-variable, [  --with-ruby-install-dir-variable=NAME Set Ruby install directory config variable (default 'rubylibdir')], ruby_install_dir_variable="$withval", ruby_install_dir_variable="rubylibdir")
+
+dnl Setting this overrides ruby-install-dir-variable above
 AC_ARG_WITH(ruby-install-dir, [  --with-ruby-install-dir=NAME Set Ruby install directory (default 'auto')], ruby_install_dir="$withval", ruby_install_dir="auto")
 
 RUBY_PACKAGE=redland
