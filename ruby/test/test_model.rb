@@ -56,7 +56,8 @@ class TestModel < Test::Unit::TestCase
     assert_equal(0,model.size)
   end
 
-  def test_add_statements(model)
+  def test_add_statements()
+    model = Model.new
     dom = BNode.new('dom')
     kris = BNode.new('kris')
     model.add(dom,@foaf['firstName'],'Dominic')

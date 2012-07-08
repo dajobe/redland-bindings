@@ -94,11 +94,11 @@ TRIPLES
     parser = Parser.new()
     parser.parse_into_model(model,"file:./ical.rdf",nil,context)
     contexts = model.contexts
-    assert(1,contexts.size)
+    assert_equal(1,contexts.size)
     assert_equal(contexts[0],Node.new(Uri.new('http://www.faa.gov')))
   end
 
-  def test_foaf_model(model)
+  def check_foaf_model(model)
     jack = model.subject(@foaf['mbox'],Node.new(:uri_string=>'mailto:jack.nager@bogus.com'))
     assert_equal('Jack',model.object(jack,@foaf['firstName']).to_s)
     assert_equal('Nager',model.object(jack,@foaf['surname']).to_s)
@@ -109,21 +109,21 @@ TRIPLES
     model = Model.new()
     parser = Parser.new()
     parser.parse_string_into_model(model,@data_rdf_string,'http://xml.com')
-    test_foaf_model(model)
+    check_foaf_model(model)
   end
 
   def test_parse_string_into_model_from_triples
     model = Model.new()
     parser = Parser.ntriples()
     parser.parse_string_into_model(model,@data_triples_string,'http://xml.com')
-    test_foaf_model(model)
+    check_foaf_model(model)
   end
 
   def test_parse_string_as_stream
     model = Model.new()
     parser = Parser.new()
     parser.parse_string_as_stream(@data_rdf_string,'http://xml.com'){|s| model.add_statement(s)}
-    test_foaf_model(model)
+    check_foaf_model(model)
   end
 
   def smush_tester(model,dom)
