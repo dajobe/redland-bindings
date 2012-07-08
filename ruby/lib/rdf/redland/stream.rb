@@ -20,7 +20,7 @@ module Redland
 
     # You shouldn't use this. Used internally for cleanup.
     def Stream.create_finalizer(stream)
-      proc {|id| "Finalizer on #{id}"
+      proc {|id| # "Finalizer on #{id}"
         #puts "closing stream"
         Redland::librdf_free_stream(stream)
       }
@@ -112,7 +112,7 @@ module Redland
 
     # You shouldn't use this. Used internally for cleanup.
     def NodeIterator.create_finalizer(iterator)
-      proc {|id| "Finalizer on #{id}"
+      proc {|id| # "Finalizer on #{id}"
         #puts "closing iterator"
         Redland::librdf_free_iterator(iterator)
       }

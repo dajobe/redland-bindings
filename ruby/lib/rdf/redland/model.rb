@@ -25,7 +25,7 @@ module Redland
 
     # You shouldn't use this. Used internally for cleanup.
     def Model.create_finalizer(model)
-      proc {|id| "Finalizer on #{id}"
+      proc {|id| # "Finalizer on #{id}"
         #$log_final.info "closing model"
         Redland::librdf_free_model(model)
       }

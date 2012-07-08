@@ -24,7 +24,7 @@ module Redland
 
     # You shouldn't use this. Used internally for cleanup.
     def Serializer.create_finalizer(serializer)
-      proc {|id| "Finalizer on #{id}"
+      proc {|id| # "Finalizer on #{id}"
         #log_final.info "closing serializer"
         Redland::librdf_free_serializer(serializer)
       }
