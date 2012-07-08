@@ -47,20 +47,17 @@ Redland/RedlandError Redland/NodeIterator Redland/FileStore		\
 Redland/Namespace Redland/World Redland/TripleStore Redland/Resource	\
 Redland/MergedModel Redland/BNode Redland/QueryResults
 
-RUBY_HTML_SOURCE_FILES=$(RUBY_FILES:%=rdoc/files/rdf/redland/%_rb.html)
-RUBY_HTML_CLASS_FILES=$(RUBY_CLASSES:%=rdoc/classes/%.html)
+RUBY_HTML_SOURCE_FILES=$(RUBY_FILES:%=rdoc/rdf/redland/%_rb.html)
+RUBY_HTML_CLASS_FILES=$(RUBY_CLASSES:%=rdoc/%.html)
 
 RUBY_HTML_RDOC_FILES= \
 $(RUBY_HTML_SOURCE_FILES) \
-rdoc/files/rdf/redland_rb.html \
-rdoc/fr_file_index.html \
+rdoc/rdf/redland_rb.html \
 $(RUBY_HTML_CLASS_FILES) \
-rdoc/fr_class_index.html \
-rdoc/fr_method_index.html \
 rdoc/index.html
 
 RUBY_EXTRA_RDOC_FILES= \
-rdoc/rdoc*.css
+rdoc/rdoc.css rdoc/rdoc-style.css
 
 CLEANFILES=README
 
@@ -107,10 +104,18 @@ $(RUBY_HTML_RDOC_FILES): rdoc/%.html: $(srcdir)/fix-rdoc-xhtml rdoc-dirs-stamp
 	-tidy -asxml -wrap 1000 $(srcdir)/../ruby/$@ 2>/dev/null | $(PERL) $(srcdir)/fix-rdoc-xhtml $@
 
 $(RUBY_EXTRA_RDOC_FILES): rdoc-dirs-stamp
-	$(INSTALL_DATA) $(srcdir)/../ruby/$@ $@
+	@for file in $(RUBY_EXTRA_RDOC_FILES); do \
+	  if test -r $(srcdir)/../ruby/$$file; then \
+	    echo $(INSTALL_DATA) $(srcdir)/../ruby/$$file $$file; \
+	    $(INSTALL_DATA) $(srcdir)/../ruby/$$file $$file; \
+	  else \
+	    echo touch $$file; \
+	    touch $$file; \
+	  fi; \
+	done
 
 rdoc-dirs-stamp: $(srcdir)/../ruby/rdoc-stamp
-	mkdir -p rdoc rdoc/classes rdoc/classes/Redland rdoc/files rdoc/files/rdf rdoc/files/rdf/redland rdoc/files/rdf/redland/schemas && touch $@
+	mkdir -p rdoc rdoc/Redland rdoc/rdf rdoc/rdf/redland rdoc/rdf/redland/schemas && touch $@
 
 $(srcdir)/../ruby/rdoc-stamp:
 	cd $(srcdir)/../ruby && $(MAKE) docs
