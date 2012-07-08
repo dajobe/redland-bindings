@@ -39,23 +39,6 @@ class TestModel < Test::Unit::TestCase
     #model.find( nil,@foaf['name'],nil){|s,p,o| puts o }
   end
 
-  def test_delete()
-    model = Model.new()
-    dom = BNode.new('dom')
-    model.add(dom,@foaf['firstName'],'Dominic')
-    model.add(dom,@foaf['surname'],'Sisneros')
-    assert_equal(2,model.size)
-    st = Statement.new(dom,@foaf['firstName'],'Dominic')
-    assert(model.include_statement?(st))
-    model.delete_statement(st)
-    assert(!model.include_statement?(st),"model should not include statement")
-    assert_equal(1,model.size)
-    model.delete(dom,@foaf['surname'],'Bogus')
-    assert_equal(1,model.size)
-    model.delete(dom,@foaf['surname'],'Sisneros')
-    assert_equal(0,model.size)
-  end
-
   def test_add_statements()
     model = Model.new
     dom = BNode.new('dom')
