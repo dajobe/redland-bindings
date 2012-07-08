@@ -6,3 +6,4 @@ redland.bundle
 redland.dylib
 redland.so
 redland_wrap*
+test-out.rdf
