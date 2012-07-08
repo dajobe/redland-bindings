@@ -23,7 +23,7 @@ module FOAF
   end
 
   def foaf_name(node)
-    @model.object(node,NAME)
+    @model.object(node,NAME).to_s
   end
 
   def foaf_title(node)
@@ -44,10 +44,6 @@ module FOAF
 
   def foaf_mbox(node)
     @model.object(node,MBOX).to_s
-  end
-
-  def foaf_name(node)
-    @model.object(node,NAME).to_s
   end
 
 end
