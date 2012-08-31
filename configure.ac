@@ -23,11 +23,11 @@ dnl
 dnl 
 
 
-AC_INIT([Redland librdf Language bindings], 1.0.16.1, http://bugs.librdf.org/, redland-bindings)
-AC_PREREQ(2.53)
+AC_INIT([Redland librdf Language bindings],[1.0.16.1],[http://bugs.librdf.org/],[redland-bindings])
+AC_PREREQ([2.62])
 AC_CONFIG_SRCDIR(perl/example.pl)
 AC_REVISION($Revision$)dnl
-AM_CONFIG_HEADER(bindings_config.h)
+AC_CONFIG_HEADERS([bindings_config.h])
 AC_CONFIG_AUX_DIR(build)
 AC_CONFIG_MACRO_DIR(build)
 AM_INIT_AUTOMAKE([1.11 check-news std-options -Wobsolete -Wportability -Wsyntax -Wunsupported])
@@ -47,7 +47,7 @@ m4_undefine([AC_PROG_CXX])
 m4_defun([AC_PROG_CXX],[])
 m4_undefine([AC_PROG_F77])
 m4_defun([AC_PROG_F77],[])
-AC_PROG_LIBTOOL
+LT_INIT
 
 # Find a tar command for 'make dist'
 AC_CHECK_PROGS(TAR, gnutar gtar tar)
@@ -504,7 +504,7 @@ fi
 
 dnl compiler checks
 # if using gcc...
-if test "$ac_cv_prog_gcc" = yes; then
+if test "$ac_cv_c_compiler_gnu" = yes; then
   STANDARD_CFLAGS=
   MAINTAINER_CFLAGS="-Wall -Wshadow -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wredundant-decls"
 else
