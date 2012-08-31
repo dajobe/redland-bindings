@@ -88,9 +88,9 @@ if test "X$SWIG" != "X"; then
 
   if test $SWIG_VERSION_DEC -ge $SWIG_MIN_VERSION_DEC; then
     if test $SWIG_VERSION_DEC -ge $SWIG_REC_VERSION_DEC; then
-      AC_MSG_RESULT($SWIG_VERSION - OK but version $SWIG_RECOMMENDED_VERSION is recommended)
-    else
       AC_MSG_RESULT($SWIG_VERSION - OK)
+    else
+      AC_MSG_RESULT($SWIG_VERSION - OK but version $SWIG_RECOMMENDED_VERSION is recommended)
     fi
   else
     AC_MSG_RESULT($SWIG_VERSION - too old to generate language interfaces)
