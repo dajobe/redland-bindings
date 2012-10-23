@@ -33,6 +33,9 @@ AC_CONFIG_MACRO_DIR(build)
 AM_INIT_AUTOMAKE([1.11 check-news std-options -Wobsolete -Wportability -Wsyntax -Wunsupported])
 AM_MAINTAINER_MODE
 
+dnl 1.0.14 probably also works (Raptor and Rasqal dependencies the same)
+MIN_REDLAND_VERSION=1.0.15
+
 AC_CANONICAL_HOST
 
 dnl Checks for programs.
@@ -71,6 +74,7 @@ fi
 AC_SUBST(PERLINSTALLSITEARCH)
 AC_SUBST(PERLMAN3DIR)
 
+dnl FIXME - require SWIG 2+ from next release
 SWIG_MIN_VERSION=1.3.26
 SWIG_RECOMMENDED_VERSION=2.0.0
 
@@ -90,7 +94,9 @@ if test "X$SWIG" != "X"; then
     if test $SWIG_VERSION_DEC -ge $SWIG_REC_VERSION_DEC; then
       AC_MSG_RESULT($SWIG_VERSION - OK)
     else
-      AC_MSG_RESULT($SWIG_VERSION - OK but version $SWIG_RECOMMENDED_VERSION is recommended)
+      AC_MSG_RESULT($SWIG_VERSION - OK but $SWIG_RECOMMENDED_VERSION recommended)
+      dnl FIXME
+      AC_MSG_WARN(SWIG $SWIG_RECOMMENDED_VERSION will be REQUIRED from the next release)
     fi
   else
     AC_MSG_RESULT($SWIG_VERSION - too old to generate language interfaces)
@@ -544,10 +550,10 @@ else
 fi
 
 
-if $PKG_CONFIG --atleast-version=$OUR_REDLAND_VERSION redland; then
+if $PKG_CONFIG --atleast-version=$MIN_REDLAND_VERSION redland; then
   :
 else
-  AC_MSG_ERROR(Redland version $REDLAND_VERSION found. $OUR_REDLAND_VERSION or newer is required - see http://librdf.org/)
+  AC_MSG_ERROR(Redland version $REDLAND_VERSION found. $MIN_REDLAND_VERSION or newer is required - see http://librdf.org/)
 fi
 
 
