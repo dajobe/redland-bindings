@@ -1,0 +1,173 @@
+2010-12-02  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py: Allow querystring parameter to Query objects to
+	be unicode
+
+	(Query.__init__): Check querystring is not None and convert
+	unicode to string (UTF-8 bytes)
+
+	Fixes Issue #0000403
+	http://bugs.librdf.org/mantis/view.php?id=403
+
+2010-12-01  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py: In constructors, set all attributes to None
+	before any exceptions can be thrown
+
+	* python/RDF.py: Protect World and Iterator destructors from use
+	of maybe undefined attribute.
+
+	* python/RDF.py: typo
+
+	* python/RDF.py: Node class __str__ and __unicode__ methods return
+	simple results
+
+	(Node.__str__): Just calls __unicode__ and converts
+
+	(Node.__unicode__): No longer returns a formatted result (in
+	N-Triples) but grabs a simple string value for literal, blank and
+	uri.
+
+	* python/RDF.py: Node class gains a blank property
+
+	(Node.__get_blank_): Return a unicode ID
+
+	(Node.blank): Added property with shorter name than
+	blank_identifier.
+
+	* python/RDF.py: Node class gains literal property returning a
+	tuple of str, lang, dt
+
+	(Node._get_literal): Added to return a tuple-valued property which
+	is shorter and nicer to deal with than a dictionary.
+
+	(Node.literal): Added property that uses above internal function.
+
+2010-11-14  Dave Beckett <dave@dajobe.org>
+
+	* python/RDF.py:
+	(QueryResults.to_string): Return bindings results with base URI
+
+	Only returns bindings results in cases when the base_uri was None
+	due to indenting the return statement.
+
+2010-10-16  Nicholas J Humfrey <njh@aelius.com>
+
+	* ruby/test/test_query.rb, ruby/test/test_serializer.rb: Improved
+	Ruby serialiser tests by checking output using regular expressions
+	instead of stream lengths.
+
+2010-10-15  Dave Beckett <dave@dajobe.org>
+
+	* ruby/test/Makefile.am, ruby/test/one.nt,
+	ruby/test/test_store.rb: Make test_store.rb work
+
+	* ruby/lib/rdf/redland/node.rb: Fixed a number of Ruby tests by
+	restoring Redland::Node#to_s to it's old behavior of returning
+	string values without quotes.
+
+	* ruby/lib/rdf/redland.rb, ruby/lib/rdf/redland/model.rb,
+	ruby/lib/rdf/redland/parser.rb, ruby/lib/rdf/redland/resource.rb,
+	ruby/test/test_model.rb, ruby/test/test_node.rb,
+	ruby/test/test_parser.rb, ruby/test/test_query.rb,
+	ruby/test/test_rdfs_resource.rb, ruby/test/test_resource.rb,
+	ruby/test/test_statement.rb, ruby/test/test_store.rb,
+	ruby/test/test_uri.rb: Cleaned up inconsistent whitespace in the
+	Ruby code and tests.
+
+	Made the Ruby tests less noisy by commenting out a number of
+	'puts' debug statements.
+
+2010-10-10  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac: Compare versions in decimal
+
+	* configure.ac: Just warn if system redland is newer than our
+	version.  Error out if it is older.
+
+2010-09-27  Dave Beckett <dave@dajobe.org>
+
+	* Snapshotted redland-bindings_1_0_11_1 for 1.0.11.1 release (GIT
+	46c21d201277766c7d6afe9c8e5c3876ab7c5571)
+
+2010-09-26  Dave Beckett <dave@dajobe.org>
+
+	* python/Makefile.am: Add redland-pre.i
+
+	* php/Makefile.am: Added -d enable_dl=On to test to maybe help
+	reduce warnings See http://us2.php.net/dl
+
+	* RELEASE.html, bindings.rdf.in, configure.ac,
+	redland-bindings.spec.in:
+	#words - Redland librdf language bindings
+
+	* lua/Makefile.am:
+	 lua_$(LUA_PACKAGE).h is not an output of swig for lua
+
+	* AUTHORS: C# gone
+
+	* autogen.sh: Use latest autogen.sh - automake 1.11 required, uses
+	silent rules etc.
+
+	* perl/Makefile.am, php/Makefile.am, python/Makefile.am: Remove
+	junk for obsolete dmalloc configuration
+
+	* .gitignore, acinclude.m4, build/.gitignore: Update config for
+	build/ dir.  remove unused acinclude.m4
+
+	* configure.ac: Automake 1.11 and use build/ dir for aux and
+	macros like rest of Redland
+
+	* LICENSE.html: Use 'or any newer versions' in titles too. Link to
+	specific LGPL 2.1
+
+2010-09-20  Dave Beckett <dave@dajobe.org>
+
+	* lua/Makefile.am, lua/test.lua: Add test.lua and make 'make
+	check' work
+
+	* Makefile.am, configure.ac, lua/Makefile.am: Add skeleton config
+	for LUA bindings
+
+2010-08-09  Dave Beckett <dave@dajobe.org>
+
+	* python/redland-post.i:
+	Revert raptor_locator_uri_string to
+	raptor_locator_uri
+
+	* python/Makefile.am, python/redland-post.i, python/redland-pre.i:
+	Update for raptor2 API
+
+	* configure.ac: Check if Redland uses Raptor2 API and set/define
+	REDLAND_HAVE_RAPTOR2_API
+
+2010-08-07  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac: 1.0.11
+
+2010-08-05  Dave Beckett <dave@dajobe.org>
+
+	* python/example.py: Turn raised exceptions into objects
+
+	* configure.ac: For OSX Python, add -F$fpath to set framework path
+	for the given python
+
+	* python/redland-post.i:
+	(librdf_python_unicode_to_bytes): Throw exceptions with better
+	runtime error types
+
+	* python/redland-post.i:
+	(librdf_python_unicode_to_bytes): Fix calculation of input string
+	length and output buffer size.  Set exceptions on errors - using a
+	bogus type for now
+
+2010-02-04  Dave Beckett <dave@dajobe.org>
+
+	* ruby/lib/rdf/redland/node.rb:
+	(node_from_hash): removed unused var h
+
+2010-01-02  Dave Beckett <dave@dajobe.org>
+
+	* .gitignore, perl/.gitignore, php/.gitignore, python/.gitignore,
+	ruby/.gitignore:
+	Add .gitignore to replace SVN prop svn:ignore
