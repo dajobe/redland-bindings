@@ -1,4 +1,111 @@
-2012-07-07  Dave Beckett  <dave@dajobe.org>
+2013-01-13  Dave Beckett <dave@dajobe.org>
+
+	* ChangeLog, ChangeLog.10, ChangeLog.11, Makefile.am: Add
+	ChangeLog.10 ChangeLog.11 for 2009 and 2010
+
+	* .gitignore: do not ignore ChangeLog
+
+	* INSTALL.html, LICENSE.html, NEWS.html, README.html,
+	RELEASE.html, TODO.html: 2013 1.0.16.1
+
+2012-10-23  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac: Allow Redland 1.0.15+ or newer.  Warn SWIG 2 is
+	going to be required.
+
+2012-08-31  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac:
+	Warn when swig is OLDER than recommended
+
+2012-08-31  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh, configure.ac: Update autogen.sh and configure.ac via
+	autoupdate
+
+	* autogen.sh: autogen.sh: Added -Wall to aclocal and autoconf
+	invocations
+
+2012-07-07  Dave Beckett <dave@dajobe.org>
+
+	* docs/Makefile.am:
+	Update rdoc files for ruby 1.9 rdoc output
+
+	* docs/Makefile.am, docs/fix-rdoc-xhtml, ruby/Makefile.am: Update
+	ruby rdoc building
+
+	* ruby/lib/rdf/redland/model.rb, ruby/lib/rdf/redland/parser.rb,
+	ruby/lib/rdf/redland/query.rb, ruby/lib/rdf/redland/serializer.rb,
+	ruby/lib/rdf/redland/store.rb, ruby/lib/rdf/redland/stream.rb,
+	ruby/lib/rdf/redland/uri.rb: Fix ruby -w warnings - commenting out
+	literals
+
+	Fixes Issue #0000243
+	http://bugs.librdf.org/mantis/view.php?id=243
+
+	* ruby/test/test_model.rb: Remove duplicate test test_delete
+
+	* ruby/lib/rdf/redland/schemas/foaf.rb: Remove duplicate method
+	foaf_name
+
+	* ruby/lib/rdf/redland/queryresults.rb: Remove duplicate method
+	binding_name
+
+	* configure.ac: Add --with-ruby-install-dir-variable to set
+	non-arch ruby install var
+
+	Fixes Issue #0000480
+	http://bugs.librdf.org/mantis/view.php?id=480
+
+	* ruby/.gitignore, ruby/test/.gitignore: ignore more
+
+	* ruby/test/test_model.rb, ruby/test/test_parser.rb: Test fixes
+	for ruby 1.9
+
+	* php/Makefile.am:
+	Tidy php makefile
+
+	* configure.ac, ruby/.gitignore, ruby/Makefile.am,
+	ruby/test/Makefile.am:
+
+	Update ruby build approach after PHP
+
+	Set the ruby build suffix at configure time and add an option to
+	make it configurable with --with-ruby-linking taking values so,
+	dylib, bundle
+
+	Cleans up ruby Makefiles to remove conditionals
+
+	Intended to fix Issue #0000444
+	http://bugs.librdf.org/mantis/view.php?id=444
+
+2012-07-07  Dave Beckett <dave@dajobe.org>
+
+	* ruby/redland-pre.i: Add STR2CSTR macro for ruby 1.9
+
+	* configure.ac: Add ruby arch include dir if it exists.  Removed
+	configure --with-ruby-header-dir-variable
+
+	* ruby/Makefile.am: -UHAVE_CONFIG_H for compiling while including
+	ruby.h
+
+	* configure.ac:
+	Default to ruby 'rubyhdrdir' for ruby headers
+
+	* configure.ac: Update ruby configuration for newer 1.9 config
+	variables
+
+	Add --with-ruby-header-dir-variable to set the variable to use for
+	the headers, defaults to sitehdrdir
+
+	Check for ruby headers in the dir from the above and default to
+	the old away in the RUBY_ARCHDIR.  Report the result in the
+	configure output and where the header came from.
+
+	* configure.ac:
+	Use ruby RbConfig:: instead of deprecated Config::
+
+	* ChangeLog, NEWS.html, RELEASE.html: 1.0.16.1
 
 	* NEWS.html, RELEASE.html, configure.ac:
 	Bumped version to 1.0.16.1
