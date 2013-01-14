@@ -38,21 +38,43 @@ and Raptor 2.0.7 or newer.
 </ul>
 
 
-<h3>Ruby bindings changes</h3>h3>
+<h3>Ruby bindings changes</h3>
+
+<p>Update ruby configuration for newer 1.9 config macros and
+variables using ruby arch include directory if it exists.</p>
+
+<p>Set the ruby build suffix at configure time and add an option to
+make it configurable with <code>configure</code> argument
+<code>--with-ruby-linking</code> taking values 'so', 'dylib' or
+'bundle'</p>
+
+<p>Added configure <code>--with-ruby-install-dir-variable</code> to set
+non-arch ruby install var.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=480">Issue #0000480</a>
+</p>
 
 <p>Make Parser class method <code>parse_string_into_model()</code>
 work properly.
 </p>
+
+<p>Fix ruby -w warnings - commenting out literals.
+Fixes <a href="http://bugs.librdf.org/mantis/view.php?id=243">Issue #0000243</a></p>
 
 <h3>Other changes</h3>
 
 <p>Remove all RDQL test queries since support is being removed from
 Rasqal.</p>
 
-<p>autogen.sh now supports the NOCONFIGURE variable like
-Lib{XML2,XSLT}, aborts the run if an progrma fails and creates the
-NEWS if it does not exist to aid building from GIT and 'make
-dist'.</p>
+<p><code>autogen.sh</code> now supports the <code>NOCONFIGURE</code>
+variable like Lib{XML2,XSLT}, aborts the run if an progrma fails and
+creates the NEWS if it does not exist to aid building from GIT and
+'make dist'.</p>
+
+
+<h2 id="rel1_0_15_1"><a name="rel1_0_15_1">Redland-bindings 1.0.15.1 changes</a></h2>
+
+<p>Never released.
+</p>
 
 
 <h2 id="rel1_0_14_1"><a name="rel1_0_14_1">Redland-bindings 1.0.14.1 changes</a></h2>
