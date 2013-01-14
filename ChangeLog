@@ -1,5 +1,8 @@
 2013-01-13  Dave Beckett <dave@dajobe.org>
 
+	* Snapshotted redland-bindings_1_0_16_1 for 1.0.16.1 release
+	(GIT 2d45a62c2a5fec49cdac8839b5ff096c92423ae1)
+
 	* ChangeLog, ChangeLog.10, ChangeLog.11, Makefile.am: Add
 	ChangeLog.10 ChangeLog.11 for 2009 and 2010
 
