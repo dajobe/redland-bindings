@@ -66,7 +66,7 @@ print "Printing all statements"
 for s in model.as_stream():
   print "Statement:",s
 
-q = RDF.Query("SELECT ?a ?c WHERE (?a dc:title ?c) USING dc FOR <http://purl.org/dc/elements/1.1/>")
+q = RDF.Query("PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT ?a ?c WHERE {?a dc:title ?c}")
 print "Querying for dc:titles:"
 for result in q.execute(model):
   print "{"
