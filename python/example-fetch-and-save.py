@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# example.py - Redland Python 2.0 example code
+# example-fetch-and-save.py - Redland Python 2.0 example code
 #
 # Copyright (C) 2000-2005 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2000-2005 University of Bristol - http://www.bristol.ac.uk/
@@ -20,11 +20,22 @@
 # 
 #
 
-import RDF
+# adapted from http://blog.literarymachine.net/?p=5
 
-storage=RDF.Storage(storage_name="hashes",
-                    name="test",
-                    options_string="new='yes',hash-type='memory',dir='.'")
+import RDF
+ 
+# Create a new MySQL storage. The second parameter is NOT the
+# name of the MySQL database to use, but the name of the
+# triplestore. This makes it possible to create several
+# triplestores within one database. The third parameter is
+# a string containing the options for the actual MySQL database.
+# They should speak for themselves, except for "new='yes'". If
+# this option is given, the necessary table structure is created and
+# any existing triples are dropped. You probably only want to use
+# it in some kind of setup or installation procedure.
+
+storage = RDF.Storage(storage_name="mysql", name="www.dajobe.org",
+                      options_string="new='yes',host='localhost',database='tests',user='librdf',password='whatever'");
 if storage is None:
   raise Exception("new RDF.Storage failed")
 
@@ -33,18 +44,6 @@ if storage is None:
 model=RDF.Model(storage)
 if model is None:
   raise Exception("new RDF.model failed")
-
-statement=RDF.Statement(RDF.Uri("http://www.dajobe.org/"),
-                        RDF.Uri("http://purl.org/dc/elements/1.1/creator"),
-                        RDF.Node("Dave Beckett"))
-if statement is None:
-  raise Exception("new RDF.Statement failed")
-
-model.add_statement(statement)
-
-# Match against an empty statement - find everything
-for s in model.find_statements(RDF.Statement()):
-  print "found statement:",s
 
 test_file='../data/dc.rdf'
 
@@ -74,13 +73,5 @@ for result in q.execute(model):
     print "  "+k+" = "+str(result[k])
   print "}"
 
-print "Writing model to test-out.rdf as rdf/xml"
-
-# Use any rdf/xml parser that is available
-serializer=RDF.Serializer()
-serializer.set_namespace("dc", RDF.Uri("http://purl.org/dc/elements/1.1/"))
-serializer.serialize_model_to_file("test-out.rdf", model)
-
-print "Serialized to ntriples as a string size",len(model.to_string(name="ntriples", base_uri="http://example.org/base#")),"bytes"
-
 print "Done"
+
