@@ -1,3 +1,31 @@
+2013-06-17  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh: update autogen.sh
+
+2013-03-12  Dave Beckett <dave@dajobe.org>
+
+	* autogen.sh: Handle variations of header macro
+
+2013-03-06  Dave Beckett <dave@dajobe.org>
+
+	* Merge pull request #5 from olberger/master:
+	Addition of an example using MySQL storage in Python
+
+2013-02-26  Olivier Berger <olivier.berger@telecom-sudparis.eu>
+
+	* python/example-fetch-and-save.py,
+	python/example-retrieve-from-saved.py:
+	Add example of MySQL Storage
+	use to persist a graph
+
+	* python/example.py:
+	Fix syntax of the SPARQL query
+
+2013-01-24  Dave Beckett <dave@dajobe.org>
+
+	* ChangeLog, ChangeLog.12, ChangeLog.13, Makefile.am: ChangeLog.12
+	and ChangeLog.13 for 2011 and 2012
+
 2013-01-13  Dave Beckett <dave@dajobe.org>
 
 	* Snapshotted redland-bindings_1_0_16_1 for 1.0.16.1 release
