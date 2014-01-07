@@ -125,6 +125,15 @@ _node_types={
 
 import Redland
 
+if sys.version_info >= (3,0,0):
+  PY3 = True
+  def unicode(s, enc=None):
+    if not isinstance(s, str):
+      return str(s)
+    else:
+      return s
+else:
+  PY3 = False
 
 class RedlandError(Exception):
   """Redland Runtime errors"""
@@ -132,7 +141,7 @@ class RedlandError(Exception):
     self.value = value
 
   def __str__(self):
-    return `self.value`
+    return repr(self.value)
 
 class NodeTypeError(RedlandError):
   pass
@@ -142,14 +151,14 @@ class RedlandWarning(Warning):
 
 def node_type(name):
   """Return the Redland node type of a node name"""
-  if _node_types.has_key(name):
+  if name in _node_types:
     return _node_types[name]
   else:
     raise NodeTypeError('Unknown node type %s' % name)
 
 def node_type_name(num):
   """Return the name of a Redland node type"""
-  for n in _node_types.keys():
+  for n in list(_node_types.keys()):
     if num==_node_types[n]:
       return n
   raise NodeTypeError('Unknown node type number %d' % num)
@@ -184,7 +193,7 @@ class World(object):
     global _debug    
     if self._world:
       if _debug:
-        print "Destroying RDF.World"
+        print("Destroying RDF.World")
       self._cleanup(self._world)
 
 # end class World
@@ -259,13 +268,13 @@ class Node(object):
     global _world
     global _debug
     if _debug:
-      print "Creating RDF.Node args=",args
+      print("Creating RDF.Node args=",args)
     self._node=None
 
     if arg is not None:
       if isinstance(arg, str):
         args['literal'] = arg
-      elif isinstance(arg, unicode):
+      elif not PY3 and isinstance(arg, unicode):
         import Redland_python
         args['literal'] = Redland_python.unicode_to_bytes(arg)
       elif isinstance(arg, Uri):
@@ -273,32 +282,32 @@ class Node(object):
       elif isinstance(arg, Node):
         args['node'] = arg
 
-    if args.has_key('literal') and isinstance(args['literal'], unicode):
+    if not PY3 and 'literal' in args and isinstance(args['literal'], unicode):
         import Redland_python
         args['literal'] = Redland_python.unicode_to_bytes(args['literal'])
 
-    if args.has_key('uri_string'):
+    if 'uri_string' in args:
       self._node=Redland.librdf_new_node_from_uri_string(_world._world,
         args['uri_string'])
 
-    elif args.has_key('uri'):
+    elif 'uri' in args:
       # no need to copy the underlying uri as the redland C api does
       # this on node construction
       self._node = Redland.librdf_new_node_from_uri(_world._world,
               args['uri']._reduri)
 
-    elif args.has_key('literal'):
-      if args.has_key('xml_language'):
+    elif 'literal' in args:
+      if 'xml_language' in args:
         xml_language=args['xml_language']
-      elif args.has_key('language'):
+      elif 'language' in args:
         xml_language=args['language']
       else:
         xml_language=None
-      if args.has_key('is_wf_xml'):
+      if 'is_wf_xml' in args:
         is_wf_xml=args['is_wf_xml']
       else:
         is_wf_xml=0
-      if args.has_key('datatype'):
+      if 'datatype' in args:
         datatype=args['datatype']
         self._node=Redland.librdf_new_node_from_typed_literal(_world._world,
           args['literal'], xml_language, datatype._reduri)
@@ -306,14 +315,14 @@ class Node(object):
         self._node=Redland.librdf_new_node_from_literal(_world._world,
           args['literal'], xml_language, is_wf_xml)
 
-    elif args.has_key('node'):
+    elif 'node' in args:
       self._node=Redland.librdf_new_node_from_node(args['node']._node)
 
-    elif args.has_key('blank'):
+    elif 'blank' in args:
       self._node=Redland.librdf_new_node_from_blank_identifier(_world._world, args['blank'])
 
-    elif args.has_key('from_object'):
-      if args.has_key('do_not_copy'):
+    elif 'from_object' in args:
+      if 'do_not_copy' in args:
         self._node=args['from_object']
       else:
         self._node=Redland.librdf_new_node_from_node(args['from_object'])
@@ -327,10 +336,10 @@ class Node(object):
     """Free an RDF Node (destructor)."""
     global _debug    
     if _debug:
-      print "Destroying RDF.Node"
+      print("Destroying RDF.Node")
     if self._node:
       if _debug:
-        print "Deleting Redland node object"
+        print("Deleting Redland node object")
       Redland.librdf_free_node(self._node)
 
   def _get_uri(self):
@@ -399,7 +408,11 @@ class Node(object):
 
   def __str__(self):
     """Get a string representation of an RDF Node."""
-    return unicode(self).encode('utf-8')
+    value = self.__unicode__()
+    if PY3:
+      return value
+    else:
+      return value.encode('utf-8')
 
   def __unicode__(self):
     """Get a Unicode string representation of an RDF Node."""
@@ -423,7 +436,7 @@ class Node(object):
     return not self == other
 
   def __hash__(self):
-    return hash(str(self))
+    return hash(unicode(self))
 
   def is_resource(self):
     """Return true if node is a resource  with a URI"""   
@@ -474,15 +487,15 @@ class Statement(object):
     global _world
     global _debug    
     if _debug:
-      print "Creating RDF.Statement subject=",subject,"predicate=",predicate,"object=",object,"args=",args
+      print("Creating RDF.Statement subject=",subject,"predicate=",predicate,"object=",object,"args=",args)
 
     self._statement = None
 
-    if args.has_key('statement'):
+    if 'statement' in args:
       self._statement=Redland.librdf_new_statement_from_statement(
           args['statement']._statement)
 
-    elif args.has_key('from_object'):
+    elif 'from_object' in args:
       self._statement = Redland.librdf_new_statement_from_statement(
           args['from_object'])
 
@@ -492,7 +505,7 @@ class Statement(object):
       else:
         if isinstance(subject, Uri) or isinstance(subject, str):
           subject = Node(subject)
-        elif isinstance(subject, unicode):
+        elif not PY3 and isinstance(subject, unicode):
           import Redland_python
           subject = Node(Redland_python.unicode_to_bytes(subject))
         s = Redland.librdf_new_node_from_node(subject._node)
@@ -502,7 +515,7 @@ class Statement(object):
       else:
         if isinstance(predicate, Uri) or isinstance(predicate, str):
           predicate = Node(predicate)
-        elif isinstance(predicate, unicode):
+        elif not PY3 and isinstance(predicate, unicode):
           import Redland_python
           predicate = Node(Redland_python.unicode_to_bytes(predicate))
         p = Redland.librdf_new_node_from_node(predicate._node)
@@ -512,7 +525,7 @@ class Statement(object):
       else:
         if isinstance(object, Uri) or isinstance(object, str):
           object = Node(object)
-        elif isinstance(object, unicode):
+        elif not PY3 and isinstance(object, unicode):
           import Redland_python
           object = Node(Redland_python.unicode_to_bytes(object))
         o = Redland.librdf_new_node_from_node(object._node)
@@ -526,10 +539,10 @@ class Statement(object):
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.Statement"
+      print("Destroying RDF.Statement")
     if self._statement:
       if _debug:
-        print "Deleting Redland statement object"
+        print("Deleting Redland statement object")
       Redland.librdf_free_statement(self._statement)
 
   def _wrap_node(self, rednode):
@@ -666,20 +679,20 @@ Create a model using an in-memory storage.
     global _world
     global _debug    
     if _debug:
-      print "Creating RDF.Model args=",args
+      print("Creating RDF.Model args=",args)
     self._model=None
     self._storage=None
 
     if storage is None:
       storage = MemoryStorage()
 
-    if args.has_key('options_string'):
+    if 'options_string' in args:
       self._model=Redland.librdf_new_model(_world._world, storage._storage,
         args['options_string'])
-    elif args.has_key('options_hash'):
+    elif 'options_hash' in args:
       self._model=Redland.librdf_new_model_with_options( _world._world,
         storage._storage, args['options_hash'].hash)
-    elif args.has_key('model'):
+    elif 'model' in args:
       self._model=Redland.librdf_new_model_from_model(storage._storage,
                                                      args['model']._model)
     else:
@@ -698,7 +711,7 @@ Create a model using an in-memory storage.
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.Model"
+      print("Destroying RDF.Model")
     if self._model:
       Redland.librdf_free_model(self._model)
 
@@ -911,7 +924,7 @@ Create a model using an in-memory storage.
       predicate = Node(predicate)
     if isinstance(target, Uri) or isinstance(target, str):
       target = Node(target)
-    elif isinstance(target, unicode):
+    elif isinstance(target, str):
       import Redland_python
       target = Node(Redland_python.unicode_to_bytes(target))
 
@@ -944,7 +957,7 @@ Create a model using an in-memory storage.
       source = Node(source)
     if isinstance(target, Uri) or isinstance(target, str):
       target = Node(target)
-    elif isinstance(target, unicode):
+    elif isinstance(target, str):
       import Redland_python
       target = Node(Redland_python.unicode_to_bytes(target))
 
@@ -1001,7 +1014,7 @@ Create a model using an in-memory storage.
       predicate = Node(predicate)
     if isinstance(target, Uri) or isinstance(target, str):
       target = Node(target)
-    elif isinstance(target, unicode):
+    elif isinstance(target, str):
       import Redland_python
       target = Node(Redland_python.unicode_to_bytes(target))
 
@@ -1019,7 +1032,7 @@ Create a model using an in-memory storage.
       source = Node(source)
     if isinstance(target, Uri) or isinstance(target, str):
       target = Node(target)
-    elif isinstance(target, unicode):
+    elif isinstance(target, str):
       import Redland_python
       target = Node(Redland_python.unicode_to_bytes(target))
 
@@ -1090,7 +1103,7 @@ Create a model using an in-memory storage.
    """
     if isinstance(uri, str):
       uri = Uri(string=uri)
-    elif isinstance(uri, unicode):
+    elif not PY3 and isinstance(uri, unicode):
       import Redland_python
       uri = Uri(string=Redland_python.unicode_to_bytes(uri))
     if uri is None:
@@ -1099,7 +1112,7 @@ Create a model using an in-memory storage.
 
     if isinstance(type_uri, str):
       type_uri = Uri(string=type_uri)
-    elif isinstance(type_uri, unicode):
+    elif not PY3 and isinstance(type_uri, unicode):
       import Redland_python
       type_uri = Uri(string=Redland_python.unicode_to_bytes(type_uri))
     if type_uri is not None:
@@ -1128,7 +1141,7 @@ Create a model using an in-memory storage.
    """
     if isinstance(base_uri, str):
       base_uri = Uri(string=base_uri)
-    elif isinstance(base_uri, unicode):
+    elif not PY3 and isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -1137,7 +1150,7 @@ Create a model using an in-memory storage.
       rbase_uri = None
     if isinstance(type_uri, str):
       type_uri = Uri(string=type_uri)
-    elif isinstance(type_uri, unicode):
+    elif not PY3 and isinstance(type_uri, unicode):
       import Redland_python
       type_uri = Uri(string=Redland_python.unicode_to_bytes(type_uri))
     if type_uri is not None:
@@ -1195,7 +1208,7 @@ class Iterator(object):
     """Create an RDF Iterator (constructor)."""
     global _debug    
     if _debug:
-      print "Creating RDF.Iterator object=",object,"creator=",creator1
+      print("Creating RDF.Iterator object=",object,"creator=",creator1)
 
     self._iterator=object
     # keep references to the things we're iterating over so they
@@ -1210,7 +1223,7 @@ class Iterator(object):
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.Iterator"
+      print("Destroying RDF.Iterator")
     if self._iterator:
       Redland.librdf_free_iterator(self._iterator)
 
@@ -1219,8 +1232,8 @@ class Iterator(object):
     return Redland.librdf_iterator_end(self._iterator)
 
   def have_elements(self):
-    print """RDF.Iterator method have_elements is deprecated,
-please use 'not iterator.end' instead."""
+    print("""RDF.Iterator method have_elements is deprecated,
+please use 'not iterator.end' instead.""")
     return Redland.librdf_iterator_have_elements(self._iterator)
 
   def current(self):
@@ -1231,9 +1244,10 @@ please use 'not iterator.end' instead."""
 
     return Node(from_object=my_node)
 
-  def next(self):
+  def __next__(self):
     """Move to the next object on the Iterator"""
     Redland.librdf_iterator_next(self._iterator)
+  next = __next__
 
   def context(self):
     """Return the context Node of the current object on the Iterator"""
@@ -1249,84 +1263,88 @@ class StreamWithContextIter(object):
   def __init__(self,stream):
     global _debug
     if _debug:
-      print "Creating StreamWithContextIter for Stream "+repr(stream)  
+      print("Creating StreamWithContextIter for Stream "+repr(stream))
     self.stream = stream
     self.first = 1
 
   def __iter__(self):
     return self
 
-  def next(self):
+  def __next__(self):
     if self.first:
       self.first = 0
     else:
-      self.stream.next()
+      next(self.stream)
     if self.stream is None or self.stream.end():
       raise StopIteration
     return (self.stream.current(), self.stream.context())
+  next = __next__
 
 class IteratorWithContextIter(object):
   def __init__(self,iterator):
     global _debug
     if _debug:
-      print "Creating IteratorWithContextIter for Iterator "+repr(iterator)  
+      print("Creating IteratorWithContextIter for Iterator "+repr(iterator))
     self.iterator = iterator
     self.first = 1
 
   def __iter__(self):
     return self
 
-  def next(self):
+  def __next__(self):
     if self.first:
       self.first = 0
     else:
-      self.iterator.next()
+      next(self.iterator)
     if self.iterator is None or self.iterator.end():
       raise StopIteration
     try:
       return (self.iterator.current(), self.iterator.context())
     except AttributeError:
       return (self.iterator.current(), None)
+  next = __next__
 
 class IteratorIter(object):
   def __init__(self,iterator):
     global _debug
     if _debug:
-      print "Creating IteratorIter for Iterator "+repr(iterator)  
+      print("Creating IteratorIter for Iterator "+repr(iterator))
     self.iterator = iterator
     self.first = 1
 
   def __iter__(self):
     return self
 
-  def next(self):
+  def __next__(self):
     if self.first:
       self.first = 0
     else:
-      self.iterator.next()
+      next(self.iterator)
     if self.iterator is None or self.iterator.end():
       raise StopIteration
     return self.iterator.current()
+  next = __next__
 
 class StreamIter:
   def __init__(self,stream):
     global _debug
     if _debug:
-      print "Creating StreamIter for Stream "+repr(stream)  
+      print("Creating StreamIter for Stream "+repr(stream))
     self.stream = stream
     self.first = 1
 
   def __iter__(self):
     return self
 
-  def next(self):
+  def __next__(self):
     if self.first:
       self.first = 0
     else:
-      self.stream.next()
+      next(self.stream)
     if self.stream is None or self.stream.end():
       raise StopIteration
     return self.stream.current()
+  next = __next__
 
 class Stream(object):
   """Redland Statement Stream class
@@ -1349,7 +1367,7 @@ class Stream(object):
     """Create an RDF Stream (constructor)."""
     global _debug    
     if _debug:
-      print "Creating RDF.Stream for object",object, "creator",creator
+      print("Creating RDF.Stream for object",object, "creator",creator)
 
     self._stream=object
 
@@ -1371,7 +1389,7 @@ class Stream(object):
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.Stream"
+      print("Destroying RDF.Stream")
     if self._stream:
       Redland.librdf_free_stream(self._stream)
 
@@ -1391,12 +1409,13 @@ class Stream(object):
       return None
     return Statement(from_object=my_statement)
 
-  def next(self):
+  def __next__(self):
     """Move to the next Statement on the Stream"""
     if not self._stream:
       return 1
 
     return Redland.librdf_stream_next(self._stream)
+  next = __next__
 
   def context(self):
     """Return the context Node of the current object on the Stream"""
@@ -1507,15 +1526,15 @@ and Hash storage:
     global _world
     global _debug    
     if _debug:
-      print "Creating RDF.Storage args=",args
+      print("Creating RDF.Storage args=",args)
     self._storage=None
 
-    if (args.has_key('storage_name') and
-        args.has_key('name') and 
-        args.has_key('options_string')):
+    if ('storage_name' in args and
+        'name' in args and
+        'options_string' in args):
       self._storage=Redland.librdf_new_storage(_world._world,
           args['storage_name'], args['name'], args['options_string'])
-    elif args.has_key('storage'):
+    elif 'storage' in args:
       self._storage=Redland.librdf_new_storage_from_storage(
           args['storage']._storage)
     else:
@@ -1528,7 +1547,7 @@ and Hash storage:
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.Storage"
+      print("Destroying RDF.Storage")
     if self._storage:
       Redland.librdf_free_storage(self._storage)
 
@@ -1608,23 +1627,23 @@ Copy an existing URI uri1.
     global _world
     global _debug    
     if _debug:
-      print "Creating RDF.Uri arg,args=",arg,args
+      print("Creating RDF.Uri arg,args=",arg,args)
     self._reduri=None
 
     if arg is not None:
       if isinstance(arg, str):
         args['string'] = arg
-      elif isinstance(arg, unicode):
+      elif not PY3 and isinstance(arg, unicode):
         import Redland_python
         args['string'] = Redland_python.unicode_to_bytes(arg)
       elif isinstance(arg, Uri):
         args['uri'] = arg
 
-    if args.has_key('string') and args['string'] is not None:
+    if 'string' in args and args['string'] is not None:
       self._reduri=Redland.librdf_new_uri(_world._world, args['string'])
-    elif args.has_key('uri'):
+    elif 'uri' in args:
       self._reduri=Redland.librdf_new_uri_from_uri(args['uri']._reduri)
-    elif args.has_key('from_object'):
+    elif 'from_object' in args:
       if args['from_object']!=None:
         self._reduri=Redland.librdf_new_uri_from_uri(args['from_object'])
       else:
@@ -1636,10 +1655,10 @@ Copy an existing URI uri1.
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.Uri"
+      print("Destroying RDF.Uri")
     if self._reduri:
       if _debug:
-        print "Deleting Redland uri object"
+        print("Deleting Redland uri object")
       Redland.librdf_free_uri(self._reduri)
 
   def __str__(self):
@@ -1651,7 +1670,7 @@ Copy an existing URI uri1.
     return unicode(Redland.librdf_uri_to_string(self._reduri), 'utf-8')
 
   def __hash__(self):
-    return hash(str(self))
+    return hash(unicode(self))
   
   def __eq__(self,other):
     """Equality of RDF URI to another RDF URI."""
@@ -1697,7 +1716,7 @@ standard configuration of Raptor.
     global _world
     global _debug    
     if _debug:
-      print "Creating RDF.Parser name=",name,"mime_type=",mime_type, "uri=",uri
+      print("Creating RDF.Parser name=",name,"mime_type=",mime_type, "uri=",uri)
 
     self._parser = None
 
@@ -1713,7 +1732,7 @@ standard configuration of Raptor.
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.Parser"
+      print("Destroying RDF.Parser")
     if self._parser:
       Redland.librdf_free_parser(self._parser)
 
@@ -1728,7 +1747,7 @@ standard configuration of Raptor.
     """
     if isinstance(uri, str):
       uri = Uri(string=uri)
-    elif isinstance(uri, unicode):
+    elif not PY3 and isinstance(uri, unicode):
       import Redland_python
       uri = Uri(string=Redland_python.unicode_to_bytes(uri))
     if base_uri is None:
@@ -1748,13 +1767,13 @@ standard configuration of Raptor.
     """
     if isinstance(base_uri, str):
       base_uri = Uri(string=base_uri)
-    elif isinstance(base_uri, unicode):
+    elif not PY3 and isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
       raise RedlandError("A base URI is required when parsing a string")
 
-    if isinstance(string, unicode):
+    if not PY3 and isinstance(string, unicode):
       import Redland_python
       string=Redland_python.unicode_to_bytes(string)
 
@@ -1778,12 +1797,12 @@ standard configuration of Raptor.
 
     if isinstance(uri, str):
       uri = Uri(string = uri)
-    elif isinstance(uri, unicode):
+    elif not PY3 and isinstance(uri, unicode):
       import Redland_python
       uri = Uri(string=Redland_python.unicode_to_bytes(uri))
     if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif isinstance(base_uri, unicode):
+    elif not PY3 and isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
@@ -1796,8 +1815,8 @@ standard configuration of Raptor.
     try:
       rc = Redland.librdf_parser_parse_into_model(self._parser,
         uri._reduri, base_uri._reduri, model._model)
-    except RedlandError, err:
-      print "Caught error",err
+    except RedlandError as err:
+      print("Caught error",err)
       raise err
 
     if handler is not None:
@@ -1817,7 +1836,7 @@ standard configuration of Raptor.
     """
     if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif isinstance(base_uri, unicode):
+    elif not PY3 and isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is None:
@@ -1827,7 +1846,7 @@ standard configuration of Raptor.
       import Redland_python
       Redland_python.set_callback(handler)
 
-    if isinstance(string, unicode):
+    if not PY3 and isinstance(string, unicode):
       import Redland_python
       string=Redland_python.unicode_to_bytes(string)
 
@@ -1960,7 +1979,7 @@ class Query(object):
     if querystring is None:
       raise RedlandError("No query string given")
 
-    if isinstance(querystring, unicode): 
+    if not PY3 and isinstance(querystring, unicode):
       querystring = querystring.encode('utf-8')
 
     if query_uri is not None:
@@ -1976,7 +1995,7 @@ class Query(object):
     global _world
     global _debug
     if _debug:
-      print "Creating query for language '"+query_language+"', base '"+str(rbase_uri)+"': "+querystring
+      print("Creating query for language '"+query_language+"', base '"+unicode(rbase_uri)+"': "+querystring)
 
     self._query = Redland.librdf_new_query(_world._world, query_language, ruri, querystring, rbase_uri)
     self.result_stream = None
@@ -1987,7 +2006,7 @@ class Query(object):
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.Query"
+      print("Destroying RDF.Query")
     if self._query:
       Redland.librdf_free_query(self._query)
 
@@ -2022,7 +2041,7 @@ class QueryResults(object):
   def __init__(self,query,results):
     global _debug
     if _debug:
-      print "Creating QueryResults"
+      print("Creating QueryResults")
     self._query = query
     self._results = results
     self.first = True
@@ -2047,7 +2066,7 @@ class QueryResults(object):
     raise ValueError("Cannot take the length of iterable query results")
 
   # Iterator method
-  def next(self):
+  def __next__(self):
     """Get the next variable binding result"""
     if not self.is_bindings():
       raise RedlandError("Query result is not in variable bindings format")
@@ -2058,6 +2077,7 @@ class QueryResults(object):
     if Redland.librdf_query_results_finished(self._results):
       raise StopIteration
     return self.make_results_hash()
+  next = __next__
 
   def make_results_hash(self):
     results = {}
@@ -2129,7 +2149,7 @@ class QueryResults(object):
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.QueryResults"
+      print("Destroying RDF.QueryResults")
     if self._results:
       Redland.librdf_free_query_results(self._results)
 
@@ -2137,7 +2157,7 @@ class QueryResults(object):
     """Serialize to filename name in syntax format_uri using the optional base URI."""
     if isinstance(format_uri, str):
       format_uri = Uri(string = format_uri)
-    elif isinstance(format_uri, unicode):
+    elif not PY3 and isinstance(format_uri, unicode):
       import Redland_python
       format_uri = Uri(string=Redland_python.unicode_to_bytes(format_uri))
     else:
@@ -2150,7 +2170,7 @@ class QueryResults(object):
 
     if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif isinstance(base_uri, unicode):
+    elif not PY3 and isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -2168,14 +2188,14 @@ class QueryResults(object):
       return serializer.serialize_model_to_string(tmpmodel, base_uri)
 
     if self.is_boolean():
-      return str(self.get_boolean())
+      return unicode(self.get_boolean())
 
     if not self.is_bindings():
       raise RedlandError("Unknown query result format cannot be written as a string")
     
     if isinstance(format_uri, str):
       format_uri = Uri(string = format_uri)
-    elif isinstance(format_uri, unicode):
+    elif not PY3 and isinstance(format_uri, unicode):
       import Redland_python
       format_uri = Uri(string=Redland_python.unicode_to_bytes(format_uri))
     else:
@@ -2187,7 +2207,7 @@ class QueryResults(object):
       rformat_uri = None
     if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif isinstance(base_uri, unicode):
+    elif not PY3 and isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -2234,8 +2254,8 @@ class Serializer(object):
     global _world
     global _debug    
     if _debug:
-      print "Creating RDF.Serializer name=",name,"mime_type=",mime_type, \
-        "uri=",uri
+      print("Creating RDF.Serializer name=",name,"mime_type=",mime_type, \
+        "uri=",uri)
 
     self._serializer = None
 
@@ -2252,7 +2272,7 @@ class Serializer(object):
   def __del__(self):
     global _debug    
     if _debug:
-      print "Destroying RDF.Serializer"
+      print("Destroying RDF.Serializer")
     if self._serializer:
       Redland.librdf_free_serializer(self._serializer)
 
@@ -2261,7 +2281,7 @@ class Serializer(object):
        optional base URI."""
     if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif isinstance(base_uri, unicode):
+    elif not PY3 and isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -2275,7 +2295,7 @@ class Serializer(object):
     """Serialize to a string using the optional base URI."""
     if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif isinstance(base_uri, unicode):
+    elif not PY3 and isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -2288,7 +2308,7 @@ class Serializer(object):
     """Serialize a stream to a string using the optional base URI."""
     if isinstance(base_uri, str):
       base_uri = Uri(string = base_uri)
-    elif isinstance(base_uri, unicode):
+    elif not PY3 and isinstance(base_uri, unicode):
       import Redland_python
       base_uri = Uri(string=Redland_python.unicode_to_bytes(base_uri))
     if base_uri is not None:
@@ -2304,7 +2324,7 @@ class Serializer(object):
     if not isinstance(uri, Uri):
       if isinstance(uri, str):
         uri = Uri(string=uri)
-      elif isinstance(uri, unicode):
+      elif not PY3 and isinstance(uri, unicode):
         import Redland_python
         uri = Uri(string=Redland_python.unicode_to_bytes(uri))
       else:
@@ -2317,7 +2337,7 @@ class Serializer(object):
     if not isinstance(uri, Uri):
       if isinstance(uri, str):
         uri = Uri(string=uri)
-      elif isinstance(uri, unicode):
+      elif not PY3 and isinstance(uri, unicode):
         import Redland_python
         uri = Uri(string=Redland_python.unicode_to_bytes(uri))
       else:
@@ -2329,7 +2349,7 @@ class Serializer(object):
     if not isinstance(uri, Uri):
       if isinstance(uri, str):
         uri = Uri(string=uri)
-      elif isinstance(uri, unicode):
+      elif not PY3 and isinstance(uri, unicode):
         import Redland_python
         uri = Uri(string=Redland_python.unicode_to_bytes(uri))
       else:

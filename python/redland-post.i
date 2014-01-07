@@ -23,8 +23,17 @@
 
 void librdf_python_world_init(librdf_world *world);
 
+#if PY_MAJOR_VERSION >= 3
+PyObject*
+#else
+void
+#endif
+SWIG_init(void);
 
-void SWIG_init(void);
+#if PY_MAJOR_VERSION >= 3
+#define PyInt_AS_LONG PyLong_AsLong
+#define PyString_FromStringAndSize PyBytes_FromStringAndSize
+#endif
 
 static PyObject *librdf_python_callback = NULL;
 
@@ -275,6 +284,19 @@ static PyMethodDef librdf_python_methods [] = {
   {NULL, NULL, 0, NULL}        /* Sentinel */
 };
 
+#if PY_MAJOR_VERSION >= 3
+static struct PyModuleDef librdf_python_moduledef = {
+  PyModuleDef_HEAD_INIT,
+  "Redland_python",
+  NULL, /* doc string */
+  -1, /* per module memory */
+  librdf_python_methods,
+  NULL, /* Unused, reload */
+  NULL, /* GC traverse */
+  NULL, /* GC clearing*/
+  NULL  /* free during deallocation */
+};
+#endif
 
 /*
  * stores a redland error message for later
@@ -359,8 +381,14 @@ librdf_python_world_init(librdf_world *world)
   PyObject *tuple;
   PyObject* rdf_module;
   const char *module_name="RDF";
-  
+
+#if PY_MAJOR_VERSION >= 3
+  module = PyModule_Create(&librdf_python_moduledef);
+  dict = PyImport_GetModuleDict();
+  PyDict_SetItemString(dict, "Redland_python", module);
+#else
   module = Py_InitModule("Redland_python", librdf_python_methods);
+#endif
   dict = PyModule_GetDict(module); /* borrowed reference */
 
   tuple = Py_BuildValue ("(iii)", librdf_version_major, librdf_version_minor,

@@ -264,7 +264,7 @@ fi
 
 dnl need to change quotes to allow square brackets
 changequote(<<, >>)dnl
-PYTHON_VERSION=`$PYTHON -c 'import sys; print sys.version[:3]' 2>/dev/null`
+PYTHON_VERSION=`$PYTHON -c 'import sys; print(sys.version[:3])' 2>/dev/null`
 changequote([, ])dnl
 if test "X$PYTHON_VERSION" != X; then
   languages_available="$languages_available python($PYTHON_VERSION)"
@@ -285,15 +285,16 @@ if test "X$PYTHON" != X; then
   fi
 
   if test "X$PYTHON_LIBEXT" = X; then
-    AC_ARG_WITH(python-libext, [  --with-python-libext(=EXT) Python shared library file extension (default .so)], with_python_libext="$withval", with_python_libext=".so")
+    python_default_libext=`$PYTHON -c 'from distutils import sysconfig; print(sysconfig.get_config_var("SO"))'`
+    AC_ARG_WITH(python-libext, [  --with-python-libext(=EXT) Python shared library file extension (default .so)], with_python_libext="$withval", with_python_libext=$python_default_libext)
     if test "X$with_python_libext" != X; then
       PYTHON_LIBEXT=$with_python_libext
     fi
   fi
 
   AC_MSG_CHECKING(Python includes)
-  python_prefix=`$PYTHON -c 'import sys; print sys.prefix' 2>/dev/null`
-  python_exec_prefix=`$PYTHON -c "import sys; print sys.exec_prefix"`
+  python_prefix=`$PYTHON -c 'import sys; print(sys.prefix)' 2>/dev/null`
+  python_exec_prefix=`$PYTHON -c "import sys; print(sys.exec_prefix)"`
 
   if test "X$PYTHON_INCLUDES" != X; then
     AC_MSG_RESULT(using user includes: $PYTHON_INCLUDES)
@@ -311,7 +312,7 @@ if test "X$PYTHON" != X; then
   if test "X$PYTHON_LIB" != X; then
     AC_MSG_RESULT(using user lib: $PYTHON_LIB)
   else
-    PYTHON_LIB=`$PYTHON -c "import distutils.sysconfig; print distutils.sysconfig.get_python_lib($get_python_lib_args)"`
+    PYTHON_LIB=`$PYTHON -c "import distutils.sysconfig; print(distutils.sysconfig.get_python_lib($get_python_lib_args))"`
     AC_MSG_RESULT($PYTHON_LIB)
   fi
 
