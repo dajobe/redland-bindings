@@ -36,26 +36,26 @@ class RedlandModelCase (unittest.TestCase):
 
         for i in range(0,4):
             s = self.make_statement (i)
-            self.assert_(s in model,
+            self.assertTrue(s in model,
                 "statement %s should be in model" % (str(s)))
             
         s_two = self.make_statement (2)
 
         s_two_again = self.make_statement (2)
 
-        self.assert_(s_two == s_two_again,
+        self.assertTrue(s_two == s_two_again,
                 "equality; statement %s should equal statement %s" % \
                         (str(s_two), str(s_two_again)))
 
         s_three = self.make_statement (3)
 
-        self.assert_(s_two != s_three,
+        self.assertTrue(s_two != s_three,
                 "inequality; statement %s should not equal statement %s" % \
                         (str(s_two), str(s_three)))
 
         del model[s_two]
 
-        self.assert_(s_two not in model,
+        self.assertTrue(s_two not in model,
                 "del failed; statement %s should not be in model" % \
                         (str(s_two)))
 
@@ -67,10 +67,10 @@ class RedlandModelCase (unittest.TestCase):
 
         for i in range(0,4):
             s = self.make_statement (i)
-            self.assert_((s, self.context_node) in model,
+            self.assertTrue((s, self.context_node) in model,
                 "statement %s context %s should be in model" % (
                     str(s), str(self.context_node)))
-            self.assert_((s, self.alien_context_node) not in model,
+            self.assertTrue((s, self.alien_context_node) not in model,
                 "statement %s context %s should be in model" % (
                     str(s), str(self.alien_context_node)))
             
@@ -78,7 +78,7 @@ class RedlandModelCase (unittest.TestCase):
 
         del model[s_two, self.context_node]
 
-        self.assert_((s_two, self.context_node) not in model,
+        self.assertTrue((s_two, self.context_node) not in model,
                 "del failed; statement %s context %s should not be in model" % \
                         (str(s_two), str(self.context_node)))
 
@@ -92,13 +92,13 @@ class RedlandSimpleGetsCase(unittest.TestCase):
         self.model.append (Statement(self.node1, self.node2, self.node3))
 
     def testSimpleGets(self):
-        self.assert_(
+        self.assertTrue(
                 self.model.get_source(self.node2, self.node3) == self.node1,
                 "Source should be node1")
-        self.assert_(
+        self.assertTrue(
                 self.model.get_target(self.node1, self.node2) == self.node3,
                 "Target should be node3")
-        self.assert_(
+        self.assertTrue(
                 self.model.get_predicate(self.node1, self.node3) == self.node2,
                 "Predicate should be node2")
 
@@ -136,31 +136,31 @@ class RedlandGetsCase(unittest.TestCase):
 
     def testGets(self):
         sources = list(self.model.get_sources(self.node2, self.node4))
-        self.assert_( (self.node1 in sources) and (self.node6 in sources),
+        self.assertTrue( (self.node1 in sources) and (self.node6 in sources),
                 "sources should contain node1 and node6")
     
         targets = list(self.model.get_targets(self.node1, self.node2))
-        self.assert_( (self.node3 in targets) and (self.node4 in targets),
+        self.assertTrue( (self.node3 in targets) and (self.node4 in targets),
                 "targets should contain node3 and node4")
 
         predicates = list(self.model.get_predicates(self.node5, self.node6))
-        self.assert_( (self.node3 in predicates) and (self.node1 in predicates),
+        self.assertTrue( (self.node3 in predicates) and (self.node1 in predicates),
                 "predicates should contain node3 and node1")
 
     def testGetsC(self):
         sources = list(self.modelC.get_sources_context(self.node2, self.node4))
-        self.assert_( ((self.node1, self.context_node) in sources) and
+        self.assertTrue( ((self.node1, self.context_node) in sources) and
                 ((self.node6, self.context_node) in sources),
                 "sources should contain (node1,c) and (node6,c)")
 
         targets = list(self.modelC.get_targets_context(self.node1, self.node2))
-        self.assert_( ((self.node3, self.context_node) in targets) and
+        self.assertTrue( ((self.node3, self.context_node) in targets) and
                 ((self.node4, self.context_node) in targets),
                 "targets should contain (node3,c) and (node4,c)")
 
         predicates = list(self.modelC.get_predicates_context(self.node5,
             self.node6))
-        self.assert_( ((self.node3, self.context_node) in predicates) and
+        self.assertTrue( ((self.node3, self.context_node) in predicates) and
                 ((self.node1, self.context_node) in predicates),
                 "predicates should contain (node3,c) and (node1,c)")
 
@@ -174,18 +174,18 @@ class RedlandStreamsCase(unittest.TestCase):
         a = "file:../data/dc.nt"
         p = NTriplesParser()
         p.parse_into_model(self.model,a)
-        self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
+        self.assertTrue(len(self.model) == 3,"dc.rdf should have 3 statements")
 
     def testParseTurtleIntoModel(self):
         a = "file:../data/dc.ttl"
         p = TurtleParser()
         p.parse_into_model(self.model,a)
-        self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
+        self.assertTrue(len(self.model) == 3,"dc.rdf should have 3 statements")
 
     def testParseIntoModel(self):
         a = "file:../data/dc.rdf"
         self.parser.parse_into_model(self.model,a)
-        self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
+        self.assertTrue(len(self.model) == 3,"dc.rdf should have 3 statements")
 
     def testIterateModel(self):
         a = "file:../data/dc.rdf"
@@ -193,13 +193,13 @@ class RedlandStreamsCase(unittest.TestCase):
         counter = 0
         for s in self.model:
             counter += 1
-        self.assert_(counter == 3,"dc.rdf should have 3 statements")
+        self.assertTrue(counter == 3,"dc.rdf should have 3 statements")
 
     def testParseAsStream(self):
         a = "file:../data/dc.rdf"
         for s in self.parser.parse_as_stream(a):
             self.model.append(s)
-        self.assert_(len(self.model) == 3,"dc.rdf should have 3 statements")
+        self.assertTrue(len(self.model) == 3,"dc.rdf should have 3 statements")
 
     def testFindStatements1(self):
         self.parser.parse_into_model(self.model,"file:../data/dc.rdf")
@@ -211,7 +211,7 @@ class RedlandStreamsCase(unittest.TestCase):
         found_stmts = self.model.find_statements(statement)
         for i in found_stmts:
             count += 1
-        self.assert_(count == 3, "Should have found_stmts 3 statements")
+        self.assertTrue(count == 3, "Should have found_stmts 3 statements")
 
     def testContains(self):
         self.parser.parse_into_model(self.model,"file:../data/dc.rdf")
@@ -224,8 +224,8 @@ class RedlandStreamsCase(unittest.TestCase):
         found_stmts = self.model.find_statements(statement)
         for i in found_stmts:
             count += 1
-        self.assert_(count == 1, "Should have found_stmts 1 statement") # test we can find it at all, for comparison
-        self.assert_(statement in self.model, "Should have found a statement via __contains__")
+        self.assertTrue(count == 1, "Should have found_stmts 1 statement") # test we can find it at all, for comparison
+        self.assertTrue(statement in self.model, "Should have found a statement via __contains__")
 
     def testFindStatementsWithContext(self):
         a = "file:../data/dc.rdf"
@@ -239,23 +239,23 @@ class RedlandStreamsCase(unittest.TestCase):
         count = 0
 
         for s,c in self.model.find_statements_context(statement):
-            self.failIf(c is None,
+            self.assertFalse(c is None,
                     "Didn't get context back from find_statements")
-            self.assert_(c == intended_context,
+            self.assertTrue(c == intended_context,
                     "Didn't get the right context back from find_statements")
-            self.assert_(statement.subject == subject,
+            self.assertTrue(statement.subject == subject,
                     "find_statements_context didn't find statements with the right subject")
             count += 1
 
-        self.assert_(count == 3, "Should have found 3 statements")
+        self.assertTrue(count == 3, "Should have found 3 statements")
 
     def testParseStringAsStream(self):
         content = """<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description rdf:about="http://librdf.org/"><dc:title>Redland RDF</dc:title></rdf:Description></rdf:RDF>"""
         base_uri = Uri("http://example.org/base#")
         s=self.parser.parse_string_as_stream(content, base_uri)
-        self.assert_(s is not None, "parse_string_as_stream should have succeeded")
+        self.assertTrue(s is not None, "parse_string_as_stream should have succeeded")
         rc=self.model.add_statements(s)
-        self.assert_(rc == 0, "add statements should have succeeded")
+        self.assertTrue(rc == 0, "add statements should have succeeded")
 
 class RedlandModelGeneral (unittest.TestCase):
     def setUp (self):
@@ -275,23 +275,23 @@ class RasqalQueryTestCase (unittest.TestCase):
     def testSPARQLQueryAsStream(self):
         q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT {?a dc:title ?c} WHERE {?a dc:title ?c}")
         s = q.execute(self.model).as_stream()
-        self.assert_(s is not None, "execute as_stream should have succeeded")
+        self.assertTrue(s is not None, "execute as_stream should have succeeded")
         rc=self.model.add_statements(s)
-        self.assert_(rc == 0, "add statements should have succeeded")
+        self.assertTrue(rc == 0, "add statements should have succeeded")
 
     def testSPARQLQueryAsk(self):
         q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> ASK WHERE {<http://www.dajobe.org/> dc:creator \"Dave Beckett\"}")
         rc = q.execute(self.model).get_boolean()
-        self.assert_(rc is True, "execute get_boolean should have returned True")
+        self.assertTrue(rc, "execute get_boolean should have returned True")
 
     def testSPARQLQueryAsString(self):
         q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> SELECT * WHERE {?a dc:title ?c}")
 
         r = q.execute(self.model)
         expect = 372
-        self.assert_(r is not None, "execute to_string should have succeeded")
+        self.assertTrue(r is not None, "execute to_string should have succeeded")
         s = r.to_string()
-        self.assert_(len(s) == expect, "to_string should have returned "+str(expect)+" not " + str(len(s)))
+        self.assertTrue(len(s) == expect, "to_string should have returned "+str(expect)+" not " + str(len(s)))
 
 
     def testSPARQLQueryTwice(self):
@@ -300,13 +300,13 @@ class RasqalQueryTestCase (unittest.TestCase):
         count1 = 0
         for result in results1:
             count1 += 1
-        self.assert_(count1 == 3, "Should have found three results in execution 1")
+        self.assertTrue(count1 == 3, "Should have found three results in execution 1")
 
         results2 = q.execute(self.model)
         count2 = 0
         for result2 in results2:
             count2 += 1
-        self.assert_(count2 == 3, "Should have found three results in execution 2")
+        self.assertTrue(count2 == 3, "Should have found three results in execution 2")
 
 
 #    def testSPARQLQueryTwiceOverwriteVar(self):
@@ -316,23 +316,23 @@ class RasqalQueryTestCase (unittest.TestCase):
 #        for result in results:
 #	    print "result 1>",count,result
 #            count += 1
-#        self.assert_(count == 3, "Should have found three results in execution 1 not "+str(count))
+#        self.assertTrue(count == 3, "Should have found three results in execution 1 not "+str(count))
 #
 #        results = q.execute(self.model)
 #        count = 0
 #        for result in results:
 #	    print "result 2>",count,result
 #            count += 1
-#        self.assert_(count == 3, "Should have found three results in execution 2 not "+str(count))
+#        self.assertTrue(count == 3, "Should have found three results in execution 2 not "+str(count))
 
     def testSPARQLQueryTriplesToString(self):
         q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> CONSTRUCT {?a dc:title ?c} WHERE {?a dc:title ?c}")
 
         r = q.execute(self.model)
         expect = 289
-        self.assert_(r is not None, "execute to_string should have succeeded")
+        self.assertTrue(r is not None, "execute to_string should have succeeded")
         s = r.to_string()
-        self.assert_(len(s) == expect, "to_string should have returned "+str(expect)+" not " + str(len(s)))
+        self.assertTrue(len(s) == expect, "to_string should have returned "+str(expect)+" not " + str(len(s)))
 
 
 
