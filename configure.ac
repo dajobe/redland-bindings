@@ -568,12 +568,6 @@ dnl needed for some bindings such as python to link raptor locator functions
 RAPTOR_LDFLAGS=`$PKG_CONFIG raptor2 --libs`
 RASQAL_LDFLAGS=`$PKG_CONFIG rasqal --libs`
 
-if test $REDLAND_VERSION_DEC -lt 10014; then
-  # These should have been added to redland.pc in 1.0.13
-
-  LIBRDF_CPPFLAGS="$LIBRDF_CPPFLAGS `$PKG_CONFIG rasqal --cflags`"
-  LIBRDF_LDFLAGS="$LIBRDF_LDFLAGS $RASQAL_LDFLAGS"
-fi
 
 
 dnl Checks for building sub-packages in sub directories
