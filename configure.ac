@@ -299,10 +299,8 @@ if test "X$PYTHON" != X; then
   if test "X$PYTHON_INCLUDES" != X; then
     AC_MSG_RESULT(using user includes: $PYTHON_INCLUDES)
   else
-    PYTHON_INCLUDES="-I${python_prefix}/include/python${PYTHON_VERSION}"
-    if test "$python_prefix" != "$python_exec_prefix"; then
-      PYTHON_INCLUDES="$PYTHON_INCLUDES -I${python_exec_prefix}/include/python${PYTHON_VERSION}"
-    fi
+    python_includes=`$PYTHON -c 'from distutils import sysconfig; print(sysconfig.get_python_inc())'`
+    PYTHON_INCLUDES="-I$python_includes"
     AC_MSG_RESULT($PYTHON_INCLUDES)
   fi
 
