@@ -83,6 +83,9 @@ install-pythonDATA: $(python_DATA)
 uninstall-pythonDATA: $(python_DATA)
 	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_FULL_DYLIB) $(DESTDIR)$(pythondir)/RDF.py
 
+clean-local:
+	rm -rf __pycache__
+
 check-local: unittest-python test-python
 
 test-python: $(PYTHON_FULL_DYLIB)
