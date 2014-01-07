@@ -4,14 +4,13 @@
 MANIFEST
 RDF.html
 Redland-stamp
-Redland.so
-Redland.dll
+Redland.py
 Redland_wrap*
+_Redland.dll
+_Redland.so
 build
 dist
-dmalloc.log
 lib
 not-used
 test*db
 test-out.rdf
-

@@ -41,10 +41,13 @@ PYTHON_LDFLAGS=@PYTHON_LDFLAGS@
 
 PYTHON_LIBEXT=@PYTHON_LIBEXT@
 
-SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c
+# Redland.py wraps and loads _Redland.so/dylib
+PYTHON_FULL_DYLIB=_$(PYTHON_PACKAGE)$(PYTHON_LIBEXT)
+
+SWIG_OUTPUTS=$(PYTHON_PACKAGE)_wrap.c Redland.py
 
 pythondir=@PYTHON_LIB@
-python_DATA=RDF.py Redland$(PYTHON_LIBEXT)
+python_DATA=RDF.py $(PYTHON_FULL_DYLIB) Redland.py
 
 EXTRA_DIST=README RDF.py \
 example.py redlandtest.py \
@@ -54,7 +57,7 @@ SUBDIRS=test
 
 CLEANFILES=*.db *.pyc test-out.rdf \
 $(PYTHON_PACKAGE)_wrap.so $(PYTHON_PACKAGE)_wrap.o $(PYTHON_PACKAGE)-stamp \
-$(PYTHON_PACKAGE)$(PYTHON_LIBEXT) $(PYTHON_PACKAGE).bundle
+$(PYTHON_FULL_DYLIB) $(PYTHON_PACKAGE).bundle
 MAINTAINERCLEANFILES=$(SWIG_OUTPUTS) $(SWIG_CRUFT)
 
 RUN=@REDLAND_RUN@
@@ -67,29 +70,29 @@ $(PYTHON_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-post.i redland-decl.i redland-t
 $(PYTHON_PACKAGE)_wrap.so: $(srcdir)/$(PYTHON_PACKAGE)_wrap.c
 	$(CC) $(DEFS) $(SWIG_OPTS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) $(STANDARD_CFLAGS) -fPIC -DPIC $(srcdir)/$(PYTHON_PACKAGE)_wrap.c -c -o $@
 
-$(PYTHON_PACKAGE)$(PYTHON_LIBEXT): $(PYTHON_PACKAGE)-stamp
+$(PYTHON_FULL_DYLIB): $(PYTHON_PACKAGE)-stamp
 $(PYTHON_PACKAGE)-stamp: $(PYTHON_PACKAGE)_wrap.so
-	$(CC) $(AM_CFLAGS) $(CFLAGS) $(PYTHON_PACKAGE)_wrap.so $(PYTHON_LDFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $(PYTHON_PACKAGE)$(PYTHON_LIBEXT)
+	$(CC) $(AM_CFLAGS) $(CFLAGS) $(PYTHON_PACKAGE)_wrap.so $(PYTHON_LDFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $(PYTHON_FULL_DYLIB)
 	touch $(PYTHON_PACKAGE)-stamp
 
 install-pythonDATA: $(python_DATA)
 	$(mkinstalldirs) $(DESTDIR)$(pythondir)
-	$(INSTALL_PROGRAM) $(PYTHON_PACKAGE)$(PYTHON_LIBEXT) $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE)$(PYTHON_LIBEXT)
+	$(INSTALL_PROGRAM) $(PYTHON_FULL_DYLIB) $(DESTDIR)$(pythondir)/$(PYTHON_FULL_DYLIB)
 	$(INSTALL_DATA) RDF.py $(DESTDIR)$(pythondir)/RDF.py
 
 uninstall-pythonDATA: $(python_DATA)
-	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_PACKAGE)$(PYTHON_LIBEXT) $(DESTDIR)$(pythondir)/RDF.py
+	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_FULL_DYLIB) $(DESTDIR)$(pythondir)/RDF.py
 
 check-local: unittest-python test-python
 
-test-python: $(PYTHON_PACKAGE)$(PYTHON_LIBEXT)
+test-python: $(PYTHON_FULL_DYLIB)
 	PYTHONPATH=. \
 	  $(RUN)$(PYTHON) $(srcdir)/test/test.py
 
-unittest-python: $(PYTHON_PACKAGE)$(PYTHON_LIBEXT)
+unittest-python: $(PYTHON_FULL_DYLIB)
 	PYTHONPATH=. \
 	  $(RUN)$(PYTHON) $(srcdir)/redlandtest.py
 
-RDF.html: RDF.py $(PYTHON_PACKAGE)$(PYTHON_LIBEXT)
+RDF.html: RDF.py $(PYTHON_FULL_DYLIB)
 	PYTHONPATH=. \
 	  $(RUN)$(PYTHON) -c 'import pydoc; pydoc.cli()' -w RDF

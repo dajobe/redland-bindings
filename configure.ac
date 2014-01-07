@@ -83,10 +83,6 @@ if test "X$SWIG" != "X"; then
   SWIG_VERSION=`$SWIG -version 2>&1 |sed -ne 's/^SWIG Version //p'`
   SWIG_VERSION_DEC=`echo $SWIG_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
 
- if test $SWIG_VERSION_DEC -ge 010326; then
-   SWIG_PYTHON_ARGS=-noproxy
- fi
-
   SWIG_MIN_VERSION_DEC=`echo $SWIG_MIN_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
   SWIG_REC_VERSION_DEC=`echo $SWIG_RECOMMENDED_VERSION | $AWK -F. '{printf("%d\n", 10000*$1 + 100*$2 + $3)};'`
 
