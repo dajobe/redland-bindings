@@ -561,20 +561,6 @@ AC_SUBST(REDLAND_RUN)
 REDLAND_SWIG=`$PKG_CONFIG redland --variable=swig`
 AC_SUBST(REDLAND_SWIG)
 
-AC_MSG_CHECKING(if redland was built with raptor2)
-REDLAND_HAVE_RAPTOR2_API=`$PKG_CONFIG redland --variable=have_raptor2_api 2>/dev/null`
-if test "X$REDLAND_HAVE_RAPTOR2_API" = X1; then
-  AC_DEFINE(REDLAND_HAVE_RAPTOR2_API, 1, [Redland uses Raptor2 API])
-  AC_MSG_RESULT(yes)
-else
-  AC_MSG_RESULT(no)
-  REDLAND_HAVE_RAPTOR2_API=0
-
-  AC_MSG_ERROR(Redland bindings requires a Redland built with Raptor 2 APIs.  see http://librdf.org/)
-fi
-AC_SUBST(REDLAND_HAVE_RAPTOR2_API)
-
-
 LIBRDF_CPPFLAGS="$LIBRDF_CPPFLAGS `$PKG_CONFIG redland --cflags`"
 LIBRDF_LDFLAGS="$LIBRDF_LDFLAGS `$PKG_CONFIG redland --libs`"
 
