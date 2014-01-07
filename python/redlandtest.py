@@ -280,7 +280,7 @@ class RasqalQueryTestCase (unittest.TestCase):
         self.assert_(rc == 0, "add statements should have succeeded")
 
     def testSPARQLQueryAsk(self):
-        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> ASK WHERE {?x ?y ?z}")
+        q = SPARQLQuery("PREFIX dc: <http://purl.org/dc/elements/1.1/> ASK WHERE {<http://www.dajobe.org/> dc:creator \"Dave Beckett\"}")
         rc = q.execute(self.model).get_boolean()
         self.assert_(rc is True, "execute get_boolean should have returned True")
 
