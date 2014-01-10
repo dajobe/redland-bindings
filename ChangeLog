@@ -1,3 +1,46 @@
+2014-01-06  Dave Beckett <dave@dajobe.org>
+
+	* configure.ac:
+	Remove test for redland 1.0.14 that is too old now
+
+	* configure.ac: Remove check for always-true
+	REDLAND_HAVE_RAPTOR2_API
+
+	* python/.gitignore, python/Makefile.am: clean __pycache__
+
+	* configure.ac, python/.gitignore, python/Makefile.am: Generate
+	recommended files: _Redland.so/dylib wrapped by Redland.py
+
+	* python/redlandtest.py: Update assertions to use non-deprecated
+	methods
+
+	* configure.ac: Use python distutils get_python_inc() to get
+	includes path
+
+	* configure.ac, python/RDF.py, python/redland-post.i,
+	python/test/test.py: Changes for Python 3.0 support (continue
+	supporting python 2)
+
+	Patch from Diane Trout - thanks.
+
+	Fixes Issue #0000549
+	http://bugs.librdf.org/mantis/view.php?id=549
+
+	* python/redlandtest.py:
+	(testSPARQLQueryAsk): Rewrite to remove unused var warning
+
+	* NEWS.html, RELEASE.html:
+	2014 1.0.17.1
+
+2013-12-29  Dave Beckett <dave@dajobe.org>
+
+	* ruby/.gitignore: Ignore rdoc/*
+
+2013-12-28  Dave Beckett <dave@dajobe.org>
+
+	* ChangeLog, NEWS.html, RELEASE.html, configure.ac:
+	1.0.17.1
+
 2013-06-17  Dave Beckett <dave@dajobe.org>
 
 	* autogen.sh: update autogen.sh
@@ -14,12 +57,10 @@
 2013-02-26  Olivier Berger <olivier.berger@telecom-sudparis.eu>
 
 	* python/example-fetch-and-save.py,
-	python/example-retrieve-from-saved.py:
-	Add example of MySQL Storage
-	use to persist a graph
+	python/example-retrieve-from-saved.py: Add example of MySQL
+	Storage use to persist a graph
 
-	* python/example.py:
-	Fix syntax of the SPARQL query
+	* python/example.py: Fix syntax of the SPARQL query
 
 2013-01-24  Dave Beckett <dave@dajobe.org>
 
