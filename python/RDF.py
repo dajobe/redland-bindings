@@ -2017,6 +2017,22 @@ class Query(object):
     else:
       return None
 
+  def get_limit(self):
+    return Redland.librdf_query_get_limit(self._query)
+
+  def set_limit(self,limit):
+    rc = Redland.librdf_query_set_limit(self._query,limit)
+    if rc != 0:
+      raise RedlandError("Couldn't set query results limit")
+
+  def get_offset(self):
+    return Redland.librdf_query_get_offset(self._query)
+
+  def set_offset(self,offset):
+    rc = Redland.librdf_query_set_offset(self._query,offset)
+    if rc != 0:
+      raise RedlandError("Couldn't set query results offset")
+
 # end class Query
 
 
