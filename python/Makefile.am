@@ -79,9 +79,10 @@ install-pythonDATA: $(python_DATA)
 	$(mkinstalldirs) $(DESTDIR)$(pythondir)
 	$(INSTALL_PROGRAM) $(PYTHON_FULL_DYLIB) $(DESTDIR)$(pythondir)/$(PYTHON_FULL_DYLIB)
 	$(INSTALL_DATA) RDF.py $(DESTDIR)$(pythondir)/RDF.py
+	$(INSTALL_DATA) Redland.py $(DESTDIR)$(pythondir)/Redland.py
 
 uninstall-pythonDATA: $(python_DATA)
-	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_FULL_DYLIB) $(DESTDIR)$(pythondir)/RDF.py
+	rm -f $(DESTDIR)$(pythondir)/$(PYTHON_FULL_DYLIB) $(DESTDIR)$(pythondir)/RDF.{py,pyc} $(DESTDIR)$(pythondir)/Redland.{py,pyc}
 
 clean-local:
 	rm -rf __pycache__
