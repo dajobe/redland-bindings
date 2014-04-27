@@ -359,7 +359,7 @@ if test "X$RUBY" != X; then
   RUBY_ARCHDIR=`$RUBY -rrbconfig -e "print RbConfig::CONFIG['archdir']"`
   ruby_install_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_install_dir_variable']"`
   ruby_header_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['rubyhdrdir']"`
-  ruby_arch_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['arch']"`
+  ruby_arch_header_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['rubyarchhdrdir']"`
   ruby_arch_install_dir_config=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['$ruby_arch_install_dir_variable']"`
   librubyarg_shared=`$RUBY -rrbconfig -e "puts RbConfig::CONFIG['LIBRUBYARG_SHARED']"`
   changequote([, ])dnl
@@ -384,14 +384,8 @@ if test "X$RUBY" != X; then
 
   AC_MSG_CHECKING(Ruby headers dir)
   if test "X$ruby_header_dir_config" != "Xnil" -a "X$ruby_header_dir_config" != "X"; then
-    RUBY_INCLUDES="$RUBY_INCLUDES -I$ruby_header_dir_config"
-    if test "X$ruby_arch_config" != "Xnil" -a "X$ruby_arch_config" != "X"; then
-      ruby_arch_hdrdir="$ruby_header_dir_config/$ruby_arch_config"
-      if test -d "$ruby_arch_hdrdir"; then
-        RUBY_INCLUDES="$RUBY_INCLUDES -I$ruby_arch_hdrdir"
-      fi
-    fi
-    AC_MSG_RESULT($RUBY_INCLUDES from RbConfig::CONFIG rubyhdrdir)
+    RUBY_INCLUDES="$RUBY_INCLUDES -I$ruby_header_dir_config -I$ruby_arch_header_dir_config"
+    AC_MSG_RESULT($RUBY_INCLUDES from RbConfig::CONFIG rubyhdrdir and rubyarchhdrdir)
   else
     if test -r "$RUBY_ARCHDIR/ruby.h"; then
       RUBY_INCLUDES="$RUBY_INCLUDES -I$RUBY_ARCHDIR"
