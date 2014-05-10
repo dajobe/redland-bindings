@@ -1,5 +1,18 @@
 2014-05-10  Dave Beckett <dave@dajobe.org>
 
+	* perl/lib/RDF/Redland/Node.pm: preferred
+
+	* ruby/Makefile.am, ruby/jquery-1.7.2.js: Install jquery source
+	code for rdoc output.  This means the distribution contains full
+	source code
+
+	* docs/Makefile.am: Install rdoc .js files
+
+	* docs/Makefile.am:
+	Make tidy deal with rdoc's latest HTML output
+
+	* NEWS.html, RELEASE.html: 1.0.17.1
+
 	* Merge pull request #7 from commonsmachinery/master Install and
 	uninstall Redland.py wrapper too
 
