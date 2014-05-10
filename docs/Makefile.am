@@ -101,7 +101,7 @@ $(PYTHON_HTML_PYDOC_FILES): pydoc/%.html: $(srcdir)/../python/RDF.html $(srcdir)
 
 # RUBY
 $(RUBY_HTML_RDOC_FILES): rdoc/%.html: $(srcdir)/fix-rdoc-xhtml rdoc-dirs-stamp
-	-tidy -asxml -wrap 1000 $(srcdir)/../ruby/$@ 2>/dev/null | $(PERL) $(srcdir)/fix-rdoc-xhtml $@
+	-tidy --new-blocklevel-tags nav,section,footer -asxml -wrap 1000 $(srcdir)/../ruby/$@ 2>/dev/null | $(PERL) $(srcdir)/fix-rdoc-xhtml $@
 
 $(RUBY_EXTRA_RDOC_FILES): rdoc-dirs-stamp
 	@for file in $(RUBY_EXTRA_RDOC_FILES); do \
