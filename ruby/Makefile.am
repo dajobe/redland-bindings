@@ -45,7 +45,8 @@ rubyarchinstall_DATA=$(RUBY_PACKAGE).$(RUBY_SO_SUFFIX)
 EXTRA_DIST=\
 example.rb test.rb \
 redland-pre.i redland-types.i \
-$(SWIG_OUTPUTS)
+$(SWIG_OUTPUTS) \
+jquery-1.7.2.js
 
 SUBDIRS=lib test
 
@@ -93,6 +94,8 @@ $(RDOC_STAMP):
 	here=`pwd`; \
 	cd $(srcdir)/lib; \
 	rdoc --quiet --fmt html --charset 'utf-8' --inline-source --op $$outdir --title "Redland Ruby API RDoc" --exclude convert_owl.rb --exclude constants.rb --exclude convertfoaf.rb && touch $$here/$@
+	echo "Install JQuery full source replacing rdoc's minimized"
+	cp jquery-1.7.2.js $(RDOC_DIR)/js/jquery.js
 
 clean-local:
 	rm -rf $(RDOC_DIR) $(RDOC_STAMP)
