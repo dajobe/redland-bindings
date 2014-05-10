@@ -506,7 +506,7 @@ language (xml:lang attribute) I<XML_LANGUAGE>
 and if content is well formed XML, when I<IS_WF> is non
 0.  I<XML_LANGUAGE> is optional can can be set to undef.
 
-This method remains but using new_literal is prefered.
+This method remains but using new_literal is preferred.
 Instead, for plain literals use:
 
   $node=new RDF::Redland::Node("blah")
