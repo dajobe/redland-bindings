@@ -1,4 +1,6 @@
-2014-05-10  Dave Beckett <dave@dajobe.org>
+2014-05-10  Dave Beckett  <dave@dajobe.org>
+
+	* Snapshotted redland-bindings_1_0_17_1 for 1.0.17.1 release (GIT e7e565db7f5c18fc955156b40c6173d1297e8afb)
 
 	* perl/lib/RDF/Redland/Node.pm: preferred
 
