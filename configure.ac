@@ -425,7 +425,7 @@ if test "X$RUBY" != X; then
 	AC_MSG_ERROR(No such RUBY linking type $ruby_linking)
 	;;
   esac
-  RUBY_SO_SUFFIX=$php_linking
+  RUBY_SO_SUFFIX=$ruby_linking
   AC_MSG_CHECKING(Ruby Linking)
   AC_MSG_RESULT(compile '$RUBY_CFLAGS' link '$RUBY_LDFLAGS' suffix $RUBY_SO_SUFFIX)
 else
