@@ -625,6 +625,7 @@ ruby/lib/Makefile
 ruby/lib/rdf/Makefile
 ruby/lib/rdf/redland/Makefile
 ruby/lib/rdf/redland/schemas/Makefile
+ada/Makefile
 data/Makefile
 ])
 AC_CONFIG_FILES([redland-bindings.spec])
