@@ -9,7 +9,7 @@ package RDF.Base is
    type Dummy_Record_Access is access Dummy_Record;
 
    -- It is logically abstract, but not exactly abstract in Ada sense.
-   -- It can't be abstract becuase the function From_Handle returns this type.
+   -- It can't be abstract because the function From_Handle returns this type.
    type Base_Object is new Ada.Finalization.Limited_Controlled with private;
 
    overriding procedure Initialize(Object: in out Base_Object);
