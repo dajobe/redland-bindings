@@ -1,4 +1,5 @@
 with RDF.Raptor;
+use all type RDF.Raptor.Flag_Type;
 
 -- This just creates and assigns some variables (and ignores their values)
 
@@ -6,7 +7,7 @@ package body Basic_Test is
 
    Default_World: RDF.Raptor.World := RDF.Raptor.Open;
 
-   World_With_Some_Flags: RDF.Raptor.World := RDF.Raptor.Open((1=>(Flag=>URI_Interning, Value=>0)));
+   World_With_Some_Flags: RDF.Raptor.World := RDF.Raptor.Open((1=>(Flag=>URI_Interning, Value=>False)));
 
    ----------
    -- Name --

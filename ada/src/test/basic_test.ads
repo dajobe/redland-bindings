@@ -1,4 +1,4 @@
-with AUnit; use AUnit, AUnit.Test_Cases, AUnit.Test_Results;
+with AUnit, AUnit.Test_Cases, AUnit.Test_Results; use AUnit, AUnit.Test_Cases, AUnit.Test_Results;
 
 package Basic_Test is
 

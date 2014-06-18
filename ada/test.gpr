@@ -1,4 +1,5 @@
 with "librdf.gpr";
+with "aunit-3.7.0w/lib/gnat/aunit_build.gpr";
 
 project Test is
 
