@@ -40,6 +40,8 @@ all: $(LIB_DIR)/librdf-ada.so $(LIB_DIR)/librdf-ada.a
 clean:
 	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname)
 	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname)
+	gnat clean -r -Ptest.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj/test -Xsoversion=$(soname)
+	gnat clean -r -Ptest.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj/test -Xsoversion=$(soname)
 	rm -f $(builddir)/lib/$(soname)
 
 install: all
