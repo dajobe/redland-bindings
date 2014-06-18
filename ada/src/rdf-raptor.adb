@@ -27,6 +27,7 @@ package body RDF.Raptor is
    procedure Open(Object: World; Flags: Flags_Array) is
    begin
       Set_Flags(Object, Flags);
+      Open(Object);
    end;
 
    function Open return World is
@@ -44,7 +45,6 @@ package body RDF.Raptor is
          Open(Object, Flags);
       end return;
    end;
-
 
    procedure Finalize_Handle(Object: World; Handle: RDF.Base.Dummy_Record_Access) is
    begin
