@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+  echo "Usage: $0 obj"
+  exit 2
+fi
+
+obj=$1
+
+# Generate the simple script
+cat > gdb.run << EOF
+# Load binary
+target sim -e bug -r 0x400000
+load $obj
+set confirm off
+run
+quit
+EOF
+
+# Run gdb on it
+powerpc-elf-gdb -n --batch --command=gdb.run $obj
+rm -f gdb.run
+

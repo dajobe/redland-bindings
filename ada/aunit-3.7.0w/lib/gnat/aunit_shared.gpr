@@ -1,0 +1,43 @@
+project AUnit_Shared is
+
+   Target := external ("PLATFORM", "native");
+
+   type Runtime_Type is
+     ("cert", "default", "full", "hi", "kernel", "kernel-sjlj", "kernel-smp",
+      "pthread", "sjlj", "ravenscar", "ravenscar-apex", "ravenscar-full",
+      "ravenscar-cert", "ravenscar-cert-rci", "ravenscar-cert-rtp",
+      "ravenscar-sfp", "rtp",
+      "rtp-smp", "soft-float", "xenomai", "zcx", "zfp", "minimal");
+   Runtime : Runtime_Type := external ("RUNTIME", "full");
+
+   Library_Dir := external ("LIBDIR", "../aunit/" & Target & "-" & Runtime);
+
+   for Source_Dirs use ();
+
+   type Exception_Type is ("fullexception", "certexception", "zfpexception");
+   type Calendar_Type is ("calendar", "nocalendar");
+   type Memory_type is ("nativememory", "staticmemory");
+
+   Except : Exception_Type := "fullexception";
+   Calend : Calendar_Type := "calendar";
+   Memory : Memory_Type := "nativememory";
+
+   case Runtime is
+      when "hi" | "ravenscar-sfp" | "zfp" | "minimal" =>
+         Except := "zfpexception";
+         Calend := "nocalendar";
+         Memory := "staticmemory";
+      when "ravenscar-full" | "ravenscar" =>
+         Except := "certexception";
+         Calend := "nocalendar";
+      when "ravenscar-cert" | "ravenscar-cert-rci" | "ravenscar-cert-rtp" =>
+         Except := "certexception";
+         Calend := "nocalendar";
+         Memory := "staticmemory";
+      when "cert" =>
+         Except := "certexception";
+         Memory := "staticmemory";
+      when others =>
+   end case;
+
+end AUnit_Shared;
