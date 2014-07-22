@@ -16,7 +16,7 @@ package body RDF.Raptor is
 
    function Default_Handle(Object: World) return RDF.Base.Dummy_Record_Access is
    begin
-      return C_Raptor_New_World_Internal(Raptor_Version);
+      return C_Raptor_New_World_Internal(Raptor_Version_Decimal);
    end;
 
    procedure Open(Object: World) is

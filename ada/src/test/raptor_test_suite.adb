@@ -1,4 +1,5 @@
 with Basic_Test;
+with Constants_Test;
 
 package body Raptor_Test_Suite is
 
@@ -9,10 +10,12 @@ package body Raptor_Test_Suite is
 
    --  Statically allocate test cases:
    Test_Case_1 : aliased Basic_Test.Test_Case;
+   Test_Case_2 : aliased Constants_Test.Test_Case;
 
    function Suite return Access_Test_Suite is
    begin
       Add_Test (Result'Access, Test_Case_1'Access);
+      Add_Test (Result'Access, Test_Case_2'Access);
       return Result'Access;
    end Suite;
 
