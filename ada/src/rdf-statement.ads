@@ -1,7 +1,9 @@
 package RDF.Statement is
 
-   type Statement_Handler is abstract tagged null record;
+   pragma Elaborate_Body; -- FIXME: Remove
 
-   procedure Handle (Handler: Statement_Handler) is abstract;
+--     type Statement_Handler is abstract tagged null record;
+--
+--     procedure Handle (Handler: Statement_Handler) is abstract;
 
 end RDF.Statement;

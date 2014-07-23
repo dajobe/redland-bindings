@@ -3,7 +3,7 @@ with RDF.Base;
 
 package RDF.Raptor is
 
-   type World is new RDF.Base.Base_Object with null record;
+   type World is new RDF.Base.Simple_Base_Object with null record;
 
    type Flag_Type is (Libxml_Error_Save,
                       Libxml_Structured_Error_Save,

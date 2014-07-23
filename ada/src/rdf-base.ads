@@ -1,36 +1,15 @@
-with Ada.Finalization;
+with RDF.Auxilary.Handled_Record;
 
 package RDF.Base is
 
    -- Internal
-   type Dummy_Record is private;
+   type Dummy_Record is null record;
 
    -- Internal
    type Dummy_Record_Access is access Dummy_Record;
 
-   -- It is logically abstract, but not exactly abstract in Ada sense.
-   -- It can't be abstract because the function From_Handle returns this type.
-   type Base_Object is new Ada.Finalization.Limited_Controlled with private;
+   package Simple_Handled_Record is new RDF.Auxilary.Handled_Record(Dummy_Record, Dummy_Record_Access);
 
-   overriding procedure Initialize(Object: in out Base_Object);
-
-   overriding procedure Finalize(Object: in out Base_Object);
-
-   not overriding function Get_Handle(Object: Base_Object) return Dummy_Record_Access with Inline;
-
-   not overriding function From_Handle(Handle: Dummy_Record_Access) return Base_Object with Inline;
-
-   not overriding function Default_Handle(Object: Base_Object) return Dummy_Record_Access;
-
-   not overriding procedure Finalize_Handle(Object: Base_Object; Handle: Dummy_Record_Access) is null;
-
-private
-
-   type Dummy_Record is null record;
-
-   type Base_Object is new Ada.Finalization.Limited_Controlled with
-      record
-         Handle: Dummy_Record_Access;
-      end record;
+   subtype Simple_Base_Object is Simple_Handled_Record.Base_Object;
 
 end RDF.Base;
