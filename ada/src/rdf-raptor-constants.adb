@@ -1,7 +1,6 @@
 with Interfaces.C.Strings;
-with RDF.Auxilary;
 
-package body RDF is
+package body RDF.Raptor.Constants is
 
    subtype chars_ptr is Interfaces.C.Strings.chars_ptr;
    function Value(Item : in chars_ptr) return String renames Interfaces.C.Strings.Value;
@@ -30,4 +29,5 @@ package body RDF is
    function raptor_xml_namespace_uri return String is (Value(c_raptor_xml_namespace_uri));
    function raptor_xmlschema_datatypes_namespace_uri return String is (Value(c_raptor_xmlschema_datatypes_namespace_uri));
 
-end RDF;
+
+end RDF.Raptor.Constants;

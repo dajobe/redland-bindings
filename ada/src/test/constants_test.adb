@@ -2,7 +2,7 @@ with AUnit.Test_Cases;
 with AUnit.Assertions;
 with Ada.Strings.Fixed;
 with Interfaces.C;
-with RDF; use RDF;
+with RDF.Raptor.Constants; use RDF.Raptor.Constants;
 
 package body Constants_Test is
 
