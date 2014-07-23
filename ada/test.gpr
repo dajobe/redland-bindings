@@ -3,9 +3,15 @@ with "aunit-3.7.0w/lib/gnat/aunit_build.gpr";
 
 project Test is
 
-   for Source_Dirs use ("src/test");
+   type Compilation_Mode_Type is
+      ("Devel", "Install");
+   type Runtime_Type is
+      ("cert", "default", "full", "hi", "kernel", "kernel-sjlj", "kernel-smp", "pthread", "sjlj", "ravenscar", "ravenscar-apex", "ravenscar-full", "ravenscar-cert", "ravenscar-cert-rci", "ravenscar-cert-rtp", "ravenscar-sfp", "rtp", "rtp-smp", 
+      "soft-float", "xenomai", "zcx", "zfp", "minimal");
    for Object_Dir use "obj/test";
    for Main use ("run_all_tests.adb");
+   RUNTIME : Runtime_Type := external ("RUNTIME");
+   MODE : Compilation_Mode_Type := external ("MODE");
 
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-O2", "-gnat2012");
@@ -14,6 +20,86 @@ project Test is
    package Linker is
       for Linker_Options use ("-lraptor2");
    end Linker;
+
+   case RUNTIME is
+
+      when "cert" =>
+         for Source_Dirs use ("src/test");
+
+      when "default" =>
+         for Source_Dirs use ("src/test");
+
+      when "full" =>
+
+         case MODE is
+
+            when "Devel" =>
+               for Source_Dirs use ("src/test");
+
+            when "Install" =>
+               for Source_Dirs use ("src/test");
+         end case;
+
+      when "hi" =>
+         for Source_Dirs use ("src/test");
+
+      when "kernel" =>
+         for Source_Dirs use ("src/test");
+
+      when "kernel-sjlj" =>
+         for Source_Dirs use ("src/test");
+
+      when "kernel-smp" =>
+         for Source_Dirs use ("src/test");
+
+      when "pthread" =>
+         for Source_Dirs use ("src/test");
+
+      when "sjlj" =>
+         for Source_Dirs use ("src/test");
+
+      when "ravenscar" =>
+         for Source_Dirs use ("src/test");
+
+      when "ravenscar-apex" =>
+         for Source_Dirs use ("src/test");
+
+      when "ravenscar-full" =>
+         for Source_Dirs use ("src/test");
+
+      when "ravenscar-cert" =>
+         for Source_Dirs use ("src/test");
+
+      when "ravenscar-cert-rci" =>
+         for Source_Dirs use ("src/test");
+
+      when "ravenscar-cert-rtp" =>
+         for Source_Dirs use ("src/test");
+
+      when "ravenscar-sfp" =>
+         for Source_Dirs use ("src/test");
+
+      when "rtp" =>
+         for Source_Dirs use ("src/test");
+
+      when "rtp-smp" =>
+         for Source_Dirs use ("src/test");
+
+      when "soft-float" =>
+         for Source_Dirs use ("src/test");
+
+      when "xenomai" =>
+         for Source_Dirs use ("src/test");
+
+      when "zcx" =>
+         for Source_Dirs use ("src/test");
+
+      when "zfp" =>
+         for Source_Dirs use ("src/test");
+
+      when "minimal" =>
+         for Source_Dirs use ("src/test");
+   end case;
 
 end Test;
 
