@@ -1,9 +1,9 @@
 with Interfaces.C;
-with RDF.Base;
+with RDF.Auxilary.Simple_Handled_Record;
 
 package RDF.Raptor is
 
-   type World is new RDF.Base.Simple_Base_Object with null record;
+   type World is new RDF.Auxilary.Simple_Handled_Record.Base_Object with null record;
 
    type Flag_Type is (Libxml_Error_Save,
                       Libxml_Structured_Error_Save,
@@ -23,7 +23,7 @@ package RDF.Raptor is
 
    type Flags_Array is array(Integer range <>) of Flag_And_Value;
 
-   overriding function Default_Handle(Object: World) return RDF.Base.Dummy_Record_Access;
+   overriding function Default_Handle(Object: World) return RDF.Auxilary.Dummy_Record_Access;
 
    --overriding function From_Handle(Handle: RDF.Base.Dummy_Record_Access) return World with Inline;
 
@@ -35,7 +35,7 @@ package RDF.Raptor is
 
    not overriding function Open(Flags: Flags_Array) return World;
 
-   overriding procedure Finalize_Handle(Object: World; Handle: RDF.Base.Dummy_Record_Access);
+   overriding procedure Finalize_Handle(Object: World; Handle: RDF.Auxilary.Dummy_Record_Access);
 
    not overriding procedure Set_Flag(Object: World; Flag: Flag_Type; Value: Boolean);
 

@@ -2,19 +2,19 @@ with Ada.Unchecked_Conversion;
 
 package body RDF.Raptor is
 
-   function C_Raptor_New_World_Internal(Version: Interfaces.C.unsigned) return RDF.Base.Dummy_Record_Access
+   function C_Raptor_New_World_Internal(Version: Interfaces.C.unsigned) return RDF.Auxilary.Dummy_Record_Access
      with Import, Convention=>C, External_Name=>"raptor_new_world_internal";
 
-   procedure C_Raptor_World_Open(Handle: RDF.Base.Dummy_Record_Access)
+   procedure C_Raptor_World_Open(Handle: RDF.Auxilary.Dummy_Record_Access)
      with Import, Convention=>C, External_Name=>"raptor_world_open";
 
-   procedure C_Raptor_Free_World(Handle: RDF.Base.Dummy_Record_Access)
+   procedure C_Raptor_Free_World(Handle: RDF.Auxilary.Dummy_Record_Access)
      with Import, Convention=>C, External_Name=>"raptor_free_world";
 
-   procedure C_Raptor_World_Set_Flag(Handle: RDF.Base.Dummy_Record_Access; Flag: Interfaces.C.int; Value: Interfaces.C.int)
+   procedure C_Raptor_World_Set_Flag(Handle: RDF.Auxilary.Dummy_Record_Access; Flag: Interfaces.C.int; Value: Interfaces.C.int)
      with Import, Convention=>C, External_Name=>"raptor_world_set_flag";
 
-   function Default_Handle(Object: World) return RDF.Base.Dummy_Record_Access is
+   function Default_Handle(Object: World) return RDF.Auxilary.Dummy_Record_Access is
    begin
       return C_Raptor_New_World_Internal(Raptor_Version_Decimal);
    end;
@@ -46,7 +46,7 @@ package body RDF.Raptor is
       end return;
    end;
 
-   procedure Finalize_Handle(Object: World; Handle: RDF.Base.Dummy_Record_Access) is
+   procedure Finalize_Handle(Object: World; Handle: RDF.Auxilary.Dummy_Record_Access) is
    begin
       C_Raptor_Free_World(Handle);
    end;
@@ -65,7 +65,7 @@ package body RDF.Raptor is
       end loop;
    end;
 
---   function From_Handle(Handle: RDF.Base.Dummy_Record_Access) return World is
+--   function From_Handle(Handle: RDF.Auxilary.Dummy_Record_Access) return World is
 --   begin
 --      return (RDF.Base.From_Handle(Handle) with null record);
 --   end From_Handle;
