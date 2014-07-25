@@ -3,19 +3,19 @@ with RDF.Raptor.Constants;
 
 package body RDF.Raptor.World is
 
-   function C_Raptor_New_World_Internal(Version: Interfaces.C.unsigned) return RDF.Auxilary.Simple_Handled_Record.Access_Type
+   function C_Raptor_New_World_Internal(Version: Interfaces.C.unsigned) return RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type
      with Import, Convention=>C, External_Name=>"raptor_new_world_internal";
 
-   procedure C_Raptor_World_Open(Handle: RDF.Auxilary.Simple_Handled_Record.Access_Type)
+   procedure C_Raptor_World_Open(Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type)
      with Import, Convention=>C, External_Name=>"raptor_world_open";
 
-   procedure C_Raptor_Free_World(Handle: RDF.Auxilary.Simple_Handled_Record.Access_Type)
+   procedure C_Raptor_Free_World(Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type)
      with Import, Convention=>C, External_Name=>"raptor_free_world";
 
-   procedure C_Raptor_World_Set_Flag(Handle: RDF.Auxilary.Simple_Handled_Record.Access_Type; Flag: Interfaces.C.int; Value: Interfaces.C.int)
+   procedure C_Raptor_World_Set_Flag(Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type; Flag: Interfaces.C.int; Value: Interfaces.C.int)
      with Import, Convention=>C, External_Name=>"raptor_world_set_flag";
 
-   function Default_Handle(Object: World_Type) return RDF.Auxilary.Simple_Handled_Record.Access_Type is
+   function Default_Handle(Object: World_Type) return RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type is
    begin
       return C_Raptor_New_World_Internal(RDF.Raptor.Constants.Raptor_Version_Decimal);
    end;
@@ -47,7 +47,7 @@ package body RDF.Raptor.World is
       end return;
    end;
 
-   procedure Finalize_Handle(Object: World_Type; Handle: RDF.Auxilary.Simple_Handled_Record.Access_Type) is
+   procedure Finalize_Handle(Object: World_Type; Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type) is
    begin
       C_Raptor_Free_World(Handle);
    end;
@@ -66,7 +66,7 @@ package body RDF.Raptor.World is
       end loop;
    end;
 
---   function From_Handle(Handle: RDF.Auxilary.Simple_Handled_Record.Access_Type) return World is
+--   function From_Handle(Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type) return World is
 --   begin
 --      return (RDF.Base.From_Handle(Handle) with null record);
 --   end From_Handle;

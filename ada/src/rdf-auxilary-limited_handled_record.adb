@@ -1,9 +1,9 @@
-package body RDF.Auxilary.Handled_Record is
+package body RDF.Auxilary.Limited_Handled_Record is
 
    function Get_Handle(Object: Base_Object) return Access_Type is (Object.Handle);
 
    function From_Handle(Handle: Access_Type) return Base_Object is
-      (Ada.Finalization.Controlled with Handle=>Handle);
+      (Ada.Finalization.Limited_Controlled with Handle=>Handle);
 
    function Default_Handle(Object: Base_Object) return Access_Type is (null);
 
@@ -20,11 +20,4 @@ package body RDF.Auxilary.Handled_Record is
       end if;
    end Finalize;
 
-   procedure Adjust(Object: in out Base_Object) is
-   begin
-      if Object.Handle /= null then
-         Object.Handle := Copy_Handle(Object, Object.Handle);
-      end if;
-   end;
-
-end RDF.Auxilary.Handled_Record;
+end RDF.Auxilary.Limited_Handled_Record;

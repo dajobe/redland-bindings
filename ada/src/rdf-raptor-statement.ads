@@ -1,5 +1,5 @@
 -- TODO
-with RDF.Auxilary.Handled_Record;
+with RDF.Auxilary.Limited_Handled_Record;
 private with Interfaces.C;
 with RDF.Auxilary;
 with RDF.Raptor.World;
@@ -11,10 +11,10 @@ package RDF.Raptor.Statement is
 --     type Raptor_Statement_Record_Access is access Raptor_Statement_Record
 --        with Convention=>C;
 --
---     package My_Handled_Record is
---       new RDF.Auxilary.Handled_Record(Raptor_Statement_Record, Raptor_Statement_Record_Access);
+--     package My_Limited_Handled_Record is
+--       new RDF.Auxilary.Limited_Handled_Record(Raptor_Statement_Record, Raptor_Statement_Record_Access);
 --
---     subtype Raptor_Statement is My_Handled_Record.Base_Object;
+--     subtype Raptor_Statement is My_Limited_Handled_Record.Base_Object;
 --
 --     type Raptor_Statement_Handler is abstract tagged null record;
 --
