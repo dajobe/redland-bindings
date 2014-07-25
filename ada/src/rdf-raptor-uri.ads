@@ -1,17 +1,20 @@
-with RDF.Auxilary.Simple_Limited_Handled_Record;
+with RDF.Auxilary.Simple_Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
 
 package RDF.Raptor.URI is
 
-   type URI_Type is new RDF.Auxilary.Simple_Limited_Handled_Record.Base_Object with null record;
+   type URI_Type is new RDF.Auxilary.Simple_Handled_Record.Base_Object with null record;
 
    -- TODO:
    -- type URI_String is new String;
 
    -- null
-   --overriding function Default_Handle(Object: URI_Type) return RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type;
+   --overriding function Default_Handle(Object: URI_Type) return RDF.Auxilary.Simple_Handled_Record.Access_Type;
 
-   overriding procedure Finalize_Handle(Object: URI_Type; Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type);
+   overriding procedure Finalize_Handle(Object: URI_Type; Handle: RDF.Auxilary.Simple_Handled_Record.Access_Type);
+
+   overriding function Copy_Handle(Object: URI_Type; Handle: RDF.Auxilary.Simple_Handled_Record.Access_Type)
+                                   return RDF.Auxilary.Simple_Handled_Record.Access_Type;
 
    not overriding function From_String(World: World_Type; Arg: String) return URI_Type;
 
