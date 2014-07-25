@@ -5,6 +5,9 @@ package RDF.Raptor.URI is
 
    type URI_Type is new RDF.Auxilary.Simple_Handled_Record.Base_Object with null record;
 
+   -- TODO:
+   -- type URI_String is new String;
+
    -- null
    --overriding function Default_Handle(Object: URI_Type) return RDF.Auxilary.Simple_Handled_Record.Access_Type;
 

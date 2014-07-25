@@ -15,6 +15,7 @@ package RDF.Auxilary.Handled_Record is
 
    overriding procedure Finalize(Object: in out Base_Object);
 
+   -- TODO: Should check non-null predicate?
    not overriding function Get_Handle(Object: Base_Object) return Access_Type with Inline;
 
    not overriding function From_Handle(Handle: Access_Type) return Base_Object with Inline;
