@@ -3,10 +3,12 @@ with Interfaces.C.Strings;
 package RDF.Auxilary is
 
    -- Internal
-   type Dummy_Record is null record;
+   type Dummy_Record is null record
+      with Convention=>C;
 
-   -- Internal
-   type Dummy_Record_Access is access Dummy_Record;
+--     -- Internal
+--     type Dummy_Record_Access is access Dummy_Record
+--        with Convention=>C;
 
    -- Unused. Remove?
    generic

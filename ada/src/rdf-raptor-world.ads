@@ -23,7 +23,7 @@ package RDF.Raptor.World is
 
    type Flags_Array is array(Integer range <>) of Flag_And_Value;
 
-   overriding function Default_Handle(Object: World_Type) return RDF.Auxilary.Dummy_Record_Access;
+   overriding function Default_Handle(Object: World_Type) return RDF.Auxilary.Simple_Handled_Record.Access_Type;
 
    --overriding function From_Handle(Handle: RDF.Base.Dummy_Record_Access) return World with Inline;
 
@@ -35,7 +35,7 @@ package RDF.Raptor.World is
 
    not overriding function Open(Flags: Flags_Array) return World_Type;
 
-   overriding procedure Finalize_Handle(Object: World_Type; Handle: RDF.Auxilary.Dummy_Record_Access);
+   overriding procedure Finalize_Handle(Object: World_Type; Handle: RDF.Auxilary.Simple_Handled_Record.Access_Type);
 
    not overriding procedure Set_Flag(Object: World_Type; Flag: Flag_Type; Value: Boolean);
 

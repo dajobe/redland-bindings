@@ -1,9 +1,11 @@
 with Ada.Finalization;
 
 generic
-   type Record_Type is limited private; -- It should be an untagged record for C compatibility
-   type Access_Type is access Record_Type;
+   type Record_Type; -- It should be an untagged record for C compatibility
 package RDF.Auxilary.Handled_Record is
+
+   type Access_Type is access Record_Type
+      with Convention=>C;
 
    -- It is logically abstract, but not exactly abstract in Ada sense.
    -- It can't be abstract because the function From_Handle returns this type.
