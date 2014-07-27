@@ -33,7 +33,7 @@ package body Constants_Test is
    procedure Register_Tests (T : in out Test_Case) is
       use AUnit.Test_Cases.Registration;
    begin
-      Register_Routine (T, Test_Open'Access, "Testing version of redlang");
+      Register_Routine (T, Test_Open'Access, "Testing version of redland");
    end Register_Tests;
 
 end Constants_Test;
