@@ -6,6 +6,13 @@ package RDF.Auxilary is
    type Dummy_Record is null record
       with Convention=>C;
 
+   type C_File_Record is null record
+      with Convention=>C;
+
+   -- Represents C FILE* record
+   type C_File_Access is access C_File_Record
+      with Convention=>C;
+
    type Comparison_Result is range -1..1;
 
    -- TODO: Unused. Remove?

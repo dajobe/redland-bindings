@@ -42,6 +42,34 @@ package RDF.Raptor.URI is
 
    not overriding function Equals(URI1, URI2: URI_Type) return Boolean;
 
-   function "="(URI1, URI2: URI_Type) return Boolean renames Equals;
+   overriding function "="(URI1, URI2: URI_Type) return Boolean renames Equals;
+
+   not overriding function To_String(URI: URI_Type) return String;
+
+   not overriding function To_Relative_URI_String(Base_URI, Reference_URI: URI_Type) return String;
+
+   function Resolve_URI_Reference (Base_URI, Reference_URI: String) return String;
+
+   function Filename_To_URI_String (Filename: String) return String;
+
+   function URI_String_Is_Absolute (Str: String) return Boolean;
+
+   function URI_String_Is_File_URI (Str: String) return Boolean;
+
+   -- ignores the fragment
+   function URI_String_To_Filename (Str: String) return String;
+
+   type Filename_And_Fragment (Filename_Length, Fragment_Length: Natural) is
+      record
+         Filename: String(1..Filename_Length);
+         Fragment: String(1..Fragment_Length);
+      end record;
+
+   function URI_String_To_Filename_And_Fragment(Str: String) return Filename_And_Fragment;
+
+   -- Not supposed to be used, but included for completeness
+   not overriding procedure Print (URI: URI_Type; File: RDF.Auxilary.C_File_Access);
+
+   not overriding function Get_World (URI: URI_Type) return World_Type_Without_Finalize;
 
 end RDF.Raptor.URI;
