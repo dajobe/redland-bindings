@@ -8,6 +8,8 @@ package RDF.Raptor.URI is
    -- TODO:
    -- type URI_String is new String;
 
+   -- TODO: *_Without_Finalize
+
    -- null
    --overriding function Default_Handle(Object: URI_Type) return RDF.Auxilary.Simple_Handled_Record.Access_Type;
 
