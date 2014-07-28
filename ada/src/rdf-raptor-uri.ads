@@ -5,18 +5,20 @@ package RDF.Raptor.URI is
 
    type URI_Type is new RDF.Auxilary.Simple_Handled_Record.Base_Object with null record;
 
+   subtype Handle_Type is RDF.Auxilary.Simple_Handled_Record.Access_Type;
+
    -- TODO:
    -- type URI_String is new String;
 
    -- TODO: *_Without_Finalize
 
    -- null
-   --overriding function Default_Handle(Object: URI_Type) return RDF.Auxilary.Simple_Handled_Record.Access_Type;
+   --overriding function Default_Handle(Object: URI_Type) return Handle_Type;
 
-   overriding procedure Finalize_Handle(Object: URI_Type; Handle: RDF.Auxilary.Simple_Handled_Record.Access_Type);
+   overriding procedure Finalize_Handle(Object: URI_Type; Handle: Handle_Type);
 
-   overriding function Copy_Handle(Object: URI_Type; Handle: RDF.Auxilary.Simple_Handled_Record.Access_Type)
-                                   return RDF.Auxilary.Simple_Handled_Record.Access_Type;
+   overriding function Copy_Handle(Object: URI_Type; Handle: Handle_Type)
+                                   return Handle_Type;
 
    not overriding function From_String(World: World_Type; Arg: String) return URI_Type;
 

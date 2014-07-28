@@ -11,4 +11,6 @@ package RDF.Raptor.IOStream is
 
    type Stream_Type is new RDF.Auxilary.Simple_Handled_Record.Base_Object with null record;
 
+   subtype Handle_Type is RDF.Auxilary.Simple_Handled_Record.Access_Type;
+
 end RDF.Raptor.IOStream;
