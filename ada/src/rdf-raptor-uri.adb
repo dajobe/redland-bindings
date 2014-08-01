@@ -27,7 +27,7 @@ package body RDF.Raptor.URI is
       return C_Raptor_URI_Copy (Handle);
    end;
 
-   function C_Raptor_New_Uri_From_Counted_String (World_Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type;
+   function C_Raptor_New_Uri_From_Counted_String (World_Handle: RDF.Raptor.World.Handle_Type;
                                                   URI_String: char_array;
                                                   Length    : size_t)
                                                   return Handle_Type
@@ -38,7 +38,7 @@ package body RDF.Raptor.URI is
       return From_Handle (C_Raptor_New_Uri_From_Counted_String (Get_Handle (World), To_C (Arg), Arg'Length));
    end;
 
-   function C_Raptor_New_Uri_From_Uri_Local_Name (World_Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type;
+   function C_Raptor_New_Uri_From_Uri_Local_Name (World_Handle: RDF.Raptor.World.Handle_Type;
                                                   URI: Handle_Type;
                                                   Local_Name: char_array)
                                                   return Handle_Type
@@ -49,7 +49,7 @@ package body RDF.Raptor.URI is
       return From_Handle (C_Raptor_New_Uri_From_Uri_Local_Name (Get_Handle (World), Get_Handle (URI), To_C (Local_Name)));
    end;
 
-   function C_Raptor_New_Uri_From_Uri_Or_File_String(World_Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type;
+   function C_Raptor_New_Uri_From_Uri_Or_File_String(World_Handle: RDF.Raptor.World.Handle_Type;
                                                      Base_URI: Handle_Type;
                                                      uri_or_file_string: char_array)
                                                      return Handle_Type
@@ -63,7 +63,7 @@ package body RDF.Raptor.URI is
       return From_Handle (C_Raptor_New_Uri_From_Uri_Or_File_String (Get_Handle (World), Get_Handle (Base_URI), To_C (Uri_Or_File)));
    end;
 
-   function C_Raptor_New_Uri_Relative_To_Base_Counted(World_Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type;
+   function C_Raptor_New_Uri_Relative_To_Base_Counted(World_Handle: RDF.Raptor.World.Handle_Type;
                                                       Base_URI: Handle_Type;
                                                       uri_string: char_array;
                                                       uri_len: size_t)
@@ -92,7 +92,7 @@ package body RDF.Raptor.URI is
       return From_Handle (C_Raptor_New_Uri_From_ID (Get_Handle (World), Get_Handle (Base_URI), To_C (ID)));
    end;
 
-   function C_Raptor_New_Uri_For_Rdf_Concept (World_Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type;
+   function C_Raptor_New_Uri_For_Rdf_Concept (World_Handle: RDF.Raptor.World.Handle_Type;
                                               Name: char_array)
                                               return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_uri_for_rdf_concept";
