@@ -1,8 +1,7 @@
--- TODO
-
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxilary.Simple_Limited_Handled_Record;
+with RDF.Raptor.World;
 
 package RDF.Raptor.IOStream is
 
@@ -21,9 +20,11 @@ package RDF.Raptor.IOStream is
 
    overriding procedure Finalize_Handle(Object: Stream_Type; Handle: Handle_Type);
 
-   type User_Defined_Stream_Type is abstract new Stream_Type with null record;
+   -- essentially abstract
+   type User_Defined_Stream_Type is new Stream_Type with private;
 
-   overriding function Default_Handle(Object: User_Defined_Stream_Type) return Handle_Type;
+   --overriding function Default_Handle(Object: User_Defined_Stream_Type) return Handle_Type;
+   not overriding function Open (World: RDF.Raptor.World.World_Type) return User_Defined_Stream_Type;
 
    -- We can do initizization and finalization on Ada level.
    -- No need to provide such callbacks to the underlying C library
@@ -33,14 +34,18 @@ package RDF.Raptor.IOStream is
    --overriding procedure Finalize(Object: in out User_Defined_Stream_Type);
 
    -- TODO: We can implement this with Write_Bytes procedure
-   not overriding procedure Do_Write_Byte (Stream: User_Defined_Stream_Type; Byte: char) is abstract;
+   not overriding procedure Do_Write_Byte (Stream: User_Defined_Stream_Type; Byte: char);
 
-   not overriding procedure Do_Write_Bytes (Stream: User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t) is abstract;
+   not overriding procedure Do_Write_Bytes (Stream: User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t);
 
-   not overriding procedure Do_Write_End (Stream: User_Defined_Stream_Type) is abstract;
+   not overriding procedure Do_Write_End (Stream: User_Defined_Stream_Type);
 
-   not overriding function Do_Read_Bytes (Stream: User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t) return size_t is abstract;
+   not overriding function Do_Read_Bytes (Stream: User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t) return size_t;
 
-   not overriding function Do_Read_Eof (Stream: User_Defined_Stream_Type) return Boolean is abstract;
+   not overriding function Do_Read_Eof (Stream: User_Defined_Stream_Type) return Boolean;
+
+private
+
+   type User_Defined_Stream_Type is new Stream_Type with null record;
 
 end RDF.Raptor.IOStream;

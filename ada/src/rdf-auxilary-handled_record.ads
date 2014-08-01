@@ -17,6 +17,10 @@ package RDF.Auxilary.Handled_Record is
 
    overriding procedure Adjust(Object: in out Base_Object);
 
+   -- Don't call this procedure unless you really need it.
+   not overriding procedure Set_Handle_Hack(Object: in out Base_Object; Handle: Access_Type)
+      with Pre => Get_Handle(Object) = null;
+
    -- TODO: Should check non-null predicate?
    not overriding function Get_Handle(Object: Base_Object) return Access_Type with Inline;
 
