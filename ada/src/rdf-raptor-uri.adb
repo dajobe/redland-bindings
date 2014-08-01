@@ -81,7 +81,7 @@ package body RDF.Raptor.URI is
                           					    URI_String'Length));
    end;
 
-   function C_Raptor_New_Uri_From_ID(World_Handle: RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type;
+   function C_Raptor_New_Uri_From_ID(World_Handle: RDF.Raptor.World.Handle_Type;
                                      Base_URI: Handle_Type;
                                      ID: char_array)
                                      return Handle_Type

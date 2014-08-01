@@ -1,6 +1,8 @@
 -- TODO
 
-with RDF.Auxilary.Simple_Handled_Record;
+with Interfaces.C; use Interfaces.C;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxilary.Simple_Limited_Handled_Record;
 
 package RDF.Raptor.IOStream is
 
@@ -9,8 +11,36 @@ package RDF.Raptor.IOStream is
 
    -- TODO: However, we can wrap this in Ada.Streams.Root_Stream_Type
 
-   type Stream_Type is new RDF.Auxilary.Simple_Handled_Record.Base_Object with null record;
+   type Stream_Type_Without_Finalize is new RDF.Auxilary.Simple_Limited_Handled_Record.Base_Object with null record;
 
-   subtype Handle_Type is RDF.Auxilary.Simple_Handled_Record.Access_Type;
+   subtype Handle_Type is RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type;
+
+   -- TODO: stopped at raptor_new_iostream_from_sink ()
+
+   type Stream_Type is new Stream_Type_Without_Finalize with null record;
+
+   overriding procedure Finalize_Handle(Object: Stream_Type; Handle: Handle_Type);
+
+   type User_Defined_Stream_Type is abstract new Stream_Type with null record;
+
+   overriding function Default_Handle(Object: User_Defined_Stream_Type) return Handle_Type;
+
+   -- We can do initizization and finalization on Ada level.
+   -- No need to provide such callbacks to the underlying C library
+
+   --overriding procedure Initialize(Object: in out User_Defined_Stream_Type);
+
+   --overriding procedure Finalize(Object: in out User_Defined_Stream_Type);
+
+   -- TODO: We can implement this with Write_Bytes procedure
+   not overriding procedure Do_Write_Byte (Stream: User_Defined_Stream_Type; Byte: char) is abstract;
+
+   not overriding procedure Do_Write_Bytes (Stream: User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t) is abstract;
+
+   not overriding procedure Do_Write_End (Stream: User_Defined_Stream_Type) is abstract;
+
+   not overriding function Do_Read_Bytes (Stream: User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t) return size_t is abstract;
+
+   not overriding function Do_Read_Eof (Stream: User_Defined_Stream_Type) return Boolean is abstract;
 
 end RDF.Raptor.IOStream;
