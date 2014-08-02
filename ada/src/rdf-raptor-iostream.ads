@@ -84,26 +84,27 @@ package RDF.Raptor.IOStream is
 
    type Stream_Type_Without_Finalize is new Base_Stream_Type with null record;
 
-   function From_Sink (World: RDF.Raptor.World.World_Type_Without_Finalize) return Stream_Type_Without_Finalize;
+   function From_Sink (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize;
 
-   function From_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize; Filename: String) return Stream_Type_Without_Finalize;
+   function From_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize;
 
-   function From_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access)
+   function From_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxilary.C_File_Access)
                               return Stream_Type_Without_Finalize;
 
    -- See below type Stream_From_String instead
 --     function From_String (World: RDF.Raptor.World.World_Type_Without_Finalize; Str: String)
 --                           return Stream_Type_Without_Finalize;
 
-   function To_Sink (World: RDF.Raptor.World.World_Type_Without_Finalize) return Stream_Type_Without_Finalize;
+   function To_Sink (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize;
 
-   function To_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize; Filename: String) return Stream_Type_Without_Finalize;
+   function To_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize;
 
-   function To_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access)
+   function To_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxilary.C_File_Access)
                               return Stream_Type_Without_Finalize;
 
-   function To_String (World: RDF.Raptor.World.World_Type_Without_Finalize; Str: String)
-                       return Stream_Type_Without_Finalize;
+   -- See below type Stream_To_String instead
+--     function To_String (World: RDF.Raptor.World.World_Type_Without_Finalize; Str: String)
+--                         return Stream_Type_Without_Finalize;
 
    type Stream_Type is new Stream_Type_Without_Finalize with null record;
 
@@ -113,7 +114,7 @@ package RDF.Raptor.IOStream is
    type User_Defined_Stream_Type is new Base_Stream_Type with private;
 
    --overriding function Default_Handle(Object: User_Defined_Stream_Type) return Handle_Type;
-   not overriding function Open (World: RDF.Raptor.World.World_Type_Without_Finalize) return User_Defined_Stream_Type;
+   not overriding function Open (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return User_Defined_Stream_Type;
 
    -- We can do initizization and finalization on Ada level.
    -- No need to provide such callbacks to the underlying C library
@@ -137,10 +138,14 @@ package RDF.Raptor.IOStream is
    -- Hack to prevent compilation error:
    overriding function From_Handle(Handle: Handle_Type) return Stream_From_String;
 
-   not overriding function Open_From_String (World: RDF.Raptor.World.World_Type; Value: String) return Stream_From_String;
+   not overriding function Open_From_String (World: RDF.Raptor.World.World_Type'Class; Value: String) return Stream_From_String;
 
    -- I decided to implement it in Ada instead of using corresponding C functions
    type Stream_To_String is new Base_Stream_Type with private;
+
+   function Open (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Stream_To_String;
+
+   not overriding function Value (Stream: Stream_To_String) return String;
 
 private
 
@@ -158,10 +163,6 @@ private
 
    -- Hack to prevent compilation error:
    overriding function From_Handle(Handle: Handle_Type) return Stream_To_String;
-
-   overriding function Open (World: RDF.Raptor.World.World_Type_Without_Finalize) return Stream_To_String;
-
-   not overriding function Value (Stream: Stream_To_String) return String;
 
    overriding procedure Do_Write_Bytes (Stream: in out Stream_To_String; Data: chars_ptr; Size, Count: size_t);
 

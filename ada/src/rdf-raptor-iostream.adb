@@ -1,4 +1,5 @@
 with Ada.Unchecked_Conversion;
+with Ada.Text_IO; -- TODO: remove
 with RDF.Raptor.World; use RDF.Raptor.World;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
@@ -9,7 +10,7 @@ package body RDF.Raptor.IOStream is
    function C_Raptor_New_Iostream_From_Sink (World: RDF.Raptor.World.Handle_Type) return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_sink";
 
-   function From_Sink (World: RDF.Raptor.World.World_Type_Without_Finalize) return Stream_Type_Without_Finalize is
+   function From_Sink (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize is
       Handle: constant Handle_Type := C_Raptor_New_Iostream_From_Sink (Get_Handle (World));
    begin
       if Handle = null then
@@ -21,7 +22,7 @@ package body RDF.Raptor.IOStream is
    function C_Raptor_New_Iostream_From_Filename (World: RDF.Raptor.World.Handle_Type; filename: char_array) return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_filename";
 
-   function From_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize; Filename: String) return Stream_Type_Without_Finalize is
+   function From_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize is
       Handle: constant Handle_Type := C_Raptor_New_Iostream_From_Filename (Get_Handle (World), To_C (Filename));
    begin
       if Handle = null then
@@ -33,7 +34,7 @@ package body RDF.Raptor.IOStream is
    function C_Raptor_New_Iostream_From_File_Handle (World: RDF.Raptor.World.Handle_Type; File: RDF.Auxilary.C_File_Access) return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_file_handle";
 
-   function From_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access)
+   function From_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxilary.C_File_Access)
                               return Stream_Type_Without_Finalize is
       Handle: constant Handle_Type := C_Raptor_New_Iostream_From_File_Handle (Get_Handle (World), File);
    begin
@@ -44,9 +45,9 @@ package body RDF.Raptor.IOStream is
    end;
 
    function C_Raptor_New_Iostream_To_Sink (World: RDF.Raptor.World.Handle_Type) return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_sink";
+     with Import, Convention=>C, External_Name=>"raptor_new_iostream_to_sink";
 
-   function To_Sink (World: RDF.Raptor.World.World_Type_Without_Finalize) return Stream_Type_Without_Finalize is
+   function To_Sink (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize is
       Handle: constant Handle_Type := C_Raptor_New_Iostream_To_Sink (Get_Handle (World));
    begin
       if Handle = null then
@@ -56,9 +57,9 @@ package body RDF.Raptor.IOStream is
    end;
 
    function C_Raptor_New_Iostream_To_Filename (World: RDF.Raptor.World.Handle_Type; filename: char_array) return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_filename";
+     with Import, Convention=>C, External_Name=>"raptor_new_iostream_to_filename";
 
-   function To_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize; Filename: String) return Stream_Type_Without_Finalize is
+   function To_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize is
       Handle: constant Handle_Type := C_Raptor_New_Iostream_To_Filename (Get_Handle (World), To_C (Filename));
    begin
       if Handle = null then
@@ -67,23 +68,23 @@ package body RDF.Raptor.IOStream is
       return From_Handle (Handle);
    end;
 
-   function C_Raptor_New_Iostream_To_String (World: RDF.Raptor.World.Handle_Type; str: char_array; length: size_t) return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_string";
-
-   function To_String (World: RDF.Raptor.World.World_Type_Without_Finalize; Str: String)
-                         return Stream_Type_Without_Finalize is
-      Handle: constant Handle_Type := C_Raptor_New_Iostream_To_String (Get_Handle (World), To_C (Str), Str'Length);
-   begin
-      if Handle = null then
-         raise IOStream_Exception;
-      end if;
-      return From_Handle (Handle);
-   end;
+--     function C_Raptor_New_Iostream_To_String (World: RDF.Raptor.World.Handle_Type; str: char_array; length: size_t) return Handle_Type
+--       with Import, Convention=>C, External_Name=>"raptor_new_iostream_to_string";
+--
+--     function To_String (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Str: String)
+--                           return Stream_Type_Without_Finalize is
+--        Handle: constant Handle_Type := C_Raptor_New_Iostream_To_String (Get_Handle (World), To_C (Str), Str'Length);
+--     begin
+--        if Handle = null then
+--           raise IOStream_Exception;
+--        end if;
+--        return From_Handle (Handle);
+--     end;
 
    function C_Raptor_New_Iostream_To_File_Handle (World: RDF.Raptor.World.Handle_Type; File: RDF.Auxilary.C_File_Access) return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_file_handle";
+     with Import, Convention=>C, External_Name=>"raptor_new_iostream_to_file_handle";
 
-   function To_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access)
+   function To_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxilary.C_File_Access)
                               return Stream_Type_Without_Finalize is
       Handle: constant Handle_Type := C_Raptor_New_Iostream_To_File_Handle (Get_Handle (World), File);
    begin
@@ -336,7 +337,7 @@ package body RDF.Raptor.IOStream is
                                                return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_handler";
 
-   function Open (World: RDF.Raptor.World.World_Type_Without_Finalize) return User_Defined_Stream_Type is
+   function Open (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return User_Defined_Stream_Type is
       Handle: Handle_Type;
       use all type RDF.Raptor.World.World_Type;
    begin
@@ -385,11 +386,12 @@ package body RDF.Raptor.IOStream is
    function C_Raptor_New_Iostream_From_String (World: RDF.Raptor.World.Handle_Type; str: char_array; length: size_t) return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_string";
 
-   function Open_From_String (World: RDF.Raptor.World.World_Type; Value: String) return Stream_From_String is
+   function Open_From_String (World: RDF.Raptor.World.World_Type'Class; Value: String) return Stream_From_String is
    begin
       return Stream: Stream_From_String(Value'Length) do
-         Stream.Str := To_C (Value);
+         Stream.Str := To_C (Value, Append_Nul=>False);
          Set_Handle_Hack (Stream, C_Raptor_New_Iostream_From_String (Get_Handle (World), Stream.Str, Value'Length));
+         Ada.Text_IO.Put_Line (size_t'Image (Stream.Str'Length));
       end return;
    end;
 
@@ -399,7 +401,7 @@ package body RDF.Raptor.IOStream is
       return (Base_Stream_Type'(From_Handle (Handle)) with Str=>Ada.Strings.Unbounded.Null_Unbounded_String);
    end;
 
-   function Open (World: RDF.Raptor.World.World_Type_Without_Finalize) return Stream_To_String is
+   function Open (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Stream_To_String is
    begin
       return (User_Defined_Stream_Type'(Open (World)) with Str=>Ada.Strings.Unbounded.Null_Unbounded_String);
    end;
