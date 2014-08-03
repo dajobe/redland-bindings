@@ -28,21 +28,21 @@ package body Iostreams_Test is
    begin
       Bytes_Read := Read_Bytes (To_Chars_Ptr (Buf'Unchecked_Access), 1, 100, In_String);
       Assert (Bytes_Read = 4, "Read 4 bytes from string");
-      Assert (To_Ada (Buf(1..4)) = Str, "Compare read string");
+      Assert (To_Ada (Buf(1..4), Trim_Nul=>False) = Str, "Compare read string");
       Write(Str, Out_String);
-      Assert (Value (Out_String) = Str, "Compare written string");
+      Assert (Value (Out_String) = Str, "Compare written string"); -- TODO: Add this test
    end;
 
    function Name (T : Test_Case)
                   return Test_String is
    begin
-      return Format ("String streams");
+      return Format ("Streams");
    end Name;
 
    procedure Register_Tests (T : in out Test_Case) is
       use AUnit.Test_Cases.Registration;
    begin
-      Register_Routine (T, Test_Sinks'Access, "Testing sinks");
+      Register_Routine (T, Test_Sinks'Access, "Testing sinks"); -- FIXME: uncomment
       Register_Routine (T, Test_Strings'Access, "Testing string streams");
    end Register_Tests;
 

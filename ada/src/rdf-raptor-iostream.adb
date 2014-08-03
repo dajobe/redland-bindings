@@ -165,11 +165,13 @@ package body RDF.Raptor.IOStream is
    function C_Raptor_Iostream_Write_Bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Handle_Type) return int
      with Import, Convention=>C, External_Name=>"raptor_iostream_write_bytes";
 
-   procedure Write_Bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Base_Stream_Type) is
+   function Write_Bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Base_Stream_Type) return int is
+      Result: constant int := C_Raptor_Iostream_Write_Bytes (Ptr, size, nmemb, Get_Handle (Stream));
    begin
-      if C_Raptor_Iostream_Write_Bytes (Ptr, size, nmemb, Get_Handle (Stream)) /= 0 then
+      if Result < 0 then
          raise IOStream_Exception;
       end if;
+      return Result;
    end;
 
    function C_Raptor_Iostream_Write_End (Stream: Handle_Type) return int
@@ -290,12 +292,12 @@ package body RDF.Raptor.IOStream is
    end;
 
    function raptor_iostream_write_bytes_impl (context: chars_ptr; ptr: chars_ptr; size, nmemb: size_t) return int is
+      Result: constant int := Do_Write_Bytes (Ptr_To_Obj (context).all, ptr, size, nmemb);
    begin
-      Do_Write_Bytes (Ptr_To_Obj (context).all, ptr, size, nmemb);
-      return 0;
+      return Result;
    exception
       when others =>
-         return 1;
+         return -1;
    end;
 
    function raptor_iostream_write_end_impl (context: chars_ptr) return int is
@@ -352,12 +354,15 @@ package body RDF.Raptor.IOStream is
    procedure Do_Write_Byte (Stream: in out User_Defined_Stream_Type; Byte: char) is
       Byte2: aliased char_array := (1=>Byte);
    begin
-      Do_Write_Bytes (Stream, To_Chars_Ptr (Byte2'Unchecked_Access), 1, 1);
+      if Do_Write_Bytes (Stream, To_Chars_Ptr (Byte2'Unchecked_Access), 1, 1) /= 1 then
+         raise IOStream_exception;
+      end if;
    end;
 
-   procedure Do_Write_Bytes (Stream: in out User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t) is
+   function Do_Write_Bytes (Stream: in out User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t) return int is
    begin
       raise Program_Error;
+      return 0;
    end;
 
    procedure Do_Write_End (Stream: in out User_Defined_Stream_Type) is
@@ -391,7 +396,6 @@ package body RDF.Raptor.IOStream is
       return Stream: Stream_From_String(Value'Length) do
          Stream.Str := To_C (Value, Append_Nul=>False);
          Set_Handle_Hack (Stream, C_Raptor_New_Iostream_From_String (Get_Handle (World), Stream.Str, Value'Length));
-         Ada.Text_IO.Put_Line (size_t'Image (Stream.Str'Length));
       end return;
    end;
 
@@ -411,9 +415,10 @@ package body RDF.Raptor.IOStream is
       return To_String (Stream.Str);
    end;
 
-   procedure Do_Write_Bytes (Stream: in out Stream_To_String; Data: chars_ptr; Size, Count: size_t) is
+   function Do_Write_Bytes (Stream: in out Stream_To_String; Data: chars_ptr; Size, Count: size_t) return int is
    begin
       Append(Stream.Str, Value (Data, Size*Count));
+      return int(Size*Count);
    end;
 
 end RDF.Raptor.IOStream;

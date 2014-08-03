@@ -31,7 +31,7 @@ package RDF.Raptor.IOStream is
 
    procedure Write (Value: char; Stream: Base_Stream_Type);
 
-   procedure Write_Bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Base_Stream_Type);
+   function Write_Bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Base_Stream_Type) return int;
 
    procedure Write_End (Stream: Base_Stream_Type);
 
@@ -125,7 +125,7 @@ package RDF.Raptor.IOStream is
 
    not overriding procedure Do_Write_Byte (Stream: in out User_Defined_Stream_Type; Byte: char);
 
-   not overriding procedure Do_Write_Bytes (Stream: in out User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t);
+   not overriding function Do_Write_Bytes (Stream: in out User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t) return int;
 
    not overriding procedure Do_Write_End (Stream: in out User_Defined_Stream_Type);
 
@@ -164,6 +164,6 @@ private
    -- Hack to prevent compilation error:
    overriding function From_Handle(Handle: Handle_Type) return Stream_To_String;
 
-   overriding procedure Do_Write_Bytes (Stream: in out Stream_To_String; Data: chars_ptr; Size, Count: size_t);
+   overriding function Do_Write_Bytes (Stream: in out Stream_To_String; Data: chars_ptr; Size, Count: size_t) return int;
 
 end RDF.Raptor.IOStream;
