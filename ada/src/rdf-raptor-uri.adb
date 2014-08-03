@@ -35,7 +35,7 @@ package body RDF.Raptor.URI is
 
    function From_String(World: World_Type; Arg: String) return URI_Type is
    begin
-      return From_Handle (C_Raptor_New_Uri_From_Counted_String (Get_Handle (World), To_C (Arg), Arg'Length));
+      return From_Handle (C_Raptor_New_Uri_From_Counted_String (Get_Handle (World), To_C (Arg, Append_Nul=>False), Arg'Length));
    end;
 
    function C_Raptor_New_Uri_From_Uri_Local_Name (World_Handle: RDF.Raptor.World.Handle_Type;
@@ -77,7 +77,7 @@ package body RDF.Raptor.URI is
    begin
       return From_Handle (C_Raptor_New_Uri_Relative_To_Base_Counted(Get_Handle (World),
        					                            Get_Handle (Base_URI),
-                          					    To_C (URI_String),
+                          					    To_C (URI_String, Append_Nul=>False),
                           					    URI_String'Length));
    end;
 
@@ -174,7 +174,7 @@ package body RDF.Raptor.URI is
       with Import, Convention=>C, External_Name=>"raptor_uri_counted_filename_to_uri_string";
 
    function Filename_To_URI_String (Filename: String) return String is
-      Result1: constant chars_ptr := C_Raptor_Uri_Counted_Filename_To_Uri_String (To_C (Filename), Filename'Length);
+      Result1: constant chars_ptr := C_Raptor_Uri_Counted_Filename_To_Uri_String (To_C (Filename, Append_Nul=>False), Filename'Length);
       Result: constant String := Value (Result1);
    begin
       RDF.Raptor.Memory.raptor_free_memory (Result1);

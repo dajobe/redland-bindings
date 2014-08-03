@@ -137,7 +137,7 @@ package body RDF.Raptor.IOStream is
 
    procedure Write (Value: String; Stream: Base_Stream_Type) is
    begin
-      if C_Raptor_Iostream_Counted_String_Write (To_C (Value), size_t (Value'Length), Get_Handle (Stream)) /= 0 then
+      if C_Raptor_Iostream_Counted_String_Write (To_C (Value, Append_Nul=>False), size_t (Value'Length), Get_Handle (Stream)) /= 0 then
          raise IOStream_Exception;
       end if;
    end;
@@ -189,7 +189,7 @@ package body RDF.Raptor.IOStream is
 
    procedure Bnodeid_Ntriples_Write (bnode: String; Stream: Base_Stream_Type) is
    begin
-      if C_Raptor_Bnodeid_Ntriples_Write (To_C (bnode), bnode'Length, Get_Handle (Stream)) /= 0 then
+      if C_Raptor_Bnodeid_Ntriples_Write (To_C (bnode, Append_Nul=>False), bnode'Length, Get_Handle (Stream)) /= 0 then
          raise IOStream_Exception;
       end if;
    end;
@@ -199,7 +199,7 @@ package body RDF.Raptor.IOStream is
 
    procedure Escaped_Write (Value: String; Delim: Character; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type) is
    begin
-      if C_raptor_string_escaped_write (To_C (Value), Value'Length, To_C (Delim), unsigned (Flags), Get_Handle (Stream)) /= 0 then
+      if C_raptor_string_escaped_write (To_C (Value, Append_Nul=>False), Value'Length, To_C (Delim), unsigned (Flags), Get_Handle (Stream)) /= 0 then
          raise IOStream_Exception;
       end if;
    end;
@@ -209,7 +209,7 @@ package body RDF.Raptor.IOStream is
 
    procedure Ntriples_Write (Value: String; Delim: Character; Stream: Base_Stream_Type) is
    begin
-      if C_Raptor_String_Ntriples_Write (To_C (Value), Value'Length, To_C (Delim), Get_Handle (Stream)) /= 0 then
+      if C_Raptor_String_Ntriples_Write (To_C (Value, Append_Nul=>False), Value'Length, To_C (Delim), Get_Handle (Stream)) /= 0 then
          raise IOStream_Exception;
       end if;
    end;
@@ -220,7 +220,7 @@ package body RDF.Raptor.IOStream is
    procedure String_Python_Write (Value: String; Delim: Character; Mode: Python_Write_Mode; Stream: Base_Stream_Type) is
       function Conv is new Ada.Unchecked_Conversion (Python_Write_Mode, unsigned);
    begin
-      if C_Raptor_String_Python_Write (To_C (Value), Value'Length, To_C (Delim), Conv (Mode), Get_Handle (Stream)) /= 0 then
+      if C_Raptor_String_Python_Write (To_C (Value, Append_Nul=>False), Value'Length, To_C (Delim), Conv (Mode), Get_Handle (Stream)) /= 0 then
          raise IOStream_Exception;
       end if;
    end;
