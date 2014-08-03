@@ -30,7 +30,8 @@ package body Iostreams_Test is
       Assert (Bytes_Read = 4, "Read 4 bytes from string");
       Assert (To_Ada (Buf(1..4), Trim_Nul=>False) = Str, "Compare read string");
       Write(Str, Out_String);
-      Assert (Value (Out_String) = Str, "Compare written string"); -- TODO: Add this test
+      Write("QQ", Out_String);
+      Assert (Value (Out_String) = Str & "QQ", "Compare written string"); -- TODO: Add this test
    end;
 
    function Name (T : Test_Case)
