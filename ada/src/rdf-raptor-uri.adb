@@ -5,6 +5,7 @@ with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Auxilary.Simple_Handled_Record;
 with RDF.Auxilary.Simple_Limited_Handled_Record;
 with RDF.Raptor.Memory;
+with RDF.Raptor.IOStream;
 --  use all type RDF.Auxilary.Simple_Handled_Record.Base_Object;
 
 package body RDF.Raptor.URI is
@@ -250,6 +251,39 @@ package body RDF.Raptor.URI is
       return From_Handle (C_Raptor_URI_Get_World (Get_Handle (URI)));
    end;
 
-   -- TODO: Finished with raptor_uri_write ()
+   function C_Raptor_URI_Write (URI: Handle_Type; Stream: RDF.Raptor.IOStream.Handle_Type) return int
+      with Import, Convention=>C, External_Name=>"raptor_uri_write";
+
+   procedure Write (URI: URI_Type; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class) is
+      use all type RDF.Raptor.IOStream.Base_Stream_Type;
+   begin
+      if C_Raptor_URI_Write (Get_Handle(URI), Get_Handle(Stream)) /= 0 then
+         raise RDF.Raptor.IOStream.IOStream_Exception;
+      end if;
+   end;
+
+   function C_Raptor_URI_File_Exists (URI: Handle_Type) return int
+      with Import, Convention=>C, External_Name=>"raptor_uri_file_exists";
+
+   function URI_File_Exists (URI: URI_Type) return Boolean is
+      Result: constant int := C_Raptor_URI_File_Exists(Get_Handle(URI));
+   begin
+      if Result < 0 then
+         raise Constraint_Error; -- TODO: Is it the best exception for the situation?
+      end if;
+      return Result /= 0;
+   end;
+
+   function C_Raptor_Uri_Filename_Exists (Filename: char_array) return int
+      with Import, Convention=>C, External_Name=>"raptor_uri_filename_exists";
+
+   function Filename_Exists (Filename: String) return Boolean is
+      Result: constant int := C_Raptor_Uri_Filename_Exists(To_C(Filename, Append_Nul=>True));
+   begin
+      if Result < 0 then
+         raise Constraint_Error; -- TODO: Is it the best exception for the situation?
+      end if;
+      return Result /= 0;
+   end;
 
 end RDF.Raptor.URI;

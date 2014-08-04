@@ -1,8 +1,10 @@
 with RDF.Auxilary.Simple_Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
+with RDF.Raptor.IOStream;
 
 package RDF.Raptor.URI is
 
+   -- Only absolute URIs!
    type URI_Type is new RDF.Auxilary.Simple_Handled_Record.Base_Object with null record;
 
    subtype Handle_Type is RDF.Auxilary.Simple_Handled_Record.Access_Type;
@@ -75,5 +77,13 @@ package RDF.Raptor.URI is
    not overriding procedure Print (URI: URI_Type; File: RDF.Auxilary.C_File_Access);
 
    not overriding function Get_World (URI: URI_Type) return World_Type_Without_Finalize;
+
+   not overriding procedure Write (URI: URI_Type; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class);
+
+   not overriding function URI_File_Exists (URI: URI_Type) return Boolean;
+
+   function Filename_Exists (Filename: String) return Boolean;
+
+   -- TODO: raptor_uri_to_turtle_string (), raptor_uri_turtle_write ()
 
 end RDF.Raptor.URI;
