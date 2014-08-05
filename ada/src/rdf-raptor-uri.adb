@@ -36,6 +36,7 @@ package body RDF.Raptor.URI is
 
    function From_String(World: World_Type; Arg: String) return URI_Type is
    begin
+      -- LD_LIBRARY_PATH="" ltrace -n4 -llibraptor2.so.0 ./obj/test/debug/run_all_tests 2>&1| egrep ^[a-z]
       return From_Handle (C_Raptor_New_Uri_From_Counted_String (Get_Handle (World), To_C (Arg, Append_Nul=>False), Arg'Length));
    end;
 
