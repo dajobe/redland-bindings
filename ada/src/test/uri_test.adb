@@ -1,20 +1,24 @@
---  with Interfaces.C; use Interfaces.C;
---  with Interfaces.C.Strings; use Interfaces.C.Strings;
---  with AUnit.Test_Cases;
 with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.World;
---  with RDF.Raptor.Iostream; use RDF.Raptor.Iostream;
---  with Ada.Text_IO;
+with Ada.Text_IO;
 
 package body URI_Test is
 
    procedure Test_URIs(T : in out Test_Cases.Test_Case'Class) is
       World: RDF.Raptor.World.World_Type;
       URI_1: constant String := "http://example.org/xyz";
+      URI_3: constant String := "http://example.org/123";
       URI_1_Obj: constant URI_Type := From_String(World, URI_1);
+      URI_2_Obj: constant URI_Type := From_String(World, URI_1);
+      URI_3_Obj: constant URI_Type := From_String(World, URI_3);
+      URI_4_Obj: constant URI_Type := From_String(World, "http://example.org");
    begin
       Assert (To_String(URI_1_Obj) = URI_1, "Converting URI to string");
+      Assert (URI_1_Obj = URI_2_Obj, "Comparing identical URIs");
+      Assert (URI_1_Obj /= URI_3_Obj, "Comparing different URIs");
+      Assert (To_String(From_URI_Relative_To_Base(World, URI_1_Obj, "zxc")) = "http://example.org/zxc", "Relative URI to base");
+      Assert (To_String(For_Retrieval(URI_4_Obj)) = "http://example.org/", "URI for retrieval");
    end;
 
    function Name (T : Test_Case)
