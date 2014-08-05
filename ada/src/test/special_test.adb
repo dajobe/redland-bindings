@@ -26,10 +26,22 @@ procedure Special_Test is
 
    World: RDF.Raptor.World.World_Type;
    URI_1: constant String := "http://example.org/xyz";
-   URI_1_Handle: constant RDF.Raptor.URI.Handle_Type := Get_Handle(From_String(World, URI_1));
+
+   function From_String(World: World_Type; Arg: String) return URI_Type is
+   begin
+      return From_Handle (C_Raptor_New_Uri_From_Counted_String (Get_Handle (World), To_C (Arg, Append_Nul=>False), Arg'Length));
+   end;
+
+   -- FIXME: The cause of the problem is automatic finalization
+   URI_1_Handle: constant RDF.Raptor.URI.Handle_Type :=
+     C_Raptor_New_Uri_From_Counted_String (Get_Handle (World), To_C (URI_1, Append_Nul=>False), URI_1'Length);
+   URI_2_Handle: constant RDF.Raptor.URI.Handle_Type :=
+     Get_Handle(From_Handle(URI_1_Handle));
+--     URI_1_Handle: constant RDF.Raptor.URI.Handle_Type := Get_Handle(From_String(World, URI_1));
 --     URI_1_Handle: constant RDF.Raptor.URI.Handle_Type :=
---       C_Raptor_New_Uri_From_Counted_String(Get_Handle(World), To_C(URI_1, Append_Nul=>True), URI_1'Length);
+--       C_Raptor_New_Uri_From_Counted_String(Get_Handle(World), To_C(URI_1, Append_Nul=>False), URI_1'Length);
 
 begin
    Ada.Text_IO.Put_Line( Integer_Address'Image (My_Conv(URI_1_Handle)));
+   Ada.Text_IO.Put_Line( Integer_Address'Image (My_Conv(URI_2_Handle)));
 end;
