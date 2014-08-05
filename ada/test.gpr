@@ -31,7 +31,7 @@ project Test is
                for Source_Dirs use ("src/test");
 
             when "Install" =>
-               for Main use ("run_all_tests.adb", "special_test.adb");
+               for Main use ("run_all_tests.adb");
                for Source_Dirs use ("src/test");
          end case;
 
