@@ -25,11 +25,4 @@ package body RDF.Auxilary.Handled_Record is
       end if;
    end Finalize;
 
-   procedure Adjust(Object: in out Base_Object) is
-   begin
-      if Object.Handle /= null then
-         Object.Handle := Copy_Handle(Object, Object.Handle);
-      end if;
-   end;
-
 end RDF.Auxilary.Handled_Record;

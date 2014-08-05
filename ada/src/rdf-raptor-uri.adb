@@ -10,31 +10,13 @@ with RDF.Raptor.IOStream;
 
 package body RDF.Raptor.URI is
 
-   procedure C_Raptor_Free_URI (Handle: Handle_Type)
-     with Import, Convention=>C, External_Name=>"raptor_free_uri";
-
-   procedure Finalize_Handle(Object: URI_Type; Handle: Handle_Type) is
-   begin
-      C_Raptor_Free_URI (Handle);
-   end;
-
-   function C_Raptor_URI_Copy (Handle: Handle_Type)
-                               return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_uri_copy";
-
-   function Copy_Handle(Object: URI_Type; Handle: Handle_Type)
-                        return Handle_Type is
-   begin
-      return C_Raptor_URI_Copy (Handle);
-   end;
-
    function C_Raptor_New_Uri_From_Counted_String (World_Handle: RDF.Raptor.World.Handle_Type;
                                                   URI_String: char_array;
                                                   Length    : size_t)
                                                   return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_uri_from_counted_string";
 
-   function From_String(World: World_Type; Arg: String) return URI_Type is
+   function From_String(World: World_Type; Arg: String) return URI_Type_Without_Finalize is
    begin
       -- LD_LIBRARY_PATH="" ltrace -n4 -llibraptor2.so.0 ./obj/test/debug/run_all_tests 2>&1| egrep ^[a-z]
       return From_Handle (C_Raptor_New_Uri_From_Counted_String (Get_Handle (World), To_C (Arg, Append_Nul=>False), Arg'Length));
@@ -46,7 +28,7 @@ package body RDF.Raptor.URI is
                                                   return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_uri_from_uri_local_name";
 
-   function From_URI_With_Local_Name(World: World_Type; URI: URI_Type; Local_Name: String) return URI_Type is
+   function From_URI_With_Local_Name(World: World_Type; URI: URI_Type_Without_Finalize; Local_Name: String) return URI_Type_Without_Finalize is
    begin
       return From_Handle (C_Raptor_New_Uri_From_Uri_Local_Name (Get_Handle (World), Get_Handle (URI), To_C (Local_Name)));
    end;
@@ -58,9 +40,9 @@ package body RDF.Raptor.URI is
      with Import, Convention=>C, External_Name=>"raptor_new_uri_from_uri_or_file_string";
 
    function From_URI_Or_File_String(World   : World_Type;
-                                    Base_URI: URI_Type;
+                                    Base_URI: URI_Type_Without_Finalize;
                                     Uri_Or_File: String)
-                                    return URI_Type is
+                                    return URI_Type_Without_Finalize is
    begin
       return From_Handle (C_Raptor_New_Uri_From_Uri_Or_File_String (Get_Handle (World), Get_Handle (Base_URI), To_C (Uri_Or_File)));
    end;
@@ -73,14 +55,14 @@ package body RDF.Raptor.URI is
      with Import, Convention=>C, External_Name=>"raptor_new_uri_relative_to_base_counted";
 
    function From_URI_Relative_To_Base(World: World_Type;
-                          	      Base_URI: URI_Type;
+                                      Base_URI: URI_Type_Without_Finalize;
                                       URI_String: String)
-                                      return URI_Type is
+                                      return URI_Type_Without_Finalize is
    begin
       return From_Handle (C_Raptor_New_Uri_Relative_To_Base_Counted(Get_Handle (World),
-       					                            Get_Handle (Base_URI),
-                          					    To_C (URI_String, Append_Nul=>False),
-                          					    URI_String'Length));
+                                                                    Get_Handle (Base_URI),
+                                                                    To_C (URI_String, Append_Nul=>False),
+                                                                    URI_String'Length));
    end;
 
    function C_Raptor_New_Uri_From_ID(World_Handle: RDF.Raptor.World.Handle_Type;
@@ -89,7 +71,7 @@ package body RDF.Raptor.URI is
                                      return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_uri_from_id";
 
-   function From_ID(World: World_Type; Base_URI: URI_Type; ID: String) return URI_Type is
+   function From_ID(World: World_Type; Base_URI: URI_Type_Without_Finalize; ID: String) return URI_Type_Without_Finalize is
    begin
       return From_Handle (C_Raptor_New_Uri_From_ID (Get_Handle (World), Get_Handle (Base_URI), To_C (ID)));
    end;
@@ -99,7 +81,7 @@ package body RDF.Raptor.URI is
                                               return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_uri_for_rdf_concept";
 
-   function From_RDF_Concept(World: World_Type; Name: String) return URI_Type is
+   function From_RDF_Concept(World: World_Type; Name: String) return URI_Type_Without_Finalize is
    begin
       return From_Handle (C_Raptor_New_Uri_For_Rdf_Concept (Get_Handle (World), To_C (Name)));
    end;
@@ -108,7 +90,7 @@ package body RDF.Raptor.URI is
                                           return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_uri_for_xmlbase";
 
-   function For_XML_Base(Old_URI: URI_Type) return URI_Type is
+   function For_XML_Base(Old_URI: URI_Type_Without_Finalize) return URI_Type_Without_Finalize is
    begin
       return From_Handle (C_Raptor_New_Uri_For_Xmlbase (Get_Handle(Old_URI)));
    end;
@@ -117,7 +99,7 @@ package body RDF.Raptor.URI is
                                           return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_uri_for_retrieval";
 
-   function For_Retrieval(Old_URI: URI_Type) return URI_Type is
+   function For_Retrieval(Old_URI: URI_Type_Without_Finalize) return URI_Type_Without_Finalize is
    begin
       return From_Handle (C_Raptor_New_Uri_For_Retrieval (Get_Handle(Old_URI)));
    end;
@@ -125,7 +107,7 @@ package body RDF.Raptor.URI is
    function C_Raptor_Uri_Compare (URI1, URI2: Handle_Type) return int
      with Import, Convention=>C, External_Name=>"raptor_uri_compare";
 
-   function Compare(URI1, URI2: URI_Type) return RDF.Auxilary.Comparison_Result is
+   function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result is
    begin
       return RDF.Auxilary.Comparison_Result (C_Raptor_Uri_Compare (Get_Handle(URI1), Get_Handle(URI2)));
    end;
@@ -133,7 +115,7 @@ package body RDF.Raptor.URI is
    function C_Raptor_Uri_Equals (URI1, URI2: Handle_Type) return int
      with Import, Convention=>C, External_Name=>"raptor_uri_equals";
 
-   function Equals(URI1, URI2: URI_Type) return Boolean is
+   function Equals(URI1, URI2: URI_Type_Without_Finalize) return Boolean is
    begin
       return C_Raptor_Uri_Equals (Get_Handle(URI1), Get_Handle(URI2)) /= 0;
    end;
@@ -144,7 +126,7 @@ package body RDF.Raptor.URI is
      with Import, Convention=>C, External_Name=>"raptor_uri_as_string";
 
    -- TODO: raptor_uri_as_counted_string() is faster (or raptor_uri_to_counted_string)
-   function To_String(URI: URI_Type) return String is
+   function To_String(URI: URI_Type_Without_Finalize) return String is
    begin
       -- raptor_uri_as_string() returns a pointer which exists as long as the URI object. No need to free it.
       return Value (C_Raptor_Uri_As_String (Get_Handle (URI)));
@@ -153,7 +135,7 @@ package body RDF.Raptor.URI is
    function C_Raptor_Uri_To_Relative_Uri_String (Base_URI, Reference_URI: Handle_Type) return chars_ptr
       with Import, Convention=>C, External_Name=>"raptor_uri_to_relative_uri_string";
 
-   function To_Relative_URI_String(Base_URI, Reference_URI: URI_Type) return String is
+   function To_Relative_URI_String(Base_URI, Reference_URI: URI_Type_Without_Finalize) return String is
       C_Str: constant chars_ptr := C_Raptor_Uri_To_Relative_Uri_String (Get_Handle (Base_URI),Get_Handle (Reference_URI));
       Result: constant String := Value (C_Str);
    begin
@@ -237,7 +219,7 @@ package body RDF.Raptor.URI is
    function C_Raptor_URI_Print (URI: Handle_Type; File: RDF.Auxilary.C_File_Access) return int
       with Import, Convention=>C, External_Name=>"raptor_uri_print";
 
-   procedure Print (URI: URI_Type; File: RDF.Auxilary.C_File_Access) is
+   procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access) is
    begin
       if C_Raptor_URI_Print (Get_Handle (URI), File) /= 0 then
          raise Ada.IO_Exceptions.Use_Error;
@@ -247,7 +229,7 @@ package body RDF.Raptor.URI is
    function C_Raptor_URI_Get_World (URI: Handle_Type) return RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type
       with Import, Convention=>C, External_Name=>"raptor_uri_get_world";
 
-   function Get_World (URI: URI_Type) return World_Type_Without_Finalize is
+   function Get_World (URI: URI_Type_Without_Finalize) return World_Type_Without_Finalize is
    begin
       return From_Handle (C_Raptor_URI_Get_World (Get_Handle (URI)));
    end;
@@ -255,7 +237,7 @@ package body RDF.Raptor.URI is
    function C_Raptor_URI_Write (URI: Handle_Type; Stream: RDF.Raptor.IOStream.Handle_Type) return int
       with Import, Convention=>C, External_Name=>"raptor_uri_write";
 
-   procedure Write (URI: URI_Type; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class) is
+   procedure Write (URI: URI_Type_Without_Finalize; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class) is
       use all type RDF.Raptor.IOStream.Base_Stream_Type;
    begin
       if C_Raptor_URI_Write (Get_Handle(URI), Get_Handle(Stream)) /= 0 then
@@ -266,7 +248,7 @@ package body RDF.Raptor.URI is
    function C_Raptor_URI_File_Exists (URI: Handle_Type) return int
       with Import, Convention=>C, External_Name=>"raptor_uri_file_exists";
 
-   function URI_File_Exists (URI: URI_Type) return Boolean is
+   function URI_File_Exists (URI: URI_Type_Without_Finalize) return Boolean is
       Result: constant int := C_Raptor_URI_File_Exists(Get_Handle(URI));
    begin
       if Result < 0 then
@@ -285,6 +267,23 @@ package body RDF.Raptor.URI is
          raise Constraint_Error; -- TODO: Is it the best exception for the situation?
       end if;
       return Result /= 0;
+   end;
+
+   procedure C_Raptor_Free_URI (Handle: Handle_Type)
+     with Import, Convention=>C, External_Name=>"raptor_free_uri";
+
+   procedure Finalize_Handle(Object: URI_Type; Handle: Handle_Type) is
+   begin
+      C_Raptor_Free_URI (Handle);
+   end;
+
+   function C_Raptor_URI_Copy (Handle: Handle_Type)
+                               return Handle_Type
+     with Import, Convention=>C, External_Name=>"raptor_uri_copy";
+
+   procedure Adjust(Object: in out URI_Type_Without_Finalize) is
+   begin
+      Set_Handle_Hack(Object, C_Raptor_URI_Copy (Get_Handle(Object)));
    end;
 
 end RDF.Raptor.URI;
