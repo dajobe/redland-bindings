@@ -9,6 +9,15 @@ package RDF.Auxilary.Handled_Record is
 
    -- It is logically abstract, but not exactly abstract in Ada sense.
    -- It can't be abstract because the function From_Handle returns this type.
+   --
+   -- When extending this type, it is recommended:
+   -- 1. Create a type T_Without_Finalize for which does NOT override Finalize_Handle and Adjust.
+   -- 2. Create T extending T_Without_Finalize for which do override Finalize_Handle and Adjust.
+   -- 3. Routines returning newly created objects of this type should return T.
+   -- 4. The rest routines should operate on T or T_Without_Finalize'Class, as appropriate.
+   --
+   -- Note: T_Without_Finalize is useful for objects which are logically a part of on other object
+   -- and thus should be finalized only as a part of finalization of the container.
    type Base_Object is new Ada.Finalization.Controlled with private;
 
    overriding procedure Initialize(Object: in out Base_Object);
