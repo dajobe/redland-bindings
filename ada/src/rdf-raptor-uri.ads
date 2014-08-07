@@ -9,30 +9,6 @@ package RDF.Raptor.URI is
    -- Only absolute URIs!
    type URI_Type_Without_Finalize is new RDF.Auxilary.Simple_Handled_Record.Base_Object with null record;
 
-   overriding procedure Adjust(Object: in out URI_Type_Without_Finalize);
-
-   not overriding function From_String(World: World_Type; Arg: String) return URI_Type_Without_Finalize;
-
-   not overriding function From_URI_With_Local_Name(World: World_Type; URI: URI_Type_Without_Finalize; Local_Name: String) return URI_Type_Without_Finalize;
-
-   not overriding function From_URI_Or_File_String(World: World_Type;
-                                                   Base_URI: URI_Type_Without_Finalize;
-                                                   uri_or_file: String)
-                                                   return URI_Type_Without_Finalize;
-
-   not overriding function From_URI_Relative_To_Base(World: World_Type;
-                                                     Base_URI: URI_Type_Without_Finalize;
-                                                     URI_String: String)
-                                                     return URI_Type_Without_Finalize;
-
-   not overriding function From_ID(World: World_Type; Base_URI: URI_Type_Without_Finalize; ID: String) return URI_Type_Without_Finalize;
-
-   not overriding function From_RDF_Concept(World: World_Type; Name: String) return URI_Type_Without_Finalize;
-
-   not overriding function For_XML_Base(Old_URI: URI_Type_Without_Finalize) return URI_Type_Without_Finalize;
-
-   not overriding function For_Retrieval(Old_URI: URI_Type_Without_Finalize) return URI_Type_Without_Finalize;
-
    not overriding function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result;
 
    not overriding function Equals(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
@@ -80,9 +56,33 @@ package RDF.Raptor.URI is
    -- TODO:
    -- type URI_String is new String;
 
-   -- null
-   --overriding function Default_Handle(Object: URI_Type) return Handle_Type;
+   overriding procedure Adjust(Object: in out URI_Type);
 
    overriding procedure Finalize_Handle(Object: URI_Type; Handle: Handle_Type);
+
+   not overriding function From_String(World: World_Type_Without_Finalize'Class; Arg: String) return URI_Type;
+
+   not overriding function From_URI_With_Local_Name(World: World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type;
+
+   not overriding function From_URI_Or_File_String(World: World_Type_Without_Finalize'Class;
+                                                   Base_URI: URI_Type_Without_Finalize'Class;
+                                                   uri_or_file: String)
+                                                   return URI_Type;
+
+   not overriding function From_URI_Relative_To_Base(World: World_Type_Without_Finalize'Class;
+                                                     Base_URI: URI_Type_Without_Finalize'Class;
+                                                     URI_String: String)
+                                                     return URI_Type;
+
+   not overriding function From_ID(World: World_Type_Without_Finalize'Class; Base_URI: URI_Type_Without_Finalize'Class; ID: String) return URI_Type;
+
+   not overriding function From_RDF_Concept(World: World_Type_Without_Finalize'Class; Name: String) return URI_Type;
+
+   not overriding function For_XML_Base(Old_URI: URI_Type_Without_Finalize'Class) return URI_Type;
+
+   not overriding function For_Retrieval(Old_URI: URI_Type_Without_Finalize'Class) return URI_Type;
+
+   -- null
+   --overriding function Default_Handle(Object: URI_Type) return Handle_Type;
 
 end RDF.Raptor.URI;
