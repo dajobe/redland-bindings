@@ -1,4 +1,4 @@
--- FIXME: Calling this (compiled with GANT 4.9) as
+-- FIXED: Calling this (compiled with GANT 4.9) as
 --   ltrace -n4 -llibraptor2.so.0 ./obj/test/check/special_test 2>&1| egrep ^[a-z]
 -- shows that there are more raptor_new_uri_from_counted_string() + raptor_uri_copy()
 -- calls than raptor_free_uri() calls.
