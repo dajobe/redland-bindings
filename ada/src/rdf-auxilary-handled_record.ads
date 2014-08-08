@@ -11,7 +11,7 @@ package RDF.Auxilary.Handled_Record is
    -- It can't be abstract because the function From_Handle returns this type.
    --
    -- When extending this type, it is recommended:
-   -- 1. Create a type T_Without_Finalize for which does NOT override Finalize_Handle and Adjust.
+   -- 1. Create a type T_Without_Finalize for which do NOT override Finalize_Handle and Adjust.
    -- 2. Create T extending T_Without_Finalize for which do override Finalize_Handle and Adjust.
    -- 3. Routines returning newly created objects of this type should return T.
    -- 4. The rest routines should operate on T or T_Without_Finalize'Class, as appropriate.
