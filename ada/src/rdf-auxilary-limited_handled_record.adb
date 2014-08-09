@@ -25,4 +25,9 @@ package body RDF.Auxilary.Limited_Handled_Record is
       end if;
    end Finalize;
 
+   function Is_Null (Object: Base_Object) return Boolean is
+   begin
+      return Object.Handle = null;
+   end;
+
 end RDF.Auxilary.Limited_Handled_Record;

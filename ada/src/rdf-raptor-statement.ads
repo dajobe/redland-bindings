@@ -1,16 +1,76 @@
--- TODO
-with RDF.Auxilary.Limited_Handled_Record;
-private with Interfaces.C;
+with RDF.Auxilary.Handled_Record;
+with Interfaces.C; use Interfaces.C;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxilary;
-with RDF.Raptor.World;
+with RDF.Raptor.World; use RDF.Raptor.World;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
 
 package RDF.Raptor.Statement is
 
+   type Term_Record is private;
+
+   package Term_Handled_Record is new RDF.Auxilary.Handled_Record(Term_Record);
+
+   type Term_Type_Without_Finalize is new Term_Handled_Record.Base_Object with null record;
+
+   subtype Term_Handle is Term_Handled_Record.Access_Type;
+
+   type Term_Literal_Value is private;
+
+   type Term_Blank_Value is private;
+
+   type Term_Kind is (Unknown,
+                      URI,
+                      Literal,
+                      Blank);
+   for Term_Kind'Size use Interfaces.C.int'Size; -- hack
+   for Term_Kind use (Unknown => 0,
+                      URI     => 1,
+                      Literal => 2,
+                      -- unused type 3
+                      Blank   => 4);
+
+   not overriding function Get_World (Term: Term_Type_Without_Finalize) return RDF.Raptor.World.World_Type_Without_Finalize;
+
+   not overriding function Get_Kind (Term: Term_Type_Without_Finalize) return Term_Kind;
+
+   not overriding function Get_URI (Term: Term_Type_Without_Finalize) return URI_Type_Without_Finalize
+      with Pre => Get_Kind(Term) = URI;
+
+   not overriding function Get_Literal (Term: Term_Type_Without_Finalize) return Term_Literal_Value
+      with Pre => Get_Kind(Term) = Literal;
+
+   not overriding function Get_Blank (Term: Term_Type_Without_Finalize) return Term_Blank_Value
+      with Pre => Get_Kind(Term) = Blank;
+
+   not overriding function Value (Literal: Term_Literal_Value) return String;
+
+   -- The returned URI may be null.
+   not overriding function Datatype (Literal: Term_Literal_Value) return RDF.Raptor.URI.URI_Type;
+
+   -- TODO: Not sure that it does the right thing with empty language string.
+   --
+   -- Return the language tag or empty string if there are none
+   not overriding function Language (Literal: Term_Literal_Value) return String;
+
+   not overriding function Value (Blank: Term_Blank_Value) return String;
+
+   type Term_Type is new Term_Type_Without_Finalize with null record;
+
+   not overriding function From_Blank (World: World_Type_Without_Finalize'Class) return Term_Type;
+   not overriding function From_Blank (World: World_Type_Without_Finalize'Class; ID: String) return Term_Type;
+   not overriding function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Or_Null) return Term_Type;
+
+   not overriding function From_Literal (World   : World_Type_Without_Finalize'Class;
+                                         Literal : RDF.Auxilary.String_Or_Null;
+                                         Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                         Language: RDF.Auxilary.String_Or_Null)
+                                         return Term_Type;
+
+   -- TODO: Stopped at raptor_new_term_from_counted_literal() (with an error)
+
 --     type Raptor_Statement_Record is private;
 
---     type Raptor_Statement_Record_Access is access Raptor_Statement_Record
---        with Convention=>C;
---
 --     package My_Limited_Handled_Record is
 --       new RDF.Auxilary.Limited_Handled_Record(Raptor_Statement_Record, Raptor_Statement_Record_Access);
 --
@@ -24,38 +84,43 @@ package RDF.Raptor.Statement is
 
 private
 
---     type Raptor_Term_Type is (Raptor_Term_Type_Unknown,
---                               Raptor_Term_Type_URI,
---                               Raptor_Term_Type_Literal,
---                               Raptor_Term_Type_Blank);
---     for Raptor_Term_Type'Size use Interfaces.C.int'Size; -- hack
---     for Raptor_Term_Type use (Raptor_Term_Type_Unknown => 0,
---                               Raptor_Term_Type_URI     => 1,
---                               Raptor_Term_Type_Literal => 2,
---                               -- unused type 3
---                               Raptor_Term_Type_Blank   => 4);
---
---     type Term_Kind_Type is (URI, Literal, Blank);
---
---     type Raptor_Term_Value (Term_Kind: Term_Kind_Type) is
---        record
---           case Term_Kind is
---              when URI     => URI: Raptor_URI;
---              when Literal => Literal: Raptor_Term_Literal_Value;
---              when Blank   => Blank: Raptor_Term_Blank_Value;
---           end case;
---        end record
---           with Unchecked_Union, Convention => C;
---
---     type Raptor_Term is
---        record
---           World: access RDF.Raptor.World.World_Type;
---           Usage: Interfaces.C.int;
---           The_Type: Raptor_Term_Type;
---           Value: Raptor_Term_Value;
---        end record
---           with Convention=>C;
---
+   type Term_Literal_Value is
+      record
+         str: chars_ptr;
+         Len: unsigned;
+         Datatype: RDF.Raptor.URI.Handle_Type;
+         Language: chars_ptr;
+         Language_Len: unsigned;
+      end record
+      with Convention => C;
+
+   type Term_Blank_Value is
+      record
+         str: chars_ptr;
+         Len: unsigned;
+      end record
+      with Convention => C;
+
+   type Term_Value (Kind: Term_Kind := Term_Kind'First) is
+      record
+         case Kind is
+            when Unknown => null;
+            when URI     => URI: RDF.Raptor.URI.Handle_Type;
+            when Literal => Literal: Term_Literal_Value;
+            when Blank   => Blank: Term_Blank_Value;
+         end case;
+      end record
+      with Unchecked_Union, Convention => C;
+
+   type Term_Record is
+      record
+         World: RDF.Raptor.World.Handle_Type;
+         Usage: Interfaces.C.int; -- intentionally not accessible from our Ada bindings
+         Kind: Term_Kind;
+         Value: Term_Value;
+      end record
+      with Convention => C;
+
 --     type Raptor_Statement_Record is
 --        record
 --           world: access RDF.Raptor.World.World_Type;

@@ -16,10 +16,8 @@ package RDF.Auxilary.Limited_Handled_Record is
    overriding procedure Finalize(Object: in out Base_Object);
 
    -- Don't call this procedure unless you really need it.
-   not overriding procedure Set_Handle_Hack(Object: in out Base_Object; Handle: Access_Type)
-      with Pre => Get_Handle(Object) = null;
+   not overriding procedure Set_Handle_Hack(Object: in out Base_Object; Handle: Access_Type);
 
-   -- TODO: Should check non-null predicate?
    not overriding function Get_Handle(Object: Base_Object) return Access_Type with Inline;
 
    not overriding function From_Handle(Handle: Access_Type) return Base_Object with Inline;
@@ -27,6 +25,8 @@ package RDF.Auxilary.Limited_Handled_Record is
    not overriding function Default_Handle(Object: Base_Object) return Access_Type;
 
    not overriding procedure Finalize_Handle(Object: Base_Object; Handle: Access_Type) is null;
+
+   not overriding function Is_Null (Object: Base_Object) return Boolean;
 
 private
 
