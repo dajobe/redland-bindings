@@ -47,7 +47,7 @@ package body Iostreams_Test is
    procedure Register_Tests (T : in out Test_Case) is
       use AUnit.Test_Cases.Registration;
    begin
-      Register_Routine (T, Test_Sinks'Access, "Testing sinks"); -- FIXME: uncomment
+      Register_Routine (T, Test_Sinks'Access, "Testing sinks");
       Register_Routine (T, Test_Strings'Access, "Testing string streams");
    end Register_Tests;
 
