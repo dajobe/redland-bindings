@@ -1,3 +1,5 @@
+with RDF.Auxilary.C_String_Holders;
+
 package body RDF.Raptor.Statement is
 
    function Get_World (Term: Term_Type_Without_Finalize) return RDF.Raptor.World.World_Type_Without_Finalize is
@@ -71,11 +73,13 @@ package body RDF.Raptor.Statement is
       return From_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), To_Chars_Ptr(Str'Unchecked_Access), ID'Length));
    end;
 
-   -- TODO: uncomment
+   -- TODO: Uncomment
 --     function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Holders.Holder) return Term_Type is
 --        use RDF.Auxilary.String_Holders;
 --     begin
---        return (if Is_Empty(ID) then From_Blank(World) else From_Blank(World, To_String(ID)));
+--        if Is_Empty(ID) then
+--           return From_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), Null_Ptr, 0));
+--        else
 --     end;
 
    function C_Raptor_New_Term_From_Counted_Literal (World: RDF.Raptor.World.Handle_Type;
@@ -93,20 +97,16 @@ package body RDF.Raptor.Statement is
                           Language: RDF.Auxilary.String_Holders.Holder)
                           return Term_Type
    is
-         Literal_N : chars_ptr := RDF.Auxilary.New_String(Literal);
-         Language_N: chars_ptr := RDF.Auxilary.New_String(Language);
-         -- FIXME: Strlen of NULL strings
-         Term: constant Term_Handle := C_Raptor_New_Term_From_Counted_Literal(Get_Handle(World),
-                                                                              Literal_N,
-                                                                              Strlen(Literal_N), -- TODO: inefficient
-                                                                              Get_Handle(Datatype),
-                                                                              Language_N,
-                                                                              Strlen(Language_N) -- TODO: inefficient
-                                                                             );
+      use RDF.Auxilary.C_String_Holders;
+      Literal_N : C_String_Holder := To_C_String_Holder(Literal );
+      Language_N: C_String_Holder := To_C_String_Holder(Language);
    begin
-      Free(Language_N);
-      Free(Literal_N);
-      return From_Handle(Term);
+      return From_Handle( C_Raptor_New_Term_From_Counted_Literal(Get_Handle(World),
+                                                                 C_String(Literal_N),
+                                                                 Length(Literal_N),
+                                                                 Get_Handle(Datatype),
+                                                                 C_String(Language_N),
+                                                                 Length(Language_N)) );
    end;
 
 end RDF.Raptor.Statement;
