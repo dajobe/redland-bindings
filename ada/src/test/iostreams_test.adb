@@ -34,9 +34,8 @@ package body Iostreams_Test is
       Write("QQ", Out_String);
       Assert (Value (Out_String) = Str & "QQ", "Compare written string");
       Assert (Tell (Out_String) = 4+2, "'Tell' position");
-      -- FIXME: Add these tests after the source is corrected.
---        Decimal_Write (1234, Out_String2);
---        Assert (Value (Out_String2) = "1234", "Decimal write");
+      Decimal_Write (1234, Out_String2);
+      Assert (Value (Out_String2) = "1234", "Decimal write");
    end;
 
    function Name (T : Test_Case)

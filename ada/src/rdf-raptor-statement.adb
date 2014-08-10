@@ -59,35 +59,38 @@ package body RDF.Raptor.Statement is
      with Import, Convention=>C, External_Name=>"raptor_new_term_from_counted_blank";
 
    function From_Blank (World: World_Type_Without_Finalize'Class) return Term_Type is
+      use RDF.Raptor.World;
    begin
       return From_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), Null_Ptr, 0));
    end;
 
    function From_Blank (World: World_Type_Without_Finalize'Class; ID: String) return Term_Type is
+      use RDF.Raptor.World;
       Str: aliased char_array := To_C(ID);
    begin
       return From_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), To_Chars_Ptr(Str'Unchecked_Access), ID'Length));
    end;
 
-   function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Or_Null) return Term_Type is
-      use all type RDF.Auxilary.String_Or_Null;
-   begin
-      return (if Is_Null(ID) then From_Blank(World) else From_Blank(World, To_String(ID)));
-   end;
+   -- TODO: uncomment
+--     function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Holders.Holder) return Term_Type is
+--        use RDF.Auxilary.String_Holders;
+--     begin
+--        return (if Is_Empty(ID) then From_Blank(World) else From_Blank(World, To_String(ID)));
+--     end;
 
-      function C_Raptor_New_Term_From_Counted_Literal (World: RDF.Raptor.World.Handle_Type;
-                                                       Literal: chars_ptr;
-                                                       Literal_Len: size_t;
-                                                       Datatype: RDF.Raptor.URI.Handle_Type;
-                                                       Language: chars_ptr;
-                                                       Language_Len: size_t)
-                                                       return Term_Handle
-     with Import, Convention=>C, External_Name=>"raptor_new_term_from_counted_literal";
+   function C_Raptor_New_Term_From_Counted_Literal (World: RDF.Raptor.World.Handle_Type;
+                                                    Literal: chars_ptr;
+                                                    Literal_Len: size_t;
+                                                    Datatype: RDF.Raptor.URI.Handle_Type;
+                                                    Language: chars_ptr;
+                                                    Language_Len: size_t)
+                                                    return Term_Handle
+      with Import, Convention=>C, External_Name=>"raptor_new_term_from_counted_literal";
 
    function From_Literal (World   : World_Type_Without_Finalize'Class;
-                          Literal : RDF.Auxilary.String_Or_Null;
+                          Literal : RDF.Auxilary.String_Holders.Holder;
                           Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
-                          Language: RDF.Auxilary.String_Or_Null)
+                          Language: RDF.Auxilary.String_Holders.Holder)
                           return Term_Type
    is
          Literal_N : chars_ptr := RDF.Auxilary.New_String(Literal);

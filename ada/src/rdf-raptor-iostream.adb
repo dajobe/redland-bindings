@@ -99,7 +99,7 @@ package body RDF.Raptor.IOStream is
 
    procedure Hexadecimal_Write (Value: Natural; Width: Natural; Stream: Base_Stream_Type) is
    begin
-      if C_Raptor_Iostream_Hexadecimal_Write(unsigned (Value), int(Width), Get_Handle (Stream)) /= 0 then
+      if C_Raptor_Iostream_Hexadecimal_Write(unsigned (Value), int(Width), Get_Handle (Stream)) < 0 then
          raise IOStream_Exception;
       end if;
    end;
@@ -147,7 +147,7 @@ package body RDF.Raptor.IOStream is
 
    procedure Decimal_Write (Value: int; Stream: Base_Stream_Type) is
    begin
-      if C_Raptor_Iostream_Decimal_Write (Value, Get_Handle (Stream)) /= 0 then
+      if C_Raptor_Iostream_Decimal_Write (Value, Get_Handle (Stream)) < 0 then
          raise IOStream_Exception;
       end if;
    end;

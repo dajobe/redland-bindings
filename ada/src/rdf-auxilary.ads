@@ -1,6 +1,7 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-private with Ada.Strings.Unbounded;
+--  private with Ada.Strings.Unbounded;
+with Ada.Containers.Indefinite_Holders;
 
 package RDF.Auxilary is
 
@@ -17,33 +18,29 @@ package RDF.Auxilary is
 
    type Comparison_Result is range -1..1;
 
-   -- TODO: Use Containers.Indefinite_Holders instead?
-   type String_Or_Null is private;
-
-   function Null_Value return String_Or_Null;
-
-   function From_String (Str: String) return String_Or_Null;
-
-   function To_String (Value: String_Or_Null) return String
-      with Pre => not Is_Null(Value);
-
-   function Is_Null (Value: String_Or_Null) return Boolean;
+   package String_Holders is new Ada.Containers.Indefinite_Holders(String);
+--     subtype String_Or_Null is String_Holders.Holder;
 
    -- Allocates a new string (if not null)
-   function New_String (Value: String_Or_Null) return chars_ptr;
+   function New_String (Value: String_Holders.Holder) return chars_ptr;
 
    -- Writes null-terminated string into Data and return a pointer to it,
 --     function To_C (Value: String_Or_Null; Data: aliased out char_array) return chars_ptr;
 
+   type C_String_Result is private;
+
+   function To_C_Object (Item: String_Holders.Holder) return C_String_Result;
+
+--     function Get_C_String (Object: C_String_Result) return Chars_Ptr;
+
+   function Length (Object: C_String_Result) return size_t;
+
 private
 
-   -- Not sure that this is the most efficient implemenation
-   type String_Or_Null (Has_Value: Boolean := False) is
-      record
-         case Has_Value is
-            when False => null;
-            when True  => Value: Ada.Strings.Unbounded.Unbounded_String;
-         end case;
-      end record;
+   type My_Array is new char_array;
+
+   package Char_Array_Holders is new Ada.Containers.Indefinite_Holders(char_array);
+
+   type C_String_Result is new Char_Array_Holders.Holder with null record;
 
 end RDF.Auxilary;
