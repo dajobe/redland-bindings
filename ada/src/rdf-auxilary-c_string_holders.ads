@@ -3,6 +3,8 @@ with RDF.Auxilary.My_Indefinite_Holders;
 
 package RDF.Auxilary.C_String_Holders is
 
+   -- TODO: Should something in this package be made private?
+
    package Char_Array_Holders is new RDF.Auxilary.My_Indefinite_Holders(char_array);
 
    type C_String_Holder is new Char_Array_Holders.Holder with null record;
