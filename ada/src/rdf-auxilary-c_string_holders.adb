@@ -7,7 +7,7 @@ package body RDF.Auxilary.C_String_Holders is
       if Is_Empty(Object) then
          return 0;
       else
-         return Element(Object)'Length;
+         return Element(Object)'Length - 1; -- minus NULL at the end of the string
       end if;
    end;
 
