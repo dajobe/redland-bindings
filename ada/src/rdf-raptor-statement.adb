@@ -73,14 +73,12 @@ package body RDF.Raptor.Statement is
       return From_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), To_Chars_Ptr(Str'Unchecked_Access), ID'Length));
    end;
 
-   -- TODO: Uncomment
---     function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Holders.Holder) return Term_Type is
---        use RDF.Auxilary.String_Holders;
---     begin
---        if Is_Empty(ID) then
---           return From_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), Null_Ptr, 0));
---        else
---     end;
+   function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Holders.Holder) return Term_Type is
+      use RDF.Auxilary.C_String_Holders;
+      ID_N : C_String_Holder := To_C_String_Holder(ID);
+   begin
+      return From_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), C_String(ID_N), Length(ID_N)));
+   end;
 
    function C_Raptor_New_Term_From_Counted_Literal (World: RDF.Raptor.World.Handle_Type;
                                                     Literal: chars_ptr;

@@ -59,7 +59,7 @@ package RDF.Raptor.Statement is
 
    not overriding function From_Blank (World: World_Type_Without_Finalize'Class) return Term_Type;
    not overriding function From_Blank (World: World_Type_Without_Finalize'Class; ID: String) return Term_Type;
---     not overriding function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Holders.Holder) return Term_Type; -- TODO: uncomment
+   not overriding function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Holders.Holder) return Term_Type; -- TODO: uncomment
 
    not overriding function From_Literal (World   : World_Type_Without_Finalize'Class;
                                          Literal : RDF.Auxilary.String_Holders.Holder;
