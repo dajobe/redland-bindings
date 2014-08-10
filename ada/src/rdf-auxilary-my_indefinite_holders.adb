@@ -69,7 +69,6 @@ package body RDF.Auxilary.My_Indefinite_Holders is
       end if;
    end;
 
-
    procedure Move (Target : in out Holder; Source : in out Holder) is
    begin
       if Target.Ptr /= Source.Ptr then
