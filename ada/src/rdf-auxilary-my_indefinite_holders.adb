@@ -46,7 +46,7 @@ package body RDF.Auxilary.My_Indefinite_Holders is
    procedure Replace_Element (Container : in out Holder; New_Item  : in Element_Type) is
    begin
       Clear(Container);
-      Container.Ptr.all := New_Item;
+      Container.Ptr := new Element_Type'(New_Item);
    end;
 
    procedure Assign (Target : in out Holder; Source : in Holder) is
