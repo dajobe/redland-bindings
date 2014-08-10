@@ -120,12 +120,12 @@ package body RDF.Raptor.URI is
       return C_Raptor_Uri_Equals (Get_Handle(URI1), Get_Handle(URI2)) /= 0;
    end;
 
-   -- TODO: remove this function?
    function C_Raptor_Uri_As_String(URI: Handle_Type)
                                    return chars_ptr
      with Import, Convention=>C, External_Name=>"raptor_uri_as_string";
 
-   -- TODO: raptor_uri_as_counted_string() is faster (or raptor_uri_to_counted_string)
+   -- raptor_uri_as_counted_string() or raptor_uri_to_counted_string() is faster.
+   -- But Ad2012 does not provide constructing strings of given length.
    function To_String(URI: URI_Type_Without_Finalize) return String is
    begin
       -- raptor_uri_as_string() returns a pointer which exists as long as the URI object. No need to free it.
