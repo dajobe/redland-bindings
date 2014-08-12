@@ -72,7 +72,21 @@ package RDF.Raptor.Statement is
    not overriding function From_URI (World: World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
                                      return Term_Type;
 
-   -- TODO: Stopped at raptor_new_term_from_counted_string()
+   not overriding function From_String (World: World_Type_Without_Finalize'Class; Value: String) return Term_Type;
+
+   overriding procedure Adjust (Object: in out Term_Type);
+
+   not overriding function Compare (Left, Right: Term_Type) return RDF.Auxilary.Comparison_Result;
+
+   not overriding function Equals (Left, Right: Term_Type) return Boolean;
+
+   overriding function "=" (Left, Right: Term_Type) return Boolean renames Equals;
+
+   overriding procedure Finalize_Handle (Object: Term_Type; Handle: Term_Handle);
+
+   not overriding function To_String (Term: Term_Type) return String;
+
+   -- TODO: Stopped at raptor_term_to_turtle_string()
 
 --     type Raptor_Statement_Record is private;
 

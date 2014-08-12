@@ -1,4 +1,6 @@
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxilary.C_String_Holders;
+with RDF.Raptor.Memory;
 
 package body RDF.Raptor.Statement is
 
@@ -125,6 +127,63 @@ package body RDF.Raptor.Statement is
                       return Term_Type is
    begin
       return From_Non_Null_Handle( C_Raptor_New_Term_From_URI(Get_Handle(World), Get_Handle(URI)) );
+   end;
+
+   function C_Raptor_New_Term_From_Counted_String (World: RDF.Raptor.World.Handle_Type; Str: char_array; Len: size_t) return Term_Handle
+      with Import, Convention=>C, External_Name=>"raptor_new_term_from_counted_string";
+
+   function From_String (World: World_Type_Without_Finalize'Class; Value: String) return Term_Type is
+   begin
+      return From_Non_Null_Handle( C_Raptor_New_Term_From_Counted_String(Get_Handle(World), To_C(Value, Append_Nul=>False), Value'Length) );
+   end;
+
+   function C_Raptor_Term_Copy (Term: Term_Handle) return Term_Handle
+      with Import, Convention=>C, External_Name=>"raptor_term_copy";
+
+   procedure Adjust (Object: in out Term_Type) is
+   begin
+      Set_Handle_Hack(Object, C_Raptor_Term_Copy(Get_Handle(Object)));
+   end;
+
+   function C_Raptor_Term_Compare (Left, Right: Term_Handle) return int
+      with Import, Convention=>C, External_Name=>"raptor_term_compare";
+
+   function Compare (Left, Right: Term_Type) return RDF.Auxilary.Comparison_Result is
+   begin
+      return RDF.Auxilary.Comparison_Result( C_Raptor_Term_Compare(Get_Handle(Left), Get_Handle(Right)) );
+   end;
+
+   function C_Raptor_Term_Equals (Left, Right: Term_Handle) return int
+      with Import, Convention=>C, External_Name=>"raptor_term_equals";
+
+   function Equals (Left, Right: Term_Type) return Boolean is
+   begin
+      return C_Raptor_Term_Equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
+   end;
+
+   procedure C_Raptor_Free_Term (Term: Term_Handle)
+      with Import, Convention=>C, External_Name=>"raptor_free_term";
+
+   procedure Finalize_Handle (Object: Term_Type; Handle: Term_Handle) is
+   begin
+      C_Raptor_Free_Term(Handle);
+   end;
+
+   function C_Raptor_Term_To_String (Term: Term_Handle) return chars_ptr
+      with Import, Convention=>C, External_Name=>"raptor_term_to_string";
+
+   function To_String (Term: Term_Type) return String is
+      Str: constant chars_ptr := C_Raptor_Term_To_String(Get_Handle(Term));
+   begin
+      if Str = Null_Ptr then
+         raise Constraint_Error; -- TODO: Is it the best exception for the case?
+      end if;
+      declare
+         Result: constant String := Value(Str);
+      begin
+         RDF.Raptor.Memory.Raptor_Free_Memory(Str);
+         return Result;
+      end;
    end;
 
 end RDF.Raptor.Statement;
