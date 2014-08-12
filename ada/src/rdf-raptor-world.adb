@@ -58,11 +58,6 @@ package body RDF.Raptor.World is
       end loop;
    end;
 
---   function From_Handle(Handle: Handle_Type) return World is
---   begin
---      return (RDF.Base.From_Handle(Handle) with null record);
---   end From_Handle;
-
    procedure C_Raptor_Free_World(Handle: Handle_Type)
      with Import, Convention=>C, External_Name=>"raptor_free_world";
 
