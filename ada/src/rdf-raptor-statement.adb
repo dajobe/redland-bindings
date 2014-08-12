@@ -107,4 +107,24 @@ package body RDF.Raptor.Statement is
                                                                  Length(Language_N)) );
    end;
 
+   function C_Raptor_New_Term_From_Counted_URI_String (World: RDF.Raptor.World.Handle_Type;
+                                                       Str: char_array;
+                                                       Str_Len: size_t)
+                                                       return Term_Handle
+      with Import, Convention=>C, External_Name=>"raptor_new_term_from_counted_uri_string";
+
+   function From_URI_String (World: World_Type_Without_Finalize'Class; URI: String) return Term_Type is
+   begin
+      return From_Handle( C_Raptor_New_Term_From_Counted_URI_String(Get_Handle(World), To_C(URI, Append_Nul=>False), URI'Length) );
+   end;
+
+   function C_Raptor_New_Term_From_URI (World: RDF.Raptor.World.Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Term_Handle
+      with Import, Convention=>C, External_Name=>"raptor_new_term_from_uri";
+
+   function From_URI (World: World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                      return Term_Type is
+   begin
+      return From_Handle( C_Raptor_New_Term_From_URI(Get_Handle(World), Get_Handle(URI)) );
+   end;
+
 end RDF.Raptor.Statement;

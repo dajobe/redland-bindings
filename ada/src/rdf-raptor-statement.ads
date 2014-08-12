@@ -67,7 +67,12 @@ package RDF.Raptor.Statement is
                                          Language: RDF.Auxilary.String_Holders.Holder)
                                          return Term_Type;
 
-   -- TODO: Stopped at raptor_new_term_from_counted_literal() (with an error)
+   not overriding function From_URI_String (World: World_Type_Without_Finalize'Class; URI: String) return Term_Type;
+
+   not overriding function From_URI (World: World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                                     return Term_Type;
+
+   -- TODO: Stopped at raptor_new_term_from_counted_string()
 
 --     type Raptor_Statement_Record is private;
 
