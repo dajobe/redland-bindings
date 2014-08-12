@@ -1,13 +1,15 @@
-with RDF.Auxilary.Simple_Handled_Record;
+with RDF.Auxilary.Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.IOStream;
 
 package RDF.Raptor.URI is
 
-   subtype Handle_Type is RDF.Auxilary.Simple_Handled_Record.Access_Type;
+   package Handled_Record is new RDF.Auxilary.Handled_Record(RDF.Auxilary.Dummy_Record);
+
+   subtype Handle_Type is Handled_Record.Access_Type;
 
    -- Only absolute URIs!
-   type URI_Type_Without_Finalize is new RDF.Auxilary.Simple_Handled_Record.Base_Object with null record;
+   type URI_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 
    not overriding function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result;
 

@@ -1,7 +1,8 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Ada.Strings.Unbounded;
-with RDF.Auxilary.Simple_Limited_Handled_Record;
+with RDF.Auxilary.Limited_Handled_Record;
+with RDF.Auxilary;
 with RDF.Raptor.World;
 
 package RDF.Raptor.IOStream is
@@ -13,9 +14,11 @@ package RDF.Raptor.IOStream is
 
    IOStream_Exception: exception;
 
-   subtype Handle_Type is RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type;
+   package Handled_Record is new RDF.Auxilary.Limited_Handled_Record(RDF.Auxilary.Dummy_Record);
 
-   type Base_Stream_Type is new RDF.Auxilary.Simple_Limited_Handled_Record.Base_Object with null record;
+   subtype Handle_Type is Handled_Record.Access_Type;
+
+   type Base_Stream_Type is new Handled_Record.Base_Object with null record;
 
    procedure Hexadecimal_Write (Value: Natural; Width: Natural; Stream: Base_Stream_Type);
 

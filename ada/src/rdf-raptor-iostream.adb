@@ -5,8 +5,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package body RDF.Raptor.IOStream is
 
-   use type Handle_Type;
-
    function C_Raptor_New_Iostream_From_Sink (World: RDF.Raptor.World.Handle_Type) return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_sink";
 

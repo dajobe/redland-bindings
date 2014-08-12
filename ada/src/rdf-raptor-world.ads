@@ -1,11 +1,13 @@
 with Interfaces.C;
-with RDF.Auxilary.Simple_Limited_Handled_Record;
+with RDF.Auxilary.Limited_Handled_Record;
 
 package RDF.Raptor.World is
 
-   type World_Type_Without_Finalize is new RDF.Auxilary.Simple_Limited_Handled_Record.Base_Object with null record;
+  package Handled_Record is new RDF.Auxilary.Limited_Handled_Record(RDF.Auxilary.Dummy_Record);
 
-   subtype Handle_Type is RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type;
+   type World_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
+
+   subtype Handle_Type is Handled_Record.Access_Type;
 
    type Flag_Type is (Libxml_Error_Save,
                       Libxml_Structured_Error_Save,

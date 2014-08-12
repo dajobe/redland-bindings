@@ -2,11 +2,8 @@ with Ada.IO_Exceptions;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Auxilary.Simple_Handled_Record;
-with RDF.Auxilary.Simple_Limited_Handled_Record;
 with RDF.Raptor.Memory;
 with RDF.Raptor.IOStream;
---  use all type RDF.Auxilary.Simple_Handled_Record.Base_Object;
 
 package body RDF.Raptor.URI is
 
@@ -226,7 +223,7 @@ package body RDF.Raptor.URI is
       end if;
    end;
 
-   function C_Raptor_URI_Get_World (URI: Handle_Type) return RDF.Auxilary.Simple_Limited_Handled_Record.Access_Type
+   function C_Raptor_URI_Get_World (URI: Handle_Type) return RDF.Raptor.World.Handle_Type
       with Import, Convention=>C, External_Name=>"raptor_uri_get_world";
 
    function Get_World (URI: URI_Type_Without_Finalize) return World_Type_Without_Finalize is
