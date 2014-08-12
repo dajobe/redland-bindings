@@ -33,7 +33,6 @@ package RDF.Auxilary.Handled_Record is
 
    not overriding function From_Handle(Handle: Access_Type) return Base_Object with Inline;
 
-   -- TODO: Can we make this function return Base_Object'Class and eliminate the need to override it?
    not overriding function From_Non_Null_Handle(Handle: Access_Type) return Base_Object with Inline;
 
    not overriding function Default_Handle(Object: Base_Object) return Access_Type;
