@@ -10,6 +10,14 @@ package body RDF.Auxilary.Handled_Record is
    function From_Handle(Handle: Access_Type) return Base_Object is
       (Ada.Finalization.Controlled with Handle=>Handle);
 
+   function From_Non_Null_Handle(Handle: Access_Type) return Base_Object is
+   begin
+      if Handle = null then
+         raise Null_Handle;
+      end if;
+      return From_Handle(Handle);
+   end;
+
    function Default_Handle(Object: Base_Object) return Access_Type is (null);
 
    procedure Initialize (Object: in out Base_Object) is

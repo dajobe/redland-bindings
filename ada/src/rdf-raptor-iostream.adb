@@ -388,6 +388,12 @@ package body RDF.Raptor.IOStream is
       return (Base_Stream_Type'(From_Handle (Handle)) with Length=>0, Str=>"");
    end;
 
+   function From_Non_Null_Handle(Handle: Handle_Type) return Stream_From_String is
+   begin
+      raise Program_Error;
+      return (Base_Stream_Type'(From_Handle (Handle)) with Length=>0, Str=>"");
+   end;
+
    function C_Raptor_New_Iostream_From_String (World: RDF.Raptor.World.Handle_Type; str: char_array; length: size_t) return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_string";
 
@@ -400,6 +406,12 @@ package body RDF.Raptor.IOStream is
    end;
 
    function From_Handle(Handle: Handle_Type) return Stream_To_String is
+   begin
+      raise Program_Error;
+      return (Base_Stream_Type'(From_Handle (Handle)) with Str=>Ada.Strings.Unbounded.Null_Unbounded_String);
+   end;
+
+   function From_Non_Null_Handle(Handle: Handle_Type) return Stream_To_String is
    begin
       raise Program_Error;
       return (Base_Stream_Type'(From_Handle (Handle)) with Str=>Ada.Strings.Unbounded.Null_Unbounded_String);

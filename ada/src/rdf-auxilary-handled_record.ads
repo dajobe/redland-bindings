@@ -33,6 +33,8 @@ package RDF.Auxilary.Handled_Record is
 
    not overriding function From_Handle(Handle: Access_Type) return Base_Object with Inline;
 
+   not overriding function From_Non_Null_Handle(Handle: Access_Type) return Base_Object with Inline;
+
    not overriding function Default_Handle(Object: Base_Object) return Access_Type;
 
    not overriding procedure Finalize_Handle(Object: Base_Object; Handle: Access_Type) is null;

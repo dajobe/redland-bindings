@@ -137,6 +137,7 @@ package RDF.Raptor.IOStream is
 
    -- Hack to prevent compilation error:
    overriding function From_Handle(Handle: Handle_Type) return Stream_From_String;
+   overriding function From_Non_Null_Handle(Handle: Handle_Type) return Stream_From_String;
 
    not overriding function Open_From_String (World: RDF.Raptor.World.World_Type'Class; Value: String) return Stream_From_String;
 
@@ -163,6 +164,7 @@ private
 
    -- Hack to prevent compilation error:
    overriding function From_Handle(Handle: Handle_Type) return Stream_To_String;
+   overriding function From_Non_Null_Handle(Handle: Handle_Type) return Stream_To_String;
 
    overriding function Do_Write_Bytes (Stream: in out Stream_To_String; Data: chars_ptr; Size, Count: size_t) return int;
 

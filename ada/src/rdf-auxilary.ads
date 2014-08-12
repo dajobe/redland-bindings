@@ -22,6 +22,8 @@ package RDF.Auxilary is
 
    function Length (Object: String_Holders.Holder) return size_t;
 
+   Null_Handle: exception;
+
 private
 
    type My_Array is new char_array;
