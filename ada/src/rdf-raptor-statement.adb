@@ -63,21 +63,21 @@ package body RDF.Raptor.Statement is
    function From_Blank (World: World_Type_Without_Finalize'Class) return Term_Type is
       use RDF.Raptor.World;
    begin
-      return From_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), Null_Ptr, 0));
+      return From_Non_Null_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), Null_Ptr, 0));
    end;
 
    function From_Blank (World: World_Type_Without_Finalize'Class; ID: String) return Term_Type is
       use RDF.Raptor.World;
       Str: aliased char_array := To_C(ID);
    begin
-      return From_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), To_Chars_Ptr(Str'Unchecked_Access), ID'Length));
+      return From_Non_Null_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), To_Chars_Ptr(Str'Unchecked_Access), ID'Length));
    end;
 
    function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Holders.Holder) return Term_Type is
       use RDF.Auxilary.C_String_Holders;
       ID_N : C_String_Holder := To_C_String_Holder(ID);
    begin
-      return From_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), C_String(ID_N), Length(ID_N)));
+      return From_Non_Null_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), C_String(ID_N), Length(ID_N)));
    end;
 
    function C_Raptor_New_Term_From_Counted_Literal (World: RDF.Raptor.World.Handle_Type;
@@ -99,12 +99,12 @@ package body RDF.Raptor.Statement is
       Literal_N : C_String_Holder := To_C_String_Holder(Literal );
       Language_N: C_String_Holder := To_C_String_Holder(Language);
    begin
-      return From_Handle( C_Raptor_New_Term_From_Counted_Literal(Get_Handle(World),
-                                                                 C_String(Literal_N),
-                                                                 Length(Literal_N),
-                                                                 Get_Handle(Datatype),
-                                                                 C_String(Language_N),
-                                                                 Length(Language_N)) );
+      return From_Non_Null_Handle( C_Raptor_New_Term_From_Counted_Literal(Get_Handle(World),
+                                                                          C_String(Literal_N),
+                                                                          Length(Literal_N),
+                                                                          Get_Handle(Datatype),
+                                                                          C_String(Language_N),
+                                                                          Length(Language_N)) );
    end;
 
    function C_Raptor_New_Term_From_Counted_URI_String (World: RDF.Raptor.World.Handle_Type;
@@ -115,7 +115,7 @@ package body RDF.Raptor.Statement is
 
    function From_URI_String (World: World_Type_Without_Finalize'Class; URI: String) return Term_Type is
    begin
-      return From_Handle( C_Raptor_New_Term_From_Counted_URI_String(Get_Handle(World), To_C(URI, Append_Nul=>False), URI'Length) );
+      return From_Non_Null_Handle( C_Raptor_New_Term_From_Counted_URI_String(Get_Handle(World), To_C(URI, Append_Nul=>False), URI'Length) );
    end;
 
    function C_Raptor_New_Term_From_URI (World: RDF.Raptor.World.Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Term_Handle
@@ -124,7 +124,7 @@ package body RDF.Raptor.Statement is
    function From_URI (World: World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
                       return Term_Type is
    begin
-      return From_Handle( C_Raptor_New_Term_From_URI(Get_Handle(World), Get_Handle(URI)) );
+      return From_Non_Null_Handle( C_Raptor_New_Term_From_URI(Get_Handle(World), Get_Handle(URI)) );
    end;
 
 end RDF.Raptor.Statement;

@@ -19,7 +19,7 @@ package body RDF.Raptor.URI is
    function From_String(World: World_Type_Without_Finalize'Class; Arg: String) return URI_Type is
    begin
       -- LD_LIBRARY_PATH="" ltrace -n4 -llibraptor2.so.0 ./obj/test/debug/run_all_tests 2>&1| egrep ^[a-z]
-      return From_Handle (C_Raptor_New_Uri_From_Counted_String (Get_Handle (World), To_C (Arg, Append_Nul=>False), Arg'Length));
+      return From_Non_Null_Handle (C_Raptor_New_Uri_From_Counted_String (Get_Handle (World), To_C (Arg, Append_Nul=>False), Arg'Length));
    end;
 
    function C_Raptor_New_Uri_From_Uri_Local_Name (World_Handle: RDF.Raptor.World.Handle_Type;
@@ -30,7 +30,7 @@ package body RDF.Raptor.URI is
 
    function From_URI_With_Local_Name(World: World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type is
    begin
-      return From_Handle (C_Raptor_New_Uri_From_Uri_Local_Name (Get_Handle (World), Get_Handle (URI), To_C (Local_Name)));
+      return From_Non_Null_Handle (C_Raptor_New_Uri_From_Uri_Local_Name (Get_Handle (World), Get_Handle (URI), To_C (Local_Name)));
    end;
 
    function C_Raptor_New_Uri_From_Uri_Or_File_String(World_Handle: RDF.Raptor.World.Handle_Type;
@@ -44,7 +44,7 @@ package body RDF.Raptor.URI is
                                     Uri_Or_File: String)
                                     return URI_Type is
    begin
-      return From_Handle (C_Raptor_New_Uri_From_Uri_Or_File_String (Get_Handle (World), Get_Handle (Base_URI), To_C (Uri_Or_File)));
+      return From_Non_Null_Handle (C_Raptor_New_Uri_From_Uri_Or_File_String (Get_Handle (World), Get_Handle (Base_URI), To_C (Uri_Or_File)));
    end;
 
    function C_Raptor_New_Uri_Relative_To_Base_Counted(World_Handle: RDF.Raptor.World.Handle_Type;
@@ -59,10 +59,10 @@ package body RDF.Raptor.URI is
                                       URI_String: String)
                                       return URI_Type is
    begin
-      return From_Handle (C_Raptor_New_Uri_Relative_To_Base_Counted(Get_Handle (World),
-                                                                    Get_Handle (Base_URI),
-                                                                    To_C (URI_String, Append_Nul=>False),
-                                                                    URI_String'Length));
+      return From_Non_Null_Handle (C_Raptor_New_Uri_Relative_To_Base_Counted(Get_Handle (World),
+                                                                             Get_Handle (Base_URI),
+                                                                             To_C (URI_String, Append_Nul=>False),
+                                                                             URI_String'Length));
    end;
 
    function C_Raptor_New_Uri_From_ID(World_Handle: RDF.Raptor.World.Handle_Type;
@@ -73,7 +73,7 @@ package body RDF.Raptor.URI is
 
    function From_ID(World: World_Type_Without_Finalize'Class; Base_URI: URI_Type_Without_Finalize'Class; ID: String) return URI_Type is
    begin
-      return From_Handle (C_Raptor_New_Uri_From_ID (Get_Handle (World), Get_Handle (Base_URI), To_C (ID)));
+      return From_Non_Null_Handle (C_Raptor_New_Uri_From_ID (Get_Handle (World), Get_Handle (Base_URI), To_C (ID)));
    end;
 
    function C_Raptor_New_Uri_For_Rdf_Concept (World_Handle: RDF.Raptor.World.Handle_Type;
@@ -83,7 +83,7 @@ package body RDF.Raptor.URI is
 
    function From_RDF_Concept(World: World_Type_Without_Finalize'Class; Name: String) return URI_Type is
    begin
-      return From_Handle (C_Raptor_New_Uri_For_Rdf_Concept (Get_Handle (World), To_C (Name)));
+      return From_Non_Null_Handle (C_Raptor_New_Uri_For_Rdf_Concept (Get_Handle (World), To_C (Name)));
    end;
 
    function C_Raptor_New_Uri_For_Xmlbase (Old_URI: Handle_Type)
@@ -92,7 +92,7 @@ package body RDF.Raptor.URI is
 
    function For_XML_Base(Old_URI: URI_Type_Without_Finalize'Class) return URI_Type is
    begin
-      return From_Handle (C_Raptor_New_Uri_For_Xmlbase (Get_Handle(Old_URI)));
+      return From_Non_Null_Handle (C_Raptor_New_Uri_For_Xmlbase (Get_Handle(Old_URI)));
    end;
 
    function C_Raptor_New_Uri_For_Retrieval (Old_URI: Handle_Type)
@@ -101,7 +101,7 @@ package body RDF.Raptor.URI is
 
    function For_Retrieval(Old_URI: URI_Type_Without_Finalize'Class) return URI_Type is
    begin
-      return From_Handle (C_Raptor_New_Uri_For_Retrieval (Get_Handle(Old_URI)));
+      return From_Non_Null_Handle (C_Raptor_New_Uri_For_Retrieval (Get_Handle(Old_URI)));
    end;
 
    function C_Raptor_Uri_Compare (URI1, URI2: Handle_Type) return int
