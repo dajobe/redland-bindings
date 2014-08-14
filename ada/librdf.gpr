@@ -1,17 +1,84 @@
 library project Librdf is
 
+   type Compilation_Mode_Type is
+      ("Devel", "Install");
+   type Runtime_Type is
+      ("cert", "default", "full", "hi", "kernel", "kernel-sjlj", "kernel-smp", "pthread", "sjlj", "ravenscar", "ravenscar-apex", "ravenscar-full", "ravenscar-cert", "ravenscar-cert-rci", "ravenscar-cert-rtp", "ravenscar-sfp", "rtp", "rtp-smp", 
+      "soft-float", "xenomai", "zcx", "zfp", "minimal");
    for Library_Name use "rdf-ada";
    for Library_Dir use "lib";
    for Library_Ali_Dir use "ali";
-   for Library_Kind use External ("LIBRARY_KIND");
-   for Library_Version use External ("soversion");
+   for Library_Kind use external ("LIBRARY_KIND");
+   for Library_Version use external ("soversion");
+   for Source_Dirs use ("src");
+   for Object_Dir use "obj";
+   RUNTIME : Runtime_Type := external ("RUNTIME");
+   MODE : Compilation_Mode_Type := external ("MODE");
 
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-O2", "-gnat2012");
    end Compiler;
 
-   for Source_Dirs use ("src");
-   for Object_Dir use "obj";
+   package Linker is
+
+      case RUNTIME is
+
+         when "cert" =>
+
+         when "default" =>
+
+         when "full" =>
+
+            case MODE is
+
+               when "Devel" =>
+
+               when "Install" =>
+                  for Linker_Options use ("-lraptor2");
+            end case;
+
+         when "hi" =>
+
+         when "kernel" =>
+
+         when "kernel-sjlj" =>
+
+         when "kernel-smp" =>
+
+         when "pthread" =>
+
+         when "sjlj" =>
+
+         when "ravenscar" =>
+
+         when "ravenscar-apex" =>
+
+         when "ravenscar-full" =>
+
+         when "ravenscar-cert" =>
+
+         when "ravenscar-cert-rci" =>
+
+         when "ravenscar-cert-rtp" =>
+
+         when "ravenscar-sfp" =>
+
+         when "rtp" =>
+
+         when "rtp-smp" =>
+
+         when "soft-float" =>
+
+         when "xenomai" =>
+
+         when "zcx" =>
+
+         when "zfp" =>
+
+         when "minimal" =>
+
+      end case;
+   end Linker;
 
 end Librdf;
 

@@ -121,7 +121,86 @@ project Test is
    end Compiler;
 
    package Linker is
-      for Linker_Options use ("-lraptor2");
+
+      case Runtime is
+
+         when "cert" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "default" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "full" =>
+
+            case Mode is
+
+               when "Devel" =>
+                  for Linker_Options use ("-lraptor2");
+
+               when "Install" =>
+                  for Linker_Options use ();
+            end case;
+
+         when "hi" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "kernel" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "kernel-sjlj" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "kernel-smp" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "pthread" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "sjlj" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "ravenscar" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "ravenscar-apex" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "ravenscar-full" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "ravenscar-cert" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "ravenscar-cert-rci" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "ravenscar-cert-rtp" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "ravenscar-sfp" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "rtp" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "rtp-smp" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "soft-float" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "xenomai" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "zcx" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "zfp" =>
+            for Linker_Options use ("-lraptor2");
+
+         when "minimal" =>
+            for Linker_Options use ("-lraptor2");
+      end case;
    end Linker;
 
    package Ide is
