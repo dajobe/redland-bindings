@@ -5,12 +5,12 @@ project Test is
 
    for Object_Dir use "obj/test";
    type Runtime_Type is
-      ("cert", "default", "full", "hi", "kernel", "kernel-sjlj", "kernel-smp", "pthread", "sjlj", "ravenscar", "ravenscar-apex", "ravenscar-full", "ravenscar-cert", "ravenscar-cert-rci", "ravenscar-cert-rtp", "ravenscar-sfp", "rtp", "rtp-smp", 
+      ("cert", "default", "full", "hi", "kernel", "kernel-sjlj", "kernel-smp", "pthread", "sjlj", "ravenscar", "ravenscar-apex", "ravenscar-full", "ravenscar-cert", "ravenscar-cert-rci", "ravenscar-cert-rtp", "ravenscar-sfp", "rtp", "rtp-smp",
       "soft-float", "xenomai", "zcx", "zfp", "minimal");
-   Runtime : Runtime_Type := external ("RUNTIME");
+   Runtime : Runtime_Type := external ("RUNTIME", "default");
    type Compilation_Mode_Type is
       ("Devel", "Install");
-   Mode : Compilation_Mode_Type := external ("MODE");
+   Mode : Compilation_Mode_Type := external ("MODE", "default");
 
    case Runtime is
 
