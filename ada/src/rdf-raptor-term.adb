@@ -37,7 +37,7 @@ package body RDF.Raptor.Term is
       return Value(Literal.Str, Size_T(Literal.Len));
    end;
 
-   function Datatype (Literal: Term_Literal_Value) return RDF.Raptor.URI.URI_Type is
+   function Datatype (Literal: Term_Literal_Value) return RDF.Raptor.URI.URI_Type_Without_Finalize is
       use type RDF.Raptor.URI.Handle_Type;
    begin
       if Literal.Datatype = null then

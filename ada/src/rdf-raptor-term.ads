@@ -48,7 +48,7 @@ package RDF.Raptor.Term is
    not overriding function Value (Literal: Term_Literal_Value) return String;
 
    -- The returned URI may be null.
-   not overriding function Datatype (Literal: Term_Literal_Value) return RDF.Raptor.URI.URI_Type;
+   not overriding function Datatype (Literal: Term_Literal_Value) return RDF.Raptor.URI.URI_Type_Without_Finalize;
 
    -- TODO: Not sure that it does the right thing with empty language string.
    --

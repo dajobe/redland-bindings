@@ -1,4 +1,4 @@
--- FIXME: Calling this (compiled with GANT 4.9) as
+-- FIXED: Calling this (compiled with GANT 4.9) as
 --   ltrace -n4 -llibraptor2.so.0 ./obj/test/check/special_test 2>&1| egrep ^[a-z] | grep _uri
 -- shows that there are less raptor_new_uri_from_counted_string() + raptor_uri_copy()
 -- calls than raptor_free_uri() calls.
@@ -20,7 +20,7 @@ procedure Special_Test is
                                       RDF.Auxilary.String_Holders.Empty_Holder -- language
                                      );
 
-   X: RDF.Raptor.URI.URI_Type := Datatype(Get_Literal(Term_1));
+   X: RDF.Raptor.URI.URI_Type_Without_Finalize := Datatype(Get_Literal(Term_1));
 
 begin
    null;
