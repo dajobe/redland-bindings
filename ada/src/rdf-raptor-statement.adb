@@ -16,10 +16,10 @@ package body RDF.Raptor.Statement is
       end return;
    end;
 
-   function Get_Subject   (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize is (Get_Handle(Statement).Subject.all);
-   function Get_Predicate (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize is (Get_Handle(Statement).Predicate.all);
-   function Get_Object    (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize is (Get_Handle(Statement).Object.all);
-   function Get_Graph     (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize is (Get_Handle(Statement).Graph.all); -- may return null handle
+   function Get_Subject   (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize is (From_Handle(Get_Handle(Statement).Subject));
+   function Get_Predicate (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize is (From_Handle(Get_Handle(Statement).Predicate));
+   function Get_Object    (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize is (From_Handle(Get_Handle(Statement).Object));
+   function Get_Graph     (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize is (From_Handle(Get_Handle(Statement).Graph)); -- may return null handle
 
 --     function No_Auto_Finalization (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class) return Boolean is
 --     begin

@@ -64,7 +64,7 @@ private
       record
          world: RDF.Raptor.World.Handle_Type;
          usage: Interfaces.C.int;
-         Subject, Predicate, Object, Graph: access RDF.Raptor.Term.Term_Type_Without_Finalize;
+         Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Handle;
       end record
          with Convention=>C;
 
