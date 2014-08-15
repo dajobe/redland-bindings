@@ -27,7 +27,7 @@ package body Constants_Test is
    function Name (T : Test_Case)
                   return Test_String is
    begin
-      return Format ("Some constant string or integer values");
+      return Format ("Some constants");
    end Name;
 
    procedure Register_Tests (T : in out Test_Case) is

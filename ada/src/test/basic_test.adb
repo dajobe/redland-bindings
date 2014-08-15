@@ -15,7 +15,7 @@ package body Basic_Test is
    function Name (T : Test_Case)
                   return Test_String is
    begin
-      return Format ("Constructors of RDF worlds");
+      return Format ("Constructors of worlds");
    end Name;
 
    procedure Register_Tests (T : in out Test_Case) is
