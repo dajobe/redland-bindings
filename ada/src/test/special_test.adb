@@ -20,7 +20,7 @@ procedure Special_Test is
                                       RDF.Auxilary.String_Holders.Empty_Holder -- language
                                      );
 
-   Str: String := To_String(Datatype(Get_Literal(Term_1)));
+   X: RDF.Raptor.URI.URI_Type := Datatype(Get_Literal(Term_1));
 
 begin
    null;
