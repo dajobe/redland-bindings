@@ -283,4 +283,9 @@ package body RDF.Raptor.URI is
       Set_Handle_Hack(Object, C_Raptor_URI_Copy (Get_Handle(Object)));
    end;
 
+   function Copy (Object: URI_Type_Without_Finalize'Class) return URI_Type is
+   begin
+      return From_Handle (C_Raptor_URI_Copy (Get_Handle(Object)) );
+   end;
+
 end RDF.Raptor.URI;

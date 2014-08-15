@@ -62,6 +62,8 @@ package RDF.Raptor.URI is
 
    overriding procedure Finalize_Handle(Object: URI_Type; Handle: Handle_Type);
 
+   not overriding function Copy (Object: URI_Type_Without_Finalize'Class) return URI_Type;
+
    not overriding function From_String(World: World_Type_Without_Finalize'Class; Arg: String) return URI_Type;
 
    not overriding function From_URI_With_Local_Name(World: World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type;

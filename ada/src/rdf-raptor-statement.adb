@@ -145,6 +145,11 @@ package body RDF.Raptor.Statement is
       Set_Handle_Hack(Object, C_Raptor_Term_Copy(Get_Handle(Object)));
    end;
 
+   function Copy (Object: Term_Type_Without_Finalize'Class) return Term_Type is
+   begin
+      return From_Handle (C_Raptor_Term_Copy (Get_Handle(Object)) );
+   end;
+
    function C_Raptor_Term_Compare (Left, Right: Term_Handle) return int
       with Import, Convention=>C, External_Name=>"raptor_term_compare";
 
