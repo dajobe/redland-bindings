@@ -148,7 +148,7 @@ package body RDF.Raptor.Statement is
    function C_Raptor_Term_Compare (Left, Right: Term_Handle) return int
       with Import, Convention=>C, External_Name=>"raptor_term_compare";
 
-   function Compare (Left, Right: Term_Type) return RDF.Auxilary.Comparison_Result is
+   function Compare (Left, Right: Term_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result is
    begin
       return RDF.Auxilary.Comparison_Result( C_Raptor_Term_Compare(Get_Handle(Left), Get_Handle(Right)) );
    end;
@@ -156,7 +156,7 @@ package body RDF.Raptor.Statement is
    function C_Raptor_Term_Equals (Left, Right: Term_Handle) return int
       with Import, Convention=>C, External_Name=>"raptor_term_equals";
 
-   function Equals (Left, Right: Term_Type) return Boolean is
+   function Equals (Left, Right: Term_Type_Without_Finalize) return Boolean is
    begin
       return C_Raptor_Term_Equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
    end;
@@ -172,7 +172,7 @@ package body RDF.Raptor.Statement is
    function C_Raptor_Term_To_String (Term: Term_Handle) return chars_ptr
       with Import, Convention=>C, External_Name=>"raptor_term_to_string";
 
-   function To_String (Term: Term_Type) return String is
+   function To_String (Term: Term_Type_Without_Finalize) return String is
       Str: constant chars_ptr := C_Raptor_Term_To_String(Get_Handle(Term));
    begin
       if Str = Null_Ptr then
