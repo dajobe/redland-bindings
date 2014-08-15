@@ -148,7 +148,7 @@ package body RDF.Raptor.Term is
       Set_Handle_Hack(Object, C_Raptor_Term_Copy(Get_Handle(Object)));
    end;
 
-   function Copy (Object: Term_Type_Without_Finalize'Class) return Term_Type is
+   function Copy (Object: Term_Type_Without_Finalize'Class) return Term_Type_Without_Finalize is
    begin
       return From_Handle (C_Raptor_Term_Copy (Get_Handle(Object)) );
    end;

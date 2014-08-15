@@ -76,6 +76,8 @@ package RDF.Raptor.Term is
                                           Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type'Class;
                                           Base_URI: URI_Type'Class);
 
+   not overriding function Copy (Object: Term_Type_Without_Finalize'Class) return Term_Type_Without_Finalize;
+
    type Term_Type is new Term_Type_Without_Finalize with null record;
 
    not overriding function From_Blank (World: World_Type_Without_Finalize'Class) return Term_Type;
@@ -98,8 +100,6 @@ package RDF.Raptor.Term is
    overriding procedure Adjust (Object: in out Term_Type);
 
    overriding procedure Finalize_Handle (Object: Term_Type; Handle: Term_Handle);
-
-   not overriding function Copy (Object: Term_Type_Without_Finalize'Class) return Term_Type;
 
 private
 

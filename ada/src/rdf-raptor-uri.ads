@@ -53,6 +53,8 @@ package RDF.Raptor.URI is
 
    -- TODO: raptor_uri_to_turtle_string (), raptor_uri_turtle_write ()
 
+   not overriding function Copy (Object: URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize;
+
    type URI_Type is new URI_Type_Without_Finalize with null record;
 
    -- TODO:
@@ -61,8 +63,6 @@ package RDF.Raptor.URI is
    overriding procedure Adjust(Object: in out URI_Type);
 
    overriding procedure Finalize_Handle(Object: URI_Type; Handle: Handle_Type);
-
-   not overriding function Copy (Object: URI_Type_Without_Finalize'Class) return URI_Type;
 
    not overriding function From_String(World: World_Type_Without_Finalize'Class; Arg: String) return URI_Type;
 

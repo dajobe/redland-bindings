@@ -63,7 +63,7 @@ package body RDF.Raptor.Statement is
       Set_Handle_Hack(Object, C_Raptor_Statement_Copy(Get_Handle(Object)));
    end;
 
-   function Copy (Object: Statement_Type_Without_Finalize'Class) return Statement_Type is
+   function Copy (Object: Statement_Type_Without_Finalize'Class) return Statement_Type_Without_Finalize is
    begin
       return From_Handle (C_Raptor_Statement_Copy (Get_Handle(Object)) );
    end;

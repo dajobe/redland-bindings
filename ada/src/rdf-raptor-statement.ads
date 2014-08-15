@@ -35,14 +35,13 @@ package RDF.Raptor.Statement is
 
    -- TODO: Stopped at raptor_statement_print_as_ntriples()
 
+   not overriding function Copy (Object: Statement_Type_Without_Finalize'Class) return Statement_Type_Without_Finalize;
+
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
    overriding procedure Adjust (Object: in out Statement_Type);
 
    overriding procedure Finalize_Handle (Object: Statement_Type; Handle: Statement_Handle);
-
-   -- FIXME: change return type to non-finalized here and in other places
-   not overriding function Copy (Object: Statement_Type_Without_Finalize'Class) return Statement_Type;
 
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
    function No_Auto_Finalization (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class) return Boolean;
