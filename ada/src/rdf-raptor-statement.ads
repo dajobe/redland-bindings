@@ -14,6 +14,8 @@ package RDF.Raptor.Statement is
    not overriding function Get_Object    (Statement: Statement_Type) return RDF.Raptor.Term.Term_Type_Without_Finalize;
    not overriding function Get_Graph     (Statement: Statement_Type) return RDF.Raptor.Term.Term_Type_Without_Finalize; -- may return null handle
 
+   -- TODO: Stopped at raptor_new_statement() -- FIXME: The subject, predicate, object and graph become owned by the statement.
+
 private
 
    type Statement_Type is
