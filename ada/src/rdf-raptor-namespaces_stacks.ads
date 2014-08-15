@@ -15,6 +15,7 @@ package RDF.Raptor.Namespaces_Stacks is
 
    not overriding procedure Clear (Stack: Namespace_Stack_Type_Without_Finalize);
 
+   -- See also below
    not overriding procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Namespace: RDF.Raptor.Namespaces.Namespace_Type'Class);
 
    not overriding procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize;
@@ -26,6 +27,18 @@ package RDF.Raptor.Namespaces_Stacks is
 
    not overriding function Get_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return RDF.Raptor.Namespaces.Namespace_Type;
 
+   not overriding function Find_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Prefix: String) return RDF.Raptor.Namespaces.Namespace_Type;
+
+   not overriding function Find_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return RDF.Raptor.Namespaces.Namespace_Type;
+
+   not overriding function Find_Namespace_By_URI (Stack: Namespace_Stack_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class)
+                                                  return RDF.Raptor.Namespaces.Namespace_Type;
+
+   not overriding function In_Scope (Stack: Namespace_Stack_Type_Without_Finalize; NS: RDF.Raptor.Namespaces.Namespace_Type'Class)
+                                     return Boolean;
+
+   not overriding procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; NS: RDF.Raptor.Namespaces.Namespace_Type_Without_Finalize'Class; New_Depth: Natural);
+
    type Namespace_Stack_Type is new Namespace_Stack_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle(Object: Namespace_Stack_Type; Handle: Namespace_Stack_Handle_Type);
@@ -36,5 +49,7 @@ package RDF.Raptor.Namespaces_Stacks is
 
    not overriding function Create_Stack (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Defaults: Defaults_Type)
                                          return Namespace_Stack_Type;
+
+   -- raptor_namespaces_init() not bound (it seems that function is internal for Raptor implementation).
 
 end RDF.Raptor.Namespaces_Stacks;
