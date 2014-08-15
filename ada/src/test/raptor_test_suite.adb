@@ -19,6 +19,7 @@ package body Raptor_Test_Suite is
    Test_Case_4 : aliased URI_Test.Test_Case;
    Test_Case_5 : aliased Namespaces_Test.Test_Case;
    Test_Case_6 : aliased Term_Test.Test_Case;
+--     Test_Case_7 : aliased Statement_Test.Test_Case; -- TODO
 
    function Suite return Access_Test_Suite is
    begin

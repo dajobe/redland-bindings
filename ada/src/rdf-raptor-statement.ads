@@ -44,14 +44,18 @@ package RDF.Raptor.Statement is
    overriding procedure Finalize_Handle (Object: Statement_Type; Handle: Statement_Handle);
 
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
-   function No_Auto_Finalization (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class) return Boolean;
+--     function No_Auto_Finalization (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class) return Boolean;
 
    not overriding function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize) return Statement_Type;
 
+   -- RDF.Raptor.Term.Term_Type_Without_Finalize is deliberately without 'Class
    not overriding function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize'Class;
-                                          Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Type_Without_Finalize'Class)
-                                          return Statement_Type
-      with Pre => No_Auto_Finalization(Subject) and No_Auto_Finalization(Predicate) and No_Auto_Finalization(Object) and No_Auto_Finalization(Graph);
+                                          Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Type_Without_Finalize)
+                                          return Statement_Type;
+--     not overriding function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize'Class;
+--                                            Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Type_Without_Finalize'Class)
+--                                            return Statement_Type
+--        with Pre => No_Auto_Finalization(Subject) and No_Auto_Finalization(Predicate) and No_Auto_Finalization(Object) and No_Auto_Finalization(Graph);
 
 private
 

@@ -21,10 +21,10 @@ package body RDF.Raptor.Statement is
    function Get_Object    (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize is (Get_Handle(Statement).Object.all);
    function Get_Graph     (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize is (Get_Handle(Statement).Graph.all); -- may return null handle
 
-   function No_Auto_Finalization (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class) return Boolean is
-   begin
-      return Is_Null(Term) or not (Term in RDF.Raptor.Term.Term_Type'Class);
-   end;
+--     function No_Auto_Finalization (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class) return Boolean is
+--     begin
+--        return Is_Null(Term) or not (Term in RDF.Raptor.Term.Term_Type'Class);
+--     end;
 
    function C_Raptor_New_Statement (World: RDF.Raptor.World.Handle_Type)
                                                   return Statement_Handle
@@ -40,7 +40,7 @@ package body RDF.Raptor.Statement is
      with Import, Convention=>C, External_Name=>"raptor_new_statement_from_nodes";
 
    function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize'Class;
-                           Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Type_Without_Finalize'Class)
+                           Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Type_Without_Finalize)
                            return Statement_Type is
    begin
       return From_Non_Null_Handle( C_Raptor_New_Statement_From_Nodes(Get_Handle(World),
