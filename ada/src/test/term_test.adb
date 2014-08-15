@@ -27,7 +27,11 @@ package body Term_Test is
       Assert(To_String(Get_URI(Term_3)) = "http://example.org/cvb", "Term_3 URI");
       Assert(Value(Get_Literal(Term_4)) = "ZZZ", "Term_4 value");
       Assert(To_String(Datatype(Get_Literal(Term_1))) = "http://example.org", "Term_1 datatype"); -- infinite loop! why?
-      -- TODO: More asserts?
+      Assert(Term_1 /= Term_2, "Non-equal terms");
+      Assert(Get_Kind(Term_1) = Literal, "Term_1 is literal");
+      Assert(Get_Kind(Term_2) = URI, "Term_2 is URI");
+      Assert(Get_Kind(Term_3) = URI, "Term_3 is URI");
+      Assert(Get_Kind(Term_4) = Literal, "Term_4 is literal");
    end;
 
    function Name (T : Test_Case)
