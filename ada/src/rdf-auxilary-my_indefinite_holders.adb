@@ -9,7 +9,9 @@ package body RDF.Auxilary.My_Indefinite_Holders is
 
    procedure Adjust(Object: in out Holder) is
    begin
-      Object.Ptr := new Element_Type'(Object.Ptr.all);
+      if Object.Ptr /= null then
+         Object.Ptr := new Element_Type'(Object.Ptr.all);
+      end if;
    end;
 
    function "=" (Left, Right : Holder) return Boolean is

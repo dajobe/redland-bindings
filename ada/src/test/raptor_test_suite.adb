@@ -3,6 +3,7 @@ with Constants_Test;
 with Iostreams_Test;
 with URI_Test;
 with Namespaces_Test;
+with Term_Test;
 
 package body Raptor_Test_Suite is
 
@@ -17,7 +18,7 @@ package body Raptor_Test_Suite is
    Test_Case_3 : aliased Iostreams_Test.Test_Case;
    Test_Case_4 : aliased URI_Test.Test_Case;
    Test_Case_5 : aliased Namespaces_Test.Test_Case;
---     Test_Case_6 : aliased Terms_Test.Test_Case; -- TODO
+   Test_Case_6 : aliased Term_Test.Test_Case;
 
    function Suite return Access_Test_Suite is
    begin
@@ -26,6 +27,7 @@ package body Raptor_Test_Suite is
       Add_Test (Result'Access, Test_Case_3'Access);
       Add_Test (Result'Access, Test_Case_4'Access);
       Add_Test (Result'Access, Test_Case_5'Access);
+      Add_Test (Result'Access, Test_Case_6'Access);
       return Result'Access;
    end Suite;
 
