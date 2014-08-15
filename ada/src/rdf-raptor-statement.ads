@@ -1,7 +1,7 @@
 with Interfaces.C;
 with RDF.Auxilary.Handled_Record;
 with RDF.Raptor.World;
-with RDF.Raptor.Term;
+with RDF.Raptor.Term; use RDF.Raptor.Term;
 
 package RDF.Raptor.Statement is
 
@@ -50,7 +50,8 @@ package RDF.Raptor.Statement is
 
    -- RDF.Raptor.Term.Term_Type_Without_Finalize is deliberately without 'Class
    not overriding function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize'Class;
-                                          Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Type_Without_Finalize)
+                                          Subject, Predicate, Object: RDF.Raptor.Term.Term_Type_Without_Finalize;
+                                          Graph: RDF.Raptor.Term.Term_Type_Without_Finalize := From_Handle(null))
                                           return Statement_Type;
 --     not overriding function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize'Class;
 --                                            Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Type_Without_Finalize'Class)

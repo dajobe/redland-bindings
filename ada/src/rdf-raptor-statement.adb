@@ -40,7 +40,8 @@ package body RDF.Raptor.Statement is
      with Import, Convention=>C, External_Name=>"raptor_new_statement_from_nodes";
 
    function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize'Class;
-                           Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Type_Without_Finalize)
+                           Subject, Predicate, Object: RDF.Raptor.Term.Term_Type_Without_Finalize;
+                           Graph: RDF.Raptor.Term.Term_Type_Without_Finalize := From_Handle(null))
                            return Statement_Type is
    begin
       return From_Non_Null_Handle( C_Raptor_New_Statement_From_Nodes(Get_Handle(World),
