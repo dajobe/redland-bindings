@@ -30,10 +30,10 @@ package body RDF.Raptor.Statement is
                                                   return Statement_Handle
      with Import, Convention=>C, External_Name=>"raptor_new_statement";
 
-   function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize) return Statement_Type is
-   begin
-      return From_Non_Null_Handle( C_Raptor_New_Statement(Get_Handle(World)) );
-   end;
+--     function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize) return Statement_Type is
+--     begin
+--        return From_Non_Null_Handle( C_Raptor_New_Statement(Get_Handle(World)) );
+--     end;
 
    function C_Raptor_New_Statement_From_Nodes (World: RDF.Raptor.World.Handle_Type; Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Handle)
                                                return Statement_Handle

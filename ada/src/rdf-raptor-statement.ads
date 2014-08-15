@@ -46,7 +46,7 @@ package RDF.Raptor.Statement is
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
 --     function No_Auto_Finalization (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class) return Boolean;
 
-   not overriding function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize) return Statement_Type;
+--     not overriding function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize) return Statement_Type;
 
    -- RDF.Raptor.Term.Term_Type_Without_Finalize is deliberately without 'Class
    not overriding function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize'Class;
