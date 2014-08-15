@@ -88,7 +88,7 @@ package RDF.Raptor.Statement is
 
    overriding procedure Finalize_Handle (Object: Term_Type; Handle: Term_Handle);
 
-   not overriding function Copy (Object: Term_Type_Without_Finalize'Class) return term_Type;
+   not overriding function Copy (Object: Term_Type_Without_Finalize'Class) return Term_Type;
 
 --     type Raptor_Statement_Record is private;
 
