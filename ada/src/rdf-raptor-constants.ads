@@ -23,4 +23,10 @@ package RDF.Raptor.Constants is
    function raptor_xml_namespace_uri return String;
    function raptor_xmlschema_datatypes_namespace_uri return String;
 
+   Rdf_Namespace_Uri_Len: constant Interfaces.C.unsigned
+     with Import, Convention=>C, External_Name=>"raptor_rdf_namespace_uri_len";
+   Xml_Literal_Datatype_Uri_String_Len: constant Interfaces.C.unsigned
+     with Import, Convention=>C, External_Name=>"raptor_xml_literal_datatype_uri_string_len";
+
+
 end RDF.Raptor.Constants;
