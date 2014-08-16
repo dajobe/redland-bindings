@@ -50,6 +50,6 @@ package RDF.Raptor.World is
 
    overriding procedure Finalize_Handle(Object: World_Type; Handle: Handle_Type);
 
-   -- TODO
+   -- TODO: stopped at raptor_world_set_log_handler()
 
 end RDF.Raptor.World;
