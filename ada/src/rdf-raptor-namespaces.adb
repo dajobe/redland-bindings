@@ -84,7 +84,7 @@ package body RDF.Raptor.Namespaces is
       C_Str: chars_ptr := C_Raptor_Namespace_Format_As_Xml(Get_Handle(NS), null);
    begin
       if C_Str = Null_Ptr then
-         raise Constraint_Error; -- FIXME: What is the best exception in this situation?
+         raise RDF.Auxilary.RDF_Exception;
       end if;
       declare
          Result: constant String := Value(C_Str);

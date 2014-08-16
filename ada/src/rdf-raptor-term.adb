@@ -184,7 +184,7 @@ package body RDF.Raptor.Term is
       Str: constant chars_ptr := C_Raptor_Term_To_String(Get_Handle(Term));
    begin
       if Str = Null_Ptr then
-         raise Constraint_Error; -- TODO: Is it the best exception for the case?
+         raise RDF.Auxilary.RDF_Exception;
       end if;
       declare
          Result: constant String := Value(Str);
@@ -207,7 +207,7 @@ package body RDF.Raptor.Term is
       Str: constant chars_ptr := C_Raptor_Term_To_Turtle_String(Get_Handle(Term), Get_Handle(Stack), Get_Handle(Base_URI));
    begin
       if Str = Null_Ptr then
-         raise Constraint_Error; -- TODO: Is it the best exception for the case?
+         raise RDF.Auxilary.RDF_Exception;
       end if;
       declare
          Result: constant String := Value(Str);
@@ -231,7 +231,7 @@ package body RDF.Raptor.Term is
       use RDF.Raptor.IOStream;
    begin
       if C_Raptor_Term_Turtle_Write(Get_Handle(Stream), Get_Handle(Term), Get_Handle(Stack), Get_Handle(Base_URI)) /= 0 then
-         raise Constraint_Error; -- TODO: Is it the best exception for the case?
+         raise IOStream_Exception;
       end if;
    end;
 

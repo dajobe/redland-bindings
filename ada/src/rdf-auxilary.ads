@@ -22,7 +22,8 @@ package RDF.Auxilary is
 
    function Length (Object: String_Holders.Holder) return size_t;
 
-   Null_Handle: exception;
+   Null_Handle  : exception;
+   RDF_Exception: exception; -- all other librdf exceptions
 
 private
 

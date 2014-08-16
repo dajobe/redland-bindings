@@ -40,7 +40,7 @@ package body RDF.Raptor.Namespaces_Stacks is
       URI_N    : C_String_Holder := To_C_String_Holder(NS_URI);
    begin
       if C_Raptor_Namespaces_Start_Namespace_Full(Get_Handle(Stack), C_String(Prefix_N), C_String(URI_N), int(Depth)) /= 0 then
-         raise Constraint_Error; -- TODO: Which exception to use?
+         raise RDF.Auxilary.RDF_Exception;
       end if;
    end;
 
@@ -129,7 +129,7 @@ package body RDF.Raptor.Namespaces_Stacks is
    procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; NS: RDF.Raptor.Namespaces.Namespace_Type_Without_Finalize'Class; New_Depth: Natural) is
    begin
       if C_Raptor_Namespace_Stack_Start_Namespace(Get_Handle(Stack), Get_Handle(NS), int(New_Depth)) /= 0 then
-         raise Constraint_Error; -- FIXME: What is the best exception for this case?
+         raise RDF.Auxilary.RDF_Exception;
       end if;
    end;
 

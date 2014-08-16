@@ -219,7 +219,7 @@ package body RDF.Raptor.URI is
    procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access) is
    begin
       if C_Raptor_URI_Print (Get_Handle (URI), File) /= 0 then
-         raise Ada.IO_Exceptions.Use_Error;
+         raise RDF.Raptor.IOStream.IOStream_Exception;
       end if;
    end;
 
@@ -249,7 +249,7 @@ package body RDF.Raptor.URI is
       Result: constant int := C_Raptor_URI_File_Exists(Get_Handle(URI));
    begin
       if Result < 0 then
-         raise Constraint_Error; -- TODO: Is it the best exception for the situation?
+         raise RDF.Auxilary.RDF_Exception;
       end if;
       return Result /= 0;
    end;
@@ -261,7 +261,7 @@ package body RDF.Raptor.URI is
       Result: constant int := C_Raptor_Uri_Filename_Exists(To_C(Filename, Append_Nul=>True));
    begin
       if Result < 0 then
-         raise Constraint_Error; -- TODO: Is it the best exception for the situation?
+         raise RDF.Auxilary.RDF_Exception;
       end if;
       return Result /= 0;
    end;
