@@ -1,0 +1,35 @@
+This are Ada2012 bindings for Redland Raptor library.
+
+They are implemented partially (work in progress). Backward incompatible
+changes are possible at this stage.
+
+These are Raptor RDF Syntax Library bindings ONLY, no support for
+Rasqal RDF Query Library and Redland RDF Libraries. (You are welcome to
+work on supplements to this library, but this is not a priority for
+myself.)
+
+Some parts of RDF Syntax Library are not supported (I mean, not bound to
+Ada), because it is probably better to use native Ada libraries:
+* AVL Trees
+* Sequence
+* String buffer
+
+It may be downgraded to Ada2005 but this isn't a priority for me.
+
+Implementation note:
+It seems we can simplify away using Ada.Unchecked_Conversion for enumeration
+types. Instead just make record field and function arguments of Ada
+enumeration types. Right?
+
+See "TODO" and "FIXME" in the source about possible improvement of the Ada
+library.
+
+Documentation of the Ada bindings are not written yet. One reason for this
+is that adabrowse package does not work with my installation of Debian
+Linux.
+
+There are some unit tests (using AUnit library), but they do not cover
+all code. I would not recommend to use this library for software which
+should be highly reliable.
+
+-- Victor Porton <porton@narod.ru>
