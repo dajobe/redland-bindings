@@ -69,7 +69,7 @@ private
          Mime_Types_Count: unsigned;
          URI_Strings: access chars_ptr;
          URI_Strings_Count: unsigned;
-         Flags: Syntax_Bitflags;
+         Flags: int;
       end record
       with Convention => C;
 
