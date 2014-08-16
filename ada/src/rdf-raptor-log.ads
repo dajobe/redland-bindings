@@ -63,8 +63,6 @@ package RDF.Raptor.Log is
    function Get_Text (Message: Log_Message_Type) return String;
    function Get_Locator (Message: Log_Message_Type) return Locator_Type;
 
-   -- TODO
-
    type Log_Handler is abstract tagged null record;
 
    procedure Log_Message(Handler: Log_Handler; Info: Log_Message_Type) is abstract;
