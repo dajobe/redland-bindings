@@ -1,4 +1,5 @@
-with Interfaces.C;
+with Interfaces.C; use Interfaces.C;
+with RDF.Auxilary; use RDF.Auxilary;
 with RDF.Auxilary.Limited_Handled_Record;
 
 package RDF.Raptor.World is
@@ -29,8 +30,6 @@ package RDF.Raptor.World is
 
    overriding function Default_Handle(Object: World_Type_Without_Finalize) return Handle_Type;
 
-   --overriding function From_Handle(Handle: RDF.Base.Dummy_Record_Access) return World with Inline;
-
    not overriding procedure Open(Object: World_Type_Without_Finalize);
 
    not overriding procedure Open(Object: World_Type_Without_Finalize; Flags: Flags_Array);
@@ -43,13 +42,19 @@ package RDF.Raptor.World is
 
    not overriding procedure Set_Flags(Object: World_Type_Without_Finalize; Flags: Flags_Array);
 
+   not overriding function Generate_Bnodeid (World: World_Type_Without_Finalize) return String;
+
+   -- TODO: raptor_world_set_generate_bnodeid_handler ()
+
    -- Not implemented
    -- procedure Set_Libxslt_Security_Preferences
+
+   procedure Set_Generate_Bnodeid_Parameters (World: World_Type_Without_Finalize;
+                                              Prefix: String_Holders.Holder;
+                                              Base: int);
 
    type World_Type is new World_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle(Object: World_Type; Handle: Handle_Type);
-
-   -- TODO: stopped at raptor_world_set_log_handler()
 
 end RDF.Raptor.World;
