@@ -16,35 +16,6 @@ package RDF.Raptor.Log is
                            Fatal => 6);
    function Last return Log_Level_Type renames Fatal;
 
-   type Domain_Type is (None,
-                        Iostream,
-                        Namespace,
-                        Parser,
-                        Qname,
-                        Sax2,
-                        Serializer,
-                        Term,
-                        Turtle_Writer,
-                        URI,
-                        World_Domain,
-                        WWW,
-                        XML_Writer);
-   for Domain_Type'Size use Interfaces.C.int'Size; -- hack
-   for Domain_Type use (None => 0,
-                        Iostream => 1,
-                        Namespace => 2,
-                        Parser => 3,
-                        Qname => 4,
-                        Sax2 => 5,
-                        Serializer => 6,
-                        Term => 7,
-                        Turtle_Writer => 8,
-                        URI => 9,
-                        World_Domain => 10,
-                        WWW => 11,
-                        XML_Writer => 12);
-   function Last return Domain_Type renames XML_Writer;
-
    type Locator_Type is private;
 
    type Log_Message_Type is private;
