@@ -24,8 +24,8 @@ package RDF.Raptor.Term is
    type Term_Kind is (Unknown,
                       URI,
                       Literal,
-                      Blank);
-   for Term_Kind'Size use Interfaces.C.int'Size; -- hack
+                      Blank)
+      with Convention => C;
    for Term_Kind use (Unknown => 0,
                       URI     => 1,
                       Literal => 2,

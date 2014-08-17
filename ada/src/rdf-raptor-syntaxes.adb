@@ -1,4 +1,3 @@
-with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Interfaces.C.Pointers;
@@ -55,9 +54,8 @@ package body RDF.Raptor.Syntaxes is
    function Get_URIs_Count (Object: Syntax_Description_Type) return Natural is (Natural(Object.URI_Strings_Count));
 
    function Get_Flags (Object: Syntax_Description_Type) return Syntax_Bitflags is
-     function Conv is new Ada.Unchecked_Conversion(Int, Syntax_Bitflags);
    begin
-      return Conv(Object.Flags);
+      return Object.Flags;
    end;
 
    function C_Raptor_World_Is_Parser_Name(World: RDF.Raptor.World.Handle_Type; Name: char_array) return int

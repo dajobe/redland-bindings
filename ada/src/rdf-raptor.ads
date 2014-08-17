@@ -14,8 +14,8 @@ package RDF.Raptor is
                         URI_Domain,
                         World_Domain,
                         WWW,
-                        XML_Writer);
-   for Domain_Type'Size use Interfaces.C.int'Size; -- hack
+                        XML_Writer)
+      with Convention => C;
    for Domain_Type use (None => 0,
                         Iostream_Domain => 1,
                         Namespace => 2,

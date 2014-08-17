@@ -44,8 +44,8 @@ package RDF.Raptor.Options is
                           NO_FILE,
                           WWW_SSL_VERIFY_PEER,
                           WWW_SSL_VERIFY_HOST,
-                          LOAD_EXTERNAL_ENTITIES);
-   for Raptor_Option'Size use int'Size;
+                          LOAD_EXTERNAL_ENTITIES)
+      with Convention => C;
    for Raptor_Option use (SCANNING => 0,
                           ALLOW_NON_NS_ATTRIBUTES => 1,
                           ALLOW_OTHER_PARSETYPES => 2,

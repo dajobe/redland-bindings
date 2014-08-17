@@ -1,4 +1,3 @@
-with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxilary; use RDF.Auxilary;
@@ -68,17 +67,15 @@ package body RDF.Raptor.Namespaces_Stacks is
       C_Raptor_Namespaces_Start_Namespace(Get_Handle(Stack), Get_Handle(Namespace));
    end;
 
-   function Defaults_Conversion is new Ada.Unchecked_Conversion(Source=>Defaults_Type, Target=>Interfaces.C.int);
-
    function C_Raptor_New_Namespaces (World: RDF.Raptor.World.Handle_Type;
-                                     Defaults: int)
+                                     Defaults: Defaults_Type)
                                      return Namespace_Stack_Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_namespaces";
 
    function Create_Stack (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Defaults: Defaults_Type)
                           return Namespace_Stack_Type is
    begin
-      return From_Non_Null_Handle( C_Raptor_New_Namespaces(Get_Handle(World), Defaults_Conversion(Defaults)) );
+      return From_Non_Null_Handle( C_Raptor_New_Namespaces(Get_Handle(World), Defaults) );
    end;
 
    function C_Raptor_Namespaces_Find_Namespace (Stack: Namespace_Stack_Handle_Type;

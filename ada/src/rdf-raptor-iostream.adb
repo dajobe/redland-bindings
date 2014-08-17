@@ -185,13 +185,12 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function C_Raptor_String_Python_Write (ptr: char_array; len: size_t; delim: char; mode: unsigned; Stream: Handle_Type) return int
+   function C_Raptor_String_Python_Write (ptr: char_array; len: size_t; delim: char; mode: Python_Write_Mode; Stream: Handle_Type) return int
      with Import, Convention=>C, External_Name=>"raptor_string_python_write";
 
    procedure String_Python_Write (Value: String; Delim: Character; Mode: Python_Write_Mode; Stream: Base_Stream_Type) is
-      function Conv is new Ada.Unchecked_Conversion (Python_Write_Mode, unsigned);
    begin
-      if C_Raptor_String_Python_Write (To_C (Value, Append_Nul=>False), Value'Length, To_C (Delim), Conv (Mode), Get_Handle (Stream)) /= 0 then
+      if C_Raptor_String_Python_Write (To_C (Value, Append_Nul=>False), Value'Length, To_C (Delim), Mode, Get_Handle (Stream)) /= 0 then
          raise IOStream_Exception;
       end if;
    end;

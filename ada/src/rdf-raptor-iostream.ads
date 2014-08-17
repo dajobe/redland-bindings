@@ -79,9 +79,9 @@ package RDF.Raptor.IOStream is
 
    procedure Ntriples_Write (Value: String; Delim: Character; Stream: Base_Stream_Type);
 
-   type Python_Write_Mode is (NTriples, Turtle, Turtle_Long_String, JSON);
+   type Python_Write_Mode is (NTriples, Turtle, Turtle_Long_String, JSON)
+      with Convention => C;
    for Python_Write_Mode use (NTriples=>0, Turtle=>1, Turtle_Long_String=>2, JSON=>3);
-   for Python_Write_Mode'Size use int'Size; -- hack
 
    procedure String_Python_Write (Value: String; Delim: Character; Mode: Python_Write_Mode; Stream: Base_Stream_Type);
 

@@ -5,8 +5,8 @@ with RDF.Raptor.URI; use RDF.Raptor.URI;
 
 package RDF.Raptor.Syntaxes is
 
-   type Syntax_Bitflags is (Need_Base_URI);
-   for Syntax_Bitflags'Size use int'Size;
+   type Syntax_Bitflags is (Need_Base_URI)
+      with Convention => C;
    for Syntax_Bitflags use (Need_Base_URI => 1);
 
    type Mime_Type_Q is private;
@@ -69,7 +69,7 @@ private
          Mime_Types_Count: unsigned;
          URI_Strings: access chars_ptr;
          URI_Strings_Count: unsigned;
-         Flags: int;
+         Flags: Syntax_Bitflags;
       end record
       with Convention => C;
 

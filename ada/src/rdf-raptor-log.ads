@@ -5,8 +5,8 @@ with RDF.Raptor.World;
 
 package RDF.Raptor.Log is
 
-   type Log_Level_Type is (None, Trace, Debug, Info, Warn, Error, Fatal);
-   for Log_Level_Type'Size use Interfaces.C.int'Size; -- hack
+   type Log_Level_Type is (None, Trace, Debug, Info, Warn, Error, Fatal)
+      with Convention => C;
    for Log_Level_Type use (None => 0,
                            Trace => 1,
                            Debug => 2,

@@ -13,8 +13,8 @@ package RDF.Raptor.World is
    type Flag_Type is (Libxml_Error_Save,
                       Libxml_Structured_Error_Save,
 		      URI_Interning,
-                      WWW_Skip_Init_Finish);
-   for Flag_Type'Size use Interfaces.C.int'Size; -- hack
+                      WWW_Skip_Init_Finish)
+      with Convention => C;
    for Flag_Type use (Libxml_Error_Save => 1,
                       Libxml_Structured_Error_Save => 2,
 		      URI_Interning => 3,
