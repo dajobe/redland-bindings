@@ -2,6 +2,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxilary.Limited_Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
+with RDF.Raptor.World;
 
 package RDF.Raptor.Options is
 
@@ -119,9 +120,23 @@ package RDF.Raptor.Options is
 
    function Get_URI (Description: Option_Description_Type_Without_Finalize) return URI_Type_Without_Finalize;
 
-   -- TODO: Bodies for the above functions.
+   function Get_Options_Count return Natural;
 
-   -- TODO: Stopped at raptor_option_get_count ()
+   function Value_Type_Label (Value_Type: Value_Type_Type) return String;
+
+   type Option_Description_Type is new Option_Description_Type_Without_Finalize with null record;
+
+   overriding procedure Finalize_Handle (Object: Option_Description_Type; Handle: Handle_Type);
+
+   not overriding function Get_Option_Description (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Natural)
+                                                   return Option_Description_Type;
+
+   not overriding function Get_Option_Description (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Raptor_Option)
+                                                   return Option_Description_Type;
+
+   -- Not implemented because Ada does not support negative values for enumeration.
+   -- TODO: Invent something.
+--     function Option_From_URI (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type'Class) return Raptor_Option;
 
 private
 
