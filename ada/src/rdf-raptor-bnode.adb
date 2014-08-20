@@ -4,7 +4,7 @@ with RDF.Raptor.Memory;
 
 package body RDF.Raptor.Bnode is
 
-function C_Raptor_World_Generate_Bnodeid (World: RDF.Raptor.World.Handle_Type) return Chars_Ptr
+   function C_Raptor_World_Generate_Bnodeid (World: RDF.Raptor.World.Handle_Type) return Chars_Ptr
      with Import, Convention=>C, External_Name=>"raptor_world_generate_bnodeid";
 
    function Generate_Bnodeid (World: World_Type_Without_Finalize'Class) return String is

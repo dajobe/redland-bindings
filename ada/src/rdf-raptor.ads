@@ -2,33 +2,33 @@ with Interfaces.C;
 
 package RDF.Raptor is
 
-   type Domain_Type is (None,
+   type Domain_Type is (None_Domain,
                         Iostream_Domain,
-                        Namespace,
-                        Parser,
-                        Qname,
-                        Sax2,
-                        Serializer,
+                        Namespace_Domain,
+                        Parser_Domain,
+                        Qname_Domain,
+                        Sax2_Domain,
+                        Serializer_Domain,
                         Term_Domain,
-                        Turtle_Writer,
+                        Turtle_Writer_Domain,
                         URI_Domain,
                         World_Domain,
-                        WWW,
-                        XML_Writer)
+                        WWW_Domain,
+                        XML_Writer_Domain)
       with Convention => C;
-   for Domain_Type use (None => 0,
+   for Domain_Type use (None_Domain => 0,
                         Iostream_Domain => 1,
-                        Namespace => 2,
-                        Parser => 3,
-                        Qname => 4,
-                        Sax2 => 5,
-                        Serializer => 6,
+                        Namespace_Domain => 2,
+                        Parser_Domain => 3,
+                        Qname_Domain => 4,
+                        Sax2_Domain => 5,
+                        Serializer_Domain => 6,
                         Term_Domain => 7,
-                        Turtle_Writer => 8,
+                        Turtle_Writer_Domain => 8,
                         URI_Domain => 9,
                         World_Domain => 10,
-                        WWW => 11,
-                        XML_Writer => 12);
-   function Last return Domain_Type renames XML_Writer;
+                        WWW_Domain => 11,
+                        XML_Writer_Domain => 12);
+   function Last return Domain_Type renames XML_Writer_Domain;
 
 end RDF.Raptor;
