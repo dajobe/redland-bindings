@@ -15,6 +15,10 @@ package RDF.Raptor.Parser is
 
    type Parser_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 
+   type Graph_Mark_Flags is (Graph_Mark_Start, Graph_Mark_Declared);
+   for Graph_Mark_Flags'Size use int'Size; -- hack
+   for Graph_Mark_Flags use (Graph_Mark_Start=>1, Graph_Mark_Declared=>2);
+
    -- You can call this function or initialize only callbacks you need (below).
    not overriding procedure Initialize_All_Callbacks (Parser: Parser_Type_Without_Finalize);
 
@@ -24,7 +28,7 @@ package RDF.Raptor.Parser is
 
    not overriding procedure Graph_Mark_Handler (Object: Parser_Type_Without_Finalize;
                                                 URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
-                                                Flags: Int) is null;
+                                                Flags: Graph_Mark_Flags) is null;
 
    not overriding procedure Statement_Handler (Object: Parser_Type_Without_Finalize;
                                                Statement: RDF.Raptor.Statement.Statement_Type_Without_Finalize'Class) is null;

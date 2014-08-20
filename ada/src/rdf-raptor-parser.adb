@@ -82,8 +82,9 @@ package body RDF.Raptor.Parser is
    end;
 
    procedure C_Raptor_Graph_Mark_Handler_Impl (Data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type; Flags: int) is
+      function Conv is new Ada.Unchecked_Conversion(int, Graph_Mark_Flags);
    begin
-      Graph_Mark_Handler(Ptr_To_Obj(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI)), Flags); -- TODO: Use an enumeration type
+      Graph_Mark_Handler(Ptr_To_Obj(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI)), Conv(Flags));
    end;
 
    procedure C_Raptor_Namespace_Handler_Impl (Data: Chars_Ptr; NS: RDF.Raptor.Namespaces.Namespace_Handle_Type) is
