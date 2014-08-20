@@ -17,7 +17,7 @@ package RDF.Raptor.Bnode is
 
    function Do_Handle (Handler: BNode_ID_Handler; User_ID: String) return String is abstract;
 
-   procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: in out BNode_ID_Handler);
+   procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: BNode_ID_Handler);
 
 private
 

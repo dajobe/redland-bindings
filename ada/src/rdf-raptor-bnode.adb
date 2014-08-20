@@ -29,7 +29,7 @@ package body RDF.Raptor.Bnode is
    type C_BNode_ID_Handler is access function (Data: chars_ptr; User_ID: chars_ptr) return Chars_Ptr
      with Convention=>C;
 
-   type User_Defined_Access is access all BNode_ID_Handler'Class;
+   type User_Defined_Access is access constant BNode_ID_Handler'Class;
    function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
 
@@ -44,7 +44,7 @@ package body RDF.Raptor.Bnode is
    procedure C_Raptor_World_Set_Generate_Bnodeid_Handler (World: Handle_Type; Data: chars_ptr; Handler: C_BNode_ID_Handler)
      with Import, Convention=>C, External_Name=>"raptor_world_set_generate_bnodeid_handler";
 
-   procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: in out BNode_ID_Handler) is
+   procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: BNode_ID_Handler) is
    begin
       C_Raptor_World_Set_Generate_Bnodeid_Handler(Get_Handle(World), Obj_To_Ptr(Handler'Unchecked_Access), C_BNode_ID_Handle_Impl'Access);
    end;

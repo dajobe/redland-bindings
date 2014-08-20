@@ -58,7 +58,7 @@ package body RDF.Raptor.Log is
    type Log_Handler_Type is access procedure (Data: chars_ptr; Msg: Log_Message_Type)
       with Convention=>C;
 
-   type User_Defined_Access is access all Log_Handler'Class;
+   type User_Defined_Access is access constant Log_Handler'Class;
    function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
 
@@ -73,7 +73,7 @@ package body RDF.Raptor.Log is
    function C_Raptor_World_Set_Log_Handler(World: RDF.Raptor.World.Handle_Type; Data: chars_ptr; Handler: Log_Handler_Type) return int
      with Import, Convention=>C, External_Name=>"raptor_world_set_log_handler";
 
-   procedure Set_Log_Handler(World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Handler: in out Log_Handler) is
+   procedure Set_Log_Handler(World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Handler: Log_Handler) is
    begin
       if C_Raptor_World_Set_Log_Handler(Get_Handle(World), Obj_To_Ptr(Handler'Unchecked_Access), C_Raptor_Log_Handler'Access) /= 0 then
          raise RDF.Auxilary.RDF_Exception;

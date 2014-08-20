@@ -43,7 +43,7 @@ package RDF.Raptor.Log is
 
    procedure Log_Message(Handler: Log_Handler; Info: Log_Message_Type) is abstract;
 
-   procedure Set_Log_Handler(World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Handler: in out Log_Handler);
+   procedure Set_Log_Handler(World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Handler: Log_Handler);
 
    function Get_Label (Level: Log_Level_Type) return String;
    function Get_Label (Level: Domain_Type) return String;
