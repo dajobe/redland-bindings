@@ -1,3 +1,4 @@
+with Ada.Iterator_Interfaces;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.World; use RDF.Raptor.World;
@@ -41,7 +42,41 @@ package RDF.Raptor.Syntaxes is
 
    -- raptor_syntax_description_validate() deliberately not implemented
 
-   -- TODO: raptor_world_get_parser_description () and raptor_world_get_serializer_description () - how to check for allowed counter range?
+   type Parser_Description_Cursor     is private;
+   type Serializer_Description_Cursor is private;
+
+   function Get_Position (Cursor: Parser_Description_Cursor    ) return Natural;
+   function Get_Position (Cursor: Serializer_Description_Cursor) return Natural;
+
+   function Get_Description (Cursor: Parser_Description_Cursor    ) return Syntax_Description_Type;
+   function Get_Description (Cursor: Serializer_Description_Cursor) return Syntax_Description_Type;
+
+   function Has_Element (Position: Parser_Description_Cursor    ) return Boolean;
+   function Has_Element (Position: Serializer_Description_Cursor) return Boolean;
+
+   package Parser_Description_Iterators     is new Ada.Iterator_Interfaces(Parser_Description_Cursor    , Has_Element);
+   package Serializer_Description_Iterators is new Ada.Iterator_Interfaces(Serializer_Description_Cursor, Has_Element);
+
+   type Parser_Description_Iterator     is new Parser_Description_Iterators    .Forward_Iterator with private;
+   type Serializer_Description_Iterator is new Serializer_Description_Iterators.Forward_Iterator with private;
+
+   overriding function First (Object: Parser_Description_Iterator) return Parser_Description_Cursor;
+   overriding function Next (Object: Parser_Description_Iterator; Position: Parser_Description_Cursor) return Parser_Description_Cursor;
+
+   overriding function First (Object: Serializer_Description_Iterator) return Serializer_Description_Cursor;
+   overriding function Next (Object: Serializer_Description_Iterator; Position: Serializer_Description_Cursor) return Serializer_Description_Cursor;
+
+   -- Attempt to make an Ada2012 iterator. It does not work.
+--     type Parser_Descriptions_List is tagged limited private
+--       with Default_Iterator=>Get_Parser_Descriptions_Iterator;
+--     type Serializer_Descriptions_List is tagged limited private
+--       with Default_Iterator=>Get_Serializer_Descriptions_Iterator;
+
+   not overriding function Create_Parser_Descriptions_Iterator     (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Parser_Description_Iterator;
+   not overriding function Create_Serializer_Descriptions_Iterator (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Serializer_Description_Iterator;
+
+--     function Parser_Descriptions     (World: World_Type_Without_Finalize'Class) return Parser_Description_List;
+--     function Serializer_Descriptions (World: World_Type_Without_Finalize'Class) return Serializer_Description_List;
 
    function Is_Parser_Name (World: World_Type_Without_Finalize'Class; Name: String) return Boolean;
 
@@ -71,6 +106,38 @@ private
          URI_Strings_Count: unsigned;
          Flags: Syntax_Bitflags;
       end record
-      with Convention => C;
+     with Convention => C;
+
+   type Parser_Description_Cursor is
+      record
+         World: RDF.Raptor.World.Handle_Type;
+         Position: Natural;
+      end record;
+
+   type Serializer_Description_Cursor is
+      record
+         World: RDF.Raptor.World.Handle_Type;
+         Position: Natural;
+      end record;
+
+   type Parser_Description_Iterator is new Parser_Description_Iterators.Forward_Iterator with
+      record
+         World: RDF.Raptor.World.Handle_Type;
+      end record;
+
+   type Serializer_Description_Iterator is new Serializer_Description_Iterators.Forward_Iterator with
+      record
+         World: RDF.Raptor.World.Handle_Type;
+      end record;
+
+   type Parser_Descriptions_List is tagged
+      record
+         World: RDF.Raptor.World.Handle_Type;
+      end record;
+
+   type Serializer_Descriptions_List is tagged
+      record
+         World: RDF.Raptor.World.Handle_Type;
+      end record;
 
 end RDF.Raptor.Syntaxes;

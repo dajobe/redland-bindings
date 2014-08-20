@@ -94,4 +94,67 @@ package body RDF.Raptor.Syntaxes is
       return C_Raptor_World_Is_Serializer_Name(Get_Handle(World), To_C(Name, Append_Nul=>True)) /= 0;
    end;
 
+   function Get_Position (Cursor: Parser_Description_Cursor    ) return Natural is (Cursor.Position);
+   function Get_Position (Cursor: Serializer_Description_Cursor) return Natural is (Cursor.Position);
+
+   function C_Raptor_World_Get_Parser_Description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return access Syntax_Description_Type
+     with Import, Convention=>C, External_Name=>"raptor_world_get_parser_description";
+
+   function C_Raptor_World_Get_Serializer_Description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return access Syntax_Description_Type
+     with Import, Convention=>C, External_Name=>"raptor_world_get_serializer_description";
+
+   function Get_Description (Cursor: Parser_Description_Cursor    ) return Syntax_Description_Type is
+   begin
+      return C_Raptor_World_Get_Parser_Description(Cursor.World, unsigned(Cursor.Position)).all;
+   end;
+
+   function Get_Description (Cursor: Serializer_Description_Cursor) return Syntax_Description_Type is
+   begin
+      return C_Raptor_World_Get_Serializer_Description(Cursor.World, unsigned(Cursor.Position)).all;
+   end;
+
+   function Has_Element (Position: Parser_Description_Cursor) return Boolean is
+   begin
+      return C_Raptor_World_Get_Parser_Description(Position.World, unsigned(Position.Position)) /= null;
+   end;
+
+   function Has_Element (Position: Serializer_Description_Cursor) return Boolean is
+   begin
+      return C_Raptor_World_Get_Serializer_Description(Position.World, unsigned(Position.Position)) /= null;
+   end;
+
+   function First (Object: Parser_Description_Iterator) return Parser_Description_Cursor is
+   begin
+      return (Position=>0, World=>Object.World);
+   end;
+
+   function Next (Object: Parser_Description_Iterator; Position: Parser_Description_Cursor) return Parser_Description_Cursor is
+   begin
+      return (Position=>Position.Position+1, World=>Position.World);
+   end;
+
+   function First (Object: Serializer_Description_Iterator) return Serializer_Description_Cursor is
+   begin
+      return (Position=>0, World=>Object.World);
+   end;
+
+   function Next (Object: Serializer_Description_Iterator; Position: Serializer_Description_Cursor) return Serializer_Description_Cursor is
+   begin
+      return (Position=>Position.Position+1, World=>Position.World);
+   end;
+
+   function Create_Parser_Descriptions_Iterator(World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Parser_Description_Iterator is
+   begin
+      return (World=>Get_Handle(World));
+   end;
+
+   function Create_Serializer_Descriptions_Iterator (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Serializer_Description_Iterator is
+   begin
+      return (World=>Get_Handle(World));
+   end;
+
+   --     function Parser_Descriptions     (World: World_Type_Without_Finalize'Class) return Parser_Description_List is (World=>Get_Handle(World));
+--
+--     function Serializer_Descriptions (World: World_Type_Without_Finalize'Class) return Serializer_Description_List is (World=>Get_Handle(World));
+
 end RDF.Raptor.Syntaxes;

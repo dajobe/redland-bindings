@@ -32,7 +32,7 @@ package RDF.Raptor.Statement is
 
    -- raptor_statement_init(), raptor_statement_clear() are not boound, because they are probably internal
 
-   -- TODO: Stopped at raptor_statement_print_as_ntriples()
+   -- TODO: Stopped at raptor_statement_ntriples_write()
 
    not overriding function Copy (Object: Statement_Type_Without_Finalize'Class) return Statement_Type_Without_Finalize;
 
