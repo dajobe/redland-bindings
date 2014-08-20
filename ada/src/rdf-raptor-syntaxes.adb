@@ -45,10 +45,10 @@ package body RDF.Raptor.Syntaxes is
 
    function Get_MIME_Types_Count (Object: Syntax_Description_Type) return Natural is (Natural(Object.Mime_Types_Count));
 
-   function Get_URI (Object: Syntax_Description_Type; Index: Natural) return String is
+   function Get_URI (Object: Syntax_Description_Type; Index: Natural) return URI_String is
       Ptr: constant access chars_ptr := Object.URI_Strings + ptrdiff_t(Index);
    begin
-      return Value(Ptr.all);
+      return URI_String(String'(Value(Ptr.all)));
    end;
 
    function Get_URIs_Count (Object: Syntax_Description_Type) return Natural is (Natural(Object.URI_Strings_Count));

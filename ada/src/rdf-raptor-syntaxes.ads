@@ -32,8 +32,7 @@ package RDF.Raptor.Syntaxes is
 
    function Get_MIME_Types_Count (Object: Syntax_Description_Type) return Natural;
 
-   -- TODO: Subtype for URI strings
-   function Get_URI (Object: Syntax_Description_Type; Index: Natural) return String
+   function Get_URI (Object: Syntax_Description_Type; Index: Natural) return URI_String
       with Pre => Index < Get_URIs_Count(Object);
 
    function Get_URIs_Count (Object: Syntax_Description_Type) return Natural;

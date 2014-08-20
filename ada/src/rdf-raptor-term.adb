@@ -118,9 +118,9 @@ package body RDF.Raptor.Term is
                                                        return Term_Handle
       with Import, Convention=>C, External_Name=>"raptor_new_term_from_counted_uri_string";
 
-   function From_URI_String (World: World_Type_Without_Finalize'Class; URI: String) return Term_Type is
+   function From_URI_String (World: World_Type_Without_Finalize'Class; URI: URI_String) return Term_Type is
    begin
-      return From_Non_Null_Handle( C_Raptor_New_Term_From_Counted_URI_String(Get_Handle(World), To_C(URI, Append_Nul=>False), URI'Length) );
+      return From_Non_Null_Handle( C_Raptor_New_Term_From_Counted_URI_String(Get_Handle(World), To_C(String(URI), Append_Nul=>False), URI'Length) );
    end;
 
    function C_Raptor_New_Term_From_URI (World: RDF.Raptor.World.Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Term_Handle

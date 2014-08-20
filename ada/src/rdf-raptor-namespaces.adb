@@ -94,7 +94,7 @@ package body RDF.Raptor.Namespaces is
    end;
 
    function Get_Prefix (Object: Prefix_And_URI) return String is (Object.Prefix);
-   function Get_URI (Object: Prefix_And_URI) return String is (Object.URI);
+   function Get_URI (Object: Prefix_And_URI) return URI_String is (Object.URI);
 
    function C_Raptor_Xml_Namespace_String_Parse (Str: char_array; Prefix, URI: access chars_ptr) return int
      with Import, Convention=>C, External_Name=>"raptor_xml_namespace_string_parse";
@@ -107,7 +107,7 @@ package body RDF.Raptor.Namespaces is
       end if;
       declare
          Prefix: constant String := Value(C_Prefix);
-         URI   : constant String := Value(C_URI   );
+         URI: constant URI_String := URI_String(String'(Value(C_URI)));
       begin
          RDF.Raptor.Memory.raptor_free_memory(C_Prefix);
          RDF.Raptor.Memory.raptor_free_memory(C_URI   );
@@ -129,14 +129,14 @@ package body RDF.Raptor.Namespaces is
       end;
    end;
 
-   function Extract_URI (NS: String) return String is
+   function Extract_URI (NS: String) return URI_String is
       C_URI: aliased chars_ptr;
    begin
       if C_Raptor_Xml_Namespace_String_Parse(To_C(NS), null, C_URI'Access) /= 0 then
          raise RDF_Exception;
       end if;
       declare
-         URI: constant String := Value(C_URI);
+         URI: constant URI_String := URI_String(String'(Value(C_URI)));
       begin
          RDF.Raptor.Memory.raptor_free_memory(C_URI);
          return URI;

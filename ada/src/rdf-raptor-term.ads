@@ -89,7 +89,7 @@ package RDF.Raptor.Term is
                                          Language: RDF.Auxilary.String_Holders.Holder)
                                          return Term_Type;
 
-   not overriding function From_URI_String (World: World_Type_Without_Finalize'Class; URI: String) return Term_Type;
+   not overriding function From_URI_String (World: World_Type_Without_Finalize'Class; URI: URI_String) return Term_Type;
 
    not overriding function From_URI (World: World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
                                      return Term_Type;

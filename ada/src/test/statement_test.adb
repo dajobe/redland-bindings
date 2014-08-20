@@ -11,9 +11,9 @@ package body Statement_Test is
    procedure Test_Statements(T : in out Test_Cases.Test_Case'Class) is
       World: RDF.Raptor.World.World_Type;
 
-      URI_1: constant String := "http://example.org/xyz";
-      URI_2: constant String := "http://example.org/qqq";
-      URI_3: constant String := "http://example.org/123";
+      URI_1: constant URI_String := "http://example.org/xyz";
+      URI_2: constant URI_String := "http://example.org/qqq";
+      URI_3: constant URI_String := "http://example.org/123";
 
       Term_1: Term_Type := From_URI_String(World, URI_1);
       Term_2: Term_Type := From_URI_String(World, URI_2);
@@ -21,9 +21,9 @@ package body Statement_Test is
 
       St: Statement_Type := New_Statement(World, Term_1, Term_2, Term_3);
    begin
-      Assert(To_String(Get_Subject  (St)) = "<" & URI_1 & ">", "Subject matches");
-      Assert(To_String(Get_Predicate(St)) = "<" & URI_2 & ">", "Predicate matches");
-      Assert(To_String(Get_Object   (St)) = "<" & URI_3 & ">", "Object matches");
+      Assert(To_String(Get_Subject  (St)) = String("<" & URI_1 & ">"), "Subject matches");
+      Assert(To_String(Get_Predicate(St)) = String("<" & URI_2 & ">"), "Predicate matches");
+      Assert(To_String(Get_Object   (St)) = String("<" & URI_3 & ">"), "Object matches");
    end;
 
    function Name (T : Test_Case)

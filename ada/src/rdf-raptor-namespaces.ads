@@ -41,20 +41,20 @@ package RDF.Raptor.Namespaces is
    type Prefix_And_URI(<>) is private;
 
    function Get_Prefix (Object: Prefix_And_URI) return String;
-   function Get_URI (Object: Prefix_And_URI) return String;
+   function Get_URI (Object: Prefix_And_URI) return URI_String;
 
    -- See also Extract_Prefix and Extract_URI
    function String_Parse (NS: String) return Prefix_And_URI;
 
    function Extract_Prefix (NS: String) return String;
-   function Extract_URI    (NS: String) return String;
+   function Extract_URI    (NS: String) return URI_String;
 
 private
 
    type Prefix_And_URI (Prefix_Length, URI_Length: Natural) is
       record
          Prefix: String(1..Prefix_Length);
-         URI: String(1..URI_Length);
+         URI: URI_String(1..URI_Length);
       end record;
 
 end RDF.Raptor.Namespaces;
