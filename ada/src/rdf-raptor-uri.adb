@@ -3,7 +3,8 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Memory;
-with RDF.Raptor.IOStream;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
+with RDF.Raptor.Namespaces_Stacks; use RDF.Raptor.Namespaces_Stacks;
 
 package body RDF.Raptor.URI is
 
@@ -288,5 +289,56 @@ package body RDF.Raptor.URI is
 
    function Get_Filename (Pair: Filename_And_Fragment) return String is (Pair.Filename);
    function Get_Fragment (Pair: Filename_And_Fragment) return String is (Pair.Fragment);
+
+   function C_Raptor_Uri_To_Turtle_String(Handle: RDF.Raptor.World.Handle_Type;
+                                          URI: Handle_Type;
+                                          Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
+                                          Base_URI: Handle_Type)
+                                          return Chars_Ptr
+     with Import, Convention=>C, External_Name=>"raptor_uri_to_turtle_string";
+
+   function To_Turtle_String (World: World_Type_Without_Finalize'Class;
+                              URI: URI_Type_Without_Finalize;
+                              Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
+                              Base_URI: URI_Type_Without_Finalize)
+                              return String is
+      C_Str: constant chars_ptr := C_Raptor_Uri_To_Turtle_String(Get_Handle(World),
+                                                                 Get_Handle(URI),
+                                                                 Get_Handle(Stack),
+                                                                 Get_Handle(Base_URI));
+   begin
+      if C_Str = Null_Ptr then
+         raise RDF.Auxilary.RDF_Exception;
+      end if;
+      declare
+         Result: constant String := Value(C_Str);
+      begin
+         RDF.Raptor.Memory.Raptor_Free_Memory(C_Str);
+         return Result;
+      end;
+   end;
+
+   function C_Raptor_Uri_Turtle_Write(Handle: RDF.Raptor.World.Handle_Type;
+                                      Stream: RDF.Raptor.IOStream.Handle_Type;
+                                      URI: Handle_Type;
+                                      Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
+                                      Base_URI: Handle_Type)
+                                      return Int
+     with Import, Convention=>C, External_Name=>"raptor_uri_turtle_write";
+
+   procedure Turtle_Write (World: World_Type_Without_Finalize'Class;
+                           Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
+                           URI: URI_Type_Without_Finalize;
+                           Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
+                           Base_URI: URI_Type_Without_Finalize) is
+   begin
+      if C_Raptor_Uri_Turtle_Write(Get_Handle(World),
+                                   Get_Handle(Stream),
+                                   Get_Handle(URI),
+                                   Get_Handle(Stack),
+                                   Get_Handle(Base_URI)) /= 0 then
+         raise IOStream_Exception;
+      end if;
+   end;
 
 end RDF.Raptor.URI;

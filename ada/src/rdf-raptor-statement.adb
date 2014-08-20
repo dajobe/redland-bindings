@@ -1,7 +1,7 @@
 with Ada.Tags;
 with RDF.Raptor.Term;
 with Interfaces.C; use Interfaces.C;
-with RDF.Raptor.IOStream;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 
 package body RDF.Raptor.Statement is
 
@@ -109,6 +109,20 @@ package body RDF.Raptor.Statement is
    procedure Print_As_Ntriples (Statement: Statement_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access) is
    begin
       if C_Raptor_Statement_Print_As_Ntriples(Get_Handle(Statement), File) /= 0 then
+         raise RDF.Raptor.IOStream.IOStream_Exception;
+      end if;
+   end;
+
+   function C_Raptor_Statement_Ntriples_Write (Statement: Statement_Handle; Stream: RDF.Raptor.IOStream.Handle_Type; Write_Graph_Term: int)
+                                               return Int
+      with Import, Convention=>C, External_Name=>"raptor_statement_ntriples_write";
+
+   procedure Ntriples_Write (Statement: Statement_Type_Without_Finalize;
+                             Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
+                             Write_Graph_Term: Boolean) is
+      Flag: constant int := (if Write_Graph_Term then 1 else 0);
+   begin
+      if C_Raptor_Statement_Ntriples_Write(Get_Handle(Statement), Get_Handle(Stream), Flag) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;
       end if;
    end;

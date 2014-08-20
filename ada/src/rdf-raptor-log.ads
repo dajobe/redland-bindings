@@ -31,7 +31,7 @@ package RDF.Raptor.Log is
 
    procedure Print (Locator: Locator_Type; File: RDF.Auxilary.C_File_Access);
 
-   -- TODO: implement raptor_locator_format()
+   function Format (Locator: Locator_Type) return String;
 
    function Get_Error_Code (Message: Log_Message_Type) return int;
    function Get_Domain (Message: Log_Message_Type) return Domain_Type;

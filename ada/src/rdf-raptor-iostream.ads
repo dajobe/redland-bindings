@@ -4,13 +4,17 @@ with Ada.Strings.Unbounded;
 with RDF.Auxilary.Limited_Handled_Record;
 with RDF.Auxilary;
 with RDF.Raptor.World;
+limited with RDF.Raptor.URI;
+limited with RDF.Raptor.Term;
+limited with RDF.Raptor.Statement;
 
 package RDF.Raptor.IOStream is
 
    -- It is impossible to make this as a wrapper around Ada.Streams.Root_Stream_Type,
    -- because Root_Stream_Type does not provide End_Of_File function.
 
-   -- TODO: However, we can wrap this in Ada.Streams.Root_Stream_Type
+   -- However, we can wrap this in Ada.Streams.Root_Stream_Type
+   -- But this probably makes no sense for a user of our code.
 
    IOStream_Exception: exception;
 
@@ -74,8 +78,11 @@ package RDF.Raptor.IOStream is
 
    procedure Escaped_Write (Value: String; Delim: Character; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type);
 
-   -- TODO:
-   -- raptor_term_escaped_write(), raptor_uri_escaped_write()
+   procedure URI_Escaped_Write (URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                Flags: Escaped_Write_Bitflags.Bitflags;
+                                Stream: Base_Stream_Type);
+
+   procedure Term_Escaped_Write (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type);
 
    procedure Ntriples_Write (Value: String; Delim: Character; Stream: Base_Stream_Type);
 

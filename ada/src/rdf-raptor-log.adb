@@ -106,4 +106,24 @@ package body RDF.Raptor.Log is
       end if;
    end;
 
+   function C_Raptor_Locator_Format (Buffer: chars_ptr; Length: size_t; Locator: Locator_Type) return int
+     with Import, Convention=>C, External_Name=>"raptor_locator_format";
+
+   function Format (Locator: Locator_Type) return String is
+      Res1: constant int := C_Raptor_Locator_Format(Null_Ptr, 0, Locator);
+   begin
+      if Res1 < 0 then
+         raise RDF.Auxilary.RDF_Exception;
+      end if;
+      declare
+         Buffer: aliased char_array := (1..size_t(Res1) => Interfaces.C.Nul);
+      begin
+         if C_Raptor_Locator_Format(To_Chars_Ptr(Buffer'Unchecked_Access, Nul_Check=>False), 0, Locator) < 0 then
+            raise RDF.Auxilary.RDF_Exception;
+         end if;
+         return To_Ada(Buffer);
+      end;
+   end;
+
+
 end RDF.Raptor.Log;

@@ -50,8 +50,6 @@ package RDF.Raptor.Term is
    -- The returned URI may be null.
    not overriding function Datatype (Literal: Term_Literal_Value) return RDF.Raptor.URI.URI_Type_Without_Finalize;
 
-   -- TODO: Not sure that it does the right thing with empty language string.
-   --
    -- Return the language tag or empty string if there are none
    not overriding function Language (Literal: Term_Literal_Value) return String;
 

@@ -1,5 +1,7 @@
 with Ada.Unchecked_Conversion;
 with RDF.Raptor.World; use RDF.Raptor.World;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
+with RDF.Raptor.Term; use RDF.Raptor.Term;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package body RDF.Raptor.IOStream is
@@ -400,6 +402,26 @@ package body RDF.Raptor.IOStream is
    begin
       Append(Stream.Str, Value (Data, Size*Count));
       return int(Size*Count);
+   end;
+
+   function C_Raptor_Term_Escaped_Write (Term: RDF.Raptor.Term.Term_Handle; Flags: unsigned; Stream: RDF.Raptor.IOStream.Handle_Type) return int
+     with Import, Convention=>C, External_Name=>"raptor_term_escaped_write";
+
+   procedure Term_Escaped_Write (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type) is
+   begin
+      if C_Raptor_Term_Escaped_Write(Get_Handle(Term), Unsigned(Flags), Get_Handle(Stream)) /= 0 then
+         raise IOStream_Exception;
+      end if;
+   end;
+
+   function C_Raptor_URI_Escaped_Write (URI, Base_URI: RDF.Raptor.URI.Handle_Type; Flags: unsigned; Stream: RDF.Raptor.IOStream.Handle_Type) return int
+     with Import, Convention=>C, External_Name=>"raptor_uri_escaped_write";
+
+   procedure URI_Escaped_Write (URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type) is
+   begin
+      if C_Raptor_URI_Escaped_Write(Get_Handle(URI), Get_Handle(Base_URI), Unsigned(Flags), Get_Handle(Stream)) /= 0 then
+         raise IOStream_Exception;
+      end if;
    end;
 
 end RDF.Raptor.IOStream;

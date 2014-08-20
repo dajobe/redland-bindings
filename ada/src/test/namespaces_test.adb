@@ -20,7 +20,6 @@ package body Namespaces_Test is
       Assert (To_String(Get_URI(NS2)) = "http://www.w3.org/1999/xhtml/", "Check namespace URI");
       Assert (Get_Prefix(NS1) = "xhtml", "Check namespace prefix");
       Assert (Get_Prefix(NS2) = "xhtml", "Check namespace prefix");
-      -- TODO: More tests
    end;
 
    function Name (T : Test_Case)
