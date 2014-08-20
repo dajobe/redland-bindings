@@ -6,6 +6,9 @@ with RDF.Raptor.World;
 
 package RDF.Raptor.Options is
 
+   -- Limit to these options which are explicitly specified below.
+   -- If you try to do with an other option, it can lead to Constraint_Error in Ada :-(
+   -- Thus we need maintain updating this list, when the corresponding enum in C changes.
    type Raptor_Option is (SCANNING,
                           ALLOW_NON_NS_ATTRIBUTES,
                           ALLOW_OTHER_PARSETYPES,
@@ -120,6 +123,7 @@ package RDF.Raptor.Options is
 
    function Get_URI (Description: Option_Description_Type_Without_Finalize) return URI_Type_Without_Finalize;
 
+   -- WARNING: Raptor_Option'Val(Get_Options_Count - 1) may throw Constraint_Error
    function Get_Options_Count return Natural;
 
    function Value_Type_Label (Value_Type: Value_Type_Type) return String;
@@ -134,9 +138,7 @@ package RDF.Raptor.Options is
    not overriding function Get_Option_Description (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Raptor_Option)
                                                    return Option_Description_Type;
 
-   -- Not implemented because Ada does not support negative values for enumeration.
-   -- TODO: Invent something.
---     function Option_From_URI (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type'Class) return Raptor_Option;
+   function Option_From_URI (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type'Class) return Raptor_Option;
 
 private
 

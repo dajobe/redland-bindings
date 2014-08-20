@@ -22,8 +22,6 @@ package RDF.Raptor.Namespaces is
 
    not overriding function Format_As_XML (NS: Namespace_Type_Without_Finalize) return String;
 
-   -- TODO: implement raptor_xml_namespace_string_parse()
-
    type Namespace_Type is new Namespace_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle (Object: Namespace_Type; Handle: Namespace_Handle_Type);
@@ -39,5 +37,24 @@ package RDF.Raptor.Namespaces is
                                      URI: URI_Type_Without_Finalize'Class;
                                      Depth: Integer)
                                      return Namespace_Type;
+
+   type Prefix_And_URI(<>) is private;
+
+   function Get_Prefix (Object: Prefix_And_URI) return String;
+   function Get_URI (Object: Prefix_And_URI) return String;
+
+   -- See also Extract_Prefix and Extract_URI
+   function String_Parse (NS: String) return Prefix_And_URI;
+
+   function Extract_Prefix (NS: String) return String;
+   function Extract_URI    (NS: String) return String;
+
+private
+
+   type Prefix_And_URI (Prefix_Length, URI_Length: Natural) is
+      record
+         Prefix: String(1..Prefix_Length);
+         URI: String(1..URI_Length);
+      end record;
 
 end RDF.Raptor.Namespaces;

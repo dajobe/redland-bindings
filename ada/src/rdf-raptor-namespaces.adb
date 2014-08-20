@@ -51,10 +51,10 @@ package body RDF.Raptor.Namespaces is
    function C_Raptor_Namespace_Get_Uri (Handle: Namespace_Handle_Type) return RDF.Raptor.URI.Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_namespace_get_uri";
 
-   -- FIXME: raptor_namespace_get_uri() may return NULL
+   -- raptor_namespace_get_uri() may return NULL (for xmlns="")
    function Get_URI (NS: Namespace_Type_Without_Finalize) return URI_Type_Without_Finalize is
    begin
-      return From_Non_Null_Handle( C_Raptor_Namespace_Get_Uri(Get_Handle(NS)) );
+      return From_Handle( C_Raptor_Namespace_Get_Uri(Get_Handle(NS)) );
    end;
 
    function C_Raptor_Namespace_Get_Prefix (Handle: Namespace_Handle_Type) return chars_ptr
@@ -90,6 +90,56 @@ package body RDF.Raptor.Namespaces is
       begin
          RDF.Raptor.Memory.Raptor_Free_Memory(C_Str);
          return Result;
+      end;
+   end;
+
+   function Get_Prefix (Object: Prefix_And_URI) return String is (Object.Prefix);
+   function Get_URI (Object: Prefix_And_URI) return String is (Object.URI);
+
+   function C_Raptor_Xml_Namespace_String_Parse (Str: char_array; Prefix, URI: access chars_ptr) return int
+     with Import, Convention=>C, External_Name=>"raptor_xml_namespace_string_parse";
+
+   function String_Parse (NS: String) return Prefix_And_URI is
+      C_Prefix, C_URI: aliased chars_ptr;
+   begin
+      if C_Raptor_Xml_Namespace_String_Parse(To_C(NS), C_Prefix'Access, C_URI'Access) /= 0 then
+         raise RDF_Exception;
+      end if;
+      declare
+         Prefix: constant String := Value(C_Prefix);
+         URI   : constant String := Value(C_URI   );
+      begin
+         RDF.Raptor.Memory.raptor_free_memory(C_Prefix);
+         RDF.Raptor.Memory.raptor_free_memory(C_URI   );
+         return (Prefix_Length=>Prefix'Length, URI_Length=>URI'Length, Prefix=>Prefix, URI=>URI);
+      end;
+   end;
+
+   function Extract_Prefix (NS: String) return String is
+      C_Prefix: aliased chars_ptr;
+   begin
+      if C_Raptor_Xml_Namespace_String_Parse(To_C(NS), C_Prefix'Access, null) /= 0 then
+         raise RDF_Exception;
+      end if;
+      declare
+         Prefix: constant String := Value(C_Prefix);
+      begin
+         RDF.Raptor.Memory.raptor_free_memory(C_Prefix);
+         return Prefix;
+      end;
+   end;
+
+   function Extract_URI (NS: String) return String is
+      C_URI: aliased chars_ptr;
+   begin
+      if C_Raptor_Xml_Namespace_String_Parse(To_C(NS), null, C_URI'Access) /= 0 then
+         raise RDF_Exception;
+      end if;
+      declare
+         URI: constant String := Value(C_URI);
+      begin
+         RDF.Raptor.Memory.raptor_free_memory(C_URI);
+         return URI;
       end;
    end;
 

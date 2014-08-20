@@ -1,5 +1,4 @@
 with Ada.Unchecked_Conversion;
-with Ada.Text_IO; -- TODO: remove
 with RDF.Raptor.World; use RDF.Raptor.World;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 

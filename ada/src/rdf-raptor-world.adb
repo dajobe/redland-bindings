@@ -67,26 +67,4 @@ package body RDF.Raptor.World is
       C_Raptor_Free_World(Handle);
    end;
 
-   function C_Raptor_World_Generate_Bnodeid (World: Handle_Type) return chars_ptr
-     with Import, Convention=>C, External_Name=>"raptor_world_generate_bnodeid";
-
-   function Generate_Bnodeid (World: World_Type_Without_Finalize) return String is
-      C_Str: chars_ptr := C_Raptor_World_Generate_Bnodeid(Get_Handle(World));
-      Result: constant String := Value(C_Str);
-   begin
-      RDF.Raptor.Memory.raptor_free_memory(C_Str);
-      return Result;
-   end;
-
-   procedure C_Raptor_World_Set_Generate_Bnodeid_Parameters (World: Handle_Type; Prefix: chars_ptr; Base: int)
-     with Import, Convention=>C, External_Name=>"raptor_world_set_generate_bnodeid_parameters";
-
-   procedure Set_Generate_Bnodeid_Parameters (World: World_Type_Without_Finalize;
-                                              Prefix: String_Holders.Holder;
-                                              Base: int) is
-      Prefix_N : C_String_Holder := To_C_String_Holder(Prefix);
-   begin
-      C_Raptor_World_Set_Generate_Bnodeid_Parameters(Get_Handle(World), C_String(Prefix_N), Base);
-   end;
-
 end RDF.Raptor.World;

@@ -13,4 +13,13 @@ package body RDF.Auxilary is
       end if;
    end;
 
+   function Sign (Value: Interfaces.C.int) return Comparison_Result is
+   begin
+      if Value < 0 then
+         return -1;
+      else
+         return (if Value > 0 then 1 else 0);
+      end if;
+   end;
+
 end RDF.Auxilary;

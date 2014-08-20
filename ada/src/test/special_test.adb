@@ -5,23 +5,11 @@
 -- This means that some object is deallocated twice.
 
 with Ada.Text_IO;
-with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.Term; use RDF.Raptor.Term;
-with RDF.Raptor.World;
-with RDF.Auxilary;
+with RDF.Raptor.Options; use RDF.Raptor.Options;
 
 procedure Special_Test is
-
-   World: RDF.Raptor.World.World_Type;
-
-   Term_1: Term_Type := From_Literal (World,
-                                      RDF.Auxilary.String_Holders.To_Holder("QWE"),
-                                      From_String(World, "http://example.org"), -- datatype
-                                      RDF.Auxilary.String_Holders.Empty_Holder -- language
-                                     );
-
-   X: RDF.Raptor.URI.URI_Type_Without_Finalize := Datatype(Get_Literal(Term_1));
-
+   Min: constant := Raptor_Option'Base'Pos(Raptor_Option'Base'First);
+   Max: constant := Raptor_Option'Base'Pos(Raptor_Option'Base'Last);
 begin
-   null;
+   Ada.Text_IO.Put_Line(Integer'Image(Min) & " - " & Integer'Image(Max));
 end;

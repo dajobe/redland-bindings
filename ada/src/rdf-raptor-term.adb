@@ -158,7 +158,7 @@ package body RDF.Raptor.Term is
 
    function Compare (Left, Right: Term_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result is
    begin
-      return RDF.Auxilary.Comparison_Result( C_Raptor_Term_Compare(Get_Handle(Left), Get_Handle(Right)) );
+      return RDF.Auxilary.Sign( C_Raptor_Term_Compare(Get_Handle(Left), Get_Handle(Right)) );
    end;
 
    function C_Raptor_Term_Equals (Left, Right: Term_Handle) return int

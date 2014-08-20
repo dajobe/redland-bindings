@@ -20,7 +20,6 @@ package RDF.Raptor.Statement is
    not overriding function Get_Object    (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize;
    not overriding function Get_Graph     (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize; -- may return null handle
 
-   -- FIXME: C library may return outside of the range -1..1
    not overriding function Compare (Left, Right: Statement_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result;
 
    not overriding function Equals (Left, Right: Statement_Type_Without_Finalize) return Boolean;

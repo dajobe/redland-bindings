@@ -32,11 +32,10 @@ package RDF.Raptor.URI is
    -- ignores the fragment
    function URI_String_To_Filename (Str: String) return String;
 
-   type Filename_And_Fragment (Filename_Length, Fragment_Length: Natural) is
-      record
-         Filename: String(1..Filename_Length);
-         Fragment: String(1..Fragment_Length);
-      end record;
+   type Filename_And_Fragment(<>) is private;
+
+   function Get_Filename (Pair: Filename_And_Fragment) return String;
+   function Get_Fragment (Pair: Filename_And_Fragment) return String;
 
    function URI_String_To_Filename_And_Fragment(Str: String) return Filename_And_Fragment;
 
@@ -88,5 +87,13 @@ package RDF.Raptor.URI is
 
    -- null
    --overriding function Default_Handle(Object: URI_Type) return Handle_Type;
+
+private
+
+   type Filename_And_Fragment (Filename_Length, Fragment_Length: Natural) is
+      record
+         Filename: String(1..Filename_Length);
+         Fragment: String(1..Fragment_Length);
+      end record;
 
 end RDF.Raptor.URI;

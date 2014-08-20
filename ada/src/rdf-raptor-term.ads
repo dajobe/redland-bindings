@@ -59,7 +59,6 @@ package RDF.Raptor.Term is
 
    not overriding function To_String (Term: Term_Type_Without_Finalize) return String;
 
-   -- FIXME: C library may return outside of the range -1..1
    not overriding function Compare (Left, Right: Term_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result;
 
    not overriding function Equals (Left, Right: Term_Type_Without_Finalize) return Boolean;

@@ -189,9 +189,7 @@ package body RDF.Raptor.URI is
       return Result;
    end;
 
-   type chars_ptr_ptr is access all chars_ptr with Convention=>C;
-
-   function C_Raptor_Uri_Uri_String_To_Filename_Fragment (URI_String: char_array; Fragment_P: chars_ptr_ptr) return chars_ptr
+   function C_Raptor_Uri_Uri_String_To_Filename_Fragment (URI_String: char_array; Fragment_P: access chars_ptr) return chars_ptr
       with Import, Convention=>C, External_Name=>"raptor_uri_uri_string_to_filename_fragment";
 
    function URI_String_To_Filename_And_Fragment(Str: String) return Filename_And_Fragment is
@@ -287,5 +285,8 @@ package body RDF.Raptor.URI is
    begin
       return From_Handle (C_Raptor_URI_Copy (Get_Handle(Object)) );
    end;
+
+   function Get_Filename (Pair: Filename_And_Fragment) return String is (Pair.Filename);
+   function Get_Fragment (Pair: Filename_And_Fragment) return String is (Pair.Fragment);
 
 end RDF.Raptor.URI;

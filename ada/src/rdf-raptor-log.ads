@@ -2,6 +2,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.World;
+with RDF.Auxilary;
 
 package RDF.Raptor.Log is
 
@@ -27,6 +28,10 @@ package RDF.Raptor.Log is
    function Get_Line   (Locator: Locator_Type) return Natural;
    function Get_Column (Locator: Locator_Type) return Natural;
    function Get_Byte   (Locator: Locator_Type) return Natural;
+
+   procedure Print (Locator: Locator_Type; File: RDF.Auxilary.C_File_Access);
+
+   -- TODO: implement raptor_locator_format()
 
    function Get_Error_Code (Message: Log_Message_Type) return int;
    function Get_Domain (Message: Log_Message_Type) return Domain_Type;

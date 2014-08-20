@@ -18,6 +18,8 @@ package RDF.Auxilary is
 
    type Comparison_Result is range -1..1;
 
+   function Sign (Value: Interfaces.C.int) return Comparison_Result;
+
    package String_Holders is new Ada.Containers.Indefinite_Holders(String);
 
    function Length (Object: String_Holders.Holder) return size_t;

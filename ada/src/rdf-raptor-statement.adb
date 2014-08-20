@@ -82,7 +82,7 @@ package body RDF.Raptor.Statement is
 
    function Compare (Left, Right: Statement_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result is
    begin
-      return RDF.Auxilary.Comparison_Result( C_Raptor_Statement_Compare(Get_Handle(Left), Get_Handle(Right)) );
+      return RDF.Auxilary.Sign( C_Raptor_Statement_Compare(Get_Handle(Left), Get_Handle(Right)) );
    end;
 
    function C_Raptor_Statement_Equals (Left, Right: Statement_Handle) return int

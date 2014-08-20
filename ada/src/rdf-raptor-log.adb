@@ -88,12 +88,22 @@ package body RDF.Raptor.Log is
       return Value(C_Raptor_Log_Level_Get_Label(Level));
    end;
 
-   function C_Raptor_Domain_Get_Label(Level: Domain_Type) return chars_ptr
+   function C_Raptor_Domain_Get_Label (Level: Domain_Type) return chars_ptr
      with Import, Convention=>C, External_Name=>"raptor_domain_get_label";
 
    function Get_Label (Level: Domain_Type) return String is
    begin
       return Value(C_Raptor_Domain_Get_Label(Level));
+   end;
+
+   function C_Raptor_Locator_Print (Locator: Locator_Type; Stream: RDF.Auxilary.C_File_Access) return int
+     with Import, Convention=>C, External_Name=>"raptor_locator_print";
+
+   procedure Print (Locator: Locator_Type; File: RDF.Auxilary.C_File_Access) is
+   begin
+      if C_Raptor_Locator_Print(Locator, File) /= 0 then
+         raise RDF.Auxilary.RDF_Exception;
+      end if;
    end;
 
 end RDF.Raptor.Log;
