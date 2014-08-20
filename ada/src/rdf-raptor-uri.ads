@@ -4,6 +4,8 @@ with RDF.Raptor.IOStream;
 
 package RDF.Raptor.URI is
 
+   type URI_String is new String;
+
    package Handled_Record is new RDF.Auxilary.Handled_Record(RDF.Auxilary.Dummy_Record);
 
    subtype Handle_Type is Handled_Record.Access_Type;
@@ -17,27 +19,27 @@ package RDF.Raptor.URI is
 
    overriding function "="(URI1, URI2: URI_Type_Without_Finalize) return Boolean renames Equals;
 
-   not overriding function To_String(URI: URI_Type_Without_Finalize) return String;
+   not overriding function To_String(URI: URI_Type_Without_Finalize) return URI_String;
 
-   not overriding function To_Relative_URI_String(Base_URI, Reference_URI: URI_Type_Without_Finalize) return String;
+   not overriding function To_Relative_URI_String(Base_URI, Reference_URI: URI_Type_Without_Finalize) return URI_String;
 
-   function Resolve_URI_Reference (Base_URI, Reference_URI: String) return String;
+   function Resolve_URI_Reference (Base_URI, Reference_URI: String) return URI_String;
 
-   function Filename_To_URI_String (Filename: String) return String;
+   function Filename_To_URI_String (Filename: String) return URI_String;
 
-   function URI_String_Is_Absolute (Str: String) return Boolean;
+   function URI_String_Is_Absolute (Str: URI_String) return Boolean;
 
-   function URI_String_Is_File_URI (Str: String) return Boolean;
+   function URI_String_Is_File_URI (Str: URI_String) return Boolean;
 
    -- ignores the fragment
-   function URI_String_To_Filename (Str: String) return String;
+   function URI_String_To_Filename (Str: URI_String) return String;
 
    type Filename_And_Fragment(<>) is private;
 
    function Get_Filename (Pair: Filename_And_Fragment) return String;
    function Get_Fragment (Pair: Filename_And_Fragment) return String;
 
-   function URI_String_To_Filename_And_Fragment(Str: String) return Filename_And_Fragment;
+   function URI_String_To_Filename_And_Fragment(Str: URI_String) return Filename_And_Fragment;
 
    -- Not supposed to be used, but included for completeness
    not overriding procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access);
@@ -56,14 +58,11 @@ package RDF.Raptor.URI is
 
    type URI_Type is new URI_Type_Without_Finalize with null record;
 
-   -- TODO:
-   -- type URI_String is new String;
-
    overriding procedure Adjust(Object: in out URI_Type);
 
    overriding procedure Finalize_Handle(Object: URI_Type; Handle: Handle_Type);
 
-   not overriding function From_String(World: World_Type_Without_Finalize'Class; Arg: String) return URI_Type;
+   not overriding function From_String(World: World_Type_Without_Finalize'Class; Arg: URI_String) return URI_Type;
 
    not overriding function From_URI_With_Local_Name(World: World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type;
 
@@ -74,7 +73,7 @@ package RDF.Raptor.URI is
 
    not overriding function From_URI_Relative_To_Base(World: World_Type_Without_Finalize'Class;
                                                      Base_URI: URI_Type_Without_Finalize'Class;
-                                                     URI_String: String)
+                                                     URI: URI_String)
                                                      return URI_Type;
 
    not overriding function From_ID(World: World_Type_Without_Finalize'Class; Base_URI: URI_Type_Without_Finalize'Class; ID: String) return URI_Type;

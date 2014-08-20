@@ -7,8 +7,8 @@ package body URI_Test is
 
    procedure Test_URIs(T : in out Test_Cases.Test_Case'Class) is
       World: RDF.Raptor.World.World_Type;
-      URI_1: constant String := "http://example.org/xyz";
-      URI_3: constant String := "http://example.org/123";
+      URI_1: constant URI_String := "http://example.org/xyz";
+      URI_3: constant URI_String := "http://example.org/123";
       URI_1_Obj: constant URI_Type := From_String(World, URI_1);
       URI_2_Obj: constant URI_Type := From_String(World, URI_1);
       URI_3_Obj: constant URI_Type := From_String(World, URI_3);
