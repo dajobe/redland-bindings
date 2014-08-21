@@ -123,4 +123,15 @@ package body RDF.Raptor.Parser is
       C_Raptor_Parser_Set_Namespace_Handler(Get_Handle(Object), Obj_To_Ptr(Object'Unchecked_Access), C_Raptor_Namespace_Handler_Impl'Access);
    end;
 
+   type My_Dummy_Access is access constant RDF.Auxilary.Dummy_Record;
+
+   function C_Raptor_Parser_Get_Description (Parser: Handle_Type) return My_Dummy_Access
+      with Import, Convention=>C, External_Name=>"raptor_parser_get_description";
+
+   function Get_Description (Parser: Parser_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type is
+      function Conv is new Ada.Unchecked_Conversion(My_Dummy_Access, RDF.Raptor.Syntaxes.Syntax_Description_Type);
+   begin
+      return Conv( C_Raptor_Parser_Get_Description(Get_Handle(Parser)) );
+   end;
+
 end RDF.Raptor.Parser;

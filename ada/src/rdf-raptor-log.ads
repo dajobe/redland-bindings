@@ -17,6 +17,7 @@ package RDF.Raptor.Log is
                            Fatal => 6);
    function Last return Log_Level_Type renames Fatal;
 
+   -- TODO: Should we make this type access type (for efficiency)?
    type Locator_Type is private;
 
    type Log_Message_Type is private;

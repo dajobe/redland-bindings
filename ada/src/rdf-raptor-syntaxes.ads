@@ -12,7 +12,7 @@ package RDF.Raptor.Syntaxes is
 
    type Mime_Type_Q is private;
 
-   -- Internally represented as an access to a C record
+   -- Internally represented as an access to a C record. (It is used for Ada.Unchecked_Conversion in some other packages.)
    type Syntax_Description_Type is private;
 
    type Q_Type is range 0..10;

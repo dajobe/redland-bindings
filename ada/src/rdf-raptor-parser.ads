@@ -6,6 +6,7 @@ with RDF.Raptor.World;
 with RDF.Raptor.URI;
 with RDF.Raptor.Statement;
 with RDF.Raptor.Namespaces;
+with RDF.Raptor.Syntaxes;
 
 package RDF.Raptor.Parser is
 
@@ -52,6 +53,8 @@ package RDF.Raptor.Parser is
                                                 Identifier: String_Holders.Holder)
                                                 return Parser_Type;
 
-   -- TODO: Stopped at raptor_parser_get_description()
+   not overriding function Get_Description (Parser: Parser_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type;
+
+   -- TODO: Stopped at raptor_parser_get_locator()
 
 end RDF.Raptor.Parser;
