@@ -52,6 +52,6 @@ package RDF.Raptor.Parser is
                                                 Identifier: String_Holders.Holder)
                                                 return Parser_Type;
 
-   -- TODO: Stopped at enum raptor_graph_mark_flags and then raptor_parser_get_description
+   -- TODO: Stopped at raptor_parser_get_description()
 
 end RDF.Raptor.Parser;

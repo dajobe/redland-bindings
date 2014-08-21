@@ -12,6 +12,7 @@ package RDF.Raptor.Syntaxes is
 
    type Mime_Type_Q is private;
 
+   -- TODO: It should be access to record instead record, for greater copying efficiency.
    type Syntax_Description_Type is private;
 
    type Q_Type is range 0..10;
