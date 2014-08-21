@@ -12,7 +12,7 @@ package RDF.Raptor.Syntaxes is
 
    type Mime_Type_Q is private;
 
-   -- TODO: It should be access to record instead record, for greater copying efficiency.
+   -- Internally represented as an access to a C record
    type Syntax_Description_Type is private;
 
    type Q_Type is range 0..10;
@@ -95,7 +95,7 @@ private
       end record
       with Convention => C;
 
-   type Syntax_Description_Type is
+   type Syntax_Description_Record is limited
       record
          Names: access chars_ptr;
          Names_Count: unsigned;
@@ -106,6 +106,9 @@ private
          URI_Strings_Count: unsigned;
          Flags: Syntax_Bitflags;
       end record
+     with Convention => C;
+
+   type Syntax_Description_Type is access constant Syntax_Description_Record
      with Convention => C;
 
    type Parser_Description_Cursor is

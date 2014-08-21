@@ -15,8 +15,6 @@ package body RDF.Raptor.Syntaxes is
 
    use Mime_Type_Q_Ptrs;
 
-   use String_Ptrs;
-
    function Get_MIME_Type (Object: Mime_Type_Q) return String is
    begin
       return Value(Object.Mime_Type, Object.Mime_Type_Len);
@@ -25,7 +23,7 @@ package body RDF.Raptor.Syntaxes is
    function Get_Q (Object: Mime_Type_Q) return Q_Type is (Q_Type(Object.Q));
 
    function Get_Name (Object: Syntax_Description_Type; Index: Natural) return String is
-      Ptr: constant access chars_ptr := Object.Names + ptrdiff_t(Index);
+      Ptr: constant access chars_ptr := String_Ptrs.Pointer(Object.Names) + ptrdiff_t(Index);
    begin
       return Value(Ptr.all);
    end;
@@ -38,7 +36,7 @@ package body RDF.Raptor.Syntaxes is
    end;
 
    function Get_MIME_Type (Object: Syntax_Description_Type; Index: Natural) return Mime_Type_Q is
-      Ptr: constant access Mime_Type_Q := Object.Mime_Types + ptrdiff_t(Index);
+      Ptr: constant access Mime_Type_Q := Mime_Type_Q_Ptrs.Pointer(Object.Mime_Types) + ptrdiff_t(Index);
    begin
       return Ptr.all;
    end;
@@ -46,7 +44,7 @@ package body RDF.Raptor.Syntaxes is
    function Get_MIME_Types_Count (Object: Syntax_Description_Type) return Natural is (Natural(Object.Mime_Types_Count));
 
    function Get_URI (Object: Syntax_Description_Type; Index: Natural) return URI_String is
-      Ptr: constant access chars_ptr := Object.URI_Strings + ptrdiff_t(Index);
+      Ptr: constant access chars_ptr := String_Ptrs.Pointer(Object.URI_Strings) + ptrdiff_t(Index);
    begin
       return URI_String(String'(Value(Ptr.all)));
    end;
