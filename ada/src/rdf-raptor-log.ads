@@ -18,6 +18,7 @@ package RDF.Raptor.Log is
    function Last return Log_Level_Type renames Fatal;
 
    -- TODO: Should we make this type access type (for efficiency)?
+   -- FIXME: Either make it limited or add Adjust
    type Locator_Type is private;
 
    type Log_Message_Type is private;
@@ -53,7 +54,7 @@ private
 
    type Locator_Type is
       record
-         URI: RDF.Raptor.URI.Handle_Type;
+         URI: RDF.Raptor.URI.Handle_Type; -- FIXME: Should it be copied?
          File: chars_ptr;
          Line, Column, Byte: int;
       end record
