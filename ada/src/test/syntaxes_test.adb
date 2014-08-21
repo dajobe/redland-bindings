@@ -13,6 +13,10 @@ package body Syntaxes_Test is
       Iterator2: Serializer_Description_Iterator := Create_Serializer_Descriptions_Iterator(World);
       Cursor2: Serializer_Description_Cursor := First(Iterator2);
    begin
+      -- Does not compile with GCC 4.9.1
+--        for Cursor in Iterator loop
+--           null;
+--        end loop;
       while Has_Element(Cursor) loop
          Cursor := Next(Iterator, Cursor);
       end loop;
