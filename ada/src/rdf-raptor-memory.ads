@@ -13,4 +13,7 @@ package RDF.Raptor.Memory is
    function raptor_calloc_memory (nmemb: size_t; size: size_t) return chars_ptr
      with Import, Convention=>C, External_Name=>"raptor_calloc_memory";
 
+   -- Missing in C code, so I implement it in Ada
+   function Copy_C_String (Str: chars_ptr) return chars_ptr;
+
 end RDF.Raptor.Memory;

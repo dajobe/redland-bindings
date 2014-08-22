@@ -1,58 +1,61 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Raptor.Memory;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Auxilary;
 
 package body RDF.Raptor.Log is
 
+--     use Locator_Handled_Record, Log_Message_Handled_Record;
+
    function Get_URI (Locator: Locator_Type) return URI_Type_Without_Finalize is
    begin
-      return From_Handle(Locator.URI);
+      return From_Handle(Get_Handle(Locator).URI);
    end;
 
    function Get_File (Locator: Locator_Type) return String is
    begin
-      return Value(Locator.File);
+      return Value(Get_Handle(Locator).File);
    end;
 
    function Get_Line (Locator: Locator_Type) return Natural is
    begin
-      return Integer(Locator.Line);
+      return Integer(Get_Handle(Locator).Line);
    end;
 
    function Get_Column (Locator: Locator_Type) return Natural is
    begin
-      return Integer(Locator.Column);
+      return Integer(Get_Handle(Locator).Column);
    end;
 
    function Get_Byte (Locator: Locator_Type) return Natural is
    begin
-      return Integer(Locator.Byte);
+      return Integer(Get_Handle(Locator).Byte);
    end;
 
    function Get_Error_Code (Message: Log_Message_Type) return int is
    begin
-      return Message.Code;
+      return Get_Handle(Message).Code;
    end;
 
    function Get_Domain (Message: Log_Message_Type) return Domain_Type is
    begin
-      return Message.Domain;
+      return Get_Handle(Message).Domain;
    end;
 
    function Get_Log_Level (Message: Log_Message_Type) return Log_Level_Type is
    begin
-      return Message.Log_Level;
+      return Get_Handle(Message).Log_Level;
    end;
 
    function Get_Text (Message: Log_Message_Type) return String is
    begin
-      return Value(Message.Text);
+      return Value(Get_Handle(Message).Text);
    end;
 
-   function Get_Locator (Message: Log_Message_Type) return Locator_Type is
+   function Get_Locator (Message: Log_Message_Type'Class) return Locator_Type is
    begin
-      return Message.Locator.all;
+      return From_Non_Null_Handle(Get_Handle(Message).Locator);
    end;
 
    type Log_Handler_Type is access procedure (Data: chars_ptr; Msg: Log_Message_Type)
@@ -96,21 +99,21 @@ package body RDF.Raptor.Log is
       return Value(C_Raptor_Domain_Get_Label(Level));
    end;
 
-   function C_Raptor_Locator_Print (Locator: Locator_Type; Stream: RDF.Auxilary.C_File_Access) return int
+   function C_Raptor_Locator_Print (Locator: Locator_Handle_Type; Stream: RDF.Auxilary.C_File_Access) return int
      with Import, Convention=>C, External_Name=>"raptor_locator_print";
 
    procedure Print (Locator: Locator_Type; File: RDF.Auxilary.C_File_Access) is
    begin
-      if C_Raptor_Locator_Print(Locator, File) /= 0 then
+      if C_Raptor_Locator_Print(Get_Handle(Locator), File) /= 0 then
          raise RDF.Auxilary.RDF_Exception;
       end if;
    end;
 
-   function C_Raptor_Locator_Format (Buffer: chars_ptr; Length: size_t; Locator: Locator_Type) return int
+   function C_Raptor_Locator_Format (Buffer: chars_ptr; Length: size_t; Locator: Locator_Handle_Type) return int
      with Import, Convention=>C, External_Name=>"raptor_locator_format";
 
    function Format (Locator: Locator_Type) return String is
-      Res1: constant int := C_Raptor_Locator_Format(Null_Ptr, 0, Locator);
+      Res1: constant int := C_Raptor_Locator_Format(Null_Ptr, 0, Get_Handle(Locator));
    begin
       if Res1 < 0 then
          raise RDF.Auxilary.RDF_Exception;
@@ -118,12 +121,49 @@ package body RDF.Raptor.Log is
       declare
          Buffer: aliased char_array := (1..size_t(Res1) => Interfaces.C.Nul);
       begin
-         if C_Raptor_Locator_Format(To_Chars_Ptr(Buffer'Unchecked_Access, Nul_Check=>False), 0, Locator) < 0 then
+         if C_Raptor_Locator_Format(To_Chars_Ptr(Buffer'Unchecked_Access, Nul_Check=>False), 0, Get_Handle(Locator)) < 0 then
             raise RDF.Auxilary.RDF_Exception;
          end if;
          return To_Ada(Buffer);
       end;
    end;
 
+   procedure C_Raptor_Free_URI (Handle: RDF.Raptor.URI.Handle_Type)
+     with Import, Convention=>C, External_Name=>"raptor_free_uri";
+
+   function C_Raptor_URI_Copy (Handle: RDF.Raptor.URI.Handle_Type)
+                               return RDF.Raptor.URI.Handle_Type
+   with Import, Convention=>C, External_Name=>"raptor_uri_copy";
+
+   procedure Finalize_Locator (Handle: Locator_Handle_Type) is
+      function Conv is new Ada.Unchecked_Conversion(Locator_Handle_Type, chars_ptr);
+   begin
+      C_Raptor_Free_URI(Handle.URI);
+      RDF.Raptor.Memory.Raptor_Free_Memory(Handle.File);
+      RDF.Raptor.Memory.Raptor_Free_Memory(Conv(Handle));
+   end;
+
+   procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle_Type) is
+   begin
+      Finalize_Locator(Handle);
+   end;
+
+   procedure Adjust (Object: in out Locator_Type) is
+   begin
+      Get_Handle(Object).URI := C_Raptor_URI_Copy(Get_Handle(Object).URI);
+      Get_Handle(Object).File := RDF.Raptor.Memory.Copy_C_String(Get_Handle(Object).File);
+   end;
+
+   procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle_Type) is
+   begin
+      RDF.Raptor.Memory.Raptor_Free_Memory(Get_Handle(Object).Text);
+      Finalize_Locator(Get_Handle(Object).Locator);
+   end;
+
+   procedure Adjust (Object: in out Log_Message_Type) is
+   begin
+      Get_Handle(Object).Text := RDF.Raptor.Memory.Copy_C_String(Get_Handle(Object).Text);
+      -- FIXME: Locator
+   end;
 
 end RDF.Raptor.Log;

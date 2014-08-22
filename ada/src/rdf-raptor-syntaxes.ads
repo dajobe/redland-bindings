@@ -66,17 +66,8 @@ package RDF.Raptor.Syntaxes is
    overriding function First (Object: Serializer_Description_Iterator) return Serializer_Description_Cursor;
    overriding function Next (Object: Serializer_Description_Iterator; Position: Serializer_Description_Cursor) return Serializer_Description_Cursor;
 
-   -- Attempt to make an Ada2012 iterator. It does not work.
---     type Parser_Descriptions_List is tagged limited private
---       with Default_Iterator=>Get_Parser_Descriptions_Iterator;
---     type Serializer_Descriptions_List is tagged limited private
---       with Default_Iterator=>Get_Serializer_Descriptions_Iterator;
-
    not overriding function Create_Parser_Descriptions_Iterator     (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Parser_Description_Iterator;
    not overriding function Create_Serializer_Descriptions_Iterator (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Serializer_Description_Iterator;
-
---     function Parser_Descriptions     (World: World_Type_Without_Finalize'Class) return Parser_Description_List;
---     function Serializer_Descriptions (World: World_Type_Without_Finalize'Class) return Serializer_Description_List;
 
    function Is_Parser_Name (World: World_Type_Without_Finalize'Class; Name: String) return Boolean;
 

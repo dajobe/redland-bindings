@@ -1,5 +1,7 @@
+with Ada.Finalization;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxilary.Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.World;
 with RDF.Auxilary;
@@ -17,55 +19,68 @@ package RDF.Raptor.Log is
                            Fatal => 6);
    function Last return Log_Level_Type renames Fatal;
 
-   -- TODO: Should we make this type access type (for efficiency)?
-   -- FIXME: Either make it limited or add Adjust
-   type Locator_Type is private;
+   type Locator_Type_Record is private;
+   type Log_Message_Record  is private;
 
-   type Log_Message_Type is private;
+   package Locator_Handled_Record is new RDF.Auxilary.Handled_Record(Locator_Type_Record);
+   subtype Locator_Handle_Type is Locator_Handled_Record.Access_Type;
+   type Locator_Type is new Locator_Handled_Record.Base_Object with null record;
 
-   function Get_URI (Locator: Locator_Type) return URI_Type_Without_Finalize;
+   overriding procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle_Type);
+   overriding procedure Adjust (Object: in out Locator_Type);
 
-   function Get_File (Locator: Locator_Type) return String;
+   package Log_Message_Handled_Record is new RDF.Auxilary.Handled_Record(Log_Message_Record);
+   subtype Log_Message_Handle_Type is Log_Message_Handled_Record.Access_Type;
+   type Log_Message_Type is new Log_Message_Handled_Record.Base_Object with null record;
 
-   function Get_Line   (Locator: Locator_Type) return Natural;
-   function Get_Column (Locator: Locator_Type) return Natural;
-   function Get_Byte   (Locator: Locator_Type) return Natural;
+   overriding procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle_Type);
+   overriding procedure Adjust (Object: in out Log_Message_Type);
 
-   procedure Print (Locator: Locator_Type; File: RDF.Auxilary.C_File_Access);
+   not overriding function Get_URI (Locator: Locator_Type) return URI_Type_Without_Finalize;
 
-   function Format (Locator: Locator_Type) return String;
+   not overriding function Get_File (Locator: Locator_Type) return String;
 
-   function Get_Error_Code (Message: Log_Message_Type) return int;
-   function Get_Domain (Message: Log_Message_Type) return Domain_Type;
-   function Get_Log_Level (Message: Log_Message_Type) return Log_Level_Type;
-   function Get_Text (Message: Log_Message_Type) return String;
-   function Get_Locator (Message: Log_Message_Type) return Locator_Type;
+   not overriding function Get_Line   (Locator: Locator_Type) return Natural;
+   not overriding function Get_Column (Locator: Locator_Type) return Natural;
+   not overriding function Get_Byte   (Locator: Locator_Type) return Natural;
+
+   not overriding procedure Print (Locator: Locator_Type; File: RDF.Auxilary.C_File_Access);
+
+   not overriding function Format (Locator: Locator_Type) return String;
+
+   not overriding function Get_Error_Code (Message: Log_Message_Type) return int;
+   not overriding function Get_Domain (Message: Log_Message_Type) return Domain_Type;
+   not overriding function Get_Log_Level (Message: Log_Message_Type) return Log_Level_Type;
+   not overriding function Get_Text (Message: Log_Message_Type) return String;
+   not overriding function Get_Locator (Message: Log_Message_Type'Class) return Locator_Type;
 
    type Log_Handler is abstract tagged null record;
 
-   procedure Log_Message(Handler: Log_Handler; Info: Log_Message_Type) is abstract;
+   -- hack: 'Class to avoid "operation can be dispatching in only one type"
+   not overriding procedure Log_Message(Handler: Log_Handler; Info: Log_Message_Type'Class) is abstract;
 
-   procedure Set_Log_Handler(World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Handler: Log_Handler);
+   not overriding procedure Set_Log_Handler(World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Handler: Log_Handler);
 
-   function Get_Label (Level: Log_Level_Type) return String;
+   not overriding function Get_Label (Level: Log_Level_Type) return String;
    function Get_Label (Level: Domain_Type) return String;
 
 private
 
-   type Locator_Type is
+   type Locator_Type_Record is
       record
-         URI: RDF.Raptor.URI.Handle_Type; -- FIXME: Should it be copied?
+         URI: RDF.Raptor.URI.Handle_Type;
          File: chars_ptr;
          Line, Column, Byte: int;
       end record
       with Convention => C;
 
-   type Log_Message_Type is
+   type Log_Message_Record is
       record
          Code: Interfaces.C.int;
          Domain: Domain_Type;
          Log_Level: Log_Level_Type;
-         Locator: access Locator_Type;
+--           Locator: access Locator_Type;
+         Locator: Locator_Handle_Type;
          Text: chars_ptr;
       end record
       with Convention => C;

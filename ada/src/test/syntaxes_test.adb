@@ -14,9 +14,6 @@ package body Syntaxes_Test is
       Cursor2: Serializer_Description_Cursor := First(Iterator2);
    begin
       -- Does not compile with GCC 4.9.1
---        for Cursor in Iterator loop
---           null;
---        end loop;
       while Has_Element(Cursor) loop
          Cursor := Next(Iterator, Cursor);
       end loop;
