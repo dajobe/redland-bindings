@@ -27,8 +27,4 @@ package RDF.Auxilary is
    Null_Handle  : exception;
    RDF_Exception: exception; -- all other librdf exceptions
 
-private
-
-   type My_Array is new char_array;
-
 end RDF.Auxilary;
