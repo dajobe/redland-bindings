@@ -3,7 +3,7 @@ with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Term; use RDF.Raptor.Term;
 with RDF.Raptor.World;
 with Ada.Text_IO;
-with RDF.Auxilary;
+with RDF.Auxiliary;
 
 package body Term_Test is
 
@@ -14,9 +14,9 @@ package body Term_Test is
       URI_3: constant String := "http://example.org/123";
 
       Term_1: Term_Type := From_Literal (World,
-                                         RDF.Auxilary.String_Holders.To_Holder("QWE"),
+                                         RDF.Auxiliary.String_Holders.To_Holder("QWE"),
                                          From_String(World, "http://example.org"), -- datatype
-                                         RDF.Auxilary.String_Holders.Empty_Holder -- language
+                                         RDF.Auxiliary.String_Holders.Empty_Holder -- language
                                         );
       Term_2: Term_Type := From_URI_String(World, "http://example.org/abc");
       Term_3: Term_Type := From_URI(World, From_String(World, "http://example.org/cvb"));

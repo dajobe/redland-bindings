@@ -1,7 +1,7 @@
-with RDF.Auxilary.Handled_Record;
+with RDF.Auxiliary.Handled_Record;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxilary;
+with RDF.Auxiliary;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespaces_Stacks;
@@ -11,7 +11,7 @@ package RDF.Raptor.Term is
 
    type Term_Record is private;
 
-   package Term_Handled_Record is new RDF.Auxilary.Handled_Record(Term_Record);
+   package Term_Handled_Record is new RDF.Auxiliary.Handled_Record(Term_Record);
 
    type Term_Type_Without_Finalize is new Term_Handled_Record.Base_Object with null record;
 
@@ -57,7 +57,7 @@ package RDF.Raptor.Term is
 
    not overriding function To_String (Term: Term_Type_Without_Finalize) return String;
 
-   not overriding function Compare (Left, Right: Term_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result;
+   not overriding function Compare (Left, Right: Term_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result;
 
    not overriding function Equals (Left, Right: Term_Type_Without_Finalize) return Boolean;
 
@@ -79,12 +79,12 @@ package RDF.Raptor.Term is
 
    not overriding function From_Blank (World: World_Type_Without_Finalize'Class) return Term_Type;
    not overriding function From_Blank (World: World_Type_Without_Finalize'Class; ID: String) return Term_Type;
-   not overriding function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Holders.Holder) return Term_Type;
+   not overriding function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxiliary.String_Holders.Holder) return Term_Type;
 
    not overriding function From_Literal (World   : World_Type_Without_Finalize'Class;
-                                         Literal : RDF.Auxilary.String_Holders.Holder;
+                                         Literal : RDF.Auxiliary.String_Holders.Holder;
                                          Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
-                                         Language: RDF.Auxilary.String_Holders.Holder)
+                                         Language: RDF.Auxiliary.String_Holders.Holder)
                                          return Term_Type;
 
    not overriding function From_URI_String (World: World_Type_Without_Finalize'Class; URI: URI_String) return Term_Type;

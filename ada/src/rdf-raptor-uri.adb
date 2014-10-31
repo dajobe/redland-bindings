@@ -105,9 +105,9 @@ package body RDF.Raptor.URI is
    function C_Raptor_Uri_Compare (URI1, URI2: Handle_Type) return int
      with Import, Convention=>C, External_Name=>"raptor_uri_compare";
 
-   function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result is
+   function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result is
    begin
-      return RDF.Auxilary.Comparison_Result (C_Raptor_Uri_Compare (Get_Handle(URI1), Get_Handle(URI2)));
+      return RDF.Auxiliary.Comparison_Result (C_Raptor_Uri_Compare (Get_Handle(URI1), Get_Handle(URI2)));
    end;
 
    function C_Raptor_Uri_Equals (URI1, URI2: Handle_Type) return int
@@ -212,10 +212,10 @@ package body RDF.Raptor.URI is
       end;
    end;
 
-   function C_Raptor_URI_Print (URI: Handle_Type; File: RDF.Auxilary.C_File_Access) return int
+   function C_Raptor_URI_Print (URI: Handle_Type; File: RDF.Auxiliary.C_File_Access) return int
       with Import, Convention=>C, External_Name=>"raptor_uri_print";
 
-   procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access) is
+   procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
    begin
       if C_Raptor_URI_Print (Get_Handle (URI), File) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;
@@ -248,7 +248,7 @@ package body RDF.Raptor.URI is
       Result: constant int := C_Raptor_URI_File_Exists(Get_Handle(URI));
    begin
       if Result < 0 then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
       return Result /= 0;
    end;
@@ -260,7 +260,7 @@ package body RDF.Raptor.URI is
       Result: constant int := C_Raptor_Uri_Filename_Exists(To_C(Filename, Append_Nul=>True));
    begin
       if Result < 0 then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
       return Result /= 0;
    end;
@@ -308,7 +308,7 @@ package body RDF.Raptor.URI is
                                                                  Get_Handle(Base_URI));
    begin
       if C_Str = Null_Ptr then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
       declare
          Result: constant String := Value(C_Str);

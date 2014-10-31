@@ -2,7 +2,7 @@ with Ada.Unchecked_Conversion;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.Memory;
 with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Auxilary;
+with RDF.Auxiliary;
 
 package body RDF.Raptor.Log is
 
@@ -79,7 +79,7 @@ package body RDF.Raptor.Log is
    procedure Set_Log_Handler(World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Handler: Log_Handler) is
    begin
       if C_Raptor_World_Set_Log_Handler(Get_Handle(World), Obj_To_Ptr(Handler'Unchecked_Access), C_Raptor_Log_Handler'Access) /= 0 then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
 
@@ -99,13 +99,13 @@ package body RDF.Raptor.Log is
       return Value(C_Raptor_Domain_Get_Label(Level));
    end;
 
-   function C_Raptor_Locator_Print (Locator: Locator_Handle_Type; Stream: RDF.Auxilary.C_File_Access) return int
+   function C_Raptor_Locator_Print (Locator: Locator_Handle_Type; Stream: RDF.Auxiliary.C_File_Access) return int
      with Import, Convention=>C, External_Name=>"raptor_locator_print";
 
-   procedure Print (Locator: Locator_Type; File: RDF.Auxilary.C_File_Access) is
+   procedure Print (Locator: Locator_Type; File: RDF.Auxiliary.C_File_Access) is
    begin
       if C_Raptor_Locator_Print(Get_Handle(Locator), File) /= 0 then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
 
@@ -116,13 +116,13 @@ package body RDF.Raptor.Log is
       Res1: constant int := C_Raptor_Locator_Format(Null_Ptr, 0, Get_Handle(Locator));
    begin
       if Res1 < 0 then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
       declare
          Buffer: aliased char_array := (1..size_t(Res1) => Interfaces.C.Nul);
       begin
          if C_Raptor_Locator_Format(To_Chars_Ptr(Buffer'Unchecked_Access, Nul_Check=>False), 0, Get_Handle(Locator)) < 0 then
-            raise RDF.Auxilary.RDF_Exception;
+            raise RDF.Auxiliary.RDF_Exception;
          end if;
          return To_Ada(Buffer);
       end;

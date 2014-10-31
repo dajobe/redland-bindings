@@ -2,7 +2,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.Constants;
 with RDF.Raptor.Memory;
-with RDF.Auxilary.C_String_Holders; use RDF.Auxilary.C_String_Holders;
+with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 
 package body RDF.Raptor.World is
 

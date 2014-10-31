@@ -1,4 +1,4 @@
-package body RDF.Auxilary.Handled_Record is
+package body RDF.Auxiliary.Handled_Record is
 
    procedure Set_Handle_Hack(Object: in out Base_Object; Handle: Access_Type) is
    begin
@@ -38,4 +38,4 @@ package body RDF.Auxilary.Handled_Record is
       return Object.Handle = null;
    end;
 
-end RDF.Auxilary.Handled_Record;
+end RDF.Auxiliary.Handled_Record;

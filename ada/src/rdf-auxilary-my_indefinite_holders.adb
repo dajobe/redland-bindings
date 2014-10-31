@@ -1,6 +1,6 @@
 with Ada.Unchecked_Deallocation;
 
-package body RDF.Auxilary.My_Indefinite_Holders is
+package body RDF.Auxiliary.My_Indefinite_Holders is
 
    procedure Finalize(Object: in out Holder) is
    begin
@@ -80,4 +80,4 @@ package body RDF.Auxilary.My_Indefinite_Holders is
       end if;
    end;
 
-end RDF.Auxilary.My_Indefinite_Holders;
+end RDF.Auxiliary.My_Indefinite_Holders;

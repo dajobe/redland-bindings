@@ -1,9 +1,9 @@
 with Interfaces.C; use Interfaces.C;
-with RDF.Auxilary.My_Indefinite_Holders;
+with RDF.Auxiliary.My_Indefinite_Holders;
 
-package RDF.Auxilary.C_String_Holders is
+package RDF.Auxiliary.C_String_Holders is
 
-   package Char_Array_Holders is new RDF.Auxilary.My_Indefinite_Holders(char_array);
+   package Char_Array_Holders is new RDF.Auxiliary.My_Indefinite_Holders(char_array);
 
    type C_String_Holder is new Char_Array_Holders.Holder with null record;
 
@@ -15,4 +15,4 @@ package RDF.Auxilary.C_String_Holders is
 
    function C_String (Object: C_String_Holder) return chars_ptr;
 
-end RDF.Auxilary.C_String_Holders;
+end RDF.Auxiliary.C_String_Holders;

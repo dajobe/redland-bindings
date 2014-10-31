@@ -5,7 +5,7 @@
 generic
    type Element_Type (<>) is private;
    with function "=" (Left, Right : Element_Type) return Boolean is <>;
-package RDF.Auxilary.My_Indefinite_Holders is
+package RDF.Auxiliary.My_Indefinite_Holders is
 
    type Holder is tagged private;
 
@@ -47,4 +47,4 @@ private
 
    Empty_Holder : constant Holder := (Ada.Finalization.Controlled with Ptr=>null);
 
-end RDF.Auxilary.My_Indefinite_Holders;
+end RDF.Auxiliary.My_Indefinite_Holders;

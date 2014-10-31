@@ -1,4 +1,4 @@
-with RDF.Auxilary;
+with RDF.Auxiliary;
 with RDF.Raptor.World; use RDF.Raptor.World;
 
 package body RDF.Raptor.Options is
@@ -49,7 +49,7 @@ package body RDF.Raptor.Options is
       Ptr: constant chars_ptr := C_Raptor_Option_Get_Value_Type_Label(Value_Type);
    begin
       if Ptr = Null_Ptr then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
       return Value(Ptr);
    end;

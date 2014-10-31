@@ -2,7 +2,7 @@ with Ada.Finalization;
 
 generic
    type Record_Type; -- It should be an untagged record for C compatibility
-package RDF.Auxilary.Handled_Record is
+package RDF.Auxiliary.Handled_Record is
 
    type Access_Type is access Record_Type
       with Convention=>C;
@@ -48,4 +48,4 @@ private
          Handle: Access_Type;
       end record;
 
-end RDF.Auxilary.Handled_Record;
+end RDF.Auxiliary.Handled_Record;

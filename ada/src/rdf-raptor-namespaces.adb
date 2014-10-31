@@ -1,7 +1,7 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxilary; use RDF.Auxilary;
-with RDF.Auxilary.C_String_Holders; use RDF.Auxilary.C_String_Holders;
+with RDF.Auxiliary; use RDF.Auxiliary;
+with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespaces_Stacks; use RDF.Raptor.Namespaces_Stacks;
@@ -83,7 +83,7 @@ package body RDF.Raptor.Namespaces is
       C_Str: chars_ptr := C_Raptor_Namespace_Format_As_Xml(Get_Handle(NS), null);
    begin
       if C_Str = Null_Ptr then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
       declare
          Result: constant String := Value(C_Str);

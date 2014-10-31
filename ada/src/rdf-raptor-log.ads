@@ -1,10 +1,10 @@
 with Ada.Finalization;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxilary.Handled_Record;
+with RDF.Auxiliary.Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.World;
-with RDF.Auxilary;
+with RDF.Auxiliary;
 
 package RDF.Raptor.Log is
 
@@ -22,14 +22,14 @@ package RDF.Raptor.Log is
    type Locator_Type_Record is private;
    type Log_Message_Record  is private;
 
-   package Locator_Handled_Record is new RDF.Auxilary.Handled_Record(Locator_Type_Record);
+   package Locator_Handled_Record is new RDF.Auxiliary.Handled_Record(Locator_Type_Record);
    subtype Locator_Handle_Type is Locator_Handled_Record.Access_Type;
    type Locator_Type is new Locator_Handled_Record.Base_Object with null record;
 
    overriding procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle_Type);
    overriding procedure Adjust (Object: in out Locator_Type);
 
-   package Log_Message_Handled_Record is new RDF.Auxilary.Handled_Record(Log_Message_Record);
+   package Log_Message_Handled_Record is new RDF.Auxiliary.Handled_Record(Log_Message_Record);
    subtype Log_Message_Handle_Type is Log_Message_Handled_Record.Access_Type;
    type Log_Message_Type is new Log_Message_Handled_Record.Base_Object with null record;
 
@@ -44,7 +44,7 @@ package RDF.Raptor.Log is
    not overriding function Get_Column (Locator: Locator_Type) return Natural;
    not overriding function Get_Byte   (Locator: Locator_Type) return Natural;
 
-   not overriding procedure Print (Locator: Locator_Type; File: RDF.Auxilary.C_File_Access);
+   not overriding procedure Print (Locator: Locator_Type; File: RDF.Auxiliary.C_File_Access);
 
    not overriding function Format (Locator: Locator_Type) return String;
 

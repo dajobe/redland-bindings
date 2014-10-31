@@ -80,9 +80,9 @@ package body RDF.Raptor.Statement is
    function C_Raptor_Statement_Compare (Left, Right: Statement_Handle) return int
       with Import, Convention=>C, External_Name=>"raptor_statement_compare";
 
-   function Compare (Left, Right: Statement_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result is
+   function Compare (Left, Right: Statement_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result is
    begin
-      return RDF.Auxilary.Sign( C_Raptor_Statement_Compare(Get_Handle(Left), Get_Handle(Right)) );
+      return RDF.Auxiliary.Sign( C_Raptor_Statement_Compare(Get_Handle(Left), Get_Handle(Right)) );
    end;
 
    function C_Raptor_Statement_Equals (Left, Right: Statement_Handle) return int
@@ -93,20 +93,20 @@ package body RDF.Raptor.Statement is
       return C_Raptor_Statement_Equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
    end;
 
-   function C_Raptor_Statement_Print (Statement: Statement_Handle; File: RDF.Auxilary.C_File_Access) return int
+   function C_Raptor_Statement_Print (Statement: Statement_Handle; File: RDF.Auxiliary.C_File_Access) return int
       with Import, Convention=>C, External_Name=>"raptor_statement_print";
 
-   procedure Print (Statement: Statement_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access) is
+   procedure Print (Statement: Statement_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
    begin
       if C_Raptor_Statement_Print(Get_Handle(Statement), File) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;
       end if;
    end;
 
-   function C_Raptor_Statement_Print_As_Ntriples (Statement: Statement_Handle; File: RDF.Auxilary.C_File_Access) return int
+   function C_Raptor_Statement_Print_As_Ntriples (Statement: Statement_Handle; File: RDF.Auxiliary.C_File_Access) return int
       with Import, Convention=>C, External_Name=>"raptor_statement_print_as_ntriples";
 
-   procedure Print_As_Ntriples (Statement: Statement_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access) is
+   procedure Print_As_Ntriples (Statement: Statement_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
    begin
       if C_Raptor_Statement_Print_As_Ntriples(Get_Handle(Statement), File) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;

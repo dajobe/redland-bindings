@@ -1,4 +1,4 @@
-with RDF.Auxilary.Handled_Record;
+with RDF.Auxiliary.Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.IOStream;
 limited with RDF.Raptor.Namespaces_Stacks;
@@ -7,14 +7,14 @@ package RDF.Raptor.URI is
 
    type URI_String is new String;
 
-   package Handled_Record is new RDF.Auxilary.Handled_Record(RDF.Auxilary.Dummy_Record);
+   package Handled_Record is new RDF.Auxiliary.Handled_Record(RDF.Auxiliary.Dummy_Record);
 
    subtype Handle_Type is Handled_Record.Access_Type;
 
    -- Only absolute URIs!
    type URI_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 
-   not overriding function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result;
+   not overriding function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result;
 
    not overriding function Equals(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
 
@@ -43,7 +43,7 @@ package RDF.Raptor.URI is
    function URI_String_To_Filename_And_Fragment(Str: URI_String) return Filename_And_Fragment;
 
    -- Not supposed to be used, but included for completeness
-   not overriding procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxilary.C_File_Access);
+   not overriding procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
 
    not overriding function Get_World (URI: URI_Type_Without_Finalize) return World_Type_Without_Finalize;
 

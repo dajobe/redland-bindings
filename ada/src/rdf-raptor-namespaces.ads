@@ -1,14 +1,14 @@
-with RDF.Auxilary.Limited_Handled_Record;
+with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with Interfaces.C;
 with RDF.Raptor.World;
-with RDF.Auxilary; use RDF.Auxilary;
+with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Raptor.IOStream;
 limited with RDF.Raptor.Namespaces_Stacks;
 
 package RDF.Raptor.Namespaces is
 
-   package Namespace_Handled_Record is new RDF.Auxilary.Limited_Handled_Record(RDF.Auxilary.Dummy_Record);
+   package Namespace_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record);
 
    subtype Namespace_Handle_Type is Namespace_Handled_Record.Access_Type;
 

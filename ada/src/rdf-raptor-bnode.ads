@@ -1,8 +1,8 @@
 with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Auxilary.C_String_Holders; use RDF.Auxilary.C_String_Holders;
+with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Interfaces.C; use Interfaces.C;
-with RDF.Auxilary; use RDF.Auxilary;
+with RDF.Auxiliary; use RDF.Auxiliary;
 
 package RDF.Raptor.Bnode is
 

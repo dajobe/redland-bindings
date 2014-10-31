@@ -1,4 +1,4 @@
-package body RDF.Auxilary.C_String_Holders is
+package body RDF.Auxiliary.C_String_Holders is
 
    use String_Holders, Char_Array_Holders;
 
@@ -36,4 +36,4 @@ package body RDF.Auxilary.C_String_Holders is
       end if;
    end;
 
-end RDF.Auxilary.C_String_Holders;
+end RDF.Auxiliary.C_String_Holders;

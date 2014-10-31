@@ -22,10 +22,10 @@ package body RDF.Raptor.IOStream is
       return From_Non_Null_Handle( C_Raptor_New_Iostream_From_Filename (Get_Handle (World), To_C (Filename)) );
    end;
 
-   function C_Raptor_New_Iostream_From_File_Handle (World: RDF.Raptor.World.Handle_Type; File: RDF.Auxilary.C_File_Access) return Handle_Type
+   function C_Raptor_New_Iostream_From_File_Handle (World: RDF.Raptor.World.Handle_Type; File: RDF.Auxiliary.C_File_Access) return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_iostream_from_file_handle";
 
-   function From_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxilary.C_File_Access)
+   function From_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
                               return Stream_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( C_Raptor_New_Iostream_From_File_Handle (Get_Handle (World), File) );
@@ -57,10 +57,10 @@ package body RDF.Raptor.IOStream is
 --        return From_Handle (Handle);
 --     end;
 
-   function C_Raptor_New_Iostream_To_File_Handle (World: RDF.Raptor.World.Handle_Type; File: RDF.Auxilary.C_File_Access) return Handle_Type
+   function C_Raptor_New_Iostream_To_File_Handle (World: RDF.Raptor.World.Handle_Type; File: RDF.Auxiliary.C_File_Access) return Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_new_iostream_to_file_handle";
 
-   function To_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxilary.C_File_Access)
+   function To_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
                               return Stream_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( C_Raptor_New_Iostream_To_File_Handle (Get_Handle (World), File) );

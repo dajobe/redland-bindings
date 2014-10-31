@@ -1,8 +1,8 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxilary; use RDF.Auxilary;
-with RDF.Auxilary.C_String_Holders; use RDF.Auxilary.C_String_Holders;
+with RDF.Auxiliary; use RDF.Auxiliary;
+with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespaces; use RDF.Raptor.Namespaces;
@@ -123,7 +123,7 @@ package body RDF.Raptor.Parser is
       C_Raptor_Parser_Set_Namespace_Handler(Get_Handle(Object), Obj_To_Ptr(Object'Unchecked_Access), C_Raptor_Namespace_Handler_Impl'Access);
    end;
 
-   type My_Dummy_Access is access constant RDF.Auxilary.Dummy_Record;
+   type My_Dummy_Access is access constant RDF.Auxiliary.Dummy_Record;
 
    function C_Raptor_Parser_Get_Description (Parser: Handle_Type) return My_Dummy_Access
       with Import, Convention=>C, External_Name=>"raptor_parser_get_description";

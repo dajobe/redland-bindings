@@ -1,4 +1,4 @@
-package body RDF.Auxilary.Limited_Handled_Record is
+package body RDF.Auxiliary.Limited_Handled_Record is
 
    procedure Set_Handle_Hack(Object: in out Base_Object; Handle: Access_Type) is
    begin
@@ -38,4 +38,4 @@ package body RDF.Auxilary.Limited_Handled_Record is
       return Object.Handle = null;
    end;
 
-end RDF.Auxilary.Limited_Handled_Record;
+end RDF.Auxiliary.Limited_Handled_Record;

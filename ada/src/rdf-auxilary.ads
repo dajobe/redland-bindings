@@ -3,7 +3,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 --  private with Ada.Strings.Unbounded;
 with Ada.Containers.Indefinite_Holders;
 
-package RDF.Auxilary is
+package RDF.Auxiliary is
 
    -- Internal
    type Dummy_Record is null record
@@ -27,4 +27,4 @@ package RDF.Auxilary is
    Null_Handle  : exception;
    RDF_Exception: exception; -- all other librdf exceptions
 
-end RDF.Auxilary;
+end RDF.Auxiliary;

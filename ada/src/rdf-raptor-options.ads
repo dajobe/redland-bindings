@@ -1,6 +1,6 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxilary.Limited_Handled_Record;
+with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.World;
 
@@ -105,7 +105,7 @@ package RDF.Raptor.Options is
 
    type Option_Description_Record is private;
 
-   package Handled_Record is new RDF.Auxilary.Limited_Handled_Record(Option_Description_Record);
+   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(Option_Description_Record);
 
    type Option_Description_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 

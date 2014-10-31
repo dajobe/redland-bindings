@@ -1,7 +1,7 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxilary; use RDF.Auxilary;
-with RDF.Auxilary.C_String_Holders; use RDF.Auxilary.C_String_Holders;
+with RDF.Auxiliary; use RDF.Auxiliary;
+with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespaces; use RDF.Raptor.Namespaces;
@@ -39,7 +39,7 @@ package body RDF.Raptor.Namespaces_Stacks is
       URI_N    : C_String_Holder := To_C_String_Holder(NS_URI);
    begin
       if C_Raptor_Namespaces_Start_Namespace_Full(Get_Handle(Stack), C_String(Prefix_N), C_String(URI_N), int(Depth)) /= 0 then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
 
@@ -126,7 +126,7 @@ package body RDF.Raptor.Namespaces_Stacks is
    procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; NS: RDF.Raptor.Namespaces.Namespace_Type_Without_Finalize'Class; New_Depth: Natural) is
    begin
       if C_Raptor_Namespace_Stack_Start_Namespace(Get_Handle(Stack), Get_Handle(NS), int(New_Depth)) /= 0 then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
 

@@ -4,7 +4,7 @@ with RDF.Raptor.Term; use RDF.Raptor.Term;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.World;
 with Ada.Text_IO;
-with RDF.Auxilary;
+with RDF.Auxiliary;
 
 package body Statement_Test is
 

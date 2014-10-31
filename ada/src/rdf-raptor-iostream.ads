@@ -1,8 +1,8 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Ada.Strings.Unbounded;
-with RDF.Auxilary.Limited_Handled_Record;
-with RDF.Auxilary;
+with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Auxiliary;
 with RDF.Raptor.World;
 limited with RDF.Raptor.URI;
 limited with RDF.Raptor.Term;
@@ -18,7 +18,7 @@ package RDF.Raptor.IOStream is
 
    IOStream_Exception: exception;
 
-   package Handled_Record is new RDF.Auxilary.Limited_Handled_Record(RDF.Auxilary.Dummy_Record);
+   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record);
 
    subtype Handle_Type is Handled_Record.Access_Type;
 
@@ -98,7 +98,7 @@ package RDF.Raptor.IOStream is
 
    function From_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize;
 
-   function From_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxilary.C_File_Access)
+   function From_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
                               return Stream_Type_Without_Finalize;
 
    -- See below type Stream_From_String instead
@@ -109,7 +109,7 @@ package RDF.Raptor.IOStream is
 
    function To_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize;
 
-   function To_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxilary.C_File_Access)
+   function To_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
                               return Stream_Type_Without_Finalize;
 
    -- See below type Stream_To_String instead

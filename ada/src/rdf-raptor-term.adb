@@ -1,5 +1,5 @@
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxilary.C_String_Holders;
+with RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.Memory;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespaces; use RDF.Raptor.Namespaces;
@@ -78,8 +78,8 @@ package body RDF.Raptor.Term is
       return From_Non_Null_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), To_Chars_Ptr(Str'Unchecked_Access), ID'Length));
    end;
 
-   function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxilary.String_Holders.Holder) return Term_Type is
-      use RDF.Auxilary.C_String_Holders;
+   function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxiliary.String_Holders.Holder) return Term_Type is
+      use RDF.Auxiliary.C_String_Holders;
       ID_N : C_String_Holder := To_C_String_Holder(ID);
    begin
       return From_Non_Null_Handle(C_Raptor_New_Term_From_Counted_Blank(Get_Handle(World), C_String(ID_N), Length(ID_N)));
@@ -95,12 +95,12 @@ package body RDF.Raptor.Term is
       with Import, Convention=>C, External_Name=>"raptor_new_term_from_counted_literal";
 
    function From_Literal (World   : World_Type_Without_Finalize'Class;
-                          Literal : RDF.Auxilary.String_Holders.Holder;
+                          Literal : RDF.Auxiliary.String_Holders.Holder;
                           Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
-                          Language: RDF.Auxilary.String_Holders.Holder)
+                          Language: RDF.Auxiliary.String_Holders.Holder)
                           return Term_Type
    is
-      use RDF.Auxilary.C_String_Holders;
+      use RDF.Auxiliary.C_String_Holders;
       Literal_N : C_String_Holder := To_C_String_Holder(Literal );
       Language_N: C_String_Holder := To_C_String_Holder(Language);
    begin
@@ -156,9 +156,9 @@ package body RDF.Raptor.Term is
    function C_Raptor_Term_Compare (Left, Right: Term_Handle) return int
       with Import, Convention=>C, External_Name=>"raptor_term_compare";
 
-   function Compare (Left, Right: Term_Type_Without_Finalize) return RDF.Auxilary.Comparison_Result is
+   function Compare (Left, Right: Term_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result is
    begin
-      return RDF.Auxilary.Sign( C_Raptor_Term_Compare(Get_Handle(Left), Get_Handle(Right)) );
+      return RDF.Auxiliary.Sign( C_Raptor_Term_Compare(Get_Handle(Left), Get_Handle(Right)) );
    end;
 
    function C_Raptor_Term_Equals (Left, Right: Term_Handle) return int
@@ -184,7 +184,7 @@ package body RDF.Raptor.Term is
       Str: constant chars_ptr := C_Raptor_Term_To_String(Get_Handle(Term));
    begin
       if Str = Null_Ptr then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
       declare
          Result: constant String := Value(Str);
@@ -207,7 +207,7 @@ package body RDF.Raptor.Term is
       Str: constant chars_ptr := C_Raptor_Term_To_Turtle_String(Get_Handle(Term), Get_Handle(Stack), Get_Handle(Base_URI));
    begin
       if Str = Null_Ptr then
-         raise RDF.Auxilary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
       declare
          Result: constant String := Value(Str);

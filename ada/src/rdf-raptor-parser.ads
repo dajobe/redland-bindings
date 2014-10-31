@@ -1,7 +1,7 @@
 with Interfaces.C; use Interfaces.C;
-with RDF.Auxilary; use RDF.Auxilary;
-with RDF.Auxilary.Limited_Handled_Record;
-with RDF.Auxilary.C_String_Holders; use RDF.Auxilary.C_String_Holders;
+with RDF.Auxiliary; use RDF.Auxiliary;
+with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.World;
 with RDF.Raptor.URI;
 with RDF.Raptor.Statement;
@@ -10,7 +10,7 @@ with RDF.Raptor.Syntaxes;
 
 package RDF.Raptor.Parser is
 
-   package Handled_Record is new RDF.Auxilary.Limited_Handled_Record(RDF.Auxilary.Dummy_Record);
+   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record);
 
    subtype Handle_Type is Handled_Record.Access_Type;
 

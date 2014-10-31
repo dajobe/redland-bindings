@@ -1,7 +1,7 @@
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Ada.Unchecked_Deallocation;
 
-package body RDF.Auxilary is
+package body RDF.Auxiliary is
 
    function Length (Object: String_Holders.Holder) return size_t is
       use String_Holders;
@@ -22,4 +22,4 @@ package body RDF.Auxilary is
       end if;
    end;
 
-end RDF.Auxilary;
+end RDF.Auxiliary;
