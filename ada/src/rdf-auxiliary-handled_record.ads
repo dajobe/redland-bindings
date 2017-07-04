@@ -1,7 +1,7 @@
 with Ada.Finalization;
 
 generic
-   type Record_Type; -- It should be an untagged record for C compatibility
+   type Record_Type; -- It should be a convention C record
 package RDF.Auxiliary.Handled_Record is
 
    type Access_Type is access Record_Type
