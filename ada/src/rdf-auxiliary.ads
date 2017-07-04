@@ -9,6 +9,9 @@ package RDF.Auxiliary is
    type Dummy_Record is null record
       with Convention=>C;
 
+   type Dummy_Record_Access is access Dummy_Record
+      with Convention=>C;
+
    type C_File_Record is null record
       with Convention=>C;
 

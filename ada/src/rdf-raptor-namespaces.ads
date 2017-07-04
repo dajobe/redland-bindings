@@ -8,7 +8,7 @@ limited with RDF.Raptor.Namespaces_Stacks;
 
 package RDF.Raptor.Namespaces is
 
-   package Namespace_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record);
+   package Namespace_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
    subtype Namespace_Handle_Type is Namespace_Handled_Record.Access_Type;
 

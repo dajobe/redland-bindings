@@ -2,10 +2,14 @@ with Ada.Finalization;
 
 generic
    type Record_Type; -- It should be a convention C record
+   type Record_Type_Access is access Record_Type;  -- It should be a convention C access type
 package RDF.Auxiliary.Handled_Record is
 
-   type Access_Type is access Record_Type
-      with Convention=>C;
+   -- Does not compile because https://gcc.gnu.org/bugzilla/show_bug.cgi?id=62235
+--    subtype Access_Type is access Record_Type
+--       with Convention=>C;
+
+   subtype Access_Type is Record_Type_Access;
 
    -- It is logically abstract, but not exactly abstract in Ada sense.
    -- It can't be abstract because the function From_Handle returns this type.

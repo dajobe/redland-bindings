@@ -105,7 +105,10 @@ package RDF.Raptor.Options is
 
    type Option_Description_Record is private;
 
-   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(Option_Description_Record);
+   type Option_Description_Record_Access is access Option_Description_Record
+      with Convention => C;
+
+   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(Option_Description_Record, Option_Description_Record_Access);
 
    type Option_Description_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 

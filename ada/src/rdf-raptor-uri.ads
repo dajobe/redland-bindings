@@ -7,7 +7,7 @@ package RDF.Raptor.URI is
 
    type URI_String is new String;
 
-   package Handled_Record is new RDF.Auxiliary.Handled_Record(RDF.Auxiliary.Dummy_Record);
+   package Handled_Record is new RDF.Auxiliary.Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
    subtype Handle_Type is Handled_Record.Access_Type;
 

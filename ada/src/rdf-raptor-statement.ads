@@ -8,7 +8,9 @@ package RDF.Raptor.Statement is
 
    type Statement_Record is private;
 
-   package Statement_Handled_Record is new RDF.Auxiliary.Handled_Record(Statement_Record);
+   type Statement_Record_Access is access Statement_Record;
+
+   package Statement_Handled_Record is new RDF.Auxiliary.Handled_Record(Statement_Record, Statement_Record_Access);
 
    type Statement_Type_Without_Finalize is new Statement_Handled_Record.Base_Object with null record;
 

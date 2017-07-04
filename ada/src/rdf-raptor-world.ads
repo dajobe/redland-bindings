@@ -4,7 +4,7 @@ with RDF.Auxiliary.Limited_Handled_Record;
 
 package RDF.Raptor.World is
 
-   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record);
+   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
    type World_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 
