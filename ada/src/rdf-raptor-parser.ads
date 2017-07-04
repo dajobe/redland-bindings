@@ -40,6 +40,10 @@ package RDF.Raptor.Parser is
 
    not overriding function Get_Locator (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type;
 
+   not overriding procedure Parse_Abort (Parser: Parser_Type_Without_Finalize);
+
+   -- TODO: Stopped at raptor_parser_parse_chunk()
+
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
    -- you may wish use Parser_Type defined below.
@@ -57,7 +61,5 @@ package RDF.Raptor.Parser is
                                                 return Parser_Type;
 
    not overriding function Get_Description (Parser: Parser_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type;
-
-   -- TODO: Stopped at raptor_parser_get_locator()
 
 end RDF.Raptor.Parser;

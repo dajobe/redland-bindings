@@ -55,6 +55,14 @@ package body RDF.Raptor.Parser is
       return From_Handle(C_raptor_parser_get_locator(Get_Handle(Parser)));
    end;
 
+   procedure C_Raptor_Parser_Parse_Abort (Parser: Handle_Type)
+      with Import, Convention=>C, External_Name=>"raptor_parser_parse_abort";
+
+   procedure Parse_Abort (Parser: Parser_Type_Without_Finalize) is
+   begin
+      C_Raptor_Parser_Parse_Abort(Get_Handle(Parser));
+   end;
+
    procedure C_Raptor_Free_Parser (Handle: Handle_Type)
      with Import, Convention=>C, External_Name=>"raptor_free_parser";
 
