@@ -6,8 +6,6 @@ with RDF.Auxiliary;
 
 package body RDF.Raptor.Log is
 
---     use Locator_Handled_Record, Log_Message_Handled_Record;
-
    function Get_URI (Locator: Locator_Type) return URI_Type_Without_Finalize is
    begin
       return From_Handle(Get_Handle(Locator).URI); -- FIXME
