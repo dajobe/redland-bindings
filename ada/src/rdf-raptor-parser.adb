@@ -63,6 +63,22 @@ package body RDF.Raptor.Parser is
       C_Raptor_Parser_Parse_Abort(Get_Handle(Parser));
    end;
 
+   function C_Raptor_Parser_Parse_Chunk (Parser: Handle_Type; Buffer: char_array; Len: size_t; Is_End: int) return int
+      with Import, Convention=>C, External_Name=>"raptor_parser_parse_chunk";
+
+   procedure Parse_Chunk (Parser: Parser_Type_Without_Finalize;
+                          Buffer: String;
+                          Is_End: Boolean) is
+   begin
+      if C_Raptor_Parser_Parse_Chunk(Get_Handle(Parser),
+                                     To_C(Buffer, Append_Nul=>False),
+                                     Buffer'Length,
+                                     (if Is_End then 1 else 0)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    procedure C_Raptor_Free_Parser (Handle: Handle_Type)
      with Import, Convention=>C, External_Name=>"raptor_free_parser";
 

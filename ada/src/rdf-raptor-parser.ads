@@ -42,7 +42,11 @@ package RDF.Raptor.Parser is
 
    not overriding procedure Parse_Abort (Parser: Parser_Type_Without_Finalize);
 
-   -- TODO: Stopped at raptor_parser_parse_chunk()
+   not overriding procedure Parse_Chunk (Parser: Parser_Type_Without_Finalize;
+                                         Buffer: String;
+                                         Is_End: Boolean);
+
+   -- TODO: Stopped at raptor_parser_parse_file()
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
