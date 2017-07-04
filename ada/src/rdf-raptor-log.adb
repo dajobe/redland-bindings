@@ -10,7 +10,7 @@ package body RDF.Raptor.Log is
 
    function Get_URI (Locator: Locator_Type) return URI_Type_Without_Finalize is
    begin
-      return From_Handle(Get_Handle(Locator).URI);
+      return From_Handle(Get_Handle(Locator).URI); -- FIXME
    end;
 
    function Get_File (Locator: Locator_Type) return String is
