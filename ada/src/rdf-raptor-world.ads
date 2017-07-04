@@ -34,15 +34,15 @@ package RDF.Raptor.World is
 
    not overriding procedure Open(Object: World_Type_Without_Finalize; Flags: Flags_Array);
 
-   not overriding function Open return World_Type_Without_Finalize;
-
-   not overriding function Open(Flags: Flags_Array) return World_Type_Without_Finalize;
-
    not overriding procedure Set_Flag(Object: World_Type_Without_Finalize; Flag: Flag_Type; Value: Boolean);
 
    not overriding procedure Set_Flags(Object: World_Type_Without_Finalize; Flags: Flags_Array);
 
    type World_Type is new World_Type_Without_Finalize with null record;
+
+   not overriding function Open return World_Type;
+
+   not overriding function Open(Flags: Flags_Array) return World_Type;
 
    overriding procedure Finalize_Handle(Object: World_Type; Handle: Handle_Type);
 

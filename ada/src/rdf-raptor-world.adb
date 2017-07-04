@@ -31,22 +31,6 @@ package body RDF.Raptor.World is
       Open(Object);
    end;
 
-   function Open return World_Type_Without_Finalize is
-      Object: World_Type_Without_Finalize;
-   begin
-      return Object: World_Type_Without_Finalize do
-         Open(Object);
-      end return;
-   end;
-
-   function Open(Flags: Flags_Array) return World_Type_Without_Finalize is
-      Object: World_Type_Without_Finalize;
-   begin
-      return Object: World_Type_Without_Finalize do
-         Open(Object, Flags);
-      end return;
-   end;
-
    procedure Set_Flag(Object: World_Type_Without_Finalize; Flag: Flag_Type; Value: Boolean) is
    begin
       C_Raptor_World_Set_Flag(Get_Handle(Object), Flag, (if Value then 1 else 0));
@@ -57,6 +41,22 @@ package body RDF.Raptor.World is
       for Element of Flags loop
          Set_Flag(Object, Element.Flag, Element.Value);
       end loop;
+   end;
+
+   function Open return World_Type is
+      Object: World_Type;
+   begin
+      return Object: World_Type do
+         Open(Object);
+      end return;
+   end;
+
+   function Open(Flags: Flags_Array) return World_Type is
+      Object: World_Type;
+   begin
+      return Object: World_Type do
+         Open(Object, Flags);
+      end return;
    end;
 
    procedure C_Raptor_Free_World(Handle: Handle_Type)
