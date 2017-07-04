@@ -123,7 +123,8 @@ package body RDF.Raptor.Parser is
       C_Raptor_Parser_Set_Namespace_Handler(Get_Handle(Object), Obj_To_Ptr(Object'Unchecked_Access), C_Raptor_Namespace_Handler_Impl'Access);
    end;
 
-   type My_Dummy_Access is access constant RDF.Auxiliary.Dummy_Record;
+   type My_Dummy_Access is access constant RDF.Auxiliary.Dummy_Record
+      with Convention=>C;
 
    function C_Raptor_Parser_Get_Description (Parser: Handle_Type) return My_Dummy_Access
       with Import, Convention=>C, External_Name=>"raptor_parser_get_description";
