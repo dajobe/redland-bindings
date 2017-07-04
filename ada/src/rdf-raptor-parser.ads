@@ -3,7 +3,7 @@ with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.World;
-with RDF.Raptor.URI;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Statement;
 with RDF.Raptor.Namespaces;
 with RDF.Raptor.Syntaxes;
@@ -46,7 +46,14 @@ package RDF.Raptor.Parser is
                                          Buffer: String;
                                          Is_End: Boolean);
 
-   -- TODO: Stopped at raptor_parser_parse_file()
+   not overriding procedure Parse_File (Parser: Parser_Type_Without_Finalize;
+                                        URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+                                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null));
+
+   not overriding procedure Parse_Stdin (Parser: Parser_Type_Without_Finalize;
+                                         Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null));
+
+   -- TODO: Stopped at raptor_parser_parse_file_stream()
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,

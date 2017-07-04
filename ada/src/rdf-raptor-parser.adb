@@ -4,10 +4,10 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespaces; use RDF.Raptor.Namespaces;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Log; use RDF.Raptor.Log;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
 
 package body RDF.Raptor.Parser is
 
@@ -77,6 +77,24 @@ package body RDF.Raptor.Parser is
       then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
+   end;
+
+   function C_Raptor_Parser_Parse_File (Parser: Handle_Type; URI, Base_URI: RDF.Raptor.URI.Handle_Type) return int
+      with Import, Convention=>C, External_Name=>"raptor_parser_parse_file";
+
+   procedure Parse_File (Parser: Parser_Type_Without_Finalize;
+                         URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+                         Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null)) is
+   begin
+      if C_Raptor_Parser_Parse_File(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   procedure Parse_Stdin (Parser: Parser_Type_Without_Finalize;
+                          Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null)) is
+   begin
+      Parse_File (Parser, From_Handle(null), Base_URI);
    end;
 
    procedure C_Raptor_Free_Parser (Handle: Handle_Type)
