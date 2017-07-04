@@ -7,6 +7,7 @@ with RDF.Raptor.URI;
 with RDF.Raptor.Statement;
 with RDF.Raptor.Namespaces;
 with RDF.Raptor.Syntaxes;
+with RDF.Raptor.Log;
 
 package RDF.Raptor.Parser is
 
@@ -36,6 +37,8 @@ package RDF.Raptor.Parser is
 
    not overriding procedure Namespace_Handler (Object: Parser_Type_Without_Finalize;
                                                Namespace: RDF.Raptor.Namespaces.Namespace_Type_Without_Finalize'Class) is null;
+
+   not overriding function Get_Locator (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type;
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,

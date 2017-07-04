@@ -7,6 +7,7 @@ with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespaces; use RDF.Raptor.Namespaces;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
+with RDF.Raptor.Log; use RDF.Raptor.Log;
 
 package body RDF.Raptor.Parser is
 
@@ -44,6 +45,14 @@ package body RDF.Raptor.Parser is
                                                                     C_String(Buffer_N),
                                                                     size_t(Length(Buffer)),
                                                                     C_String(Identifier_N)) );
+   end;
+
+   function C_Raptor_Parser_Get_Locator (Parser: Handle_Type) return RDF.Raptor.Log.Locator_Handle_Type
+      with Import, Convention=>C, External_Name=>"raptor_parser_get_locator";
+
+   function Get_Locator (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type is
+   begin
+      return From_Handle(C_raptor_parser_get_locator(Get_Handle(Parser)));
    end;
 
    procedure C_Raptor_Free_Parser (Handle: Handle_Type)
@@ -126,13 +135,13 @@ package body RDF.Raptor.Parser is
    type My_Dummy_Access is access constant RDF.Auxiliary.Dummy_Record
       with Convention=>C;
 
-   function C_Raptor_Parser_Get_Description (Parser: Handle_Type) return My_Dummy_Access
+   function C_Raptor_Parser_Get_Description (Parser: Handle_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type
       with Import, Convention=>C, External_Name=>"raptor_parser_get_description";
 
    function Get_Description (Parser: Parser_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type is
       function Conv is new Ada.Unchecked_Conversion(My_Dummy_Access, RDF.Raptor.Syntaxes.Syntax_Description_Type);
    begin
-      return Conv( C_Raptor_Parser_Get_Description(Get_Handle(Parser)) );
+      return C_Raptor_Parser_Get_Description(Get_Handle(Parser));
    end;
 
 end RDF.Raptor.Parser;
