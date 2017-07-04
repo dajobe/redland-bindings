@@ -139,7 +139,6 @@ package body RDF.Raptor.Parser is
       with Import, Convention=>C, External_Name=>"raptor_parser_get_description";
 
    function Get_Description (Parser: Parser_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type is
-      function Conv is new Ada.Unchecked_Conversion(My_Dummy_Access, RDF.Raptor.Syntaxes.Syntax_Description_Type);
    begin
       return C_Raptor_Parser_Get_Description(Get_Handle(Parser));
    end;
