@@ -4,5 +4,7 @@
 
 * Add "limited" to records where appropriate.
 
+* Check that we use T'Class rather then T where appropriate.
+
 * Some raptor_parser_*() functions return <0 on missing required base URI.
   Should we raise a different exception in this case?
