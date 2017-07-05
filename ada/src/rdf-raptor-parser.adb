@@ -139,6 +139,19 @@ package body RDF.Raptor.Parser is
       end if;
    end;
 
+   function C_Raptor_Parser_Parse_Uri (Parser: Handle_Type;
+                                       URI, Base_URI: RDF.Raptor.URI.Handle_Type) return int
+      with Import, Convention=>C, External_Name=>"raptor_parser_parse_uri";
+
+   procedure Parse_URI (Parser: Parser_Type_Without_Finalize;
+                        URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null)) is
+   begin
+      if C_raptor_parser_parse_uri(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    procedure C_Raptor_Free_Parser (Handle: Handle_Type)
      with Import, Convention=>C, External_Name=>"raptor_free_parser";
 

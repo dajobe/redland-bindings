@@ -65,7 +65,11 @@ package RDF.Raptor.Parser is
 
    not overriding procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
 
-   -- TODO: Stopped at raptor_parser_parse_uri()
+   not overriding procedure Parse_URI (Parser: Parser_Type_Without_Finalize;
+                                       URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+                                       Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null));
+
+   -- TODO: Stopped at raptor_parser_parse_uri_with_connection(); will continue after we finish RDF.Raptor.WWW
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
