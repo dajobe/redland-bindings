@@ -8,6 +8,7 @@ with RDF.Raptor.Namespaces; use RDF.Raptor.Namespaces;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Log; use RDF.Raptor.Log;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
+with RDF.Raptor.IOStream;
 
 package body RDF.Raptor.Parser is
 
@@ -95,6 +96,47 @@ package body RDF.Raptor.Parser is
                           Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null)) is
    begin
       Parse_File (Parser, From_Handle(null), Base_URI);
+   end;
+
+   function C_Raptor_Parser_Parse_File_Stream (Parser: Handle_Type;
+                                               Stream: RDF.Auxiliary.C_File_Access;
+                                               Filename: char_array;
+                                               Base_URI: RDF.Raptor.URI.Handle_Type) return int
+      with Import, Convention=>C, External_Name=>"raptor_parser_parse_file_stream";
+
+   procedure Parse_File_Stream (Parser: Parser_Type_Without_Finalize;
+                                Stream: RDF.Auxiliary.C_File_Access;
+                                Filename: String;
+                                Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+   begin
+      if C_Raptor_Parser_Parse_File_Stream(Get_Handle(Parser), Stream, To_C(Filename), Get_Handle(Base_URI)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function C_Raptor_Parser_Parse_Iostream (Parser: Handle_Type;
+                                            Stream: RDF.Raptor.IOStream.Handle_Type;
+                                            Base_URI: RDF.Raptor.URI.Handle_Type) return int
+      with Import, Convention=>C, External_Name=>"raptor_parser_parse_iostream";
+
+   procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
+                             Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                             Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+      use RDF.Raptor.IOStream;
+   begin
+      if C_Raptor_Parser_Parse_Iostream(Get_Handle(Parser), Get_Handle(Stream), Get_Handle(Base_URI)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function C_Raptor_Parser_Parse_Start (Parser: Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return int
+      with Import, Convention=>C, External_Name=>"raptor_parser_parse_start";
+
+   procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+   begin
+      if C_Raptor_Parser_Parse_Start(Get_Handle(Parser), Get_Handle(URI)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
    end;
 
    procedure C_Raptor_Free_Parser (Handle: Handle_Type)

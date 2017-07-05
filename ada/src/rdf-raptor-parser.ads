@@ -4,6 +4,7 @@ with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
+with RDF.Raptor.IOStream;
 with RDF.Raptor.Statement;
 with RDF.Raptor.Namespaces;
 with RDF.Raptor.Syntaxes;
@@ -53,7 +54,18 @@ package RDF.Raptor.Parser is
    not overriding procedure Parse_Stdin (Parser: Parser_Type_Without_Finalize;
                                          Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null));
 
-   -- TODO: Stopped at raptor_parser_parse_file_stream()
+   not overriding procedure Parse_File_Stream (Parser: Parser_Type_Without_Finalize;
+                                               Stream: RDF.Auxiliary.C_File_Access;
+                                               Filename: String;
+                                               Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+
+   not overriding procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
+                                            Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                                            Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+
+   not overriding procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+
+   -- TODO: Stopped at raptor_parser_parse_uri()
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
