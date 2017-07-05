@@ -15,4 +15,6 @@ package RDF.Raptor.WWW is
 
    function New_WWW (World: RDF.Raptor.World.World_Type'Class) return WWW_Type;
 
+   -- TODO: Stopped at raptor_new_www_with_connection()
+
 end RDF.Raptor.WWW;
