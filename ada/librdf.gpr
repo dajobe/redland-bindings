@@ -25,7 +25,12 @@ library project Librdf is
    MODE : Compilation_Mode_Type := external ("MODE");
 
    package Compiler is
-      for Default_Switches ("ada") use ("-g", "-O2", "-gnat2012");
+      case LIBRARY_KIND is
+         when "dynamic" =>
+            for Default_Switches ("ada") use ("-g", "-O2", "-gnat2012", "-fpic");
+         when others =>
+            for Default_Switches ("ada") use ("-g", "-O2", "-gnat2012");
+      end case;
    end Compiler;
 
    package Linker is
