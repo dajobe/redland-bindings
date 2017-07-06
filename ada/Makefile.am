@@ -27,15 +27,19 @@ ADALIB = $(libdir)/librdf
 
 LIB_DIR = $(builddir)/lib
 
-$(LIB_DIR)/librdf-ada.so:
-	gnatmake -p -Plibrdf.gpr \
-                 -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname) -XMODE=Install
+# $(LIB_DIR)/librdf-ada.so: my-dynamic-lib
 
-$(LIB_DIR)/librdf-ada.a:
+my-dynamic-lib:
 	gnatmake -p -Plibrdf.gpr \
-		 -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname) -XMODE=Install
+                 -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install
 
-all-local: $(LIB_DIR)/librdf-ada.so $(LIB_DIR)/librdf-ada.a
+# $(LIB_DIR)/librdf-ada.a: my-static-lib
+
+my-static-lib:
+	gnatmake -p -Plibrdf.gpr \
+                 -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install
+
+all-local: my-dynamic-lib my-static-lib
 
 clean-local:
 	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname) -XMODE=Install
@@ -59,4 +63,4 @@ uninstall-local:
 	cd $(builddir)/lib && rm -f librdf-ada.so librdf-ada.a $(soname)
 
 .PHONY: all-local clean-local install-local uninstall-local
-.PHONY: $(LIB_DIR)/librdf-ada.so $(LIB_DIR)/librdf-ada.a
+.PHONY: my-dynamic-lib my-static-lib
