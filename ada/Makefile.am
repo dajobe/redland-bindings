@@ -25,26 +25,26 @@ soname = librdf-ada.so.$(soversion)
 ADAINCLUDE = $(includedir)/librdf
 ADALIB = $(libdir)/librdf
 
-LIB_DIR = $(srcdir)/lib
+LIB_DIR = $(builddir)/lib
 
-lib/librdf-ada.so:
+$(LIB_DIR)/librdf-ada.so:
 	gnatmake -p -Plibrdf.gpr \
                  -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname) -XMODE=Install
 
-lib/librdf-ada.a:
+$(LIB_DIR)/librdf-ada.a:
 	gnatmake -p -Plibrdf.gpr \
 		 -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname) -XMODE=Install
 
-all: $(LIB_DIR)/librdf-ada.so $(LIB_DIR)/librdf-ada.a
+all-local: $(LIB_DIR)/librdf-ada.so $(LIB_DIR)/librdf-ada.a
 
-clean:
+clean-local:
 	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname) -XMODE=Install
 	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname) -XMODE=Install
 	gnat clean -r -Ptest.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj/test -Xsoversion=$(soname) -XMODE=Install
 	gnat clean -r -Ptest.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj/test -Xsoversion=$(soname) -XMODE=Install
 	rm -f $(builddir)/lib/$(soname)
 
-install: all
+install-data-local:
 	mkdir -p $(ADAINCLUDE)
 	mkdir -p $(ADALIB)
 	mkdir -p $(libdir)
@@ -53,9 +53,10 @@ install: all
 	$(INSTALL_DATA) lib/librdf-ada.so lib/librdf-ada.a $(soname) $(libdir)
 
 
-uninstall:
+uninstall-local:
 	rm -rf $(ADAINCLUDE)
 	rm -rf $(ADALIB)
 	cd $(builddir)/lib && rm -f librdf-ada.so librdf-ada.a $(soname)
 
-.PHONY: all clean install uninstall
+.PHONY: all-local clean-local install-local uninstall-local
+.PHONY: $(LIB_DIR)/librdf-ada.so $(LIB_DIR)/librdf-ada.a
