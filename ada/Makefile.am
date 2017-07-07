@@ -53,7 +53,8 @@ install-data-local:
 	mkdir -p $(ADALIB)
 	mkdir -p $(libdir)
 	cd $(srcdir)/src && $(INSTALL_DATA) *.ads *.adb $(ADAINCLUDE)
-	cd $(builddir)/ali && $(INSTALL_DATA) *.ali $(ADALIB)
+	cd $(builddir)/ali-static && $(INSTALL_DATA) *.ali $(ADALIB)/static
+	cd $(builddir)/ali-dynamic && $(INSTALL_DATA) *.ali $(ADALIB)/dynamic
 	$(INSTALL_DATA) lib/librdf-ada.so lib/librdf-ada.a $(soname) $(libdir)
 
 
