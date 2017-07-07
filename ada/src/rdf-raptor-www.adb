@@ -108,4 +108,12 @@ package body RDF.Raptor.WWW is
                           Value_With_Possible_NULs(Ptr, Size*Nmemb));
    end;
 
+   procedure Initialize_All_Callbacks (WWW: WWW_Type_Without_Finalize) is
+   begin
+      null; -- FIXME
+--       Initialize_Graph_Mark_Handler(Parser);
+--       Initialize_Statement_Handler (Parser);
+--       Initialize_Namespace_Handler (Parser);
+   end;
+
 end RDF.Raptor.WWW;

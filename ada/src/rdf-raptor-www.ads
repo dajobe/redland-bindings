@@ -13,6 +13,9 @@ package RDF.Raptor.WWW is
 
    type WWW_Type_Without_Finalize is new WWW_Handled_Record.Base_Object with null record;
 
+   -- You can call this function or initialize only callbacks you need (below).
+   not overriding procedure Initialize_All_Callbacks (WWW: WWW_Type_Without_Finalize);
+
    not overriding procedure Write_Bytes_Handler(WWW: WWW_Type_Without_Finalize; Value: String) is null;
 
    -- Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
