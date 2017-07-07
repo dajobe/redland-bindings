@@ -28,6 +28,22 @@ package body RDF.Raptor.WWW is
       C_Raptor_Www_Set_Proxy(Get_Handle(WWW), To_C(Proxy));
    end;
 
+   procedure C_Raptor_Www_Set_Http_Accept (WWW: WWW_Handle_Type; Value: chars_ptr)
+      with Import, Convention=>C, External_Name=>"raptor_www_set_http_accept";
+
+   procedure Set_HTTP_Accept (WWW: WWW_Type_Without_Finalize; Value: String) is
+   begin
+      if Value /= "" then
+         declare
+            Str: aliased char_array := To_C(Value);
+         begin
+            C_Raptor_Www_Set_Http_Accept(Get_Handle(WWW), To_Chars_Ptr(Str'Unchecked_Access));
+         end;
+      else
+         C_Raptor_Www_Set_Http_Accept(Get_Handle(WWW), Null_Ptr);
+      end if;
+   end;
+
    function C_Raptor_New_WWW (World: RDF.Raptor.World.Handle_Type) return WWW_Handle_Type
       with Import, Convention=>C, External_Name=>"raptor_new_www";
 

@@ -18,7 +18,10 @@ package RDF.Raptor.WWW is
 
    not overriding procedure Set_Proxy (WWW: WWW_Type_Without_Finalize; Proxy: String);
 
-   -- TODO: Stopped at raptor_www_set_http_accept()
+   -- The same as for User-Agent
+   not overriding procedure Set_HTTP_Accept (WWW: WWW_Type_Without_Finalize; Value: String);
+
+   -- TODO: Stopped at raptor_www_set_http_cache_control()
 
    type WWW_Type is new WWW_Type_Without_Finalize with null record;
 
