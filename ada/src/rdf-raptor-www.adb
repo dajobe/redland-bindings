@@ -1,6 +1,8 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.C_Pointers;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.WWW is
 
@@ -95,16 +97,16 @@ package body RDF.Raptor.WWW is
    type C_Raptor_Www_Content_Type_Handler is access procedure (WWW: WWW_Handle_Type; User_data: chars_ptr; Content_Type: chars_ptr)
       with Convention=>C;
 
-   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: chars_ptr; Size, Nmemb: size_t)
+   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: RDF.Auxiliary.C_Pointers.Pointer; Size, Nmemb: size_t)
       with Convention=>C;
 
    -- We discard User_data because we can instead define any data in a derived class
-   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: chars_ptr; Size, Nmemb: size_t) is
+   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: RDF.Auxiliary.C_Pointers.Pointer; Size, Nmemb: size_t) is
    begin
       -- FIXME: Value stops at first '\0' char
      Write_Bytes_Handler(WWW_Type_Without_Finalize'(From_Handle(WWW)),
 --                          Ptr_To_Obj(User_Data).all,
-                         Value(Ptr, Size*Nmemb));
+                         Value_With_Possible_NULs(Ptr, Size*Nmemb));
    end;
 
 end RDF.Raptor.WWW;
