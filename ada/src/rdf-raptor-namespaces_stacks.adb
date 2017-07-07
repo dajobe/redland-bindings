@@ -79,7 +79,7 @@ package body RDF.Raptor.Namespaces_Stacks is
    end;
 
    function C_Raptor_Namespaces_Find_Namespace (Stack: Namespace_Stack_Handle_Type;
-                                                Prefix: Char_Array_Access;
+                                                Prefix: Char_Array_Access; -- FIXME: Not a Convention=>C type!!
                                                 Len: int)
                                                 return Namespace_Handle_Type
      with Import, Convention=>C, External_Name=>"raptor_namespaces_find_namespace";

@@ -13,6 +13,8 @@ package RDF.Raptor.WWW is
 
    type WWW_Type_Without_Finalize is new WWW_Handled_Record.Base_Object with null record;
 
+   not overriding procedure Write_Bytes_Handler(WWW: WWW_Type_Without_Finalize; Value: String) is null;
+
    -- Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
    not overriding procedure Set_User_Agent (WWW: WWW_Type_Without_Finalize; User_Agent: String);
 
@@ -21,7 +23,13 @@ package RDF.Raptor.WWW is
    -- The same as for User-Agent
    not overriding procedure Set_HTTP_Accept (WWW: WWW_Type_Without_Finalize; Value: String);
 
-   -- TODO: Stopped at raptor_www_set_http_cache_control()
+   -- Empty Cache_Control is not the same as Unset_Cache_Control
+   not overriding procedure Set_Cache_Control (WWW: WWW_Type_Without_Finalize; Cache_Control: String);
+
+   -- Remove Cache-Control: header altogether
+   not overriding procedure Unset_Cache_Control (WWW: WWW_Type_Without_Finalize);
+
+   -- TODO: Stopped at raptor_www_set_write_bytes_handler()
 
    type WWW_Type is new WWW_Type_Without_Finalize with null record;
 

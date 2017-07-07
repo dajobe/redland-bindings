@@ -44,6 +44,21 @@ package body RDF.Raptor.WWW is
       Set_Or_Null(C_Raptor_Www_Set_Http_Accept'Access, WWW, Value);
    end;
 
+   procedure C_Raptor_Set_Cache_Control (WWW: WWW_Handle_Type; Cache_Control: chars_ptr)
+      with Import, Convention=>C, External_Name=>"raptor_www_set_cache_control";
+
+   procedure Set_Cache_Control (WWW: WWW_Type_Without_Finalize; Cache_Control: String) is
+      Str: aliased char_array := To_C(Cache_Control);
+   begin
+      C_Raptor_Set_Cache_Control(Get_Handle(WWW), To_Chars_Ptr(Str'Unchecked_Access));
+   end;
+
+   -- Remove Cache-Control: header altogether
+   procedure Unset_Cache_Control (WWW: WWW_Type_Without_Finalize) is
+   begin
+      C_Raptor_Set_Cache_Control(Get_Handle(WWW), Null_Ptr);
+   end;
+
    function C_Raptor_New_WWW (World: RDF.Raptor.World.Handle_Type) return WWW_Handle_Type
       with Import, Convention=>C, External_Name=>"raptor_new_www";
 
@@ -78,6 +93,15 @@ package body RDF.Raptor.WWW is
      with Convention=>C;
 
    type C_Raptor_Www_Content_Type_Handler is access procedure (WWW: WWW_Handle_Type; User_data: chars_ptr; Content_Type: chars_ptr)
-     with Convention=>C;
+      with Convention=>C;
+
+   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: chars_ptr; Size, Nmemb: size_t) is
+      with Convention=>C;
+
+   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: chars_ptr; Size, Nmemb: size_t) is
+   begin
+      -- FIXME: Value
+      Write_Bytes_Handler(From_Handle(WWW), Ptr_To_Obj(User_Data).all, Value(Ptr, Size*Nmemb));
+   end;
 
 end RDF.Raptor.WWW;
