@@ -100,12 +100,10 @@ package body RDF.Raptor.WWW is
    procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: RDF.Auxiliary.C_Pointers.Pointer; Size, Nmemb: size_t)
       with Convention=>C;
 
-   -- We discard User_data because we can instead define any data in a derived class.
-   -- FIXME: Wrong! We can't (at least easily) restore the particular derived type in the class from the handle
    procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: RDF.Auxiliary.C_Pointers.Pointer; Size, Nmemb: size_t) is
    begin
-      Write_Bytes_Handler(WWW_Type_Without_Finalize'(From_Handle(WWW)),
---                           Ptr_To_Obj(User_Data).all,
+      Write_Bytes_Handler(--WWW_Type_Without_Finalize'(From_Handle(WWW)), -- ignored
+                          Ptr_To_Obj(User_Data).all,
                           Value_With_Possible_NULs(Ptr, Size*Nmemb));
    end;
 
