@@ -95,13 +95,16 @@ package body RDF.Raptor.WWW is
    type C_Raptor_Www_Content_Type_Handler is access procedure (WWW: WWW_Handle_Type; User_data: chars_ptr; Content_Type: chars_ptr)
       with Convention=>C;
 
-   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: chars_ptr; Size, Nmemb: size_t) is
+   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: chars_ptr; Size, Nmemb: size_t)
       with Convention=>C;
 
+   -- We discard User_data because we can instead define any data in a derived class
    procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: chars_ptr; Size, Nmemb: size_t) is
    begin
-      -- FIXME: Value
-      Write_Bytes_Handler(From_Handle(WWW), Ptr_To_Obj(User_Data).all, Value(Ptr, Size*Nmemb));
+      -- FIXME: Value stops at first '\0' char
+     Write_Bytes_Handler(WWW_Type_Without_Finalize'(From_Handle(WWW)),
+--                          Ptr_To_Obj(User_Data).all,
+                         Value(Ptr, Size*Nmemb));
    end;
 
 end RDF.Raptor.WWW;
