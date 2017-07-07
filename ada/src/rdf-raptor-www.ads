@@ -13,7 +13,12 @@ package RDF.Raptor.WWW is
 
    type WWW_Type_Without_Finalize is new WWW_Handled_Record.Base_Object with null record;
 
+   -- Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
+   not overriding procedure Set_User_Agent (WWW: WWW_Type_Without_Finalize; User_Agent: String);
 
+   not overriding procedure Set_Proxy (WWW: WWW_Type_Without_Finalize; Proxy: String);
+
+   -- TODO: Stopped at raptor_www_set_http_accept()
 
    type WWW_Type is new WWW_Type_Without_Finalize with null record;
 
@@ -22,7 +27,5 @@ package RDF.Raptor.WWW is
    not overriding function New_WWW (World: RDF.Raptor.World.World_Type'Class; Connection: Connection_Type) return WWW_Type;
 
    overriding procedure Finalize_Handle(Object: WWW_Type; Handle: WWW_Handle_Type);
-
-   -- TODO: Stopped at raptor_www_write_bytes_handler()
 
 end RDF.Raptor.WWW;
