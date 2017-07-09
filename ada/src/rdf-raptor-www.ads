@@ -51,9 +51,15 @@ package RDF.Raptor.WWW is
 
    not overriding procedure Fetch (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
 
-   not overriding function Fetch_To_String(WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize) return String;
+   not overriding function Fetch_To_String (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize) return String;
 
-   -- TODO: Stopped at raptor_www_fetch_to_string()
+   not overriding function Get_Connection (WWW: WWW_Type_Without_Finalize) return Connection_Type;
+
+   not overriding procedure Set_SSL_Cert_Options (WWW: WWW_Type_Without_Finalize; Cert_Filename, Cert_Type, Cert_Passphrase: String);
+
+   not overriding procedure Set_SSL_Verify_Options (WWW: WWW_Type_Without_Finalize; Verify_Peer, Verify_Host: Boolean);
+
+   not overriding procedure Abort_Operation (WWW: WWW_Type_Without_Finalize; Reason: String);
 
    type WWW_Type is new WWW_Type_Without_Finalize with null record;
 

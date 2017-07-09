@@ -120,6 +120,45 @@ package body RDF.Raptor.WWW is
       end;
    end;
 
+   function raptor_www_get_connection (WWW: WWW_Handle_Type) return Connection_Type
+      with Import, Convention=>C;
+
+   function Get_Connection (WWW: WWW_Type_Without_Finalize) return Connection_Type is
+   begin
+      return raptor_www_get_connection(Get_Handle(WWW));
+   end;
+
+   function raptor_www_set_ssl_cert_options (WWW: WWW_Handle_Type; Cert_Filename, Cert_Type, Cert_Passphrase: char_array) return int
+      with Import, Convention=>C;
+
+   procedure Set_SSL_Cert_Options (WWW: WWW_Type_Without_Finalize; Cert_Filename, Cert_Type, Cert_Passphrase: String) is
+   begin
+      if raptor_www_set_ssl_cert_options(Get_Handle(WWW), To_C(Cert_Filename), To_C(Cert_Type), To_C(Cert_Passphrase)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function raptor_www_set_ssl_verify_options (WWW: WWW_Handle_Type; Verify_Peer, Verify_Host: int) return int
+      with Import, Convention=>C;
+
+   procedure Set_SSL_Verify_Options (WWW: WWW_Type_Without_Finalize; Verify_Peer, Verify_Host: Boolean) is
+   begin
+      if raptor_www_set_ssl_verify_options(Get_Handle(WWW),
+                                           (if Verify_Peer then 1 else 0),
+                                           (if Verify_Host then 1 else 0)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   procedure raptor_www_abort (WWW: WWW_Handle_Type; Reason: char_array)
+      with Import, Convention=>C;
+
+   procedure Abort_Operation (WWW: WWW_Type_Without_Finalize; Reason: String) is
+   begin
+      raptor_www_abort(Get_Handle(WWW), To_C(Reason));
+   end;
+
    function raptor_new_www (World: RDF.Raptor.World.Handle_Type) return WWW_Handle_Type
       with Import, Convention=>C;
 
