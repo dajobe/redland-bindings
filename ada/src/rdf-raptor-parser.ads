@@ -1,4 +1,5 @@
 with Interfaces.C; use Interfaces.C;
+-- with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
@@ -9,6 +10,7 @@ with RDF.Raptor.Statement;
 with RDF.Raptor.Namespaces;
 with RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log;
+with RDF.Raptor.WWW;
 
 package RDF.Raptor.Parser is
 
@@ -69,7 +71,12 @@ package RDF.Raptor.Parser is
                                        URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
                                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null));
 
-   -- TODO: Stopped at raptor_parser_parse_uri_with_connection(); will continue after we finish RDF.Raptor.WWW
+   not overriding procedure Parse_URI_With_Connection (Parser: Parser_Type_Without_Finalize;
+                                                       URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+                                                       Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null);
+                                                       Connection: RDF.Raptor.WWW.Connection_Type := null);
+
+   -- TODO: Stopped at raptor_parser_parse_uri_with_connection()
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
