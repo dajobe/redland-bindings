@@ -11,6 +11,7 @@ with RDF.Raptor.Namespaces;
 with RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log;
 with RDF.Raptor.WWW;
+with RDF.Raptor.Options;
 
 package RDF.Raptor.Parser is
 
@@ -82,7 +83,14 @@ package RDF.Raptor.Parser is
 
    not overriding function Get_Name (Parser: Parser_Type_Without_Finalize) return String;
 
-   -- TODO: Stopped at raptor_parser_set_option()
+   not overriding procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: String);
+   not overriding procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: int);
+
+   -- TODO: Not sure if we should be able to query here whether the option is numeric
+   not overriding function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return int;
+   not overriding function Get_String_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return String;
+
+   -- TODO: Stopped at raptor_parser_get_accept_header()
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
