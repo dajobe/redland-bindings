@@ -1,5 +1,6 @@
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.World;
+with RDF.Raptor.URI;
 
 package RDF.Raptor.WWW is
 
@@ -18,9 +19,15 @@ package RDF.Raptor.WWW is
 
    not overriding procedure Initialize_Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize);
    not overriding procedure Initialize_Content_Type_Handler (WWW: WWW_Type_Without_Finalize);
+   not overriding procedure Initialize_URI_Filter (WWW: WWW_Type_Without_Finalize);
 
-   not overriding procedure Write_Bytes_Handler(WWW: WWW_Type_Without_Finalize; Value: String) is null;
-   not overriding procedure Content_Type_Handler(WWW: WWW_Type_Without_Finalize; Content_Type: String) is null;
+   not overriding procedure Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize; Value: String) is null;
+   not overriding procedure Content_Type_Handler (WWW: WWW_Type_Without_Finalize; Content_Type: String) is null;
+
+   -- Return False to disallow loading an URI
+   not overriding function URI_Filter (WWW: WWW_Type_Without_Finalize;
+                                       URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                                       return Boolean is (True);
 
    -- Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
    not overriding procedure Set_User_Agent (WWW: WWW_Type_Without_Finalize; User_Agent: String);
@@ -38,7 +45,7 @@ package RDF.Raptor.WWW is
 
    not overriding procedure Set_Connection_Timeout (WWW: WWW_Type_Without_Finalize; Timeout: Natural);
 
-   -- TODO: Stopped at raptor_www_set_content_type_handler()
+   -- TODO: Stopped at raptor_www_final_uri_handler()
 
    type WWW_Type is new WWW_Type_Without_Finalize with null record;
 
