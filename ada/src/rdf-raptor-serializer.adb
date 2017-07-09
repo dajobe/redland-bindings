@@ -18,4 +18,12 @@ package body RDF.Raptor.Serializer is
       return From_Non_Null_Handle(raptor_new_serializer(Get_Handle(World), To_Chars_Ptr(V'Unchecked_Access)));
    end;
 
+   procedure raptor_free_serializer (Serializer: Handle_Type)
+      with Import, Convention=>C;
+
+   procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Handle_Type) is
+   begin
+      raptor_free_serializer(Handle);
+   end;
+
 end RDF.Raptor.Serializer;

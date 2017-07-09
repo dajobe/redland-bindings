@@ -14,4 +14,8 @@ package RDF.Raptor.Serializer is
    not overriding function New_Serializer (World: World_Type) return Serializer_Type;
    not overriding function New_Serializer (World: World_Type; Syntax_Name: String) return Serializer_Type;
 
+   overriding procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Handle_Type);
+
+   -- TODO: raptor_serializer_start_to_iostream()
+
 end RDF.Raptor.Serializer;
