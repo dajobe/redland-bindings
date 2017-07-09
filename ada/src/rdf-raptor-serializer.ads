@@ -1,8 +1,13 @@
+with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Iostream;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespaces;
+with RDF.Raptor.Statement;
+with RDF.Raptor.Syntaxes;
+with RDF.Raptor.Log;
+with RDF.Raptor.Options;
 
 package RDF.Raptor.Serializer is
 
@@ -37,7 +42,27 @@ package RDF.Raptor.Serializer is
    not overriding procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
                                            Namespace: RDF.Raptor.Namespaces.Namespace_Type_Without_Finalize);
 
-   -- TODO: raptor_serializer_set_namespace()
+   not overriding procedure Serialize_Statement (Serializer: Serializer_Type_Without_Finalize;
+                                                 Statement: RDF.Raptor.Statement.Statement_Type_Without_Finalize'Class);
+
+   not overriding procedure Serialize_End (Serializer: Serializer_Type_Without_Finalize);
+
+   not overriding procedure Serialize_Flush (Serializer: Serializer_Type_Without_Finalize);
+
+   not overriding function Get_Description (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type;
+
+   not overriding function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Iostream.Base_Stream_Type;
+
+   not overriding function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type;
+
+   not overriding procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: String);
+   not overriding procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: int);
+
+   -- TODO: Not sure if we should be able to query here whether the option is numeric
+   not overriding function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return int;
+   not overriding function Get_String_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return String;
+
+   -- TODO: raptor_serializer_set_option()
 
    type Serializer_Type is new Serializer_Type_Without_Finalize with null record;
 
