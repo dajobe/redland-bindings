@@ -49,9 +49,9 @@ package RDF.Raptor.WWW is
 
    not overriding function Get_Final_URI (WWW: WWW_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type;
 
---    not overriding procedure Fetch (WWW: WWW_Type_Without_Finalize;)
+   not overriding procedure Fetch (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
 
-   -- TODO: Stopped at raptor_www_fetch()
+   -- TODO: Stopped at raptor_www_fetch_to_string()
 
    type WWW_Type is new WWW_Type_Without_Finalize with null record;
 

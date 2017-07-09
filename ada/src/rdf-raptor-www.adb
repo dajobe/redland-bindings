@@ -80,6 +80,17 @@ package body RDF.Raptor.WWW is
       return From_Handle(raptor_www_get_final_uri(Get_Handle(WWW)));
    end;
 
+   function raptor_www_fetch (WWW: WWW_Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return int
+      with Import, Convention=>C;
+
+   procedure Fetch (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+      use RDF.Raptor.URI;
+   begin
+      if raptor_www_fetch(Get_Handle(WWW), Get_Handle(URI)) /= 0 then
+        raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    function raptor_new_www (World: RDF.Raptor.World.Handle_Type) return WWW_Handle_Type
       with Import, Convention=>C;
 
