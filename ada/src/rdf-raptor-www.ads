@@ -24,7 +24,7 @@ package RDF.Raptor.WWW is
 
    not overriding procedure Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize; Value: String) is null;
    not overriding procedure Content_Type_Handler (WWW: WWW_Type_Without_Finalize; Content_Type: String) is null;
-   not overriding procedure Final_URI_Handler (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type) is null;
+   not overriding procedure Final_URI_Handler (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is null;
 
    -- Return False to disallow loading an URI
    not overriding function URI_Filter (WWW: WWW_Type_Without_Finalize;
@@ -48,6 +48,8 @@ package RDF.Raptor.WWW is
    not overriding procedure Set_Connection_Timeout (WWW: WWW_Type_Without_Finalize; Timeout: Natural);
 
    not overriding function Get_Final_URI (WWW: WWW_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type;
+
+--    not overriding procedure Fetch (WWW: WWW_Type_Without_Finalize;)
 
    -- TODO: Stopped at raptor_www_fetch()
 
