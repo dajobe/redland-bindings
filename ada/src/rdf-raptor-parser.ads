@@ -96,7 +96,7 @@ package RDF.Raptor.Parser is
 
    not overriding function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String;
 
-   -- TODO: Stopped at raptor_parser_get_accept_header()
+   not overriding function Get_World (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.World.World_Type_Without_Finalize;
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,

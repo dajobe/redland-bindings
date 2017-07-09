@@ -249,6 +249,14 @@ package body RDF.Raptor.Parser is
       return S;
    end;
 
+   function raptor_parser_get_world (Parser: Handle_Type) return RDF.Raptor.World.Handle_Type
+      with Import, Convention=>C;
+
+   function Get_World (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.World.World_Type_Without_Finalize is
+   begin
+      return From_Handle(raptor_parser_get_world(Get_Handle(Parser)));
+   end;
+
    procedure raptor_free_parser (Handle: Handle_Type)
      with Import, Convention=>C;
 
