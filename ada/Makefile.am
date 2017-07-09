@@ -45,11 +45,15 @@ my-static-lib:
 	gnatmake -p -Plibrdf.gpr \
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=$(DEBUG_MODE)
 
+my-check:
+	gnatmake -p -Plibrdf.gpr \
+                 -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=check
+
 all-local: my-dynamic-lib my-static-lib
 
 clean-local:
-	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname) -XMODE=Install
-	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj -Xsoversion=$(soname) -XMODE=Install
+	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install
+	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install
 	gnat clean -r -Ptest.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj/test -Xsoversion=$(soname) -XMODE=Install
 	gnat clean -r -Ptest.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj/test -Xsoversion=$(soname) -XMODE=Install
 	rm -f $(builddir)/lib/$(soname)

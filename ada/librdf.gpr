@@ -1,9 +1,8 @@
 library project Librdf is
-
-   type Library_Kind_Type is ("static", "dynamic");
+type Library_Kind_Type is ("static", "dynamic");
    Library_Kind : Library_Kind_Type := external ("LIBRARY_KIND", "static");
 
-   type Debug_Mode_Type is ("debug", "release");
+   type Debug_Mode_Type is ("debug", "release", "check");
    Debug_Mode : Debug_Mode_Type := external ("DEBUG_MODE", "debug");
 
    type Compilation_Mode_Type is
@@ -37,6 +36,8 @@ library project Librdf is
             Debug_Flags := ("-g", "-gnata");
           when "release" =>
             Debug_Flags := ("-O2");
+          when "check" =>
+            Debug_Flags := ("-gnatc");
       end case;
 
       case LIBRARY_KIND is
@@ -107,6 +108,15 @@ library project Librdf is
 
       end case;
    end Linker;
+
+   package Builder is
+      case Debug_Mode is
+          when "check" =>
+             for Default_Switches ("Ada") use ("-gnatc");
+          when others =>
+             null;
+      end case;
+   end Builder;
 
 end Librdf;
 
