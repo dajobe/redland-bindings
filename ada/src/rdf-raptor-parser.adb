@@ -168,6 +168,30 @@ package body RDF.Raptor.Parser is
       end if;
    end;
 
+   function raptor_parser_get_graph (Parser: Handle_Type) return RDF.Raptor.URI.Handle_Type
+         with Import, Convention=>C;
+
+   function Get_Graph (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type is
+   begin
+      return From_Handle(raptor_parser_get_graph(Get_Handle(Parser)));
+   end;
+
+   function raptor_parser_get_description (Parser: Handle_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type
+      with Import, Convention=>C;
+
+   function Get_Description (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type is
+   begin
+      return raptor_parser_get_description(Get_Handle(Parser));
+   end;
+
+   function raptor_parser_get_name (Parser: Handle_Type) return chars_ptr
+         with Import, Convention=>C;
+
+   function Get_Name (Parser: Parser_Type_Without_Finalize) return String is
+   begin
+      return Value(raptor_parser_get_name(Get_Handle(Parser)));
+   end;
+
    procedure raptor_free_parser (Handle: Handle_Type)
      with Import, Convention=>C;
 
@@ -247,13 +271,5 @@ package body RDF.Raptor.Parser is
 
    type My_Dummy_Access is access constant RDF.Auxiliary.Dummy_Record
       with Convention=>C;
-
-   function raptor_parser_get_description (Parser: Handle_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type
-      with Import, Convention=>C;
-
-   function Get_Description (Parser: Parser_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type is
-   begin
-      return raptor_parser_get_description(Get_Handle(Parser));
-   end;
 
 end RDF.Raptor.Parser;

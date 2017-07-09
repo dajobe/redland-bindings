@@ -76,7 +76,13 @@ package RDF.Raptor.Parser is
                                                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null);
                                                        Connection: RDF.Raptor.WWW.Connection_Type := null);
 
-   -- TODO: Stopped at raptor_parser_parse_uri_with_connection()
+   not overriding function Get_Graph (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type;
+
+   not overriding function Get_Description (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type;
+
+   not overriding function Get_Name (Parser: Parser_Type_Without_Finalize) return String;
+
+   -- TODO: Stopped at raptor_parser_set_option()
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
@@ -93,7 +99,5 @@ package RDF.Raptor.Parser is
                                                 Buffer: String_Holders.Holder;
                                                 Identifier: String_Holders.Holder)
                                                 return Parser_Type;
-
-   not overriding function Get_Description (Parser: Parser_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type;
 
 end RDF.Raptor.Parser;
