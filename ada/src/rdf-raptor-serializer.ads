@@ -18,7 +18,14 @@ package RDF.Raptor.Serializer is
 
    not overriding procedure Start_To_Filename (Serializer: Serializer_Type_Without_Finalize; Filename: String);
 
-   -- TODO: raptor_serializer_start_to_string()
+   -- raptor_serializer_start_to_string() is deliberately not used.
+   -- Use RDF.Raptor.IOStream.Stream_To_String instead.
+
+   not overriding procedure Start_To_Filehandle (Serializer: Serializer_Type_Without_Finalize;
+                                                 URI: URI_Type_Without_Finalize'Class;
+                                                 FH: RDF.Auxiliary.C_File_Access);
+
+   -- TODO: raptor_serializer_set_namespace()
 
    type Serializer_Type is new Serializer_Type_Without_Finalize with null record;
 

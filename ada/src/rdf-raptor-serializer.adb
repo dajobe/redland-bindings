@@ -32,6 +32,19 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
+   function raptor_serializer_start_to_file_handle (Serializer: Handle_Type; URI: RDF.Raptor.URI.Handle_Type;  FH: RDF.Auxiliary.C_File_Access)
+                                                    return int
+      with Import, Convention=>C;
+
+   procedure Start_To_Filehandle (Serializer: Serializer_Type_Without_Finalize;
+                                  URI: URI_Type_Without_Finalize'Class;
+                                  FH: RDF.Auxiliary.C_File_Access) is
+   begin
+      if raptor_serializer_start_to_file_handle(Get_Handle(Serializer), Get_Handle(URI), FH) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    function raptor_new_serializer (World: RDF.Raptor.World.Handle_Type; Syntax_Name: chars_ptr) return Handle_Type
       with Import, Convention=>C;
 
