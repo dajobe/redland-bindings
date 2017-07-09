@@ -31,6 +31,7 @@ package RDF.Raptor.Parser is
    not overriding procedure Initialize_Graph_Mark_Handler (Object: Parser_Type_Without_Finalize);
    not overriding procedure Initialize_Statement_Handler  (Object: Parser_Type_Without_Finalize);
    not overriding procedure Initialize_Namespace_Handler  (Object: Parser_Type_Without_Finalize);
+   not overriding procedure Initialize_URI_Filter         (Object: Parser_Type_Without_Finalize);
 
    not overriding procedure Graph_Mark_Handler (Object: Parser_Type_Without_Finalize;
                                                 URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
@@ -41,6 +42,9 @@ package RDF.Raptor.Parser is
 
    not overriding procedure Namespace_Handler (Object: Parser_Type_Without_Finalize;
                                                Namespace: RDF.Raptor.Namespaces.Namespace_Type_Without_Finalize'Class) is null;
+
+   not overriding function URI_Filter (Object: Parser_Type_Without_Finalize;
+                                       URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class) return Boolean is (True);
 
    not overriding function Get_Locator (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type;
 
@@ -89,6 +93,8 @@ package RDF.Raptor.Parser is
    -- TODO: Not sure if we should be able to query here whether the option is numeric
    not overriding function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return int;
    not overriding function Get_String_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return String;
+
+   not overriding function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String;
 
    -- TODO: Stopped at raptor_parser_get_accept_header()
 
