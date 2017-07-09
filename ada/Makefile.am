@@ -27,6 +27,8 @@ ADALIB = $(libdir)/librdf
 
 LIB_DIR = $(builddir)/lib
 
+EXTRA_DIST = librdf.gpr test.gpr src/*.ad[bs] src/test/*.ad[bs]
+
 # $(LIB_DIR)/librdf-ada.so: my-dynamic-lib
 
 if DEBUG
