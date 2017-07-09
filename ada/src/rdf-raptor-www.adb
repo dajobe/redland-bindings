@@ -91,7 +91,10 @@ package body RDF.Raptor.WWW is
    function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
 
-   type C_Raptor_Www_Write_Bytes_Handler is access procedure (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: chars_ptr; Size, Nmemb: size_t)
+   type C_Raptor_Www_Write_Bytes_Handler is access procedure (WWW: WWW_Handle_Type;
+                                                              User_data: chars_ptr;
+                                                              Ptr: RDF.Auxiliary.C_Pointers.Pointer;
+                                                              Size, Nmemb: size_t)
      with Convention=>C;
 
    type C_Raptor_Www_Content_Type_Handler is access procedure (WWW: WWW_Handle_Type; User_data: chars_ptr; Content_Type: chars_ptr)
@@ -109,10 +112,16 @@ package body RDF.Raptor.WWW is
 
    procedure Initialize_All_Callbacks (WWW: WWW_Type_Without_Finalize) is
    begin
-      null; -- FIXME
---       Initialize_Graph_Mark_Handler(Parser);
---       Initialize_Statement_Handler (Parser);
---       Initialize_Namespace_Handler (Parser);
+      Initialize_Write_Bytes_Handler(WWW);
+      -- TODO
+   end;
+
+   procedure C_raptor_www_set_write_bytes_handler (WWW: WWW_Handle_Type; Handler: C_Raptor_Www_Write_Bytes_Handler; User_Data: chars_ptr)
+      with Import, Convention=>C, External_Name=>"raptor_www_set_write_bytes_handler";
+
+   procedure Initialize_Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize) is
+   begin
+      C_raptor_www_set_write_bytes_handler(Get_Handle(WWW), Write_Bytes_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
    end;
 
 end RDF.Raptor.WWW;

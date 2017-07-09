@@ -16,6 +16,8 @@ package RDF.Raptor.WWW is
    -- You can call this function or initialize only callbacks you need (below).
    not overriding procedure Initialize_All_Callbacks (WWW: WWW_Type_Without_Finalize);
 
+   not overriding procedure Initialize_Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize);
+
    not overriding procedure Write_Bytes_Handler(WWW: WWW_Type_Without_Finalize; Value: String) is null;
 
    -- Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
@@ -32,7 +34,7 @@ package RDF.Raptor.WWW is
    -- Remove Cache-Control: header altogether
    not overriding procedure Unset_Cache_Control (WWW: WWW_Type_Without_Finalize);
 
-   -- TODO: Stopped at raptor_www_set_write_bytes_handler()
+   -- TODO: Stopped at raptor_www_set_connection_timeout()
 
    type WWW_Type is new WWW_Type_Without_Finalize with null record;
 
