@@ -2,6 +2,7 @@ with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Iostream;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
+with RDF.Raptor.Namespaces;
 
 package RDF.Raptor.Serializer is
 
@@ -24,6 +25,17 @@ package RDF.Raptor.Serializer is
    not overriding procedure Start_To_Filehandle (Serializer: Serializer_Type_Without_Finalize;
                                                  URI: URI_Type_Without_Finalize'Class;
                                                  FH: RDF.Auxiliary.C_File_Access);
+
+   -- WARNING: Other order of arguments than in C
+   not overriding procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
+                                           Prefix: String;
+                                           URI: URI_Type_Without_Finalize := From_Handle(null));
+
+   not overriding procedure Set_Namespace_Without_Prefix (Serializer: Serializer_Type_Without_Finalize;
+                                                          URI: URI_Type_Without_Finalize := From_Handle(null));
+
+   not overriding procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
+                                           Namespace: RDF.Raptor.Namespaces.Namespace_Type_Without_Finalize);
 
    -- TODO: raptor_serializer_set_namespace()
 

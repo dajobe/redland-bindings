@@ -45,6 +45,40 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
+   function raptor_serializer_set_namespace (Serializer: Handle_Type; URI: RDF.Raptor.URI.Handle_Type; Prefix: chars_ptr) return int
+      with Import, Convention=>C;
+
+   procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
+                            Prefix: String;
+                            URI: URI_Type_Without_Finalize := From_Handle(null)) is
+      V: aliased char_array := To_C(Prefix);
+   begin
+      if raptor_serializer_set_namespace(Get_Handle(Serializer), Get_Handle(URI), To_Chars_Ptr(V'Unchecked_Access)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   procedure Set_Namespace_Without_Prefix (Serializer: Serializer_Type_Without_Finalize;
+                                           URI: URI_Type_Without_Finalize := From_Handle(null)) is
+   begin
+      if raptor_serializer_set_namespace(Get_Handle(Serializer), Get_Handle(URI), Null_Ptr) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function raptor_serializer_set_namespace_from_namespace (Serializer: Handle_Type; Namespace: RDF.Raptor.Namespaces.Namespace_Handle_Type)
+                                                            return int
+      with Import, Convention=>C;
+
+   procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
+                            Namespace: RDF.Raptor.Namespaces.Namespace_Type_Without_Finalize) is
+      use RDF.Raptor.Namespaces;
+   begin
+      if raptor_serializer_set_namespace_from_namespace(Get_Handle(Serializer), Get_Handle(Namespace)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    function raptor_new_serializer (World: RDF.Raptor.World.Handle_Type; Syntax_Name: chars_ptr) return Handle_Type
       with Import, Convention=>C;
 
