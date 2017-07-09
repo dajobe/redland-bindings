@@ -20,9 +20,11 @@ package RDF.Raptor.WWW is
    not overriding procedure Initialize_Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize);
    not overriding procedure Initialize_Content_Type_Handler (WWW: WWW_Type_Without_Finalize);
    not overriding procedure Initialize_URI_Filter (WWW: WWW_Type_Without_Finalize);
+   not overriding procedure Initialize_Final_URI_Handler (WWW: WWW_Type_Without_Finalize);
 
    not overriding procedure Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize; Value: String) is null;
    not overriding procedure Content_Type_Handler (WWW: WWW_Type_Without_Finalize; Content_Type: String) is null;
+   not overriding procedure Final_URI_Handler (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type) is null;
 
    -- Return False to disallow loading an URI
    not overriding function URI_Filter (WWW: WWW_Type_Without_Finalize;
@@ -45,7 +47,9 @@ package RDF.Raptor.WWW is
 
    not overriding procedure Set_Connection_Timeout (WWW: WWW_Type_Without_Finalize; Timeout: Natural);
 
-   -- TODO: Stopped at raptor_www_final_uri_handler()
+   not overriding function Get_Final_URI (WWW: WWW_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type;
+
+   -- TODO: Stopped at raptor_www_fetch()
 
    type WWW_Type is new WWW_Type_Without_Finalize with null record;
 
@@ -53,6 +57,6 @@ package RDF.Raptor.WWW is
 
    not overriding function New_WWW (World: RDF.Raptor.World.World_Type'Class; Connection: Connection_Type) return WWW_Type;
 
-   overriding procedure Finalize_Handle(Object: WWW_Type; Handle: WWW_Handle_Type);
+   overriding procedure Finalize_Handle (Object: WWW_Type; Handle: WWW_Handle_Type);
 
 end RDF.Raptor.WWW;
