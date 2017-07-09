@@ -22,6 +22,16 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
+   function raptor_serializer_start_to_filename (Serializer: Handle_Type; Filename: char_array) return int
+      with Import, Convention=>C;
+
+   procedure Start_To_Filename (Serializer: Serializer_Type_Without_Finalize; Filename: String) is
+   begin
+      if raptor_serializer_start_to_filename(Get_Handle(Serializer), To_C(Filename)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    function raptor_new_serializer (World: RDF.Raptor.World.Handle_Type; Syntax_Name: chars_ptr) return Handle_Type
       with Import, Convention=>C;
 

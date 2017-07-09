@@ -16,7 +16,9 @@ package RDF.Raptor.Serializer is
                                                Iostream: RDF.Raptor.Iostream.Base_Stream_Type'Class;
                                                URI: URI_Type_Without_Finalize := From_Handle(null));
 
-   -- TODO: raptor_serializer_start_to_filename()
+   not overriding procedure Start_To_Filename (Serializer: Serializer_Type_Without_Finalize; Filename: String);
+
+   -- TODO: raptor_serializer_start_to_string()
 
    type Serializer_Type is new Serializer_Type_Without_Finalize with null record;
 
