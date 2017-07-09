@@ -82,7 +82,7 @@ package body RDF.Raptor.Options is
 
    -- Crude hack
    function Option_From_URI (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type'Class) return Raptor_Option is
-       Result: constant Raptor_Option'Base := C_Raptor_World_Get_Option_From_Uri(Get_Handle(World), Get_Handle(URI));
+      Result: constant Raptor_Option'Base := C_Raptor_World_Get_Option_From_Uri(Get_Handle(World), Get_Handle(URI));
    begin
       if not Result'Valid then
          raise Constraint_Error;

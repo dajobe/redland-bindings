@@ -336,7 +336,8 @@ package body RDF.Raptor.URI is
                                    Get_Handle(Stream),
                                    Get_Handle(URI),
                                    Get_Handle(Stack),
-                                   Get_Handle(Base_URI)) /= 0 then
+                                   Get_Handle(Base_URI)) /= 0
+      then
          raise IOStream_Exception;
       end if;
    end;

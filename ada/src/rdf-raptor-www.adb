@@ -6,8 +6,8 @@ with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.WWW is
 
-  type C_Func is access procedure (WWW: WWW_Handle_Type; Value: chars_ptr)
-     with Convention=>C;
+   type C_Func is access procedure (WWW: WWW_Handle_Type; Value: chars_ptr)
+      with Convention=>C;
 
    procedure Set_Or_Null (Func: C_Func; WWW: WWW_Type_Without_Finalize; Value: String) is
    begin

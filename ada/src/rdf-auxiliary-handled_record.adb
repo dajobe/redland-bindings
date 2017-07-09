@@ -29,7 +29,7 @@ package body RDF.Auxiliary.Handled_Record is
    begin
       if Object.Handle /= null then
          Finalize_Handle(Base_Object'Class(Object), Object.Handle);
-	 Object.Handle := null;
+         Object.Handle := null;
       end if;
    end Finalize;
 
