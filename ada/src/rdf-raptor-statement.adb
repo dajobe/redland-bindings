@@ -26,18 +26,18 @@ package body RDF.Raptor.Statement is
 --        return Is_Null(Term) or not (Term in RDF.Raptor.Term.Term_Type'Class);
 --     end;
 
-   function C_Raptor_New_Statement (World: RDF.Raptor.World.Handle_Type)
+   function raptor_new_statement (World: RDF.Raptor.World.Handle_Type)
                                                   return Statement_Handle
-     with Import, Convention=>C, External_Name=>"raptor_new_statement";
+     with Import, Convention=>C;
 
 --     function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize) return Statement_Type is
 --     begin
---        return From_Non_Null_Handle( C_Raptor_New_Statement(Get_Handle(World)) );
+--        return From_Non_Null_Handle( raptor_new_statement(Get_Handle(World)) );
 --     end;
 
-   function C_Raptor_New_Statement_From_Nodes (World: RDF.Raptor.World.Handle_Type; Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Handle)
+   function raptor_new_statement_from_nodes (World: RDF.Raptor.World.Handle_Type; Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Handle)
                                                return Statement_Handle
-     with Import, Convention=>C, External_Name=>"raptor_new_statement_from_nodes";
+     with Import, Convention=>C;
 
    function New_Statement (World: RDF.Raptor.World.World_Type_Without_Finalize'Class;
                            Subject, Predicate, Object: RDF.Raptor.Term.Term_Type_Without_Finalize'Class;
@@ -52,77 +52,77 @@ package body RDF.Raptor.Statement is
                                           Graph: RDF.Raptor.Term.Term_Type_Without_Finalize := From_Handle(null))
                                           return Statement_Type is
    begin
-      return From_Non_Null_Handle( C_Raptor_New_Statement_From_Nodes(Get_Handle(World),
+      return From_Non_Null_Handle( raptor_new_statement_from_nodes(Get_Handle(World),
                                                                      Get_Handle(Subject), Get_Handle(Predicate), Get_Handle(Object), Get_Handle(Graph)) );
    end;
 
-   procedure C_Raptor_Free_Statement (Statement: Statement_Handle)
-      with Import, Convention=>C, External_Name=>"raptor_free_statement";
+   procedure raptor_free_statement (Statement: Statement_Handle)
+      with Import, Convention=>C;
 
    procedure Finalize_Handle (Object: Statement_Type; Handle: Statement_Handle) is
    begin
-      C_Raptor_Free_Statement(Handle);
+      raptor_free_statement(Handle);
    end;
 
-   function C_Raptor_Statement_Copy (Term: Statement_Handle) return Statement_Handle
-      with Import, Convention=>C, External_Name=>"raptor_statement_copy";
+   function raptor_statement_copy (Term: Statement_Handle) return Statement_Handle
+      with Import, Convention=>C;
 
    procedure Adjust (Object: in out Statement_Type) is
    begin
-      Set_Handle_Hack(Object, C_Raptor_Statement_Copy(Get_Handle(Object)));
+      Set_Handle_Hack(Object, raptor_statement_copy(Get_Handle(Object)));
    end;
 
    function Copy (Object: Statement_Type_Without_Finalize'Class) return Statement_Type_Without_Finalize is
    begin
-      return From_Handle (C_Raptor_Statement_Copy (Get_Handle(Object)) );
+      return From_Handle (raptor_statement_copy (Get_Handle(Object)) );
    end;
 
-   function C_Raptor_Statement_Compare (Left, Right: Statement_Handle) return int
-      with Import, Convention=>C, External_Name=>"raptor_statement_compare";
+   function raptor_statement_compare (Left, Right: Statement_Handle) return int
+      with Import, Convention=>C;
 
    function Compare (Left, Right: Statement_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result is
    begin
-      return RDF.Auxiliary.Sign( C_Raptor_Statement_Compare(Get_Handle(Left), Get_Handle(Right)) );
+      return RDF.Auxiliary.Sign( raptor_statement_compare(Get_Handle(Left), Get_Handle(Right)) );
    end;
 
-   function C_Raptor_Statement_Equals (Left, Right: Statement_Handle) return int
-      with Import, Convention=>C, External_Name=>"raptor_statement_equals";
+   function raptor_statement_equals (Left, Right: Statement_Handle) return int
+      with Import, Convention=>C;
 
    function Equals (Left, Right: Statement_Type_Without_Finalize) return Boolean is
    begin
-      return C_Raptor_Statement_Equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
+      return raptor_statement_equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
    end;
 
-   function C_Raptor_Statement_Print (Statement: Statement_Handle; File: RDF.Auxiliary.C_File_Access) return int
-      with Import, Convention=>C, External_Name=>"raptor_statement_print";
+   function raptor_statement_print (Statement: Statement_Handle; File: RDF.Auxiliary.C_File_Access) return int
+      with Import, Convention=>C;
 
    procedure Print (Statement: Statement_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
    begin
-      if C_Raptor_Statement_Print(Get_Handle(Statement), File) /= 0 then
+      if raptor_statement_print(Get_Handle(Statement), File) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;
       end if;
    end;
 
-   function C_Raptor_Statement_Print_As_Ntriples (Statement: Statement_Handle; File: RDF.Auxiliary.C_File_Access) return int
-      with Import, Convention=>C, External_Name=>"raptor_statement_print_as_ntriples";
+   function raptor_statement_print_as_ntriples (Statement: Statement_Handle; File: RDF.Auxiliary.C_File_Access) return int
+      with Import, Convention=>C;
 
    procedure Print_As_Ntriples (Statement: Statement_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
    begin
-      if C_Raptor_Statement_Print_As_Ntriples(Get_Handle(Statement), File) /= 0 then
+      if raptor_statement_print_as_ntriples(Get_Handle(Statement), File) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;
       end if;
    end;
 
-   function C_Raptor_Statement_Ntriples_Write (Statement: Statement_Handle; Stream: RDF.Raptor.IOStream.Handle_Type; Write_Graph_Term: int)
+   function raptor_statement_ntriples_write (Statement: Statement_Handle; Stream: RDF.Raptor.IOStream.Handle_Type; Write_Graph_Term: int)
                                                return Int
-      with Import, Convention=>C, External_Name=>"raptor_statement_ntriples_write";
+      with Import, Convention=>C;
 
    procedure Ntriples_Write (Statement: Statement_Type_Without_Finalize;
                              Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
                              Write_Graph_Term: Boolean) is
       Flag: constant int := (if Write_Graph_Term then 1 else 0);
    begin
-      if C_Raptor_Statement_Ntriples_Write(Get_Handle(Statement), Get_Handle(Stream), Flag) /= 0 then
+      if raptor_statement_ntriples_write(Get_Handle(Statement), Get_Handle(Stream), Flag) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;
       end if;
    end;

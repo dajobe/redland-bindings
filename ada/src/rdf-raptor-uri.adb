@@ -8,196 +8,196 @@ with RDF.Raptor.Namespaces_Stacks; use RDF.Raptor.Namespaces_Stacks;
 
 package body RDF.Raptor.URI is
 
-   function C_Raptor_New_Uri_From_Counted_String (World_Handle: RDF.Raptor.World.Handle_Type;
+   function raptor_new_uri_from_counted_string (World_Handle: RDF.Raptor.World.Handle_Type;
                                                   URI_String: char_array;
                                                   Length    : size_t)
                                                   return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_uri_from_counted_string";
+     with Import, Convention=>C;
 
    function From_String(World: World_Type_Without_Finalize'Class; Arg: URI_String) return URI_Type is
    begin
       -- LD_LIBRARY_PATH="" ltrace -n4 -llibraptor2.so.0 ./obj/test/debug/run_all_tests 2>&1| egrep ^[a-z]
-      return From_Non_Null_Handle (C_Raptor_New_Uri_From_Counted_String (Get_Handle (World), To_C (String(Arg), Append_Nul=>False), Arg'Length));
+      return From_Non_Null_Handle (raptor_new_uri_from_counted_string (Get_Handle (World), To_C (String(Arg), Append_Nul=>False), Arg'Length));
    end;
 
-   function C_Raptor_New_Uri_From_Uri_Local_Name (World_Handle: RDF.Raptor.World.Handle_Type;
+   function raptor_new_uri_from_uri_local_name (World_Handle: RDF.Raptor.World.Handle_Type;
                                                   URI: Handle_Type;
                                                   Local_Name: char_array)
                                                   return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_uri_from_uri_local_name";
+     with Import, Convention=>C;
 
    function From_URI_With_Local_Name(World: World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type is
    begin
-      return From_Non_Null_Handle (C_Raptor_New_Uri_From_Uri_Local_Name (Get_Handle (World), Get_Handle (URI), To_C (Local_Name)));
+      return From_Non_Null_Handle (raptor_new_uri_from_uri_local_name (Get_Handle (World), Get_Handle (URI), To_C (Local_Name)));
    end;
 
-   function C_Raptor_New_Uri_From_Uri_Or_File_String(World_Handle: RDF.Raptor.World.Handle_Type;
+   function raptor_new_uri_from_uri_or_file_string(World_Handle: RDF.Raptor.World.Handle_Type;
                                                      Base_URI: Handle_Type;
                                                      uri_or_file_string: char_array)
                                                      return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_uri_from_uri_or_file_string";
+     with Import, Convention=>C;
 
    function From_URI_Or_File_String(World   : World_Type_Without_Finalize'Class;
                                     Base_URI: URI_Type_Without_Finalize'Class;
                                     Uri_Or_File: String)
                                     return URI_Type is
    begin
-      return From_Non_Null_Handle (C_Raptor_New_Uri_From_Uri_Or_File_String (Get_Handle (World), Get_Handle (Base_URI), To_C (Uri_Or_File)));
+      return From_Non_Null_Handle (raptor_new_uri_from_uri_or_file_string (Get_Handle (World), Get_Handle (Base_URI), To_C (Uri_Or_File)));
    end;
 
-   function C_Raptor_New_Uri_Relative_To_Base_Counted(World_Handle: RDF.Raptor.World.Handle_Type;
+   function raptor_new_uri_relative_to_base_counted(World_Handle: RDF.Raptor.World.Handle_Type;
                                                       Base_URI: Handle_Type;
                                                       uri_string: char_array;
                                                       uri_len: size_t)
                                                      return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_uri_relative_to_base_counted";
+     with Import, Convention=>C;
 
    function From_URI_Relative_To_Base(World: World_Type_Without_Finalize'Class;
                                       Base_URI: URI_Type_Without_Finalize'Class;
                                       URI: URI_String)
                                       return URI_Type is
    begin
-      return From_Non_Null_Handle (C_Raptor_New_Uri_Relative_To_Base_Counted(Get_Handle (World),
+      return From_Non_Null_Handle (raptor_new_uri_relative_to_base_counted(Get_Handle (World),
                                                                              Get_Handle (Base_URI),
                                                                              To_C(String(URI), Append_Nul=>False),
                                                                              URI'Length));
    end;
 
-   function C_Raptor_New_Uri_From_ID(World_Handle: RDF.Raptor.World.Handle_Type;
+   function raptor_new_uri_from_id(World_Handle: RDF.Raptor.World.Handle_Type;
                                      Base_URI: Handle_Type;
                                      ID: char_array)
                                      return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_uri_from_id";
+     with Import, Convention=>C;
 
    function From_ID(World: World_Type_Without_Finalize'Class; Base_URI: URI_Type_Without_Finalize'Class; ID: String) return URI_Type is
    begin
-      return From_Non_Null_Handle (C_Raptor_New_Uri_From_ID (Get_Handle (World), Get_Handle (Base_URI), To_C (ID)));
+      return From_Non_Null_Handle (raptor_new_uri_from_id (Get_Handle (World), Get_Handle (Base_URI), To_C (ID)));
    end;
 
-   function C_Raptor_New_Uri_For_Rdf_Concept (World_Handle: RDF.Raptor.World.Handle_Type;
+   function raptor_new_uri_for_rdf_concept (World_Handle: RDF.Raptor.World.Handle_Type;
                                               Name: char_array)
                                               return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_uri_for_rdf_concept";
+     with Import, Convention=>C;
 
    function From_RDF_Concept(World: World_Type_Without_Finalize'Class; Name: String) return URI_Type is
    begin
-      return From_Non_Null_Handle (C_Raptor_New_Uri_For_Rdf_Concept (Get_Handle (World), To_C (Name)));
+      return From_Non_Null_Handle (raptor_new_uri_for_rdf_concept (Get_Handle (World), To_C (Name)));
    end;
 
-   function C_Raptor_New_Uri_For_Xmlbase (Old_URI: Handle_Type)
+   function raptor_new_uri_for_xmlbase (Old_URI: Handle_Type)
                                           return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_uri_for_xmlbase";
+     with Import, Convention=>C;
 
    function For_XML_Base(Old_URI: URI_Type_Without_Finalize'Class) return URI_Type is
    begin
-      return From_Non_Null_Handle (C_Raptor_New_Uri_For_Xmlbase (Get_Handle(Old_URI)));
+      return From_Non_Null_Handle (raptor_new_uri_for_xmlbase (Get_Handle(Old_URI)));
    end;
 
-   function C_Raptor_New_Uri_For_Retrieval (Old_URI: Handle_Type)
+   function raptor_new_uri_for_retrieval (Old_URI: Handle_Type)
                                           return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_uri_for_retrieval";
+     with Import, Convention=>C;
 
    function For_Retrieval(Old_URI: URI_Type_Without_Finalize'Class) return URI_Type is
    begin
-      return From_Non_Null_Handle (C_Raptor_New_Uri_For_Retrieval (Get_Handle(Old_URI)));
+      return From_Non_Null_Handle (raptor_new_uri_for_retrieval (Get_Handle(Old_URI)));
    end;
 
-   function C_Raptor_Uri_Compare (URI1, URI2: Handle_Type) return int
-     with Import, Convention=>C, External_Name=>"raptor_uri_compare";
+   function raptor_uri_compare (URI1, URI2: Handle_Type) return int
+     with Import, Convention=>C;
 
    function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result is
    begin
-      return RDF.Auxiliary.Comparison_Result (C_Raptor_Uri_Compare (Get_Handle(URI1), Get_Handle(URI2)));
+      return RDF.Auxiliary.Comparison_Result (raptor_uri_compare (Get_Handle(URI1), Get_Handle(URI2)));
    end;
 
-   function C_Raptor_Uri_Equals (URI1, URI2: Handle_Type) return int
-     with Import, Convention=>C, External_Name=>"raptor_uri_equals";
+   function raptor_uri_equals (URI1, URI2: Handle_Type) return int
+     with Import, Convention=>C;
 
    function Equals(URI1, URI2: URI_Type_Without_Finalize) return Boolean is
    begin
-      return C_Raptor_Uri_Equals (Get_Handle(URI1), Get_Handle(URI2)) /= 0;
+      return raptor_uri_equals (Get_Handle(URI1), Get_Handle(URI2)) /= 0;
    end;
 
-   function C_Raptor_Uri_As_String(URI: Handle_Type)
+   function raptor_uri_as_string(URI: Handle_Type)
                                    return chars_ptr
-     with Import, Convention=>C, External_Name=>"raptor_uri_as_string";
+     with Import, Convention=>C;
 
    -- raptor_uri_as_counted_string() or raptor_uri_to_counted_string() is faster.
    -- But Ad2012 does not provide constructing strings of given length.
    function To_String(URI: URI_Type_Without_Finalize) return URI_String is
    begin
       -- raptor_uri_as_string() returns a pointer which exists as long as the URI object. No need to free it.
-      return URI_String(String'(Value(C_Raptor_Uri_As_String(Get_Handle(URI)))));
+      return URI_String(String'(Value(raptor_uri_as_string(Get_Handle(URI)))));
    end;
 
-   function C_Raptor_Uri_To_Relative_Uri_String (Base_URI, Reference_URI: Handle_Type) return chars_ptr
-      with Import, Convention=>C, External_Name=>"raptor_uri_to_relative_uri_string";
+   function raptor_uri_to_relative_uri_string (Base_URI, Reference_URI: Handle_Type) return chars_ptr
+      with Import, Convention=>C;
 
    function To_Relative_URI_String(Base_URI, Reference_URI: URI_Type_Without_Finalize) return URI_String is
-      C_Str: constant chars_ptr := C_Raptor_Uri_To_Relative_Uri_String (Get_Handle (Base_URI),Get_Handle (Reference_URI));
+      C_Str: constant chars_ptr := raptor_uri_to_relative_uri_string (Get_Handle (Base_URI),Get_Handle (Reference_URI));
       Result: constant String := Value (C_Str);
    begin
       RDF.Raptor.Memory.raptor_free_memory (C_Str);
       return URI_String(Result);
    end;
 
-   function C_Raptor_Uri_Resolve_Uri_Reference(Base_URI, Reference_URI: char_array; buffer: char_array; length: size_t) return size_t
-      with Import, Convention=>C, External_Name=>"raptor_uri_resolve_uri_reference";
+   function raptor_uri_resolve_uri_reference(Base_URI, Reference_URI: char_array; buffer: char_array; length: size_t) return size_t
+      with Import, Convention=>C;
 
    function Resolve_URI_Reference (Base_URI, Reference_URI: String) return URI_String is
       Buffer_Length: constant size_t := Base_URI'Length + Reference_URI'Length + 1;
       Buffer       : char_array (1..Buffer_Length) := (others=>NUL);
-      Dummy        : constant size_t := C_Raptor_Uri_Resolve_Uri_Reference (To_C (Base_URI), To_C (Reference_URI), Buffer, Buffer_Length);
+      Dummy        : constant size_t := raptor_uri_resolve_uri_reference (To_C (Base_URI), To_C (Reference_URI), Buffer, Buffer_Length);
    begin
       return URI_String(To_Ada(Buffer));
    end;
 
-   function C_Raptor_Uri_Counted_Filename_To_Uri_String(filename: char_array; filename_len: size_t) return chars_ptr
-      with Import, Convention=>C, External_Name=>"raptor_uri_counted_filename_to_uri_string";
+   function raptor_uri_counted_filename_to_uri_string(filename: char_array; filename_len: size_t) return chars_ptr
+      with Import, Convention=>C;
 
    function Filename_To_URI_String (Filename: String) return URI_String is
-      Result1: constant chars_ptr := C_Raptor_Uri_Counted_Filename_To_Uri_String (To_C (Filename, Append_Nul=>False), Filename'Length);
+      Result1: constant chars_ptr := raptor_uri_counted_filename_to_uri_string (To_C (Filename, Append_Nul=>False), Filename'Length);
       Result: constant String := Value (Result1);
    begin
       RDF.Raptor.Memory.raptor_free_memory (Result1);
       return URI_String(Result);
    end;
 
-   function C_Raptor_Uri_Uri_String_Is_Absolute (URI_String: char_array) return int
-      with Import, Convention=>C, External_Name=>"raptor_uri_uri_string_is_absolute";
+   function raptor_uri_uri_string_is_absolute (URI_String: char_array) return int
+      with Import, Convention=>C;
 
    function URI_String_Is_Absolute (Str: URI_String) return Boolean is
    begin
-      return C_Raptor_Uri_Uri_String_Is_Absolute(To_C(String(Str))) > 0; -- C sources show that <0 cannot be returned
+      return raptor_uri_uri_string_is_absolute(To_C(String(Str))) > 0; -- C sources show that <0 cannot be returned
    end;
 
-   function C_Raptor_Uri_Uri_String_Is_File_Uri (URI_String: char_array) return int
-      with Import, Convention=>C, External_Name=>"raptor_uri_uri_string_is_file_uri";
+   function raptor_uri_uri_string_is_file_uri (URI_String: char_array) return int
+      with Import, Convention=>C;
 
    function URI_String_Is_File_URI (Str: URI_String) return Boolean is
    begin
-      return C_Raptor_Uri_Uri_String_Is_File_Uri(To_C(String(Str))) /= 0;
+      return raptor_uri_uri_string_is_file_uri(To_C(String(Str))) /= 0;
    end;
 
-   function C_Raptor_Uri_Uri_String_To_Filename (URI_String: char_array) return chars_ptr
-      with Import, Convention=>C, External_Name=>"raptor_uri_uri_string_to_filename";
+   function raptor_uri_uri_string_to_filename (URI_String: char_array) return chars_ptr
+      with Import, Convention=>C;
 
    function URI_String_To_Filename (Str: URI_String) return String is
-      Result1: constant chars_ptr := C_Raptor_Uri_Uri_String_To_Filename(To_C(String(Str)));
+      Result1: constant chars_ptr := raptor_uri_uri_string_to_filename(To_C(String(Str)));
       Result: constant String := Value (Result1);
    begin
       RDF.Raptor.Memory.raptor_free_memory (Result1);
       return Result;
    end;
 
-   function C_Raptor_Uri_Uri_String_To_Filename_Fragment (URI_String: char_array; Fragment_P: access chars_ptr) return chars_ptr
-      with Import, Convention=>C, External_Name=>"raptor_uri_uri_string_to_filename_fragment";
+   function raptor_uri_uri_string_to_filename_fragment (URI_String: char_array; Fragment_P: access chars_ptr) return chars_ptr
+      with Import, Convention=>C;
 
    function URI_String_To_Filename_And_Fragment(Str: URI_String) return Filename_And_Fragment is
       C_Filename : chars_ptr;
       C_Fragment : aliased chars_ptr;
    begin
-      C_Filename := C_Raptor_Uri_Uri_String_To_Filename_Fragment (To_C(String(Str)), C_Fragment'Unchecked_Access);
+      C_Filename := raptor_uri_uri_string_to_filename_fragment (To_C(String(Str)), C_Fragment'Unchecked_Access);
       declare
          Filename: constant String := Value (C_Filename);
          Fragment: constant String := Value (C_Fragment);
@@ -212,40 +212,40 @@ package body RDF.Raptor.URI is
       end;
    end;
 
-   function C_Raptor_URI_Print (URI: Handle_Type; File: RDF.Auxiliary.C_File_Access) return int
-      with Import, Convention=>C, External_Name=>"raptor_uri_print";
+   function raptor_uri_print (URI: Handle_Type; File: RDF.Auxiliary.C_File_Access) return int
+      with Import, Convention=>C;
 
    procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
    begin
-      if C_Raptor_URI_Print (Get_Handle (URI), File) /= 0 then
+      if raptor_uri_print (Get_Handle (URI), File) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;
       end if;
    end;
 
-   function C_Raptor_URI_Get_World (URI: Handle_Type) return RDF.Raptor.World.Handle_Type
-      with Import, Convention=>C, External_Name=>"raptor_uri_get_world";
+   function raptor_uri_get_world (URI: Handle_Type) return RDF.Raptor.World.Handle_Type
+      with Import, Convention=>C;
 
    function Get_World (URI: URI_Type_Without_Finalize) return World_Type_Without_Finalize is
    begin
-      return From_Handle (C_Raptor_URI_Get_World (Get_Handle (URI)));
+      return From_Handle (raptor_uri_get_world (Get_Handle (URI)));
    end;
 
-   function C_Raptor_URI_Write (URI: Handle_Type; Stream: RDF.Raptor.IOStream.Handle_Type) return int
-      with Import, Convention=>C, External_Name=>"raptor_uri_write";
+   function raptor_uri_write (URI: Handle_Type; Stream: RDF.Raptor.IOStream.Handle_Type) return int
+      with Import, Convention=>C;
 
    procedure Write (URI: URI_Type_Without_Finalize; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class) is
       use all type RDF.Raptor.IOStream.Base_Stream_Type;
    begin
-      if C_Raptor_URI_Write (Get_Handle(URI), Get_Handle(Stream)) /= 0 then
+      if raptor_uri_write (Get_Handle(URI), Get_Handle(Stream)) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;
       end if;
    end;
 
-   function C_Raptor_URI_File_Exists (URI: Handle_Type) return int
-      with Import, Convention=>C, External_Name=>"raptor_uri_file_exists";
+   function raptor_uri_file_exists (URI: Handle_Type) return int
+      with Import, Convention=>C;
 
    function URI_File_Exists (URI: URI_Type_Without_Finalize) return Boolean is
-      Result: constant int := C_Raptor_URI_File_Exists(Get_Handle(URI));
+      Result: constant int := raptor_uri_file_exists(Get_Handle(URI));
    begin
       if Result < 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -253,11 +253,11 @@ package body RDF.Raptor.URI is
       return Result /= 0;
    end;
 
-   function C_Raptor_Uri_Filename_Exists (Filename: char_array) return int
-      with Import, Convention=>C, External_Name=>"raptor_uri_filename_exists";
+   function raptor_uri_filename_exists (Filename: char_array) return int
+      with Import, Convention=>C;
 
    function Filename_Exists (Filename: String) return Boolean is
-      Result: constant int := C_Raptor_Uri_Filename_Exists(To_C(Filename, Append_Nul=>True));
+      Result: constant int := raptor_uri_filename_exists(To_C(Filename, Append_Nul=>True));
    begin
       if Result < 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -265,44 +265,44 @@ package body RDF.Raptor.URI is
       return Result /= 0;
    end;
 
-   procedure C_Raptor_Free_URI (Handle: Handle_Type)
-     with Import, Convention=>C, External_Name=>"raptor_free_uri";
+   procedure raptor_free_uri (Handle: Handle_Type)
+     with Import, Convention=>C;
 
    procedure Finalize_Handle(Object: URI_Type; Handle: Handle_Type) is
    begin
-      C_Raptor_Free_URI (Handle);
+      raptor_free_uri (Handle);
    end;
 
-   function C_Raptor_URI_Copy (Handle: Handle_Type)
+   function raptor_uri_copy (Handle: Handle_Type)
                                return Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_uri_copy";
+     with Import, Convention=>C;
 
    procedure Adjust(Object: in out URI_Type) is
    begin
-      Set_Handle_Hack(Object, C_Raptor_URI_Copy (Get_Handle(Object)));
+      Set_Handle_Hack(Object, raptor_uri_copy (Get_Handle(Object)));
    end;
 
    function Copy (Object: URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize is
    begin
-      return From_Handle (C_Raptor_URI_Copy (Get_Handle(Object)) );
+      return From_Handle (raptor_uri_copy (Get_Handle(Object)) );
    end;
 
    function Get_Filename (Pair: Filename_And_Fragment) return String is (Pair.Filename);
    function Get_Fragment (Pair: Filename_And_Fragment) return String is (Pair.Fragment);
 
-   function C_Raptor_Uri_To_Turtle_String(Handle: RDF.Raptor.World.Handle_Type;
+   function raptor_uri_to_turtle_string(Handle: RDF.Raptor.World.Handle_Type;
                                           URI: Handle_Type;
                                           Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
                                           Base_URI: Handle_Type)
                                           return Chars_Ptr
-     with Import, Convention=>C, External_Name=>"raptor_uri_to_turtle_string";
+     with Import, Convention=>C;
 
    function To_Turtle_String (World: World_Type_Without_Finalize'Class;
                               URI: URI_Type_Without_Finalize;
                               Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
                               Base_URI: URI_Type_Without_Finalize)
                               return String is
-      C_Str: constant chars_ptr := C_Raptor_Uri_To_Turtle_String(Get_Handle(World),
+      C_Str: constant chars_ptr := raptor_uri_to_turtle_string(Get_Handle(World),
                                                                  Get_Handle(URI),
                                                                  Get_Handle(Stack),
                                                                  Get_Handle(Base_URI));
@@ -318,13 +318,13 @@ package body RDF.Raptor.URI is
       end;
    end;
 
-   function C_Raptor_Uri_Turtle_Write(Handle: RDF.Raptor.World.Handle_Type;
+   function raptor_uri_turtle_write(Handle: RDF.Raptor.World.Handle_Type;
                                       Stream: RDF.Raptor.IOStream.Handle_Type;
                                       URI: Handle_Type;
                                       Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
                                       Base_URI: Handle_Type)
                                       return Int
-     with Import, Convention=>C, External_Name=>"raptor_uri_turtle_write";
+     with Import, Convention=>C;
 
    procedure Turtle_Write (World: World_Type_Without_Finalize'Class;
                            Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
@@ -332,7 +332,7 @@ package body RDF.Raptor.URI is
                            Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
                            Base_URI: URI_Type_Without_Finalize) is
    begin
-      if C_Raptor_Uri_Turtle_Write(Get_Handle(World),
+      if raptor_uri_turtle_write(Get_Handle(World),
                                    Get_Handle(Stream),
                                    Get_Handle(URI),
                                    Get_Handle(Stack),

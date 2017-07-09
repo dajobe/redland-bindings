@@ -56,27 +56,27 @@ package body RDF.Raptor.Syntaxes is
       return Object.Flags;
    end;
 
-   function C_Raptor_World_Is_Parser_Name(World: RDF.Raptor.World.Handle_Type; Name: char_array) return int
-     with Import, Convention=>C, External_Name=>"raptor_world_is_parser_name";
+   function raptor_world_is_parser_name(World: RDF.Raptor.World.Handle_Type; Name: char_array) return int
+     with Import, Convention=>C;
 
    function Is_Parser_Name (World: World_Type_Without_Finalize'Class; Name: String) return Boolean is
    begin
-      return C_Raptor_World_Is_Parser_Name(Get_Handle(World), To_C(Name, Append_Nul=>True)) /= 0;
+      return raptor_world_is_parser_name(Get_Handle(World), To_C(Name, Append_Nul=>True)) /= 0;
    end;
 
-   function C_Raptor_World_Guess_Parser_Name (World: RDF.Raptor.World.Handle_Type;
+   function raptor_world_guess_parser_name (World: RDF.Raptor.World.Handle_Type;
                                               URI: RDF.Raptor.URI.Handle_Type;
                                               MIME_Type: Char_Array;
                                               Buffer: Char_Array;
                                               Len: Size_T;
                                               Identifier: Char_Array) return chars_ptr
-     with Import, Convention=>C, External_Name=>"raptor_world_guess_parser_name";
+     with Import, Convention=>C;
 
 
    function Guess_Parser_Name (World: World_Type_Without_Finalize'Class; URI: URI_Type; MIME_Type: String; Buffer: String; Identifier: String)
                                return String is
    begin
-      return Value( C_Raptor_World_Guess_Parser_Name(Get_Handle(World),
+      return Value( raptor_world_guess_parser_name(Get_Handle(World),
                                                      Get_Handle(URI),
                                                      To_C(MIME_Type, Append_Nul=>True),
                                                      To_C(Buffer, Append_Nul=>False),
@@ -84,41 +84,41 @@ package body RDF.Raptor.Syntaxes is
                     To_C(Identifier, Append_Nul=>True)) );
    end;
 
-   function C_Raptor_World_Is_Serializer_Name(World: RDF.Raptor.World.Handle_Type; Name: char_array) return int
-     with Import, Convention=>C, External_Name=>"raptor_world_is_serializer_name";
+   function raptor_world_is_serializer_name(World: RDF.Raptor.World.Handle_Type; Name: char_array) return int
+     with Import, Convention=>C;
 
    function Is_Serializer_Name (World: World_Type_Without_Finalize'Class; Name: String) return Boolean is
    begin
-      return C_Raptor_World_Is_Serializer_Name(Get_Handle(World), To_C(Name, Append_Nul=>True)) /= 0;
+      return raptor_world_is_serializer_name(Get_Handle(World), To_C(Name, Append_Nul=>True)) /= 0;
    end;
 
    function Get_Position (Cursor: Parser_Description_Cursor    ) return Natural is (Cursor.Position);
    function Get_Position (Cursor: Serializer_Description_Cursor) return Natural is (Cursor.Position);
 
-   function C_Raptor_World_Get_Parser_Description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return access Syntax_Description_Type
-     with Import, Convention=>C, External_Name=>"raptor_world_get_parser_description";
+   function raptor_world_get_parser_description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return access Syntax_Description_Type
+     with Import, Convention=>C;
 
-   function C_Raptor_World_Get_Serializer_Description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return access Syntax_Description_Type
-     with Import, Convention=>C, External_Name=>"raptor_world_get_serializer_description";
+   function raptor_world_get_serializer_description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return access Syntax_Description_Type
+     with Import, Convention=>C;
 
    function Get_Description (Cursor: Parser_Description_Cursor    ) return Syntax_Description_Type is
    begin
-      return C_Raptor_World_Get_Parser_Description(Cursor.World, unsigned(Cursor.Position)).all;
+      return raptor_world_get_parser_description(Cursor.World, unsigned(Cursor.Position)).all;
    end;
 
    function Get_Description (Cursor: Serializer_Description_Cursor) return Syntax_Description_Type is
    begin
-      return C_Raptor_World_Get_Serializer_Description(Cursor.World, unsigned(Cursor.Position)).all;
+      return raptor_world_get_serializer_description(Cursor.World, unsigned(Cursor.Position)).all;
    end;
 
    function Has_Element (Position: Parser_Description_Cursor) return Boolean is
    begin
-      return C_Raptor_World_Get_Parser_Description(Position.World, unsigned(Position.Position)) /= null;
+      return raptor_world_get_parser_description(Position.World, unsigned(Position.Position)) /= null;
    end;
 
    function Has_Element (Position: Serializer_Description_Cursor) return Boolean is
    begin
-      return C_Raptor_World_Get_Serializer_Description(Position.World, unsigned(Position.Position)) /= null;
+      return raptor_world_get_serializer_description(Position.World, unsigned(Position.Position)) /= null;
    end;
 
    function First (Object: Parser_Description_Iterator) return Parser_Description_Cursor is

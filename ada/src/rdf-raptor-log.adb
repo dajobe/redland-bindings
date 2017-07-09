@@ -63,55 +63,55 @@ package body RDF.Raptor.Log is
    function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
 
-   procedure C_Raptor_Log_Handler(Data: chars_ptr; Msg: Log_Message_Type)
+   procedure raptor_log_handler(Data: chars_ptr; Msg: Log_Message_Type)
       with Convention=>C;
 
-   procedure C_Raptor_Log_Handler(Data: chars_ptr; Msg: Log_Message_Type) is
+   procedure raptor_log_handler(Data: chars_ptr; Msg: Log_Message_Type) is
    begin
       Log_Message(Ptr_To_Obj(Data).all, Msg);
    end;
 
-   function C_Raptor_World_Set_Log_Handler(World: RDF.Raptor.World.Handle_Type; Data: chars_ptr; Handler: Log_Handler_Type) return int
-     with Import, Convention=>C, External_Name=>"raptor_world_set_log_handler";
+   function raptor_world_set_log_handler(World: RDF.Raptor.World.Handle_Type; Data: chars_ptr; Handler: Log_Handler_Type) return int
+     with Import, Convention=>C;
 
    procedure Set_Log_Handler(World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Handler: Log_Handler) is
    begin
-      if C_Raptor_World_Set_Log_Handler(Get_Handle(World), Obj_To_Ptr(Handler'Unchecked_Access), C_Raptor_Log_Handler'Access) /= 0 then
+      if raptor_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler'Unchecked_Access), raptor_log_handler'Access) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
 
-   function C_Raptor_Log_Level_Get_Label(Level: Log_Level_Type) return chars_ptr
-     with Import, Convention=>C, External_Name=>"raptor_log_level_get_label";
+   function raptor_log_level_get_label(Level: Log_Level_Type) return chars_ptr
+     with Import, Convention=>C;
 
    function Get_Label (Level: Log_Level_Type) return String is
    begin
-      return Value(C_Raptor_Log_Level_Get_Label(Level));
+      return Value(raptor_log_level_get_label(Level));
    end;
 
-   function C_Raptor_Domain_Get_Label (Level: Domain_Type) return chars_ptr
-     with Import, Convention=>C, External_Name=>"raptor_domain_get_label";
+   function raptor_domain_get_label (Level: Domain_Type) return chars_ptr
+     with Import, Convention=>C;
 
    function Get_Label (Level: Domain_Type) return String is
    begin
-      return Value(C_Raptor_Domain_Get_Label(Level));
+      return Value(raptor_domain_get_label(Level));
    end;
 
-   function C_Raptor_Locator_Print (Locator: Locator_Handle_Type; Stream: RDF.Auxiliary.C_File_Access) return int
-     with Import, Convention=>C, External_Name=>"raptor_locator_print";
+   function raptor_locator_print (Locator: Locator_Handle_Type; Stream: RDF.Auxiliary.C_File_Access) return int
+     with Import, Convention=>C;
 
    procedure Print (Locator: Locator_Type; File: RDF.Auxiliary.C_File_Access) is
    begin
-      if C_Raptor_Locator_Print(Get_Handle(Locator), File) /= 0 then
+      if raptor_locator_print(Get_Handle(Locator), File) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
 
-   function C_Raptor_Locator_Format (Buffer: chars_ptr; Length: size_t; Locator: Locator_Handle_Type) return int
-     with Import, Convention=>C, External_Name=>"raptor_locator_format";
+   function raptor_locator_format (Buffer: chars_ptr; Length: size_t; Locator: Locator_Handle_Type) return int
+     with Import, Convention=>C;
 
    function Format (Locator: Locator_Type) return String is
-      Res1: constant int := C_Raptor_Locator_Format(Null_Ptr, 0, Get_Handle(Locator));
+      Res1: constant int := raptor_locator_format(Null_Ptr, 0, Get_Handle(Locator));
    begin
       if Res1 < 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -119,24 +119,24 @@ package body RDF.Raptor.Log is
       declare
          Buffer: aliased char_array := (1..size_t(Res1) => Interfaces.C.Nul);
       begin
-         if C_Raptor_Locator_Format(To_Chars_Ptr(Buffer'Unchecked_Access, Nul_Check=>False), 0, Get_Handle(Locator)) < 0 then
+         if raptor_locator_format(To_Chars_Ptr(Buffer'Unchecked_Access, Nul_Check=>False), 0, Get_Handle(Locator)) < 0 then
             raise RDF.Auxiliary.RDF_Exception;
          end if;
          return To_Ada(Buffer);
       end;
    end;
 
-   procedure C_Raptor_Free_URI (Handle: RDF.Raptor.URI.Handle_Type)
-     with Import, Convention=>C, External_Name=>"raptor_free_uri";
+   procedure raptor_free_uri (Handle: RDF.Raptor.URI.Handle_Type)
+     with Import, Convention=>C;
 
-   function C_Raptor_URI_Copy (Handle: RDF.Raptor.URI.Handle_Type)
+   function raptor_uri_copy (Handle: RDF.Raptor.URI.Handle_Type)
                                return RDF.Raptor.URI.Handle_Type
-   with Import, Convention=>C, External_Name=>"raptor_uri_copy";
+   with Import, Convention=>C;
 
    procedure Finalize_Locator (Handle: Locator_Handle_Type) is
       function Conv is new Ada.Unchecked_Conversion(Locator_Handle_Type, chars_ptr);
    begin
-      C_Raptor_Free_URI(Handle.URI);
+      raptor_free_uri(Handle.URI);
       RDF.Raptor.Memory.Raptor_Free_Memory(Handle.File);
       RDF.Raptor.Memory.Raptor_Free_Memory(Conv(Handle));
    end;
@@ -148,7 +148,7 @@ package body RDF.Raptor.Log is
 
    procedure Adjust (Object: in out Locator_Type) is
    begin
-      Get_Handle(Object).URI := C_Raptor_URI_Copy(Get_Handle(Object).URI);
+      Get_Handle(Object).URI := raptor_uri_copy(Get_Handle(Object).URI);
       Get_Handle(Object).File := RDF.Raptor.Memory.Copy_C_String(Get_Handle(Object).File);
    end;
 

@@ -16,11 +16,11 @@ package body Constants_Test is
          return Ada.Strings.Fixed.Trim (unsigned'Image (I), Ada.Strings.Left);
       end My_Image;
       Combined_String: constant String :=
-        My_Image(Raptor_Version_Major) & '.' & My_Image(Raptor_Version_Minor) & '.' & My_Image(Raptor_Version_Release);
+        My_Image(raptor_version_major) & '.' & My_Image(raptor_version_minor) & '.' & My_Image(Raptor_Version_Release);
       Combined_Decimal: constant unsigned :=
-        Raptor_Version_Major * 10000 + Raptor_Version_Minor * 100 + Raptor_Version_Release;
+        raptor_version_major * 10000 + raptor_version_minor * 100 + raptor_version_release;
    begin
-      AUnit.Assertions.Assert (Combined_String = raptor_version_string, "Combined version string");
+      AUnit.Assertions.Assert (Combined_String = version_string, "Combined version string");
       AUnit.Assertions.Assert (Combined_Decimal = raptor_version_decimal, "Combined decimal version");
    end;
 

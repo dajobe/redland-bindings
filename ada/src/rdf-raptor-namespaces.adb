@@ -9,12 +9,12 @@ with RDF.Raptor.Memory;
 
 package body RDF.Raptor.Namespaces is
 
-   function C_Raptor_New_Namespace (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
+   function raptor_new_namespace (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
                                     Prefix: Char_Array;
                                     NS: Char_Array;
                                     Depth: Int)
                                     return Namespace_Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_namespace";
+     with Import, Convention=>C;
 
    function New_Namespace (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
                            Prefix: String;
@@ -22,14 +22,14 @@ package body RDF.Raptor.Namespaces is
                            Depth: Natural)
                            return Namespace_Type is
    begin
-      return From_Non_Null_Handle( C_Raptor_New_Namespace(Get_Handle(Stack), To_C(Prefix, Append_Nul=>True), To_C(NS, Append_Nul=>True), Int(Depth)) );
+      return From_Non_Null_Handle( raptor_new_namespace(Get_Handle(Stack), To_C(Prefix, Append_Nul=>True), To_C(NS, Append_Nul=>True), Int(Depth)) );
    end;
 
-   function C_Raptor_New_Namespace_From_URI (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
+   function raptor_new_namespace_from_uri (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
                                              Prefix: char_array;
                                              URI: RDF.Raptor.URI.Handle_Type)
                                              return Namespace_Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_new_namespace_from_uri";
+     with Import, Convention=>C;
 
    function From_URI (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
                       Prefix: String;
@@ -37,50 +37,50 @@ package body RDF.Raptor.Namespaces is
                       Depth: Integer)
                       return Namespace_Type is
    begin
-      return From_Non_Null_Handle( C_Raptor_New_Namespace_From_URI (Get_Handle(Stack), To_C(Prefix, Append_Nul=>True), Get_Handle(URI)) );
+      return From_Non_Null_Handle( raptor_new_namespace_from_uri (Get_Handle(Stack), To_C(Prefix, Append_Nul=>True), Get_Handle(URI)) );
    end;
 
-   procedure C_Raptor_Free_Namespace (Handle: Namespace_Handle_Type)
-     with Import, Convention=>C, External_Name=>"raptor_free_namespace";
+   procedure raptor_free_namespace (Handle: Namespace_Handle_Type)
+     with Import, Convention=>C;
 
    procedure Finalize_Handle (Object: Namespace_Type; Handle: Namespace_Handle_Type) is
    begin
-      C_Raptor_Free_Namespace(Handle);
+      raptor_free_namespace(Handle);
    end;
 
-   function C_Raptor_Namespace_Get_Uri (Handle: Namespace_Handle_Type) return RDF.Raptor.URI.Handle_Type
-     with Import, Convention=>C, External_Name=>"raptor_namespace_get_uri";
+   function raptor_namespace_get_uri (Handle: Namespace_Handle_Type) return RDF.Raptor.URI.Handle_Type
+     with Import, Convention=>C;
 
    -- raptor_namespace_get_uri() may return NULL (for xmlns="")
    function Get_URI (NS: Namespace_Type_Without_Finalize) return URI_Type_Without_Finalize is
    begin
-      return From_Handle( C_Raptor_Namespace_Get_Uri(Get_Handle(NS)) );
+      return From_Handle( raptor_namespace_get_uri(Get_Handle(NS)) );
    end;
 
-   function C_Raptor_Namespace_Get_Prefix (Handle: Namespace_Handle_Type) return chars_ptr
-     with Import, Convention=>C, External_Name=>"raptor_namespace_get_prefix";
+   function raptor_namespace_get_prefix (Handle: Namespace_Handle_Type) return chars_ptr
+     with Import, Convention=>C;
 
    function Get_Prefix (NS: Namespace_Type_Without_Finalize) return String is
    begin
-      return Value( C_Raptor_Namespace_Get_Prefix(Get_Handle(NS)) );
+      return Value( raptor_namespace_get_prefix(Get_Handle(NS)) );
    end;
 
-   function C_Raptor_Namespace_Write (NS: Namespace_Handle_Type; Stream: RDF.Raptor.IOStream.Handle_Type) return int
-     with Import, Convention=>C, External_Name=>"raptor_namespace_write";
+   function raptor_namespace_write (NS: Namespace_Handle_Type; Stream: RDF.Raptor.IOStream.Handle_Type) return int
+     with Import, Convention=>C;
 
    procedure Write (NS: Namespace_Type_Without_Finalize; Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class) is
       use RDF.Raptor.IOStream;
    begin
-      if C_Raptor_Namespace_Write(Get_Handle(NS), Get_Handle(Stream)) /= 0 then
+      if raptor_namespace_write(Get_Handle(NS), Get_Handle(Stream)) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;
       end if;
    end;
 
-   function C_Raptor_Namespace_Format_As_Xml (NS: Namespace_Handle_Type; Stream: access size_t) return chars_ptr
-     with Import, Convention=>C, External_Name=>"raptor_namespace_format_as_xml";
+   function raptor_namespace_format_as_xml (NS: Namespace_Handle_Type; Stream: access size_t) return chars_ptr
+     with Import, Convention=>C;
 
    function Format_As_XML (NS: Namespace_Type_Without_Finalize) return String is
-      C_Str: chars_ptr := C_Raptor_Namespace_Format_As_Xml(Get_Handle(NS), null);
+      C_Str: chars_ptr := raptor_namespace_format_as_xml(Get_Handle(NS), null);
    begin
       if C_Str = Null_Ptr then
          raise RDF.Auxiliary.RDF_Exception;
@@ -96,13 +96,13 @@ package body RDF.Raptor.Namespaces is
    function Get_Prefix (Object: Prefix_And_URI) return String is (Object.Prefix);
    function Get_URI (Object: Prefix_And_URI) return URI_String is (Object.URI);
 
-   function C_Raptor_Xml_Namespace_String_Parse (Str: char_array; Prefix, URI: access chars_ptr) return int
-     with Import, Convention=>C, External_Name=>"raptor_xml_namespace_string_parse";
+   function raptor_xml_namespace_string_parse (Str: char_array; Prefix, URI: access chars_ptr) return int
+     with Import, Convention=>C;
 
    function String_Parse (NS: String) return Prefix_And_URI is
       C_Prefix, C_URI: aliased chars_ptr;
    begin
-      if C_Raptor_Xml_Namespace_String_Parse(To_C(NS), C_Prefix'Access, C_URI'Access) /= 0 then
+      if raptor_xml_namespace_string_parse(To_C(NS), C_Prefix'Access, C_URI'Access) /= 0 then
          raise RDF_Exception;
       end if;
       declare
@@ -118,7 +118,7 @@ package body RDF.Raptor.Namespaces is
    function Extract_Prefix (NS: String) return String is
       C_Prefix: aliased chars_ptr;
    begin
-      if C_Raptor_Xml_Namespace_String_Parse(To_C(NS), C_Prefix'Access, null) /= 0 then
+      if raptor_xml_namespace_string_parse(To_C(NS), C_Prefix'Access, null) /= 0 then
          raise RDF_Exception;
       end if;
       declare
@@ -132,7 +132,7 @@ package body RDF.Raptor.Namespaces is
    function Extract_URI (NS: String) return URI_String is
       C_URI: aliased chars_ptr;
    begin
-      if C_Raptor_Xml_Namespace_String_Parse(To_C(NS), null, C_URI'Access) /= 0 then
+      if raptor_xml_namespace_string_parse(To_C(NS), null, C_URI'Access) /= 0 then
          raise RDF_Exception;
       end if;
       declare
