@@ -29,15 +29,21 @@ LIB_DIR = $(builddir)/lib
 
 # $(LIB_DIR)/librdf-ada.so: my-dynamic-lib
 
+if DEBUG
+DEBUG_MODE=debug
+else
+DEBUG_MODE=release
+endif
+
 my-dynamic-lib:
 	gnatmake -p -Plibrdf.gpr \
-                 -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install
+                 -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=$(DEBUG_MODE)
 
 # $(LIB_DIR)/librdf-ada.a: my-static-lib
 
 my-static-lib:
 	gnatmake -p -Plibrdf.gpr \
-                 -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install
+                 -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=$(DEBUG_MODE)
 
 all-local: my-dynamic-lib my-static-lib
 
