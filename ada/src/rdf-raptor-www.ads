@@ -34,7 +34,9 @@ package RDF.Raptor.WWW is
    -- Remove Cache-Control: header altogether
    not overriding procedure Unset_Cache_Control (WWW: WWW_Type_Without_Finalize);
 
-   -- TODO: Stopped at raptor_www_set_connection_timeout()
+   not overriding procedure Set_Connection_Timeout (WWW: WWW_Type_Without_Finalize; Timeout: Natural);
+
+   -- TODO: Stopped at raptor_www_set_content_type_handler()
 
    type WWW_Type is new WWW_Type_Without_Finalize with null record;
 

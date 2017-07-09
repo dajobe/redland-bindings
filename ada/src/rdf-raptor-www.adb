@@ -61,6 +61,14 @@ package body RDF.Raptor.WWW is
       C_Raptor_Set_Cache_Control(Get_Handle(WWW), Null_Ptr);
    end;
 
+   procedure C_Raptor_Www_Set_Connection_Timeout (WWW: WWW_Handle_Type; Timeout: int)
+      with Import, Convention=>C, External_Name=>"raptor_www_set_connection_timeout";
+
+   procedure Set_Connection_Timeout (WWW: WWW_Type_Without_Finalize; Timeout: Natural) is
+   begin
+      C_Raptor_Www_Set_Connection_Timeout(Get_Handle(WWW), int(Timeout));
+   end;
+
    function C_Raptor_New_WWW (World: RDF.Raptor.World.Handle_Type) return WWW_Handle_Type
       with Import, Convention=>C, External_Name=>"raptor_new_www";
 
@@ -116,12 +124,12 @@ package body RDF.Raptor.WWW is
       -- TODO
    end;
 
-   procedure C_raptor_www_set_write_bytes_handler (WWW: WWW_Handle_Type; Handler: C_Raptor_Www_Write_Bytes_Handler; User_Data: chars_ptr)
+   procedure C_Raptor_Www_Set_Write_Bytes_Handler(WWW: WWW_Handle_Type; Handler: C_Raptor_Www_Write_Bytes_Handler; User_Data: chars_ptr)
       with Import, Convention=>C, External_Name=>"raptor_www_set_write_bytes_handler";
 
    procedure Initialize_Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize) is
    begin
-      C_raptor_www_set_write_bytes_handler(Get_Handle(WWW), Write_Bytes_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
+      C_Raptor_Www_Set_Write_Bytes_Handler(Get_Handle(WWW), Write_Bytes_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
    end;
 
 end RDF.Raptor.WWW;
