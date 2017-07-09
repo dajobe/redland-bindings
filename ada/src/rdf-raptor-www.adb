@@ -111,6 +111,9 @@ package body RDF.Raptor.WWW is
    procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: RDF.Auxiliary.C_Pointers.Pointer; Size, Nmemb: size_t)
       with Convention=>C;
 
+   procedure Content_Type_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Content_Type: chars_ptr)
+      with Convention=>C;
+
    procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: RDF.Auxiliary.C_Pointers.Pointer; Size, Nmemb: size_t) is
    begin
       Write_Bytes_Handler(--WWW_Type_Without_Finalize'(From_Handle(WWW)), -- ignored
@@ -118,9 +121,17 @@ package body RDF.Raptor.WWW is
                           Value_With_Possible_NULs(Ptr, Size*Nmemb));
    end;
 
+   procedure Content_Type_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Content_Type: chars_ptr) is
+   begin
+      Content_Type_Handler(--WWW_Type_Without_Finalize'(From_Handle(WWW)), -- ignored
+                           Ptr_To_Obj(User_Data).all,
+                           Value(Content_Type));
+   end;
+
    procedure Initialize_All_Callbacks (WWW: WWW_Type_Without_Finalize) is
    begin
       Initialize_Write_Bytes_Handler(WWW);
+      Initialize_Content_Type_Handler(WWW);
       -- TODO
    end;
 
@@ -130,6 +141,14 @@ package body RDF.Raptor.WWW is
    procedure Initialize_Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize) is
    begin
       C_Raptor_Www_Set_Write_Bytes_Handler(Get_Handle(WWW), Write_Bytes_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
+   end;
+
+   procedure C_Raptor_Www_Set_Content_Type_Handler(WWW: WWW_Handle_Type; Handler: C_Raptor_Www_Content_Type_Handler; User_Data: chars_ptr)
+      with Import, Convention=>C, External_Name=>"raptor_www_set_content_Type_handler";
+
+   procedure Initialize_Content_Type_Handler (WWW: WWW_Type_Without_Finalize) is
+   begin
+      C_Raptor_Www_Set_Content_Type_Handler(Get_Handle(WWW), Content_Type_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
    end;
 
 end RDF.Raptor.WWW;

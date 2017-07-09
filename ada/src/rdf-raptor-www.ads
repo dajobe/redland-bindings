@@ -17,8 +17,10 @@ package RDF.Raptor.WWW is
    not overriding procedure Initialize_All_Callbacks (WWW: WWW_Type_Without_Finalize);
 
    not overriding procedure Initialize_Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize);
+   not overriding procedure Initialize_Content_Type_Handler (WWW: WWW_Type_Without_Finalize);
 
    not overriding procedure Write_Bytes_Handler(WWW: WWW_Type_Without_Finalize; Value: String) is null;
+   not overriding procedure Content_Type_Handler(WWW: WWW_Type_Without_Finalize; Content_Type: String) is null;
 
    -- Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
    not overriding procedure Set_User_Agent (WWW: WWW_Type_Without_Finalize; User_Agent: String);
