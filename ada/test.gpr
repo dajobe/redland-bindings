@@ -3,7 +3,7 @@ with "aunit-3.7.0w/lib/gnat/aunit_build.gpr";
 
 project Test is
 
-   for Object_Dir use "obj/test";
+   for Object_Dir use "obj-static/test";
    type Runtime_Type is
       ("cert", "default", "full", "hi", "kernel", "kernel-sjlj", "kernel-smp", "pthread", "sjlj", "ravenscar", "ravenscar-apex", "ravenscar-full", "ravenscar-cert", "ravenscar-cert-rci", "ravenscar-cert-rtp", "ravenscar-sfp", "rtp", "rtp-smp",
       "soft-float", "xenomai", "zcx", "zfp", "minimal");
@@ -12,256 +12,19 @@ project Test is
       ("Devel", "Install");
    Mode : Compilation_Mode_Type := external ("MODE", "default");
 
-   case Runtime is
-
-      when "cert" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "default" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "full" =>
-
-         case Mode is
-
-            when "Devel" =>
-               for Main use ("run_all_tests.adb");
-               for Source_Dirs use ("src/test");
-
-            when "Install" =>
-               for Main use ("run_all_tests.adb", "special_test.adb");
-               for Source_Dirs use ("src/test");
-         end case;
-
-      when "hi" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "kernel" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "kernel-sjlj" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "kernel-smp" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "pthread" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "sjlj" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "ravenscar" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "ravenscar-apex" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "ravenscar-full" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "ravenscar-cert" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "ravenscar-cert-rci" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "ravenscar-cert-rtp" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "ravenscar-sfp" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "rtp" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "rtp-smp" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "soft-float" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "xenomai" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "zcx" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "zfp" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-
-      when "minimal" =>
-         for Main use ("run_all_tests.adb");
-         for Source_Dirs use ("src/test");
-   end case;
+   for Main use ("run_all_tests.adb");
+   for Source_Dirs use ("src/test");
 
    package Compiler is
       for Default_Switches ("ada") use ("-g", "-O2", "-gnat2012");
    end Compiler;
 
    package Linker is
-
-      case Runtime is
-
-         when "cert" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "default" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "full" =>
-
-            case Mode is
-
-               when "Devel" =>
-                  for Linker_Options use ("-lraptor2");
-
-               when "Install" =>
-                  for Linker_Options use ();
-            end case;
-
-         when "hi" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "kernel" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "kernel-sjlj" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "kernel-smp" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "pthread" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "sjlj" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "ravenscar" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "ravenscar-apex" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "ravenscar-full" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "ravenscar-cert" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "ravenscar-cert-rci" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "ravenscar-cert-rtp" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "ravenscar-sfp" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "rtp" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "rtp-smp" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "soft-float" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "xenomai" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "zcx" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "zfp" =>
-            for Linker_Options use ("-lraptor2");
-
-         when "minimal" =>
-            for Linker_Options use ("-lraptor2");
-      end case;
+      for Linker_Options use ("-lraptor2");
    end Linker;
 
    package Ide is
-
-      case Runtime is
-
-         when "cert" =>
-
-         when "default" =>
-
-         when "full" =>
-
-            case Mode is
-
-               when "Devel" =>
-
-               when "Install" =>
-                  for Vcs_Kind use "Git";
-            end case;
-
-         when "hi" =>
-
-         when "kernel" =>
-
-         when "kernel-sjlj" =>
-
-         when "kernel-smp" =>
-
-         when "pthread" =>
-
-         when "sjlj" =>
-
-         when "ravenscar" =>
-
-         when "ravenscar-apex" =>
-
-         when "ravenscar-full" =>
-
-         when "ravenscar-cert" =>
-
-         when "ravenscar-cert-rci" =>
-
-         when "ravenscar-cert-rtp" =>
-
-         when "ravenscar-sfp" =>
-
-         when "rtp" =>
-
-         when "rtp-smp" =>
-
-         when "soft-float" =>
-
-         when "xenomai" =>
-
-         when "zcx" =>
-
-         when "zfp" =>
-
-         when "minimal" =>
-
-      end case;
+      for Vcs_Kind use "Git";
    end Ide;
 
 end Test;

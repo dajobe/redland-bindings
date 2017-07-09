@@ -1,3 +1,4 @@
+-- https://gcc.gnu.org/bugzilla/show_bug.cgi?id=62236 (FIXED)
 with Ada.Iterator_Interfaces;
 
 procedure Special_Test is

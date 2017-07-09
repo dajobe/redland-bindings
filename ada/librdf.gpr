@@ -33,11 +33,11 @@ library project Librdf is
       Debug_Flags := ();
       case Debug_Mode is
           when "debug" =>
-            Debug_Flags := ("-g", "-gnata");
+             Debug_Flags := ("-g", "-gnata");
           when "release" =>
-            Debug_Flags := ("-O2");
+             Debug_Flags := ("-O2");
           when "check" =>
-            Debug_Flags := ("-gnatc");
+             Debug_Flags := ("-gnatc");
       end case;
 
       case LIBRARY_KIND is

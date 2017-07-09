@@ -45,17 +45,23 @@ my-static-lib:
 	gnatmake -p -Plibrdf.gpr \
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=$(DEBUG_MODE)
 
-my-check:
+check-syntax:
 	gnatmake -p -Plibrdf.gpr \
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=check
 
 all-local: my-dynamic-lib my-static-lib
 
+check-local: $(builddir)/obj-static/test/run_all_tests
+	$(builddir)/obj-static/test/run_all_tests
+
+$(builddir)/obj-static/test/run_all_tests: my-static-lib
+	gnatmake -p -Ptest.gpr \
+                 -XOBJ_DIR=$(builddir)/obj-static -XMODE=Install -XDEBUG_MODE=debug
+
 clean-local:
 	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install
 	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install
-	gnat clean -r -Ptest.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj/test -Xsoversion=$(soname) -XMODE=Install
-	gnat clean -r -Ptest.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj/test -Xsoversion=$(soname) -XMODE=Install
+	gnat clean -r -Ptest.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static/test -Xsoversion=$(soname) -XMODE=Install
 	rm -f $(builddir)/lib/$(soname)
 
 install-data-local:
@@ -74,4 +80,4 @@ uninstall-local:
 	cd $(builddir)/lib && rm -f librdf-ada.so librdf-ada.a $(soname)
 
 .PHONY: all-local clean-local install-local uninstall-local
-.PHONY: my-dynamic-lib my-static-lib
+.PHONY: my-dynamic-lib my-static-lib check-syntax
