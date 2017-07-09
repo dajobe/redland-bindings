@@ -12,11 +12,26 @@ project Test is
       ("Devel", "Install");
    Mode : Compilation_Mode_Type := external ("MODE", "default");
 
+   type Debug_Mode_Type is ("debug", "release", "check");
+   Debug_Mode : Debug_Mode_Type := external ("DEBUG_MODE", "debug");
+
    for Main use ("run_all_tests.adb");
    for Source_Dirs use ("src/test");
 
    package Compiler is
-      for Default_Switches ("ada") use ("-g", "-O2", "-gnat2012");
+      Common_Ada_Flags := ("-gnat2012", "-gnaty3", "-gnatya", "-gnatyA", "-gnatyb", "-gnatyd", "-gnatyf", "-gnatyh", "-gnatyi", "-gnatyl", "-gnatyp", "-gnatyx");
+
+      Debug_Flags := ();
+      case Debug_Mode is
+          when "debug" =>
+             Debug_Flags := ("-g", "-gnata");
+          when "release" =>
+             Debug_Flags := ("-O2");
+          when "check" =>
+             Debug_Flags := ("-gnatc");
+      end case;
+
+      for Default_Switches ("Ada") use Common_Ada_Flags & Debug_Flags;
    end Compiler;
 
    package Linker is

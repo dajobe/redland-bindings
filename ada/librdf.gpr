@@ -49,64 +49,7 @@ library project Librdf is
    end Compiler;
 
    package Linker is
-
-      case RUNTIME is
-
-         when "cert" =>
-
-         when "default" =>
-
-         when "full" =>
-
-            case MODE is
-
-               when "Devel" =>
-
-               when "Install" =>
-                  for Linker_Options use ("-lraptor2");
-            end case;
-
-         when "hi" =>
-
-         when "kernel" =>
-
-         when "kernel-sjlj" =>
-
-         when "kernel-smp" =>
-
-         when "pthread" =>
-
-         when "sjlj" =>
-
-         when "ravenscar" =>
-
-         when "ravenscar-apex" =>
-
-         when "ravenscar-full" =>
-
-         when "ravenscar-cert" =>
-
-         when "ravenscar-cert-rci" =>
-
-         when "ravenscar-cert-rtp" =>
-
-         when "ravenscar-sfp" =>
-
-         when "rtp" =>
-
-         when "rtp-smp" =>
-
-         when "soft-float" =>
-
-         when "xenomai" =>
-
-         when "zcx" =>
-
-         when "zfp" =>
-
-         when "minimal" =>
-
-      end case;
+      for Linker_Options use ("-lraptor2");
    end Linker;
 
    package Builder is
