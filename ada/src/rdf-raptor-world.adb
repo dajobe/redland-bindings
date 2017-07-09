@@ -17,7 +17,7 @@ package body RDF.Raptor.World is
 
    function Default_Handle(Object: World_Type_Without_Finalize) return Handle_Type is
    begin
-      return raptor_new_world_internal(RDF.Raptor.Constants.Raptor_Version_Decimal);
+      return raptor_new_world_internal(RDF.Raptor.Constants.version_decimal);
    end;
 
    procedure Open(Object: World_Type_Without_Finalize) is
