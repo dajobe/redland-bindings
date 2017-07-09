@@ -2,6 +2,7 @@ with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_Pointers;
+with RDF.Raptor.Memory;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 with RDF.Raptor.URI;
 
@@ -87,8 +88,36 @@ package body RDF.Raptor.WWW is
       use RDF.Raptor.URI;
    begin
       if raptor_www_fetch(Get_Handle(WWW), Get_Handle(URI)) /= 0 then
-        raise RDF.Auxiliary.RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
+   end;
+
+   type String_P_Type is access all chars_ptr with Convention=>C;
+   type String_P_Type2 is access all RDF.Auxiliary.C_Pointers.Pointer with Convention=>C;
+
+   function Convert2 is new Ada.Unchecked_Conversion(String_P_Type, String_P_Type2);
+
+   function raptor_www_fetch_to_string (WWW: WWW_Handle_Type;
+                                        URI: RDF.Raptor.URI.Handle_Type;
+                                        String_P: access chars_ptr;
+                                        Length_P: access size_t;
+                                        Malloc_Handler: chars_ptr) return int
+       with Import, Convention=>C;
+
+   function Fetch_To_String(WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize) return String is
+      use RDF.Raptor.URI;
+      String_P: aliased chars_ptr;
+      Length_P: aliased size_t;
+   begin
+      if raptor_www_fetch_to_string(Get_Handle(WWW), Get_Handle(URI), String_P'Access, Length_P'Access, Null_Ptr) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      declare
+         Result: constant String := Value_With_Possible_NULs(Convert2(String_P'Unchecked_Access).all, Length_P);
+      begin
+         RDF.Raptor.Memory.raptor_free_memory(String_P);
+         return Result;
+      end;
    end;
 
    function raptor_new_www (World: RDF.Raptor.World.Handle_Type) return WWW_Handle_Type
