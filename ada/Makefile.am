@@ -19,7 +19,7 @@
 #
 #
 
-soversion = 2.0.14
+soversion = 2.0.15
 soname = librdf-ada.so.$(soversion)
 
 ADAINCLUDE = $(includedir)/librdf
