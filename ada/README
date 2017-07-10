@@ -1,7 +1,7 @@
-This are Ada2012 bindings for Redland Raptor library.
+This are thick object orienteed Ada2012 bindings for Redland
+Raptor library.
 
-They are implemented partially (work in progress). Backward incompatible
-changes are possible at this stage.
+Backward incompatible changes are possible at this stage.
 
 These are Raptor RDF Syntax Library bindings ONLY, no support for
 Rasqal RDF Query Library and Redland RDF Libraries. (You are welcome to
@@ -10,9 +10,14 @@ myself.)
 
 Some parts of RDF Syntax Library are not supported (I mean, not bound to
 Ada), because it is probably better to use native Ada libraries:
-* AVL Trees
-* Sequence
-* String buffer
+
+* AVL Trees (internals)
+* SAX2 (use XMLAda instead)
+* Sequence (internals)
+* String buffer (use Ada code instead)
+* Unicode (use an Ada library)
+* XML QName (internals)
+* XML (use XMLAda instead)
 
 It may be downgraded to Ada2005 but this isn't a priority for me.
 
