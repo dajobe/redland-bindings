@@ -37,18 +37,20 @@ else
 DEBUG_MODE=release
 endif
 
+GNATMAKE = @GNATMAKE@
+
 my-dynamic-lib:
-	gnatmake -p -Plibrdf.gpr \
+	$(GNATMAKE) -p -Plibrdf.gpr \
                  -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=$(DEBUG_MODE)
 
 # $(LIB_DIR)/librdf-ada.a: my-static-lib
 
 my-static-lib:
-	gnatmake -p -Plibrdf.gpr \
+	$(GNATMAKE) -p -Plibrdf.gpr \
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=$(DEBUG_MODE)
 
 check-syntax:
-	gnatmake -p -Plibrdf.gpr \
+	$(GNATMAKE) -p -Plibrdf.gpr \
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=check
 
 all-local: my-dynamic-lib my-static-lib
@@ -57,7 +59,7 @@ check-local: $(builddir)/obj-static/test/run_all_tests
 	$(builddir)/obj-static/test/run_all_tests
 
 $(builddir)/obj-static/test/run_all_tests: my-static-lib
-	gnatmake -p -Ptest.gpr \
+	$(GNATMAKE) -p -Ptest.gpr \
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -XMODE=Install -XDEBUG_MODE=debug
 
 clean-local:

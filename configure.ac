@@ -70,6 +70,7 @@ AC_CHECK_PROGS(PERL, perl)
 AC_CHECK_PROGS(PHP, php)
 AC_CHECK_PROGS(RUBY, ruby)
 AC_CHECK_PROGS(SWIG, swig)
+AC_CHECK_PROGS(GNATMAKE, gnatmake)
 # Gnome
 AC_CHECK_PROGS(PKG_CONFIG, pkg-config)
 
@@ -489,6 +490,22 @@ if test "X$RUBY_VERSION" != X; then
 fi
 AC_MSG_RESULT($with_ruby)
 AC_SUBST(RUBY_VERSION)
+
+
+AC_ARG_WITH(ada, [   --with-ada(=GNATMAKE)      Enable the Ada interface], with_ada="$withval", with_ada="no")
+AC_MSG_CHECKING(Enable Ada API)
+if test "X$with_ada" != Xno ; then
+  if test "X$with_ada" != Xyes; then
+    GNATMAKE=$with_ada
+  fi
+  with_ada=yes
+fi
+
+if test $with_ada = yes; then
+  languages="$languages ada"
+fi
+AC_MSG_RESULT($with_ada)
+AC_SUBST(GNATMAKE)
 
 
 
