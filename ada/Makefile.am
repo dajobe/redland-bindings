@@ -75,11 +75,9 @@ install-data-local:
 	cd $(builddir)/ali-dynamic && $(INSTALL_DATA) *.ali $(ADALIB)/dynamic
 	$(INSTALL_DATA) lib/librdf-ada.so lib/librdf-ada.a $(soname) $(libdir)
 
-
 uninstall-local:
 	rm -rf $(ADAINCLUDE)
 	rm -rf $(ADALIB)
 	cd $(builddir)/lib && rm -f librdf-ada.so librdf-ada.a $(soname)
 
-.PHONY: all-local clean-local install-local uninstall-local
 .PHONY: my-dynamic-lib my-static-lib check-syntax
