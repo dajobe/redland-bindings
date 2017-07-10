@@ -1,0 +1,100 @@
+#!/usr/bin/make -f
+#
+# Debian Makefile for AUnit
+# Copyright (c) 2009      Stephen Leake <stephen_leake@stephe-leake.org>
+# Copyright (c) 2004-2006 Ludovic Brenta <ludovic@ludovic-brenta.org>
+# Copyright (c) 2013-2016 Nicolas Boulenguez <nicolas@debian.org>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, see <http://www.gnu.org/licenses/>.
+#
+
+DEB_BUILD_MAINT_OPTIONS=hardening=+all,-pie
+# PIE should only affect the static library.
+include /usr/share/dpkg/default.mk
+include /usr/share/ada/debian_packaging*.mk
+
+DEB_DATE := $(shell dpkg-parsechangelog -S date)
+
+ADAFLAGS += -gnatfno -gnatwa -gnatVa
+
+LIB_NAME := $(patsubst lib%,%,$(DEB_SOURCE))
+
+SOVERSION := $(shell sed debian/control -ne \
+  '/^Package: $(DEB_SOURCE)\([0-9.]\+\)$$/ { s//\1/; p; q}')
+ifndef SOVERSION
+  $(warning Could not guess SOVERSION from debian/control)
+  # Not error. Policy defines targets that may be run from outside build dir.
+endif
+
+######################################################################
+POLICY_TARGETS := binary binary-arch binary-indep build build-arch \
+  build-indep clean
+.PHONY: $(POLICY_TARGETS)
+$(POLICY_TARGETS):
+	dh $@ --with ada-library
+
+######################################################################
+# Ignore upstream Makefile/configure.
+.PHONY: $(addprefix override_dh_auto_,configure build-arch build-indep test install clean)
+
+override_dh_auto_build-arch:
+	$(MAKE) \
+	  GPRBUILD='gprbuild $(BUILDER_OPTIONS) -XLIBRARY_KIND=static "-XADAFLAGS=$(ADAFLAGS) -fPIE" "-XSOVERSION=$(SOVERSION)"'
+
+	$(MAKE) \
+	  GPRBUILD='gprbuild $(BUILDER_OPTIONS) -XLIBRARY_KIND=dynamic $(foreach var,ADAFLAGS LDFLAGS SOVERSION,"-X$(var)=$($(var))")'
+
+TOUCHED_TOO_MUCH := \
+ include/aunit/containers/ada_containers-aunit_lists.adb
+override_dh_auto_build-arch: deterministic-timestamps-in-ali-files-stamp
+deterministic-timestamps-in-ali-files-stamp:
+	touch --date='$(DEB_DATE)' $(TOUCHED_TOO_MUCH)
+	touch $@
+
+# For the freeze option, the faketime API does not allow to explicit
+# the time zone, introducing an implicit dependency on it.
+DEB_DATE_FAKETIME := $(shell date "+%F %T" -d "$(DEB_DATE)")
+override_dh_auto_build-indep: version_information.backup
+ # Freeze the clock for deterministic PDF timestamps.
+	faketime -f "$(DEB_DATE_FAKETIME)" \
+	$(MAKE) -C docs
+version_information.backup: %.backup: %
+	mv $* $@
+	echo MAJOR_VERSION=$(DEB_VERSION_UPSTREAM) \
+	  | sed 's/\./.\nMINOR_VERSION=/' > $*
+
+override_dh_auto_clean::
+	dh_auto_clean
+	if test -e version_information.backup; then \
+	  mv version_information.backup version_information; \
+	fi
+
+######################################################################
+# The order in this list matters for rdfind.
+EXAMPLES := simple_test test_caller test_fixture calculator failures liskov
+INSTALLED_EXAMPLES := $(addprefix debian/libaunit-doc/usr/share/doc/libaunit-doc/examples/,$(EXAMPLES))
+.PHONY: override_dh_installexamples-indep
+override_dh_installexamples-indep:
+	dh_installexamples --indep
+  # Replace duplicate files with symlinks.
+	rdfind -outputname /dev/null -makesymlinks true $(INSTALLED_EXAMPLES)
+  # symlinks to make them relative (only if -indep build).
+	symlinks -r -s -c $(INSTALLED_EXAMPLES)
+
+######################################################################
+.PHONY: override_dh_compress
+override_dh_compress:
+	dh_compress --package=libaunit-doc --exclude=usr/share/doc/libaunit-doc/examples/
+# Check calculator/tests/stack-test.adb.gz
+	dh_compress --remaining-packages

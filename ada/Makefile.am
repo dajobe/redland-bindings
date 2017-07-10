@@ -27,7 +27,7 @@ ADALIB = $(libdir)/librdf
 
 LIB_DIR = $(builddir)/lib
 
-EXTRA_DIST = librdf.gpr test.gpr src/*.ad[bs] src/test/*.ad[bs] main_test.adb
+EXTRA_DIST = librdf.gpr test.gpr src/*.ad[bs] src/test/*.ad[bs]
 
 # $(LIB_DIR)/librdf-ada.so: my-dynamic-lib
 
@@ -58,7 +58,7 @@ check-local: $(builddir)/obj-static/test/run_all_tests
 
 $(builddir)/obj-static/test/run_all_tests: my-static-lib
 	gnatmake -p -Ptest.gpr \
-                 -XOBJ_DIR=$(builddir)/obj-static -XMODE=Install -XDEBUG_MODE=debug
+                 -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -XMODE=Install -XDEBUG_MODE=debug
 
 clean-local:
 	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install
