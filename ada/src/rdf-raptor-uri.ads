@@ -24,7 +24,7 @@ package RDF.Raptor.URI is
 
    not overriding function To_Relative_URI_String(Base_URI, Reference_URI: URI_Type_Without_Finalize) return URI_String;
 
-   function Resolve_URI_Reference (Base_URI, Reference_URI: String) return URI_String;
+   function Resolve_URI_Reference (Base_URI, Reference_URI: URI_String) return URI_String;
 
    function Filename_To_URI_String (Filename: String) return URI_String;
 

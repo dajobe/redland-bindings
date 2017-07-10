@@ -144,10 +144,10 @@ package body RDF.Raptor.URI is
    function raptor_uri_resolve_uri_reference(Base_URI, Reference_URI: char_array; buffer: char_array; length: size_t) return size_t
       with Import, Convention=>C;
 
-   function Resolve_URI_Reference (Base_URI, Reference_URI: String) return URI_String is
+   function Resolve_URI_Reference (Base_URI, Reference_URI: URI_String) return URI_String is
       Buffer_Length: constant size_t := Base_URI'Length + Reference_URI'Length + 1;
       Buffer       : char_array (1..Buffer_Length) := (others=>NUL);
-      Dummy        : constant size_t := raptor_uri_resolve_uri_reference (To_C (Base_URI), To_C (Reference_URI), Buffer, Buffer_Length);
+      Dummy        : constant size_t := raptor_uri_resolve_uri_reference (To_C (String(Base_URI)), To_C (String(Reference_URI)), Buffer, Buffer_Length);
    begin
       return URI_String(To_Ada(Buffer));
    end;
