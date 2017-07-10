@@ -4,7 +4,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.Namespaces_Stacks;
+with RDF.Raptor.Namespace_Stack;
 with RDF.Raptor.IOStream;
 
 package RDF.Raptor.Term is
@@ -66,13 +66,13 @@ package RDF.Raptor.Term is
    overriding function "=" (Left, Right: Term_Type_Without_Finalize) return Boolean renames Equals;
 
    not overriding function To_Turtle_String(Term: Term_Type_Without_Finalize;
-                                            Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type'Class;
+                                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                                             Base_URI: URI_Type'Class)
                                             return String;
 
    not overriding procedure Turtle_Write (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
                                           Term: Term_Type_Without_Finalize;
-                                          Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type'Class;
+                                          Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                                           Base_URI: URI_Type'Class);
 
    not overriding function Copy (Object: Term_Type_Without_Finalize'Class) return Term_Type_Without_Finalize;

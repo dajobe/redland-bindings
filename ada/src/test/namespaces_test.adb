@@ -1,7 +1,7 @@
 with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.Namespaces; use RDF.Raptor.Namespaces;
-with RDF.Raptor.Namespaces_Stacks; use RDF.Raptor.Namespaces_Stacks;
+with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
+with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
 with RDF.Raptor.World;
 
 package body Namespaces_Test is

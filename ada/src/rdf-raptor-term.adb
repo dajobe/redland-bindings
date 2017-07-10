@@ -2,8 +2,8 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.Memory;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.Namespaces; use RDF.Raptor.Namespaces;
-with RDF.Raptor.Namespaces_Stacks; use RDF.Raptor.Namespaces_Stacks;
+with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
+with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
 
 package body RDF.Raptor.Term is
 
@@ -195,13 +195,13 @@ package body RDF.Raptor.Term is
    end;
 
    function raptor_term_to_turtle_string (Term: Term_Handle;
-                                            Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
+                                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
                                             Base_URI: RDF.Raptor.URI.Handle_Type)
                                             return chars_ptr
       with Import, Convention=>C;
 
    function To_Turtle_String(Term: Term_Type_Without_Finalize;
-                             Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type'Class;
+                             Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                              Base_URI: URI_Type'Class)
                              return String is
       Str: constant chars_ptr := raptor_term_to_turtle_string(Get_Handle(Term), Get_Handle(Stack), Get_Handle(Base_URI));
@@ -219,14 +219,14 @@ package body RDF.Raptor.Term is
 
    function raptor_term_turtle_write (Stream: RDF.Raptor.IOStream.Handle_Type;
                                         Term: Term_Handle;
-                                        Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
+                                        Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
                                         Base_URI: RDF.Raptor.URI.Handle_Type)
                                         return Int
       with Import, Convention=>C;
 
    procedure Turtle_Write (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
                            Term: Term_Type_Without_Finalize;
-                           Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type'Class;
+                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                            Base_URI: URI_Type'Class) is
       use RDF.Raptor.IOStream;
    begin

@@ -4,19 +4,19 @@ with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.Namespaces_Stacks; use RDF.Raptor.Namespaces_Stacks;
+with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
 with RDF.Raptor.Memory;
 
-package body RDF.Raptor.Namespaces is
+package body RDF.Raptor.Namespace is
 
-   function raptor_new_namespace (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
+   function raptor_new_namespace (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
                                     Prefix: Char_Array;
                                     NS: Char_Array;
                                     Depth: Int)
                                     return Namespace_Handle_Type
      with Import, Convention=>C;
 
-   function New_Namespace (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
+   function New_Namespace (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                            Prefix: String;
                            NS: String;
                            Depth: Natural)
@@ -25,13 +25,13 @@ package body RDF.Raptor.Namespaces is
       return From_Non_Null_Handle( raptor_new_namespace(Get_Handle(Stack), To_C(Prefix, Append_Nul=>True), To_C(NS, Append_Nul=>True), Int(Depth)) );
    end;
 
-   function raptor_new_namespace_from_uri (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
+   function raptor_new_namespace_from_uri (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
                                              Prefix: char_array;
                                              URI: RDF.Raptor.URI.Handle_Type)
                                              return Namespace_Handle_Type
      with Import, Convention=>C;
 
-   function From_URI (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
+   function From_URI (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                       Prefix: String;
                       URI: URI_Type_Without_Finalize'Class;
                       Depth: Integer)
@@ -143,4 +143,4 @@ package body RDF.Raptor.Namespaces is
       end;
    end;
 
-end RDF.Raptor.Namespaces;
+end RDF.Raptor.Namespace;

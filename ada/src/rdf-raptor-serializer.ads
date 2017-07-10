@@ -3,7 +3,7 @@ with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Iostream;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.Namespaces;
+with RDF.Raptor.Namespace;
 with RDF.Raptor.Statement;
 with RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log;
@@ -40,7 +40,7 @@ package RDF.Raptor.Serializer is
                                                           URI: URI_Type_Without_Finalize := From_Handle(null));
 
    not overriding procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
-                                           Namespace: RDF.Raptor.Namespaces.Namespace_Type_Without_Finalize);
+                                           Namespace: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize);
 
    not overriding procedure Serialize_Statement (Serializer: Serializer_Type_Without_Finalize;
                                                  Statement: RDF.Raptor.Statement.Statement_Type_Without_Finalize'Class);

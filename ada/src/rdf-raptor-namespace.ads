@@ -4,9 +4,9 @@ with Interfaces.C;
 with RDF.Raptor.World;
 with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Raptor.IOStream;
-limited with RDF.Raptor.Namespaces_Stacks;
+limited with RDF.Raptor.Namespace_Stack;
 
-package RDF.Raptor.Namespaces is
+package RDF.Raptor.Namespace is
 
    package Namespace_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
@@ -26,13 +26,13 @@ package RDF.Raptor.Namespaces is
 
    overriding procedure Finalize_Handle (Object: Namespace_Type; Handle: Namespace_Handle_Type);
 
-   not overriding function New_Namespace (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
+   not overriding function New_Namespace (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                           Prefix: String;
                                           NS: String;
                                           Depth: Natural)
                                           return Namespace_Type;
 
-   not overriding function From_URI (Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
+   not overriding function From_URI (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                      Prefix: String;
                                      URI: URI_Type_Without_Finalize'Class;
                                      Depth: Integer)
@@ -57,4 +57,4 @@ private
          URI: URI_String(1..URI_Length);
       end record;
 
-end RDF.Raptor.Namespaces;
+end RDF.Raptor.Namespace;

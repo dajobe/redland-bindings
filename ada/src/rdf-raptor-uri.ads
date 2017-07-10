@@ -1,7 +1,7 @@
 with RDF.Auxiliary.Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.IOStream;
-limited with RDF.Raptor.Namespaces_Stacks;
+limited with RDF.Raptor.Namespace_Stack;
 
 package RDF.Raptor.URI is
 
@@ -55,14 +55,14 @@ package RDF.Raptor.URI is
 
    not overriding function To_Turtle_String (World: World_Type_Without_Finalize'Class;
                                              URI: URI_Type_Without_Finalize;
-                                             Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
+                                             Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                              Base_URI: URI_Type_Without_Finalize)
                                              return String;
 
    not overriding procedure Turtle_Write (World: World_Type_Without_Finalize'Class;
                                           Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
                                           URI: URI_Type_Without_Finalize;
-                                          Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
+                                          Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                           Base_URI: URI_Type_Without_Finalize);
 
    not overriding function Copy (Object: URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize;

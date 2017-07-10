@@ -7,7 +7,7 @@ with RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream;
 with RDF.Raptor.Statement;
-with RDF.Raptor.Namespaces;
+with RDF.Raptor.Namespace;
 with RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log;
 with RDF.Raptor.WWW;
@@ -41,7 +41,7 @@ package RDF.Raptor.Parser is
                                                Statement: RDF.Raptor.Statement.Statement_Type_Without_Finalize'Class) is null;
 
    not overriding procedure Namespace_Handler (Object: Parser_Type_Without_Finalize;
-                                               Namespace: RDF.Raptor.Namespaces.Namespace_Type_Without_Finalize'Class) is null;
+                                               Namespace: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize'Class) is null;
 
    not overriding function URI_Filter (Object: Parser_Type_Without_Finalize;
                                        URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class) return Boolean is (True);

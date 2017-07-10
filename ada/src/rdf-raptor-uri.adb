@@ -4,7 +4,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Memory;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
-with RDF.Raptor.Namespaces_Stacks; use RDF.Raptor.Namespaces_Stacks;
+with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
 
 package body RDF.Raptor.URI is
 
@@ -292,14 +292,14 @@ package body RDF.Raptor.URI is
 
    function raptor_uri_to_turtle_string(Handle: RDF.Raptor.World.Handle_Type;
                                           URI: Handle_Type;
-                                          Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
+                                          Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
                                           Base_URI: Handle_Type)
                                           return Chars_Ptr
      with Import, Convention=>C;
 
    function To_Turtle_String (World: World_Type_Without_Finalize'Class;
                               URI: URI_Type_Without_Finalize;
-                              Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
+                              Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                               Base_URI: URI_Type_Without_Finalize)
                               return String is
       C_Str: constant chars_ptr := raptor_uri_to_turtle_string(Get_Handle(World),
@@ -321,7 +321,7 @@ package body RDF.Raptor.URI is
    function raptor_uri_turtle_write(Handle: RDF.Raptor.World.Handle_Type;
                                       Stream: RDF.Raptor.IOStream.Handle_Type;
                                       URI: Handle_Type;
-                                      Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Handle_Type;
+                                      Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
                                       Base_URI: Handle_Type)
                                       return Int
      with Import, Convention=>C;
@@ -329,7 +329,7 @@ package body RDF.Raptor.URI is
    procedure Turtle_Write (World: World_Type_Without_Finalize'Class;
                            Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
                            URI: URI_Type_Without_Finalize;
-                           Stack: RDF.Raptor.Namespaces_Stacks.Namespace_Stack_Type_Without_Finalize'Class;
+                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                            Base_URI: URI_Type_Without_Finalize) is
    begin
       if raptor_uri_turtle_write(Get_Handle(World),

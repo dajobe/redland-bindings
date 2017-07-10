@@ -5,7 +5,7 @@ with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.Memory;
 with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Raptor.Namespaces; use RDF.Raptor.Namespaces;
+with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Log; use RDF.Raptor.Log;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
@@ -275,7 +275,7 @@ package body RDF.Raptor.Parser is
    type raptor_graph_mark_handler is access procedure (Data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type; Flags: int)
      with Convention=>C;
 
-   type raptor_namespace_handler is access procedure (Data: chars_ptr; NS: RDF.Raptor.Namespaces.Namespace_Handle_Type)
+   type raptor_namespace_handler is access procedure (Data: chars_ptr; NS: RDF.Raptor.Namespace.Namespace_Handle_Type)
      with Convention=>C;
 
    type raptor_uri_filter_func is access function (Data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type) return int
@@ -287,7 +287,7 @@ package body RDF.Raptor.Parser is
    procedure raptor_graph_mark_handler_impl (Data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type; Flags: int)
      with Convention=>C;
 
-   procedure raptor_namespace_handler_impl (Data: Chars_Ptr; NS: RDF.Raptor.Namespaces.Namespace_Handle_Type)
+   procedure raptor_namespace_handler_impl (Data: Chars_Ptr; NS: RDF.Raptor.Namespace.Namespace_Handle_Type)
      with Convention=>C;
 
    function raptor_uri_filter_impl (Data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type) return int
@@ -304,7 +304,7 @@ package body RDF.Raptor.Parser is
       Graph_Mark_Handler(Ptr_To_Obj(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI)), Conv(Flags));
    end;
 
-   procedure raptor_namespace_handler_impl (Data: Chars_Ptr; NS: RDF.Raptor.Namespaces.Namespace_Handle_Type) is
+   procedure raptor_namespace_handler_impl (Data: Chars_Ptr; NS: RDF.Raptor.Namespace.Namespace_Handle_Type) is
    begin
       Namespace_Handler(Ptr_To_Obj(Data).all, Namespace_Type_Without_Finalize'(From_Non_Null_Handle(NS)));
    end;
