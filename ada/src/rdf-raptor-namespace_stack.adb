@@ -79,7 +79,7 @@ package body RDF.Raptor.Namespace_Stack is
    end;
 
    function raptor_namespaces_find_namespace (Stack: Namespace_Stack_Handle_Type;
-                                                Prefix: Char_Array_Access; -- FIXME: Not a Convention=>C type!!
+                                                Prefix: chars_ptr;
                                                 Len: int)
                                                 return Namespace_Handle_Type
      with Import, Convention=>C;
@@ -87,12 +87,12 @@ package body RDF.Raptor.Namespace_Stack is
    function Find_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Prefix: String) return RDF.Raptor.Namespace.Namespace_Type is
       C_Prefix: aliased char_array := To_C(Prefix, Append_Nul=>False);
    begin
-      return From_Non_Null_Handle( raptor_namespaces_find_namespace(Get_Handle(Stack), C_Prefix'Unchecked_Access, Prefix'Length) );
+      return From_Non_Null_Handle( raptor_namespaces_find_namespace(Get_Handle(Stack), To_Chars_Ptr(C_Prefix'Unchecked_Access), Prefix'Length) );
    end;
 
    function Find_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return RDF.Raptor.Namespace.Namespace_Type is
    begin
-      return From_Non_Null_Handle( raptor_namespaces_find_namespace(Get_Handle(Stack), null, 0) );
+      return From_Non_Null_Handle( raptor_namespaces_find_namespace(Get_Handle(Stack), Null_Ptr, 0) );
    end;
 
    function raptor_namespaces_find_namespace_by_uri (Stack: Namespace_Stack_Handle_Type;

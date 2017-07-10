@@ -8,7 +8,7 @@ package body RDF.Raptor.Log is
 
    function Get_URI (Locator: Locator_Type) return URI_Type_Without_Finalize is
    begin
-      return From_Handle(Get_Handle(Locator).URI); -- FIXME
+      return From_Handle(Get_Handle(Locator).URI);
    end;
 
    function Get_File (Locator: Locator_Type) return String is
@@ -133,35 +133,35 @@ package body RDF.Raptor.Log is
                                return RDF.Raptor.URI.Handle_Type
    with Import, Convention=>C;
 
-   procedure Finalize_Locator (Handle: Locator_Handle_Type) is
-      function Conv is new Ada.Unchecked_Conversion(Locator_Handle_Type, chars_ptr);
-   begin
-      raptor_free_uri(Handle.URI);
-      RDF.Raptor.Memory.Raptor_Free_Memory(Handle.File);
-      RDF.Raptor.Memory.Raptor_Free_Memory(Conv(Handle));
-   end;
+--    procedure Finalize_Locator (Handle: Locator_Handle_Type) is
+--       function Conv is new Ada.Unchecked_Conversion(Locator_Handle_Type, chars_ptr);
+--    begin
+--       raptor_free_uri(Handle.URI);
+--       RDF.Raptor.Memory.Raptor_Free_Memory(Handle.File);
+--       RDF.Raptor.Memory.Raptor_Free_Memory(Conv(Handle));
+--    end;
+--
+--    procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle_Type) is
+--    begin
+--       Finalize_Locator(Handle);
+--    end;
+--
+--    procedure Adjust (Object: in out Locator_Type) is
+--    begin
+--       Get_Handle(Object).URI := raptor_uri_copy(Get_Handle(Object).URI);
+--       Get_Handle(Object).File := RDF.Raptor.Memory.Copy_C_String(Get_Handle(Object).File);
+--    end;
 
-   procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle_Type) is
-   begin
-      Finalize_Locator(Handle);
-   end;
-
-   procedure Adjust (Object: in out Locator_Type) is
-   begin
-      Get_Handle(Object).URI := raptor_uri_copy(Get_Handle(Object).URI);
-      Get_Handle(Object).File := RDF.Raptor.Memory.Copy_C_String(Get_Handle(Object).File);
-   end;
-
-   procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle_Type) is
-   begin
-      RDF.Raptor.Memory.Raptor_Free_Memory(Get_Handle(Object).Text);
-      Finalize_Locator(Get_Handle(Object).Locator);
-   end;
-
-   procedure Adjust (Object: in out Log_Message_Type) is
-   begin
-      Get_Handle(Object).Text := RDF.Raptor.Memory.Copy_C_String(Get_Handle(Object).Text);
-      -- FIXME: Locator
-   end;
+--    procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle_Type) is
+--    begin
+--       RDF.Raptor.Memory.Raptor_Free_Memory(Get_Handle(Object).Text);
+--       Finalize_Locator(Get_Handle(Object).Locator);
+--    end;
+--
+--    procedure Adjust (Object: in out Log_Message_Type) is
+--    begin
+--       Get_Handle(Object).Text := RDF.Raptor.Memory.Copy_C_String(Get_Handle(Object).Text);
+--       -- FIXME: Locator
+--    end;
 
 end RDF.Raptor.Log;
