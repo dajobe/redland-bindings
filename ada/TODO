@@ -1,5 +1,3 @@
-* Use grpbuild instead of gnatmake
-
 * Can Adjust be done without Set_Handle_Hack, using class-wide types?
 
 * Add "with Inline" whereever feasible.
