@@ -50,7 +50,7 @@ my-static-lib:
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=$(DEBUG_MODE)
 
 check-syntax:
-	$(GNATMAKE) -p -Plibrdf.gpr \
+	$(GNATMAKE) -p -c -Plibrdf.gpr \
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=check
 
 all-local: my-dynamic-lib my-static-lib
