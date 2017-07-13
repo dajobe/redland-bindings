@@ -12,7 +12,7 @@ project AUnit_Shared is
 
    type A_Library_Kind is ("dynamic", "static");
    Library_Kind : A_Library_Kind := External ("LIBRARY_KIND");
-   Soversion := External ("SOVERSION");
+   Soversion := External ("SOVERSION", "3.7.2");
    Adaflags  := External_As_List ("ADAFLAGS", " ");
    Ldflags   := External_As_List ("LDFLAGS",  " ");
 

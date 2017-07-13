@@ -37,20 +37,24 @@ else
 DEBUG_MODE=release
 endif
 
-GNATMAKE = @GNATMAKE@
+GPRBUILD = @GPRBUILD@ --relocate-build-tree -p -s -we
+
+# TODO: Support for specifying it in ./configure
+GPRCLEAN = gprclean
+GPRINSTALL = gprinstall --prefix=$(prefix) --relocate-build-tree
 
 my-dynamic-lib:
-	$(GNATMAKE) -p -Plibrdf.gpr \
+	$(GPRBUILD) librdf.gpr \
                  -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=$(DEBUG_MODE)
 
 # $(LIB_DIR)/librdf-ada.a: my-static-lib
 
 my-static-lib:
-	$(GNATMAKE) -p -Plibrdf.gpr \
+	$(GPRBUILD) librdf.gpr \
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=$(DEBUG_MODE)
 
 check-syntax:
-	$(GNATMAKE) -p -c -Plibrdf.gpr \
+	$(GPRBUILD) librdf.gpr -c \
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install -XDEBUG_MODE=check
 
 all-local: my-dynamic-lib my-static-lib
@@ -59,27 +63,21 @@ check-local: $(builddir)/obj-static/test/run_all_tests
 	$(builddir)/obj-static/test/run_all_tests
 
 $(builddir)/obj-static/test/run_all_tests: my-static-lib
-	$(GNATMAKE) -p -Ptest.gpr \
+	$(GPRBUILD) test.gpr \
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -XMODE=Install -XDEBUG_MODE=debug
 
 clean-local:
-	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install
-	gnat clean -r -Plibrdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install
-	gnat clean -r -Ptest.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static/test -Xsoversion=$(soname) -XMODE=Install
-	rm -f $(builddir)/lib/$(soname)
+	gprclean -r librdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install
+	gprclean -r librdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install
+	gprclean -r test.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static/test -Xsoversion=$(soname) -XMODE=Install
+# 	rm -f $(builddir)/lib/$(soname)
 
 install-data-local:
-	mkdir -p $(ADAINCLUDE)
-	mkdir -p $(ADALIB)
-	mkdir -p $(libdir)
-	cd $(srcdir)/src && $(INSTALL_DATA) *.ads *.adb $(ADAINCLUDE)
-	cd $(builddir)/ali-static && $(INSTALL_DATA) *.ali $(ADALIB)/static
-	cd $(builddir)/ali-dynamic && $(INSTALL_DATA) *.ali $(ADALIB)/dynamic
-	$(INSTALL_DATA) lib/librdf-ada.so lib/librdf-ada.a $(soname) $(libdir)
+	$(GPRINSTALL) -f -p librdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install --build-name=dynamic
+	$(GPRINSTALL) -f -p librdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install --build-name=static
 
 uninstall-local:
-	rm -rf $(ADAINCLUDE)
-	rm -rf $(ADALIB)
-	cd $(builddir)/lib && rm -f librdf-ada.so librdf-ada.a $(soname)
+	$(GPRINSTALL) --uninstall -f -p librdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install
+	$(GPRINSTALL) --uninstall -f -p librdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install
 
 .PHONY: my-dynamic-lib my-static-lib check-syntax
