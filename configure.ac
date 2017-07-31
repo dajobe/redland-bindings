@@ -500,9 +500,9 @@ fi
 AC_MSG_RESULT($with_ada)
 
 if test "X$with_ada" != Xno; then
-  AC_ARG_WITH(ada-gprbuild,   [  --with-gprbuild(=gprbuild)   Ada builder], GPRBUILD="$withval")
-  AC_ARG_WITH(ada-gprclean,   [  --with-gprclean(=gprclean)   Ada cleaner], GPRCLEAN="$withval")
-  AC_ARG_WITH(ada-gprinstall, [  --with-gprbuild(=gprinstall) Ada installer], GPRINSTALL="$withval")
+  AC_ARG_WITH(gprbuild,   [  --with-gprbuild(=gprbuild)   Ada builder], GPRBUILD="$withval")
+  AC_ARG_WITH(gprclean,   [  --with-gprclean(=gprclean)   Ada cleaner], GPRCLEAN="$withval")
+  AC_ARG_WITH(gprinstall, [  --with-gprbuild(=gprinstall) Ada installer], GPRINSTALL="$withval")
 
   AC_CHECK_PROGS(GPRBUILD, gprbuild)
   AC_CHECK_PROGS(GPRCLEAN, gprclean)
