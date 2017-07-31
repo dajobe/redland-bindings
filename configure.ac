@@ -70,7 +70,6 @@ AC_CHECK_PROGS(PERL, perl)
 AC_CHECK_PROGS(PHP, php)
 AC_CHECK_PROGS(RUBY, ruby)
 AC_CHECK_PROGS(SWIG, swig)
-AC_CHECK_PROGS(GPRBUILD, gprbuild)
 # Gnome
 AC_CHECK_PROGS(PKG_CONFIG, pkg-config)
 
@@ -492,21 +491,27 @@ AC_MSG_RESULT($with_ruby)
 AC_SUBST(RUBY_VERSION)
 
 
-AC_ARG_WITH(ada, [  --with-ada(=GPRBUILD)   Enable the Ada interface], with_ada="$withval", with_ada="no")
+AC_ARG_WITH(ada, [  --with-ada              Enable the Ada interface], with_ada="$withval", with_ada="no")
 AC_MSG_CHECKING(Enable Ada API)
-if test "X$with_ada" != Xno ; then
-  if test "X$with_ada" != Xyes; then
-    GPRBUILD=$with_ada
-  fi
-  with_ada=yes
-fi
 
-if test $with_ada = yes; then
+if test "X$with_ada" != Xno; then
   languages="$languages ada"
 fi
 AC_MSG_RESULT($with_ada)
-AC_SUBST(GPRBUILD)
 
+if test "X$with_ada" != Xno; then
+  AC_ARG_WITH(ada-gprbuild,   [  --with-gprbuild(=gprbuild)   Ada builder], GPRBUILD="$withval")
+  AC_ARG_WITH(ada-gprclean,   [  --with-gprclean(=gprclean)   Ada cleaner], GPRCLEAN="$withval")
+  AC_ARG_WITH(ada-gprinstall, [  --with-gprbuild(=gprinstall) Ada installer], GPRINSTALL="$withval")
+
+  AC_CHECK_PROGS(GPRBUILD, gprbuild)
+  AC_CHECK_PROGS(GPRCLEAN, gprclean)
+  AC_CHECK_PROGS(GPRINSTALL, gprinstall)
+fi
+
+AC_SUBST(GPRBUILD)
+AC_SUBST(GPRCLEAN)
+AC_SUBST(GPRINSTALL)
 
 
 AM_MISSING_PROG(ACLOCAL, aclocal, $missing_dir)

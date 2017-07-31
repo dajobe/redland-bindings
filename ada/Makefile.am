@@ -39,9 +39,8 @@ endif
 
 GPRBUILD = @GPRBUILD@ --relocate-build-tree -p -s -we
 
-# TODO: Support for specifying it in ./configure
-GPRCLEAN = gprclean
-GPRINSTALL = gprinstall --prefix=$(prefix) --relocate-build-tree
+GPRCLEAN = @GPRCLEAN@
+GPRINSTALL = @GPRINSTALL@ --prefix=$(prefix) --relocate-build-tree
 
 my-dynamic-lib:
 	$(GPRBUILD) librdf.gpr \
