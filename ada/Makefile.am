@@ -38,7 +38,6 @@ DEBUG_MODE=release
 endif
 
 GPRBUILD = @GPRBUILD@ --relocate-build-tree -p -s -we
-
 GPRCLEAN = @GPRCLEAN@
 GPRINSTALL = @GPRINSTALL@ --prefix=$(prefix) --relocate-build-tree
 
