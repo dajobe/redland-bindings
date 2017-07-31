@@ -65,9 +65,9 @@ $(builddir)/obj-static/test/run_all_tests: my-static-lib
                  -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -XMODE=Install -XDEBUG_MODE=debug
 
 clean-local:
-	gprclean -r librdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install
-	gprclean -r librdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install
-	gprclean -r test.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static/test -Xsoversion=$(soname) -XMODE=Install
+	$(GPRCLEAN) -r librdf.gpr -XLIBRARY_KIND=dynamic -XOBJ_DIR=$(builddir)/obj-dynamic -Xsoversion=$(soname) -XMODE=Install
+	$(GPRCLEAN) -r librdf.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static -Xsoversion=$(soname) -XMODE=Install
+	$(GPRCLEAN) -r test.gpr -XLIBRARY_KIND=static -XOBJ_DIR=$(builddir)/obj-static/test -Xsoversion=$(soname) -XMODE=Install
 # 	rm -f $(builddir)/lib/$(soname)
 
 install-data-local:
