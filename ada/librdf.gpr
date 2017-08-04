@@ -49,7 +49,7 @@ library project Librdf is
    end Compiler;
 
    package Linker is
-      for Linker_Options use ("-lraptor2");
+      for Linker_Options use ("-lraptor2", "-lrasqal");
    end Linker;
 
    package Builder is
