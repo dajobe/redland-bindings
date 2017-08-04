@@ -39,6 +39,23 @@ package body RDF.Rasqal.World is
       end if;
    end;
 
+   function rasqal_world_get_raptor (World: Handle_Type) return RDF.Raptor.World.Handle_Type
+      with Import, Convention=>C;
+
+   function Get_Raptor (World: World_Type_Without_Finalize) return RDF.Raptor.World.World_Type_Without_Finalize is
+      use RDF.Raptor.World;
+   begin
+      return From_Non_Null_Handle(rasqal_world_get_raptor(Get_Handle(World)));
+   end;
+
+   procedure rasqal_world_set_raptor (World: Handle_Type; Raptor_World: RDF.Raptor.World.Handle_Type)
+      with Import, Convention=>C;
+
+   procedure Set_Raptor (World: World_Type_Without_Finalize; Raptor_World: RDF.Raptor.World.World_Type_Without_Finalize) is
+      use RDF.Raptor.World;
+   begin
+      rasqal_world_set_raptor(Get_Handle(World), Get_Handle(Raptor_World));
+   end;
 
    procedure rasqal_free_world (World: Handle_Type)
       with Import, Convention=>C;

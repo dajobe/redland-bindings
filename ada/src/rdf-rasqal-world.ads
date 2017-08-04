@@ -1,5 +1,6 @@
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Raptor.World;
 with RDF.Raptor.Log;
 
 package RDF.Rasqal.World is
@@ -19,6 +20,10 @@ package RDF.Rasqal.World is
    type Warning_Level is range 0 .. 100;
 
    not overriding procedure Set_Warning_Level (World: World_Type_Without_Finalize; Level: Warning_Level);
+
+   not overriding function Get_Raptor (World: World_Type_Without_Finalize) return RDF.Raptor.World.World_Type_Without_Finalize;
+
+   not overriding procedure Set_Raptor (World: World_Type_Without_Finalize; Raptor_World: RDF.Raptor.World.World_Type_Without_Finalize);
 
    -- TODO: stopped at rasqal_world_get_raptor ()
 
