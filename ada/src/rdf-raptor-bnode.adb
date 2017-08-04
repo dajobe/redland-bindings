@@ -36,6 +36,8 @@ package body RDF.Raptor.Bnode is
    function C_BNode_ID_Handle_Impl(Data: chars_ptr; User_ID: chars_ptr) return Chars_Ptr
       with Convention=>C;
 
+   -- FIXME: free(User_ID)
+   -- FIXME: User_ID may be null
    function C_BNode_ID_Handle_Impl(Data: chars_ptr; User_ID: chars_ptr) return Chars_Ptr is
    begin
       return New_String(Do_Handle(Ptr_To_Obj(Data).all, Value(User_ID)));
