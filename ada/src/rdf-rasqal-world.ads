@@ -16,16 +16,16 @@ package RDF.Rasqal.World is
 
    not overriding procedure Set_Log_Handler(World: World_Type_Without_Finalize; Handler: RDF.Raptor.Log.Log_Handler);
 
+   type Warning_Level is range 0 .. 100;
+
+   not overriding procedure Set_Warning_Level (World: World_Type_Without_Finalize; Level: Warning_Level);
+
+   -- TODO: stopped at rasqal_world_get_raptor ()
+
    type World_Type is new World_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle (Object: World_Type; Handle: Handle_Type);
 
    not overriding function Open return World_Type;
-
-   type Warning_Level is range 0 .. 100;
-
-   not overriding procedure Set_Warning_Level (World: World_Type; Level: Warning_Level);
-
-   -- TODO: stopped at rasqal_world_get_raptor ()
 
 end RDF.Rasqal.World;
