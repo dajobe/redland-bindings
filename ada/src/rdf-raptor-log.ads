@@ -59,6 +59,13 @@ package RDF.Raptor.Log is
 
    type Log_Handler is abstract tagged null record;
 
+   type Log_Handler_Procedure_Type is access procedure (Data: Chars_Ptr; Msg: Log_Message_Type)
+      with Convention=>C;
+
+   -- Internal
+   procedure Our_Raptor_Log_Handler(Data: chars_ptr; Msg: Log_Message_Type)
+      with Convention=>C;
+
    -- hack: 'Class to avoid "operation can be dispatching in only one type"
    not overriding procedure Log_Message(Handler: Log_Handler; Info: Log_Message_Type'Class) is abstract;
 
