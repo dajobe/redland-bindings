@@ -25,7 +25,7 @@ package RDF.Rasqal.World is
 
    not overriding procedure Set_Raptor (World: World_Type_Without_Finalize; Raptor_World: RDF.Raptor.World.World_Type_Without_Finalize);
 
-   -- TODO: stopped at rasqal_world_get_raptor ()
+   -- TODO: stopped at rasqal_world_get_query_language_description ()
 
    type World_Type is new World_Type_Without_Finalize with null record;
 
