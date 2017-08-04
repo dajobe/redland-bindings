@@ -1,5 +1,7 @@
 with Ada.Unchecked_Conversion;
+with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary;
 
 package body RDF.Rasqal.World is
 
@@ -45,6 +47,16 @@ package body RDF.Rasqal.World is
    procedure Set_Log_Handler(World: World_Type_Without_Finalize; Handler: RDF.Raptor.Log.Log_Handler) is
    begin
       rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler'Unchecked_Access), RDF.Raptor.Log.Our_Raptor_Log_Handler'Access);
+   end;
+
+   function rasqal_world_set_warning_level (World: Handle_Type; Level: unsigned) return int
+      with Import, Convention=>C;
+
+   procedure Set_Warning_Level (World: World_Type; Level: Warning_Level) is
+   begin
+      if rasqal_world_set_warning_level(Get_Handle(World), unsigned(Level)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
    end;
 
 end RDF.Rasqal.World;

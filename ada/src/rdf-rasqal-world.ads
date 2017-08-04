@@ -22,6 +22,10 @@ package RDF.Rasqal.World is
 
    not overriding function Open return World_Type;
 
-   -- TODO: stopped at rasqal_world_set_log_handler ()
+   type Warning_Level is range 0 .. 100;
+
+   not overriding procedure Set_Warning_Level (World: World_Type; Level: Warning_Level);
+
+   -- TODO: stopped at rasqal_world_get_raptor ()
 
 end RDF.Rasqal.World;
