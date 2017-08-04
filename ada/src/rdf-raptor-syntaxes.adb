@@ -95,10 +95,13 @@ package body RDF.Raptor.Syntaxes is
    function Get_Position (Cursor: Parser_Description_Cursor    ) return Natural is (Cursor.Position);
    function Get_Position (Cursor: Serializer_Description_Cursor) return Natural is (Cursor.Position);
 
-   function raptor_world_get_parser_description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return access Syntax_Description_Type
+   type Syntax_Description_Access is access all Syntax_Description_Type
+      with Convention=>C;
+
+   function raptor_world_get_parser_description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return Syntax_Description_Access
      with Import, Convention=>C;
 
-   function raptor_world_get_serializer_description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return access Syntax_Description_Type
+   function raptor_world_get_serializer_description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return Syntax_Description_Access
      with Import, Convention=>C;
 
    function Get_Description (Cursor: Parser_Description_Cursor    ) return Syntax_Description_Type is

@@ -12,12 +12,15 @@ package body RDF.Rasqal.Syntaxes is
    function Get_Position (Cursor: Query_Language_Description_Cursor      ) return Natural is (Cursor.Position);
    function Get_Position (Cursor: Query_Results_Format_Description_Cursor) return Natural is (Cursor.Position);
 
+   type Syntax_Description_Access is access all Syntax_Description_Type
+      with Convention=>C;
+
    function rasqal_world_get_query_language_description (World: RDF.Rasqal.World.Handle_Type; Counter: unsigned)
-                                                         return access Syntax_Description_Type
+                                                         return Syntax_Description_Access
       with Import, Convention=>C;
 
    function rasqal_world_get_query_results_format_description (World: RDF.Rasqal.World.Handle_Type; Counter: unsigned)
-                                                               return access Syntax_Description_Type
+                                                               return Syntax_Description_Access
       with Import, Convention=>C;
 
    function Get_Description (Cursor: Query_Language_Description_Cursor    ) return Syntax_Description_Type is
