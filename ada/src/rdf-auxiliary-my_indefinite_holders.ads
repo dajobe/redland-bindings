@@ -1,5 +1,6 @@
--- In GNAT 4.9 there references to an element in Holder are not impemented.
--- So I can't get an access to the element in the container.
+-- With Ada.Containers.Indefinite_Holders
+-- Reference(Object).Element.all works only for varaible Object.
+-- This makes impossible to extract chars_ptr from a constant Object.
 -- As such I implement my own holder with API similar to Ada.Containers.Indefinite_Holders.
 -- (It is a hack, don't take this code seriously.)
 generic
