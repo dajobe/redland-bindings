@@ -15,8 +15,7 @@ package RDF.Raptor.Bnode is
    -- Should we derive it from Limited_Controlled?
    type BNode_ID_Handler is abstract tagged limited private;
 
-   -- FIXME: User_ID may be NULL in C
-   function Do_Handle (Handler: BNode_ID_Handler; User_ID: String) return String is abstract;
+   function Do_Handle (Handler: BNode_ID_Handler; User_ID: RDF.Auxiliary.String_Holders.Holder) return String is abstract;
 
    procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: BNode_ID_Handler);
 

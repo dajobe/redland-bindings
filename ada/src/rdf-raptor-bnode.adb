@@ -36,11 +36,19 @@ package body RDF.Raptor.Bnode is
    function C_BNode_ID_Handle_Impl(Data: chars_ptr; User_ID: chars_ptr) return Chars_Ptr
       with Convention=>C;
 
-   -- FIXME: free(User_ID)
-   -- FIXME: User_ID may be null
    function C_BNode_ID_Handle_Impl(Data: chars_ptr; User_ID: chars_ptr) return Chars_Ptr is
+      use RDF.Auxiliary.String_Holders;
+      User_ID2: RDF.Auxiliary.String_Holders.Holder;
    begin
-      return New_String(Do_Handle(Ptr_To_Obj(Data).all, Value(User_ID)));
+      if User_ID /= Null_Ptr then
+         Replace_Element(User_ID2, Value(User_ID));
+      end if;
+      declare
+         Result: constant Chars_Ptr := New_String(Do_Handle(Ptr_To_Obj(Data).all, User_ID2));
+      begin
+         RDF.Raptor.Memory.raptor_free_memory(User_ID);
+         return Result;
+      end;
    end;
 
    procedure raptor_world_set_generate_bnodeid_handler (World: Handle_Type; Data: chars_ptr; Handler: C_BNode_ID_Handler)
