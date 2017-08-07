@@ -1,5 +1,6 @@
 package body RDF.Rasqal.Features is
 
+   -- FIXME: 'Base is not what we need
    function rasqal_feature_from_uri (World: RDF.Rasqal.World.Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Feature_Type'Base
       with Import, Convention=>C;
 
