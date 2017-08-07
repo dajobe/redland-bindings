@@ -9,4 +9,6 @@ package RDF.Rasqal.Features is
 
    function Feature_From_URI (World: World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class) return Feature_Type;
 
+   -- TODO: stopped at rasqal_feature_value_type ()
+
 end RDF.Rasqal.Features;
