@@ -1,3 +1,5 @@
+with Interfaces.C; use Interfaces.C;
+with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 
@@ -15,6 +17,18 @@ package RDF.Rasqal.Features is
 
    function Get_Type (Feature: Feature_Type) return Feature_Value_Type;
 
-   -- TODO: stopped at rasqal_features_enumerate ()
+   type Feature_Description is
+      record
+         Name, Label: String_Holders.Holder;
+         URI: URI_Type; -- with finalize
+      end record;
+
+   -- For API simplicity, I don't support the C library feature to retrieve only a part of the data.
+   -- For API simplicity, we do not differentiate between failure and unknown feature.
+   function Get_Feature_Description (World: World_Type_Without_Finalize'Class; Feature: Feature_Type) return Feature_Description;
+
+   function Get_Feature_Count return unsigned;
+
+   -- TODO: stopped at rasqal_features_enumerate (), need to create an iterator
 
 end RDF.Rasqal.Features;
