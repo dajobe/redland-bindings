@@ -1,5 +1,6 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.C_String_Holders;
 with RDF.Rasqal.Memory;
 
 package body RDF.Rasqal.Bnode is
@@ -40,12 +41,31 @@ package body RDF.Rasqal.Bnode is
       end;
    end;
 
-   procedure rasqal_world_set_generate_bnodeid_handler (World: Handle_Type; Data: chars_ptr; Handler: C_BNode_ID_Handler)
+   procedure rasqal_world_set_generate_bnodeid_handler (World: RDF.Rasqal.World.Handle_Type; Data: chars_ptr; Handler: C_BNode_ID_Handler)
      with Import, Convention=>C;
 
    procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class) is
    begin
       rasqal_world_set_generate_bnodeid_handler(Get_Handle(World), Obj_To_Ptr(Handler), C_BNode_ID_Handle_Impl'Access);
+   end;
+
+   function rasqal_world_set_default_generate_bnodeid_parameters (World: RDF.Rasqal.World.Handle_Type;
+                                                                  Prefix: Chars_Ptr;
+                                                                  Base: int)
+                                                                  return int
+     with Import, Convention=>C;
+
+   procedure Set_Default_Generate_Bnodeid_Parameters (World: World_Type_Without_Finalize'Class;
+                                                      Prefix: String_Holders.Holder;
+                                                      Base: int) is
+      use RDF.Auxiliary.C_String_Holders;
+      C_Prefix: constant chars_ptr := New_String(Prefix);
+      Result: constant int := rasqal_world_set_default_generate_bnodeid_parameters(Get_Handle(World), C_Prefix, Base);
+   begin
+      RDF.Rasqal.Memory.Rasqal_Free_Memory(C_Prefix);
+      if Result /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
    end;
 
 end RDF.Rasqal.Bnode;

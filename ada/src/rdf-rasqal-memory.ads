@@ -4,7 +4,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 -- This are thin bindings
 package RDF.Rasqal.Memory is
 
-   procedure Rasqal_free_memory (ptr: chars_ptr)
+   procedure rasqal_free_memory (ptr: chars_ptr)
      with Import, Convention=>C;
 
    function rasqal_alloc_memory (size: size_t) return chars_ptr

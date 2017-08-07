@@ -1,4 +1,5 @@
-with RDF.Auxiliary;
+with Interfaces.C; use Interfaces.C;
+with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
 
 package RDF.Rasqal.Bnode is
@@ -19,6 +20,10 @@ package RDF.Rasqal.Bnode is
                        return String is abstract;
 
    procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class);
+
+   procedure Set_Default_Generate_Bnodeid_Parameters (World: World_Type_Without_Finalize'Class;
+                                                      Prefix: String_Holders.Holder;
+                                                      Base: int);
 
 private
 
