@@ -54,9 +54,9 @@ package body RDF.Raptor.Bnode is
    procedure raptor_world_set_generate_bnodeid_handler (World: Handle_Type; Data: chars_ptr; Handler: C_BNode_ID_Handler)
      with Import, Convention=>C;
 
-   procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: BNode_ID_Handler) is
+   procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler) is
    begin
-      raptor_world_set_generate_bnodeid_handler(Get_Handle(World), Obj_To_Ptr(Handler'Unchecked_Access), C_BNode_ID_Handle_Impl'Access);
+      raptor_world_set_generate_bnodeid_handler(Get_Handle(World), Obj_To_Ptr(Handler), C_BNode_ID_Handle_Impl'Access);
    end;
 
 end RDF.Raptor.Bnode;

@@ -15,7 +15,7 @@ package RDF.Rasqal.World is
 
    not overriding procedure Open(Object: World_Type_Without_Finalize);
 
-   not overriding procedure Set_Log_Handler(World: World_Type_Without_Finalize; Handler: RDF.Raptor.Log.Log_Handler);
+   not overriding procedure Set_Log_Handler(World: World_Type_Without_Finalize; Handler: access RDF.Raptor.Log.Log_Handler);
 
    type Warning_Level is range 0 .. 100;
 

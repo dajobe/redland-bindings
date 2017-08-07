@@ -72,9 +72,9 @@ package body RDF.Rasqal.World is
    procedure rasqal_world_set_log_handler (World: Handle_Type; Data: chars_ptr; Handler: RDF.Raptor.Log.Log_Handler_Procedure_Type)
       with Import, Convention=>C;
 
-   procedure Set_Log_Handler(World: World_Type_Without_Finalize; Handler: RDF.Raptor.Log.Log_Handler) is
+   procedure Set_Log_Handler(World: World_Type_Without_Finalize; Handler: access RDF.Raptor.Log.Log_Handler) is
    begin
-      rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler'Unchecked_Access), RDF.Raptor.Log.Our_Raptor_Log_Handler'Access);
+      rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), RDF.Raptor.Log.Our_Raptor_Log_Handler'Access);
    end;
 
 end RDF.Rasqal.World;
