@@ -1,9 +1,9 @@
+with Ada.Containers.Indefinite_Holders;
 with Interfaces.C; use Interfaces.C;
-with RDF.Auxiliary.My_Indefinite_Holders;
 
 package RDF.Auxiliary.C_String_Holders is
 
-   package Char_Array_Holders is new RDF.Auxiliary.My_Indefinite_Holders(char_array);
+   package Char_Array_Holders is new Ada.Containers.Indefinite_Holders(char_array);
 
    type C_String_Holder is new Char_Array_Holders.Holder with null record;
 

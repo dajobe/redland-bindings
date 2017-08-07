@@ -31,8 +31,7 @@ package body RDF.Auxiliary.C_String_Holders is
       if Is_Empty(Object) then
          return Null_Ptr;
       else
-         return To_Chars_Ptr(Char_Array_Access(Element_Access(Object)));
---           return To_Chars_Ptr(Reference(Object).all'Access);
+         return To_Chars_Ptr(Constant_Reference(Object).Element);
       end if;
    end;
 
