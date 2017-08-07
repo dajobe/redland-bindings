@@ -2,6 +2,9 @@ with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
+with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
+with RDF.Raptor.URI;
+with RDF.Rasqal.Memory;
 
 package body RDF.Rasqal.World is
 
@@ -75,6 +78,38 @@ package body RDF.Rasqal.World is
    procedure Set_Log_Handler(World: World_Type_Without_Finalize; Handler: access RDF.Raptor.Log.Log_Handler) is
    begin
       rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), RDF.Raptor.Log.Our_Raptor_Log_Handler'Access);
+   end;
+
+   function rasqal_world_guess_query_results_format_name (World: RDF.Rasqal.World.Handle_Type;
+                                                          URI: RDF.Raptor.URI.Handle_Type;
+                                                          Mime_Type: chars_ptr;
+                                                          Buffer: chars_ptr;
+                                                          Len: size_t;
+                                                          Identifier: chars_ptr)
+                                                          return chars_ptr
+         with Import, Convention=>C;
+
+   -- FIXME: Check if need to deallocate the result of the C function
+   function Rasqal_World_Guess_Query_Results_Format_Name (World: World_Type_Without_Finalize;
+                                                          URI: URI_Type_Without_Finalize'Class;
+                                                          Mime_Type: String_Holders.Holder;
+                                                          Buffer: String_Holders.Holder;
+                                                          Identifier: String_Holders.Holder)
+                                                          return String_Holders.Holder is
+      Buffer2: constant C_String_Holder := To_C_String_Holder(Buffer);
+      Mime_Type2 : constant chars_ptr := New_String(Mime_Type );
+      Identifier2: constant chars_ptr := New_String(Identifier);
+      Result: constant chars_ptr := rasqal_world_guess_query_results_format_name(Get_Handle(World),
+                                                                                 Get_Handle(URI),
+                                                                                 Mime_Type2,
+                                                                                 C_String(Buffer2),
+                                                                                 Length(Buffer2),
+                                                                                 Identifier2);
+      use String_Holders;
+   begin
+      RDF.Rasqal.Memory.rasqal_free_memory(Mime_Type2);
+      RDF.Rasqal.Memory.rasqal_free_memory(Identifier2);
+      return (if Result = Null_Ptr then Empty_Holder else To_Holder(Value(Result)));
    end;
 
 end RDF.Rasqal.World;

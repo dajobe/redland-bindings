@@ -1,7 +1,8 @@
-with RDF.Auxiliary;
+with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.World;
 with RDF.Raptor.Log;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
 
 package RDF.Rasqal.World is
 
@@ -25,7 +26,14 @@ package RDF.Rasqal.World is
 
    not overriding procedure Set_Raptor (World: World_Type_Without_Finalize; Raptor_World: RDF.Raptor.World.World_Type_Without_Finalize);
 
-   -- TODO: stopped at rasqal_world_guess_query_results_format_name ()
+   not overriding function Rasqal_World_Guess_Query_Results_Format_Name (World: World_Type_Without_Finalize;
+                                                                         URI: URI_Type_Without_Finalize'Class;
+                                                                         Mime_Type: String_Holders.Holder;
+                                                                         Buffer: String_Holders.Holder;
+                                                                         Identifier: String_Holders.Holder)
+                                                                         return String_Holders.Holder;
+
+   -- TODO: stopped at rasqal_feature ()
 
    type World_Type is new World_Type_Without_Finalize with null record;
 
