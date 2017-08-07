@@ -36,6 +36,8 @@ package RDF.Rasqal.Syntaxes is
    not overriding function Create_Query_Language_Descriptions_Iterator     (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class) return Query_Language_Description_Iterator;
    not overriding function Create_Query_Results_Format_Descriptions_Iterator (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class) return Query_Results_Format_Description_Iterator;
 
+   function Language_Name_Check (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class; Name: String) return Boolean;
+
 private
 
    type Query_Language_Description_Cursor is

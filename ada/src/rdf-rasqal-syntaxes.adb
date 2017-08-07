@@ -1,5 +1,5 @@
 with Interfaces.C; use Interfaces.C;
---  with Interfaces.C.Strings; use Interfaces.C.Strings;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 --  with Interfaces.C.Pointers;
 --  with RDF.Rasqal.World; use RDF.Rasqal.World;
 
@@ -71,6 +71,17 @@ package body RDF.Rasqal.Syntaxes is
    function Create_Query_Results_Format_Descriptions_Iterator (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class) return Query_Results_Format_Description_Iterator is
    begin
       return (World=>Get_Handle(World));
+   end;
+
+   function rasqal_language_name_check (World: RDF.Rasqal.World.Handle_Type; Name: chars_ptr) return int
+     with Import, Convention=>C;
+
+   function Language_Name_Check (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class; Name: String) return Boolean is
+      Name2: chars_ptr := New_String(Name);
+      Result: constant int := rasqal_language_name_check(Get_Handle(World), Name2);
+   begin
+      Interfaces.C.Strings.Free(Name2);
+      return Result /= 0;
    end;
 
 end RDF.Rasqal.Syntaxes;

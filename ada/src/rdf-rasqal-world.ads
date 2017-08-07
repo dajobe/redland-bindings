@@ -33,7 +33,7 @@ package RDF.Rasqal.World is
                                                                          Identifier: String_Holders.Holder)
                                                                          return String_Holders.Holder;
 
-   -- TODO: stopped at rasqal_feature ()
+   -- TODO: stopped at rasqal_feature_from_uri () [in RDF.Rasqal.Features]
 
    type World_Type is new World_Type_Without_Finalize with null record;
 
