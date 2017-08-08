@@ -4,6 +4,8 @@ with RDF.Raptor.World;
 
 package body RDF.Rasqal.Features is
 
+   -- FIXME: 'Val does a wrong thing
+
    function rasqal_feature_from_uri (World: RDF.Rasqal.World.Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Feature_Type
       with Import, Convention=>C;
 
