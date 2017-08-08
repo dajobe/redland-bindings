@@ -4,8 +4,6 @@ with RDF.Raptor.World;
 
 package body RDF.Rasqal.Features is
 
-   -- FIXME: 'Val does a wrong thing
-
    function rasqal_feature_from_uri (World: RDF.Rasqal.World.Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Feature_Type
       with Import, Convention=>C;
 
@@ -21,7 +19,13 @@ package body RDF.Rasqal.Features is
    function Get_Type (Feature: Feature_Type) return Feature_Value_Type is
       Value_Type: constant int := rasqal_feature_value_type(Feature);
    begin
-      return (if Value_Type in 0..1 then Feature_Value_Type'Val(Value_Type) else Other);
+      if Value_Type = 0 then
+         return Integer_Type;
+      elsif Value_Type = 1 then
+         return String_Type;
+      else
+         return Other;
+      end if;
    end;
 
    type String_P_Type is access all chars_ptr with Convention=>C;
