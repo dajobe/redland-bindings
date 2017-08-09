@@ -8,7 +8,7 @@ package RDF.Raptor.Statement is
 
    type Statement_Record is private;
 
-   type Statement_Record_Access is access Statement_Record;
+   type Statement_Record_Access is access Statement_Record with Convention=>C;
 
    package Statement_Handled_Record is new RDF.Auxiliary.Handled_Record(Statement_Record, Statement_Record_Access);
 
