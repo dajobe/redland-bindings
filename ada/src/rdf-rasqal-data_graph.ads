@@ -23,7 +23,8 @@ package RDF.Rasqal.Data_Graph is
 
    type Flags_Type is (None, -- unused
                        Named,
-                       Background);
+                       Background)
+      with Convention=>C;
 
    function Get_Flags (Graph: Data_Graph_Type_Without_Finalize) return Flags_Type;
 
