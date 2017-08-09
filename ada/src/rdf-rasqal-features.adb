@@ -1,3 +1,4 @@
+with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.World;
@@ -55,5 +56,39 @@ package body RDF.Rasqal.Features is
       with Import, Convention=>C;
 
    function Get_Feature_Count return unsigned is (Rasqal_Get_Feature_Count);
+
+   type C_Features_Enum is range -(2**(Feature_Type'Size-1)) .. (2**(Feature_Type'Size-1))-1
+     with Size => Feature_Type'Size, Convention => C;
+
+   function Conv is new Ada.Unchecked_Conversion(C_Features_Enum, Feature_Type);
+   function Conv is new Ada.Unchecked_Conversion(Feature_Type, C_Features_Enum);
+
+   function Get_Position (Cursor: Features_Cursor) return Feature_Type is (Cursor.Position);
+
+   function Get_Description (Cursor: Features_Cursor) return Feature_Description is
+   begin
+      return Get_Feature_Description(World_Type_Without_Finalize'(From_Handle(Cursor.World)), Cursor.Position);
+   end;
+
+   function Has_Element (Position: Features_Cursor) return Boolean is
+   begin
+      return Conv(Position.Position) < C_Features_Enum(Get_Feature_Count);
+   end;
+
+   function First (Object: Features_Iterator) return Features_Cursor is
+   begin
+      return Features_Cursor'(World=>Object.World, Position=>Conv(0));
+   end;
+
+   function Next (Object: Features_Iterator; Position: Features_Cursor) return Features_Cursor is
+   begin
+      return (World=>Object.World, Position=>Conv(Conv(Position.Position) + 1));
+   end;
+
+   function Create_Features_Descriptions_Iterator(World: RDF.Rasqal.World.World_Type_Without_Finalize'Class)
+                                                  return Features_Iterator is
+   begin
+      return Features_Iterator'(World => Get_Handle(World));
+   end;
 
 end RDF.Rasqal.Features;

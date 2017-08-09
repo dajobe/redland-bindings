@@ -64,14 +64,4 @@ private
          World: RDF.Rasqal.World.Handle_Type;
       end record;
 
-   type Query_Language_Descriptions_List is tagged
-      record
-         World: RDF.Rasqal.World.Handle_Type;
-      end record;
-
-   type Query_Results_Format_Descriptions_List is tagged
-      record
-         World: RDF.Rasqal.World.Handle_Type;
-      end record;
-
 end RDF.Rasqal.Syntaxes;

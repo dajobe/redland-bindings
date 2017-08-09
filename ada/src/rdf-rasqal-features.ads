@@ -1,3 +1,4 @@
+with Ada.Iterator_Interfaces;
 with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
@@ -29,6 +30,35 @@ package RDF.Rasqal.Features is
 
    function Get_Feature_Count return unsigned;
 
-   -- TODO: stopped at rasqal_features_enumerate (), need to create an iterator
+   type Features_Cursor is private;
+
+   function Get_Position (Cursor: Features_Cursor) return Feature_Type;
+
+   function Get_Description (Cursor: Features_Cursor) return Feature_Description;
+
+   function Has_Element (Position: Features_Cursor) return Boolean;
+
+   package Features_Iterators is new Ada.Iterator_Interfaces(Features_Cursor, Has_Element);
+
+   type Features_Iterator is new Features_Iterators.Forward_Iterator with private;
+
+   overriding function First (Object: Features_Iterator) return Features_Cursor;
+   overriding function Next (Object: Features_Iterator; Position: Features_Cursor) return Features_Cursor;
+
+   not overriding function Create_Features_Descriptions_Iterator(World: RDF.Rasqal.World.World_Type_Without_Finalize'Class)
+                                                                 return Features_Iterator;
+
+private
+
+   type Features_Cursor is
+      record
+         World: RDF.Rasqal.World.Handle_Type;
+         Position: Feature_Type;
+      end record;
+
+   type Features_Iterator is new Features_Iterators.Forward_Iterator with
+      record
+         World: RDF.Rasqal.World.Handle_Type;
+      end record;
 
 end RDF.Rasqal.Features;
