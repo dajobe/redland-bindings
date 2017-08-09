@@ -10,3 +10,5 @@ TODO: Stopped at finishing http://librdf.org/rasqal/docs/api/rasqal-section-gene
 
 * Some raptor_parser_*() functions return <0 on missing required base URI.
   Should we raise a different exception in this case?
+
+* Add strings to exception raised.
