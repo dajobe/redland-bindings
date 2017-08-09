@@ -7,6 +7,8 @@ with RDF.Raptor.Syntaxes;
 
 package RDF.Rasqal.Syntaxes is
 
+   -- TODO: Add low-level interface (without iterators)
+
    subtype Syntax_Description_Type is RDF.Raptor.Syntaxes.Syntax_Description_Type;
 
    type Query_Language_Description_Cursor is private;
