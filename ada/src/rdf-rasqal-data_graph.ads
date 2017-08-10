@@ -15,6 +15,8 @@ package RDF.Rasqal.Data_Graph is
 
    type Data_Graph_Type_Without_Finalize is new Data_Graph_Handled_Record.Base_Object with null record;
 
+   subtype Data_Graph_Handle is Data_Graph_Handled_Record.Access_Type;
+
    function Get_World (Graph: Data_Graph_Type_Without_Finalize) return RDF.Rasqal.World.World_Type_Without_Finalize;
 
    function Get_URI (Graph: Data_Graph_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type_Without_Finalize;
@@ -39,6 +41,14 @@ package RDF.Rasqal.Data_Graph is
    function Get_Base_URI (Graph: Data_Graph_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type;
 
    function Get_Usage_Count (Graph: Data_Graph_Type_Without_Finalize) return Natural;
+
+   not overriding function Copy (Object: Data_Graph_Type_Without_Finalize'Class) return Data_Graph_Type_Without_Finalize;
+
+   type Data_Graph_Type is new Data_Graph_Type_Without_Finalize with null record;
+
+   overriding procedure Adjust (Object: in out Data_Graph_Type);
+
+   overriding procedure Finalize_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle);
 
    -- TODO: Stopped at rasqal_new_data_graph_from_data_graph ()
 
