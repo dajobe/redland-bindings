@@ -59,6 +59,13 @@ package RDF.Rasqal.Data_Graph is
                                           Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
                                           return Data_Graph_Type;
 
+   not overriding function From_URI (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
+                                     URI, Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                     Flags: Flags_Type;
+                                     Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
+                                     Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                                     return Data_Graph_Type;
+
    -- TODO: Stopped at rasqal_new_data_graph_from_uri ()
 
 private
