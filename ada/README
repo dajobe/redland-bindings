@@ -19,6 +19,13 @@ Ada), because it is probably better to use native Ada libraries:
 * XML QName (internals)
 * XML (use XMLAda instead)
 * Rasqal expressions (internals)
+* Rasqal graph patterns (internals)
+* Rasqal literals (internals)
+* Rasqal prefixes (internals)
+
+The following APIs are implemented partially:
+
+* Rasqal Query
 
 It may be downgraded to Ada2005 but this isn't a priority for me.
 
