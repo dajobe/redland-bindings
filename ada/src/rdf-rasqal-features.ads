@@ -18,6 +18,7 @@ package RDF.Rasqal.Features is
 
    function Get_Type (Feature: Feature_Type) return Feature_Value_Type;
 
+   -- FIXME: Use discrimiated record instead of String_Holders here
    type Feature_Description is
       record
          Name, Label: String_Holders.Holder;
