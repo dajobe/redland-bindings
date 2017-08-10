@@ -1,5 +1,6 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary;
 with RDF.Auxiliary.Handled_Record;
 with RDF.Rasqal.World;
 with RDF.Raptor.URI;
@@ -50,7 +51,15 @@ package RDF.Rasqal.Data_Graph is
 
    overriding procedure Finalize_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle);
 
-   -- TODO: Stopped at rasqal_new_data_graph_from_data_graph ()
+   not overriding function From_IOStream (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
+                                          IOStream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
+                                          Base_URI, Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                          Flags: Flags_Type;
+                                          Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
+                                          Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                                          return Data_Graph_Type;
+
+   -- TODO: Stopped at rasqal_new_data_graph_from_uri ()
 
 private
 
