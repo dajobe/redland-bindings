@@ -45,6 +45,8 @@ package RDF.Rasqal.Data_Graph is
 
    not overriding function Copy (Object: Data_Graph_Type_Without_Finalize'Class) return Data_Graph_Type_Without_Finalize;
 
+   not overriding procedure Print (Graph: Data_Graph_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
+
    type Data_Graph_Type is new Data_Graph_Type_Without_Finalize with null record;
 
    overriding procedure Adjust (Object: in out Data_Graph_Type);
@@ -65,8 +67,6 @@ package RDF.Rasqal.Data_Graph is
                                      Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
                                      Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
                                      return Data_Graph_Type;
-
-   -- TODO: Stopped at rasqal_new_data_graph_from_uri ()
 
 private
 

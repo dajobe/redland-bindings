@@ -143,4 +143,14 @@ package body RDF.Rasqal.Data_Graph is
       return From_Handle(Result);
    end;
 
+   function rasqal_data_graph_print (Graph: Data_Graph_Handle; File: RDF.Auxiliary.C_File_Access) return int
+     with Import, Convention=>C;
+
+   procedure Print (Graph: Data_Graph_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
+   begin
+      if rasqal_data_graph_print(Get_Handle(Graph), File) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Rasqal.Data_Graph;
