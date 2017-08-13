@@ -31,4 +31,17 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_boolean_literal(Get_Handle(World), Boolean'Pos(Value)));
    end;
 
+   function rasqal_new_decimal_literal (World: RDF.Rasqal.World.Handle_Type;
+                                        Value: char_array)
+                                        return Literal_Handle_Type
+     with Import, Convention=>C;
+
+   function From_Decimal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                          Value: String)
+                          return Literal_Type is
+      use RDF.Rasqal.World;
+   begin
+      return From_Non_Null_Handle(rasqal_new_decimal_literal(Get_Handle(World), To_C(Value)));
+   end;
+
 end RDF.Rasqal.Literal;

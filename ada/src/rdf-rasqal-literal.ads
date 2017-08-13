@@ -42,6 +42,15 @@ package RDF.Rasqal.Literal is
 --                                            Value: XSD_Datetime)
 --                                            return Literal_Type;
 
-   -- TODO: Stopped at rasqal_new_decimal_literal ()
+   not overriding function From_Decimal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                         Value: String)
+                                         return Literal_Type;
+
+   -- Not implemented
+--     not overriding function From_Decimal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+--                                           Value: XSD_Decimal)
+--                                           return Literal_Type;
+
+   -- TODO: Stopped at rasqal_new_double_literal ()
 
 end RDF.Rasqal.Literal;
