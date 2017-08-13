@@ -12,10 +12,12 @@ package RDF.Rasqal.Query is
 
    type Query_Type_Without_Finalize is new Query_Handled_Record.Base_Object with null record;
 
+   -- TODO: Stopped at rasqal_query_add_data_graph()
+
    type Query_Type is new Query_Type_Without_Finalize with null record;
 
-   not overriding function New_Query (World: RDF.Rasqal.World.World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type;
+   overriding procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle_Type);
 
-   -- TODO: Stopped at rasqal_free_query()
+   not overriding function New_Query (World: RDF.Rasqal.World.World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type;
 
 end RDF.Rasqal.Query;

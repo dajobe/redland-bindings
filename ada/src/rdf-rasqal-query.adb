@@ -18,4 +18,12 @@ package body RDF.Rasqal.Query is
       return From_Non_Null_Handle(Result);
    end;
 
+   procedure rasqal_free_query (Handle: Query_Handle_Type)
+     with Import, Convention=>C;
+
+   procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle_Type) is
+   begin
+      rasqal_free_query(Handle);
+   end;
+
 end RDF.Rasqal.Query;
