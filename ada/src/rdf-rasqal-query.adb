@@ -1,7 +1,20 @@
+with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_String_Holders;
 
 package body RDF.Rasqal.Query is
+
+   function rasqal_query_add_data_graph (Query: Query_Handle_Type; Graph: RDF.Rasqal.Data_Graph.Data_Graph_Handle)
+                                         return int
+     with Import, Convention=>C;
+
+   procedure Add_Data_Graph (Query: Query_Type_Without_Finalize; Graph: RDF.Rasqal.Data_Graph.Data_Graph_Type) is
+      use RDF.Rasqal.Data_Graph;
+   begin
+      if rasqal_query_add_data_graph (Get_Handle(Query), Get_Handle(Graph)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
 
    function rasqal_new_query (World: RDF.Rasqal.World.Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
      with Import, Convention=>C;

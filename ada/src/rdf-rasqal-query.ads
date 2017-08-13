@@ -1,6 +1,7 @@
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Rasqal.World;
+with RDF.Rasqal.Data_Graph;
 
 package RDF.Rasqal.Query is
 
@@ -11,6 +12,8 @@ package RDF.Rasqal.Query is
    subtype Query_Handle_Type is Query_Handled_Record.Access_Type;
 
    type Query_Type_Without_Finalize is new Query_Handled_Record.Base_Object with null record;
+
+   not overriding procedure Add_Data_Graph (Query: Query_Type_Without_Finalize; Graph: RDF.Rasqal.Data_Graph.Data_Graph_Type);
 
    -- TODO: Stopped at rasqal_query_add_data_graph()
 
