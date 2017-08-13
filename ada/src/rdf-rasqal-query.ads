@@ -20,7 +20,7 @@ package RDF.Rasqal.Query is
 
    not overriding procedure Add_Data_Graphs (Query: Query_Type_Without_Finalize; Graphs: Data_Graphs_Array);
 
-   -- TODO: Stopped at rasqal_query_add_data_graph()
+   -- TODO: Stopped at rasqal_query_execute(); will continue after RDF.Rasqal.Query_Results
 
    type Query_Type is new Query_Type_Without_Finalize with null record;
 
