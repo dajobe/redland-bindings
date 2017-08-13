@@ -33,6 +33,15 @@ package RDF.Rasqal.Literal is
                                               Value: String)
                                               return Literal_Type;
 
-   -- TODO: Stopped at rasqal_new_boolean_literal ()
+   not overriding function From_Boolean (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                         Value: Boolean)
+                                         return Literal_Type;
+
+   -- Not implemented
+--     not overriding function From_Datetime (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+--                                            Value: XSD_Datetime)
+--                                            return Literal_Type;
+
+   -- TODO: Stopped at rasqal_new_decimal_literal ()
 
 end RDF.Rasqal.Literal;

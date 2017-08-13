@@ -16,6 +16,19 @@ package body RDF.Rasqal.Literal is
       use RDF.Rasqal.World;
    begin
       return From_Non_Null_Handle(rasqal_new_typed_literal(Get_Handle(World), Type_Of_Literal, To_C(Value)));
-   end New_Typed_Literal;
+   end;
+
+   function rasqal_new_boolean_literal (World: RDF.Rasqal.World.Handle_Type;
+                                        Value: int)
+                                        return Literal_Handle_Type
+     with Import, Convention=>C;
+
+   function From_Boolean (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                          Value: Boolean)
+                          return Literal_Type is
+      use RDF.Rasqal.World;
+   begin
+      return From_Non_Null_Handle(rasqal_new_boolean_literal(Get_Handle(World), Boolean'Pos(Value)));
+   end;
 
 end RDF.Rasqal.Literal;
