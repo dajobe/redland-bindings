@@ -13,7 +13,12 @@ package RDF.Rasqal.Query is
 
    type Query_Type_Without_Finalize is new Query_Handled_Record.Base_Object with null record;
 
-   not overriding procedure Add_Data_Graph (Query: Query_Type_Without_Finalize; Graph: RDF.Rasqal.Data_Graph.Data_Graph_Type);
+   not overriding procedure Add_Data_Graph (Query: Query_Type_Without_Finalize;
+                                            Graph: RDF.Rasqal.Data_Graph.Data_Graph_Type_Without_Finalize);
+
+   type Data_Graphs_Array is array(Integer range <>) of RDF.Rasqal.Data_Graph.Data_Graph_Type_Without_Finalize;
+
+   not overriding procedure Add_Data_Graphs (Query: Query_Type_Without_Finalize; Graphs: Data_Graphs_Array);
 
    -- TODO: Stopped at rasqal_query_add_data_graph()
 

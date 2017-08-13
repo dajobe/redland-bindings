@@ -8,12 +8,20 @@ package body RDF.Rasqal.Query is
                                          return int
      with Import, Convention=>C;
 
-   procedure Add_Data_Graph (Query: Query_Type_Without_Finalize; Graph: RDF.Rasqal.Data_Graph.Data_Graph_Type) is
+   procedure Add_Data_Graph (Query: Query_Type_Without_Finalize;
+                             Graph: RDF.Rasqal.Data_Graph.Data_Graph_Type_Without_Finalize) is
       use RDF.Rasqal.Data_Graph;
    begin
       if rasqal_query_add_data_graph (Get_Handle(Query), Get_Handle(Graph)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
+   end;
+
+   procedure Add_Data_Graphs (Query: Query_Type_Without_Finalize; Graphs: Data_Graphs_Array) is
+   begin
+      for Graph of Graphs loop
+         Add_Data_Graph(Query, Graph);
+      end loop;
    end;
 
    function rasqal_new_query (World: RDF.Rasqal.World.Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
