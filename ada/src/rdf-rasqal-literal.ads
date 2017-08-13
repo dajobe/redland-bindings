@@ -1,10 +1,11 @@
 with RDF.Auxiliary.Handled_Record;
+with RDF.Rasqal.World;
 
 package RDF.Rasqal.Literal is
 
    package Literal_Handled_Record is new RDF.Auxiliary.Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype Literal_Type is Literal_Handled_Record.Access_Type;
+   subtype Literal_Handle_Type is Literal_Handled_Record.Access_Type;
 
    type Literal_Type_Without_Finalize is new Literal_Handled_Record.Base_Object with null record;
 
@@ -25,6 +26,13 @@ package RDF.Rasqal.Literal is
                               Literal_Variable,
                               Literal_Date);
 
-   -- TODO: Stopped at rasqal_new_typed_literal ()
+   type Literal_Type is new Literal_Type_Without_Finalize with null record;
+
+   not overriding function New_Typed_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                              Type_Of_Literal: Literal_Type_Enum;
+                                              Value: String)
+                                              return Literal_Type;
+
+   -- TODO: Stopped at rasqal_new_boolean_literal ()
 
 end RDF.Rasqal.Literal;
