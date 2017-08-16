@@ -27,6 +27,9 @@ package RDF.Rasqal.Literal is
                               Literal_Variable,
                               Literal_Date);
 
+   subtype Literal_Type_Enum_Simple is Literal_Type_Enum
+     with Static_Predicate => Literal_Type_Enum_Simple in Literal_Blank | Literal_Qname;
+
    type Literal_Type is new Literal_Type_Without_Finalize with null record;
 
    not overriding function New_Typed_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
@@ -72,6 +75,11 @@ package RDF.Rasqal.Literal is
                                          Value: long)
                                          return Literal_Type;
 
-   -- TODO: Stopped at rasqal_new_pattern_literal ()
+   not overriding function New_Simple_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                               Kind: Literal_Type_Enum_Simple;
+                                               Value: String)
+                                               return Literal_Type;
+
+   -- TODO: Stopped at rasqal_new_string_literal ()
 
 end RDF.Rasqal.Literal;

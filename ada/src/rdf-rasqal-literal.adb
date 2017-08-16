@@ -1,4 +1,5 @@
 with Interfaces.C; use Interfaces.C;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 
 package body RDF.Rasqal.Literal is
 
@@ -88,5 +89,22 @@ package body RDF.Rasqal.Literal is
    begin
       return From_Non_Null_Handle(rasqal_new_numeric_literal_from_long(Get_Handle(World), Literal_Integer, Value));
    end;
+
+   function rasqal_new_simple_literal (World: RDF.Rasqal.World.Handle_Type;
+                                       Kind: Literal_Type_Enum_Simple;
+                                       Value: chars_ptr)
+                                       return Literal_Handle_Type
+     with Import, Convention=>C;
+
+   function New_Simple_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                Kind: Literal_Type_Enum_Simple;
+                                Value: String)
+                                return Literal_Type is
+      Value2: chars_ptr := New_String(Value); -- freed by rasqal_new_simple_literal
+      use RDF.Rasqal.World;
+   begin
+      return From_Non_Null_Handle(rasqal_new_simple_literal(Get_Handle(World), Kind, Value2));
+   end;
+
 
 end RDF.Rasqal.Literal;
