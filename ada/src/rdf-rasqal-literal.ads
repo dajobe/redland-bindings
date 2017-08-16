@@ -106,6 +106,10 @@ package RDF.Rasqal.Literal is
                                         return Literal_Type
      is (New_String_Literal(World, Value));
 
-   -- TODO: Stopped at rasqal_new_uri_literal ()
+   not overriding function From_URI (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                     Value: RDF.Raptor.URI.URI_Type_Without_Finalize)
+                                     return Literal_Type;
+
+   -- TODO: Stopped at rasqal_literal_same_term ()
 
 end RDF.Rasqal.Literal;

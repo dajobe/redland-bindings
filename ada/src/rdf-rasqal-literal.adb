@@ -159,4 +159,17 @@ package body RDF.Rasqal.Literal is
                                   Null_Ptr));
    end;
 
+   function rasqal_new_uri_literal (World: RDF.Rasqal.World.Handle_Type;
+                                    Value: RDF.Raptor.URI.Handle_Type)
+                                    return Literal_Handle_Type
+     with Import, Convention=>C;
+
+   function From_URI (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                      Value: RDF.Raptor.URI.URI_Type_Without_Finalize)
+                      return Literal_Type is
+      use RDF.Rasqal.World, RDF.Raptor.URI;
+   begin
+      return From_Non_Null_Handle(rasqal_new_uri_literal(Get_Handle(World), Get_Handle(Value)));
+   end;
+
 end RDF.Rasqal.Literal;
