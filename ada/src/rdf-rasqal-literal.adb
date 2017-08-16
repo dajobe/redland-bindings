@@ -252,6 +252,48 @@ package body RDF.Rasqal.Literal is
       return New_Holder(rasqal_literal_get_language(Get_Handle(Literal)));
    end;
 
+   function rasqal_literal_get_rdf_term_type (Literal: Literal_Handle_Type) return Literal_Type_Enum
+     with Import, Convention=>C;
+
+   function rasqal_literal_get_type (Literal: Literal_Handle_Type) return Literal_Type_Enum
+     with Import, Convention=>C;
+
+   function Get_Rdf_Term_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum is
+      (rasqal_literal_get_rdf_term_type(Get_Handle(Literal)));
+
+   function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum is
+     (rasqal_literal_get_type(Get_Handle(Literal)));
+
+   function rasqal_literal_is_rdf_literal (Literal: Literal_Handle_Type) return int
+     with Import, Convention=>C;
+
+   function Is_Rdf_Literal (Literal: Literal_Type_Without_Finalize) return Boolean is
+      (rasqal_literal_is_rdf_literal(Get_Handle(Literal)) /= 0);
+
+   function rasqal_literal_print (Literal: Literal_Handle_Type; File: RDF.Auxiliary.C_File_Access) return int
+     with Import, Convention=>C;
+
+   procedure Print (Literal: Literal_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
+   begin
+      if rasqal_literal_print (Get_Handle(Literal), File) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   procedure rasqal_literal_print_type (Literal: Literal_Handle_Type; File: RDF.Auxiliary.C_File_Access)
+     with Import, Convention=>C;
+
+   procedure Print_Type (Literal: Literal_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
+   begin
+      rasqal_literal_print_type (Get_Handle(Literal), File);
+   end;
+
+   function rasqal_literal_type_label (Kind: Literal_Type_Enum) return chars_ptr
+     with Import, Convention=>C;
+
+   function Type_Label (Kind: Literal_Type_Enum) return String is
+     (Value(rasqal_literal_type_label(Kind)));
+
    function rasqal_literal_value (Literal: Literal_Handle_Type) return Literal_Handle_Type
      with Import, Convention=>C;
 

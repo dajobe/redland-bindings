@@ -62,7 +62,19 @@ package RDF.Rasqal.Literal is
 
    not overriding function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder;
 
-   -- TODO: Stopped at rasqal_literal_get_rdf_term_type ()
+   not overriding function Get_Rdf_Term_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum;
+
+   not overriding function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum;
+
+   not overriding function Is_Rdf_Literal (Literal: Literal_Type_Without_Finalize) return Boolean;
+
+   not overriding procedure Print (Literal: Literal_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
+
+   not overriding procedure Print_Type (Literal: Literal_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
+
+   not overriding function Type_Label (Kind: Literal_Type_Enum) return String;
+
+   -- TODO: Stopped at rasqal_literal_is_rdf_literal ()
 
    type Literal_Type is new Literal_Type_Without_Finalize with null record;
 
