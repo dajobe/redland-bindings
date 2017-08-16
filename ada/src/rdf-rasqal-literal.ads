@@ -114,4 +114,6 @@ package RDF.Rasqal.Literal is
 
    not overriding function Value (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type;
 
+   -- TODO: This package is not finished
+
 end RDF.Rasqal.Literal;
