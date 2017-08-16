@@ -33,6 +33,8 @@ package RDF.Rasqal.Literal is
    subtype Literal_Type_Enum_Simple is Literal_Type_Enum
      with Static_Predicate => Literal_Type_Enum_Simple in Literal_Blank | Literal_Qname;
 
+   overriding function "=" (Left, Right: Literal_Type_Without_Finalize) return Boolean;
+
    type Literal_Type is new Literal_Type_Without_Finalize with null record;
 
    not overriding function New_Typed_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
@@ -110,6 +112,6 @@ package RDF.Rasqal.Literal is
                                      Value: RDF.Raptor.URI.URI_Type_Without_Finalize)
                                      return Literal_Type;
 
-   -- TODO: Stopped at rasqal_literal_same_term ()
+   not overriding function Value (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type;
 
 end RDF.Rasqal.Literal;

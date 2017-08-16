@@ -172,4 +172,16 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_uri_literal(Get_Handle(World), Get_Handle(Value)));
    end;
 
+   function rasqal_literal_same_term (Left, Right: Literal_Handle_Type) return int
+     with Import, Convention=>C;
+
+   function "=" (Left, Right: Literal_Type_Without_Finalize) return Boolean is
+     (rasqal_literal_same_term(Get_Handle(Left), Get_Handle(Right)) /= 0);
+
+   function rasqal_literal_value (Literal: Literal_Handle_Type) return Literal_Handle_Type
+     with Import, Convention=>C;
+
+   function Value (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type is
+      (From_Handle(rasqal_literal_value(Get_Handle(Literal))));
+
 end RDF.Rasqal.Literal;
