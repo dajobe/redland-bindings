@@ -1,3 +1,4 @@
+with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary.Handled_Record;
 with RDF.Rasqal.World;
 
@@ -66,6 +67,11 @@ package RDF.Rasqal.Literal is
                                             Value: Long_Float)
                                             return Literal_Type;
 
-   -- TODO: Stopped at rasqal_new_integer_literal ()
+   -- Deliberately accept only long integers, don't implement "Value: int".
+   not overriding function From_Integer (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                         Value: long)
+                                         return Literal_Type;
+
+   -- TODO: Stopped at rasqal_new_pattern_literal ()
 
 end RDF.Rasqal.Literal;

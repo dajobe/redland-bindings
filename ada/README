@@ -26,6 +26,7 @@ Ada), because it is probably better to use native Ada libraries:
 The following APIs are implemented partially:
 
 * Rasqal Query
+* Literals (not implemented things related to patterns)
 
 It may be downgraded to Ada2005 but this isn't a priority for me.
 
