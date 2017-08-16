@@ -178,10 +178,24 @@ package body RDF.Rasqal.Literal is
    function "=" (Left, Right: Literal_Type_Without_Finalize) return Boolean is
      (rasqal_literal_same_term(Get_Handle(Left), Get_Handle(Right)) /= 0);
 
+   procedure rasqal_free_literal (Handle: Literal_Handle_Type)
+     with Import, Convention=>C;
+
+   procedure Finalize_Handle (Object: Literal_Type; Handle: Literal_Handle_Type) is
+   begin
+      rasqal_free_literal(Handle);
+   end;
+
+   function rasqal_as_node (Literal: Literal_Handle_Type) return Literal_Handle_Type
+     with Import, Convention=>C;
+
+   function As_Node (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type is
+     (From_Handle(rasqal_as_node(Get_Handle(Literal))));
+
    function rasqal_literal_value (Literal: Literal_Handle_Type) return Literal_Handle_Type
      with Import, Convention=>C;
 
    function Value (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type is
-      (From_Handle(rasqal_literal_value(Get_Handle(Literal))));
+     (From_Handle(rasqal_literal_value(Get_Handle(Literal))));
 
 end RDF.Rasqal.Literal;

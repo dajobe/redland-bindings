@@ -35,7 +35,11 @@ package RDF.Rasqal.Literal is
 
    overriding function "=" (Left, Right: Literal_Type_Without_Finalize) return Boolean;
 
+   -- TODO: Stopped at rasqal_literal_as_counted_string ()
+
    type Literal_Type is new Literal_Type_Without_Finalize with null record;
+
+   overriding procedure Finalize_Handle (Object: Literal_Type; Handle: Literal_Handle_Type);
 
    not overriding function New_Typed_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
                                               Type_Of_Literal: Literal_Type_Enum;
@@ -114,6 +118,6 @@ package RDF.Rasqal.Literal is
 
    not overriding function Value (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type;
 
-   -- TODO: This package is not finished
+   not overriding function As_Node (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type;
 
 end RDF.Rasqal.Literal;
