@@ -44,4 +44,36 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_decimal_literal(Get_Handle(World), To_C(Value)));
    end;
 
+   function rasqal_new_double_literal (World: RDF.Rasqal.World.Handle_Type; Value: double)
+                                       return Literal_Handle_Type
+     with Import, Convention=>C;
+
+   function rasqal_new_floating_literal (World: RDF.Rasqal.World.Handle_Type; Kind: Literal_Type_Enum; Value: double)
+                                         return Literal_Handle_Type
+     with Import, Convention=>C;
+
+   function From_Float (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                        Value: Float)
+                        return Literal_Type is
+      use RDF.Rasqal.World;
+   begin
+      return From_Non_Null_Handle(rasqal_new_floating_literal(Get_Handle(World), Literal_Float, double(Value)));
+   end;
+
+   function From_Float (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                        Value: Long_Float)
+                        return Literal_Type is
+      use RDF.Rasqal.World;
+   begin
+      return From_Non_Null_Handle(rasqal_new_floating_literal(Get_Handle(World), Literal_Float, double(Value)));
+   end;
+
+   function From_Long_Float (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                             Value: Long_Float)
+                             return Literal_Type is
+      use RDF.Rasqal.World;
+   begin
+      return From_Non_Null_Handle(rasqal_new_double_literal(Get_Handle(World), double(Value)));
+   end;
+
 end RDF.Rasqal.Literal;

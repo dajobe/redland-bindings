@@ -51,6 +51,21 @@ package RDF.Rasqal.Literal is
 --                                           Value: XSD_Decimal)
 --                                           return Literal_Type;
 
-   -- TODO: Stopped at rasqal_new_double_literal ()
+   -- From_Float API is experimental
+
+   not overriding function From_Float (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                       Value: Float)
+                                       return Literal_Type;
+
+   -- WARNING: This takes a Long_Float value but silently rounds it to Float
+   not overriding function From_Float (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                       Value: Long_Float)
+                                       return Literal_Type;
+
+   not overriding function From_Long_Float (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                            Value: Long_Float)
+                                            return Literal_Type;
+
+   -- TODO: Stopped at rasqal_new_integer_literal ()
 
 end RDF.Rasqal.Literal;
