@@ -147,7 +147,7 @@ package body RDF.Rasqal.Literal is
 
    function New_String_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
                                 Value: String;
-                                Language: RDF.Auxiliary.String_Holders.Holder)
+                                Language: RDF.Auxiliary.String_Holders.Holder := Empty_Holder)
                                 return Literal_Type is
       use RDF.Rasqal.World;
    begin
