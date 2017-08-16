@@ -1,5 +1,6 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 
 package body RDF.Rasqal.Literal is
 
@@ -106,5 +107,56 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_simple_literal(Get_Handle(World), Kind, Value2));
    end;
 
+   function rasqal_new_string_literal (World: RDF.Rasqal.World.Handle_Type;
+                                       Value: chars_ptr;
+                                       Language: chars_ptr;
+                                       Datatype: RDF.Raptor.URI.Handle_Type;
+                                       Datatype_Qname: chars_ptr)
+                                       return Literal_Handle_Type
+     with Import, Convention=>C;
+
+   function New_String_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                Value: String;
+                                Language: RDF.Auxiliary.String_Holders.Holder;
+                                Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize)
+                                return Literal_Type is
+      use RDF.Rasqal.World, RDF.Raptor.URI;
+   begin
+      return From_Non_Null_Handle(rasqal_new_string_literal(
+                                  Get_Handle(World),
+                                  New_String(Value),
+                                  New_String(Language),
+                                  Get_Handle(Datatype),
+                                  Null_Ptr));
+   end;
+
+   function New_String_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                Value: String;
+                                Language: RDF.Auxiliary.String_Holders.Holder;
+                                Datatype_Qname: String)
+                                return Literal_Type is
+      use RDF.Rasqal.World, RDF.Raptor.URI;
+   begin
+      return From_Non_Null_Handle(rasqal_new_string_literal(
+                                  Get_Handle(World),
+                                  New_String(Value),
+                                  New_String(Language),
+                                  null,
+                                  New_String(Datatype_Qname)));
+   end;
+
+   function New_String_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                Value: String;
+                                Language: RDF.Auxiliary.String_Holders.Holder)
+                                return Literal_Type is
+      use RDF.Rasqal.World;
+   begin
+      return From_Non_Null_Handle(rasqal_new_string_literal(
+                                  Get_Handle(World),
+                                  New_String(Value),
+                                  New_String(Language),
+                                  null,
+                                  Null_Ptr));
+   end;
 
 end RDF.Rasqal.Literal;

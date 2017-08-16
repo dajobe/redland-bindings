@@ -1,6 +1,8 @@
 with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary.Handled_Record;
 with RDF.Rasqal.World;
+with RDF.Raptor.URI;
+with RDF.Auxiliary;
 
 package RDF.Rasqal.Literal is
 
@@ -80,6 +82,24 @@ package RDF.Rasqal.Literal is
                                                Value: String)
                                                return Literal_Type;
 
-   -- TODO: Stopped at rasqal_new_string_literal ()
+   -- overloaded
+   not overriding function New_String_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                               Value: String;
+                                               Language: RDF.Auxiliary.String_Holders.Holder;
+                                               Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize)
+                                               return Literal_Type;
+
+   not overriding function New_String_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                               Value: String;
+                                               Language: RDF.Auxiliary.String_Holders.Holder;
+                                               Datatype_Qname: String)
+                                               return Literal_Type;
+
+   not overriding function New_String_Literal (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                               Value: String;
+                                               Language: RDF.Auxiliary.String_Holders.Holder)
+                                               return Literal_Type;
+
+   -- TODO: Stopped at rasqal_new_uri_literal ()
 
 end RDF.Rasqal.Literal;
