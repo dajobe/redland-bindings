@@ -35,4 +35,13 @@ package body RDF.Auxiliary.C_String_Holders is
       end if;
    end;
 
+   function New_Holder (Ptr: chars_ptr) return String_Holders.Holder is
+   begin
+      if Ptr = Null_Ptr then
+         return String_Holders.Empty_Holder;
+      else
+         return String_Holders.To_Holder(Value(Ptr));
+      end if;
+   end;
+
 end RDF.Auxiliary.C_String_Holders;

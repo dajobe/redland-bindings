@@ -2,7 +2,7 @@ with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary.Handled_Record;
 with RDF.Rasqal.World;
 with RDF.Raptor.URI;
-with RDF.Auxiliary;
+with RDF.Auxiliary; use RDF.Auxiliary;
 use RDF.Auxiliary.String_Holders;
 
 package RDF.Rasqal.Literal is
@@ -57,7 +57,12 @@ package RDF.Rasqal.Literal is
                                     Flags: Compare_Flags)
                                     return RDF.Auxiliary.Comparison_Result;
 
-   -- TODO: Stopped at rasqal_literal_datatype ()
+   not overriding function Get_Datatype (Literal: Literal_Type_Without_Finalize)
+                                         return RDF.Raptor.URI.URI_Type_Without_Finalize;
+
+   not overriding function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder;
+
+   -- TODO: Stopped at rasqal_literal_get_rdf_term_type ()
 
    type Literal_Type is new Literal_Type_Without_Finalize with null record;
 

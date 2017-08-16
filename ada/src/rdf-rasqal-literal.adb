@@ -234,6 +234,24 @@ package body RDF.Rasqal.Literal is
       return Sign(rasqal_literal_compare(Get_Handle(Left), Get_Handle(Right),  Compare_Flags'Pos(Flags), Error'Unchecked_Access));
    end;
 
+   function rasqal_literal_datatype (Literal: Literal_Handle_Type) return RDF.Raptor.URI.Handle_Type
+     with Import, Convention=>C;
+
+   function Get_Datatype (Literal: Literal_Type_Without_Finalize)
+                          return RDF.Raptor.URI.URI_Type_Without_Finalize is
+      use RDF.Raptor.URI;
+   begin
+      return From_Handle(rasqal_literal_datatype(Get_Handle(Literal)));
+   end;
+
+   function rasqal_literal_get_language (Literal: Literal_Handle_Type) return Chars_Ptr
+     with Import, Convention=>C;
+
+   function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder is
+   begin
+      return New_Holder(rasqal_literal_get_language(Get_Handle(Literal)));
+   end;
+
    function rasqal_literal_value (Literal: Literal_Handle_Type) return Literal_Handle_Type
      with Import, Convention=>C;
 
