@@ -1,6 +1,8 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
+with RDF.Auxiliary.C_Pointers;
+with RDF.Auxiliary.Convert;
 
 package body RDF.Rasqal.Literal is
 
@@ -191,6 +193,46 @@ package body RDF.Rasqal.Literal is
 
    function As_Node (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type is
      (From_Handle(rasqal_as_node(Get_Handle(Literal))));
+
+   function "or" (Left, Right: Compare_Flags) return Compare_Flags is
+      type B is mod 256;
+   begin
+      return Compare_Flags'Val(B(Compare_Flags'Pos(Left)) or B(Compare_Flags'Pos(Right)));
+   end;
+
+   type Size_T_P is access all size_t with Convention=>C;
+   type Int_P is access all int with Convention=>C;
+
+   function rasqal_literal_as_counted_string (Literal: Literal_Handle_Type;
+                                              Len_P: Size_T_P;
+                                              Flags: int;
+                                              Error_P: Int_P)
+                                              return RDF.Auxiliary.C_Pointers.Pointer
+     with Import, Convention=>C;
+
+   function As_String (Literal: Literal_Type_Without_Finalize; Flags: Compare_Flags) return String is
+      Error: aliased int;
+      Length: aliased size_t;
+      Item: RDF.Auxiliary.C_Pointers.Pointer :=
+        rasqal_literal_as_counted_string(Get_Handle(Literal), Length'Unchecked_Access, Compare_Flags'Pos(Flags), Error'Unchecked_Access);
+      use RDF.Auxiliary.Convert;
+   begin
+      if Error /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Value_With_Possible_NULs(Item, Length);
+   end;
+
+   function rasqal_literal_compare (Left, Right: Literal_Handle_Type; Flags: int; Error_P: Int_P) return int
+     with Import, Convention=>C;
+
+   function Compare (Left, Right: Literal_Type_Without_Finalize; Flags: Compare_Flags)
+                     return RDF.Auxiliary.Comparison_Result is
+      Error: aliased int;
+      use RDF.Auxiliary;
+   begin
+      return Sign(rasqal_literal_compare(Get_Handle(Left), Get_Handle(Right),  Compare_Flags'Pos(Flags), Error'Unchecked_Access));
+   end;
 
    function rasqal_literal_value (Literal: Literal_Handle_Type) return Literal_Handle_Type
      with Import, Convention=>C;

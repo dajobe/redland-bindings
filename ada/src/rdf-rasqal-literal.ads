@@ -35,7 +35,29 @@ package RDF.Rasqal.Literal is
 
    overriding function "=" (Left, Right: Literal_Type_Without_Finalize) return Boolean;
 
-   -- TODO: Stopped at rasqal_literal_as_counted_string ()
+   type Compare_Flags is (Compare_None,
+                          Compare_Nocase,
+                          Compare_XQuery,
+                          Compare_RDF,
+                          Compare_URI,
+                          Compare_Sameterm);
+
+   for Compare_Flags use (Compare_None     => 0,
+                          Compare_Nocase   => 1,
+                          Compare_XQuery   => 2,
+                          Compare_RDF      => 4,
+                          Compare_URI      => 8,
+                          Compare_Sameterm => 16);
+
+   not overriding function "or" (Left, Right: Compare_Flags) return Compare_Flags;
+
+   not overriding function As_String (Literal: Literal_Type_Without_Finalize; Flags: Compare_Flags) return String;
+
+   not overriding function Compare (Left, Right: Literal_Type_Without_Finalize;
+                                    Flags: Compare_Flags)
+                                    return RDF.Auxiliary.Comparison_Result;
+
+   -- TODO: Stopped at rasqal_literal_datatype ()
 
    type Literal_Type is new Literal_Type_Without_Finalize with null record;
 
