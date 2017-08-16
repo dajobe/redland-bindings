@@ -101,6 +101,11 @@ package RDF.Rasqal.Literal is
                                                Language: RDF.Auxiliary.String_Holders.Holder := Empty_Holder)
                                                return Literal_Type;
 
+   not overriding function From_String (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                        Value: String)
+                                        return Literal_Type
+     is (New_String_Literal(World, Value));
+
    -- TODO: Stopped at rasqal_new_uri_literal ()
 
 end RDF.Rasqal.Literal;
