@@ -12,3 +12,5 @@ TODO: Stopped at finishing http://librdf.org/rasqal/docs/api/rasqal-section-gene
   Should we raise a different exception in this case?
 
 * Add strings to exception raised.
+
+* It seems that I sometimes use New_String where To_C for char_array does better.

@@ -31,7 +31,14 @@ package RDF.Rasqal.Query_Results is
                                               Offset: Natural)
                                               return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
 
-   -- TODO: Stopped at rasqal_query_results_get_binding_value_by_name ()
+   not overriding function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize;
+                                                      Name: String)
+                                                      return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
+
+   -- rasqal_query_results_get_bindings() deliberately not implemented.
+   -- Use iterators instead.
+
+   -- TODO: Stopped at rasqal_query_results_get_bindings_count ()
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
 
