@@ -38,7 +38,10 @@ package RDF.Rasqal.Query_Results is
    -- rasqal_query_results_get_bindings() deliberately not implemented.
    -- Use iterators instead.
 
-   -- TODO: Stopped at rasqal_query_results_get_bindings_count ()
+   not overriding function Get_Bindings_Count (Results: Query_Results_Type_Without_Finalize)
+                                               return Natural; -- or Positive?
+
+   -- TODO: Stopped at rasqal_query_results_get_boolean ()
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
 

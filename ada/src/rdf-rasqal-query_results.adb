@@ -53,6 +53,18 @@ package body RDF.Rasqal.Query_Results is
       return From_Non_Null_Handle(rasqal_query_results_get_binding_value_by_name(Get_Handle(Results), To_C(Name)));
    end;
 
+   function rasqal_query_results_get_bindings_count (Results: Query_Results_Handle_Type) return int
+     with Import, Convention=>C;
+
+   function Get_Bindings_Count (Results: Query_Results_Type_Without_Finalize) return Natural is
+      Count: constant int := rasqal_query_results_get_bindings_count(Get_Handle(Results));
+   begin
+      if Count < 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Positive(Count);
+   end;
+
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
      with Import, Convention=>C;
 
