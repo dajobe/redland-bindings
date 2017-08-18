@@ -1,4 +1,4 @@
-TODO: Stopped at finishing http://librdf.org/rasqal/docs/api/rasqal-section-general.html
+* "TODO" in the sources.
 
 * Can Adjust be done without Set_Handle_Hack, using class-wide types?
 
