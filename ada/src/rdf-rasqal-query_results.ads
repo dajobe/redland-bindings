@@ -24,7 +24,7 @@ package RDF.Rasqal.Query_Results is
 
    -- TODO: Stopped at rasqal_query_results_get_binding_name ()
 
-   -- TODO: Iterators
+   -- TODO: Iterators for binding rows and triples (and also for binding names?)
 
    type Query_Results_Type is new Query_Results_Type_Without_Finalize with null record;
 
