@@ -1,3 +1,4 @@
+with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
@@ -194,11 +195,13 @@ package body RDF.Rasqal.Literal is
    function As_Node (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type is
      (From_Handle(rasqal_as_node(Get_Handle(Literal))));
 
+   type Compare_Flags_Code is mod 2**(Compare_Flags'Size);
+   function Conv is new Ada.Unchecked_Conversion(Compare_Flags, Compare_Flags_Code);
+   function Conv is new Ada.Unchecked_Conversion(Compare_Flags_Code, Compare_Flags);
+
    function "or" (Left, Right: Compare_Flags) return Compare_Flags is
-      type B is mod 256;
    begin
-      -- FIXME: Pos and Val do wrong things!
-      return Compare_Flags'Val(B(Compare_Flags'Pos(Left)) or B(Compare_Flags'Pos(Right)));
+      return Conv(Conv(Left) or Conv(Right));
    end;
 
    type Size_T_P is access all size_t with Convention=>C;
