@@ -1,6 +1,5 @@
 with Ada.Iterator_Interfaces;
 with Interfaces.C; use Interfaces.C;
-with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 
@@ -18,10 +17,10 @@ package RDF.Rasqal.Features is
 
    function Get_Type (Feature: Feature_Type) return Feature_Value_Type;
 
-   -- FIXME: Use discrimiated record instead of String_Holders here
-   type Feature_Description is
+   type Feature_Description (Name_Length, Label_Length: Natural) is
       record
-         Name, Label: String_Holders.Holder;
+         Name: String(1..Name_Length);
+         Label: String(1..Label_Length);
          URI: URI_Type; -- with finalize
       end record;
 

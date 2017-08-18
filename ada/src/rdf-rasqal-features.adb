@@ -1,6 +1,7 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary;
 with RDF.Raptor.World;
 
 package body RDF.Rasqal.Features is
@@ -43,13 +44,21 @@ package body RDF.Rasqal.Features is
    function Get_Feature_Description (World: World_Type_Without_Finalize'Class; Feature: Feature_Type) return Feature_Description is
       Name, Label: aliased chars_ptr;
       URI: aliased RDF.Raptor.URI.Handle_Type;
-      use String_Holders;
    begin
       if rasqal_features_enumerate(Get_Handle(World), Feature, Name'Unchecked_Access, URI'Unchecked_Access, Label'Unchecked_Access) /= 0
       then
-         raise RDF_Exception;
+         raise RDF.Auxiliary.RDF_Exception;
       end if;
-      return (Name=>To_Holder(Value(Name)), Label=>To_Holder(Value(Label)), URI=>From_Non_Null_Handle(URI));
+      declare
+         Name2 : constant String := Value(Name );
+         Label2: constant String := Value(Label);
+      begin
+         return (Name_Length  => Name2'Length,
+                 Label_Length => Label2'Length,
+                 Name  => Name2,
+                 Label => Label2,
+                 URI => From_Non_Null_Handle(URI));
+      end;
    end;
 
    function rasqal_get_feature_count return unsigned
