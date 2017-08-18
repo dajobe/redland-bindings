@@ -18,23 +18,27 @@ package RDF.Rasqal.Query_Results is
                                     Results_Syntax,
                                     Results_Unknow);
 
-   type Query_Results_Type is new Query_Results_Type_Without_Finalize with null record;
-
-   procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle_Type);
-
-   function New_Query_Results (World: RDF.Rasqal.World.World_Type_Without_Finalize;
-                               Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
-                               Kind: Query_Results_Type_Enum)
-                               return Query_Results_Type;
-
-   function From_String (World: RDF.Rasqal.World.World_Type_Without_Finalize;
-                         Kind: Query_Results_Type_Enum;
-                         Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                         Value: String)
-                         return Query_Results_Type;
-
    -- function Add_Row is deliberately not implemented
 
-   -- TODO: Stopped at rasqal_query_results_finished ()
+   not overriding function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean;
+
+   -- TODO: Stopped at rasqal_query_results_get_binding_name ()
+
+   -- TODO: Iterators
+
+   type Query_Results_Type is new Query_Results_Type_Without_Finalize with null record;
+
+   overriding procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle_Type);
+
+   not overriding function New_Query_Results (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                              Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
+                                              Kind: Query_Results_Type_Enum)
+                                              return Query_Results_Type;
+
+   not overriding function From_String (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+                                        Kind: Query_Results_Type_Enum;
+                                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+                                        Value: String)
+                                        return Query_Results_Type;
 
 end RDF.Rasqal.Query_Results;

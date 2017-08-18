@@ -5,6 +5,12 @@ with RDF.Rasqal.Query;
 
 package body RDF.Rasqal.Query_Results is
 
+   function rasqal_query_results_finished (Results: Query_Results_Handle_Type) return int
+     with Import, Convention=>C;
+
+   function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean is
+     (rasqal_query_results_finished(Get_Handle(Results)) /= 0);
+
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
      with Import, Convention=>C;
 
