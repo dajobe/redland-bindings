@@ -42,7 +42,7 @@ package RDF.Rasqal.Query_Results is
                                                return Natural; -- or Positive?
 
    -- TODO: subtypes for different types of query results (Query_Results_Type_Enum)
-   -- Hm, what about subtypes without Without_Finalize?
+   -- Also corresponding subtypes for *_Without_Finalize
 
    -- TODO: Stopped at rasqal_query_results_get_boolean ()
 
