@@ -27,6 +27,19 @@ package body RDF.Rasqal.Query_Results is
       return Value(Ptr);
    end;
 
+   function rasqal_query_results_get_binding_value (Results: Query_Results_Handle_Type;
+                                                    Offset: int)
+                                                    return RDF.Rasqal.Literal.Literal_Handle_Type
+     with Import, Convention=>C;
+
+   function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize;
+                               Offset: Natural)
+                               return RDF.Rasqal.Literal.Literal_Type_Without_Finalize is
+      use RDF.Rasqal.Literal;
+   begin
+      return From_Non_Null_Handle(rasqal_query_results_get_binding_value(Get_Handle(Results), int(Offset)));
+   end;
+
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
      with Import, Convention=>C;
 

@@ -2,6 +2,7 @@ with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI;
 with RDF.Rasqal.World;
+with RDF.Rasqal.Literal;
 limited with RDF.Rasqal.Query;
 
 package RDF.Rasqal.Query_Results is
@@ -26,7 +27,11 @@ package RDF.Rasqal.Query_Results is
                                              Offset: Natural)
                                              return String;
 
-   -- TODO: Stopped at rasqal_query_results_get_binding_value ()
+   not overriding function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize;
+                                              Offset: Natural)
+                                              return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
+
+   -- TODO: Stopped at rasqal_query_results_get_binding_value_by_name ()
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
 
