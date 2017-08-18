@@ -11,6 +11,22 @@ package body RDF.Rasqal.Query_Results is
    function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean is
      (rasqal_query_results_finished(Get_Handle(Results)) /= 0);
 
+   function rasqal_query_results_get_binding_name (Results: Query_Results_Handle_Type;
+                                                   Offset: int)
+                                                   return chars_ptr
+     with Import, Convention=>C;
+
+   function Get_Binding_Name (Results: Query_Results_Type_Without_Finalize;
+                              Offset: Natural)
+                              return String is
+      Ptr: constant chars_ptr := rasqal_query_results_get_binding_name(Get_Handle(Results), int(Offset));
+   begin
+      if Ptr = Null_Ptr then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Value(Ptr);
+   end;
+
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
      with Import, Convention=>C;
 

@@ -22,7 +22,11 @@ package RDF.Rasqal.Query_Results is
 
    not overriding function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean;
 
-   -- TODO: Stopped at rasqal_query_results_get_binding_name ()
+   not overriding function Get_Binding_Name (Results: Query_Results_Type_Without_Finalize;
+                                             Offset: Natural)
+                                             return String;
+
+   -- TODO: Stopped at rasqal_query_results_get_binding_value ()
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
 
