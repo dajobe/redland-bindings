@@ -197,6 +197,7 @@ package body RDF.Rasqal.Literal is
    function "or" (Left, Right: Compare_Flags) return Compare_Flags is
       type B is mod 256;
    begin
+      -- FIXME: Pos and Val do wrong things!
       return Compare_Flags'Val(B(Compare_Flags'Pos(Left)) or B(Compare_Flags'Pos(Right)));
    end;
 
