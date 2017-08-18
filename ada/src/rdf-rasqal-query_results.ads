@@ -17,7 +17,7 @@ package RDF.Rasqal.Query_Results is
                                     Results_Boolean,
                                     Results_Graph,
                                     Results_Syntax,
-                                    Results_Unknow);
+                                    Results_Unknown);
 
    -- function Add_Row is deliberately not implemented
 
