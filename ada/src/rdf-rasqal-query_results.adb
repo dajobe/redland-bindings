@@ -112,6 +112,14 @@ package body RDF.Rasqal.Query_Results is
       return From_Non_Null_Handle(rasqal_query_results_get_triple(Get_Handle(Results)));
    end;
 
+   function rasqal_query_results_get_type (Results: Query_Results_Handle_Type) return Query_Results_Type_Enum
+     with Import, Convention=>C;
+
+   function Get_Type (Results: Query_Results_Type_Without_Finalize) return Query_Results_Type_Enum is
+   begin
+      return rasqal_query_results_get_type(Get_Handle(Results));
+   end;
+
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
      with Import, Convention=>C;
 

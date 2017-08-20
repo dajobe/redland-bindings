@@ -55,8 +55,10 @@ package RDF.Rasqal.Query_Results is
    not overriding function Get_Triple (Results: Query_Results_Type_Without_Finalize)
                                        return RDF.Raptor.Statement.Statement_Type_Without_Finalize;
 
-   -- Deliberately not implmented:
+   -- Deliberately not implemented:
 --     function Get_Row_By_Offset (Results: Query_Results_Type_Without_Finalize; Offset: Natural) return XXX;
+
+   function Get_Type (Results: Query_Results_Type_Without_Finalize) return Query_Results_Type_Enum;
 
    -- TODO: Stopped at rasqal_query_results_get_type ()
 
