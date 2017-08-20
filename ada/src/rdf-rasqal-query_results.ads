@@ -58,7 +58,12 @@ package RDF.Rasqal.Query_Results is
    -- Deliberately not implemented:
 --     function Get_Row_By_Offset (Results: Query_Results_Type_Without_Finalize; Offset: Natural) return XXX;
 
-   function Get_Type (Results: Query_Results_Type_Without_Finalize) return Query_Results_Type_Enum;
+   not overriding function Get_Type (Results: Query_Results_Type_Without_Finalize) return Query_Results_Type_Enum;
+
+   not overriding function Is_Bindings (Results: Query_Results_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Graph (Results: Query_Results_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Syntax (Results: Query_Results_Type_Without_Finalize) return Boolean;
 
    -- TODO: Stopped at rasqal_query_results_get_type ()
 

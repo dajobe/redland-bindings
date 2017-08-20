@@ -120,6 +120,34 @@ package body RDF.Rasqal.Query_Results is
       return rasqal_query_results_get_type(Get_Handle(Results));
    end;
 
+   -------------------------------------
+
+   function rasqal_query_results_is_bindings (Results: Query_Results_Handle_Type) return int
+     with Import, Convention=>C;
+
+   function Is_Bindings (Results: Query_Results_Type_Without_Finalize) return Boolean is
+     (rasqal_query_results_is_bindings(Get_Handle(Results)) /= 0);
+
+   function rasqal_query_results_is_boolean (Results: Query_Results_Handle_Type) return int
+     with Import, Convention=>C;
+
+   function Is_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean is
+     (rasqal_query_results_is_boolean(Get_Handle(Results)) /= 0);
+
+   function rasqal_query_results_is_graph (Results: Query_Results_Handle_Type) return int
+     with Import, Convention=>C;
+
+   function Is_Graph (Results: Query_Results_Type_Without_Finalize) return Boolean is
+     (rasqal_query_results_is_graph(Get_Handle(Results)) /= 0);
+
+   function rasqal_query_results_is_syntax (Results: Query_Results_Handle_Type) return int
+     with Import, Convention=>C;
+
+   function Is_Syntax (Results: Query_Results_Type_Without_Finalize) return Boolean is
+     (rasqal_query_results_is_syntax(Get_Handle(Results)) /= 0);
+
+   -------------------------------------
+
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
      with Import, Convention=>C;
 
