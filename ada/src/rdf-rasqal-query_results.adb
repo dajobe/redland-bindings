@@ -91,7 +91,7 @@ package body RDF.Rasqal.Query_Results is
 
    function rasqal_query_results_get_query (Results: Query_Results_Handle_Type)
                                             return RDF.Rasqal.Query.Query_Handle_Type
-        with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Query (Results: Query_Results_Type_Without_Finalize)
                        return RDF.Rasqal.Query.Query_Type_Without_Finalize is
@@ -99,6 +99,17 @@ package body RDF.Rasqal.Query_Results is
    begin
       -- TODO: From_Non_Null_Handle?
       return From_Handle(rasqal_query_results_get_query(Get_Handle(Results)));
+   end;
+
+   function rasqal_query_results_get_triple (Results: Query_Results_Handle_Type)
+                                             return RDF.Raptor.Statement.Statement_Handle
+     with Import, Convention=>C;
+
+   function Get_Triple (Results: Query_Results_Type_Without_Finalize)
+                        return RDF.Raptor.Statement.Statement_Type_Without_Finalize is
+      use RDF.Raptor.Statement;
+   begin
+      return From_Non_Null_Handle(rasqal_query_results_get_triple(Get_Handle(Results)));
    end;
 
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)

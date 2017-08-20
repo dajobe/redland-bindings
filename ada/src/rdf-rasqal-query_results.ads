@@ -1,6 +1,7 @@
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI;
+with RDF.Raptor.Statement;
 with RDF.Rasqal.World;
 with RDF.Rasqal.Literal;
 limited with RDF.Rasqal.Query;
@@ -51,7 +52,13 @@ package RDF.Rasqal.Query_Results is
    not overriding function Get_Query (Results: Query_Results_Type_Without_Finalize)
                                       return RDF.Rasqal.Query.Query_Type_Without_Finalize;
 
-   -- TODO: Stopped at rasqal_query_results_get_triple ()
+   not overriding function Get_Triple (Results: Query_Results_Type_Without_Finalize)
+                                       return RDF.Raptor.Statement.Statement_Type_Without_Finalize;
+
+   -- Deliberately not implmented:
+--     function Get_Row_By_Offset (Results: Query_Results_Type_Without_Finalize; Offset: Natural) return XXX;
+
+   -- TODO: Stopped at rasqal_query_results_get_type ()
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
 
