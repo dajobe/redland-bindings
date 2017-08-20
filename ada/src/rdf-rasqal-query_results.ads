@@ -48,7 +48,10 @@ package RDF.Rasqal.Query_Results is
 
    not overriding function Get_Current_Count (Results: Query_Results_Type_Without_Finalize) return Natural;
 
-   -- TODO: Stopped at rasqal_query_results_get_query ()
+   not overriding function Get_Query (Results: Query_Results_Type_Without_Finalize)
+                                      return RDF.Rasqal.Query.Query_Type_Without_Finalize;
+
+   -- TODO: Stopped at rasqal_query_results_get_triple ()
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
 

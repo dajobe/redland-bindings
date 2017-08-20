@@ -89,6 +89,18 @@ package body RDF.Rasqal.Query_Results is
       return Natural(Value);
    end;
 
+   function rasqal_query_results_get_query (Results: Query_Results_Handle_Type)
+                                            return RDF.Rasqal.Query.Query_Handle_Type
+        with Import, Convention=>C;
+
+   function Get_Query (Results: Query_Results_Type_Without_Finalize)
+                       return RDF.Rasqal.Query.Query_Type_Without_Finalize is
+      use RDF.Rasqal.Query;
+   begin
+      -- TODO: From_Non_Null_Handle?
+      return From_Handle(rasqal_query_results_get_query(Get_Handle(Results)));
+   end;
+
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
      with Import, Convention=>C;
 
