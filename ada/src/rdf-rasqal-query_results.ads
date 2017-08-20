@@ -44,7 +44,11 @@ package RDF.Rasqal.Query_Results is
    -- TODO: subtypes for different types of query results (Query_Results_Type_Enum)
    -- Also corresponding subtypes for *_Without_Finalize
 
-   -- TODO: Stopped at rasqal_query_results_get_boolean ()
+   not overriding function Get_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean;
+
+   not overriding function Get_Current_Count (Results: Query_Results_Type_Without_Finalize) return Natural;
+
+   -- TODO: Stopped at rasqal_query_results_get_query ()
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
 
