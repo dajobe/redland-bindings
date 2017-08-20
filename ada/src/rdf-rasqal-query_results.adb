@@ -148,6 +148,26 @@ package body RDF.Rasqal.Query_Results is
 
    -------------------------------------
 
+   function rasqal_query_results_next (Results: Query_Results_Handle_Type) return int
+     with Import, Convention=>C;
+
+   procedure Next (Results: Query_Results_Type_Without_Finalize) is
+   begin
+      if rasqal_query_results_next(Get_Handle(Results)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function rasqal_query_results_next_triple (Results: Query_Results_Handle_Type) return int
+     with Import, Convention=>C;
+
+   procedure Next_Triple (Results: Query_Results_Type_Without_Finalize) is
+   begin
+      if rasqal_query_results_next_triple(Get_Handle(Results)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
      with Import, Convention=>C;
 

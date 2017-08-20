@@ -65,7 +65,11 @@ package RDF.Rasqal.Query_Results is
    not overriding function Is_Graph (Results: Query_Results_Type_Without_Finalize) return Boolean;
    not overriding function Is_Syntax (Results: Query_Results_Type_Without_Finalize) return Boolean;
 
-   -- TODO: Stopped at rasqal_query_results_get_type ()
+   not overriding procedure Next (Results: Query_Results_Type_Without_Finalize);
+
+   not overriding procedure Next_Triple (Results: Query_Results_Type_Without_Finalize);
+
+   -- TODO: Stopped at rasqal_query_results_read ()
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
 
