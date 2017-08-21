@@ -1,7 +1,9 @@
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Raptor.URI;
 with RDF.Rasqal.World;
 with RDF.Rasqal.Data_Graph;
+with RDF.Rasqal.Query_Results;
 
 package RDF.Rasqal.Query is
 
@@ -20,7 +22,13 @@ package RDF.Rasqal.Query is
 
    not overriding procedure Add_Data_Graphs (Query: Query_Type_Without_Finalize; Graphs: Data_Graphs_Array);
 
-   -- TODO: Stopped at rasqal_query_execute(); will continue after RDF.Rasqal.Query_Results
+   not overriding function Execute (Query: Query_Type_Without_Finalize) return RDF.Rasqal.Query_Results.Query_Results_Type;
+
+   not overriding procedure Prepare (Query: Query_Type_Without_Finalize;
+                                     Query_String: String;
+                                     Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := RDF.Raptor.URI.From_Handle(null));
+
+   -- TODO: Stopped at rasqal_query_prepare()
 
    type Query_Type is new Query_Type_Without_Finalize with null record;
 
