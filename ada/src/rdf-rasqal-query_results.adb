@@ -196,6 +196,34 @@ package body RDF.Rasqal.Query_Results is
       end if;
    end;
 
+   function rasqal_query_results_write (Stream: RDF.Raptor.IOStream.Handle_Type;
+                                        Results: Query_Results_Handle_Type;
+                                        Name, Mime_Type: Chars_Ptr;
+                                        Format_URI, Base_URI: RDF.Raptor.URI.Handle_Type)
+                                        return Int
+     with Import, Convention=>C;
+
+   procedure Write (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+                    Results: Query_Results_Type_Without_Finalize;
+                    Format_Name: String; -- "" for no format name
+                    Mime_Type: String; -- "" for no MIME type
+                    Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+                    Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+      use RDF.Raptor.URI, RDF.Raptor.IOStream;
+      Format_Name2: aliased char_array := To_C(Format_Name);
+      Mime_Type2  : aliased char_array := To_C(Mime_Type);
+   begin
+      if rasqal_query_results_write(Get_Handle(Stream),
+                                    Get_Handle(Results),
+                                    (if Format_Name = "" then Null_Ptr else To_Chars_Ptr(Format_Name2'Unchecked_Access)),
+                                    (if Mime_Type = "" then Null_Ptr else To_Chars_Ptr(Mime_Type2'Unchecked_Access)),
+                                    Get_Handle(Format_URI),
+                                    Get_Handle(Base_URI)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
      with Import, Convention=>C;
 

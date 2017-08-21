@@ -77,6 +77,13 @@ package RDF.Rasqal.Query_Results is
                                   Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
                                   Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
 
+   not overriding procedure Write (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+                                   Results: Query_Results_Type_Without_Finalize;
+                                   Format_Name: String; -- "" for no format name
+                                   Mime_Type: String; -- "" for no MIME type
+                                   Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+                                   Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+
    -- TODO: Stopped at rasqal_query_results_write ()
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
