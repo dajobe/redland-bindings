@@ -133,11 +133,26 @@ package RDF.Rasqal.Query_Results is
                                                       Name: String)
                                                       return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
 
+   ---
+   type Triples_Iterator is new Base_Iterators.Forward_Iterator with private;
+
+   overriding function First (Object: Triples_Iterator) return Cursor;
+
+   overriding function Next (Object: Triples_Iterator; Position: Cursor) return Cursor;
+
+   not overriding function Get_Triple (Position: Cursor) return RDF.Raptor.Statement.Statement_Type_Without_Finalize;
+   ---
+
 private
 
    type Cursor is access all Query_Results_Type_Without_Finalize'Class;
 
    type Bindings_Iterator is new Base_Iterators.Forward_Iterator with
+      record
+         Ref: Cursor;
+      end record;
+
+   type Triples_Iterator is new Base_Iterators.Forward_Iterator with
       record
          Ref: Cursor;
       end record;

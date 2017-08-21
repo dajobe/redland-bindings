@@ -310,4 +310,16 @@ package body RDF.Rasqal.Query_Results is
                                        return RDF.Rasqal.Literal.Literal_Type_Without_Finalize is
       (Get_Binding_Value_By_Name(Position.all, Name));
 
+   function First (Object: Triples_Iterator) return Cursor is
+      (Object.Ref);
+
+   function Next (Object: Triples_Iterator; Position: Cursor) return Cursor is
+   begin
+      Next_Triple(Position.all);
+      return Position;
+   end;
+
+   function Get_Triple (Position: Cursor) return RDF.Raptor.Statement.Statement_Type_Without_Finalize is
+      (Get_Triple(Position.all));
+
 end RDF.Rasqal.Query_Results;
