@@ -47,7 +47,7 @@ package RDF.Rasqal.Query_Results is
    not overriding function Get_Bindings_Count (Results: Query_Results_Type_Without_Finalize)
                                                return Natural; -- or Positive?
 
-   -- TODO: subtypes for different types of query results (Query_Results_Type_Enum)
+   -- TODO: subtypes or preconditions for different types of query results (Query_Results_Type_Enum)
    -- Also corresponding subtypes for *_Without_Finalize
 
    not overriding function Get_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean;
@@ -92,8 +92,6 @@ package RDF.Rasqal.Query_Results is
 
    not overriding procedure Rewind (Results: Query_Results_Type_Without_Finalize);
 
-   -- TODO: Iterators for binding rows and triples (and also for binding names?)
-
    type Query_Results_Type is new Query_Results_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle_Type);
@@ -121,6 +119,9 @@ package RDF.Rasqal.Query_Results is
 
    type Bindings_Iterator is new Base_Iterators.Forward_Iterator with private;
 
+   not overriding function Create_Bindings_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+                                                     return Bindings_Iterator;
+
    overriding function First (Object: Bindings_Iterator) return Cursor;
 
    overriding function Next (Object: Bindings_Iterator; Position: Cursor) return Cursor;
@@ -133,19 +134,22 @@ package RDF.Rasqal.Query_Results is
                                                       Name: String)
                                                       return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
 
-   ---
    type Triples_Iterator is new Base_Iterators.Forward_Iterator with private;
+
+   not overriding function Create_Triples_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+                                                    return Bindings_Iterator;
 
    overriding function First (Object: Triples_Iterator) return Cursor;
 
    overriding function Next (Object: Triples_Iterator; Position: Cursor) return Cursor;
 
    not overriding function Get_Triple (Position: Cursor) return RDF.Raptor.Statement.Statement_Type_Without_Finalize;
-   ---
+
+   -- TODO: Iterators for binding names
 
 private
 
-   type Cursor is access all Query_Results_Type_Without_Finalize'Class;
+   type Cursor is access constant Query_Results_Type_Without_Finalize'Class;
 
    type Bindings_Iterator is new Base_Iterators.Forward_Iterator with
       record

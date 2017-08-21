@@ -289,7 +289,11 @@ package body RDF.Rasqal.Query_Results is
    end;
 
    function Has_Element (Position: Cursor) return Boolean is
-      (Not_Finished(Position.all));
+     (Not_Finished(Position.all));
+
+   function Create_Bindings_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+                                      return Bindings_Iterator is
+     (Ref=>Results'Unchecked_Access);
 
    function First (Object: Bindings_Iterator) return Cursor is
       (Object.Ref);
@@ -309,6 +313,10 @@ package body RDF.Rasqal.Query_Results is
                                        Name: String)
                                        return RDF.Rasqal.Literal.Literal_Type_Without_Finalize is
       (Get_Binding_Value_By_Name(Position.all, Name));
+
+   function Create_Triples_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+                                     return Bindings_Iterator is
+     (Ref=>Results'Unchecked_Access);
 
    function First (Object: Triples_Iterator) return Cursor is
       (Object.Ref);
