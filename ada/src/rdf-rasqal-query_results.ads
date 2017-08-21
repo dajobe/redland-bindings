@@ -2,6 +2,7 @@ with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI;
 with RDF.Raptor.Statement;
+with RDF.Raptor.IOStream;
 with RDF.Rasqal.World;
 with RDF.Rasqal.Literal;
 limited with RDF.Rasqal.Query;
@@ -69,7 +70,14 @@ package RDF.Rasqal.Query_Results is
 
    not overriding procedure Next_Triple (Results: Query_Results_Type_Without_Finalize);
 
-   -- TODO: Stopped at rasqal_query_results_read ()
+   not overriding procedure Read (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+                                  Results: Query_Results_Type_Without_Finalize;
+                                  Format_Name: String; -- "" for no format name
+                                  Mime_Type: String; -- "" for no MIME type
+                                  Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+                                  Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+
+   -- TODO: Stopped at rasqal_query_results_write ()
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
 
