@@ -330,4 +330,22 @@ package body RDF.Rasqal.Query_Results is
    function Get_Triple (Position: Cursor) return RDF.Raptor.Statement.Statement_Type_Without_Finalize is
       (Get_Triple(Position.all));
 
+   -----------------
+
+   function Has_Element (Position: Variables_Cursor) return Boolean is
+      (Position.Count < Get_Bindings_Count(Position.Ref.all));
+
+   function Create_Variables_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+                                       return Variables_Iterator is
+     (Ref=>Results'Unchecked_Access);
+
+   function First (Object: Variables_Iterator) return Variables_Cursor is
+     (Ref=>Object.Ref, Count=>0);
+
+   function Next (Object: Variables_Iterator; Position: Variables_Cursor) return Variables_Cursor is
+     (Position with delta Count=>Position.Count);
+
+   function Get_Name (Position: Variables_Cursor) return String is
+     (Get_Binding_Name(Position.Ref.all, Position.Count));
+
 end RDF.Rasqal.Query_Results;

@@ -145,7 +145,23 @@ package RDF.Rasqal.Query_Results is
 
    not overriding function Get_Triple (Position: Cursor) return RDF.Raptor.Statement.Statement_Type_Without_Finalize;
 
-   -- TODO: Iterators for binding names
+   type Variables_Cursor is private;
+
+   not overriding function Has_Element (Position: Variables_Cursor) return Boolean;
+
+   package Variables_Iterators is new Ada.Iterator_Interfaces(Variables_Cursor, Has_Element);
+
+   -- We can also make backward iterator, but I see no use cases for this
+   type Variables_Iterator is new Variables_Iterators.Forward_Iterator with private;
+
+   not overriding function Create_Variables_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+                                                      return Variables_Iterator;
+
+   overriding function First (Object: Variables_Iterator) return Variables_Cursor;
+
+   overriding function Next (Object: Variables_Iterator; Position: Variables_Cursor) return Variables_Cursor;
+
+   not overriding function Get_Name (Position: Variables_Cursor) return String;
 
 private
 
@@ -157,6 +173,17 @@ private
       end record;
 
    type Triples_Iterator is new Base_Iterators.Forward_Iterator with
+      record
+         Ref: Cursor;
+      end record;
+
+   type Variables_Cursor is
+      record
+         Ref: Cursor; -- hack
+         Count: Natural;
+      end record;
+
+   type Variables_Iterator is new Variables_Iterators.Forward_Iterator with
       record
          Ref: Cursor;
       end record;
