@@ -74,8 +74,6 @@ package RDF.Rasqal.Literal is
 
    not overriding function Type_Label (Kind: Literal_Type_Enum) return String;
 
-   -- TODO: Stopped at rasqal_literal_is_rdf_literal ()
-
    type Literal_Type is new Literal_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle (Object: Literal_Type; Handle: Literal_Handle_Type);
