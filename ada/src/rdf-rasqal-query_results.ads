@@ -84,7 +84,9 @@ package RDF.Rasqal.Query_Results is
                                    Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
                                    Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
 
-   -- TODO: Stopped at rasqal_query_results_write ()
+   not overriding function Type_Label (Kind: Query_Results_Type_Enum) return String;
+
+   not overriding procedure Rewind (Results: Query_Results_Type_Without_Finalize);
 
    -- TODO: Iterators for binding rows and triples (and also for binding names?)
 

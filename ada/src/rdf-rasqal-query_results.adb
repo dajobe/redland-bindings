@@ -224,6 +224,28 @@ package body RDF.Rasqal.Query_Results is
       end if;
    end;
 
+   function rasqal_query_results_type_label (Kind: Query_Results_Type_Enum) return Chars_Ptr
+     with Import, Convention=>C;
+
+   function Type_Label (Kind: Query_Results_Type_Enum) return String is
+      Ptr: constant chars_ptr := rasqal_query_results_type_label(Kind);
+   begin
+      if Ptr = Null_Ptr then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Value(Ptr);
+   end;
+
+   function rasqal_query_results_rewind (Results: Query_Results_Handle_Type) return Int
+     with Import, Convention=>C;
+
+   procedure Rewind (Results: Query_Results_Type_Without_Finalize) is
+   begin
+      if rasqal_query_results_rewind(Get_Handle(Results)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
      with Import, Convention=>C;
 
