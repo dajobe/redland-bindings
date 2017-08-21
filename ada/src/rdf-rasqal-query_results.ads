@@ -1,3 +1,4 @@
+with Ada.Iterator_Interfaces;
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI;
@@ -24,6 +25,9 @@ package RDF.Rasqal.Query_Results is
    -- function Add_Row is deliberately not implemented
 
    not overriding function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean;
+
+   not overriding function Not_Finished (Results: Query_Results_Type_Without_Finalize) return Boolean is
+     (not Finished(Results));
 
    not overriding function Get_Binding_Name (Results: Query_Results_Type_Without_Finalize;
                                              Offset: Natural)
@@ -104,5 +108,38 @@ package RDF.Rasqal.Query_Results is
                                         Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
                                         Value: String)
                                         return Query_Results_Type;
+
+   -- The same cursor is used for bindings iterator and for triples iterator.
+   -- However, don't rely on using the same type.
+   -- Do not create more than one cursor for the same query results object.
+   -- TODO: If in debug mode, enforce this restriction.
+   type Cursor is private;
+
+   not overriding function Has_Element (Position: Cursor) return Boolean;
+
+   package Base_Iterators is new Ada.Iterator_Interfaces(Cursor, Has_Element);
+
+   type Bindings_Iterator is new Base_Iterators.Forward_Iterator with private;
+
+   overriding function First (Object: Bindings_Iterator) return Cursor;
+
+   overriding function Next (Object: Bindings_Iterator; Position: Cursor) return Cursor;
+
+   not overriding function Get_Binding_Value (Position: Cursor;
+                                              Offset: Natural)
+                                              return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
+
+   not overriding function Get_Binding_Value_By_Name (Position: Cursor;
+                                                      Name: String)
+                                                      return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
+
+private
+
+   type Cursor is access all Query_Results_Type_Without_Finalize'Class;
+
+   type Bindings_Iterator is new Base_Iterators.Forward_Iterator with
+      record
+         Ref: Cursor;
+      end record;
 
 end RDF.Rasqal.Query_Results;

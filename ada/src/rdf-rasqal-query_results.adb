@@ -288,4 +288,26 @@ package body RDF.Rasqal.Query_Results is
                                   Get_Handle(World), Kind, Get_Handle(Base_URI), To_C(Value, Append_Nul=>False), Value'Length));
    end;
 
+   function Has_Element (Position: Cursor) return Boolean is
+      (Not_Finished(Position.all));
+
+   function First (Object: Bindings_Iterator) return Cursor is
+      (Object.Ref);
+
+   function Next (Object: Bindings_Iterator; Position: Cursor) return Cursor is
+   begin
+      Next(Position.all);
+      return Position;
+   end;
+
+   function Get_Binding_Value (Position: Cursor;
+                               Offset: Natural)
+                               return RDF.Rasqal.Literal.Literal_Type_Without_Finalize is
+      (Get_Binding_Value(Position.all, Offset));
+
+   function Get_Binding_Value_By_Name (Position: Cursor;
+                                       Name: String)
+                                       return RDF.Rasqal.Literal.Literal_Type_Without_Finalize is
+      (Get_Binding_Value_By_Name(Position.all, Name));
+
 end RDF.Rasqal.Query_Results;
