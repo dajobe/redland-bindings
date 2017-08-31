@@ -57,6 +57,14 @@ package body RDF.Rasqal.Query is
       end if;
    end;
 
+   procedure rasqal_query_set_wildcard (Query: Query_Handle_Type; Store: int)
+     with Import, Convention=>C;
+
+   procedure Set_Wildcard (Query: Query_Type_Without_Finalize; Store: Boolean) is
+   begin
+      rasqal_query_set_wildcard(Get_Handle(Query), (if Store then 1 else 0));
+   end;
+
    function rasqal_new_query (World: RDF.Rasqal.World.Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
      with Import, Convention=>C;
 

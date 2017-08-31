@@ -30,7 +30,9 @@ package RDF.Rasqal.Query is
 
    not overriding procedure Set_Store_Results (Query: Query_Type_Without_Finalize; Store: Boolean);
 
-   -- TODO: Stopped at rasqal_query_set_wildcard()
+   not overriding procedure Set_Wildcard (Query: Query_Type_Without_Finalize; Store: Boolean);
+
+   -- TODO: Stopped at rasqal_query_write ()
 
    type Query_Type is new Query_Type_Without_Finalize with null record;
 
