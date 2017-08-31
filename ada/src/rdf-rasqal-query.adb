@@ -65,6 +65,22 @@ package body RDF.Rasqal.Query is
       rasqal_query_set_wildcard(Get_Handle(Query), (if Store then 1 else 0));
    end;
 
+   function rasqal_query_write (Stream: RDF.Raptor.IOStream.Handle_Type;
+                                Query: Query_Handle_Type;
+                                Format_URI, Base_URI: RDF.Raptor.URI.Handle_Type)
+                                return Int
+     with Import, Convention=>C;
+
+   procedure Write_Query (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+                          Query: Query_Type_Without_Finalize;
+                          Format_URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+      use RDF.Raptor.IOStream, RDF.Raptor.URI;
+   begin
+      if rasqal_query_write(Get_Handle(Stream), Get_Handle(Query), Get_Handle(Format_URI), Get_Handle(Base_URI)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    function rasqal_new_query (World: RDF.Rasqal.World.Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
      with Import, Convention=>C;
 

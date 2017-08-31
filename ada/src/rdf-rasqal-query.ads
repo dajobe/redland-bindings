@@ -1,6 +1,7 @@
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI;
+with RDF.Raptor.IOStream;
 with RDF.Rasqal.World;
 with RDF.Rasqal.Data_Graph;
 with RDF.Rasqal.Query_Results;
@@ -31,6 +32,10 @@ package RDF.Rasqal.Query is
    not overriding procedure Set_Store_Results (Query: Query_Type_Without_Finalize; Store: Boolean);
 
    not overriding procedure Set_Wildcard (Query: Query_Type_Without_Finalize; Store: Boolean);
+
+   not overriding procedure Write_Query (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+                                         Query: Query_Type_Without_Finalize;
+                                         Format_URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
 
    -- TODO: Stopped at rasqal_query_write ()
 
