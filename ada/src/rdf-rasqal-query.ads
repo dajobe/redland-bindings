@@ -28,7 +28,9 @@ package RDF.Rasqal.Query is
                                      Query_String: String;
                                      Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := RDF.Raptor.URI.From_Handle(null));
 
-   -- TODO: Stopped at rasqal_query_set_store_results()
+   not overriding procedure Set_Store_Results (Query: Query_Type_Without_Finalize; Store: Boolean);
+
+   -- TODO: Stopped at rasqal_query_set_wildcard()
 
    type Query_Type is new Query_Type_Without_Finalize with null record;
 

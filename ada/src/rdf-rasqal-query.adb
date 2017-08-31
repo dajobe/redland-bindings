@@ -47,6 +47,16 @@ package body RDF.Rasqal.Query is
       end if;
    end;
 
+   function rasqal_query_set_store_results (Query: Query_Handle_Type; Store: int) return int
+     with Import, Convention=>C;
+
+   procedure Set_Store_Results (Query: Query_Type_Without_Finalize; Store: Boolean) is
+   begin
+      if rasqal_query_set_store_results(Get_Handle(Query), (if Store then 1 else 0)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    function rasqal_new_query (World: RDF.Rasqal.World.Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
      with Import, Convention=>C;
 
