@@ -134,6 +134,32 @@ package body RDF.Rasqal.Query is
       end;
    end;
 
+   function rasqal_query_set_feature (Query: Query_Handle_Type;
+                                      Feature: RDF.Rasqal.Features.Feature_Type;
+                                      Value: int)
+                                      return int
+     with Import, Convention=>C;
+
+   procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: int) is
+   begin
+      if rasqal_query_set_feature(Get_Handle(Query), Feature, Value) /= 0  then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function rasqal_query_set_feature_string (Query: Query_Handle_Type;
+                                             Feature: RDF.Rasqal.Features.Feature_Type;
+                                             Value: char_array)
+                                             return int
+     with Import, Convention=>C;
+
+   procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: String) is
+   begin
+      if rasqal_query_set_feature_string(Get_Handle(Query), Feature, To_C(Value)) /= 0  then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
    function rasqal_new_query (World: RDF.Rasqal.World.Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
      with Import, Convention=>C;
 
