@@ -1,4 +1,3 @@
-with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI;
@@ -47,7 +46,7 @@ package RDF.Rasqal.Query is
    not overriding function Escape_String (Query: Query_Type_Without_Finalize; Str: String)
                                           return String;
 
-   not overriding procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: int);
+   not overriding procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: Natural);
    not overriding procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: String);
 
    -- TODO: Stopped at rasqal_query_get_feature ()

@@ -140,9 +140,9 @@ package body RDF.Rasqal.Query is
                                       return int
      with Import, Convention=>C;
 
-   procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: int) is
+   procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: Natural) is
    begin
-      if rasqal_query_set_feature(Get_Handle(Query), Feature, Value) /= 0  then
+      if rasqal_query_set_feature(Get_Handle(Query), Feature, int(Value)) /= 0  then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
