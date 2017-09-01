@@ -37,7 +37,15 @@ package RDF.Rasqal.Query is
                                          Query: Query_Type_Without_Finalize;
                                          Format_URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
 
-   -- TODO: Stopped at rasqal_query_write ()
+   -- Is it really useful? Maybe remove from public API?
+   not overriding procedure Write_Escaped_String (Query: Query_Type_Without_Finalize;
+                                                  Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+                                                  Str: String);
+
+   not overriding function Escape_String (Query: Query_Type_Without_Finalize; Str: String)
+                                          return String;
+
+   -- TODO: Stopped at rasqal_query_set_feature ()
 
    type Query_Type is new Query_Type_Without_Finalize with null record;
 

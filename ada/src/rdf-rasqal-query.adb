@@ -1,6 +1,9 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_String_Holders;
+with RDF.Auxiliary.C_Pointers;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
+with RDF.Rasqal.Memory;
 
 package body RDF.Rasqal.Query is
 
@@ -79,6 +82,56 @@ package body RDF.Rasqal.Query is
       if rasqal_query_write(Get_Handle(Stream), Get_Handle(Query), Get_Handle(Format_URI), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
+   end;
+
+   function rasqal_query_iostream_write_escaped_counted_string (Query: Query_Handle_Type;
+                                                                Stream: RDF.Raptor.IOStream.Handle_Type;
+                                                                Str: char_array;
+                                                                Len: size_t)
+                                                                return int
+     with Import, Convention=>C;
+
+   procedure Write_Escaped_String (Query: Query_Type_Without_Finalize;
+                                   Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+                                   Str: String) is
+      use RDF.Raptor.IOStream;
+   begin
+      if rasqal_query_iostream_write_escaped_counted_string(Get_Handle(Query),
+                                                            Get_Handle(Stream),
+                                                            To_C(Str, Append_Nul=>False),
+                                                            Str'Length) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   type Size_T_P is access all size_t with Convention=>C;
+
+   function Rasqal_Query_Escape_Counted_String (Query: Query_Handle_Type;
+                                                Str: char_array;
+                                                Len: size_t;
+                                                Out_Len: Size_T_P)
+                                                return RDF.Auxiliary.C_Pointers.Pointer
+     with Import, Convention=>C;
+
+   function Escape_String (Query: Query_Type_Without_Finalize; Str: String)
+                           return String is
+      In_Str2: char_array := To_C(Str, Append_Nul=>False);
+      Out_Len: aliased size_t;
+      Result: constant RDF.Auxiliary.C_Pointers.Pointer :=
+        rasqal_query_escape_counted_string(Get_Handle(Query), In_Str2, Str'Length, Out_Len'Unchecked_Access);
+      use RDF.Auxiliary.C_Pointers;
+   begin
+      if Result = null then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      declare
+         use RDF.Auxiliary.Convert;
+         Out_Str: constant String := Value_With_Possible_NULs(Result, Out_Len);
+      begin
+         RDF.Rasqal.Memory.rasqal_free_memory(Convert(Result));
+         return Out_Str;
+      end;
    end;
 
    function rasqal_new_query (World: RDF.Rasqal.World.Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
