@@ -1,5 +1,5 @@
 with Ada.Iterator_Interfaces;
---with Interfaces.C; use Interfaces.C;
+with Interfaces.C; use Interfaces.C;
 --with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
 --with RDF.Rasqal.URI; use RDF.Rasqal.URI;
@@ -7,9 +7,10 @@ with RDF.Raptor.Syntaxes;
 
 package RDF.Rasqal.Syntaxes is
 
-   -- TODO: Add low-level interface (without iterators)
-
    subtype Syntax_Description_Type is RDF.Raptor.Syntaxes.Syntax_Description_Type;
+
+   function Get_Query_Language_Description (World: World_Type; Counter: unsigned) return Syntax_Description_Type;
+   function Get_Query_Results_Format_Description (World: World_Type; Counter: Unsigned) return Syntax_Description_Type;
 
    type Query_Language_Description_Cursor is private;
    type Query_Results_Format_Description_Cursor is private;

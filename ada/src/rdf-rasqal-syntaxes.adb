@@ -5,13 +5,6 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 
 package body RDF.Rasqal.Syntaxes is
 
-   --package String_Ptrs is new Interfaces.C.Pointers(size_t, chars_ptr, chars_ptr_array, Null_Ptr);
-
-   --use String_Ptrs;
-
-   function Get_Position (Cursor: Query_Language_Description_Cursor      ) return Natural is (Cursor.Position);
-   function Get_Position (Cursor: Query_Results_Format_Description_Cursor) return Natural is (Cursor.Position);
-
    type Syntax_Description_Access is access all Syntax_Description_Type
       with Convention=>C;
 
@@ -23,14 +16,31 @@ package body RDF.Rasqal.Syntaxes is
                                                                return Syntax_Description_Access
       with Import, Convention=>C;
 
+   function Get_Query_Language_Description (World: World_Type; Counter: Unsigned) return Syntax_Description_Type is
+   begin
+      return rasqal_world_get_query_language_description(Get_Handle(World), Counter).all;
+   end;
+
+   function Get_Query_Results_Format_Description (World: World_Type; Counter: Unsigned) return Syntax_Description_Type is
+   begin
+      return rasqal_world_get_query_results_format_description(Get_Handle(World), Counter).all;
+   end;
+
+   --package String_Ptrs is new Interfaces.C.Pointers(size_t, chars_ptr, chars_ptr_array, Null_Ptr);
+
+   --use String_Ptrs;
+
+   function Get_Position (Cursor: Query_Language_Description_Cursor      ) return Natural is (Cursor.Position);
+   function Get_Position (Cursor: Query_Results_Format_Description_Cursor) return Natural is (Cursor.Position);
+
    function Get_Description (Cursor: Query_Language_Description_Cursor    ) return Syntax_Description_Type is
    begin
-      return rasqal_world_get_query_language_description(Cursor.World, unsigned(Cursor.Position)).all;
+      return Get_Query_Language_Description (From_Handle(Cursor.World), unsigned(Cursor.Position));
    end;
 
    function Get_Description (Cursor: Query_Results_Format_Description_Cursor) return Syntax_Description_Type is
    begin
-      return rasqal_world_get_query_results_format_description(Cursor.World, unsigned(Cursor.Position)).all;
+      return Get_Query_Results_Format_Description (From_Handle(Cursor.World), unsigned(Cursor.Position));
    end;
 
    function Has_Element (Position: Query_Language_Description_Cursor) return Boolean is
