@@ -252,7 +252,6 @@ package body RDF.Raptor.WWW is
       Initialize_Content_Type_Handler(WWW);
       Initialize_URI_Filter(WWW);
       Initialize_Final_URI_Handler(WWW);
-      -- TODO
    end;
 
    procedure raptor_www_set_write_bytes_handler(WWW: WWW_Handle_Type; Handler: raptor_www_write_bytes_handler; User_Data: chars_ptr)
