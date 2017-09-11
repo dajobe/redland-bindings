@@ -1,7 +1,7 @@
 with Ada.Finalization;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Auxiliary.Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.World;
 with RDF.Auxiliary;
@@ -25,19 +25,19 @@ package RDF.Raptor.Log is
    type Locator_Type_Record_Access is access Locator_Type_Record with Convention=>C;
    type Log_Message_Record_Access is access Log_Message_Record with Convention=>C;
 
-   package Locator_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(Locator_Type_Record, Locator_Type_Record_Access);
+   package Locator_Handled_Record is new RDF.Auxiliary.Handled_Record(Locator_Type_Record, Locator_Type_Record_Access);
    subtype Locator_Handle_Type is Locator_Handled_Record.Access_Type;
    type Locator_Type is new Locator_Handled_Record.Base_Object with null record;
 
---    overriding procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle_Type);
---    overriding procedure Adjust (Object: in out Locator_Type);
+   overriding procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle_Type);
+   overriding procedure Adjust (Object: in out Locator_Type);
 
-   package Log_Message_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(Log_Message_Record, Log_Message_Record_Access);
+   package Log_Message_Handled_Record is new RDF.Auxiliary.Handled_Record(Log_Message_Record, Log_Message_Record_Access);
    subtype Log_Message_Handle_Type is Log_Message_Handled_Record.Access_Type;
    type Log_Message_Type is new Log_Message_Handled_Record.Base_Object with null record;
 
---    overriding procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle_Type);
---    overriding procedure Adjust (Object: in out Log_Message_Type);
+   overriding procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle_Type);
+   overriding procedure Adjust (Object: in out Log_Message_Type);
 
    not overriding function Get_URI (Locator: Locator_Type) return URI_Type_Without_Finalize;
 
