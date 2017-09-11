@@ -49,7 +49,14 @@ package RDF.Rasqal.Query is
    not overriding procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: Natural);
    not overriding procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: String);
 
-   -- TODO: Stopped at rasqal_query_get_feature ()
+   not overriding function Get_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type)
+                                        return Natural;
+
+   -- Currently it raises an exception, if there is no such feature. Is it correct?
+   not overriding function Get_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type)
+                                        return String;
+
+   -- TODO: Stopped at rasqal_query_get_result_type ()
 
    type Query_Type is new Query_Type_Without_Finalize with null record;
 
