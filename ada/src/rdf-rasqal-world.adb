@@ -90,12 +90,12 @@ package body RDF.Rasqal.World is
          with Import, Convention=>C;
 
    -- FIXME: Check if need to deallocate the result of the C function
-   function Rasqal_World_Guess_Query_Results_Format_Name (World: World_Type_Without_Finalize;
-                                                          URI: URI_Type_Without_Finalize'Class;
-                                                          Mime_Type: String_Holders.Holder;
-                                                          Buffer: String_Holders.Holder;
-                                                          Identifier: String_Holders.Holder)
-                                                          return String_Holders.Holder is
+   function Guess_Query_Results_Format_Name (World: World_Type_Without_Finalize;
+                                             URI: URI_Type_Without_Finalize'Class;
+                                             Mime_Type: String_Holders.Holder;
+                                             Buffer: String_Holders.Holder;
+                                             Identifier: String_Holders.Holder)
+                                             return String_Holders.Holder is
       Buffer2: constant C_String_Holder := To_C_String_Holder(Buffer);
       Mime_Type2 : constant chars_ptr := New_String(Mime_Type );
       Identifier2: constant chars_ptr := New_String(Identifier);

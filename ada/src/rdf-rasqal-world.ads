@@ -26,12 +26,12 @@ package RDF.Rasqal.World is
 
    not overriding procedure Set_Raptor (World: World_Type_Without_Finalize; Raptor_World: RDF.Raptor.World.World_Type_Without_Finalize);
 
-   not overriding function Rasqal_World_Guess_Query_Results_Format_Name (World: World_Type_Without_Finalize;
-                                                                         URI: URI_Type_Without_Finalize'Class;
-                                                                         Mime_Type: String_Holders.Holder;
-                                                                         Buffer: String_Holders.Holder;
-                                                                         Identifier: String_Holders.Holder)
-                                                                         return String_Holders.Holder;
+   not overriding function Guess_Query_Results_Format_Name (World: World_Type_Without_Finalize;
+                                                            URI: URI_Type_Without_Finalize'Class;
+                                                            Mime_Type: String_Holders.Holder;
+                                                            Buffer: String_Holders.Holder;
+                                                            Identifier: String_Holders.Holder)
+                                                            return String_Holders.Holder;
 
    type World_Type is new World_Type_Without_Finalize with null record;
 
