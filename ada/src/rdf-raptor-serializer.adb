@@ -166,13 +166,13 @@ package body RDF.Raptor.Serializer is
                                       Integer_P: Int_P_Type) return int
       with Import, Convention=>C;
 
-   function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return int is
+   function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return Natural is
       V: aliased int;
    begin
       if raptor_parser_get_option(Get_Handle(Serializer), Option, null, V'Unchecked_Access) < 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
-      return V;
+      return Natural(V);
    end;
 
    function Get_String_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return String is

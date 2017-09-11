@@ -90,8 +90,8 @@ package RDF.Raptor.Parser is
    not overriding procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: String);
    not overriding procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: int);
 
-   -- TODO: Not sure if we should be able to query here whether the option is numeric
-   not overriding function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return int;
+   -- Not sure if we should be able to query here whether the option is numeric
+   not overriding function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return Natural;
    not overriding function Get_String_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return String;
 
    not overriding function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String;
