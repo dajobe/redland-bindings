@@ -5,6 +5,7 @@ with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.Namespace_Stack is
 
@@ -85,7 +86,7 @@ package body RDF.Raptor.Namespace_Stack is
      with Import, Convention=>C;
 
    function Find_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Prefix: String) return RDF.Raptor.Namespace.Namespace_Type is
-      C_Prefix: aliased char_array := To_C(Prefix, Append_Nul=>False);
+      C_Prefix: aliased char_array := My_To_C_Without_Nul(Prefix);
    begin
       return From_Non_Null_Handle( raptor_namespaces_find_namespace(Get_Handle(Stack), To_Chars_Ptr(C_Prefix'Unchecked_Access), Prefix'Length) );
    end;

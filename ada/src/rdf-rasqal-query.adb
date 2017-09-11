@@ -116,7 +116,7 @@ package body RDF.Rasqal.Query is
 
    function Escape_String (Query: Query_Type_Without_Finalize; Str: String)
                            return String is
-      In_Str2: char_array := To_C(Str, Append_Nul=>False);
+      In_Str2: char_array := My_To_C_Without_Nul(Str);
       Out_Len: aliased size_t;
       Result: constant RDF.Auxiliary.C_Pointers.Pointer :=
         rasqal_query_escape_counted_string(Get_Handle(Query), In_Str2, Str'Length, Out_Len'Unchecked_Access);

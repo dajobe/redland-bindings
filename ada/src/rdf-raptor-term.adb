@@ -4,6 +4,7 @@ with RDF.Raptor.Memory;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.Term is
 
@@ -120,7 +121,7 @@ package body RDF.Raptor.Term is
 
    function From_URI_String (World: World_Type_Without_Finalize'Class; URI: URI_String) return Term_Type is
    begin
-      return From_Non_Null_Handle( raptor_new_term_from_counted_uri_string(Get_Handle(World), To_C(String(URI), Append_Nul=>False), URI'Length) );
+      return From_Non_Null_Handle( raptor_new_term_from_counted_uri_string(Get_Handle(World), My_To_C_Without_Nul(String(URI)), URI'Length) );
    end;
 
    function raptor_new_term_from_uri (World: RDF.Raptor.World.Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Term_Handle
@@ -137,7 +138,7 @@ package body RDF.Raptor.Term is
 
    function From_String (World: World_Type_Without_Finalize'Class; Value: String) return Term_Type is
    begin
-      return From_Non_Null_Handle( raptor_new_term_from_counted_string(Get_Handle(World), To_C(Value, Append_Nul=>False), Value'Length) );
+      return From_Non_Null_Handle( raptor_new_term_from_counted_string(Get_Handle(World), My_To_C_Without_Nul(Value), Value'Length) );
    end;
 
    function raptor_term_copy (Term: Term_Handle) return Term_Handle

@@ -5,6 +5,7 @@ with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Memory;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.URI is
 
@@ -17,7 +18,7 @@ package body RDF.Raptor.URI is
    function From_String(World: World_Type_Without_Finalize'Class; Arg: URI_String) return URI_Type is
    begin
       -- LD_LIBRARY_PATH="" ltrace -n4 -llibraptor2.so.0 ./obj/test/debug/run_all_tests 2>&1| egrep ^[a-z]
-      return From_Non_Null_Handle (raptor_new_uri_from_counted_string (Get_Handle (World), To_C (String(Arg), Append_Nul=>False), Arg'Length));
+      return From_Non_Null_Handle (raptor_new_uri_from_counted_string (Get_Handle (World), My_To_C_Without_Nul(String(Arg)), Arg'Length));
    end;
 
    function raptor_new_uri_from_uri_local_name (World_Handle: RDF.Raptor.World.Handle_Type;
@@ -59,7 +60,7 @@ package body RDF.Raptor.URI is
    begin
       return From_Non_Null_Handle (raptor_new_uri_relative_to_base_counted(Get_Handle (World),
                                                                              Get_Handle (Base_URI),
-                                                                             To_C(String(URI), Append_Nul=>False),
+                                                                             My_To_C_Without_Nul(String(URI)),
                                                                              URI'Length));
    end;
 

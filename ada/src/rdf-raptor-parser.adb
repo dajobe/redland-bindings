@@ -10,6 +10,7 @@ with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Log; use RDF.Raptor.Log;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.Parser is
 
@@ -73,9 +74,9 @@ package body RDF.Raptor.Parser is
                           Is_End: Boolean) is
    begin
       if raptor_parser_parse_chunk(Get_Handle(Parser),
-                                     To_C(Buffer, Append_Nul=>False),
-                                     Buffer'Length,
-                                     (if Is_End then 1 else 0)) /= 0
+                                   My_To_C_Without_Nul(Buffer),
+                                   Buffer'Length,
+                                   (if Is_End then 1 else 0)) /= 0
       then
          raise RDF.Auxiliary.RDF_Exception;
       end if;

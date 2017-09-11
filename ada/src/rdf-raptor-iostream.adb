@@ -3,6 +3,7 @@ with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Term; use RDF.Raptor.Term;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.IOStream is
 
@@ -109,7 +110,7 @@ package body RDF.Raptor.IOStream is
 
    procedure Write (Value: String; Stream: Base_Stream_Type) is
    begin
-      if raptor_iostream_counted_string_write (To_C (Value, Append_Nul=>False), size_t (Value'Length), Get_Handle (Stream)) /= 0 then
+      if raptor_iostream_counted_string_write (My_To_C_Without_Nul(Value), size_t (Value'Length), Get_Handle (Stream)) /= 0 then
          raise IOStream_Exception;
       end if;
    end;
@@ -171,7 +172,7 @@ package body RDF.Raptor.IOStream is
 
    procedure Escaped_Write (Value: String; Delim: Character; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type) is
    begin
-      if raptor_string_escaped_write (To_C (Value, Append_Nul=>False), Value'Length, To_C (Delim), unsigned (Flags), Get_Handle (Stream)) /= 0 then
+      if raptor_string_escaped_write (My_To_C_Without_Nul(Value), Value'Length, To_C (Delim), unsigned (Flags), Get_Handle (Stream)) /= 0 then
          raise IOStream_Exception;
       end if;
    end;
@@ -181,7 +182,7 @@ package body RDF.Raptor.IOStream is
 
    procedure Ntriples_Write (Value: String; Delim: Character; Stream: Base_Stream_Type) is
    begin
-      if raptor_string_ntriples_write (To_C (Value, Append_Nul=>False), Value'Length, To_C (Delim), Get_Handle (Stream)) /= 0 then
+      if raptor_string_ntriples_write (My_To_C_Without_Nul(Value), Value'Length, To_C (Delim), Get_Handle (Stream)) /= 0 then
          raise IOStream_Exception;
       end if;
    end;
@@ -191,7 +192,7 @@ package body RDF.Raptor.IOStream is
 
    procedure String_Python_Write (Value: String; Delim: Character; Mode: Python_Write_Mode; Stream: Base_Stream_Type) is
    begin
-      if raptor_string_python_write (To_C (Value, Append_Nul=>False), Value'Length, To_C (Delim), Mode, Get_Handle (Stream)) /= 0 then
+      if raptor_string_python_write (My_To_C_Without_Nul(Value), Value'Length, To_C (Delim), Mode, Get_Handle (Stream)) /= 0 then
          raise IOStream_Exception;
       end if;
    end;
@@ -371,7 +372,7 @@ package body RDF.Raptor.IOStream is
    function Open_From_String (World: RDF.Raptor.World.World_Type'Class; Value: String) return Stream_From_String is
    begin
       return Stream: Stream_From_String(Value'Length) do
-         Stream.Str := To_C (Value, Append_Nul=>False);
+         Stream.Str := My_To_C_Without_Nul(Value);
          Set_Handle_Hack (Stream, raptor_new_iostream_from_string (Get_Handle (World), Stream.Str, Value'Length));
       end return;
    end;

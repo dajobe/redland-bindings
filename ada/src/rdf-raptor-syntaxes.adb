@@ -2,6 +2,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Interfaces.C.Pointers;
 with RDF.Raptor.World; use RDF.Raptor.World;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.Syntaxes is
 
@@ -79,7 +80,7 @@ package body RDF.Raptor.Syntaxes is
       return Value( raptor_world_guess_parser_name(Get_Handle(World),
                                                      Get_Handle(URI),
                                                      To_C(MIME_Type, Append_Nul=>True),
-                                                     To_C(Buffer, Append_Nul=>False),
+                                                     My_To_C_Without_Nul(Buffer),
                                                      size_t(Buffer'Length),
                     To_C(Identifier, Append_Nul=>True)) );
    end;

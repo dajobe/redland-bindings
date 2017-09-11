@@ -2,6 +2,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.URI;
 with RDF.Rasqal.Query;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Rasqal.Query_Results is
 
@@ -285,7 +286,7 @@ package body RDF.Rasqal.Query_Results is
       use RDF.Rasqal.World, RDF.Raptor.URI;
    begin
       return From_Non_Null_Handle(Rasqal_New_Query_Results_From_String(
-                                  Get_Handle(World), Kind, Get_Handle(Base_URI), To_C(Value, Append_Nul=>False), Value'Length));
+                                  Get_Handle(World), Kind, Get_Handle(Base_URI), My_To_C_Without_Nul(Value), Value'Length));
    end;
 
    function Has_Element (Position: Cursor) return Boolean is
