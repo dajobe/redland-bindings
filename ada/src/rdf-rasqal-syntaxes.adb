@@ -73,15 +73,12 @@ package body RDF.Rasqal.Syntaxes is
       return (World=>Get_Handle(World));
    end;
 
-   function rasqal_language_name_check (World: RDF.Rasqal.World.Handle_Type; Name: chars_ptr) return int
+   function rasqal_language_name_check (World: RDF.Rasqal.World.Handle_Type; Name: char_array) return int
      with Import, Convention=>C;
 
    function Language_Name_Check (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class; Name: String) return Boolean is
-      Name2: chars_ptr := New_String(Name);
-      Result: constant int := rasqal_language_name_check(Get_Handle(World), Name2);
    begin
-      Interfaces.C.Strings.Free(Name2);
-      return Result /= 0;
+      return rasqal_language_name_check(Get_Handle(World), To_C(Name)) /= 0;
    end;
 
 end RDF.Rasqal.Syntaxes;

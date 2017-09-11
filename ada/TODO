@@ -13,8 +13,6 @@
 
 * Add strings to exception raised.
 
-* It seems that I sometimes use New_String where To_C for char_array does better.
-
 * Subprograms which modify an object should have "in out" mode.
 
 * Should Base_Stream be an interface rather than a tagged type?
