@@ -47,9 +47,6 @@ package RDF.Rasqal.Query_Results is
    not overriding function Get_Bindings_Count (Results: Query_Results_Type_Without_Finalize)
                                                return Natural; -- or Positive?
 
-   -- TODO: subtypes or preconditions for different types of query results (Query_Results_Type_Enum)
-   -- Also corresponding subtypes for *_Without_Finalize
-
    not overriding function Get_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean;
 
    not overriding function Get_Current_Count (Results: Query_Results_Type_Without_Finalize) return Natural;
