@@ -24,6 +24,7 @@ Ada), because it is probably better to use native Ada libraries:
 * Rasqal prefixes (internals)
 * Query Results Formatter
 * Query Result Row (C API is too rudimentary)
+* Service (requires Sequences which are not yet implented)
 
 The following APIs are implemented partially:
 
