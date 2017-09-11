@@ -22,6 +22,8 @@ Ada), because it is probably better to use native Ada libraries:
 * Rasqal graph patterns (internals)
 * Rasqal literals (internals)
 * Rasqal prefixes (internals)
+* Query Results Formatter
+* Query Result Row (C API is too rudimentary)
 
 The following APIs are implemented partially:
 

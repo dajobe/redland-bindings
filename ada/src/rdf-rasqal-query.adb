@@ -189,6 +189,20 @@ package body RDF.Rasqal.Query is
       end;
    end;
 
+   function rasqal_query_get_result_type (Query: Query_Handle_Type) return RDF.Rasqal.Query_Results.Query_Results_Type_Enum
+     with Import, Convention=>C;
+
+   function Get_Result_Type (Query: Query_Type_Without_Finalize) return RDF.Rasqal.Query_Results.Query_Results_Type_Enum is
+      use RDF.Rasqal.Query_Results;
+      Result: constant Query_Results_Type_Enum :=
+        rasqal_query_get_result_type(Get_Handle(Query));
+   begin
+      if Result = Results_Unknown then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Result;
+   end;
+
    function rasqal_new_query (World: RDF.Rasqal.World.Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
      with Import, Convention=>C;
 

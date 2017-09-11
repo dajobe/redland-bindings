@@ -56,7 +56,12 @@ package RDF.Rasqal.Query is
    not overriding function Get_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type)
                                         return String;
 
-   -- TODO: Stopped at rasqal_query_get_result_type ()
+   not overriding function Get_Result_Type (Query: Query_Type_Without_Finalize)
+                                            return RDF.Rasqal.Query_Results.Query_Results_Type_Enum;
+
+   -- Deliberately not implemented
+--     function Get_Update_Operation;
+--     function Get_Update_Operations_Sequence;
 
    type Query_Type is new Query_Type_Without_Finalize with null record;
 
