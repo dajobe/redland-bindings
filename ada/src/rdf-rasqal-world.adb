@@ -89,7 +89,6 @@ package body RDF.Rasqal.World is
                                                           return chars_ptr
          with Import, Convention=>C;
 
-   -- FIXME: Check if need to deallocate the result of the C function
    function Guess_Query_Results_Format_Name (World: World_Type_Without_Finalize;
                                              URI: URI_Type_Without_Finalize'Class;
                                              Mime_Type: String_Holders.Holder;
