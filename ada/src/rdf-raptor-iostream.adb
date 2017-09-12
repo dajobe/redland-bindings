@@ -369,7 +369,7 @@ package body RDF.Raptor.IOStream is
    function raptor_new_iostream_from_string (World: RDF.Raptor.World.Handle_Type; str: char_array; length: size_t) return Handle_Type
      with Import, Convention=>C;
 
-   function Open_From_String (World: RDF.Raptor.World.World_Type'Class; Value: String) return Stream_From_String is
+   function Open_From_String (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Value: String) return Stream_From_String is
    begin
       return Stream: Stream_From_String(Value'Length) do
          Stream.Str := My_To_C_Without_Nul(Value);

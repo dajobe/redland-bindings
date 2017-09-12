@@ -54,7 +54,7 @@ package RDF.Rasqal.Data_Graph is
    overriding procedure Finalize_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle);
 
    not overriding function From_IOStream (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
-                                          IOStream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
+                                          IOStream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                                           Base_URI, Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
                                           Flags: Flags_Type;
                                           Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
@@ -67,6 +67,15 @@ package RDF.Rasqal.Data_Graph is
                                      Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
                                      Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
                                      return Data_Graph_Type;
+
+   -- Not binding, but a wrapper
+   not overriding function From_String (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
+                                        Str: String;
+                                        Base_URI, Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                        Flags: Flags_Type;
+                                        Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
+                                        Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                                        return Data_Graph_Type;
 
 private
 

@@ -149,7 +149,7 @@ package RDF.Raptor.IOStream is
    overriding function From_Handle(Handle: Handle_Type) return Stream_From_String;
    overriding function From_Non_Null_Handle(Handle: Handle_Type) return Stream_From_String;
 
-   not overriding function Open_From_String (World: RDF.Raptor.World.World_Type'Class; Value: String) return Stream_From_String;
+   not overriding function Open_From_String (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Value: String) return Stream_From_String;
 
    -- I decided to implement it in Ada instead of using corresponding C functions
    type Stream_To_String is new Base_Stream_Type with private;

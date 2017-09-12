@@ -86,7 +86,7 @@ package body RDF.Rasqal.Data_Graph is
      with Import, Convention=>C;
 
    function From_IOStream (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
-                           IOStream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
+                           IOStream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                            Base_URI, Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
                            Flags: Flags_Type;
                            Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
@@ -141,6 +141,19 @@ package body RDF.Rasqal.Data_Graph is
       Free(Format_Type2);
       Free(Format_Name2);
       return From_Handle(Result);
+   end;
+
+   function From_String (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
+                         Str: String;
+                         Base_URI, Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                         Flags: Flags_Type;
+                         Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
+                         Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                         return Data_Graph_Type is
+      use RDF.Raptor.IOStream, RDF.Rasqal.World;
+      Stream: Stream_From_String := Open_From_String(Get_Raptor(World), Str);
+   begin
+      return From_IOStream(World, Stream, Base_URI, Name_URI, Flags, Format_Type, Format_Name, Format_URI);
    end;
 
    function rasqal_data_graph_print (Graph: Data_Graph_Handle; File: RDF.Auxiliary.C_File_Access) return int
