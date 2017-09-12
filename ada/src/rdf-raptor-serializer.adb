@@ -124,7 +124,7 @@ package body RDF.Raptor.Serializer is
    function raptor_serializer_get_iostream (Serializer: Handle_Type) return RDF.Raptor.Iostream.Handle_Type
       with Import, Convention=>C;
 
-   function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Iostream.Base_Stream_Type is
+   function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Iostream.Stream_Type_Without_Finalize is
       use RDF.Raptor.Iostream;
    begin
       return From_Handle(raptor_serializer_get_iostream(Get_Handle(Serializer)));

@@ -51,7 +51,7 @@ package RDF.Raptor.Serializer is
 
    not overriding function Get_Description (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type;
 
-   not overriding function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Iostream.Base_Stream_Type;
+   not overriding function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Iostream.Stream_Type_Without_Finalize;
 
    not overriding function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type;
 

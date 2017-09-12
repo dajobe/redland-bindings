@@ -71,14 +71,14 @@ package RDF.Rasqal.Query_Results is
 
    not overriding procedure Next_Triple (Results: Query_Results_Type_Without_Finalize);
 
-   not overriding procedure Read (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+   not overriding procedure Read (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                                   Results: Query_Results_Type_Without_Finalize;
                                   Format_Name: String; -- "" for no format name
                                   Mime_Type: String; -- "" for no MIME type
                                   Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
                                   Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
 
-   not overriding procedure Write (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+   not overriding procedure Write (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                                    Results: Query_Results_Type_Without_Finalize;
                                    Format_Name: String; -- "" for no format name
                                    Mime_Type: String; -- "" for no MIME type

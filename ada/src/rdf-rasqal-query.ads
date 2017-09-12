@@ -34,13 +34,13 @@ package RDF.Rasqal.Query is
 
    not overriding procedure Set_Wildcard (Query: Query_Type_Without_Finalize; Store: Boolean);
 
-   not overriding procedure Write_Query (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+   not overriding procedure Write_Query (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                                          Query: Query_Type_Without_Finalize;
                                          Format_URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
 
    -- Is it really useful? Maybe remove from public API?
    not overriding procedure Write_Escaped_String (Query: Query_Type_Without_Finalize;
-                                                  Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+                                                  Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                                                   Str: String);
 
    not overriding function Escape_String (Query: Query_Type_Without_Finalize; Str: String)

@@ -328,7 +328,7 @@ package body RDF.Raptor.URI is
      with Import, Convention=>C;
 
    procedure Turtle_Write (World: World_Type_Without_Finalize'Class;
-                           Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
+                           Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                            URI: URI_Type_Without_Finalize;
                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                            Base_URI: URI_Type_Without_Finalize) is

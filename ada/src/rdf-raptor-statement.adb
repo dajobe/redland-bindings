@@ -118,7 +118,7 @@ package body RDF.Raptor.Statement is
       with Import, Convention=>C;
 
    procedure Ntriples_Write (Statement: Statement_Type_Without_Finalize;
-                             Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize'Class;
+                             Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                              Write_Graph_Term: Boolean) is
       Flag: constant int := (if Write_Graph_Term then 1 else 0);
    begin

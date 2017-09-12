@@ -74,7 +74,7 @@ package body RDF.Rasqal.Query is
                                 return Int
      with Import, Convention=>C;
 
-   procedure Write_Query (Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+   procedure Write_Query (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                           Query: Query_Type_Without_Finalize;
                           Format_URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
       use RDF.Raptor.IOStream, RDF.Raptor.URI;
@@ -92,7 +92,7 @@ package body RDF.Rasqal.Query is
      with Import, Convention=>C;
 
    procedure Write_Escaped_String (Query: Query_Type_Without_Finalize;
-                                   Stream: RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+                                   Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                                    Str: String) is
       use RDF.Raptor.IOStream;
    begin
