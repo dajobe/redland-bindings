@@ -40,9 +40,15 @@ package body AUnit.Test_Suites is
 
    procedure Add_Test
      (S : access Test_Suite'Class;
-      T : access Test_Suite'Class)
+      T : access Test_Suite'Class;
+      E : Environment_Access := null)
    is
    begin
+      if E = null then
+         Set_Environment(T.all, Get_Environment(S.all));
+      else
+         Set_Environment(T.all, E);
+      end if;
       Append
         (S.Tests,
          (Kind => TS_Elt,
@@ -55,9 +61,15 @@ package body AUnit.Test_Suites is
 
    procedure Add_Test
      (S : access Test_Suite'Class;
-      T : access Test_Case'Class)
+      T : access Test_Case'Class;
+      E : Environment_Access := null)
    is
    begin
+      if E = null then
+         Set_Environment(T.all, Get_Environment(S.all));
+      else
+         Set_Environment(T.all, E);
+      end if;
       Append
         (S.Tests,
          (Kind => TC_Elt,

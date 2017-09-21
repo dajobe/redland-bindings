@@ -189,11 +189,11 @@ package body RDF.Rasqal.Literal is
       rasqal_free_literal(Handle);
    end;
 
-   function rasqal_as_node (Literal: Literal_Handle_Type) return Literal_Handle_Type
+   function rasqal_literal_as_node (Literal: Literal_Handle_Type) return Literal_Handle_Type
      with Import, Convention=>C;
 
    function As_Node (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type is
-     (From_Handle(rasqal_as_node(Get_Handle(Literal))));
+     (From_Handle(rasqal_literal_as_node(Get_Handle(Literal))));
 
    type Compare_Flags_Code is mod 2**(Compare_Flags'Size);
    function Conv is new Ada.Unchecked_Conversion(Compare_Flags, Compare_Flags_Code);
@@ -248,25 +248,26 @@ package body RDF.Rasqal.Literal is
       return From_Handle(rasqal_literal_datatype(Get_Handle(Literal)));
    end;
 
-   function rasqal_literal_get_language (Literal: Literal_Handle_Type) return Chars_Ptr
-     with Import, Convention=>C;
-
-   function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder is
-   begin
-      return New_Holder(rasqal_literal_get_language(Get_Handle(Literal)));
-   end;
+   -- TODO: Not supported as of Rasqal 0.9.32
+--     function rasqal_literal_get_language (Literal: Literal_Handle_Type) return Chars_Ptr
+--       with Import, Convention=>C;
+--
+--     function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder is
+--     begin
+--        return New_Holder(rasqal_literal_get_language(Get_Handle(Literal)));
+--     end;
 
    function rasqal_literal_get_rdf_term_type (Literal: Literal_Handle_Type) return Literal_Type_Enum
      with Import, Convention=>C;
 
-   function rasqal_literal_get_type (Literal: Literal_Handle_Type) return Literal_Type_Enum
-     with Import, Convention=>C;
+--     function rasqal_literal_get_type (Literal: Literal_Handle_Type) return Literal_Type_Enum
+--       with Import, Convention=>C;
 
    function Get_Rdf_Term_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum is
       (rasqal_literal_get_rdf_term_type(Get_Handle(Literal)));
 
-   function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum is
-     (rasqal_literal_get_type(Get_Handle(Literal)));
+--     function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum is
+--       (rasqal_literal_get_type(Get_Handle(Literal)));
 
    function rasqal_literal_is_rdf_literal (Literal: Literal_Handle_Type) return int
      with Import, Convention=>C;

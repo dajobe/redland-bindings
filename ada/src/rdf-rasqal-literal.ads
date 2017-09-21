@@ -60,11 +60,13 @@ package RDF.Rasqal.Literal is
    not overriding function Get_Datatype (Literal: Literal_Type_Without_Finalize)
                                          return RDF.Raptor.URI.URI_Type_Without_Finalize;
 
-   not overriding function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder;
+   -- TODO: Not supported as of Rasqal 0.9.32
+--     not overriding function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder;
 
    not overriding function Get_Rdf_Term_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum;
 
-   not overriding function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum;
+   -- TODO: Not supported as of Rasqal 0.9.32
+--     not overriding function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum;
 
    not overriding function Is_Rdf_Literal (Literal: Literal_Type_Without_Finalize) return Boolean;
 

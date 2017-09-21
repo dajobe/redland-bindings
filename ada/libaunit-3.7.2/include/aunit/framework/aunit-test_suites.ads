@@ -37,6 +37,7 @@ with AUnit.Options;           use AUnit.Options;
 with AUnit.Simple_Test_Cases; use AUnit.Simple_Test_Cases;
 with AUnit.Tests;
 with AUnit.Test_Results;      use AUnit.Test_Results;
+with AUnit.Environments; use AUnit.Environments;
 
 package AUnit.Test_Suites is
 
@@ -44,9 +45,11 @@ package AUnit.Test_Suites is
    type Access_Test_Suite is access all Test_Suite'Class;
 
    procedure Add_Test (S : access Test_Suite'Class;
-                       T : access Test_Suite'Class);
+                       T : access Test_Suite'Class;
+                       E : Environment_Access := null);
    procedure Add_Test (S : access Test_Suite'Class;
-                       T : access Test_Case'Class);
+                       T : access Test_Case'Class;
+                       E : Environment_Access := null);
    --  Add a test case or suite to this suite
 
    procedure Run (Suite   : access Test_Suite;

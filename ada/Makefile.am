@@ -58,7 +58,7 @@ check-syntax:
 all-local: my-dynamic-lib my-static-lib
 
 check-local: $(builddir)/obj-static/test/run_all_tests
-	$(builddir)/obj-static/test/run_all_tests
+	$(builddir)/obj-static/test/run_all_tests $(srcdir)
 
 $(builddir)/obj-static/test/run_all_tests: my-static-lib
 	$(GPRBUILD) test.gpr \

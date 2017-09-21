@@ -98,11 +98,12 @@ package RDF.Rasqal.Query_Results is
                                               Kind: Query_Results_Type_Enum)
                                               return Query_Results_Type;
 
-   not overriding function From_String (World: RDF.Rasqal.World.World_Type_Without_Finalize;
-                                        Kind: Query_Results_Type_Enum;
-                                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                                        Value: String)
-                                        return Query_Results_Type;
+   -- TODO: Not supported as of Rasqal 0.9.32
+--     not overriding function From_String (World: RDF.Rasqal.World.World_Type_Without_Finalize;
+--                                          Kind: Query_Results_Type_Enum;
+--                                          Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+--                                          Value: String)
+--                                          return Query_Results_Type;
 
    -- The same cursor is used for bindings iterator and for triples iterator.
    -- However, don't rely on using the same type.

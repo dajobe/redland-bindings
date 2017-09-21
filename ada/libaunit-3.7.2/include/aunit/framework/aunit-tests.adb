@@ -4,9 +4,9 @@
 --                                                                          --
 --                          A U N I T . T E S T S                           --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2000-2011, AdaCore                     --
+--                       Copyright (C) 2017, Victor Porton                  --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -28,28 +28,27 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  Base Test Case or Test Suite
---
---  This base type allows composition of both test cases and sub-suites into a
---  test suite (Composite pattern)
+package body AUnit.Tests is
 
-with AUnit.Environments; use AUnit.Environments;
+   ---------------------
+   -- Set_Environment --
+   ---------------------
 
-package AUnit.Tests is
+   procedure Set_Environment
+     (T: in out Test;
+      E: Environment_Access)
+   is
+   begin
+      T.Environment := E;
+   end Set_Environment;
 
-   type Test is abstract tagged limited private;
-   type Test_Access is access all Test'Class;
+   ---------------------
+   -- Get_Environment --
+   ---------------------
 
-   procedure Set_Environment (T: in out Test;
-                              E: Environment_Access);
-
-   function Get_Environment (T: Test) return Environment_Access;
-
-private
-
-   type Test is abstract tagged limited
-      record
-         Environment: Environment_Access;
-      end record;
+   function Get_Environment (T: Test) return Environment_Access is
+   begin
+      return T.Environment;
+   end Get_Environment;
 
 end AUnit.Tests;

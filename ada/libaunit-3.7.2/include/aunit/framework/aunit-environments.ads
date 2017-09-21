@@ -2,11 +2,12 @@
 --                                                                          --
 --                         GNAT COMPILER COMPONENTS                         --
 --                                                                          --
---                          A U N I T . T E S T S                           --
+--                    A U N I T . E N V I R O N M E N T S                   --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                     Copyright (C) 2000-2011, AdaCore                     --
+--                                                                          --
+--                       Copyright (C) 2017, Victor Porton                  --
 --                                                                          --
 -- GNAT is free software;  you can  redistribute it  and/or modify it under --
 -- terms of the  GNU General Public License as published  by the Free Soft- --
@@ -24,32 +25,17 @@
 -- see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see    --
 -- <http://www.gnu.org/licenses/>.                                          --
 --                                                                          --
--- GNAT is maintained by AdaCore (http://www.adacore.com).                  --
+-- GNAT is maintained by AdaCore (http://www.adacore.com)                   --
 --                                                                          --
 ------------------------------------------------------------------------------
 
---  Base Test Case or Test Suite
---
---  This base type allows composition of both test cases and sub-suites into a
---  test suite (Composite pattern)
+--  Test Suite Framework
 
-with AUnit.Environments; use AUnit.Environments;
+package AUnit.Environments is
 
-package AUnit.Tests is
+   -- or should it be "tagged null record"?
+   type Environment is tagged null record;
 
-   type Test is abstract tagged limited private;
-   type Test_Access is access all Test'Class;
+   type Environment_Access is access all Environment'Class;
 
-   procedure Set_Environment (T: in out Test;
-                              E: Environment_Access);
-
-   function Get_Environment (T: Test) return Environment_Access;
-
-private
-
-   type Test is abstract tagged limited
-      record
-         Environment: Environment_Access;
-      end record;
-
-end AUnit.Tests;
+end AUnit.Environments;

@@ -12,7 +12,7 @@ package body RDF.Rasqal.Query is
      with Import, Convention=>C;
 
    procedure Add_Data_Graph (Query: Query_Type_Without_Finalize;
-                             Graph: RDF.Rasqal.Data_Graph.Data_Graph_Type_Without_Finalize) is
+                             Graph: RDF.Rasqal.Data_Graph.Data_Graph_Type_Without_Finalize'Class) is
       use RDF.Rasqal.Data_Graph;
    begin
       if rasqal_query_add_data_graph (Get_Handle(Query), Get_Handle(Graph)) /= 0 then
