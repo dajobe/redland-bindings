@@ -14,6 +14,7 @@ package body Count_Test is
 
    procedure Test_Count (T : in out Test_Cases.Test_Case'Class) is
       use Ada.Strings.Unbounded;
+      use RDF.Auxiliary.String_Holders;
       use RDF.Raptor.URI;
       use RDF.Raptor.IOStream;
       use RDF.Rasqal.World;
@@ -29,10 +30,10 @@ package body Count_Test is
                                                Base_URI => RDF.Raptor.URI.From_String(Get_Raptor(World), "http://example.org"),
                                                Name_URI => URI_Type'(From_Handle(null)),
                                                Flags => RDF.Rasqal.Data_Graph.Background,
-                                               Format_Type => RDF.Auxiliary.String_Holders.Empty_Holder,
-                                               Format_Name => RDF.Auxiliary.String_Holders.Empty_Holder,
+                                               Format_Type => Empty_Holder,
+                                               Format_Name => Empty_Holder,
                                                Format_URI => URI_Type'(From_Handle(null)));
-      Query: RDF.Rasqal.Query.Query_Type;
+      Query: RDF.Rasqal.Query.Query_Type := New_Query(World, Empty_Holder, Empty_Holder);
    begin
       Prepare(Query, SPARQL);
       Add_Data_Graph(Query, Graph);
