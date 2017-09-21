@@ -33,7 +33,6 @@
 
 package AUnit.Environments is
 
-   -- or should it be "tagged null record"?
    type Environment is tagged null record;
 
    type Environment_Access is access all Environment'Class;
