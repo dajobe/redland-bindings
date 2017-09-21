@@ -215,7 +215,7 @@ package body RDF.Rasqal.Literal is
      with Import, Convention=>C;
 
    function As_String (Literal: Literal_Type_Without_Finalize; Flags: Compare_Flags := Compare_None) return String is
-      Error: aliased int;
+      Error: aliased Int := 0;
       Length: aliased size_t;
       Item: RDF.Auxiliary.C_Pointers.Pointer :=
         rasqal_literal_as_counted_string(Get_Handle(Literal), Length'Unchecked_Access, Compare_Flags'Pos(Flags), Error'Unchecked_Access);
@@ -232,7 +232,7 @@ package body RDF.Rasqal.Literal is
 
    function Compare (Left, Right: Literal_Type_Without_Finalize; Flags: Compare_Flags)
                      return RDF.Auxiliary.Comparison_Result is
-      Error: aliased int;
+      Error: aliased Int := 0;
       use RDF.Auxiliary;
    begin
       return Sign(rasqal_literal_compare(Get_Handle(Left), Get_Handle(Right),  Compare_Flags'Pos(Flags), Error'Unchecked_Access));
