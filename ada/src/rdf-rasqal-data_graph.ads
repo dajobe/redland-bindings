@@ -3,7 +3,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
 with RDF.Auxiliary.Handled_Record;
 with RDF.Rasqal.World;
-with RDF.Raptor.URI;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream;
 
 package RDF.Rasqal.Data_Graph is
@@ -55,10 +55,11 @@ package RDF.Rasqal.Data_Graph is
 
    not overriding function From_IOStream (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
                                           IOStream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
-                                          Base_URI, Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
-                                          Flags: Flags_Type;
-                                          Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
-                                          Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                                          Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                          Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
+                                          Flags: Flags_Type := Background;
+                                          Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
+                                          Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
                                           return Data_Graph_Type;
 
    not overriding function From_URI (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
@@ -67,6 +68,16 @@ package RDF.Rasqal.Data_Graph is
                                      Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
                                      Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
                                      return Data_Graph_Type;
+
+   -- Not binding, but a wrapper
+   not overriding function From_File (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
+                                      Filename: String;
+                                      Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                      Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
+                                      Flags: Flags_Type := Background;
+                                      Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
+                                      Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
+                                      return Data_Graph_Type;
 
    -- Not binding, but a wrapper
    not overriding function From_String (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;

@@ -88,10 +88,11 @@ package body RDF.Rasqal.Data_Graph is
 
    function From_IOStream (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
                            IOStream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
-                           Base_URI, Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
-                           Flags: Flags_Type;
-                           Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
-                           Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                           Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                           Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := RDF.Raptor.URI.URI_Type'(From_Handle(null));
+                           Flags: Flags_Type := Background;
+                           Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
+                           Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := RDF.Raptor.URI.URI_Type'(From_Handle(null)))
                            return Data_Graph_Type is
       use RDF.Auxiliary.C_String_Holders;
       Format_Type2: chars_ptr := New_String(Format_Type);
@@ -142,6 +143,20 @@ package body RDF.Rasqal.Data_Graph is
       Free(Format_Type2);
       Free(Format_Name2);
       return From_Handle(Result);
+   end;
+
+   function From_File (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;
+                       Filename: String;
+                       Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                       Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
+                       Flags: Flags_Type := Background;
+                       Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
+                       Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
+                       return Data_Graph_Type is
+      use RDF.Rasqal.World;
+      Stream: RDF.Raptor.IOStream.Stream_Type := RDF.Raptor.IOStream.From_Filename(Get_Raptor(World), Filename);
+   begin
+      return From_IOStream (World, Stream, Base_URI, Name_URI, Flags, Format_Type, Format_Name, Format_URI);
    end;
 
    function From_String (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class;

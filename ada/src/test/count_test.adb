@@ -27,14 +27,15 @@ package body Count_Test is
 
       World: RDF.Rasqal.World.World_Type := RDF.Rasqal.World.Open;
       Graph_Stream: RDF.Raptor.IOStream.Stream_Type := From_Filename(Get_Raptor(World), RDF_File);
-      Graph: Data_Graph_Type := From_IOStream (World,
-                                               Graph_Stream,
-                                               Base_URI => RDF.Raptor.URI.From_String(Get_Raptor(World), "http://example.org"),
-                                               Name_URI => URI_Type'(From_Handle(null)),
-                                               Flags => RDF.Rasqal.Data_Graph.Background,
-                                               Format_Type => Empty_Holder,
-                                               Format_Name => Empty_Holder,
-                                               Format_URI => URI_Type'(From_Handle(null)));
+      Graph: Data_Graph_Type := From_IOStream(World,
+                                              Graph_Stream,
+                                              Base_URI => RDF.Raptor.URI.From_String(Get_Raptor(World), "http://example.org")
+                                              --                                                 Name_URI => URI_Type'(From_Handle(null)),
+                                              --                                                 Flags => RDF.Rasqal.Data_Graph.Background,
+                                              --                                                 Format_Type => Empty_Holder,
+                                              --                                                 Format_Name => Empty_Holder,
+                                              --                                                 Format_URI => URI_Type'(From_Handle(null))
+                                             );
       Query: RDF.Rasqal.Query.Query_Type := New_Query(World, Empty_Holder, Empty_Holder);
    begin
       Prepare(Query, SPARQL);
