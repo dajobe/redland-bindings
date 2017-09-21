@@ -107,7 +107,6 @@ private
       end record
      with Convention=>C;
 
-   -- TODO: Can be made more efficient by storing Stream handle instead of stream object
 --     type Streamed_Data_Graph_Type is new Data_Graph_Type with
 --        record
 --           Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
