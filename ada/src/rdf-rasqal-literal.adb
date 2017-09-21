@@ -214,7 +214,7 @@ package body RDF.Rasqal.Literal is
                                               return RDF.Auxiliary.C_Pointers.Pointer
      with Import, Convention=>C;
 
-   function As_String (Literal: Literal_Type_Without_Finalize; Flags: Compare_Flags) return String is
+   function As_String (Literal: Literal_Type_Without_Finalize; Flags: Compare_Flags := Compare_None) return String is
       Error: aliased int;
       Length: aliased size_t;
       Item: RDF.Auxiliary.C_Pointers.Pointer :=

@@ -1,12 +1,13 @@
 with Ada.Strings.Unbounded;
 with Ada.Containers.Indefinite_Vectors;
 with AUnit.Test_Cases;
-with AUnit.Assertions;
+with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Auxiliary;
 with RDF.Raptor.World;
 with RDF.Raptor.IOStream;
 with RDF.Raptor.URI;
 with RDF.Rasqal.World;
+with RDF.Rasqal.Literal;
 with RDF.Rasqal.Data_Graph; use RDF.Rasqal.Data_Graph;
 with RDF.Rasqal.Query; use RDF.Rasqal.Query;
 with RDF.Rasqal.Query_Results; use RDF.Rasqal.Query_Results;
@@ -41,11 +42,19 @@ package body Count_Test is
       declare
          Results: Query_Results_Type := Execute(Query);
          package Rows_Holder is new Ada.Containers.Indefinite_Vectors(Positive, String);
-         Rows: Rows_Holder.Vector;
+         use Ada.Containers, Rows_Holder;
+         Rows: Vector;
       begin
          for I in Create_Bindings_Iterator(Results) loop
-            null; -- FIXME
+            declare
+               use RDF.Rasqal.Literal;
+               L: Literal_Type_Without_Finalize := Get_Binding_Value_By_Name(I, "count");
+            begin
+               Append(Rows, As_String(L));
+            end;
          end loop;
+         Assert(Length(Rows) = Count_Type(1), "count() returns one row");
+         Assert(Element(Rows, 1) = "3", "count() = 3");
       end;
    end;
 

@@ -51,7 +51,9 @@ package RDF.Rasqal.Literal is
 
    not overriding function "or" (Left, Right: Compare_Flags) return Compare_Flags;
 
-   not overriding function As_String (Literal: Literal_Type_Without_Finalize; Flags: Compare_Flags) return String;
+   not overriding function As_String (Literal: Literal_Type_Without_Finalize;
+                                      Flags: Compare_Flags := Compare_None)
+                                      return String;
 
    not overriding function Compare (Left, Right: Literal_Type_Without_Finalize;
                                     Flags: Compare_Flags)
