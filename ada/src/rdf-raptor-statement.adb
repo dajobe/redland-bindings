@@ -69,7 +69,9 @@ package body RDF.Raptor.Statement is
 
    procedure Adjust (Object: in out Statement_Type) is
    begin
-      Set_Handle_Hack(Object, raptor_statement_copy(Get_Handle(Object)));
+      if Get_Handle(Object) /= null then
+         Set_Handle_Hack(Object, Raptor_Statement_Copy(Get_Handle(Object)));
+      end if;
    end;
 
    function Copy (Object: Statement_Type_Without_Finalize'Class) return Statement_Type_Without_Finalize is

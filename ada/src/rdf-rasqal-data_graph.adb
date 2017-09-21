@@ -60,6 +60,7 @@ package body RDF.Rasqal.Data_Graph is
 
    procedure Adjust (Object: in out Data_Graph_Type) is
    begin
+      -- rasqal_new_data_graph_from_data_graph() accepts NULL
       Set_Handle_Hack(Object, rasqal_new_data_graph_from_data_graph(Get_Handle(Object)));
    end;
 
