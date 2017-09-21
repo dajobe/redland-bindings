@@ -1,15 +1,14 @@
 This are thick object orienteed Ada2012 bindings for Redland
 Raptor library.
 
-Backward incompatible changes are possible at this stage.
+Backward incompatible API changes are possible at this stage.
 
-These are Raptor RDF Syntax Library bindings ONLY, no support for
-Rasqal RDF Query Library and Redland RDF Libraries. (You are welcome to
-work on supplements to this library, but this is not a priority for
-myself.)
+These are Raptor RDF Syntax Library and Rasqal RDF Query Library bindings
+ONLY, no support for Redland RDF Libraries. (You are welcome to work on
+supplements to this library, but this is not a priority for myself.)
 
 Some parts of RDF Syntax Library are not supported (I mean, not bound to
-Ada), because it is probably better to use native Ada libraries:
+Ada):
 
 * AVL Trees (internals)
 * SAX2 (use XMLAda instead)
