@@ -1,4 +1,5 @@
 with Ada.Strings.Unbounded;
+with Ada.Containers.Indefinite_Vectors;
 with AUnit.Test_Cases;
 with AUnit.Assertions;
 with RDF.Auxiliary;
@@ -39,8 +40,12 @@ package body Count_Test is
       Add_Data_Graph(Query, Graph);
       declare
          Results: Query_Results_Type := Execute(Query);
+         package Rows_Holder is new Ada.Containers.Indefinite_Vectors(Positive, String);
+         Rows: Rows_Holder.Vector;
       begin
-         null; -- FIXME
+         for I in Create_Bindings_Iterator(Results) loop
+            null; -- FIXME
+         end loop;
       end;
    end;
 
