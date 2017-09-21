@@ -155,7 +155,8 @@ package body RDF.Rasqal.Query_Results is
    procedure Next (Results: Query_Results_Type_Without_Finalize) is
    begin
       if rasqal_query_results_next(Get_Handle(Results)) /= 0 then
-         raise RDF.Auxiliary.RDF_Exception;
+         -- Check is done by Finished procedure, not here
+         null; -- raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
 
@@ -165,7 +166,8 @@ package body RDF.Rasqal.Query_Results is
    procedure Next_Triple (Results: Query_Results_Type_Without_Finalize) is
    begin
       if rasqal_query_results_next_triple(Get_Handle(Results)) /= 0 then
-         raise RDF.Auxiliary.RDF_Exception;
+         -- Check is done by Finished procedure, not here
+         null; -- raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
 
