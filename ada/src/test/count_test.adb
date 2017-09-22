@@ -46,6 +46,7 @@ package body Count_Test is
          use Ada.Containers, Rows_Holder;
          Rows: Vector;
       begin
+         Assert(Is_Bindings(Results), "Result is bindings");
          for I in Create_Bindings_Iterator(Results) loop
             declare
                use RDF.Rasqal.Literal;
