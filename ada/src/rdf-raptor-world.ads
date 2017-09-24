@@ -6,7 +6,7 @@ package RDF.Raptor.World is
 
    package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   type World_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
+   type Raptor_World_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 
    subtype Handle_Type is Handled_Record.Access_Type;
 
@@ -28,23 +28,23 @@ package RDF.Raptor.World is
 
    type Flags_Array is array(Integer range <>) of Flag_And_Value;
 
-   overriding function Default_Handle(Object: World_Type_Without_Finalize) return Handle_Type;
+   overriding function Default_Handle(Object: Raptor_World_Type_Without_Finalize) return Handle_Type;
 
-   not overriding procedure Open(Object: World_Type_Without_Finalize);
+   not overriding procedure Open(Object: Raptor_World_Type_Without_Finalize);
 
-   not overriding procedure Open(Object: World_Type_Without_Finalize; Flags: Flags_Array);
+   not overriding procedure Open(Object: Raptor_World_Type_Without_Finalize; Flags: Flags_Array);
 
-   not overriding procedure Set_Flag(Object: World_Type_Without_Finalize; Flag: Flag_Type; Value: Boolean);
+   not overriding procedure Set_Flag(Object: Raptor_World_Type_Without_Finalize; Flag: Flag_Type; Value: Boolean);
 
-   not overriding procedure Set_Flags(Object: World_Type_Without_Finalize; Flags: Flags_Array);
+   not overriding procedure Set_Flags(Object: Raptor_World_Type_Without_Finalize; Flags: Flags_Array);
 
-   type World_Type is new World_Type_Without_Finalize with null record;
+   type Raptor_World_Type is new Raptor_World_Type_Without_Finalize with null record;
 
-   not overriding function Open return World_Type;
+   not overriding function Open return Raptor_World_Type;
 
-   not overriding function Open(Flags: Flags_Array) return World_Type;
+   not overriding function Open(Flags: Flags_Array) return Raptor_World_Type;
 
-   overriding procedure Finalize_Handle(Object: World_Type; Handle: Handle_Type);
+   overriding procedure Finalize_Handle(Object: Raptor_World_Type; Handle: Handle_Type);
 
    -- Not implemented
    -- procedure Set_Libxslt_Security_Preferences

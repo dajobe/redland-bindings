@@ -9,7 +9,7 @@ with Ada.Text_IO;
 package body Iostreams_Test is
 
    procedure Test_Sinks(T : in out Test_Cases.Test_Case'Class) is
-      World: RDF.Raptor.World.World_Type;
+      World: RDF.Raptor.World.Raptor_World_Type;
       Str: aliased char_array := "qqq";
       In_Sink:  Stream_Type := From_Sink (World);
       Out_Sink: Stream_Type := To_Sink (World);
@@ -19,7 +19,7 @@ package body Iostreams_Test is
    end;
 
    procedure Test_Strings(T : in out Test_Cases.Test_Case'Class) is
-      World: RDF.Raptor.World.World_Type;
+      World: RDF.Raptor.World.Raptor_World_Type;
       Str  : String := "xqqq";
       Buf: aliased char_array := (1..99=>'w', 100=>NUL);
       In_String: Stream_From_String := Open_From_String (World, Str);

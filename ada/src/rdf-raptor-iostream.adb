@@ -10,7 +10,7 @@ package body RDF.Raptor.IOStream is
    function raptor_new_iostream_from_sink (World: RDF.Raptor.World.Handle_Type) return Handle_Type
      with Import, Convention=>C;
 
-   function From_Sink (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize is
+   function From_Sink (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( raptor_new_iostream_from_sink (Get_Handle (World)) );
    end;
@@ -18,7 +18,7 @@ package body RDF.Raptor.IOStream is
    function raptor_new_iostream_from_filename (World: RDF.Raptor.World.Handle_Type; filename: char_array) return Handle_Type
      with Import, Convention=>C;
 
-   function From_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize is
+   function From_Filename (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( raptor_new_iostream_from_filename (Get_Handle (World), To_C (Filename)) );
    end;
@@ -26,7 +26,7 @@ package body RDF.Raptor.IOStream is
    function raptor_new_iostream_from_file_handle (World: RDF.Raptor.World.Handle_Type; File: RDF.Auxiliary.C_File_Access) return Handle_Type
      with Import, Convention=>C;
 
-   function From_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
+   function From_File_Handle (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
                               return Stream_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( raptor_new_iostream_from_file_handle (Get_Handle (World), File) );
@@ -35,7 +35,7 @@ package body RDF.Raptor.IOStream is
    function raptor_new_iostream_to_sink (World: RDF.Raptor.World.Handle_Type) return Handle_Type
      with Import, Convention=>C;
 
-   function To_Sink (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize is
+   function To_Sink (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( raptor_new_iostream_to_sink (Get_Handle (World)) );
    end;
@@ -43,7 +43,7 @@ package body RDF.Raptor.IOStream is
    function raptor_new_iostream_to_filename (World: RDF.Raptor.World.Handle_Type; filename: char_array) return Handle_Type
      with Import, Convention=>C;
 
-   function To_Filename (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize is
+   function To_Filename (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( raptor_new_iostream_to_filename (Get_Handle (World), To_C (Filename)) );
    end;
@@ -51,7 +51,7 @@ package body RDF.Raptor.IOStream is
 --     function raptor_new_iostream_to_string (World: RDF.Raptor.World.Handle_Type; str: char_array; length: size_t) return Handle_Type
 --       with Import, Convention=>C;
 --
---     function To_String (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Str: String)
+--     function To_String (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Str: String)
 --                           return Stream_Type_Without_Finalize is
 --        Handle: constant Handle_Type := raptor_new_iostream_to_string (Get_Handle (World), To_C (Str), Str'Length);
 --     begin
@@ -61,7 +61,7 @@ package body RDF.Raptor.IOStream is
    function raptor_new_iostream_to_file_handle (World: RDF.Raptor.World.Handle_Type; File: RDF.Auxiliary.C_File_Access) return Handle_Type
      with Import, Convention=>C;
 
-   function To_File_Handle (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
+   function To_File_Handle (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
                               return Stream_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( raptor_new_iostream_to_file_handle (Get_Handle (World), File) );
@@ -311,9 +311,9 @@ package body RDF.Raptor.IOStream is
                                                return Handle_Type
      with Import, Convention=>C;
 
-   function Open (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return User_Defined_Stream_Type is
+   function Open (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return User_Defined_Stream_Type is
       Handle: Handle_Type;
-      use all type RDF.Raptor.World.World_Type;
+      use all type RDF.Raptor.World.Raptor_World_Type;
    begin
       return Stream: User_Defined_Stream_Type do
          Handle := raptor_new_iostream_from_handler (Get_Handle (World),
@@ -369,7 +369,7 @@ package body RDF.Raptor.IOStream is
    function raptor_new_iostream_from_string (World: RDF.Raptor.World.Handle_Type; str: char_array; length: size_t) return Handle_Type
      with Import, Convention=>C;
 
-   function Open_From_String (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Value: String) return Stream_From_String is
+   function Open_From_String (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Value: String) return Stream_From_String is
    begin
       return Stream: Stream_From_String(Value'Length) do
          Stream.Str := My_To_C_Without_Nul(Value);
@@ -389,7 +389,7 @@ package body RDF.Raptor.IOStream is
       return (Base_Stream_Type'(From_Handle (Handle)) with Str=>Ada.Strings.Unbounded.Null_Unbounded_String);
    end;
 
-   function Open (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Stream_To_String is
+   function Open (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return Stream_To_String is
    begin
       return (User_Defined_Stream_Type'(Open (World)) with Str=>Ada.Strings.Unbounded.Null_Unbounded_String);
    end;

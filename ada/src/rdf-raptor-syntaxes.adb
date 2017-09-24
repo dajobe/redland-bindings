@@ -60,7 +60,7 @@ package body RDF.Raptor.Syntaxes is
    function raptor_world_is_parser_name(World: RDF.Raptor.World.Handle_Type; Name: char_array) return int
      with Import, Convention=>C;
 
-   function Is_Parser_Name (World: World_Type_Without_Finalize'Class; Name: String) return Boolean is
+   function Is_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean is
    begin
       return raptor_world_is_parser_name(Get_Handle(World), To_C(Name, Append_Nul=>True)) /= 0;
    end;
@@ -74,7 +74,7 @@ package body RDF.Raptor.Syntaxes is
      with Import, Convention=>C;
 
 
-   function Guess_Parser_Name (World: World_Type_Without_Finalize'Class; URI: URI_Type; MIME_Type: String; Buffer: String; Identifier: String)
+   function Guess_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type; MIME_Type: String; Buffer: String; Identifier: String)
                                return String is
    begin
       return Value( raptor_world_guess_parser_name(Get_Handle(World),
@@ -88,7 +88,7 @@ package body RDF.Raptor.Syntaxes is
    function raptor_world_is_serializer_name(World: RDF.Raptor.World.Handle_Type; Name: char_array) return int
      with Import, Convention=>C;
 
-   function Is_Serializer_Name (World: World_Type_Without_Finalize'Class; Name: String) return Boolean is
+   function Is_Serializer_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean is
    begin
       return raptor_world_is_serializer_name(Get_Handle(World), To_C(Name, Append_Nul=>True)) /= 0;
    end;
@@ -145,18 +145,18 @@ package body RDF.Raptor.Syntaxes is
       return (Position=>Position.Position+1, World=>Position.World);
    end;
 
-   function Create_Parser_Descriptions_Iterator(World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Parser_Description_Iterator is
+   function Create_Parser_Descriptions_Iterator(World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return Parser_Description_Iterator is
    begin
       return (World=>Get_Handle(World));
    end;
 
-   function Create_Serializer_Descriptions_Iterator (World: RDF.Raptor.World.World_Type_Without_Finalize'Class) return Serializer_Description_Iterator is
+   function Create_Serializer_Descriptions_Iterator (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return Serializer_Description_Iterator is
    begin
       return (World=>Get_Handle(World));
    end;
 
-   --     function Parser_Descriptions     (World: World_Type_Without_Finalize'Class) return Parser_Description_List is (World=>Get_Handle(World));
+   --     function Parser_Descriptions     (World: Raptor_World_Type_Without_Finalize'Class) return Parser_Description_List is (World=>Get_Handle(World));
 --
---     function Serializer_Descriptions (World: World_Type_Without_Finalize'Class) return Serializer_Description_List is (World=>Get_Handle(World));
+--     function Serializer_Descriptions (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Description_List is (World=>Get_Handle(World));
 
 end RDF.Raptor.Syntaxes;

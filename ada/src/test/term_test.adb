@@ -8,7 +8,7 @@ with RDF.Auxiliary;
 package body Term_Test is
 
    procedure Test_Terms(T : in out Test_Cases.Test_Case'Class) is
-      World: RDF.Raptor.World.World_Type;
+      World: RDF.Raptor.World.Raptor_World_Type;
 
       URI_1: constant String := "http://example.org/xyz";
       URI_3: constant String := "http://example.org/123";

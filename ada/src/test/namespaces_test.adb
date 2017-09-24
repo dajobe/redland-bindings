@@ -7,7 +7,7 @@ with RDF.Raptor.World;
 package body Namespaces_Test is
 
    procedure Test_Stacks(T : in out Test_Cases.Test_Case'Class) is
-      World: RDF.Raptor.World.World_Type;
+      World: RDF.Raptor.World.Raptor_World_Type;
 
       Stack: Namespace_Stack_Type := Create_Stack (World, XML_Type);
 

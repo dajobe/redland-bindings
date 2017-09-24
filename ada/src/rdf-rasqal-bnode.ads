@@ -14,14 +14,14 @@ package RDF.Rasqal.Bnode is
    -- So I recommend not to use World argument at all.
    -- TODO: Remove World argument and make the API the same as in
    -- RDF.Raptor.Bnode, possibly merging both tagged types.
-   function Do_Handle (World: World_Type_Without_Finalize;
+   function Do_Handle (World: Raptor_World_Type_Without_Finalize;
                        Handler: BNode_ID_Handler;
                        User_ID: RDF.Auxiliary.String_Holders.Holder)
                        return String is abstract;
 
-   procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class);
+   procedure Set_BNode_ID_Handler (World: Raptor_World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class);
 
-   procedure Set_Default_Generate_Bnodeid_Parameters (World: World_Type_Without_Finalize'Class;
+   procedure Set_Default_Generate_Bnodeid_Parameters (World: Raptor_World_Type_Without_Finalize'Class;
                                                       Prefix: String_Holders.Holder;
                                                       Base: int);
 

@@ -8,8 +8,8 @@ with RDF.Rasqal.Syntaxes; use RDF.Rasqal.Syntaxes;
 package body Syntaxes_Test is
 
    procedure Test_Enum_Syntaxes (T : in out Test_Cases.Test_Case'Class) is
-      World2: RDF.Rasqal.World.World_Type := RDF.Rasqal.World.Open;
-      World: RDF.Raptor.World.World_Type_Without_Finalize := RDF.Rasqal.World.Get_Raptor(World2);
+      World2: RDF.Rasqal.World.Raptor_World_Type := RDF.Rasqal.World.Open;
+      World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize := RDF.Rasqal.World.Get_Raptor(World2);
 
       Iterator: Parser_Description_Iterator := Create_Parser_Descriptions_Iterator(World);
       Cursor: Parser_Description_Cursor := First(Iterator);

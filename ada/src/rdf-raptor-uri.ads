@@ -45,7 +45,7 @@ package RDF.Raptor.URI is
    -- Not supposed to be used, but included for completeness
    not overriding procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
 
-   not overriding function Get_World (URI: URI_Type_Without_Finalize) return World_Type_Without_Finalize;
+   not overriding function Get_World (URI: URI_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
 
    not overriding procedure Write (URI: URI_Type_Without_Finalize; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class);
 
@@ -53,13 +53,13 @@ package RDF.Raptor.URI is
 
    function Filename_Exists (Filename: String) return Boolean;
 
-   not overriding function To_Turtle_String (World: World_Type_Without_Finalize'Class;
+   not overriding function To_Turtle_String (World: Raptor_World_Type_Without_Finalize'Class;
                                              URI: URI_Type_Without_Finalize;
                                              Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                              Base_URI: URI_Type_Without_Finalize)
                                              return String;
 
-   not overriding procedure Turtle_Write (World: World_Type_Without_Finalize'Class;
+   not overriding procedure Turtle_Write (World: Raptor_World_Type_Without_Finalize'Class;
                                           Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                                           URI: URI_Type_Without_Finalize;
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
@@ -73,23 +73,23 @@ package RDF.Raptor.URI is
 
    overriding procedure Finalize_Handle(Object: URI_Type; Handle: Handle_Type);
 
-   not overriding function From_String(World: World_Type_Without_Finalize'Class; Arg: URI_String) return URI_Type;
+   not overriding function From_String(World: Raptor_World_Type_Without_Finalize'Class; Arg: URI_String) return URI_Type;
 
-   not overriding function From_URI_With_Local_Name(World: World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type;
+   not overriding function From_URI_With_Local_Name(World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type;
 
-   not overriding function From_URI_Or_File_String(World: World_Type_Without_Finalize'Class;
+   not overriding function From_URI_Or_File_String(World: Raptor_World_Type_Without_Finalize'Class;
                                                    Base_URI: URI_Type_Without_Finalize'Class;
                                                    uri_or_file: String)
                                                    return URI_Type;
 
-   not overriding function From_URI_Relative_To_Base(World: World_Type_Without_Finalize'Class;
+   not overriding function From_URI_Relative_To_Base(World: Raptor_World_Type_Without_Finalize'Class;
                                                      Base_URI: URI_Type_Without_Finalize'Class;
                                                      URI: URI_String)
                                                      return URI_Type;
 
-   not overriding function From_ID(World: World_Type_Without_Finalize'Class; Base_URI: URI_Type_Without_Finalize'Class; ID: String) return URI_Type;
+   not overriding function From_ID(World: Raptor_World_Type_Without_Finalize'Class; Base_URI: URI_Type_Without_Finalize'Class; ID: String) return URI_Type;
 
-   not overriding function From_RDF_Concept(World: World_Type_Without_Finalize'Class; Name: String) return URI_Type;
+   not overriding function From_RDF_Concept(World: Raptor_World_Type_Without_Finalize'Class; Name: String) return URI_Type;
 
    not overriding function For_XML_Base(Old_URI: URI_Type_Without_Finalize'Class) return URI_Type;
 

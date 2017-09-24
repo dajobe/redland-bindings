@@ -6,9 +6,9 @@ with RDF.Auxiliary; use RDF.Auxiliary;
 
 package RDF.Raptor.Bnode is
 
-   function Generate_Bnodeid (World: World_Type_Without_Finalize'Class) return String;
+   function Generate_Bnodeid (World: Raptor_World_Type_Without_Finalize'Class) return String;
 
-   procedure Set_Generate_Bnodeid_Parameters (World: World_Type_Without_Finalize'Class;
+   procedure Set_Generate_Bnodeid_Parameters (World: Raptor_World_Type_Without_Finalize'Class;
                                               Prefix: String_Holders.Holder;
                                               Base: int);
 
@@ -17,7 +17,7 @@ package RDF.Raptor.Bnode is
 
    function Do_Handle (Handler: BNode_ID_Handler; User_ID: RDF.Auxiliary.String_Holders.Holder) return String is abstract;
 
-   procedure Set_BNode_ID_Handler (World: World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class);
+   procedure Set_BNode_ID_Handler (World: Raptor_World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class);
 
 private
 

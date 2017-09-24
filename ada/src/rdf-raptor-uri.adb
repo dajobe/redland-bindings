@@ -15,7 +15,7 @@ package body RDF.Raptor.URI is
                                                   return Handle_Type
      with Import, Convention=>C;
 
-   function From_String(World: World_Type_Without_Finalize'Class; Arg: URI_String) return URI_Type is
+   function From_String(World: Raptor_World_Type_Without_Finalize'Class; Arg: URI_String) return URI_Type is
    begin
       -- LD_LIBRARY_PATH="" ltrace -n4 -llibraptor2.so.0 ./obj/test/debug/run_all_tests 2>&1| egrep ^[a-z]
       return From_Non_Null_Handle (raptor_new_uri_from_counted_string (Get_Handle (World), My_To_C_Without_Nul(String(Arg)), Arg'Length));
@@ -27,7 +27,7 @@ package body RDF.Raptor.URI is
                                                   return Handle_Type
      with Import, Convention=>C;
 
-   function From_URI_With_Local_Name(World: World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type is
+   function From_URI_With_Local_Name(World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type is
    begin
       return From_Non_Null_Handle (raptor_new_uri_from_uri_local_name (Get_Handle (World), Get_Handle (URI), To_C (Local_Name)));
    end;
@@ -38,7 +38,7 @@ package body RDF.Raptor.URI is
                                                      return Handle_Type
      with Import, Convention=>C;
 
-   function From_URI_Or_File_String(World   : World_Type_Without_Finalize'Class;
+   function From_URI_Or_File_String(World   : Raptor_World_Type_Without_Finalize'Class;
                                     Base_URI: URI_Type_Without_Finalize'Class;
                                     Uri_Or_File: String)
                                     return URI_Type is
@@ -53,7 +53,7 @@ package body RDF.Raptor.URI is
                                                      return Handle_Type
      with Import, Convention=>C;
 
-   function From_URI_Relative_To_Base(World: World_Type_Without_Finalize'Class;
+   function From_URI_Relative_To_Base(World: Raptor_World_Type_Without_Finalize'Class;
                                       Base_URI: URI_Type_Without_Finalize'Class;
                                       URI: URI_String)
                                       return URI_Type is
@@ -70,7 +70,7 @@ package body RDF.Raptor.URI is
                                      return Handle_Type
      with Import, Convention=>C;
 
-   function From_ID(World: World_Type_Without_Finalize'Class; Base_URI: URI_Type_Without_Finalize'Class; ID: String) return URI_Type is
+   function From_ID(World: Raptor_World_Type_Without_Finalize'Class; Base_URI: URI_Type_Without_Finalize'Class; ID: String) return URI_Type is
    begin
       return From_Non_Null_Handle (raptor_new_uri_from_id (Get_Handle (World), Get_Handle (Base_URI), To_C (ID)));
    end;
@@ -80,7 +80,7 @@ package body RDF.Raptor.URI is
                                               return Handle_Type
      with Import, Convention=>C;
 
-   function From_RDF_Concept(World: World_Type_Without_Finalize'Class; Name: String) return URI_Type is
+   function From_RDF_Concept(World: Raptor_World_Type_Without_Finalize'Class; Name: String) return URI_Type is
    begin
       return From_Non_Null_Handle (raptor_new_uri_for_rdf_concept (Get_Handle (World), To_C (Name)));
    end;
@@ -226,7 +226,7 @@ package body RDF.Raptor.URI is
    function raptor_uri_get_world (URI: Handle_Type) return RDF.Raptor.World.Handle_Type
       with Import, Convention=>C;
 
-   function Get_World (URI: URI_Type_Without_Finalize) return World_Type_Without_Finalize is
+   function Get_World (URI: URI_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
    begin
       return From_Handle (raptor_uri_get_world (Get_Handle (URI)));
    end;
@@ -301,7 +301,7 @@ package body RDF.Raptor.URI is
                                           return Chars_Ptr
      with Import, Convention=>C;
 
-   function To_Turtle_String (World: World_Type_Without_Finalize'Class;
+   function To_Turtle_String (World: Raptor_World_Type_Without_Finalize'Class;
                               URI: URI_Type_Without_Finalize;
                               Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                               Base_URI: URI_Type_Without_Finalize)
@@ -330,7 +330,7 @@ package body RDF.Raptor.URI is
                                       return Int
      with Import, Convention=>C;
 
-   procedure Turtle_Write (World: World_Type_Without_Finalize'Class;
+   procedure Turtle_Write (World: Raptor_World_Type_Without_Finalize'Class;
                            Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                            URI: URI_Type_Without_Finalize;
                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;

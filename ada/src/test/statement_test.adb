@@ -9,7 +9,7 @@ with RDF.Auxiliary;
 package body Statement_Test is
 
    procedure Test_Statements(T : in out Test_Cases.Test_Case'Class) is
-      World: RDF.Raptor.World.World_Type;
+      World: RDF.Raptor.World.Raptor_World_Type;
 
       URI_1: constant URI_String := "http://example.org/xyz";
       URI_2: constant URI_String := "http://example.org/qqq";

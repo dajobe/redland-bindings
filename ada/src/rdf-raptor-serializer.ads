@@ -62,12 +62,12 @@ package RDF.Raptor.Serializer is
    not overriding function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return Natural;
    not overriding function Get_String_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return String;
 
-   not overriding function Get_World (Serializer: Serializer_Type_Without_Finalize) return World_Type_Without_Finalize;
+   not overriding function Get_World (Serializer: Serializer_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
 
    type Serializer_Type is new Serializer_Type_Without_Finalize with null record;
 
-   not overriding function New_Serializer (World: World_Type) return Serializer_Type;
-   not overriding function New_Serializer (World: World_Type; Syntax_Name: String) return Serializer_Type;
+   not overriding function New_Serializer (World: Raptor_World_Type) return Serializer_Type;
+   not overriding function New_Serializer (World: Raptor_World_Type; Syntax_Name: String) return Serializer_Type;
 
    overriding procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Handle_Type);
 

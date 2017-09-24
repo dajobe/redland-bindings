@@ -73,7 +73,7 @@ package body RDF.Raptor.Namespace_Stack is
                                      return Namespace_Stack_Handle_Type
      with Import, Convention=>C;
 
-   function Create_Stack (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Defaults: Defaults_Type)
+   function Create_Stack (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Defaults: Defaults_Type)
                           return Namespace_Stack_Type is
    begin
       return From_Non_Null_Handle( raptor_new_namespaces(Get_Handle(World), Defaults) );

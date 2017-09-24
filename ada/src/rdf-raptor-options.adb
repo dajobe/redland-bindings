@@ -57,13 +57,13 @@ package body RDF.Raptor.Options is
    function raptor_world_get_option_description (World: RDF.Raptor.World.Handle_Type; Domain: Domain_Type; Option: Raptor_Option) return Handle_Type
      with Import, Convention=>C;
 
-   function Get_Option_Description (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Natural)
+   function Get_Option_Description (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Natural)
                                     return Option_Description_Type is
    begin
       return Get_Option_Description(World, Domain, Raptor_Option'Val(Option));
    end;
 
-   function Get_Option_Description (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Raptor_Option)
+   function Get_Option_Description (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Raptor_Option)
                                     return Option_Description_Type is
    begin
       return From_Non_Null_Handle( raptor_world_get_option_description(Get_Handle(World), Domain, Option) );
@@ -81,7 +81,7 @@ package body RDF.Raptor.Options is
      with Import, Convention=>C;
 
    -- Crude hack
-   function Option_From_URI (World: RDF.Raptor.World.World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type'Class) return Raptor_Option is
+   function Option_From_URI (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type'Class) return Raptor_Option is
       Result: constant Raptor_Option'Base := raptor_world_get_option_from_uri(Get_Handle(World), Get_Handle(URI));
    begin
       if not Result'Valid then

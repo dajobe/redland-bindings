@@ -7,11 +7,11 @@ package body Basic_Test is
 
    -- This just creates and assigns some variables (and ignores their values)
    procedure Test_Open(T : in out Test_Cases.Test_Case'Class) is
-      Default_World: RDF.Raptor.World.World_Type := RDF.Raptor.World.Open;
-      World_With_Some_Flags: RDF.Raptor.World.World_Type := RDF.Raptor.World.Open((1=>(Flag=>URI_Interning, Value=>False)));
+      Default_World: RDF.Raptor.World.Raptor_World_Type := RDF.Raptor.World.Open;
+      World_With_Some_Flags: RDF.Raptor.World.Raptor_World_Type := RDF.Raptor.World.Open((1=>(Flag=>URI_Interning, Value=>False)));
 
-      World2: RDF.Rasqal.World.World_Type := RDF.Rasqal.World.Open;
-      World: RDF.Raptor.World.World_Type_Without_Finalize := RDF.Rasqal.World.Get_Raptor(World2);
+      World2: RDF.Rasqal.World.Raptor_World_Type := RDF.Rasqal.World.Open;
+      World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize := RDF.Rasqal.World.Get_Raptor(World2);
    begin
       null;
    end;

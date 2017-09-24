@@ -34,7 +34,7 @@ package RDF.Raptor.Term is
                       -- unused type 3
                       Blank   => 4);
 
-   not overriding function Get_World (Term: Term_Type_Without_Finalize) return RDF.Raptor.World.World_Type_Without_Finalize;
+   not overriding function Get_World (Term: Term_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize;
 
    not overriding function Get_Kind (Term: Term_Type_Without_Finalize) return Term_Kind;
 
@@ -79,22 +79,22 @@ package RDF.Raptor.Term is
 
    type Term_Type is new Term_Type_Without_Finalize with null record;
 
-   not overriding function From_Blank (World: World_Type_Without_Finalize'Class) return Term_Type;
-   not overriding function From_Blank (World: World_Type_Without_Finalize'Class; ID: String) return Term_Type;
-   not overriding function From_Blank (World: World_Type_Without_Finalize'Class; ID: RDF.Auxiliary.String_Holders.Holder) return Term_Type;
+   not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class) return Term_Type;
+   not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: String) return Term_Type;
+   not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: RDF.Auxiliary.String_Holders.Holder) return Term_Type;
 
-   not overriding function From_Literal (World   : World_Type_Without_Finalize'Class;
+   not overriding function From_Literal (World   : Raptor_World_Type_Without_Finalize'Class;
                                          Literal : RDF.Auxiliary.String_Holders.Holder;
                                          Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
                                          Language: RDF.Auxiliary.String_Holders.Holder)
                                          return Term_Type;
 
-   not overriding function From_URI_String (World: World_Type_Without_Finalize'Class; URI: URI_String) return Term_Type;
+   not overriding function From_URI_String (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_String) return Term_Type;
 
-   not overriding function From_URI (World: World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+   not overriding function From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
                                      return Term_Type;
 
-   not overriding function From_String (World: World_Type_Without_Finalize'Class; Value: String) return Term_Type;
+   not overriding function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String) return Term_Type;
 
    overriding procedure Adjust (Object: in out Term_Type);
 

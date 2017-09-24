@@ -16,12 +16,12 @@ package body RDF.Rasqal.Syntaxes is
                                                                return Syntax_Description_Access
       with Import, Convention=>C;
 
-   function Get_Query_Language_Description (World: World_Type; Counter: Unsigned) return Syntax_Description_Type is
+   function Get_Query_Language_Description (World: Raptor_World_Type; Counter: Unsigned) return Syntax_Description_Type is
    begin
       return rasqal_world_get_query_language_description(Get_Handle(World), Counter).all;
    end;
 
-   function Get_Query_Results_Format_Description (World: World_Type; Counter: Unsigned) return Syntax_Description_Type is
+   function Get_Query_Results_Format_Description (World: Raptor_World_Type; Counter: Unsigned) return Syntax_Description_Type is
    begin
       return rasqal_world_get_query_results_format_description(Get_Handle(World), Counter).all;
    end;
@@ -73,12 +73,12 @@ package body RDF.Rasqal.Syntaxes is
       return (Position=>Position.Position+1, World=>Position.World);
    end;
 
-   function Create_Query_Language_Descriptions_Iterator(World: RDF.Rasqal.World.World_Type_Without_Finalize'Class) return Query_Language_Description_Iterator is
+   function Create_Query_Language_Descriptions_Iterator(World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class) return Query_Language_Description_Iterator is
    begin
       return (World=>Get_Handle(World));
    end;
 
-   function Create_Query_Results_Format_Descriptions_Iterator (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class) return Query_Results_Format_Description_Iterator is
+   function Create_Query_Results_Format_Descriptions_Iterator (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class) return Query_Results_Format_Description_Iterator is
    begin
       return (World=>Get_Handle(World));
    end;
@@ -86,7 +86,7 @@ package body RDF.Rasqal.Syntaxes is
    function rasqal_language_name_check (World: RDF.Rasqal.World.Handle_Type; Name: char_array) return int
      with Import, Convention=>C;
 
-   function Language_Name_Check (World: RDF.Rasqal.World.World_Type_Without_Finalize'Class; Name: String) return Boolean is
+   function Language_Name_Check (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean is
    begin
       return rasqal_language_name_check(Get_Handle(World), To_C(Name)) /= 0;
    end;
