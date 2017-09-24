@@ -18,7 +18,7 @@ package RDF.Rasqal.Data_Graph is
 
    subtype Data_Graph_Handle is Data_Graph_Handled_Record.Access_Type;
 
-   function Get_World (Graph: Data_Graph_Type_Without_Finalize) return RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function Get_World (Graph: Data_Graph_Type_Without_Finalize) return RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
 
    function Get_URI (Graph: Data_Graph_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type_Without_Finalize;
 
@@ -53,7 +53,7 @@ package RDF.Rasqal.Data_Graph is
 
    overriding procedure Finalize_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle);
 
-   not overriding function From_IOStream (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class;
+   not overriding function From_IOStream (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
                                           IOStream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                                           Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
                                           Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
@@ -62,7 +62,7 @@ package RDF.Rasqal.Data_Graph is
                                           Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
                                           return Data_Graph_Type;
 
-   not overriding function From_URI (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class;
+   not overriding function From_URI (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
                                      URI, Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
                                      Flags: Flags_Type;
                                      Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
@@ -73,7 +73,7 @@ package RDF.Rasqal.Data_Graph is
 
    -- TODO: Implement
 --     -- Not binding, but a wrapper
---     not overriding function From_File (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class;
+--     not overriding function From_File (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
 --                                        Filename: String;
 --                                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
 --                                        Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
@@ -83,7 +83,7 @@ package RDF.Rasqal.Data_Graph is
 --                                        return Streamed_Data_Graph_Type;
 --
 --     -- Not binding, but a wrapper
---     not overriding function From_String (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class;
+--     not overriding function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
 --                                          Str: String;
 --                                          Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
 --                                          Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));

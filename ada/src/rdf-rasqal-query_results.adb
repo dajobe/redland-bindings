@@ -264,7 +264,7 @@ package body RDF.Rasqal.Query_Results is
 --                                         return Query_Results_Handle_Type
 --       with Import, Convention=>C;
 --
---     function New_Query_Results (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+--     function New_Query_Results (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
 --                                 Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
 --                                 Kind: Query_Results_Type_Enum)
 --                                 return Query_Results_Type is
@@ -280,7 +280,7 @@ package body RDF.Rasqal.Query_Results is
                                       return Query_Results_Handle_Type
      with Import, Convention=>C;
 
-   function New_Query_Results (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function New_Query_Results (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
                                Kind: Query_Results_Type_Enum)
                                return Query_Results_Type is
@@ -297,7 +297,7 @@ package body RDF.Rasqal.Query_Results is
 --                                                    return Query_Results_Handle_Type
 --       with Import, Convention=>C;
 --
---     function From_String (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+--     function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
 --                           Kind: Query_Results_Type_Enum;
 --                           Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
 --                           Value: String)

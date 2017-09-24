@@ -9,7 +9,7 @@ package body RDF.Rasqal.Features is
    function rasqal_feature_from_uri (World: RDF.Rasqal.World.Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Feature_Type
       with Import, Convention=>C;
 
-   function Feature_From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class) return Feature_Type is
+   function Feature_From_URI (World: Rasqal_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class) return Feature_Type is
       Value: constant Feature_Type := rasqal_feature_from_uri(Get_Handle(World), Get_Handle(URI));
    begin
       return (if Value'Valid then Value else Unknown);
@@ -41,7 +41,7 @@ package body RDF.Rasqal.Features is
                                        return Int
       with Import, Convention=>C;
 
-   function Get_Feature_Description (World: Raptor_World_Type_Without_Finalize'Class; Feature: Feature_Type) return Feature_Description is
+   function Get_Feature_Description (World: Rasqal_World_Type_Without_Finalize'Class; Feature: Feature_Type) return Feature_Description is
       Name, Label: aliased chars_ptr;
       URI: aliased RDF.Raptor.URI.Handle_Type;
    begin
@@ -76,7 +76,7 @@ package body RDF.Rasqal.Features is
 
    function Get_Description (Cursor: Features_Cursor) return Feature_Description is
    begin
-      return Get_Feature_Description(Raptor_World_Type_Without_Finalize'(From_Handle(Cursor.World)), Cursor.Position);
+      return Get_Feature_Description(Rasqal_World_Type_Without_Finalize'(From_Handle(Cursor.World)), Cursor.Position);
    end;
 
    function Has_Element (Position: Features_Cursor) return Boolean is
@@ -94,7 +94,7 @@ package body RDF.Rasqal.Features is
       return (World=>Object.World, Position=>Conv(Conv(Position.Position) + 1));
    end;
 
-   function Create_Features_Descriptions_Iterator(World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class)
+   function Create_Features_Descriptions_Iterator(World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class)
                                                   return Features_Iterator is
    begin
       return Features_Iterator'(World => Get_Handle(World));

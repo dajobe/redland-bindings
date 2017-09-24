@@ -10,7 +10,7 @@ package body Basic_Test is
       Default_World: RDF.Raptor.World.Raptor_World_Type := RDF.Raptor.World.Open;
       World_With_Some_Flags: RDF.Raptor.World.Raptor_World_Type := RDF.Raptor.World.Open((1=>(Flag=>URI_Interning, Value=>False)));
 
-      World2: RDF.Rasqal.World.Raptor_World_Type := RDF.Rasqal.World.Open;
+      World2: RDF.Rasqal.World.Rasqal_World_Type := RDF.Rasqal.World.Open;
       World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize := RDF.Rasqal.World.Get_Raptor(World2);
    begin
       null;

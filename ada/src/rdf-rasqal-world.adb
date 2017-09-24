@@ -14,20 +14,20 @@ package body RDF.Rasqal.World is
    procedure rasqal_world_open(Handle: Handle_Type)
      with Import, Convention=>C;
 
-   function Default_Handle(Object: Raptor_World_Type_Without_Finalize) return Handle_Type is
+   function Default_Handle(Object: Rasqal_World_Type_Without_Finalize) return Handle_Type is
    begin
       return rasqal_new_world;
    end;
 
-   procedure Open(Object: Raptor_World_Type_Without_Finalize) is
+   procedure Open(Object: Rasqal_World_Type_Without_Finalize) is
    begin
       rasqal_world_open(Get_Handle(Object));
    end;
 
-   function Open return Raptor_World_Type is
-      Object: Raptor_World_Type;
+   function Open return Rasqal_World_Type is
+      Object: Rasqal_World_Type;
    begin
-      return Object: Raptor_World_Type do
+      return Object: Rasqal_World_Type do
          Open(Object);
       end return;
    end;
@@ -35,7 +35,7 @@ package body RDF.Rasqal.World is
    function rasqal_world_set_warning_level (World: Handle_Type; Level: unsigned) return int
       with Import, Convention=>C;
 
-   procedure Set_Warning_Level (World: Raptor_World_Type_Without_Finalize; Level: Warning_Level) is
+   procedure Set_Warning_Level (World: Rasqal_World_Type_Without_Finalize; Level: Warning_Level) is
    begin
       if rasqal_world_set_warning_level(Get_Handle(World), unsigned(Level)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -45,7 +45,7 @@ package body RDF.Rasqal.World is
    function rasqal_world_get_raptor (World: Handle_Type) return RDF.Raptor.World.Handle_Type
       with Import, Convention=>C;
 
-   function Get_Raptor (World: Raptor_World_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize is
+   function Get_Raptor (World: Rasqal_World_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize is
       use RDF.Raptor.World;
    begin
       return From_Non_Null_Handle(rasqal_world_get_raptor(Get_Handle(World)));
@@ -54,7 +54,7 @@ package body RDF.Rasqal.World is
    procedure rasqal_world_set_raptor (World: Handle_Type; Raptor_World: RDF.Raptor.World.Handle_Type)
       with Import, Convention=>C;
 
-   procedure Set_Raptor (World: Raptor_World_Type_Without_Finalize; Raptor_World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize) is
+   procedure Set_Raptor (World: Rasqal_World_Type_Without_Finalize; Raptor_World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize) is
       use RDF.Raptor.World;
    begin
       rasqal_world_set_raptor(Get_Handle(World), Get_Handle(Raptor_World));
@@ -63,7 +63,7 @@ package body RDF.Rasqal.World is
    procedure rasqal_free_world (World: Handle_Type)
       with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Raptor_World_Type; Handle: Handle_Type) is
+   procedure Finalize_Handle (Object: Rasqal_World_Type; Handle: Handle_Type) is
    begin
       rasqal_free_world(Handle);
    end;
@@ -75,7 +75,7 @@ package body RDF.Rasqal.World is
    procedure rasqal_world_set_log_handler (World: Handle_Type; Data: chars_ptr; Handler: RDF.Raptor.Log.Log_Handler_Procedure_Type)
       with Import, Convention=>C;
 
-   procedure Set_Log_Handler(World: Raptor_World_Type_Without_Finalize; Handler: access RDF.Raptor.Log.Log_Handler) is
+   procedure Set_Log_Handler(World: Rasqal_World_Type_Without_Finalize; Handler: access RDF.Raptor.Log.Log_Handler) is
    begin
       rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), RDF.Raptor.Log.Our_Raptor_Log_Handler'Access);
    end;
@@ -89,7 +89,7 @@ package body RDF.Rasqal.World is
                                                           return chars_ptr
          with Import, Convention=>C;
 
-   function Guess_Query_Results_Format_Name (World: Raptor_World_Type_Without_Finalize;
+   function Guess_Query_Results_Format_Name (World: Rasqal_World_Type_Without_Finalize;
                                              URI: URI_Type_Without_Finalize'Class;
                                              Mime_Type: String_Holders.Holder;
                                              Buffer: String_Holders.Holder;

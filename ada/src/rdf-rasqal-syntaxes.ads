@@ -9,8 +9,9 @@ package RDF.Rasqal.Syntaxes is
 
    subtype Syntax_Description_Type is RDF.Raptor.Syntaxes.Syntax_Description_Type;
 
-   function Get_Query_Language_Description (World: Raptor_World_Type; Counter: unsigned) return Syntax_Description_Type;
-   function Get_Query_Results_Format_Description (World: Raptor_World_Type; Counter: Unsigned) return Syntax_Description_Type;
+   -- FIXME: Shouldn't here be Rasqal_World_Type_Without_Finalize?
+   function Get_Query_Language_Description (World: Rasqal_World_Type; Counter: unsigned) return Syntax_Description_Type;
+   function Get_Query_Results_Format_Description (World: Rasqal_World_Type; Counter: unsigned) return Syntax_Description_Type;
 
    type Query_Language_Description_Cursor is private;
    type Query_Results_Format_Description_Cursor is private;
@@ -36,10 +37,10 @@ package RDF.Rasqal.Syntaxes is
    overriding function First (Object: Query_Results_Format_Description_Iterator) return Query_Results_Format_Description_Cursor;
    overriding function Next (Object: Query_Results_Format_Description_Iterator; Position: Query_Results_Format_Description_Cursor) return Query_Results_Format_Description_Cursor;
 
-   not overriding function Create_Query_Language_Descriptions_Iterator     (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class) return Query_Language_Description_Iterator;
-   not overriding function Create_Query_Results_Format_Descriptions_Iterator (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class) return Query_Results_Format_Description_Iterator;
+   not overriding function Create_Query_Language_Descriptions_Iterator     (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class) return Query_Language_Description_Iterator;
+   not overriding function Create_Query_Results_Format_Descriptions_Iterator (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class) return Query_Results_Format_Description_Iterator;
 
-   function Language_Name_Check (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean;
+   function Language_Name_Check (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class; Name: String) return Boolean;
 
 private
 

@@ -67,6 +67,6 @@ package RDF.Rasqal.Query is
 
    overriding procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle_Type);
 
-   not overriding function New_Query (World: RDF.Rasqal.World.Raptor_World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type;
+   not overriding function New_Query (World: RDF.Rasqal.World.Rasqal_World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type;
 
 end RDF.Rasqal.Query;

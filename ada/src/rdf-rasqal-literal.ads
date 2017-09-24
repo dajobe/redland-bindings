@@ -82,78 +82,78 @@ package RDF.Rasqal.Literal is
 
    overriding procedure Finalize_Handle (Object: Literal_Type; Handle: Literal_Handle_Type);
 
-   not overriding function New_Typed_Literal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function New_Typed_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                               Type_Of_Literal: Literal_Type_Enum;
                                               Value: String)
                                               return Literal_Type;
 
-   not overriding function From_Boolean (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function From_Boolean (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                          Value: Boolean)
                                          return Literal_Type;
 
    -- Not implemented
---     not overriding function From_Datetime (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+--     not overriding function From_Datetime (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
 --                                            Value: XSD_Datetime)
 --                                            return Literal_Type;
 
-   not overriding function From_Decimal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function From_Decimal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                          Value: String)
                                          return Literal_Type;
 
    -- Not implemented
---     not overriding function From_Decimal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+--     not overriding function From_Decimal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
 --                                           Value: XSD_Decimal)
 --                                           return Literal_Type;
 
    -- From_Float API is experimental
 
-   not overriding function From_Float (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function From_Float (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                        Value: Float)
                                        return Literal_Type;
 
    -- WARNING: This takes a Long_Float value but silently rounds it to Float
-   not overriding function From_Float (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function From_Float (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                        Value: Long_Float)
                                        return Literal_Type;
 
-   not overriding function From_Long_Float (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function From_Long_Float (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                             Value: Long_Float)
                                             return Literal_Type;
 
    -- Deliberately accept only long integers, don't implement "Value: int".
-   not overriding function From_Integer (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function From_Integer (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                          Value: long)
                                          return Literal_Type;
 
-   not overriding function New_Simple_Literal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function New_Simple_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                                Kind: Literal_Type_Enum_Simple;
                                                Value: String)
                                                return Literal_Type;
 
    -- overloaded
-   not overriding function New_String_Literal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function New_String_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                                Value: String;
                                                Language: RDF.Auxiliary.String_Holders.Holder;
                                                Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize)
                                                return Literal_Type;
 
-   not overriding function New_String_Literal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function New_String_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                                Value: String;
                                                Language: RDF.Auxiliary.String_Holders.Holder;
                                                Datatype_Qname: String)
                                                return Literal_Type;
 
-   not overriding function New_String_Literal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function New_String_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                                Value: String;
                                                Language: RDF.Auxiliary.String_Holders.Holder := Empty_Holder)
                                                return Literal_Type;
 
-   not overriding function From_String (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                         Value: String)
                                         return Literal_Type
      is (New_String_Literal(World, Value));
 
-   not overriding function From_URI (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function From_URI (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                      Value: RDF.Raptor.URI.URI_Type_Without_Finalize)
                                      return Literal_Type;
 

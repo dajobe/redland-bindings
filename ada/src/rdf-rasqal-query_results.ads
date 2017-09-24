@@ -93,13 +93,13 @@ package RDF.Rasqal.Query_Results is
 
    overriding procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle_Type);
 
-   not overriding function New_Query_Results (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   not overriding function New_Query_Results (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                               Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
                                               Kind: Query_Results_Type_Enum)
                                               return Query_Results_Type;
 
    -- TODO: Not supported as of Rasqal 0.9.32
---     not overriding function From_String (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+--     not overriding function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
 --                                          Kind: Query_Results_Type_Enum;
 --                                          Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
 --                                          Value: String)

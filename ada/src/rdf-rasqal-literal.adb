@@ -14,7 +14,7 @@ package body RDF.Rasqal.Literal is
      with Import, Convention=>C;
 
 
-   function New_Typed_Literal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function New_Typed_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                Type_Of_Literal: Literal_Type_Enum;
                                Value: String)
                                return Literal_Type is
@@ -28,7 +28,7 @@ package body RDF.Rasqal.Literal is
                                         return Literal_Handle_Type
      with Import, Convention=>C;
 
-   function From_Boolean (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function From_Boolean (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                           Value: Boolean)
                           return Literal_Type is
       use RDF.Rasqal.World;
@@ -41,7 +41,7 @@ package body RDF.Rasqal.Literal is
                                         return Literal_Handle_Type
      with Import, Convention=>C;
 
-   function From_Decimal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function From_Decimal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                           Value: String)
                           return Literal_Type is
       use RDF.Rasqal.World;
@@ -57,7 +57,7 @@ package body RDF.Rasqal.Literal is
                                          return Literal_Handle_Type
      with Import, Convention=>C;
 
-   function From_Float (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function From_Float (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                         Value: Float)
                         return Literal_Type is
       use RDF.Rasqal.World;
@@ -65,7 +65,7 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_floating_literal(Get_Handle(World), Literal_Float, double(Value)));
    end;
 
-   function From_Float (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function From_Float (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                         Value: Long_Float)
                         return Literal_Type is
       use RDF.Rasqal.World;
@@ -73,7 +73,7 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_floating_literal(Get_Handle(World), Literal_Float, double(Value)));
    end;
 
-   function From_Long_Float (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function From_Long_Float (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                              Value: Long_Float)
                              return Literal_Type is
       use RDF.Rasqal.World;
@@ -87,7 +87,7 @@ package body RDF.Rasqal.Literal is
                                                   return Literal_Handle_Type
      with Import, Convention=>C;
 
-   function From_Integer (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize; Value: long)
+   function From_Integer (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize; Value: long)
                           return Literal_Type is
       use RDF.Rasqal.World;
    begin
@@ -100,7 +100,7 @@ package body RDF.Rasqal.Literal is
                                        return Literal_Handle_Type
      with Import, Convention=>C;
 
-   function New_Simple_Literal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function New_Simple_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                 Kind: Literal_Type_Enum_Simple;
                                 Value: String)
                                 return Literal_Type is
@@ -118,7 +118,7 @@ package body RDF.Rasqal.Literal is
                                        return Literal_Handle_Type
      with Import, Convention=>C;
 
-   function New_String_Literal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function New_String_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                 Value: String;
                                 Language: RDF.Auxiliary.String_Holders.Holder;
                                 Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize)
@@ -133,7 +133,7 @@ package body RDF.Rasqal.Literal is
                                   Null_Ptr));
    end;
 
-   function New_String_Literal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function New_String_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                 Value: String;
                                 Language: RDF.Auxiliary.String_Holders.Holder;
                                 Datatype_Qname: String)
@@ -148,7 +148,7 @@ package body RDF.Rasqal.Literal is
                                   New_String(Datatype_Qname)));
    end;
 
-   function New_String_Literal (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function New_String_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                 Value: String;
                                 Language: RDF.Auxiliary.String_Holders.Holder := Empty_Holder)
                                 return Literal_Type is
@@ -167,7 +167,7 @@ package body RDF.Rasqal.Literal is
                                     return Literal_Handle_Type
      with Import, Convention=>C;
 
-   function From_URI (World: RDF.Rasqal.World.Raptor_World_Type_Without_Finalize;
+   function From_URI (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                       Value: RDF.Raptor.URI.URI_Type_Without_Finalize)
                       return Literal_Type is
       use RDF.Rasqal.World, RDF.Raptor.URI;
