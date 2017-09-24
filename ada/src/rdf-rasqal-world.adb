@@ -32,7 +32,7 @@ package body RDF.Rasqal.World is
       end return;
    end;
 
-   function rasqal_world_set_warning_level (World: Handle_Type; Level: unsigned) return int
+   function rasqal_world_set_warning_level (World: Rasqal_World_Handle_Type; Level: unsigned) return int
       with Import, Convention=>C;
 
    procedure Set_Warning_Level (World: Rasqal_World_Type_Without_Finalize; Level: Warning_Level) is
@@ -42,7 +42,7 @@ package body RDF.Rasqal.World is
       end if;
    end;
 
-   function rasqal_world_get_raptor (World: Handle_Type) return RDF.Raptor.World.Handle_Type
+   function rasqal_world_get_raptor (World: Rasqal_World_Handle_Type) return RDF.Raptor.World.Raptor_World_Handle_Type
       with Import, Convention=>C;
 
    function Get_Raptor (World: Rasqal_World_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize is
@@ -51,7 +51,7 @@ package body RDF.Rasqal.World is
       return From_Non_Null_Handle(rasqal_world_get_raptor(Get_Handle(World)));
    end;
 
-   procedure rasqal_world_set_raptor (World: Handle_Type; Raptor_World: RDF.Raptor.World.Handle_Type)
+   procedure rasqal_world_set_raptor (World: Rasqal_World_Handle_Type; Raptor_World: RDF.Raptor.World.Raptor_World_Handle_Type)
       with Import, Convention=>C;
 
    procedure Set_Raptor (World: Rasqal_World_Type_Without_Finalize; Raptor_World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize) is
@@ -60,7 +60,7 @@ package body RDF.Rasqal.World is
       rasqal_world_set_raptor(Get_Handle(World), Get_Handle(Raptor_World));
    end;
 
-   procedure rasqal_free_world (World: Handle_Type)
+   procedure rasqal_free_world (World: Rasqal_World_Handle_Type)
       with Import, Convention=>C;
 
    procedure Finalize_Handle (Object: Rasqal_World_Type; Handle: Handle_Type) is
@@ -72,7 +72,7 @@ package body RDF.Rasqal.World is
    function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, Log_Handler_Access);
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(Log_Handler_Access, chars_ptr);
 
-   procedure rasqal_world_set_log_handler (World: Handle_Type; Data: chars_ptr; Handler: RDF.Raptor.Log.Log_Handler_Procedure_Type)
+   procedure rasqal_world_set_log_handler (World: Rasqal_World_Handle_Type; Data: chars_ptr; Handler: RDF.Raptor.Log.Log_Handler_Procedure_Type)
       with Import, Convention=>C;
 
    procedure Set_Log_Handler(World: Rasqal_World_Type_Without_Finalize; Handler: access RDF.Raptor.Log.Log_Handler) is
@@ -80,7 +80,7 @@ package body RDF.Rasqal.World is
       rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), RDF.Raptor.Log.Our_Raptor_Log_Handler'Access);
    end;
 
-   function rasqal_world_guess_query_results_format_name (World: RDF.Rasqal.World.Handle_Type;
+   function rasqal_world_guess_query_results_format_name (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
                                                           URI: RDF.Raptor.URI.Handle_Type;
                                                           Mime_Type: chars_ptr;
                                                           Buffer: chars_ptr;

@@ -57,7 +57,7 @@ package body RDF.Raptor.Syntaxes is
       return Object.Flags;
    end;
 
-   function raptor_world_is_parser_name(World: RDF.Raptor.World.Handle_Type; Name: char_array) return int
+   function raptor_world_is_parser_name(World: RDF.Raptor.World.Raptor_World_Handle_Type; Name: char_array) return int
      with Import, Convention=>C;
 
    function Is_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean is
@@ -65,7 +65,7 @@ package body RDF.Raptor.Syntaxes is
       return raptor_world_is_parser_name(Get_Handle(World), To_C(Name, Append_Nul=>True)) /= 0;
    end;
 
-   function raptor_world_guess_parser_name (World: RDF.Raptor.World.Handle_Type;
+   function raptor_world_guess_parser_name (World: RDF.Raptor.World.Raptor_World_Handle_Type;
                                               URI: RDF.Raptor.URI.Handle_Type;
                                               MIME_Type: Char_Array;
                                               Buffer: Char_Array;
@@ -85,7 +85,7 @@ package body RDF.Raptor.Syntaxes is
                     To_C(Identifier, Append_Nul=>True)) );
    end;
 
-   function raptor_world_is_serializer_name(World: RDF.Raptor.World.Handle_Type; Name: char_array) return int
+   function raptor_world_is_serializer_name(World: RDF.Raptor.World.Raptor_World_Handle_Type; Name: char_array) return int
      with Import, Convention=>C;
 
    function Is_Serializer_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean is
@@ -99,10 +99,10 @@ package body RDF.Raptor.Syntaxes is
    type Syntax_Description_Access is access all Syntax_Description_Type
       with Convention=>C;
 
-   function raptor_world_get_parser_description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return Syntax_Description_Access
+   function raptor_world_get_parser_description (World: RDF.Raptor.World.Raptor_World_Handle_Type; Counter: unsigned) return Syntax_Description_Access
      with Import, Convention=>C;
 
-   function raptor_world_get_serializer_description (World: RDF.Raptor.World.Handle_Type; Counter: unsigned) return Syntax_Description_Access
+   function raptor_world_get_serializer_description (World: RDF.Raptor.World.Raptor_World_Handle_Type; Counter: unsigned) return Syntax_Description_Access
      with Import, Convention=>C;
 
    function Get_Description (Cursor: Parser_Description_Cursor    ) return Syntax_Description_Type is

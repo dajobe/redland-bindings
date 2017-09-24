@@ -96,7 +96,7 @@ private
 
    type Data_Graph_Record is
       record
-         World: RDF.Rasqal.World.Handle_Type;
+         World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
          URI, Name_URI: RDF.Raptor.URI.Handle_Type;
          Flags: unsigned;
          Format_Type, Format_Name: chars_ptr;

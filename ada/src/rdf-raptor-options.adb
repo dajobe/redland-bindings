@@ -54,7 +54,7 @@ package body RDF.Raptor.Options is
       return Value(Ptr);
    end;
 
-   function raptor_world_get_option_description (World: RDF.Raptor.World.Handle_Type; Domain: Domain_Type; Option: Raptor_Option) return Handle_Type
+   function raptor_world_get_option_description (World: RDF.Raptor.World.Raptor_World_Handle_Type; Domain: Domain_Type; Option: Raptor_Option) return Handle_Type
      with Import, Convention=>C;
 
    function Get_Option_Description (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Natural)
@@ -77,7 +77,7 @@ package body RDF.Raptor.Options is
       raptor_world_get_option_description(Handle);
    end;
 
-   function raptor_world_get_option_from_uri (World: RDF.Raptor.World.Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Raptor_Option
+   function raptor_world_get_option_from_uri (World: RDF.Raptor.World.Raptor_World_Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Raptor_Option
      with Import, Convention=>C;
 
    -- Crude hack

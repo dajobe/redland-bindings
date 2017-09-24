@@ -6,7 +6,7 @@ with RDF.Raptor.World;
 
 package body RDF.Rasqal.Features is
 
-   function rasqal_feature_from_uri (World: RDF.Rasqal.World.Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Feature_Type
+   function rasqal_feature_from_uri (World: RDF.Rasqal.World.Rasqal_World_Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return Feature_Type
       with Import, Convention=>C;
 
    function Feature_From_URI (World: Rasqal_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class) return Feature_Type is
@@ -33,7 +33,7 @@ package body RDF.Rasqal.Features is
    type String_P_Type is access all chars_ptr with Convention=>C;
    type URI_P_Type is access all RDF.Raptor.URI.Handle_Type with Convention=>C;
 
-   function rasqal_features_enumerate (World: RDF.Raptor.World.Handle_Type;
+   function rasqal_features_enumerate (World: RDF.Raptor.World.Raptor_World_Handle_Type;
                                        Feature: Feature_Type;
                                        Name: String_P_Type;
                                        URI: URI_P_Type;

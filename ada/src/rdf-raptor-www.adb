@@ -159,7 +159,7 @@ package body RDF.Raptor.WWW is
       raptor_www_abort(Get_Handle(WWW), To_C(Reason));
    end;
 
-   function raptor_new_www (World: RDF.Raptor.World.Handle_Type) return WWW_Handle_Type
+   function raptor_new_www (World: RDF.Raptor.World.Raptor_World_Handle_Type) return WWW_Handle_Type
       with Import, Convention=>C;
 
    function New_WWW (World: RDF.Raptor.World.Raptor_World_Type'Class) return WWW_Type is
@@ -168,7 +168,7 @@ package body RDF.Raptor.WWW is
       return From_Non_Null_Handle(raptor_new_www(Get_Handle(World)));
    end;
 
-   function raptor_new_www_with_connection (World: RDF.Raptor.World.Handle_Type; Connection: Connection_Type) return WWW_Handle_Type
+   function raptor_new_www_with_connection (World: RDF.Raptor.World.Raptor_World_Handle_Type; Connection: Connection_Type) return WWW_Handle_Type
       with Import, Convention=>C;
 
    function New_WWW (World: RDF.Raptor.World.Raptor_World_Type'Class; Connection: Connection_Type) return WWW_Type is

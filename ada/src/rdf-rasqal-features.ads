@@ -52,13 +52,13 @@ private
 
    type Features_Cursor is
       record
-         World: RDF.Rasqal.World.Handle_Type;
+         World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
          Position: Feature_Type;
       end record;
 
    type Features_Iterator is new Features_Iterators.Forward_Iterator with
       record
-         World: RDF.Rasqal.World.Handle_Type;
+         World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
       end record;
 
 end RDF.Rasqal.Features;

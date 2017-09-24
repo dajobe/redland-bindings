@@ -16,7 +16,7 @@ package body RDF.Raptor.Parser is
 
 --     use all type Parser_Type;
 
-   function raptor_new_parser (World: RDF.Raptor.World.Handle_Type; Name: char_array) return Handle_Type
+   function raptor_new_parser (World: RDF.Raptor.World.Raptor_World_Handle_Type; Name: char_array) return Handle_Type
      with Import, Convention=>C;
 
    function Create (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Name: String) return Parser_Type is
@@ -24,7 +24,7 @@ package body RDF.Raptor.Parser is
       return From_Non_Null_Handle( raptor_new_parser(Get_Handle(World), To_C(Name, Append_Nul=>True)) );
    end;
 
-   function raptor_new_parser_for_content (World: RDF.Raptor.World.Handle_Type;
+   function raptor_new_parser_for_content (World: RDF.Raptor.World.Raptor_World_Handle_Type;
                                              URI: RDF.Raptor.URI.Handle_Type;
                                              MIME_Type: chars_ptr;
                                              Buffer: chars_ptr;
@@ -250,7 +250,7 @@ package body RDF.Raptor.Parser is
       return S;
    end;
 
-   function raptor_parser_get_world (Parser: Handle_Type) return RDF.Raptor.World.Handle_Type
+   function raptor_parser_get_world (Parser: Handle_Type) return RDF.Raptor.World.Raptor_World_Handle_Type
       with Import, Convention=>C;
 
    function Get_World (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize is

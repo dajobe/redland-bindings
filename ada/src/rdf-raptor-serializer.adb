@@ -184,7 +184,7 @@ package body RDF.Raptor.Serializer is
       return Value(V); -- do NOT free it
    end;
 
-   function raptor_serializer_get_world (Serializer: Handle_Type) return RDF.Raptor.World.Handle_Type
+   function raptor_serializer_get_world (Serializer: Handle_Type) return RDF.Raptor.World.Raptor_World_Handle_Type
       with Import, Convention=>C;
 
    function Get_World (Serializer: Serializer_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
@@ -192,7 +192,7 @@ package body RDF.Raptor.Serializer is
       return From_Handle(raptor_serializer_get_world(Get_Handle(Serializer)));
    end;
 
-   function raptor_new_serializer (World: RDF.Raptor.World.Handle_Type; Syntax_Name: chars_ptr) return Handle_Type
+   function raptor_new_serializer (World: RDF.Raptor.World.Raptor_World_Handle_Type; Syntax_Name: chars_ptr) return Handle_Type
       with Import, Convention=>C;
 
    function New_Serializer (World: Raptor_World_Type) return Serializer_Type is

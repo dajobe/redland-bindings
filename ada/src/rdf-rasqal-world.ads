@@ -10,7 +10,7 @@ package RDF.Rasqal.World is
 
    type Rasqal_World_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 
-   subtype Handle_Type is Handled_Record.Access_Type;
+   subtype Rasqal_World_Handle_Type is Handled_Record.Access_Type;
 
    overriding function Default_Handle(Object: Rasqal_World_Type_Without_Finalize) return Handle_Type;
 
@@ -35,7 +35,7 @@ package RDF.Rasqal.World is
 
    type Rasqal_World_Type is new Rasqal_World_Type_Without_Finalize with null record;
 
-   overriding procedure Finalize_Handle (Object: Rasqal_World_Type; Handle: Handle_Type);
+   overriding procedure Finalize_Handle (Object: Rasqal_World_Type; Handle: Rasqal_World_Handle_Type);
 
    not overriding function Open return Rasqal_World_Type;
 

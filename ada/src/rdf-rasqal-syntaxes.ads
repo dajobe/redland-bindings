@@ -46,24 +46,24 @@ private
 
    type Query_Language_Description_Cursor is
       record
-         World: RDF.Rasqal.World.Handle_Type;
+         World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
          Position: Natural;
       end record;
 
    type Query_Results_Format_Description_Cursor is
       record
-         World: RDF.Rasqal.World.Handle_Type;
+         World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
          Position: Natural;
       end record;
 
    type Query_Language_Description_Iterator is new Query_Language_Description_Iterators.Forward_Iterator with
       record
-         World: RDF.Rasqal.World.Handle_Type;
+         World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
       end record;
 
    type Query_Results_Format_Description_Iterator is new Query_Results_Format_Description_Iterators.Forward_Iterator with
       record
-         World: RDF.Rasqal.World.Handle_Type;
+         World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
       end record;
 
 end RDF.Rasqal.Syntaxes;

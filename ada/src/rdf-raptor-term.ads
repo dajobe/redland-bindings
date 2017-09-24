@@ -132,7 +132,7 @@ private
 
    type Term_Record is
       record
-         World: RDF.Raptor.World.Handle_Type;
+         World: RDF.Raptor.World.Raptor_World_Handle_Type;
          Usage: Interfaces.C.int; -- intentionally not accessible from our Ada bindings
          Kind: Term_Kind;
          Value: Term_Value;

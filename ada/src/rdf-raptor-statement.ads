@@ -72,7 +72,7 @@ private
 
    type Statement_Record is
       record
-         world: RDF.Raptor.World.Handle_Type;
+         world: RDF.Raptor.World.Raptor_World_Handle_Type;
          usage: Interfaces.C.int;
          Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Handle;
       end record

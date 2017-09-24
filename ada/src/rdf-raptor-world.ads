@@ -8,7 +8,7 @@ package RDF.Raptor.World is
 
    type Raptor_World_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 
-   subtype Handle_Type is Handled_Record.Access_Type;
+   subtype Raptor_World_Handle_Type is Handled_Record.Access_Type;
 
    type Flag_Type is (Libxml_Error_Save,
                       Libxml_Structured_Error_Save,
@@ -28,7 +28,7 @@ package RDF.Raptor.World is
 
    type Flags_Array is array(Integer range <>) of Flag_And_Value;
 
-   overriding function Default_Handle(Object: Raptor_World_Type_Without_Finalize) return Handle_Type;
+   overriding function Default_Handle(Object: Raptor_World_Type_Without_Finalize) return Raptor_World_Handle_Type;
 
    not overriding procedure Open(Object: Raptor_World_Type_Without_Finalize);
 
@@ -44,7 +44,7 @@ package RDF.Raptor.World is
 
    not overriding function Open(Flags: Flags_Array) return Raptor_World_Type;
 
-   overriding procedure Finalize_Handle(Object: Raptor_World_Type; Handle: Handle_Type);
+   overriding procedure Finalize_Handle(Object: Raptor_World_Type; Handle: Raptor_World_Handle_Type);
 
    -- Not implemented
    -- procedure Set_Libxslt_Security_Preferences

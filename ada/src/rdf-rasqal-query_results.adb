@@ -258,7 +258,7 @@ package body RDF.Rasqal.Query_Results is
    end;
 
    -- TODO: Not supported as of Rasqal 0.9.32
---     function rasqal_new_query_results2 (World: RDF.Rasqal.World.Handle_Type;
+--     function rasqal_new_query_results2 (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
 --                                         Query: RDF.Rasqal.Query.Query_Handle_Type;
 --                                         Kind: Query_Results_Type_Enum)
 --                                         return Query_Results_Handle_Type
@@ -273,7 +273,7 @@ package body RDF.Rasqal.Query_Results is
 --        return From_Non_Null_Handle(rasqal_new_query_results2(Get_Handle(World), Get_Handle(Query), Kind));
 --     end;
 
-   function rasqal_new_query_results (World: RDF.Rasqal.World.Handle_Type;
+   function rasqal_new_query_results (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
                                       Query: RDF.Rasqal.Query.Query_Handle_Type;
                                       Kind: Query_Results_Type_Enum;
                                       Vars_Table: RDF.Auxiliary.Dummy_Record_Access)
@@ -289,7 +289,7 @@ package body RDF.Rasqal.Query_Results is
       return From_Non_Null_Handle(rasqal_new_query_results(Get_Handle(World), Get_Handle(Query), Kind, null));
    end;
 
---     function rasqal_new_query_results_from_string (World: RDF.Rasqal.World.Handle_Type;
+--     function rasqal_new_query_results_from_string (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
 --                                                    Kind: Query_Results_Type_Enum;
 --                                                    Base_URI: RDF.Raptor.URI.Handle_Type;
 --                                                    Value: char_array;

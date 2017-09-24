@@ -8,11 +8,11 @@ package body RDF.Rasqal.Syntaxes is
    type Syntax_Description_Access is access all Syntax_Description_Type
       with Convention=>C;
 
-   function rasqal_world_get_query_language_description (World: RDF.Rasqal.World.Handle_Type; Counter: unsigned)
+   function rasqal_world_get_query_language_description (World: RDF.Rasqal.World.Rasqal_World_Handle_Type; Counter: unsigned)
                                                          return Syntax_Description_Access
       with Import, Convention=>C;
 
-   function rasqal_world_get_query_results_format_description (World: RDF.Rasqal.World.Handle_Type; Counter: unsigned)
+   function rasqal_world_get_query_results_format_description (World: RDF.Rasqal.World.Rasqal_World_Handle_Type; Counter: unsigned)
                                                                return Syntax_Description_Access
       with Import, Convention=>C;
 
@@ -83,7 +83,7 @@ package body RDF.Rasqal.Syntaxes is
       return (World=>Get_Handle(World));
    end;
 
-   function rasqal_language_name_check (World: RDF.Rasqal.World.Handle_Type; Name: char_array) return int
+   function rasqal_language_name_check (World: RDF.Rasqal.World.Rasqal_World_Handle_Type; Name: char_array) return int
      with Import, Convention=>C;
 
    function Language_Name_Check (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class; Name: String) return Boolean is

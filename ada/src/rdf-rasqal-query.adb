@@ -203,7 +203,7 @@ package body RDF.Rasqal.Query is
       return Result;
    end;
 
-   function rasqal_new_query (World: RDF.Rasqal.World.Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
+   function rasqal_new_query (World: RDF.Rasqal.World.Rasqal_World_Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
      with Import, Convention=>C;
 
    function New_Query (World: RDF.Rasqal.World.Rasqal_World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type is

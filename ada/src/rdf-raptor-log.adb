@@ -65,7 +65,7 @@ package body RDF.Raptor.Log is
       Log_Message(Ptr_To_Obj(Data).all, Msg);
    end;
 
-   function raptor_world_set_log_handler(World: RDF.Raptor.World.Handle_Type; Data: chars_ptr; Handler: Log_Handler_Procedure_Type) return int
+   function raptor_world_set_log_handler(World: RDF.Raptor.World.Raptor_World_Handle_Type; Data: chars_ptr; Handler: Log_Handler_Procedure_Type) return int
      with Import, Convention=>C;
 
    procedure Set_Log_Handler(World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Handler: access Log_Handler) is
