@@ -30,12 +30,12 @@ package body RDF.Rasqal.Query_Results is
 
    function rasqal_query_results_get_binding_value (Results: Query_Results_Handle;
                                                     Offset: int)
-                                                    return RDF.Rasqal.Literal.Literal_Handle
+                                                    return Literal_Handle
      with Import, Convention=>C;
 
    function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize;
                                Offset: Natural)
-                               return RDF.Rasqal.Literal.Literal_Type_Without_Finalize is
+                               return Literal_Type_Without_Finalize is
       use RDF.Rasqal.Literal;
    begin
       return From_Non_Null_Handle(rasqal_query_results_get_binding_value(Get_Handle(Results), int(Offset)));
@@ -43,12 +43,12 @@ package body RDF.Rasqal.Query_Results is
 
    function rasqal_query_results_get_binding_value_by_name (Results: Query_Results_Handle;
                                                             Name: char_array)
-                                                            return RDF.Rasqal.Literal.Literal_Handle
+                                                            return Literal_Handle
      with Import, Convention=>C;
 
    function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize;
                                        Name: String)
-                                       return RDF.Rasqal.Literal.Literal_Type_Without_Finalize is
+                                       return Literal_Type_Without_Finalize is
       use RDF.Rasqal.Literal;
    begin
       return From_Non_Null_Handle(rasqal_query_results_get_binding_value_by_name(Get_Handle(Results), To_C(Name)));
@@ -326,12 +326,12 @@ package body RDF.Rasqal.Query_Results is
 
    function Get_Binding_Value (Position: Cursor;
                                Offset: Natural)
-                               return RDF.Rasqal.Literal.Literal_Type_Without_Finalize is
+                               return Literal_Type_Without_Finalize is
       (Get_Binding_Value(Position.all, Offset));
 
    function Get_Binding_Value_By_Name (Position: Cursor;
                                        Name: String)
-                                       return RDF.Rasqal.Literal.Literal_Type_Without_Finalize is
+                                       return Literal_Type_Without_Finalize is
       (Get_Binding_Value_By_Name(Position.all, Name));
 
    function Create_Triples_Iterator (Results: Query_Results_Type_Without_Finalize'Class)

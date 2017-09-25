@@ -5,7 +5,7 @@ with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
-with RDF.Rasqal.Literal;
+with RDF.Rasqal.Literal; use RDF.Rasqal.Literal;
 limited with RDF.Rasqal.Query;
 
 package RDF.Rasqal.Query_Results is
@@ -35,11 +35,11 @@ package RDF.Rasqal.Query_Results is
 
    not overriding function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize;
                                               Offset: Natural)
-                                              return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
+                                              return Literal_Type_Without_Finalize;
 
    not overriding function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize;
                                                       Name: String)
-                                                      return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
+                                                      return Literal_Type_Without_Finalize;
 
    -- rasqal_query_results_get_bindings() deliberately not implemented.
    -- Use iterators instead.
@@ -126,11 +126,11 @@ package RDF.Rasqal.Query_Results is
 
    not overriding function Get_Binding_Value (Position: Cursor;
                                               Offset: Natural)
-                                              return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
+                                              return Literal_Type_Without_Finalize;
 
    not overriding function Get_Binding_Value_By_Name (Position: Cursor;
                                                       Name: String)
-                                                      return RDF.Rasqal.Literal.Literal_Type_Without_Finalize;
+                                                      return Literal_Type_Without_Finalize;
 
    type Triples_Iterator is new Base_Iterators.Forward_Iterator with private;
 
