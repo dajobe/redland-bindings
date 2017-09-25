@@ -171,10 +171,10 @@ package body RDF.Rasqal.Query_Results is
       end if;
    end;
 
-   function rasqal_query_results_read (Stream: RDF.Raptor.IOStream.Handle_Type;
+   function rasqal_query_results_read (Stream: RDF.Raptor.IOStream.IOStream_Handle_Type;
                                        Results: Query_Results_Handle_Type;
                                        Name, Mime_Type: chars_ptr;
-                                       Format_URI, Base_URI: RDF.Raptor.URI.Handle_Type)
+                                       Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle_Type)
                                        return Int
      with Import, Convention=>C;
 
@@ -199,10 +199,10 @@ package body RDF.Rasqal.Query_Results is
       end if;
    end;
 
-   function rasqal_query_results_write (Stream: RDF.Raptor.IOStream.Handle_Type;
+   function rasqal_query_results_write (Stream: RDF.Raptor.IOStream.IOStream_Handle_Type;
                                         Results: Query_Results_Handle_Type;
                                         Name, Mime_Type: Chars_Ptr;
-                                        Format_URI, Base_URI: RDF.Raptor.URI.Handle_Type)
+                                        Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle_Type)
                                         return Int
      with Import, Convention=>C;
 

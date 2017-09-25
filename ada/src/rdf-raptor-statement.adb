@@ -115,7 +115,7 @@ package body RDF.Raptor.Statement is
       end if;
    end;
 
-   function raptor_statement_ntriples_write (Statement: Statement_Handle; Stream: RDF.Raptor.IOStream.Handle_Type; Write_Graph_Term: int)
+   function raptor_statement_ntriples_write (Statement: Statement_Handle; Stream: RDF.Raptor.IOStream.IOStream_Handle_Type; Write_Graph_Term: int)
                                                return Int
       with Import, Convention=>C;
 

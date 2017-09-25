@@ -112,7 +112,7 @@ package RDF.Raptor.Options is
 
    type Option_Description_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 
-   subtype Handle_Type is Handled_Record.Access_Type;
+   subtype Option_Description_Handle_Type is Handled_Record.Access_Type;
 
    function Get_Domain (Description: Option_Description_Type_Without_Finalize) return Domain_Type;
 
@@ -133,7 +133,7 @@ package RDF.Raptor.Options is
 
    type Option_Description_Type is new Option_Description_Type_Without_Finalize with null record;
 
-   overriding procedure Finalize_Handle (Object: Option_Description_Type; Handle: Handle_Type);
+   overriding procedure Finalize_Handle (Object: Option_Description_Type; Handle: Option_Description_Handle_Type);
 
    not overriding function Get_Option_Description (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Natural)
                                                    return Option_Description_Type;
@@ -153,7 +153,7 @@ private
          Name: chars_ptr;
          Len: size_t;
          Label: chars_ptr;
-         URI: RDF.Raptor.URI.Handle_Type;
+         URI: RDF.Raptor.URI.URI_Handle_Type;
       end record
       with Convention => C;
 

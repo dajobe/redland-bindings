@@ -78,11 +78,11 @@ package body RDF.Rasqal.Data_Graph is
    end;
 
    function rasqal_new_data_graph_from_iostream (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
-                                                 IOStream: RDF.Raptor.IOStream.Handle_Type;
-                                                 Base_URI, Name_URI: RDF.Raptor.URI.Handle_Type;
+                                                 IOStream: RDF.Raptor.IOStream.IOStream_Handle_Type;
+                                                 Base_URI, Name_URI: RDF.Raptor.URI.URI_Handle_Type;
                                                  Flags: unsigned;
                                                  Format_Type, Format_Name: chars_ptr;
-                                                 Format_URI: RDF.Raptor.URI.Handle_Type)
+                                                 Format_URI: RDF.Raptor.URI.URI_Handle_Type)
                                                  return Data_Graph_Handle
      with Import, Convention=>C;
 
@@ -114,10 +114,10 @@ package body RDF.Rasqal.Data_Graph is
    end;
 
    function rasqal_new_data_graph_from_uri (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
-                                            URI, Name_URI: RDF.Raptor.URI.Handle_Type;
+                                            URI, Name_URI: RDF.Raptor.URI.URI_Handle_Type;
                                             Flags: Unsigned;
                                             Format_Type, Format_Name: Chars_Ptr;
-                                            Format_URI: RDF.Raptor.URI.Handle_Type)
+                                            Format_URI: RDF.Raptor.URI.URI_Handle_Type)
                                             return Data_Graph_Handle
      with Import, Convention=>C;
 

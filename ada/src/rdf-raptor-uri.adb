@@ -12,7 +12,7 @@ package body RDF.Raptor.URI is
    function raptor_new_uri_from_counted_string (World_Handle: RDF.Raptor.World.Raptor_World_Handle_Type;
                                                   URI_String: char_array;
                                                   Length    : size_t)
-                                                  return Handle_Type
+                                                  return URI_Handle_Type
      with Import, Convention=>C;
 
    function From_String(World: Raptor_World_Type_Without_Finalize'Class; Arg: URI_String) return URI_Type is
@@ -22,9 +22,9 @@ package body RDF.Raptor.URI is
    end;
 
    function raptor_new_uri_from_uri_local_name (World_Handle: RDF.Raptor.World.Raptor_World_Handle_Type;
-                                                  URI: Handle_Type;
+                                                  URI: URI_Handle_Type;
                                                   Local_Name: char_array)
-                                                  return Handle_Type
+                                                  return URI_Handle_Type
      with Import, Convention=>C;
 
    function From_URI_With_Local_Name(World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type is
@@ -33,9 +33,9 @@ package body RDF.Raptor.URI is
    end;
 
    function raptor_new_uri_from_uri_or_file_string(World_Handle: RDF.Raptor.World.Raptor_World_Handle_Type;
-                                                     Base_URI: Handle_Type;
+                                                     Base_URI: URI_Handle_Type;
                                                      uri_or_file_string: char_array)
-                                                     return Handle_Type
+                                                     return URI_Handle_Type
      with Import, Convention=>C;
 
    function From_URI_Or_File_String(World   : Raptor_World_Type_Without_Finalize'Class;
@@ -47,10 +47,10 @@ package body RDF.Raptor.URI is
    end;
 
    function raptor_new_uri_relative_to_base_counted(World_Handle: RDF.Raptor.World.Raptor_World_Handle_Type;
-                                                      Base_URI: Handle_Type;
+                                                      Base_URI: URI_Handle_Type;
                                                       uri_string: char_array;
                                                       uri_len: size_t)
-                                                     return Handle_Type
+                                                     return URI_Handle_Type
      with Import, Convention=>C;
 
    function From_URI_Relative_To_Base(World: Raptor_World_Type_Without_Finalize'Class;
@@ -65,9 +65,9 @@ package body RDF.Raptor.URI is
    end;
 
    function raptor_new_uri_from_id(World_Handle: RDF.Raptor.World.Raptor_World_Handle_Type;
-                                     Base_URI: Handle_Type;
+                                     Base_URI: URI_Handle_Type;
                                      ID: char_array)
-                                     return Handle_Type
+                                     return URI_Handle_Type
      with Import, Convention=>C;
 
    function From_ID(World: Raptor_World_Type_Without_Finalize'Class; Base_URI: URI_Type_Without_Finalize'Class; ID: String) return URI_Type is
@@ -77,7 +77,7 @@ package body RDF.Raptor.URI is
 
    function raptor_new_uri_for_rdf_concept (World_Handle: RDF.Raptor.World.Raptor_World_Handle_Type;
                                               Name: char_array)
-                                              return Handle_Type
+                                              return URI_Handle_Type
      with Import, Convention=>C;
 
    function From_RDF_Concept(World: Raptor_World_Type_Without_Finalize'Class; Name: String) return URI_Type is
@@ -85,8 +85,8 @@ package body RDF.Raptor.URI is
       return From_Non_Null_Handle (raptor_new_uri_for_rdf_concept (Get_Handle (World), To_C (Name)));
    end;
 
-   function raptor_new_uri_for_xmlbase (Old_URI: Handle_Type)
-                                          return Handle_Type
+   function raptor_new_uri_for_xmlbase (Old_URI: URI_Handle_Type)
+                                          return URI_Handle_Type
      with Import, Convention=>C;
 
    function For_XML_Base(Old_URI: URI_Type_Without_Finalize'Class) return URI_Type is
@@ -94,8 +94,8 @@ package body RDF.Raptor.URI is
       return From_Non_Null_Handle (raptor_new_uri_for_xmlbase (Get_Handle(Old_URI)));
    end;
 
-   function raptor_new_uri_for_retrieval (Old_URI: Handle_Type)
-                                          return Handle_Type
+   function raptor_new_uri_for_retrieval (Old_URI: URI_Handle_Type)
+                                          return URI_Handle_Type
      with Import, Convention=>C;
 
    function For_Retrieval(Old_URI: URI_Type_Without_Finalize'Class) return URI_Type is
@@ -103,7 +103,7 @@ package body RDF.Raptor.URI is
       return From_Non_Null_Handle (raptor_new_uri_for_retrieval (Get_Handle(Old_URI)));
    end;
 
-   function raptor_uri_compare (URI1, URI2: Handle_Type) return int
+   function raptor_uri_compare (URI1, URI2: URI_Handle_Type) return int
      with Import, Convention=>C;
 
    function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result is
@@ -111,7 +111,7 @@ package body RDF.Raptor.URI is
       return RDF.Auxiliary.Comparison_Result (raptor_uri_compare (Get_Handle(URI1), Get_Handle(URI2)));
    end;
 
-   function raptor_uri_equals (URI1, URI2: Handle_Type) return int
+   function raptor_uri_equals (URI1, URI2: URI_Handle_Type) return int
      with Import, Convention=>C;
 
    function Equals(URI1, URI2: URI_Type_Without_Finalize) return Boolean is
@@ -119,7 +119,7 @@ package body RDF.Raptor.URI is
       return raptor_uri_equals (Get_Handle(URI1), Get_Handle(URI2)) /= 0;
    end;
 
-   function raptor_uri_as_string(URI: Handle_Type)
+   function raptor_uri_as_string(URI: URI_Handle_Type)
                                    return chars_ptr
      with Import, Convention=>C;
 
@@ -131,7 +131,7 @@ package body RDF.Raptor.URI is
       return URI_String(String'(Value(raptor_uri_as_string(Get_Handle(URI)))));
    end;
 
-   function raptor_uri_to_relative_uri_string (Base_URI, Reference_URI: Handle_Type) return chars_ptr
+   function raptor_uri_to_relative_uri_string (Base_URI, Reference_URI: URI_Handle_Type) return chars_ptr
       with Import, Convention=>C;
 
    function To_Relative_URI_String(Base_URI, Reference_URI: URI_Type_Without_Finalize) return URI_String is
@@ -213,7 +213,7 @@ package body RDF.Raptor.URI is
       end;
    end;
 
-   function raptor_uri_print (URI: Handle_Type; File: RDF.Auxiliary.C_File_Access) return int
+   function raptor_uri_print (URI: URI_Handle_Type; File: RDF.Auxiliary.C_File_Access) return int
       with Import, Convention=>C;
 
    procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
@@ -223,7 +223,7 @@ package body RDF.Raptor.URI is
       end if;
    end;
 
-   function raptor_uri_get_world (URI: Handle_Type) return RDF.Raptor.World.Raptor_World_Handle_Type
+   function raptor_uri_get_world (URI: URI_Handle_Type) return RDF.Raptor.World.Raptor_World_Handle_Type
       with Import, Convention=>C;
 
    function Get_World (URI: URI_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
@@ -231,7 +231,7 @@ package body RDF.Raptor.URI is
       return From_Handle (raptor_uri_get_world (Get_Handle (URI)));
    end;
 
-   function raptor_uri_write (URI: Handle_Type; Stream: RDF.Raptor.IOStream.Handle_Type) return int
+   function raptor_uri_write (URI: URI_Handle_Type; Stream: RDF.Raptor.IOStream.IOStream_Handle_Type) return int
       with Import, Convention=>C;
 
    procedure Write (URI: URI_Type_Without_Finalize; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class) is
@@ -242,7 +242,7 @@ package body RDF.Raptor.URI is
       end if;
    end;
 
-   function raptor_uri_file_exists (URI: Handle_Type) return int
+   function raptor_uri_file_exists (URI: URI_Handle_Type) return int
       with Import, Convention=>C;
 
    function URI_File_Exists (URI: URI_Type_Without_Finalize) return Boolean is
@@ -266,16 +266,16 @@ package body RDF.Raptor.URI is
       return Result /= 0;
    end;
 
-   procedure raptor_free_uri (Handle: Handle_Type)
+   procedure raptor_free_uri (Handle: URI_Handle_Type)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle(Object: URI_Type; Handle: Handle_Type) is
+   procedure Finalize_Handle(Object: URI_Type; Handle: URI_Handle_Type) is
    begin
       raptor_free_uri (Handle);
    end;
 
-   function raptor_uri_copy (Handle: Handle_Type)
-                               return Handle_Type
+   function raptor_uri_copy (Handle: URI_Handle_Type)
+                               return URI_Handle_Type
      with Import, Convention=>C;
 
    procedure Adjust(Object: in out URI_Type) is
@@ -295,9 +295,9 @@ package body RDF.Raptor.URI is
    function Get_Fragment (Pair: Filename_And_Fragment) return String is (Pair.Fragment);
 
    function raptor_uri_to_turtle_string(Handle: RDF.Raptor.World.Raptor_World_Handle_Type;
-                                          URI: Handle_Type;
+                                          URI: URI_Handle_Type;
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
-                                          Base_URI: Handle_Type)
+                                          Base_URI: URI_Handle_Type)
                                           return Chars_Ptr
      with Import, Convention=>C;
 
@@ -323,10 +323,10 @@ package body RDF.Raptor.URI is
    end;
 
    function raptor_uri_turtle_write(Handle: RDF.Raptor.World.Raptor_World_Handle_Type;
-                                      Stream: RDF.Raptor.IOStream.Handle_Type;
-                                      URI: Handle_Type;
+                                      Stream: RDF.Raptor.IOStream.IOStream_Handle_Type;
+                                      URI: URI_Handle_Type;
                                       Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
-                                      Base_URI: Handle_Type)
+                                      Base_URI: URI_Handle_Type)
                                       return Int
      with Import, Convention=>C;
 

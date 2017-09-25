@@ -7,9 +7,9 @@ with RDF.Raptor.Options;
 
 package body RDF.Raptor.Serializer is
 
-   function raptor_serializer_start_to_iostream (Serializer: Handle_Type;
-                                                 URI: RDF.Raptor.URI.Handle_Type;
-                                                 Iostream: RDF.Raptor.Iostream.Handle_Type)
+   function raptor_serializer_start_to_iostream (Serializer: Serializer_Handle_Type;
+                                                 URI: RDF.Raptor.URI.URI_Handle_Type;
+                                                 Iostream: RDF.Raptor.Iostream.IOStream_Handle_Type)
                                                  return int
       with Import, Convention=>C;
 
@@ -23,7 +23,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_start_to_filename (Serializer: Handle_Type; Filename: char_array) return int
+   function raptor_serializer_start_to_filename (Serializer: Serializer_Handle_Type; Filename: char_array) return int
       with Import, Convention=>C;
 
    procedure Start_To_Filename (Serializer: Serializer_Type_Without_Finalize; Filename: String) is
@@ -33,7 +33,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_start_to_file_handle (Serializer: Handle_Type; URI: RDF.Raptor.URI.Handle_Type;  FH: RDF.Auxiliary.C_File_Access)
+   function raptor_serializer_start_to_file_handle (Serializer: Serializer_Handle_Type; URI: RDF.Raptor.URI.URI_Handle_Type;  FH: RDF.Auxiliary.C_File_Access)
                                                     return int
       with Import, Convention=>C;
 
@@ -46,7 +46,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_set_namespace (Serializer: Handle_Type; URI: RDF.Raptor.URI.Handle_Type; Prefix: chars_ptr) return int
+   function raptor_serializer_set_namespace (Serializer: Serializer_Handle_Type; URI: RDF.Raptor.URI.URI_Handle_Type; Prefix: chars_ptr) return int
       with Import, Convention=>C;
 
    procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
@@ -67,7 +67,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_set_namespace_from_namespace (Serializer: Handle_Type; Namespace: RDF.Raptor.Namespace.Namespace_Handle_Type)
+   function raptor_serializer_set_namespace_from_namespace (Serializer: Serializer_Handle_Type; Namespace: RDF.Raptor.Namespace.Namespace_Handle_Type)
                                                             return int
       with Import, Convention=>C;
 
@@ -80,7 +80,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_serialize_statement (Serializer: Handle_Type; Statement: RDF.Raptor.Statement.Statement_Handle)
+   function raptor_serializer_serialize_statement (Serializer: Serializer_Handle_Type; Statement: RDF.Raptor.Statement.Statement_Handle)
                                                    return int
       with Import, Convention=>C;
 
@@ -93,7 +93,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_serialize_end (Serializer: Handle_Type) return int
+   function raptor_serializer_serialize_end (Serializer: Serializer_Handle_Type) return int
       with Import, Convention=>C;
 
    procedure Serialize_End (Serializer: Serializer_Type_Without_Finalize) is
@@ -103,7 +103,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_serialize_flush (Serializer: Handle_Type) return int
+   function raptor_serializer_serialize_flush (Serializer: Serializer_Handle_Type) return int
       with Import, Convention=>C;
 
    procedure Serialize_Flush (Serializer: Serializer_Type_Without_Finalize) is
@@ -113,7 +113,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_get_description (Serializer: Handle_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type
+   function raptor_serializer_get_description (Serializer: Serializer_Handle_Type) return RDF.Raptor.Syntaxes.Syntax_Description_Type
       with Import, Convention=>C;
 
    function Get_Description (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type is
@@ -121,7 +121,7 @@ package body RDF.Raptor.Serializer is
       return raptor_serializer_get_description(Get_Handle(Serializer));
    end;
 
-   function raptor_serializer_get_iostream (Serializer: Handle_Type) return RDF.Raptor.Iostream.Handle_Type
+   function raptor_serializer_get_iostream (Serializer: Serializer_Handle_Type) return RDF.Raptor.Iostream.IOStream_Handle_Type
       with Import, Convention=>C;
 
    function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Iostream.Stream_Type_Without_Finalize is
@@ -130,7 +130,7 @@ package body RDF.Raptor.Serializer is
       return From_Handle(raptor_serializer_get_iostream(Get_Handle(Serializer)));
    end;
 
-   function raptor_serializer_get_locator (Serializer: Handle_Type) return RDF.Raptor.Log.Locator_Handle_Type
+   function raptor_serializer_get_locator (Serializer: Serializer_Handle_Type) return RDF.Raptor.Log.Locator_Handle_Type
       with Import, Convention=>C;
 
    function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type is
@@ -139,7 +139,7 @@ package body RDF.Raptor.Serializer is
       return From_Handle(raptor_serializer_get_locator(Get_Handle(Serializer)));
    end;
 
-   function raptor_parser_set_option (Serializer: Handle_Type; Option: RDF.Raptor.Options.Raptor_Option; Value: chars_ptr; Int_Value: int) return int
+   function raptor_parser_set_option (Serializer: Serializer_Handle_Type; Option: RDF.Raptor.Options.Raptor_Option; Value: chars_ptr; Int_Value: int) return int
       with Import, Convention=>C;
 
    procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: String) is
@@ -160,7 +160,7 @@ package body RDF.Raptor.Serializer is
    type String_P_Type is access all chars_ptr with Convention=>C;
    type Int_P_Type is access all int with Convention=>C;
 
-   function raptor_parser_get_option (Serializer: Handle_Type;
+   function raptor_parser_get_option (Serializer: Serializer_Handle_Type;
                                       Option: RDF.Raptor.Options.Raptor_Option;
                                       String_P: String_P_Type;
                                       Integer_P: Int_P_Type) return int
@@ -184,7 +184,7 @@ package body RDF.Raptor.Serializer is
       return Value(V); -- do NOT free it
    end;
 
-   function raptor_serializer_get_world (Serializer: Handle_Type) return RDF.Raptor.World.Raptor_World_Handle_Type
+   function raptor_serializer_get_world (Serializer: Serializer_Handle_Type) return RDF.Raptor.World.Raptor_World_Handle_Type
       with Import, Convention=>C;
 
    function Get_World (Serializer: Serializer_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
@@ -192,7 +192,7 @@ package body RDF.Raptor.Serializer is
       return From_Handle(raptor_serializer_get_world(Get_Handle(Serializer)));
    end;
 
-   function raptor_new_serializer (World: RDF.Raptor.World.Raptor_World_Handle_Type; Syntax_Name: chars_ptr) return Handle_Type
+   function raptor_new_serializer (World: RDF.Raptor.World.Raptor_World_Handle_Type; Syntax_Name: chars_ptr) return Serializer_Handle_Type
       with Import, Convention=>C;
 
    function New_Serializer (World: Raptor_World_Type) return Serializer_Type is
@@ -206,10 +206,10 @@ package body RDF.Raptor.Serializer is
       return From_Non_Null_Handle(raptor_new_serializer(Get_Handle(World), To_Chars_Ptr(V'Unchecked_Access)));
    end;
 
-   procedure raptor_free_serializer (Serializer: Handle_Type)
+   procedure raptor_free_serializer (Serializer: Serializer_Handle_Type)
       with Import, Convention=>C;
 
-   procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Handle_Type) is
+   procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Serializer_Handle_Type) is
    begin
       raptor_free_serializer(Handle);
    end;

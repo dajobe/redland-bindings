@@ -8,13 +8,13 @@ with RDF.Rasqal.Memory;
 
 package body RDF.Rasqal.World is
 
-   function rasqal_new_world return Handle_Type
+   function rasqal_new_world return Rasqal_World_Handle_Type
      with Import, Convention=>C;
 
-   procedure rasqal_world_open(Handle: Handle_Type)
+   procedure rasqal_world_open(Handle: Rasqal_World_Handle_Type)
      with Import, Convention=>C;
 
-   function Default_Handle(Object: Rasqal_World_Type_Without_Finalize) return Handle_Type is
+   function Default_Handle(Object: Rasqal_World_Type_Without_Finalize) return Rasqal_World_Handle_Type is
    begin
       return rasqal_new_world;
    end;
@@ -63,7 +63,7 @@ package body RDF.Rasqal.World is
    procedure rasqal_free_world (World: Rasqal_World_Handle_Type)
       with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Rasqal_World_Type; Handle: Handle_Type) is
+   procedure Finalize_Handle (Object: Rasqal_World_Type; Handle: Rasqal_World_Handle_Type) is
    begin
       rasqal_free_world(Handle);
    end;
@@ -81,7 +81,7 @@ package body RDF.Rasqal.World is
    end;
 
    function rasqal_world_guess_query_results_format_name (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
-                                                          URI: RDF.Raptor.URI.Handle_Type;
+                                                          URI: RDF.Raptor.URI.URI_Handle_Type;
                                                           Mime_Type: chars_ptr;
                                                           Buffer: chars_ptr;
                                                           Len: size_t;

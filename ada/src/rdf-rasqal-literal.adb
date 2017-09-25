@@ -113,7 +113,7 @@ package body RDF.Rasqal.Literal is
    function rasqal_new_string_literal (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
                                        Value: chars_ptr;
                                        Language: chars_ptr;
-                                       Datatype: RDF.Raptor.URI.Handle_Type;
+                                       Datatype: RDF.Raptor.URI.URI_Handle_Type;
                                        Datatype_Qname: chars_ptr)
                                        return Literal_Handle_Type
      with Import, Convention=>C;
@@ -163,7 +163,7 @@ package body RDF.Rasqal.Literal is
    end;
 
    function rasqal_new_uri_literal (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
-                                    Value: RDF.Raptor.URI.Handle_Type)
+                                    Value: RDF.Raptor.URI.URI_Handle_Type)
                                     return Literal_Handle_Type
      with Import, Convention=>C;
 
@@ -238,7 +238,7 @@ package body RDF.Rasqal.Literal is
       return Sign(rasqal_literal_compare(Get_Handle(Left), Get_Handle(Right),  Compare_Flags'Pos(Flags), Error'Unchecked_Access));
    end;
 
-   function rasqal_literal_datatype (Literal: Literal_Handle_Type) return RDF.Raptor.URI.Handle_Type
+   function rasqal_literal_datatype (Literal: Literal_Handle_Type) return RDF.Raptor.URI.URI_Handle_Type
      with Import, Convention=>C;
 
    function Get_Datatype (Literal: Literal_Type_Without_Finalize)

@@ -106,7 +106,7 @@ private
       record
          str: chars_ptr;
          Len: unsigned;
-         Datatype: RDF.Raptor.URI.Handle_Type;
+         Datatype: RDF.Raptor.URI.URI_Handle_Type;
          Language: chars_ptr;
          Language_Len: unsigned;
       end record
@@ -123,7 +123,7 @@ private
       record
          case Kind is
             when Unknown => null;
-            when URI     => URI: RDF.Raptor.URI.Handle_Type;
+            when URI     => URI: RDF.Raptor.URI.URI_Handle_Type;
             when Literal => Literal: Term_Literal_Value;
             when Blank   => Blank: Term_Blank_Value;
          end case;

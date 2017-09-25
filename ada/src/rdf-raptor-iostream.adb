@@ -7,7 +7,7 @@ with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.IOStream is
 
-   function raptor_new_iostream_from_sink (World: RDF.Raptor.World.Raptor_World_Handle_Type) return Handle_Type
+   function raptor_new_iostream_from_sink (World: RDF.Raptor.World.Raptor_World_Handle_Type) return IOStream_Handle_Type
      with Import, Convention=>C;
 
    function From_Sink (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize is
@@ -15,7 +15,7 @@ package body RDF.Raptor.IOStream is
       return From_Non_Null_Handle( raptor_new_iostream_from_sink (Get_Handle (World)) );
    end;
 
-   function raptor_new_iostream_from_filename (World: RDF.Raptor.World.Raptor_World_Handle_Type; filename: char_array) return Handle_Type
+   function raptor_new_iostream_from_filename (World: RDF.Raptor.World.Raptor_World_Handle_Type; filename: char_array) return IOStream_Handle_Type
      with Import, Convention=>C;
 
    function From_Filename (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize is
@@ -23,7 +23,7 @@ package body RDF.Raptor.IOStream is
       return From_Non_Null_Handle( raptor_new_iostream_from_filename (Get_Handle (World), To_C (Filename)) );
    end;
 
-   function raptor_new_iostream_from_file_handle (World: RDF.Raptor.World.Raptor_World_Handle_Type; File: RDF.Auxiliary.C_File_Access) return Handle_Type
+   function raptor_new_iostream_from_file_handle (World: RDF.Raptor.World.Raptor_World_Handle_Type; File: RDF.Auxiliary.C_File_Access) return IOStream_Handle_Type
      with Import, Convention=>C;
 
    function From_File_Handle (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
@@ -32,7 +32,7 @@ package body RDF.Raptor.IOStream is
       return From_Non_Null_Handle( raptor_new_iostream_from_file_handle (Get_Handle (World), File) );
    end;
 
-   function raptor_new_iostream_to_sink (World: RDF.Raptor.World.Raptor_World_Handle_Type) return Handle_Type
+   function raptor_new_iostream_to_sink (World: RDF.Raptor.World.Raptor_World_Handle_Type) return IOStream_Handle_Type
      with Import, Convention=>C;
 
    function To_Sink (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize is
@@ -40,7 +40,7 @@ package body RDF.Raptor.IOStream is
       return From_Non_Null_Handle( raptor_new_iostream_to_sink (Get_Handle (World)) );
    end;
 
-   function raptor_new_iostream_to_filename (World: RDF.Raptor.World.Raptor_World_Handle_Type; filename: char_array) return Handle_Type
+   function raptor_new_iostream_to_filename (World: RDF.Raptor.World.Raptor_World_Handle_Type; filename: char_array) return IOStream_Handle_Type
      with Import, Convention=>C;
 
    function To_Filename (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize is
@@ -58,7 +58,7 @@ package body RDF.Raptor.IOStream is
 --        return From_Handle (Handle);
 --     end;
 
-   function raptor_new_iostream_to_file_handle (World: RDF.Raptor.World.Raptor_World_Handle_Type; File: RDF.Auxiliary.C_File_Access) return Handle_Type
+   function raptor_new_iostream_to_file_handle (World: RDF.Raptor.World.Raptor_World_Handle_Type; File: RDF.Auxiliary.C_File_Access) return IOStream_Handle_Type
      with Import, Convention=>C;
 
    function To_File_Handle (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
@@ -67,7 +67,7 @@ package body RDF.Raptor.IOStream is
       return From_Non_Null_Handle( raptor_new_iostream_to_file_handle (Get_Handle (World), File) );
    end;
 
-   function raptor_iostream_hexadecimal_write (value: unsigned; width: int; Stream: Handle_Type) return int
+   function raptor_iostream_hexadecimal_write (value: unsigned; width: int; Stream: IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    procedure Hexadecimal_Write (Value: Natural; Width: Natural; Stream: Base_Stream_Type) is
@@ -77,7 +77,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_iostream_read_bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Handle_Type) return size_t
+   function raptor_iostream_read_bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: IOStream_Handle_Type) return size_t
      with Import, Convention=>C;
 
    function Read_Bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Base_Stream_Type) return size_t is
@@ -89,7 +89,7 @@ package body RDF.Raptor.IOStream is
       return Result;
    end;
 
-   function raptor_iostream_read_eof (Stream: Handle_Type) return int
+   function raptor_iostream_read_eof (Stream: IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    function Read_Eof (Stream: Base_Stream_Type) return Boolean is
@@ -97,7 +97,7 @@ package body RDF.Raptor.IOStream is
       return raptor_iostream_read_eof (Get_Handle (Stream)) /= 0;
    end;
 
-   function raptor_iostream_tell (Stream: Handle_Type) return unsigned_long
+   function raptor_iostream_tell (Stream: IOStream_Handle_Type) return unsigned_long
      with Import, Convention=>C;
 
    function Tell (Stream: Base_Stream_Type) return unsigned_long is
@@ -105,7 +105,7 @@ package body RDF.Raptor.IOStream is
       return raptor_iostream_tell (Get_Handle (Stream));
    end;
 
-   function raptor_iostream_counted_string_write (str: char_array; len: size_t; stream: Handle_Type) return unsigned_long
+   function raptor_iostream_counted_string_write (str: char_array; len: size_t; Stream: IOStream_Handle_Type) return unsigned_long
      with Import, Convention=>C;
 
    procedure Write (Value: String; Stream: Base_Stream_Type) is
@@ -115,7 +115,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_iostream_decimal_write (Value: int; stream: Handle_Type) return int
+   function raptor_iostream_decimal_write (Value: int; Stream: IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    procedure Decimal_Write (Value: int; Stream: Base_Stream_Type) is
@@ -125,7 +125,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_iostream_write_byte (byte: int; stream: Handle_Type) return int
+   function raptor_iostream_write_byte (byte: int; Stream: IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    procedure Write (Value: char; Stream: Base_Stream_Type) is
@@ -135,7 +135,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_iostream_write_bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Handle_Type) return int
+   function raptor_iostream_write_bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    function Write_Bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Base_Stream_Type) return int is
@@ -147,7 +147,7 @@ package body RDF.Raptor.IOStream is
       return Result;
    end;
 
-   function raptor_iostream_write_end (Stream: Handle_Type) return int
+   function raptor_iostream_write_end (Stream: IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    procedure Write_End (Stream: Base_Stream_Type) is
@@ -157,7 +157,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_bnodeid_ntriples_write (bnode: char_array; len: size_t; Stream: Handle_Type) return int
+   function raptor_bnodeid_ntriples_write (bnode: char_array; len: size_t; Stream: IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    procedure Bnodeid_Ntriples_Write (bnode: String; Stream: Base_Stream_Type) is
@@ -167,7 +167,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_string_escaped_write (Str: char_array; Len: size_t; Delim: char; Flags: unsigned; Stream: Handle_Type) return int
+   function raptor_string_escaped_write (Str: char_array; Len: size_t; Delim: char; Flags: unsigned; Stream: IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    procedure Escaped_Write (Value: String; Delim: Character; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type) is
@@ -177,7 +177,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_string_ntriples_write (Str: char_array; Len: size_t; Delim: char; Stream: Handle_Type) return int
+   function raptor_string_ntriples_write (Str: char_array; Len: size_t; Delim: char; Stream: IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    procedure Ntriples_Write (Value: String; Delim: Character; Stream: Base_Stream_Type) is
@@ -187,7 +187,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_string_python_write (ptr: char_array; len: size_t; delim: char; mode: Python_Write_Mode; Stream: Handle_Type) return int
+   function raptor_string_python_write (ptr: char_array; len: size_t; delim: char; mode: Python_Write_Mode; Stream: IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    procedure String_Python_Write (Value: String; Delim: Character; Mode: Python_Write_Mode; Stream: Base_Stream_Type) is
@@ -197,10 +197,10 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   procedure raptor_free_iostream(Handle: Handle_Type)
+   procedure raptor_free_iostream(Handle: IOStream_Handle_Type)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle(Object: Stream_Type; Handle: Handle_Type) is
+   procedure Finalize_Handle(Object: Stream_Type; Handle: IOStream_Handle_Type) is
    begin
       raptor_free_iostream (Handle);
    end;
@@ -308,11 +308,11 @@ package body RDF.Raptor.IOStream is
    function raptor_new_iostream_from_handler(world: RDF.Raptor.World.Raptor_World_Handle_Type;
                                                user_data: chars_ptr;
                                                Dispatcher: access constant Dispatcher_Type)
-                                               return Handle_Type
+                                               return IOStream_Handle_Type
      with Import, Convention=>C;
 
    function Open (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return User_Defined_Stream_Type is
-      Handle: Handle_Type;
+      Handle: IOStream_Handle_Type;
       use all type RDF.Raptor.World.Raptor_World_Type;
    begin
       return Stream: User_Defined_Stream_Type do
@@ -354,19 +354,19 @@ package body RDF.Raptor.IOStream is
       return False;
    end;
 
-   function From_Handle(Handle: Handle_Type) return Stream_From_String is
+   function From_Handle(Handle: IOStream_Handle_Type) return Stream_From_String is
    begin
       raise Program_Error;
       return (Base_Stream_Type'(From_Handle (Handle)) with Length=>0, Str=>"");
    end;
 
-   function From_Non_Null_Handle(Handle: Handle_Type) return Stream_From_String is
+   function From_Non_Null_Handle(Handle: IOStream_Handle_Type) return Stream_From_String is
    begin
       raise Program_Error;
       return (Base_Stream_Type'(From_Handle (Handle)) with Length=>0, Str=>"");
    end;
 
-   function raptor_new_iostream_from_string (World: RDF.Raptor.World.Raptor_World_Handle_Type; str: char_array; length: size_t) return Handle_Type
+   function raptor_new_iostream_from_string (World: RDF.Raptor.World.Raptor_World_Handle_Type; str: char_array; length: size_t) return IOStream_Handle_Type
      with Import, Convention=>C;
 
    function Open_From_String (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Value: String) return Stream_From_String is
@@ -377,13 +377,13 @@ package body RDF.Raptor.IOStream is
       end return;
    end;
 
-   function From_Handle(Handle: Handle_Type) return Stream_To_String is
+   function From_Handle(Handle: IOStream_Handle_Type) return Stream_To_String is
    begin
       raise Program_Error;
       return (Base_Stream_Type'(From_Handle (Handle)) with Str=>Ada.Strings.Unbounded.Null_Unbounded_String);
    end;
 
-   function From_Non_Null_Handle(Handle: Handle_Type) return Stream_To_String is
+   function From_Non_Null_Handle(Handle: IOStream_Handle_Type) return Stream_To_String is
    begin
       raise Program_Error;
       return (Base_Stream_Type'(From_Handle (Handle)) with Str=>Ada.Strings.Unbounded.Null_Unbounded_String);
@@ -405,7 +405,7 @@ package body RDF.Raptor.IOStream is
       return int(Size*Count);
    end;
 
-   function raptor_term_escaped_write (Term: RDF.Raptor.Term.Term_Handle; Flags: unsigned; Stream: RDF.Raptor.IOStream.Handle_Type) return int
+   function raptor_term_escaped_write (Term: RDF.Raptor.Term.Term_Handle; Flags: unsigned; Stream: RDF.Raptor.IOStream.IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    procedure Term_Escaped_Write (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type) is
@@ -417,7 +417,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_uri_escaped_write (URI, Base_URI: RDF.Raptor.URI.Handle_Type; Flags: unsigned; Stream: RDF.Raptor.IOStream.Handle_Type) return int
+   function raptor_uri_escaped_write (URI, Base_URI: RDF.Raptor.URI.URI_Handle_Type; Flags: unsigned; Stream: RDF.Raptor.IOStream.IOStream_Handle_Type) return int
      with Import, Convention=>C;
 
    procedure URI_Escaped_Write (URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type) is

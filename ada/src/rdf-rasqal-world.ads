@@ -12,7 +12,7 @@ package RDF.Rasqal.World is
 
    subtype Rasqal_World_Handle_Type is Handled_Record.Access_Type;
 
-   overriding function Default_Handle(Object: Rasqal_World_Type_Without_Finalize) return Handle_Type;
+   overriding function Default_Handle(Object: Rasqal_World_Type_Without_Finalize) return Rasqal_World_Handle_Type;
 
    not overriding procedure Open(Object: Rasqal_World_Type_Without_Finalize);
 

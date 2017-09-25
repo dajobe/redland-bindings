@@ -71,7 +71,7 @@ package body RDF.Raptor.WWW is
       raptor_www_set_connection_timeout(Get_Handle(WWW), int(Timeout));
    end;
 
-   function raptor_www_get_final_uri (WWW: WWW_Handle_Type) return RDF.Raptor.URI.Handle_Type
+   function raptor_www_get_final_uri (WWW: WWW_Handle_Type) return RDF.Raptor.URI.URI_Handle_Type
       with Import, Convention=>C;
 
    function Get_Final_URI (WWW: WWW_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type is
@@ -81,7 +81,7 @@ package body RDF.Raptor.WWW is
       return From_Handle(raptor_www_get_final_uri(Get_Handle(WWW)));
    end;
 
-   function raptor_www_fetch (WWW: WWW_Handle_Type; URI: RDF.Raptor.URI.Handle_Type) return int
+   function raptor_www_fetch (WWW: WWW_Handle_Type; URI: RDF.Raptor.URI.URI_Handle_Type) return int
       with Import, Convention=>C;
 
    procedure Fetch (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
@@ -98,7 +98,7 @@ package body RDF.Raptor.WWW is
    function Convert2 is new Ada.Unchecked_Conversion(String_P_Type, String_P_Type2);
 
    function raptor_www_fetch_to_string (WWW: WWW_Handle_Type;
-                                        URI: RDF.Raptor.URI.Handle_Type;
+                                        URI: RDF.Raptor.URI.URI_Handle_Type;
                                         String_P: access chars_ptr;
                                         Length_P: access size_t;
                                         Malloc_Handler: chars_ptr) return int
@@ -198,10 +198,10 @@ package body RDF.Raptor.WWW is
    type raptor_www_content_type_handler is access procedure (WWW: WWW_Handle_Type; User_data: chars_ptr; Content_Type: chars_ptr)
       with Convention=>C;
 
-   type raptor_www_uri_filter_func is access function (User_data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type) return int
+   type raptor_www_uri_filter_func is access function (User_data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle_Type) return int
       with Convention=>C;
 
-   type raptor_www_final_uri_handler is access procedure (WWW: WWW_Handle_Type; User_data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type)
+   type raptor_www_final_uri_handler is access procedure (WWW: WWW_Handle_Type; User_data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle_Type)
       with Convention=>C;
 
    procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: RDF.Auxiliary.C_Pointers.Pointer; Size, Nmemb: size_t)
@@ -210,10 +210,10 @@ package body RDF.Raptor.WWW is
    procedure Content_Type_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Content_Type: chars_ptr)
       with Convention=>C;
 
-   function URI_Filter_Impl (User_data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type) return int
+   function URI_Filter_Impl (User_data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle_Type) return int
       with Convention=>C;
 
-   procedure Final_URI_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type)
+   procedure Final_URI_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle_Type)
       with Convention=>C;
 
    procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle_Type; User_data: chars_ptr; Ptr: RDF.Auxiliary.C_Pointers.Pointer; Size, Nmemb: size_t) is
@@ -230,7 +230,7 @@ package body RDF.Raptor.WWW is
                            Value(Content_Type));
    end;
 
-   function URI_Filter_Impl (User_data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type) return int is
+   function URI_Filter_Impl (User_data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle_Type) return int is
       use RDF.Raptor.URI;
       Result: constant Boolean := URI_Filter(Ptr_To_Obj(User_Data).all,
                                              RDF.Raptor.URI.URI_Type_Without_Finalize'(From_Non_Null_Handle(URI)));
@@ -238,7 +238,7 @@ package body RDF.Raptor.WWW is
       return (if Result then 0 else 1);
    end;
 
-   procedure Final_URI_Handler_Impl (WWW: WWW_Handle_Type; User_Data: chars_ptr; URI: RDF.Raptor.URI.Handle_Type) is
+   procedure Final_URI_Handler_Impl (WWW: WWW_Handle_Type; User_Data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle_Type) is
       use RDF.Raptor.URI;
    begin
       Final_URI_Handler(--WWW_Type_Without_Finalize'(From_Handle(WWW)), -- ignored

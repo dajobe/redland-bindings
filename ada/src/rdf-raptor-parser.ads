@@ -17,7 +17,7 @@ package RDF.Raptor.Parser is
 
    package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype Handle_Type is Handled_Record.Access_Type;
+   subtype Parser_Handle_Type is Handled_Record.Access_Type;
 
    type Parser_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 
@@ -103,7 +103,7 @@ package RDF.Raptor.Parser is
    -- you may wish use Parser_Type defined below.
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
 
-   overriding procedure Finalize_Handle (Object: Parser_Type; Handle: Handle_Type);
+   overriding procedure Finalize_Handle (Object: Parser_Type; Handle: Parser_Handle_Type);
 
    not overriding function Create (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Name: String) return Parser_Type;
 

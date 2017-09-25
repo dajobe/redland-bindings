@@ -20,7 +20,7 @@ package RDF.Raptor.IOStream is
 
    package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype Handle_Type is Handled_Record.Access_Type;
+   subtype IOStream_Handle_Type is Handled_Record.Access_Type;
 
    type Base_Stream_Type is new Handled_Record.Base_Object with null record;
 
@@ -118,7 +118,7 @@ package RDF.Raptor.IOStream is
 
    type Stream_Type is new Stream_Type_Without_Finalize with null record;
 
-   overriding procedure Finalize_Handle(Object: Stream_Type; Handle: Handle_Type);
+   overriding procedure Finalize_Handle(Object: Stream_Type; Handle: IOStream_Handle_Type);
 
    -- essentially abstract
    type User_Defined_Stream_Type is new Base_Stream_Type with private;
@@ -146,8 +146,8 @@ package RDF.Raptor.IOStream is
    type Stream_From_String(<>) is new Base_Stream_Type with private;
 
    -- Hack to prevent compilation error:
-   overriding function From_Handle(Handle: Handle_Type) return Stream_From_String;
-   overriding function From_Non_Null_Handle(Handle: Handle_Type) return Stream_From_String;
+   overriding function From_Handle(Handle: IOStream_Handle_Type) return Stream_From_String;
+   overriding function From_Non_Null_Handle(Handle: IOStream_Handle_Type) return Stream_From_String;
 
    not overriding function Open_From_String (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Value: String) return Stream_From_String;
 
@@ -173,8 +173,8 @@ private
       end record;
 
    -- Hack to prevent compilation error:
-   overriding function From_Handle(Handle: Handle_Type) return Stream_To_String;
-   overriding function From_Non_Null_Handle(Handle: Handle_Type) return Stream_To_String;
+   overriding function From_Handle(Handle: IOStream_Handle_Type) return Stream_To_String;
+   overriding function From_Non_Null_Handle(Handle: IOStream_Handle_Type) return Stream_To_String;
 
    overriding function Do_Write_Bytes (Stream: in out Stream_To_String; Data: chars_ptr; Size, Count: size_t) return int;
 

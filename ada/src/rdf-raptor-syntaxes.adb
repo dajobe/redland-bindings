@@ -66,7 +66,7 @@ package body RDF.Raptor.Syntaxes is
    end;
 
    function raptor_world_guess_parser_name (World: RDF.Raptor.World.Raptor_World_Handle_Type;
-                                              URI: RDF.Raptor.URI.Handle_Type;
+                                              URI: RDF.Raptor.URI.URI_Handle_Type;
                                               MIME_Type: Char_Array;
                                               Buffer: Char_Array;
                                               Len: Size_T;
