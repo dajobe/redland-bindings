@@ -7,12 +7,12 @@ with RDF.Rasqal.Memory;
 
 package body RDF.Rasqal.Query is
 
-   function rasqal_query_add_data_graph (Query: Query_Handle; Graph: RDF.Rasqal.Data_Graph.Data_Graph_Handle)
+   function rasqal_query_add_data_graph (Query: Query_Handle; Graph: Data_Graph_Handle)
                                          return int
      with Import, Convention=>C;
 
    procedure Add_Data_Graph (Query: Query_Type_Without_Finalize;
-                             Graph: RDF.Rasqal.Data_Graph.Data_Graph_Type_Without_Finalize'Class) is
+                             Graph: Data_Graph_Type_Without_Finalize'Class) is
       use RDF.Rasqal.Data_Graph;
    begin
       if rasqal_query_add_data_graph (Get_Handle(Query), Get_Handle(Graph)) /= 0 then
@@ -27,10 +27,10 @@ package body RDF.Rasqal.Query is
       end loop;
    end;
 
-   function rasqal_query_execute (Query: Query_Handle) return RDF.Rasqal.Query_Results.Query_Results_Handle
+   function rasqal_query_execute (Query: Query_Handle) return Query_Results_Handle
      with Import, Convention=>C;
 
-   function Execute (Query: Query_Type_Without_Finalize) return RDF.Rasqal.Query_Results.Query_Results_Type is
+   function Execute (Query: Query_Type_Without_Finalize) return Query_Results_Type is
       use RDF.Rasqal.Query_Results;
    begin
       return From_Non_Null_Handle(rasqal_query_execute(Get_Handle(Query)));
@@ -135,12 +135,12 @@ package body RDF.Rasqal.Query is
    end;
 
    function rasqal_query_set_feature (Query: Query_Handle;
-                                      Feature: RDF.Rasqal.Features.Feature_Type;
+                                      Feature: Feature_Type;
                                       Value: int)
                                       return int
      with Import, Convention=>C;
 
-   procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: Natural) is
+   procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type; Value: Natural) is
    begin
       if rasqal_query_set_feature(Get_Handle(Query), Feature, int(Value)) /= 0  then
          raise RDF.Auxiliary.RDF_Exception;
@@ -148,22 +148,22 @@ package body RDF.Rasqal.Query is
    end;
 
    function rasqal_query_set_feature_string (Query: Query_Handle;
-                                             Feature: RDF.Rasqal.Features.Feature_Type;
+                                             Feature: Feature_Type;
                                              Value: char_array)
                                              return int
      with Import, Convention=>C;
 
-   procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: String) is
+   procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type; Value: String) is
    begin
       if rasqal_query_set_feature_string(Get_Handle(Query), Feature, To_C(Value)) /= 0  then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
 
-   function rasqal_query_get_feature (Query: Query_Handle; Feature: RDF.Rasqal.Features.Feature_Type) return int
+   function rasqal_query_get_feature (Query: Query_Handle; Feature: Feature_Type) return int
      with Import, Convention=>C;
 
-   function Get_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type) return Natural is
+   function Get_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type) return Natural is
       Result: constant int := rasqal_query_get_feature(Get_Handle(Query), Feature);
    begin
       if Result < 0 then
@@ -172,10 +172,10 @@ package body RDF.Rasqal.Query is
       return Natural(Result);
    end;
 
-   function rasqal_query_get_feature_string (Query: Query_Handle; Feature: RDF.Rasqal.Features.Feature_Type) return chars_ptr
+   function rasqal_query_get_feature_string (Query: Query_Handle; Feature: Feature_Type) return chars_ptr
      with Import, Convention=>C;
 
-   function Get_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type) return String is
+   function Get_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type) return String is
       Result: constant chars_ptr := rasqal_query_get_feature_string(Get_Handle(Query), Feature);
    begin
       if Result = Null_Ptr then
@@ -189,10 +189,10 @@ package body RDF.Rasqal.Query is
       end;
    end;
 
-   function rasqal_query_get_result_type (Query: Query_Handle) return RDF.Rasqal.Query_Results.Query_Results_Type_Enum
+   function rasqal_query_get_result_type (Query: Query_Handle) return Query_Results_Type_Enum
      with Import, Convention=>C;
 
-   function Get_Result_Type (Query: Query_Type_Without_Finalize) return RDF.Rasqal.Query_Results.Query_Results_Type_Enum is
+   function Get_Result_Type (Query: Query_Type_Without_Finalize) return Query_Results_Type_Enum is
       use RDF.Rasqal.Query_Results;
       Result: constant Query_Results_Type_Enum :=
         rasqal_query_get_result_type(Get_Handle(Query));

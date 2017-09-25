@@ -3,9 +3,9 @@ with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
-with RDF.Rasqal.Features;
-with RDF.Rasqal.Data_Graph;
-with RDF.Rasqal.Query_Results;
+with RDF.Rasqal.Features; use RDF.Rasqal.Features;
+with RDF.Rasqal.Data_Graph; use RDF.Rasqal.Data_Graph;
+with RDF.Rasqal.Query_Results; use RDF.Rasqal.Query_Results;
 
 package RDF.Rasqal.Query is
 
@@ -18,13 +18,13 @@ package RDF.Rasqal.Query is
    type Query_Type_Without_Finalize is new Query_Handled_Record.Base_Object with null record;
 
    not overriding procedure Add_Data_Graph (Query: Query_Type_Without_Finalize;
-                                            Graph: RDF.Rasqal.Data_Graph.Data_Graph_Type_Without_Finalize'Class);
+                                            Graph: Data_Graph_Type_Without_Finalize'Class);
 
-   type Data_Graphs_Array is array(Integer range <>) of RDF.Rasqal.Data_Graph.Data_Graph_Type_Without_Finalize;
+   type Data_Graphs_Array is array(Integer range <>) of Data_Graph_Type_Without_Finalize;
 
    not overriding procedure Add_Data_Graphs (Query: Query_Type_Without_Finalize; Graphs: Data_Graphs_Array);
 
-   not overriding function Execute (Query: Query_Type_Without_Finalize) return RDF.Rasqal.Query_Results.Query_Results_Type;
+   not overriding function Execute (Query: Query_Type_Without_Finalize) return Query_Results_Type;
 
    not overriding procedure Prepare (Query: Query_Type_Without_Finalize;
                                      Query_String: String;
@@ -46,18 +46,18 @@ package RDF.Rasqal.Query is
    not overriding function Escape_String (Query: Query_Type_Without_Finalize; Str: String)
                                           return String;
 
-   not overriding procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: Natural);
-   not overriding procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type; Value: String);
+   not overriding procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type; Value: Natural);
+   not overriding procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type; Value: String);
 
-   not overriding function Get_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type)
+   not overriding function Get_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type)
                                         return Natural;
 
    -- Currently it raises an exception, if there is no such feature. Is it correct?
-   not overriding function Get_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type)
+   not overriding function Get_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type)
                                         return String;
 
    not overriding function Get_Result_Type (Query: Query_Type_Without_Finalize)
-                                            return RDF.Rasqal.Query_Results.Query_Results_Type_Enum;
+                                            return Query_Results_Type_Enum;
 
    -- Deliberately not implemented
 --     function Get_Update_Operation;

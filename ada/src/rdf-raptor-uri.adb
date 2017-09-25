@@ -296,14 +296,14 @@ package body RDF.Raptor.URI is
 
    function raptor_uri_to_turtle_string(Handle: Raptor_World_Handle;
                                           URI: URI_Handle;
-                                          Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
+                                          Stack: Namespace_Stack_Handle;
                                           Base_URI: URI_Handle)
                                           return Chars_Ptr
      with Import, Convention=>C;
 
    function To_Turtle_String (World: Raptor_World_Type_Without_Finalize'Class;
                               URI: URI_Type_Without_Finalize;
-                              Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
+                              Stack: Namespace_Stack_Type_Without_Finalize'Class;
                               Base_URI: URI_Type_Without_Finalize)
                               return String is
       C_Str: constant chars_ptr := raptor_uri_to_turtle_string(Get_Handle(World),
@@ -325,7 +325,7 @@ package body RDF.Raptor.URI is
    function raptor_uri_turtle_write(Handle: Raptor_World_Handle;
                                       Stream: IOStream_Handle;
                                       URI: URI_Handle;
-                                      Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
+                                      Stack: Namespace_Stack_Handle;
                                       Base_URI: URI_Handle)
                                       return Int
      with Import, Convention=>C;
@@ -333,7 +333,7 @@ package body RDF.Raptor.URI is
    procedure Turtle_Write (World: Raptor_World_Type_Without_Finalize'Class;
                            Stream: Base_Stream_Type'Class;
                            URI: URI_Type_Without_Finalize;
-                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
+                           Stack: Namespace_Stack_Type_Without_Finalize'Class;
                            Base_URI: URI_Type_Without_Finalize) is
    begin
       if raptor_uri_turtle_write(Get_Handle(World),

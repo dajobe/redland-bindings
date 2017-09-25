@@ -31,7 +31,7 @@ package body Count_Test is
                                               Graph_Stream,
                                               Base_URI => From_String(Get_Raptor(World), "http://example.org")
                                               --                                                 Name_URI => URI_Type'(From_Handle(null)),
-                                              --                                                 Flags => RDF.Rasqal.Data_Graph.Background,
+                                              --                                                 Flags => Background,
                                               --                                                 Format_Type => Empty_Holder,
                                               --                                                 Format_Name => Empty_Holder,
                                               --                                                 Format_URI => URI_Type'(From_Handle(null))

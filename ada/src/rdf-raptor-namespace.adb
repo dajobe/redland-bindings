@@ -9,14 +9,14 @@ with RDF.Raptor.Memory;
 
 package body RDF.Raptor.Namespace is
 
-   function raptor_new_namespace (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
+   function raptor_new_namespace (Stack: Namespace_Stack_Handle;
                                     Prefix: Char_Array;
                                     NS: Char_Array;
                                     Depth: Int)
                                     return Namespace_Handle
      with Import, Convention=>C;
 
-   function New_Namespace (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
+   function New_Namespace (Stack: Namespace_Stack_Type_Without_Finalize'Class;
                            Prefix: String;
                            NS: String;
                            Depth: Natural)
@@ -25,13 +25,13 @@ package body RDF.Raptor.Namespace is
       return From_Non_Null_Handle( raptor_new_namespace(Get_Handle(Stack), To_C(Prefix, Append_Nul=>True), To_C(NS, Append_Nul=>True), Int(Depth)) );
    end;
 
-   function raptor_new_namespace_from_uri (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
+   function raptor_new_namespace_from_uri (Stack: Namespace_Stack_Handle;
                                              Prefix: char_array;
                                              URI: URI_Handle)
                                              return Namespace_Handle
      with Import, Convention=>C;
 
-   function From_URI (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
+   function From_URI (Stack: Namespace_Stack_Type_Without_Finalize'Class;
                       Prefix: String;
                       URI: URI_Type_Without_Finalize'Class;
                       Depth: Integer)

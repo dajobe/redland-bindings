@@ -198,13 +198,13 @@ package body RDF.Raptor.Term is
    end;
 
    function raptor_term_to_turtle_string (Term: Term_Handle;
-                                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
+                                            Stack: Namespace_Stack_Handle;
                                             Base_URI: URI_Handle)
                                             return chars_ptr
       with Import, Convention=>C;
 
    function To_Turtle_String(Term: Term_Type_Without_Finalize;
-                             Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
+                             Stack: Namespace_Stack_Type'Class;
                              Base_URI: URI_Type'Class)
                              return String is
       Str: constant chars_ptr := raptor_term_to_turtle_string(Get_Handle(Term), Get_Handle(Stack), Get_Handle(Base_URI));
@@ -222,14 +222,14 @@ package body RDF.Raptor.Term is
 
    function raptor_term_turtle_write (Stream: IOStream_Handle;
                                         Term: Term_Handle;
-                                        Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
+                                        Stack: Namespace_Stack_Handle;
                                         Base_URI: URI_Handle)
                                         return Int
       with Import, Convention=>C;
 
    procedure Turtle_Write (Stream: Base_Stream_Type'Class;
                            Term: Term_Type_Without_Finalize;
-                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
+                           Stack: Namespace_Stack_Type'Class;
                            Base_URI: URI_Type'Class) is
       use RDF.Raptor.IOStream;
    begin
