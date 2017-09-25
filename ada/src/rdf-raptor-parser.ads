@@ -10,7 +10,7 @@ with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log; use RDF.Raptor.Log;
-with RDF.Raptor.WWW;
+with RDF.Raptor.WWW; use RDF.Raptor.WWW;
 with RDF.Raptor.Options;
 
 package RDF.Raptor.Parser is
@@ -79,7 +79,7 @@ package RDF.Raptor.Parser is
    not overriding procedure Parse_URI_With_Connection (Parser: Parser_Type_Without_Finalize;
                                                        URI: URI_Type_Without_Finalize;
                                                        Base_URI: URI_Type_Without_Finalize := From_Handle(null);
-                                                       Connection: RDF.Raptor.WWW.Connection_Type := null);
+                                                       Connection: Connection_Type := null);
 
    not overriding function Get_Graph (Parser: Parser_Type_Without_Finalize) return URI_Type;
 

@@ -156,14 +156,14 @@ package body RDF.Raptor.Parser is
 
    function raptor_parser_parse_uri_with_connection (Parser: Parser_Handle;
                                                      URI, Base_URI: URI_Handle;
-                                                     Connection: RDF.Raptor.WWW.Connection_Type)
+                                                     Connection: Connection_Type)
                                                      return int
       with Import, Convention=>C;
 
    procedure Parse_URI_With_Connection (Parser: Parser_Type_Without_Finalize;
                                         URI: URI_Type_Without_Finalize;
                                         Base_URI: URI_Type_Without_Finalize := From_Handle(null);
-                                        Connection: RDF.Raptor.WWW.Connection_Type := null) is
+                                        Connection: Connection_Type := null) is
    begin
       if raptor_parser_parse_uri_with_connection(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI), Connection) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
