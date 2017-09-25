@@ -3,7 +3,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.World;
+with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Auxiliary;
 
 package RDF.Raptor.Log is
@@ -69,7 +69,7 @@ package RDF.Raptor.Log is
    -- hack: 'Class to avoid "operation can be dispatching in only one type"
    not overriding procedure Log_Message(Handler: Log_Handler; Info: Log_Message_Type'Class) is abstract;
 
-   not overriding procedure Set_Log_Handler(World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Handler: access Log_Handler);
+   not overriding procedure Set_Log_Handler(World: Raptor_World_Type_Without_Finalize'Class; Handler: access Log_Handler);
 
    not overriding function Get_Label (Level: Log_Level_Type) return String;
    function Get_Label (Level: Domain_Type) return String;

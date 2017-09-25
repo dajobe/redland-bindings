@@ -8,7 +8,7 @@ with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.Term is
 
-   function Get_World (Term: Term_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize is
+   function Get_World (Term: Term_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
    begin
       return From_Handle( Get_Handle(Term).World );
    end;
@@ -60,7 +60,7 @@ package body RDF.Raptor.Term is
       return Value(Blank.Str, size_t(Blank.Len));
    end;
 
-   function raptor_new_term_from_counted_blank (World: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_term_from_counted_blank (World: Raptor_World_Handle;
                                                   Blank: chars_ptr;
                                                   Length: size_t)
                                                   return Term_Handle
@@ -86,7 +86,7 @@ package body RDF.Raptor.Term is
       return From_Non_Null_Handle(raptor_new_term_from_counted_blank(Get_Handle(World), C_String(ID_N), Length(ID_N)));
    end;
 
-   function raptor_new_term_from_counted_literal (World: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_term_from_counted_literal (World: Raptor_World_Handle;
                                                     Literal: chars_ptr;
                                                     Literal_Len: size_t;
                                                     Datatype: URI_Handle;
@@ -113,7 +113,7 @@ package body RDF.Raptor.Term is
                                                                           Length(Language_N)) );
    end;
 
-   function raptor_new_term_from_counted_uri_string (World: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_term_from_counted_uri_string (World: Raptor_World_Handle;
                                                        Str: char_array;
                                                        Str_Len: size_t)
                                                        return Term_Handle
@@ -124,7 +124,7 @@ package body RDF.Raptor.Term is
       return From_Non_Null_Handle( raptor_new_term_from_counted_uri_string(Get_Handle(World), My_To_C_Without_Nul(String(URI)), URI'Length) );
    end;
 
-   function raptor_new_term_from_uri (World: RDF.Raptor.World.Raptor_World_Handle; URI: URI_Handle) return Term_Handle
+   function raptor_new_term_from_uri (World: Raptor_World_Handle; URI: URI_Handle) return Term_Handle
       with Import, Convention=>C;
 
    function From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class)
@@ -133,7 +133,7 @@ package body RDF.Raptor.Term is
       return From_Non_Null_Handle( raptor_new_term_from_uri(Get_Handle(World), Get_Handle(URI)) );
    end;
 
-   function raptor_new_term_from_counted_string (World: RDF.Raptor.World.Raptor_World_Handle; Str: char_array; Len: size_t) return Term_Handle
+   function raptor_new_term_from_counted_string (World: Raptor_World_Handle; Str: char_array; Len: size_t) return Term_Handle
       with Import, Convention=>C;
 
    function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String) return Term_Type is

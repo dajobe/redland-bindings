@@ -3,7 +3,7 @@ with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
-with RDF.Raptor.World;
+with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
@@ -96,7 +96,7 @@ package RDF.Raptor.Parser is
 
    not overriding function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String;
 
-   not overriding function Get_World (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize;
+   not overriding function Get_World (Parser: Parser_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
@@ -105,9 +105,9 @@ package RDF.Raptor.Parser is
 
    overriding procedure Finalize_Handle (Object: Parser_Type; Handle: Parser_Handle);
 
-   not overriding function Create (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Name: String) return Parser_Type;
+   not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Parser_Type;
 
-   not overriding function Create_From_Content (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class;
+   not overriding function Create_From_Content (World: Raptor_World_Type_Without_Finalize'Class;
                                                 URI: URI_Type_Without_Finalize'Class;
                                                 Mime_Type: String_Holders.Holder;
                                                 Buffer: String_Holders.Holder;

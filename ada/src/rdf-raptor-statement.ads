@@ -1,6 +1,6 @@
 with Interfaces.C;
 with RDF.Auxiliary.Handled_Record;
-with RDF.Raptor.World;
+with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Term; use RDF.Raptor.Term;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 
@@ -16,7 +16,7 @@ package RDF.Raptor.Statement is
 
    subtype Statement_Handle is Statement_Handled_Record.Access_Type;
 
-   not overriding function Get_World (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize;
+   not overriding function Get_World (Statement: Statement_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
 
    not overriding function Get_Subject   (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize;
    not overriding function Get_Predicate (Statement: Statement_Type_Without_Finalize) return RDF.Raptor.Term.Term_Type_Without_Finalize;
@@ -50,20 +50,20 @@ package RDF.Raptor.Statement is
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
 --     function No_Auto_Finalization (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class) return Boolean;
 
---     not overriding function New_Statement (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize) return Statement_Type;
+--     not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize) return Statement_Type;
 
    -- Makes copies of the terms (unlike the C library)
-   not overriding function New_Statement (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class;
+   not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class;
                                           Subject, Predicate, Object: RDF.Raptor.Term.Term_Type_Without_Finalize'Class;
                                           Graph: RDF.Raptor.Term.Term_Type_Without_Finalize'Class := RDF.Raptor.Term.Term_Type_Without_Finalize'(From_Handle(null)))
                                           return Statement_Type;
 
    -- Does not make copies of the terms (as the C library)
-   not overriding function New_Statement_Without_Copies (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class;
+   not overriding function New_Statement_Without_Copies (World: Raptor_World_Type_Without_Finalize'Class;
                                                          Subject, Predicate, Object: RDF.Raptor.Term.Term_Type_Without_Finalize;
                                                          Graph: RDF.Raptor.Term.Term_Type_Without_Finalize := From_Handle(null))
                                                          return Statement_Type;
---     not overriding function New_Statement (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class;
+--     not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class;
 --                                            Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Type_Without_Finalize'Class)
 --                                            return Statement_Type
 --        with Pre => No_Auto_Finalization(Subject) and No_Auto_Finalization(Predicate) and No_Auto_Finalization(Object) and No_Auto_Finalization(Graph);
@@ -72,7 +72,7 @@ private
 
    type Statement_Record is
       record
-         world: RDF.Raptor.World.Raptor_World_Handle;
+         world: Raptor_World_Handle;
          usage: Interfaces.C.int;
          Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Handle;
       end record

@@ -34,7 +34,7 @@ package RDF.Raptor.Term is
                       -- unused type 3
                       Blank   => 4);
 
-   not overriding function Get_World (Term: Term_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize;
+   not overriding function Get_World (Term: Term_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
 
    not overriding function Get_Kind (Term: Term_Type_Without_Finalize) return Term_Kind;
 
@@ -132,7 +132,7 @@ private
 
    type Term_Record is
       record
-         World: RDF.Raptor.World.Raptor_World_Handle;
+         World: Raptor_World_Handle;
          Usage: Interfaces.C.int; -- intentionally not accessible from our Ada bindings
          Kind: Term_Kind;
          Value: Term_Value;

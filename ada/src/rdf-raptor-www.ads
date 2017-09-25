@@ -1,5 +1,5 @@
 with RDF.Auxiliary.Limited_Handled_Record;
-with RDF.Raptor.World;
+with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 
 package RDF.Raptor.WWW is
@@ -63,9 +63,9 @@ package RDF.Raptor.WWW is
 
    type WWW_Type is new WWW_Type_Without_Finalize with null record;
 
-   not overriding function New_WWW (World: RDF.Raptor.World.Raptor_World_Type'Class) return WWW_Type;
+   not overriding function New_WWW (World: Raptor_World_Type'Class) return WWW_Type;
 
-   not overriding function New_WWW (World: RDF.Raptor.World.Raptor_World_Type'Class; Connection: Connection_Type) return WWW_Type;
+   not overriding function New_WWW (World: Raptor_World_Type'Class; Connection: Connection_Type) return WWW_Type;
 
    overriding procedure Finalize_Handle (Object: WWW_Type; Handle: WWW_Handle);
 

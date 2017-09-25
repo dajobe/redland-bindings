@@ -16,15 +16,15 @@ package body RDF.Raptor.Parser is
 
 --     use all type Parser_Type;
 
-   function raptor_new_parser (World: RDF.Raptor.World.Raptor_World_Handle; Name: char_array) return Parser_Handle
+   function raptor_new_parser (World: Raptor_World_Handle; Name: char_array) return Parser_Handle
      with Import, Convention=>C;
 
-   function Create (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Name: String) return Parser_Type is
+   function Create (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Parser_Type is
    begin
       return From_Non_Null_Handle( raptor_new_parser(Get_Handle(World), To_C(Name, Append_Nul=>True)) );
    end;
 
-   function raptor_new_parser_for_content (World: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_parser_for_content (World: Raptor_World_Handle;
                                              URI: URI_Handle;
                                              MIME_Type: chars_ptr;
                                              Buffer: chars_ptr;
@@ -32,7 +32,7 @@ package body RDF.Raptor.Parser is
                                              Identifier: chars_ptr) return Parser_Handle
      with Import, Convention=>C;
 
-   function Create_From_Content (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class;
+   function Create_From_Content (World: Raptor_World_Type_Without_Finalize'Class;
                                  URI: URI_Type_Without_Finalize'Class;
                                  Mime_Type : String_Holders.Holder;
                                  Buffer    : String_Holders.Holder;
@@ -250,10 +250,10 @@ package body RDF.Raptor.Parser is
       return S;
    end;
 
-   function raptor_parser_get_world (Parser: Parser_Handle) return RDF.Raptor.World.Raptor_World_Handle
+   function raptor_parser_get_world (Parser: Parser_Handle) return Raptor_World_Handle
       with Import, Convention=>C;
 
-   function Get_World (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize is
+   function Get_World (Parser: Parser_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
    begin
       return From_Handle(raptor_parser_get_world(Get_Handle(Parser)));
    end;

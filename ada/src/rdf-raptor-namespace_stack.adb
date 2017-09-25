@@ -68,12 +68,12 @@ package body RDF.Raptor.Namespace_Stack is
       raptor_namespaces_start_namespace(Get_Handle(Stack), Get_Handle(Namespace));
    end;
 
-   function raptor_new_namespaces (World: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_namespaces (World: Raptor_World_Handle;
                                      Defaults: Defaults_Type)
                                      return Namespace_Stack_Handle
      with Import, Convention=>C;
 
-   function Create_Stack (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Defaults: Defaults_Type)
+   function Create_Stack (World: Raptor_World_Type_Without_Finalize'Class; Defaults: Defaults_Type)
                           return Namespace_Stack_Type is
    begin
       return From_Non_Null_Handle( raptor_new_namespaces(Get_Handle(World), Defaults) );

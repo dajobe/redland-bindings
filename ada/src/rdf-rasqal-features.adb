@@ -2,7 +2,7 @@ with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
-with RDF.Raptor.World;
+with RDF.Raptor.World; use RDF.Raptor.World;
 
 package body RDF.Rasqal.Features is
 
@@ -33,7 +33,7 @@ package body RDF.Rasqal.Features is
    type String_P_Type is access all chars_ptr with Convention=>C;
    type URI_P_Type is access all URI_Handle with Convention=>C;
 
-   function rasqal_features_enumerate (World: RDF.Raptor.World.Raptor_World_Handle;
+   function rasqal_features_enumerate (World: Raptor_World_Handle;
                                        Feature: Feature_Type;
                                        Name: String_P_Type;
                                        URI: URI_P_Type;

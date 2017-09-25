@@ -66,8 +66,8 @@ package RDF.Raptor.Syntaxes is
    overriding function First (Object: Serializer_Description_Iterator) return Serializer_Description_Cursor;
    overriding function Next (Object: Serializer_Description_Iterator; Position: Serializer_Description_Cursor) return Serializer_Description_Cursor;
 
-   not overriding function Create_Parser_Descriptions_Iterator     (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return Parser_Description_Iterator;
-   not overriding function Create_Serializer_Descriptions_Iterator (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class) return Serializer_Description_Iterator;
+   not overriding function Create_Parser_Descriptions_Iterator     (World: Raptor_World_Type_Without_Finalize'Class) return Parser_Description_Iterator;
+   not overriding function Create_Serializer_Descriptions_Iterator (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Description_Iterator;
 
    function Is_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean;
 
@@ -104,34 +104,34 @@ private
 
    type Parser_Description_Cursor is
       record
-         World: RDF.Raptor.World.Raptor_World_Handle;
+         World: Raptor_World_Handle;
          Position: Natural;
       end record;
 
    type Serializer_Description_Cursor is
       record
-         World: RDF.Raptor.World.Raptor_World_Handle;
+         World: Raptor_World_Handle;
          Position: Natural;
       end record;
 
    type Parser_Description_Iterator is new Parser_Description_Iterators.Forward_Iterator with
       record
-         World: RDF.Raptor.World.Raptor_World_Handle;
+         World: Raptor_World_Handle;
       end record;
 
    type Serializer_Description_Iterator is new Serializer_Description_Iterators.Forward_Iterator with
       record
-         World: RDF.Raptor.World.Raptor_World_Handle;
+         World: Raptor_World_Handle;
       end record;
 
    type Parser_Descriptions_List is tagged
       record
-         World: RDF.Raptor.World.Raptor_World_Handle;
+         World: Raptor_World_Handle;
       end record;
 
    type Serializer_Descriptions_List is tagged
       record
-         World: RDF.Raptor.World.Raptor_World_Handle;
+         World: Raptor_World_Handle;
       end record;
 
 end RDF.Raptor.Syntaxes;

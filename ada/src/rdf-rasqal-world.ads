@@ -1,6 +1,6 @@
 with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
-with RDF.Raptor.World;
+with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Log;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 
@@ -22,9 +22,9 @@ package RDF.Rasqal.World is
 
    not overriding procedure Set_Warning_Level (World: Rasqal_World_Type_Without_Finalize; Level: Warning_Level);
 
-   not overriding function Get_Raptor (World: Rasqal_World_Type_Without_Finalize) return RDF.Raptor.World.Raptor_World_Type_Without_Finalize;
+   not overriding function Get_Raptor (World: Rasqal_World_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
 
-   not overriding procedure Set_Raptor (World: Rasqal_World_Type_Without_Finalize; Raptor_World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize);
+   not overriding procedure Set_Raptor (World: Rasqal_World_Type_Without_Finalize; Raptor_World: Raptor_World_Type_Without_Finalize);
 
    not overriding function Guess_Query_Results_Format_Name (World: Rasqal_World_Type_Without_Finalize;
                                                             URI: URI_Type_Without_Finalize'Class;

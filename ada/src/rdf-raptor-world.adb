@@ -12,7 +12,7 @@ package body RDF.Raptor.World is
    procedure raptor_world_open(Handle: Raptor_World_Handle)
      with Import, Convention=>C;
 
-   procedure raptor_world_set_flag(Handle: Raptor_World_Handle; Flag: Flag_Type; Value: Interfaces.C.int)
+   procedure raptor_world_set_flag(Handle: Raptor_World_Handle; Flag: Raptor_Flag_Type; Value: Interfaces.C.int)
      with Import, Convention=>C;
 
    function Default_Handle(Object: Raptor_World_Type_Without_Finalize) return Raptor_World_Handle is
@@ -31,7 +31,7 @@ package body RDF.Raptor.World is
       Open(Object);
    end;
 
-   procedure Set_Flag(Object: Raptor_World_Type_Without_Finalize; Flag: Flag_Type; Value: Boolean) is
+   procedure Set_Flag(Object: Raptor_World_Type_Without_Finalize; Flag: Raptor_Flag_Type; Value: Boolean) is
    begin
       raptor_world_set_flag(Get_Handle(Object), Flag, (if Value then 1 else 0));
    end;

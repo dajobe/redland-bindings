@@ -9,7 +9,7 @@ with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.URI is
 
-   function raptor_new_uri_from_counted_string (World_Handle: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_uri_from_counted_string (World_Handle: Raptor_World_Handle;
                                                   URI_String: char_array;
                                                   Length    : size_t)
                                                   return URI_Handle
@@ -21,7 +21,7 @@ package body RDF.Raptor.URI is
       return From_Non_Null_Handle (raptor_new_uri_from_counted_string (Get_Handle (World), My_To_C_Without_Nul(String(Arg)), Arg'Length));
    end;
 
-   function raptor_new_uri_from_uri_local_name (World_Handle: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_uri_from_uri_local_name (World_Handle: Raptor_World_Handle;
                                                   URI: URI_Handle;
                                                   Local_Name: char_array)
                                                   return URI_Handle
@@ -32,7 +32,7 @@ package body RDF.Raptor.URI is
       return From_Non_Null_Handle (raptor_new_uri_from_uri_local_name (Get_Handle (World), Get_Handle (URI), To_C (Local_Name)));
    end;
 
-   function raptor_new_uri_from_uri_or_file_string(World_Handle: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_uri_from_uri_or_file_string(World_Handle: Raptor_World_Handle;
                                                      Base_URI: URI_Handle;
                                                      uri_or_file_string: char_array)
                                                      return URI_Handle
@@ -46,7 +46,7 @@ package body RDF.Raptor.URI is
       return From_Non_Null_Handle (raptor_new_uri_from_uri_or_file_string (Get_Handle (World), Get_Handle (Base_URI), To_C (Uri_Or_File)));
    end;
 
-   function raptor_new_uri_relative_to_base_counted(World_Handle: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_uri_relative_to_base_counted(World_Handle: Raptor_World_Handle;
                                                       Base_URI: URI_Handle;
                                                       uri_string: char_array;
                                                       uri_len: size_t)
@@ -64,7 +64,7 @@ package body RDF.Raptor.URI is
                                                                              URI'Length));
    end;
 
-   function raptor_new_uri_from_id(World_Handle: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_uri_from_id(World_Handle: Raptor_World_Handle;
                                      Base_URI: URI_Handle;
                                      ID: char_array)
                                      return URI_Handle
@@ -75,7 +75,7 @@ package body RDF.Raptor.URI is
       return From_Non_Null_Handle (raptor_new_uri_from_id (Get_Handle (World), Get_Handle (Base_URI), To_C (ID)));
    end;
 
-   function raptor_new_uri_for_rdf_concept (World_Handle: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_new_uri_for_rdf_concept (World_Handle: Raptor_World_Handle;
                                               Name: char_array)
                                               return URI_Handle
      with Import, Convention=>C;
@@ -223,7 +223,7 @@ package body RDF.Raptor.URI is
       end if;
    end;
 
-   function raptor_uri_get_world (URI: URI_Handle) return RDF.Raptor.World.Raptor_World_Handle
+   function raptor_uri_get_world (URI: URI_Handle) return Raptor_World_Handle
       with Import, Convention=>C;
 
    function Get_World (URI: URI_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
@@ -294,7 +294,7 @@ package body RDF.Raptor.URI is
    function Get_Filename (Pair: Filename_And_Fragment) return String is (Pair.Filename);
    function Get_Fragment (Pair: Filename_And_Fragment) return String is (Pair.Fragment);
 
-   function raptor_uri_to_turtle_string(Handle: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_uri_to_turtle_string(Handle: Raptor_World_Handle;
                                           URI: URI_Handle;
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
                                           Base_URI: URI_Handle)
@@ -322,7 +322,7 @@ package body RDF.Raptor.URI is
       end;
    end;
 
-   function raptor_uri_turtle_write(Handle: RDF.Raptor.World.Raptor_World_Handle;
+   function raptor_uri_turtle_write(Handle: Raptor_World_Handle;
                                       Stream: IOStream_Handle;
                                       URI: URI_Handle;
                                       Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;

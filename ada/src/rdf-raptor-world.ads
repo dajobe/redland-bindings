@@ -10,19 +10,19 @@ package RDF.Raptor.World is
 
    subtype Raptor_World_Handle is Handled_Record.Access_Type;
 
-   type Flag_Type is (Libxml_Error_Save,
+   type Raptor_Flag_Type is (Libxml_Error_Save,
                       Libxml_Structured_Error_Save,
                       URI_Interning,
                       WWW_Skip_Init_Finish)
       with Convention => C;
-   for Flag_Type use (Libxml_Error_Save => 1,
+   for Raptor_Flag_Type use (Libxml_Error_Save => 1,
                       Libxml_Structured_Error_Save => 2,
                       URI_Interning => 3,
                       WWW_Skip_Init_Finish => 4);
 
    type Flag_And_Value is
       record
-         Flag : Flag_Type;
+         Flag : Raptor_Flag_Type;
          Value: Boolean;
       end record;
 
@@ -34,7 +34,7 @@ package RDF.Raptor.World is
 
    not overriding procedure Open(Object: Raptor_World_Type_Without_Finalize; Flags: Flags_Array);
 
-   not overriding procedure Set_Flag(Object: Raptor_World_Type_Without_Finalize; Flag: Flag_Type; Value: Boolean);
+   not overriding procedure Set_Flag(Object: Raptor_World_Type_Without_Finalize; Flag: Raptor_Flag_Type; Value: Boolean);
 
    not overriding procedure Set_Flags(Object: Raptor_World_Type_Without_Finalize; Flags: Flags_Array);
 
