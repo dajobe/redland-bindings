@@ -258,13 +258,13 @@ package body RDF.Rasqal.Query_Results is
    end;
 
    -- TODO: Not supported as of Rasqal 0.9.32
---     function rasqal_new_query_results2 (World: RDF.Rasqal.World.Rasqal_World_Handle;
+--     function rasqal_new_query_results2 (World: Rasqal_World_Handle;
 --                                         Query: RDF.Rasqal.Query.Query_Handle;
 --                                         Kind: Query_Results_Type_Enum)
 --                                         return Query_Results_Handle
 --       with Import, Convention=>C;
 --
---     function New_Query_Results (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
+--     function New_Query_Results (World: Rasqal_World_Type_Without_Finalize;
 --                                 Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
 --                                 Kind: Query_Results_Type_Enum)
 --                                 return Query_Results_Type is
@@ -273,14 +273,14 @@ package body RDF.Rasqal.Query_Results is
 --        return From_Non_Null_Handle(rasqal_new_query_results2(Get_Handle(World), Get_Handle(Query), Kind));
 --     end;
 
-   function rasqal_new_query_results (World: RDF.Rasqal.World.Rasqal_World_Handle;
+   function rasqal_new_query_results (World: Rasqal_World_Handle;
                                       Query: RDF.Rasqal.Query.Query_Handle;
                                       Kind: Query_Results_Type_Enum;
                                       Vars_Table: RDF.Auxiliary.Dummy_Record_Access)
                                       return Query_Results_Handle
      with Import, Convention=>C;
 
-   function New_Query_Results (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
+   function New_Query_Results (World: Rasqal_World_Type_Without_Finalize;
                                Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
                                Kind: Query_Results_Type_Enum)
                                return Query_Results_Type is
@@ -289,7 +289,7 @@ package body RDF.Rasqal.Query_Results is
       return From_Non_Null_Handle(rasqal_new_query_results(Get_Handle(World), Get_Handle(Query), Kind, null));
    end;
 
---     function rasqal_new_query_results_from_string (World: RDF.Rasqal.World.Rasqal_World_Handle;
+--     function rasqal_new_query_results_from_string (World: Rasqal_World_Handle;
 --                                                    Kind: Query_Results_Type_Enum;
 --                                                    Base_URI: Handle_Type;
 --                                                    Value: char_array;
@@ -297,7 +297,7 @@ package body RDF.Rasqal.Query_Results is
 --                                                    return Query_Results_Handle
 --       with Import, Convention=>C;
 --
---     function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
+--     function From_String (World: Rasqal_World_Type_Without_Finalize;
 --                           Kind: Query_Results_Type_Enum;
 --                           Base_URI: URI_Type_Without_Finalize;
 --                           Value: String)

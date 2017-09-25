@@ -3,7 +3,7 @@ with RDF.Auxiliary.C_String_Holders;
 package body RDF.Rasqal.Data_Graph is
 
    function Get_World (Graph: Data_Graph_Type_Without_Finalize)
-                       return RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize is
+                       return Rasqal_World_Type_Without_Finalize is
       use RDF.Rasqal.World;
    begin
       return From_Handle(Get_Handle(Graph).World);
@@ -77,7 +77,7 @@ package body RDF.Rasqal.Data_Graph is
       rasqal_free_data_graph(Handle);
    end;
 
-   function rasqal_new_data_graph_from_iostream (World: RDF.Rasqal.World.Rasqal_World_Handle;
+   function rasqal_new_data_graph_from_iostream (World: Rasqal_World_Handle;
                                                  IOStream: IOStream_Handle;
                                                  Base_URI, Name_URI: URI_Handle;
                                                  Flags: unsigned;
@@ -86,7 +86,7 @@ package body RDF.Rasqal.Data_Graph is
                                                  return Data_Graph_Handle
      with Import, Convention=>C;
 
-   function From_IOStream (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
+   function From_IOStream (World: Rasqal_World_Type_Without_Finalize'Class;
                            IOStream: Base_Stream_Type'Class;
                            Base_URI: URI_Type_Without_Finalize'Class;
                            Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
@@ -113,7 +113,7 @@ package body RDF.Rasqal.Data_Graph is
       return From_Handle(Result);
    end;
 
-   function rasqal_new_data_graph_from_uri (World: RDF.Rasqal.World.Rasqal_World_Handle;
+   function rasqal_new_data_graph_from_uri (World: Rasqal_World_Handle;
                                             URI, Name_URI: URI_Handle;
                                             Flags: Unsigned;
                                             Format_Type, Format_Name: Chars_Ptr;
@@ -121,7 +121,7 @@ package body RDF.Rasqal.Data_Graph is
                                             return Data_Graph_Handle
      with Import, Convention=>C;
 
-   function From_URI (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
+   function From_URI (World: Rasqal_World_Type_Without_Finalize'Class;
                       URI, Name_URI: URI_Type_Without_Finalize'Class;
                       Flags: Flags_Type;
                       Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
@@ -145,7 +145,7 @@ package body RDF.Rasqal.Data_Graph is
       return From_Handle(Result);
    end;
 
---     function From_File (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
+--     function From_File (World: Rasqal_World_Type_Without_Finalize'Class;
 --                         Filename: String;
 --                         Base_URI: URI_Type_Without_Finalize'Class;
 --                         Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
@@ -160,7 +160,7 @@ package body RDF.Rasqal.Data_Graph is
 --        return From_String (World, Str, Base_URI, Name_URI, Flags, Format_Type, Format_Name, Format_URI);
 --     end;
 --
---     function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
+--     function From_String (World: Rasqal_World_Type_Without_Finalize'Class;
 --                           Str: String;
 --                           Base_URI: URI_Type_Without_Finalize'Class;
 --                           Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));

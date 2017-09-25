@@ -80,7 +80,7 @@ package body RDF.Rasqal.World is
       rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), RDF.Raptor.Log.Our_Raptor_Log_Handler'Access);
    end;
 
-   function rasqal_world_guess_query_results_format_name (World: RDF.Rasqal.World.Rasqal_World_Handle;
+   function rasqal_world_guess_query_results_format_name (World: Rasqal_World_Handle;
                                                           URI: URI_Handle;
                                                           Mime_Type: chars_ptr;
                                                           Buffer: chars_ptr;

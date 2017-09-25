@@ -2,7 +2,7 @@ with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
-with RDF.Rasqal.World;
+with RDF.Rasqal.World; use RDF.Rasqal.World;
 with RDF.Rasqal.Features;
 with RDF.Rasqal.Data_Graph;
 with RDF.Rasqal.Query_Results;
@@ -67,6 +67,6 @@ package RDF.Rasqal.Query is
 
    overriding procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle);
 
-   not overriding function New_Query (World: RDF.Rasqal.World.Rasqal_World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type;
+   not overriding function New_Query (World: Rasqal_World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type;
 
 end RDF.Rasqal.Query;

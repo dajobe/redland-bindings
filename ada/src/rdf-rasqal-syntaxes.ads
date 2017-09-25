@@ -37,33 +37,33 @@ package RDF.Rasqal.Syntaxes is
    overriding function First (Object: Query_Results_Format_Description_Iterator) return Query_Results_Format_Description_Cursor;
    overriding function Next (Object: Query_Results_Format_Description_Iterator; Position: Query_Results_Format_Description_Cursor) return Query_Results_Format_Description_Cursor;
 
-   not overriding function Create_Query_Language_Descriptions_Iterator     (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class) return Query_Language_Description_Iterator;
-   not overriding function Create_Query_Results_Format_Descriptions_Iterator (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class) return Query_Results_Format_Description_Iterator;
+   not overriding function Create_Query_Language_Descriptions_Iterator     (World: Rasqal_World_Type_Without_Finalize'Class) return Query_Language_Description_Iterator;
+   not overriding function Create_Query_Results_Format_Descriptions_Iterator (World: Rasqal_World_Type_Without_Finalize'Class) return Query_Results_Format_Description_Iterator;
 
-   function Language_Name_Check (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class; Name: String) return Boolean;
+   function Language_Name_Check (World: Rasqal_World_Type_Without_Finalize'Class; Name: String) return Boolean;
 
 private
 
    type Query_Language_Description_Cursor is
       record
-         World: RDF.Rasqal.World.Rasqal_World_Handle;
+         World: Rasqal_World_Handle;
          Position: Natural;
       end record;
 
    type Query_Results_Format_Description_Cursor is
       record
-         World: RDF.Rasqal.World.Rasqal_World_Handle;
+         World: Rasqal_World_Handle;
          Position: Natural;
       end record;
 
    type Query_Language_Description_Iterator is new Query_Language_Description_Iterators.Forward_Iterator with
       record
-         World: RDF.Rasqal.World.Rasqal_World_Handle;
+         World: Rasqal_World_Handle;
       end record;
 
    type Query_Results_Format_Description_Iterator is new Query_Results_Format_Description_Iterators.Forward_Iterator with
       record
-         World: RDF.Rasqal.World.Rasqal_World_Handle;
+         World: Rasqal_World_Handle;
       end record;
 
 end RDF.Rasqal.Syntaxes;

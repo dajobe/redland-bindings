@@ -2,7 +2,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
 with RDF.Auxiliary.Handled_Record;
-with RDF.Rasqal.World;
+with RDF.Rasqal.World; use RDF.Rasqal.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 
@@ -18,7 +18,7 @@ package RDF.Rasqal.Data_Graph is
 
    subtype Data_Graph_Handle is Data_Graph_Handled_Record.Access_Type;
 
-   function Get_World (Graph: Data_Graph_Type_Without_Finalize) return RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
+   function Get_World (Graph: Data_Graph_Type_Without_Finalize) return Rasqal_World_Type_Without_Finalize;
 
    function Get_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type_Without_Finalize;
 
@@ -53,7 +53,7 @@ package RDF.Rasqal.Data_Graph is
 
    overriding procedure Finalize_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle);
 
-   not overriding function From_IOStream (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
+   not overriding function From_IOStream (World: Rasqal_World_Type_Without_Finalize'Class;
                                           IOStream: Base_Stream_Type'Class;
                                           Base_URI: URI_Type_Without_Finalize'Class;
                                           Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
@@ -62,7 +62,7 @@ package RDF.Rasqal.Data_Graph is
                                           Format_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
                                           return Data_Graph_Type;
 
-   not overriding function From_URI (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
+   not overriding function From_URI (World: Rasqal_World_Type_Without_Finalize'Class;
                                      URI, Name_URI: URI_Type_Without_Finalize'Class;
                                      Flags: Flags_Type;
                                      Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
@@ -73,7 +73,7 @@ package RDF.Rasqal.Data_Graph is
 
    -- TODO: Implement
 --     -- Not binding, but a wrapper
---     not overriding function From_File (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
+--     not overriding function From_File (World: Rasqal_World_Type_Without_Finalize'Class;
 --                                        Filename: String;
 --                                        Base_URI: URI_Type_Without_Finalize'Class;
 --                                        Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
@@ -83,7 +83,7 @@ package RDF.Rasqal.Data_Graph is
 --                                        return Streamed_Data_Graph_Type;
 --
 --     -- Not binding, but a wrapper
---     not overriding function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
+--     not overriding function From_String (World: Rasqal_World_Type_Without_Finalize'Class;
 --                                          Str: String;
 --                                          Base_URI: URI_Type_Without_Finalize'Class;
 --                                          Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
@@ -96,7 +96,7 @@ private
 
    type Data_Graph_Record is
       record
-         World: RDF.Rasqal.World.Rasqal_World_Handle;
+         World: Rasqal_World_Handle;
          URI, Name_URI: URI_Handle;
          Flags: unsigned;
          Format_Type, Format_Name: chars_ptr;

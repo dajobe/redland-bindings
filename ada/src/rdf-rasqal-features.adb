@@ -6,7 +6,7 @@ with RDF.Raptor.World; use RDF.Raptor.World;
 
 package body RDF.Rasqal.Features is
 
-   function rasqal_feature_from_uri (World: RDF.Rasqal.World.Rasqal_World_Handle; URI: URI_Handle) return Feature_Type
+   function rasqal_feature_from_uri (World: Rasqal_World_Handle; URI: URI_Handle) return Feature_Type
       with Import, Convention=>C;
 
    function Feature_From_URI (World: Rasqal_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class) return Feature_Type is
@@ -94,7 +94,7 @@ package body RDF.Rasqal.Features is
       return (World=>Object.World, Position=>Conv(Conv(Position.Position) + 1));
    end;
 
-   function Create_Features_Descriptions_Iterator(World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class)
+   function Create_Features_Descriptions_Iterator(World: Rasqal_World_Type_Without_Finalize'Class)
                                                   return Features_Iterator is
    begin
       return Features_Iterator'(World => Get_Handle(World));

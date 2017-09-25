@@ -45,20 +45,20 @@ package RDF.Rasqal.Features is
    overriding function First (Object: Features_Iterator) return Features_Cursor;
    overriding function Next (Object: Features_Iterator; Position: Features_Cursor) return Features_Cursor;
 
-   not overriding function Create_Features_Descriptions_Iterator(World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class)
+   not overriding function Create_Features_Descriptions_Iterator(World: Rasqal_World_Type_Without_Finalize'Class)
                                                                  return Features_Iterator;
 
 private
 
    type Features_Cursor is
       record
-         World: RDF.Rasqal.World.Rasqal_World_Handle;
+         World: Rasqal_World_Handle;
          Position: Feature_Type;
       end record;
 
    type Features_Iterator is new Features_Iterators.Forward_Iterator with
       record
-         World: RDF.Rasqal.World.Rasqal_World_Handle;
+         World: Rasqal_World_Handle;
       end record;
 
 end RDF.Rasqal.Features;
