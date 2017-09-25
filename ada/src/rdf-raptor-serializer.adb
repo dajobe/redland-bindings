@@ -113,10 +113,10 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_get_description (Serializer: Serializer_Handle) return RDF.Raptor.Syntaxes.Syntax_Description_Type
+   function raptor_serializer_get_description (Serializer: Serializer_Handle) return Raptor_Syntax_Description_Type
       with Import, Convention=>C;
 
-   function Get_Description (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type is
+   function Get_Description (Serializer: Serializer_Type_Without_Finalize) return Raptor_Syntax_Description_Type is
    begin
       return raptor_serializer_get_description(Get_Handle(Serializer));
    end;

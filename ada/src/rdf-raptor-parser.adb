@@ -178,10 +178,10 @@ package body RDF.Raptor.Parser is
       return From_Handle(raptor_parser_get_graph(Get_Handle(Parser)));
    end;
 
-   function raptor_parser_get_description (Parser: Parser_Handle) return RDF.Raptor.Syntaxes.Syntax_Description_Type
+   function raptor_parser_get_description (Parser: Parser_Handle) return Raptor_Syntax_Description_Type
       with Import, Convention=>C;
 
-   function Get_Description (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type is
+   function Get_Description (Parser: Parser_Type_Without_Finalize) return Raptor_Syntax_Description_Type is
    begin
       return raptor_parser_get_description(Get_Handle(Parser));
    end;

@@ -13,7 +13,7 @@ package RDF.Raptor.Syntaxes is
    type Mime_Type_Q is private;
 
    -- Internally represented as an access to a C record. (It is used for Ada.Unchecked_Conversion in some other packages.)
-   type Syntax_Description_Type is private;
+   type Raptor_Syntax_Description_Type is private;
 
    type Q_Type is range 0..10;
 
@@ -21,24 +21,24 @@ package RDF.Raptor.Syntaxes is
 
    function Get_Q (Object: Mime_Type_Q) return Q_Type;
 
-   function Get_Name (Object: Syntax_Description_Type; Index: Natural) return String
+   function Get_Name (Object: Raptor_Syntax_Description_Type; Index: Natural) return String
       with Pre => Index < Get_Names_Count(Object);
 
-   function Get_Names_Count (Object: Syntax_Description_Type) return Natural;
+   function Get_Names_Count (Object: Raptor_Syntax_Description_Type) return Natural;
 
-   function Get_Label (Object: Syntax_Description_Type) return String;
+   function Get_Label (Object: Raptor_Syntax_Description_Type) return String;
 
-   function Get_MIME_Type (Object: Syntax_Description_Type; Index: Natural) return Mime_Type_Q
+   function Get_MIME_Type (Object: Raptor_Syntax_Description_Type; Index: Natural) return Mime_Type_Q
       with Pre => Index < Get_MIME_Types_Count(Object);
 
-   function Get_MIME_Types_Count (Object: Syntax_Description_Type) return Natural;
+   function Get_MIME_Types_Count (Object: Raptor_Syntax_Description_Type) return Natural;
 
-   function Get_URI (Object: Syntax_Description_Type; Index: Natural) return URI_String
+   function Get_URI (Object: Raptor_Syntax_Description_Type; Index: Natural) return URI_String
       with Pre => Index < Get_URIs_Count(Object);
 
-   function Get_URIs_Count (Object: Syntax_Description_Type) return Natural;
+   function Get_URIs_Count (Object: Raptor_Syntax_Description_Type) return Natural;
 
-   function Get_Flags (Object: Syntax_Description_Type) return Syntax_Bitflags;
+   function Get_Flags (Object: Raptor_Syntax_Description_Type) return Syntax_Bitflags;
 
    -- raptor_syntax_description_validate() deliberately not implemented
 
@@ -48,8 +48,8 @@ package RDF.Raptor.Syntaxes is
    function Get_Position (Cursor: Parser_Description_Cursor    ) return Natural;
    function Get_Position (Cursor: Serializer_Description_Cursor) return Natural;
 
-   function Get_Description (Cursor: Parser_Description_Cursor    ) return Syntax_Description_Type;
-   function Get_Description (Cursor: Serializer_Description_Cursor) return Syntax_Description_Type;
+   function Get_Description (Cursor: Parser_Description_Cursor    ) return Raptor_Syntax_Description_Type;
+   function Get_Description (Cursor: Serializer_Description_Cursor) return Raptor_Syntax_Description_Type;
 
    function Has_Element (Position: Parser_Description_Cursor    ) return Boolean;
    function Has_Element (Position: Serializer_Description_Cursor) return Boolean;
@@ -99,7 +99,7 @@ private
       end record
      with Convention => C;
 
-   type Syntax_Description_Type is access constant Syntax_Description_Record
+   type Raptor_Syntax_Description_Type is access constant Syntax_Description_Record
      with Convention => C;
 
    type Parser_Description_Cursor is

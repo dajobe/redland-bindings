@@ -1,17 +1,15 @@
 with Ada.Iterator_Interfaces;
 with Interfaces.C; use Interfaces.C;
---with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
---with RDF.Rasqal.URI; use RDF.Rasqal.URI;
-with RDF.Raptor.Syntaxes;
+with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 
 package RDF.Rasqal.Syntaxes is
 
-   subtype Syntax_Description_Type is RDF.Raptor.Syntaxes.Syntax_Description_Type;
+   subtype Rasqal_Syntax_Description_Type is Raptor_Syntax_Description_Type;
 
    -- FIXME: Shouldn't here be Rasqal_World_Type_Without_Finalize?
-   function Get_Query_Language_Description (World: Rasqal_World_Type; Counter: unsigned) return Syntax_Description_Type;
-   function Get_Query_Results_Format_Description (World: Rasqal_World_Type; Counter: unsigned) return Syntax_Description_Type;
+   function Get_Query_Language_Description (World: Rasqal_World_Type; Counter: unsigned) return Rasqal_Syntax_Description_Type;
+   function Get_Query_Results_Format_Description (World: Rasqal_World_Type; Counter: unsigned) return Rasqal_Syntax_Description_Type;
 
    type Query_Language_Description_Cursor is private;
    type Query_Results_Format_Description_Cursor is private;
@@ -19,8 +17,8 @@ package RDF.Rasqal.Syntaxes is
    function Get_Position (Cursor: Query_Language_Description_Cursor    ) return Natural;
    function Get_Position (Cursor: Query_Results_Format_Description_Cursor) return Natural;
 
-   function Get_Description (Cursor: Query_Language_Description_Cursor    ) return Syntax_Description_Type;
-   function Get_Description (Cursor: Query_Results_Format_Description_Cursor) return Syntax_Description_Type;
+   function Get_Description (Cursor: Query_Language_Description_Cursor    ) return Rasqal_Syntax_Description_Type;
+   function Get_Description (Cursor: Query_Results_Format_Description_Cursor) return Rasqal_Syntax_Description_Type;
 
    function Has_Element (Position: Query_Language_Description_Cursor    ) return Boolean;
    function Has_Element (Position: Query_Results_Format_Description_Cursor) return Boolean;

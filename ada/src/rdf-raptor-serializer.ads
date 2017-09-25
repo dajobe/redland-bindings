@@ -5,7 +5,7 @@ with RDF.Raptor.Iostream; use RDF.Raptor.IOStream;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
-with RDF.Raptor.Syntaxes;
+with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log; use RDF.Raptor.Log;
 with RDF.Raptor.Options; use RDF.Raptor.Options;
 
@@ -49,7 +49,7 @@ package RDF.Raptor.Serializer is
 
    not overriding procedure Serialize_Flush (Serializer: Serializer_Type_Without_Finalize);
 
-   not overriding function Get_Description (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type;
+   not overriding function Get_Description (Serializer: Serializer_Type_Without_Finalize) return Raptor_Syntax_Description_Type;
 
    not overriding function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return Stream_Type_Without_Finalize;
 

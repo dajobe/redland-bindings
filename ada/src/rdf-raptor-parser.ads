@@ -8,7 +8,7 @@ with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
-with RDF.Raptor.Syntaxes;
+with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log; use RDF.Raptor.Log;
 with RDF.Raptor.WWW; use RDF.Raptor.WWW;
 with RDF.Raptor.Options; use RDF.Raptor.Options;
@@ -83,7 +83,7 @@ package RDF.Raptor.Parser is
 
    not overriding function Get_Graph (Parser: Parser_Type_Without_Finalize) return URI_Type;
 
-   not overriding function Get_Description (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type;
+   not overriding function Get_Description (Parser: Parser_Type_Without_Finalize) return Raptor_Syntax_Description_Type;
 
    not overriding function Get_Name (Parser: Parser_Type_Without_Finalize) return String;
 

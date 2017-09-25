@@ -23,36 +23,36 @@ package body RDF.Raptor.Syntaxes is
 
    function Get_Q (Object: Mime_Type_Q) return Q_Type is (Q_Type(Object.Q));
 
-   function Get_Name (Object: Syntax_Description_Type; Index: Natural) return String is
+   function Get_Name (Object: Raptor_Syntax_Description_Type; Index: Natural) return String is
       Ptr: constant access chars_ptr := String_Ptrs.Pointer(Object.Names) + ptrdiff_t(Index);
    begin
       return Value(Ptr.all);
    end;
 
-   function Get_Names_Count (Object: Syntax_Description_Type) return Natural is (Natural(Object.Names_Count));
+   function Get_Names_Count (Object: Raptor_Syntax_Description_Type) return Natural is (Natural(Object.Names_Count));
 
-   function Get_Label (Object: Syntax_Description_Type) return String is
+   function Get_Label (Object: Raptor_Syntax_Description_Type) return String is
    begin
       return Value(Object.Label);
    end;
 
-   function Get_MIME_Type (Object: Syntax_Description_Type; Index: Natural) return Mime_Type_Q is
+   function Get_MIME_Type (Object: Raptor_Syntax_Description_Type; Index: Natural) return Mime_Type_Q is
       Ptr: constant access Mime_Type_Q := Mime_Type_Q_Ptrs.Pointer(Object.Mime_Types) + ptrdiff_t(Index);
    begin
       return Ptr.all;
    end;
 
-   function Get_MIME_Types_Count (Object: Syntax_Description_Type) return Natural is (Natural(Object.Mime_Types_Count));
+   function Get_MIME_Types_Count (Object: Raptor_Syntax_Description_Type) return Natural is (Natural(Object.Mime_Types_Count));
 
-   function Get_URI (Object: Syntax_Description_Type; Index: Natural) return URI_String is
+   function Get_URI (Object: Raptor_Syntax_Description_Type; Index: Natural) return URI_String is
       Ptr: constant access chars_ptr := String_Ptrs.Pointer(Object.URI_Strings) + ptrdiff_t(Index);
    begin
       return URI_String(String'(Value(Ptr.all)));
    end;
 
-   function Get_URIs_Count (Object: Syntax_Description_Type) return Natural is (Natural(Object.URI_Strings_Count));
+   function Get_URIs_Count (Object: Raptor_Syntax_Description_Type) return Natural is (Natural(Object.URI_Strings_Count));
 
-   function Get_Flags (Object: Syntax_Description_Type) return Syntax_Bitflags is
+   function Get_Flags (Object: Raptor_Syntax_Description_Type) return Syntax_Bitflags is
    begin
       return Object.Flags;
    end;
@@ -96,7 +96,7 @@ package body RDF.Raptor.Syntaxes is
    function Get_Position (Cursor: Parser_Description_Cursor    ) return Natural is (Cursor.Position);
    function Get_Position (Cursor: Serializer_Description_Cursor) return Natural is (Cursor.Position);
 
-   type Syntax_Description_Access is access all Syntax_Description_Type
+   type Syntax_Description_Access is access all Raptor_Syntax_Description_Type
       with Convention=>C;
 
    function raptor_world_get_parser_description (World: Raptor_World_Handle; Counter: unsigned) return Syntax_Description_Access
@@ -105,12 +105,12 @@ package body RDF.Raptor.Syntaxes is
    function raptor_world_get_serializer_description (World: Raptor_World_Handle; Counter: unsigned) return Syntax_Description_Access
      with Import, Convention=>C;
 
-   function Get_Description (Cursor: Parser_Description_Cursor    ) return Syntax_Description_Type is
+   function Get_Description (Cursor: Parser_Description_Cursor    ) return Raptor_Syntax_Description_Type is
    begin
       return raptor_world_get_parser_description(Cursor.World, unsigned(Cursor.Position)).all;
    end;
 
-   function Get_Description (Cursor: Serializer_Description_Cursor) return Syntax_Description_Type is
+   function Get_Description (Cursor: Serializer_Description_Cursor) return Raptor_Syntax_Description_Type is
    begin
       return raptor_world_get_serializer_description(Cursor.World, unsigned(Cursor.Position)).all;
    end;
