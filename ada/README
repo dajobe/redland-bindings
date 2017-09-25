@@ -30,7 +30,7 @@ Ada):
 * XSD related objects (not a priority to implement)
 * Query Results Formatter
 * Query Result Row (C API is too rudimentary)
-* Service (requires Sequences which are not yet implented)
+* Service (requires Sequences which are not yet implemented)
 
 The following APIs are implemented partially:
 
