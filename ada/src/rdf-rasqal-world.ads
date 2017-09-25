@@ -1,7 +1,7 @@
 with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Raptor.Log;
+with RDF.Raptor.Log; use RDF.Raptor.Log;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 
 package RDF.Rasqal.World is
@@ -16,7 +16,7 @@ package RDF.Rasqal.World is
 
    not overriding procedure Open(Object: Rasqal_World_Type_Without_Finalize);
 
-   not overriding procedure Set_Log_Handler(World: Rasqal_World_Type_Without_Finalize; Handler: access RDF.Raptor.Log.Log_Handler);
+   not overriding procedure Set_Log_Handler(World: Rasqal_World_Type_Without_Finalize; Handler: access Log_Handler);
 
    type Warning_Level is range 0 .. 100;
 

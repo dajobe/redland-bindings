@@ -50,10 +50,10 @@ package body RDF.Raptor.Parser is
                                                                     C_String(Identifier_N)) );
    end;
 
-   function raptor_parser_get_locator (Parser: Parser_Handle) return RDF.Raptor.Log.Locator_Handle
+   function raptor_parser_get_locator (Parser: Parser_Handle) return Locator_Handle
       with Import, Convention=>C;
 
-   function Get_Locator (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type is
+   function Get_Locator (Parser: Parser_Type_Without_Finalize) return Locator_Type is
    begin
       return From_Handle(raptor_parser_get_locator(Get_Handle(Parser)));
    end;

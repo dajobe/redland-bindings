@@ -6,7 +6,7 @@ with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Syntaxes;
-with RDF.Raptor.Log;
+with RDF.Raptor.Log; use RDF.Raptor.Log;
 with RDF.Raptor.Options;
 
 package RDF.Raptor.Serializer is
@@ -53,7 +53,7 @@ package RDF.Raptor.Serializer is
 
    not overriding function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return Stream_Type_Without_Finalize;
 
-   not overriding function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type;
+   not overriding function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return Locator_Type;
 
    not overriding procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: String);
    not overriding procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: int);

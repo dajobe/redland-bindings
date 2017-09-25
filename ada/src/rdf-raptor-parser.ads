@@ -9,7 +9,7 @@ with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Syntaxes;
-with RDF.Raptor.Log;
+with RDF.Raptor.Log; use RDF.Raptor.Log;
 with RDF.Raptor.WWW;
 with RDF.Raptor.Options;
 
@@ -46,7 +46,7 @@ package RDF.Raptor.Parser is
    not overriding function URI_Filter (Object: Parser_Type_Without_Finalize;
                                        URI: URI_Type_Without_Finalize'Class) return Boolean is (True);
 
-   not overriding function Get_Locator (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type;
+   not overriding function Get_Locator (Parser: Parser_Type_Without_Finalize) return Locator_Type;
 
    not overriding procedure Parse_Abort (Parser: Parser_Type_Without_Finalize);
 

@@ -130,10 +130,10 @@ package body RDF.Raptor.Serializer is
       return From_Handle(raptor_serializer_get_iostream(Get_Handle(Serializer)));
    end;
 
-   function raptor_serializer_get_locator (Serializer: Serializer_Handle) return RDF.Raptor.Log.Locator_Handle
+   function raptor_serializer_get_locator (Serializer: Serializer_Handle) return Locator_Handle
       with Import, Convention=>C;
 
-   function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type is
+   function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return Locator_Type is
       use RDF.Raptor.Log;
    begin
       return From_Handle(raptor_serializer_get_locator(Get_Handle(Serializer)));

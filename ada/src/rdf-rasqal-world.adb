@@ -68,16 +68,16 @@ package body RDF.Rasqal.World is
       rasqal_free_world(Handle);
    end;
 
-   type Log_Handler_Access is access constant RDF.Raptor.Log.Log_Handler'Class;
+   type Log_Handler_Access is access constant Log_Handler'Class;
    function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, Log_Handler_Access);
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(Log_Handler_Access, chars_ptr);
 
-   procedure rasqal_world_set_log_handler (World: Rasqal_World_Handle; Data: chars_ptr; Handler: RDF.Raptor.Log.Log_Handler_Procedure_Type)
+   procedure rasqal_world_set_log_handler (World: Rasqal_World_Handle; Data: chars_ptr; Handler: Log_Handler_Procedure_Type)
       with Import, Convention=>C;
 
-   procedure Set_Log_Handler(World: Rasqal_World_Type_Without_Finalize; Handler: access RDF.Raptor.Log.Log_Handler) is
+   procedure Set_Log_Handler(World: Rasqal_World_Type_Without_Finalize; Handler: access Log_Handler) is
    begin
-      rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), RDF.Raptor.Log.Our_Raptor_Log_Handler'Access);
+      rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), Our_Raptor_Log_Handler'Access);
    end;
 
    function rasqal_world_guess_query_results_format_name (World: Rasqal_World_Handle;
