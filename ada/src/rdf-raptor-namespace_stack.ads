@@ -3,7 +3,7 @@ with RDF.Raptor.URI; use RDF.Raptor.URI;
 with Interfaces.C;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Auxiliary; use RDF.Auxiliary;
-limited with RDF.Raptor.Namespace;
+with RDF.Raptor.Namespace;
 
 package RDF.Raptor.Namespace_Stack is
 
