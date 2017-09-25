@@ -67,12 +67,12 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_set_namespace_from_namespace (Serializer: Serializer_Handle; Namespace: RDF.Raptor.Namespace.Namespace_Handle)
+   function raptor_serializer_set_namespace_from_namespace (Serializer: Serializer_Handle; Namespace: Namespace_Handle)
                                                             return int
       with Import, Convention=>C;
 
    procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
-                            Namespace: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize) is
+                            Namespace: Namespace_Type_Without_Finalize) is
       use RDF.Raptor.Namespace;
    begin
       if raptor_serializer_set_namespace_from_namespace(Get_Handle(Serializer), Get_Handle(Namespace)) /= 0 then

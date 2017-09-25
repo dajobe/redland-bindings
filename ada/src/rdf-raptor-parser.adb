@@ -276,7 +276,7 @@ package body RDF.Raptor.Parser is
    type raptor_graph_mark_handler is access procedure (Data: chars_ptr; URI: URI_Handle; Flags: int)
      with Convention=>C;
 
-   type raptor_namespace_handler is access procedure (Data: chars_ptr; NS: RDF.Raptor.Namespace.Namespace_Handle)
+   type raptor_namespace_handler is access procedure (Data: chars_ptr; NS: Namespace_Handle)
      with Convention=>C;
 
    type raptor_uri_filter_func is access function (Data: chars_ptr; URI: URI_Handle) return int
@@ -288,7 +288,7 @@ package body RDF.Raptor.Parser is
    procedure raptor_graph_mark_handler_impl (Data: chars_ptr; URI: URI_Handle; Flags: int)
      with Convention=>C;
 
-   procedure raptor_namespace_handler_impl (Data: Chars_Ptr; NS: RDF.Raptor.Namespace.Namespace_Handle)
+   procedure raptor_namespace_handler_impl (Data: Chars_Ptr; NS: Namespace_Handle)
      with Convention=>C;
 
    function raptor_uri_filter_impl (Data: chars_ptr; URI: URI_Handle) return int
@@ -305,7 +305,7 @@ package body RDF.Raptor.Parser is
       Graph_Mark_Handler(Ptr_To_Obj(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI)), Conv(Flags));
    end;
 
-   procedure raptor_namespace_handler_impl (Data: Chars_Ptr; NS: RDF.Raptor.Namespace.Namespace_Handle) is
+   procedure raptor_namespace_handler_impl (Data: Chars_Ptr; NS: Namespace_Handle) is
    begin
       Namespace_Handler(Ptr_To_Obj(Data).all, Namespace_Type_Without_Finalize'(From_Non_Null_Handle(NS)));
    end;
