@@ -11,7 +11,7 @@ with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log; use RDF.Raptor.Log;
 with RDF.Raptor.WWW; use RDF.Raptor.WWW;
-with RDF.Raptor.Options;
+with RDF.Raptor.Options; use RDF.Raptor.Options;
 
 package RDF.Raptor.Parser is
 
@@ -87,12 +87,12 @@ package RDF.Raptor.Parser is
 
    not overriding function Get_Name (Parser: Parser_Type_Without_Finalize) return String;
 
-   not overriding procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: String);
-   not overriding procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: int);
+   not overriding procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option; Value: String);
+   not overriding procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option; Value: int);
 
    -- Not sure if we should be able to query here whether the option is numeric
-   not overriding function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return Natural;
-   not overriding function Get_String_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return String;
+   not overriding function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option) return Natural;
+   not overriding function Get_String_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option) return String;
 
    not overriding function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String;
 

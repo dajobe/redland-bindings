@@ -7,7 +7,7 @@ with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log; use RDF.Raptor.Log;
-with RDF.Raptor.Options;
+with RDF.Raptor.Options; use RDF.Raptor.Options;
 
 package RDF.Raptor.Serializer is
 
@@ -55,12 +55,12 @@ package RDF.Raptor.Serializer is
 
    not overriding function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return Locator_Type;
 
-   not overriding procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: String);
-   not overriding procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: int);
+   not overriding procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: String);
+   not overriding procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: int);
 
    -- Not sure if we should be able to query here whether the option is numeric
-   not overriding function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return Natural;
-   not overriding function Get_String_Option (Serializer: Serializer_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return String;
+   not overriding function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option) return Natural;
+   not overriding function Get_String_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option) return String;
 
    not overriding function Get_World (Serializer: Serializer_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
 

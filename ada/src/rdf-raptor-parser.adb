@@ -194,10 +194,10 @@ package body RDF.Raptor.Parser is
       return Value(raptor_parser_get_name(Get_Handle(Parser)));
    end;
 
-   function raptor_parser_set_option (Parser: Parser_Handle; Option: RDF.Raptor.Options.Raptor_Option; Value: chars_ptr; Int_Value: int) return int
+   function raptor_parser_set_option (Parser: Parser_Handle; Option: Raptor_Option; Value: chars_ptr; Int_Value: int) return int
       with Import, Convention=>C;
 
-   procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: String) is
+   procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option; Value: String) is
       Value2: aliased char_array := To_C(Value);
    begin
       if raptor_parser_set_option(Get_Handle(Parser), Option, To_Chars_Ptr(Value2'Unchecked_Access), 0) /= 0 then
@@ -205,7 +205,7 @@ package body RDF.Raptor.Parser is
       end if;
    end;
 
-   procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option; Value: int) is
+   procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option; Value: int) is
    begin
       if raptor_parser_set_option(Get_Handle(Parser), Option, Null_Ptr, Value) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -216,12 +216,12 @@ package body RDF.Raptor.Parser is
    type Int_P_Type is access all int with Convention=>C;
 
    function raptor_parser_get_option (Parser: Parser_Handle;
-                                      Option: RDF.Raptor.Options.Raptor_Option;
+                                      Option: Raptor_Option;
                                       String_P: String_P_Type;
                                       Integer_P: Int_P_Type) return int
       with Import, Convention=>C;
 
-   function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return Natural is
+   function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option) return Natural is
       V: aliased int;
    begin
       if raptor_parser_get_option(Get_Handle(Parser), Option, null, V'Unchecked_Access) < 0 then
@@ -230,7 +230,7 @@ package body RDF.Raptor.Parser is
       return Natural(V);
    end;
 
-   function Get_String_Option (Parser: Parser_Type_Without_Finalize; Option: RDF.Raptor.Options.Raptor_Option) return String is
+   function Get_String_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option) return String is
       V: aliased chars_ptr;
    begin
       if raptor_parser_get_option(Get_Handle(Parser), Option, V'Unchecked_Access, null) < 0 then
