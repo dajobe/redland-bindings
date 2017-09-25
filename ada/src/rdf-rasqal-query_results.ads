@@ -2,7 +2,7 @@ with Ada.Iterator_Interfaces;
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.Statement;
+with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Rasqal.World;
 with RDF.Rasqal.Literal;
@@ -55,7 +55,7 @@ package RDF.Rasqal.Query_Results is
                                       return RDF.Rasqal.Query.Query_Type_Without_Finalize;
 
    not overriding function Get_Triple (Results: Query_Results_Type_Without_Finalize)
-                                       return RDF.Raptor.Statement.Statement_Type_Without_Finalize;
+                                       return Statement_Type_Without_Finalize;
 
    -- Deliberately not implemented:
 --     function Get_Row_By_Offset (Results: Query_Results_Type_Without_Finalize; Offset: Natural) return XXX;
@@ -141,7 +141,7 @@ package RDF.Rasqal.Query_Results is
 
    overriding function Next (Object: Triples_Iterator; Position: Cursor) return Cursor;
 
-   not overriding function Get_Triple (Position: Cursor) return RDF.Raptor.Statement.Statement_Type_Without_Finalize;
+   not overriding function Get_Triple (Position: Cursor) return Statement_Type_Without_Finalize;
 
    type Variables_Cursor is private;
 

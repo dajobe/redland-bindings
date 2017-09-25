@@ -80,12 +80,12 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_serialize_statement (Serializer: Serializer_Handle; Statement: RDF.Raptor.Statement.Statement_Handle)
+   function raptor_serializer_serialize_statement (Serializer: Serializer_Handle; Statement: Statement_Handle)
                                                    return int
       with Import, Convention=>C;
 
    procedure Serialize_Statement (Serializer: Serializer_Type_Without_Finalize;
-                                  Statement: RDF.Raptor.Statement.Statement_Type_Without_Finalize'Class) is
+                                  Statement: Statement_Type_Without_Finalize'Class) is
       use RDF.Raptor.Statement;
    begin
       if raptor_serializer_serialize_statement(Get_Handle(Serializer), Get_Handle(Statement)) /= 0 then

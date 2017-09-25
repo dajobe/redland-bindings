@@ -270,7 +270,7 @@ package body RDF.Raptor.Parser is
    function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
 
-   type raptor_statement_handler is access procedure (Data: chars_ptr; Statement: RDF.Raptor.Statement.Statement_Handle)
+   type raptor_statement_handler is access procedure (Data: chars_ptr; Statement: Statement_Handle)
      with Convention=>C;
 
    type raptor_graph_mark_handler is access procedure (Data: chars_ptr; URI: URI_Handle; Flags: int)
@@ -282,7 +282,7 @@ package body RDF.Raptor.Parser is
    type raptor_uri_filter_func is access function (Data: chars_ptr; URI: URI_Handle) return int
      with Convention=>C;
 
-   procedure raptor_statement_handler_impl (Data: Chars_Ptr; Statement: RDF.Raptor.Statement.Statement_Handle)
+   procedure raptor_statement_handler_impl (Data: Chars_Ptr; Statement: Statement_Handle)
      with Convention=>C;
 
    procedure raptor_graph_mark_handler_impl (Data: chars_ptr; URI: URI_Handle; Flags: int)
@@ -294,7 +294,7 @@ package body RDF.Raptor.Parser is
    function raptor_uri_filter_impl (Data: chars_ptr; URI: URI_Handle) return int
      with Convention=>C;
 
-   procedure raptor_statement_handler_impl (Data: Chars_Ptr; Statement: RDF.Raptor.Statement.Statement_Handle) is
+   procedure raptor_statement_handler_impl (Data: Chars_Ptr; Statement: Statement_Handle) is
    begin
       Statement_Handler(Ptr_To_Obj(Data).all, Statement_Type_Without_Finalize'(From_Non_Null_Handle(Statement)));
    end;

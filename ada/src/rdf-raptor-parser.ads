@@ -6,7 +6,7 @@ with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
-with RDF.Raptor.Statement;
+with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Namespace;
 with RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log;
@@ -38,7 +38,7 @@ package RDF.Raptor.Parser is
                                                 Flags: Graph_Mark_Flags) is null;
 
    not overriding procedure Statement_Handler (Object: Parser_Type_Without_Finalize;
-                                               Statement: RDF.Raptor.Statement.Statement_Type_Without_Finalize'Class) is null;
+                                               Statement: Statement_Type_Without_Finalize'Class) is null;
 
    not overriding procedure Namespace_Handler (Object: Parser_Type_Without_Finalize;
                                                Namespace: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize'Class) is null;

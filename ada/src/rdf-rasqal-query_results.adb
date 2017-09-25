@@ -103,11 +103,11 @@ package body RDF.Rasqal.Query_Results is
    end;
 
    function rasqal_query_results_get_triple (Results: Query_Results_Handle)
-                                             return RDF.Raptor.Statement.Statement_Handle
+                                             return Statement_Handle
      with Import, Convention=>C;
 
    function Get_Triple (Results: Query_Results_Type_Without_Finalize)
-                        return RDF.Raptor.Statement.Statement_Type_Without_Finalize is
+                        return Statement_Type_Without_Finalize is
       use RDF.Raptor.Statement;
    begin
       return From_Non_Null_Handle(rasqal_query_results_get_triple(Get_Handle(Results)));
@@ -347,7 +347,7 @@ package body RDF.Rasqal.Query_Results is
       return Position;
    end;
 
-   function Get_Triple (Position: Cursor) return RDF.Raptor.Statement.Statement_Type_Without_Finalize is
+   function Get_Triple (Position: Cursor) return Statement_Type_Without_Finalize is
       (Get_Triple(Position.all));
 
    -----------------

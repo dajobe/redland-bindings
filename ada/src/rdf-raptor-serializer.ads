@@ -4,7 +4,7 @@ with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Iostream; use RDF.Raptor.IOStream;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace;
-with RDF.Raptor.Statement;
+with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Syntaxes;
 with RDF.Raptor.Log;
 with RDF.Raptor.Options;
@@ -43,7 +43,7 @@ package RDF.Raptor.Serializer is
                                            Namespace: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize);
 
    not overriding procedure Serialize_Statement (Serializer: Serializer_Type_Without_Finalize;
-                                                 Statement: RDF.Raptor.Statement.Statement_Type_Without_Finalize'Class);
+                                                 Statement: Statement_Type_Without_Finalize'Class);
 
    not overriding procedure Serialize_End (Serializer: Serializer_Type_Without_Finalize);
 
