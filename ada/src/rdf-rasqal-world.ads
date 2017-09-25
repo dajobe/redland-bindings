@@ -6,11 +6,11 @@ with RDF.Raptor.URI; use RDF.Raptor.URI;
 
 package RDF.Rasqal.World is
 
-   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
+   package Rasqal_World_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   type Rasqal_World_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
+   type Rasqal_World_Type_Without_Finalize is new Rasqal_World_Handled_Record.Base_Object with null record;
 
-   subtype Rasqal_World_Handle is Handled_Record.Access_Type;
+   subtype Rasqal_World_Handle is Rasqal_World_Handled_Record.Access_Type;
 
    overriding function Default_Handle(Object: Rasqal_World_Type_Without_Finalize) return Rasqal_World_Handle;
 

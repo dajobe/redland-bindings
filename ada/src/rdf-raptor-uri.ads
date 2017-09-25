@@ -7,12 +7,12 @@ package RDF.Raptor.URI is
 
    type URI_String is new String;
 
-   package Handled_Record is new RDF.Auxiliary.Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
+   package URI_Handled_Record is new RDF.Auxiliary.Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype URI_Handle is Handled_Record.Access_Type;
+   subtype URI_Handle is URI_Handled_Record.Access_Type;
 
    -- Only absolute URIs!
-   type URI_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
+   type URI_Type_Without_Finalize is new URI_Handled_Record.Base_Object with null record;
 
    not overriding function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result;
 

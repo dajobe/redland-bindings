@@ -11,11 +11,11 @@ with RDF.Raptor.Options; use RDF.Raptor.Options;
 
 package RDF.Raptor.Serializer is
 
-   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
+   package Serializer_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype Serializer_Handle is Handled_Record.Access_Type;
+   subtype Serializer_Handle is Serializer_Handled_Record.Access_Type;
 
-   type Serializer_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
+   type Serializer_Type_Without_Finalize is new Serializer_Handled_Record.Base_Object with null record;
 
    -- WARNING: Other order of arguments than in C
    not overriding procedure Start_To_Iostream (Serializer: Serializer_Type_Without_Finalize;

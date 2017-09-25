@@ -108,11 +108,11 @@ package RDF.Raptor.Options is
    type Option_Description_Record_Access is access Option_Description_Record
       with Convention => C;
 
-   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(Option_Description_Record, Option_Description_Record_Access);
+   package Option_Description_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(Option_Description_Record, Option_Description_Record_Access);
 
-   type Option_Description_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
+   type Option_Description_Type_Without_Finalize is new Option_Description_Handled_Record.Base_Object with null record;
 
-   subtype Option_Description_Handle is Handled_Record.Access_Type;
+   subtype Option_Description_Handle is Option_Description_Handled_Record.Access_Type;
 
    function Get_Domain (Description: Option_Description_Type_Without_Finalize) return Domain_Type;
 

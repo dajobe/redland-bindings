@@ -4,11 +4,11 @@ with RDF.Auxiliary.Limited_Handled_Record;
 
 package RDF.Raptor.World is
 
-   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
+   package Raptor_World_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   type Raptor_World_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
+   type Raptor_World_Type_Without_Finalize is new Raptor_World_Handled_Record.Base_Object with null record;
 
-   subtype Raptor_World_Handle is Handled_Record.Access_Type;
+   subtype Raptor_World_Handle is Raptor_World_Handled_Record.Access_Type;
 
    type Raptor_Flag_Type is (Libxml_Error_Save,
                       Libxml_Structured_Error_Save,

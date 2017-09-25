@@ -15,11 +15,11 @@ with RDF.Raptor.Options; use RDF.Raptor.Options;
 
 package RDF.Raptor.Parser is
 
-   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
+   package Parser_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype Parser_Handle is Handled_Record.Access_Type;
+   subtype Parser_Handle is Parser_Handled_Record.Access_Type;
 
-   type Parser_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
+   type Parser_Type_Without_Finalize is new Parser_Handled_Record.Base_Object with null record;
 
    type Graph_Mark_Flags is (Graph_Mark_Start, Graph_Mark_Declared);
    for Graph_Mark_Flags'Size use int'Size; -- hack

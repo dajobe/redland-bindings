@@ -18,11 +18,11 @@ package RDF.Raptor.IOStream is
 
    IOStream_Exception: exception;
 
-   package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
+   package IOStream_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype IOStream_Handle is Handled_Record.Access_Type;
+   subtype IOStream_Handle is IOStream_Handled_Record.Access_Type;
 
-   type Base_Stream_Type is new Handled_Record.Base_Object with null record;
+   type Base_Stream_Type is new IOStream_Handled_Record.Base_Object with null record;
 
    procedure Hexadecimal_Write (Value: Natural; Width: Natural; Stream: Base_Stream_Type);
 
