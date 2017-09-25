@@ -11,12 +11,12 @@ package body RDF.Rasqal.Syntaxes is
                                                                return Rasqal_Syntax_Description_Access
       with Import, Convention=>C;
 
-   function Get_Query_Language_Description (World: Rasqal_World_Type; Counter: Unsigned) return Rasqal_Syntax_Description_Type is
+   function Get_Query_Language_Description (World: Rasqal_World_Type_Without_Finalize; Counter: Unsigned) return Rasqal_Syntax_Description_Type is
    begin
       return rasqal_world_get_query_language_description(Get_Handle(World), Counter).all;
    end;
 
-   function Get_Query_Results_Format_Description (World: Rasqal_World_Type; Counter: Unsigned) return Rasqal_Syntax_Description_Type is
+   function Get_Query_Results_Format_Description (World: Rasqal_World_Type_Without_Finalize; Counter: Unsigned) return Rasqal_Syntax_Description_Type is
    begin
       return rasqal_world_get_query_results_format_description(Get_Handle(World), Counter).all;
    end;
