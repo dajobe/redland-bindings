@@ -1,6 +1,6 @@
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
-with RDF.Raptor.URI;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream;
 with RDF.Rasqal.World;
 with RDF.Rasqal.Features;
@@ -28,7 +28,7 @@ package RDF.Rasqal.Query is
 
    not overriding procedure Prepare (Query: Query_Type_Without_Finalize;
                                      Query_String: String;
-                                     Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := RDF.Raptor.URI.From_Handle(null));
+                                     Base_URI: URI_Type_Without_Finalize := From_Handle(null));
 
    not overriding procedure Set_Store_Results (Query: Query_Type_Without_Finalize; Store: Boolean);
 
@@ -36,7 +36,7 @@ package RDF.Rasqal.Query is
 
    not overriding procedure Write_Query (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                                          Query: Query_Type_Without_Finalize;
-                                         Format_URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+                                         Format_URI, Base_URI: URI_Type_Without_Finalize);
 
    -- Is it really useful? Maybe remove from public API?
    not overriding procedure Write_Escaped_String (Query: Query_Type_Without_Finalize;

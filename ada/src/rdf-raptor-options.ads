@@ -141,7 +141,7 @@ package RDF.Raptor.Options is
    not overriding function Get_Option_Description (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Raptor_Option)
                                                    return Option_Description_Type;
 
-   function Option_From_URI (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type'Class) return Raptor_Option;
+   function Option_From_URI (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; URI: URI_Type'Class) return Raptor_Option;
 
 private
 
@@ -153,7 +153,7 @@ private
          Name: chars_ptr;
          Len: size_t;
          Label: chars_ptr;
-         URI: RDF.Raptor.URI.URI_Handle;
+         URI: URI_Handle;
       end record
       with Convention => C;
 

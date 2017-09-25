@@ -27,7 +27,7 @@ package body RDF.Raptor.Namespace is
 
    function raptor_new_namespace_from_uri (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
                                              Prefix: char_array;
-                                             URI: RDF.Raptor.URI.URI_Handle)
+                                             URI: URI_Handle)
                                              return Namespace_Handle
      with Import, Convention=>C;
 
@@ -48,7 +48,7 @@ package body RDF.Raptor.Namespace is
       raptor_free_namespace(Handle);
    end;
 
-   function raptor_namespace_get_uri (Handle: Namespace_Handle) return RDF.Raptor.URI.URI_Handle
+   function raptor_namespace_get_uri (Handle: Namespace_Handle) return URI_Handle
      with Import, Convention=>C;
 
    -- raptor_namespace_get_uri() may return NULL (for xmlns="")

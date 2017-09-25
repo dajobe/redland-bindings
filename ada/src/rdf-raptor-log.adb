@@ -120,11 +120,11 @@ package body RDF.Raptor.Log is
       end;
    end;
 
-   procedure raptor_free_uri (Handle: RDF.Raptor.URI.URI_Handle)
+   procedure raptor_free_uri (Handle: URI_Handle)
      with Import, Convention=>C;
 
-   function raptor_uri_copy (Handle: RDF.Raptor.URI.URI_Handle)
-                               return RDF.Raptor.URI.URI_Handle
+   function raptor_uri_copy (Handle: URI_Handle)
+                               return URI_Handle
    with Import, Convention=>C;
 
    procedure Finalize_Locator (Handle: Locator_Handle) is

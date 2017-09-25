@@ -8,7 +8,7 @@ with RDF.Raptor.Options;
 package body RDF.Raptor.Serializer is
 
    function raptor_serializer_start_to_iostream (Serializer: Serializer_Handle;
-                                                 URI: RDF.Raptor.URI.URI_Handle;
+                                                 URI: URI_Handle;
                                                  Iostream: RDF.Raptor.Iostream.IOStream_Handle)
                                                  return int
       with Import, Convention=>C;
@@ -33,7 +33,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_start_to_file_handle (Serializer: Serializer_Handle; URI: RDF.Raptor.URI.URI_Handle;  FH: RDF.Auxiliary.C_File_Access)
+   function raptor_serializer_start_to_file_handle (Serializer: Serializer_Handle; URI: URI_Handle;  FH: RDF.Auxiliary.C_File_Access)
                                                     return int
       with Import, Convention=>C;
 
@@ -46,7 +46,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_set_namespace (Serializer: Serializer_Handle; URI: RDF.Raptor.URI.URI_Handle; Prefix: chars_ptr) return int
+   function raptor_serializer_set_namespace (Serializer: Serializer_Handle; URI: URI_Handle; Prefix: chars_ptr) return int
       with Import, Convention=>C;
 
    procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;

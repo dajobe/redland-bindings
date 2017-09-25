@@ -113,7 +113,7 @@ package body RDF.Rasqal.Literal is
    function rasqal_new_string_literal (World: RDF.Rasqal.World.Rasqal_World_Handle;
                                        Value: chars_ptr;
                                        Language: chars_ptr;
-                                       Datatype: RDF.Raptor.URI.URI_Handle;
+                                       Datatype: URI_Handle;
                                        Datatype_Qname: chars_ptr)
                                        return Literal_Handle
      with Import, Convention=>C;
@@ -121,7 +121,7 @@ package body RDF.Rasqal.Literal is
    function New_String_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                 Value: String;
                                 Language: RDF.Auxiliary.String_Holders.Holder;
-                                Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize)
+                                Datatype: URI_Type_Without_Finalize)
                                 return Literal_Type is
       use RDF.Rasqal.World, RDF.Raptor.URI;
    begin
@@ -163,12 +163,12 @@ package body RDF.Rasqal.Literal is
    end;
 
    function rasqal_new_uri_literal (World: RDF.Rasqal.World.Rasqal_World_Handle;
-                                    Value: RDF.Raptor.URI.URI_Handle)
+                                    Value: URI_Handle)
                                     return Literal_Handle
      with Import, Convention=>C;
 
    function From_URI (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
-                      Value: RDF.Raptor.URI.URI_Type_Without_Finalize)
+                      Value: URI_Type_Without_Finalize)
                       return Literal_Type is
       use RDF.Rasqal.World, RDF.Raptor.URI;
    begin
@@ -238,11 +238,11 @@ package body RDF.Rasqal.Literal is
       return Sign(rasqal_literal_compare(Get_Handle(Left), Get_Handle(Right),  Compare_Flags'Pos(Flags), Error'Unchecked_Access));
    end;
 
-   function rasqal_literal_datatype (Literal: Literal_Handle) return RDF.Raptor.URI.URI_Handle
+   function rasqal_literal_datatype (Literal: Literal_Handle) return URI_Handle
      with Import, Convention=>C;
 
    function Get_Datatype (Literal: Literal_Type_Without_Finalize)
-                          return RDF.Raptor.URI.URI_Type_Without_Finalize is
+                          return URI_Type_Without_Finalize is
       use RDF.Raptor.URI;
    begin
       return From_Handle(rasqal_literal_datatype(Get_Handle(Literal)));

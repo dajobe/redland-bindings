@@ -6,7 +6,7 @@ with RDF.Raptor.World;
 
 package body RDF.Rasqal.Features is
 
-   function rasqal_feature_from_uri (World: RDF.Rasqal.World.Rasqal_World_Handle; URI: RDF.Raptor.URI.URI_Handle) return Feature_Type
+   function rasqal_feature_from_uri (World: RDF.Rasqal.World.Rasqal_World_Handle; URI: URI_Handle) return Feature_Type
       with Import, Convention=>C;
 
    function Feature_From_URI (World: Rasqal_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class) return Feature_Type is
@@ -31,7 +31,7 @@ package body RDF.Rasqal.Features is
    end;
 
    type String_P_Type is access all chars_ptr with Convention=>C;
-   type URI_P_Type is access all RDF.Raptor.URI.URI_Handle with Convention=>C;
+   type URI_P_Type is access all URI_Handle with Convention=>C;
 
    function rasqal_features_enumerate (World: RDF.Raptor.World.Raptor_World_Handle;
                                        Feature: Feature_Type;
@@ -43,7 +43,7 @@ package body RDF.Rasqal.Features is
 
    function Get_Feature_Description (World: Rasqal_World_Type_Without_Finalize'Class; Feature: Feature_Type) return Feature_Description is
       Name, Label: aliased chars_ptr;
-      URI: aliased RDF.Raptor.URI.URI_Handle;
+      URI: aliased URI_Handle;
    begin
       if rasqal_features_enumerate(Get_Handle(World), Feature, Name'Unchecked_Access, URI'Unchecked_Access, Label'Unchecked_Access) /= 0
       then

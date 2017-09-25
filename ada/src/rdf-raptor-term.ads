@@ -50,7 +50,7 @@ package RDF.Raptor.Term is
    not overriding function Value (Literal: Term_Literal_Value) return String;
 
    -- The returned URI may be null.
-   not overriding function Datatype (Literal: Term_Literal_Value) return RDF.Raptor.URI.URI_Type_Without_Finalize;
+   not overriding function Datatype (Literal: Term_Literal_Value) return URI_Type_Without_Finalize;
 
    -- Return the language tag or empty string if there are none
    not overriding function Language (Literal: Term_Literal_Value) return String;
@@ -85,13 +85,13 @@ package RDF.Raptor.Term is
 
    not overriding function From_Literal (World   : Raptor_World_Type_Without_Finalize'Class;
                                          Literal : RDF.Auxiliary.String_Holders.Holder;
-                                         Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                         Datatype: URI_Type_Without_Finalize'Class;
                                          Language: RDF.Auxiliary.String_Holders.Holder)
                                          return Term_Type;
 
    not overriding function From_URI_String (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_String) return Term_Type;
 
-   not overriding function From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+   not overriding function From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class)
                                      return Term_Type;
 
    not overriding function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String) return Term_Type;
@@ -106,7 +106,7 @@ private
       record
          str: chars_ptr;
          Len: unsigned;
-         Datatype: RDF.Raptor.URI.URI_Handle;
+         Datatype: URI_Handle;
          Language: chars_ptr;
          Language_Len: unsigned;
       end record
@@ -123,7 +123,7 @@ private
       record
          case Kind is
             when Unknown => null;
-            when URI     => URI: RDF.Raptor.URI.URI_Handle;
+            when URI     => URI: URI_Handle;
             when Literal => Literal: Term_Literal_Value;
             when Blank   => Blank: Term_Blank_Value;
          end case;

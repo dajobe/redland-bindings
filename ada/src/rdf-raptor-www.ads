@@ -1,6 +1,6 @@
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.World;
-with RDF.Raptor.URI;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
 
 package RDF.Raptor.WWW is
 
@@ -24,11 +24,11 @@ package RDF.Raptor.WWW is
 
    not overriding procedure Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize; Value: String) is null;
    not overriding procedure Content_Type_Handler (WWW: WWW_Type_Without_Finalize; Content_Type: String) is null;
-   not overriding procedure Final_URI_Handler (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is null;
+   not overriding procedure Final_URI_Handler (WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize) is null;
 
    -- Return False to disallow loading an URI
    not overriding function URI_Filter (WWW: WWW_Type_Without_Finalize;
-                                       URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                                       URI: URI_Type_Without_Finalize'Class)
                                        return Boolean is (True);
 
    -- Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
@@ -47,11 +47,11 @@ package RDF.Raptor.WWW is
 
    not overriding procedure Set_Connection_Timeout (WWW: WWW_Type_Without_Finalize; Timeout: Natural);
 
-   not overriding function Get_Final_URI (WWW: WWW_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type;
+   not overriding function Get_Final_URI (WWW: WWW_Type_Without_Finalize) return URI_Type;
 
-   not overriding procedure Fetch (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+   not overriding procedure Fetch (WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize);
 
-   not overriding function Fetch_To_String (WWW: WWW_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize) return String;
+   not overriding function Fetch_To_String (WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize) return String;
 
    not overriding function Get_Connection (WWW: WWW_Type_Without_Finalize) return Connection_Type;
 

@@ -77,11 +77,11 @@ package body RDF.Raptor.Options is
       raptor_world_get_option_description(Handle);
    end;
 
-   function raptor_world_get_option_from_uri (World: RDF.Raptor.World.Raptor_World_Handle; URI: RDF.Raptor.URI.URI_Handle) return Raptor_Option
+   function raptor_world_get_option_from_uri (World: RDF.Raptor.World.Raptor_World_Handle; URI: URI_Handle) return Raptor_Option
      with Import, Convention=>C;
 
    -- Crude hack
-   function Option_From_URI (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type'Class) return Raptor_Option is
+   function Option_From_URI (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; URI: URI_Type'Class) return Raptor_Option is
       Result: constant Raptor_Option'Base := raptor_world_get_option_from_uri(Get_Handle(World), Get_Handle(URI));
    begin
       if not Result'Valid then

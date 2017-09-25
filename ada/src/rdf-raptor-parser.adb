@@ -25,7 +25,7 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_new_parser_for_content (World: RDF.Raptor.World.Raptor_World_Handle;
-                                             URI: RDF.Raptor.URI.URI_Handle;
+                                             URI: URI_Handle;
                                              MIME_Type: chars_ptr;
                                              Buffer: chars_ptr;
                                              Len: size_t;
@@ -33,7 +33,7 @@ package body RDF.Raptor.Parser is
      with Import, Convention=>C;
 
    function Create_From_Content (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class;
-                                 URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                 URI: URI_Type_Without_Finalize'Class;
                                  Mime_Type : String_Holders.Holder;
                                  Buffer    : String_Holders.Holder;
                                  Identifier: String_Holders.Holder)
@@ -82,12 +82,12 @@ package body RDF.Raptor.Parser is
       end if;
    end;
 
-   function raptor_parser_parse_file (Parser: Parser_Handle; URI, Base_URI: RDF.Raptor.URI.URI_Handle) return int
+   function raptor_parser_parse_file (Parser: Parser_Handle; URI, Base_URI: URI_Handle) return int
       with Import, Convention=>C;
 
    procedure Parse_File (Parser: Parser_Type_Without_Finalize;
-                         URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                         Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null)) is
+                         URI: URI_Type_Without_Finalize;
+                         Base_URI: URI_Type_Without_Finalize := From_Handle(null)) is
    begin
       if raptor_parser_parse_file(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -95,7 +95,7 @@ package body RDF.Raptor.Parser is
    end;
 
    procedure Parse_Stdin (Parser: Parser_Type_Without_Finalize;
-                          Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null)) is
+                          Base_URI: URI_Type_Without_Finalize := From_Handle(null)) is
    begin
       Parse_File (Parser, From_Handle(null), Base_URI);
    end;
@@ -103,13 +103,13 @@ package body RDF.Raptor.Parser is
    function raptor_parser_parse_file_stream (Parser: Parser_Handle;
                                                Stream: RDF.Auxiliary.C_File_Access;
                                                Filename: char_array;
-                                               Base_URI: RDF.Raptor.URI.URI_Handle) return int
+                                               Base_URI: URI_Handle) return int
       with Import, Convention=>C;
 
    procedure Parse_File_Stream (Parser: Parser_Type_Without_Finalize;
                                 Stream: RDF.Auxiliary.C_File_Access;
                                 Filename: String;
-                                Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+                                Base_URI: URI_Type_Without_Finalize) is
    begin
       if raptor_parser_parse_file_stream(Get_Handle(Parser), Stream, To_C(Filename), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -118,12 +118,12 @@ package body RDF.Raptor.Parser is
 
    function raptor_parser_parse_iostream (Parser: Parser_Handle;
                                             Stream: RDF.Raptor.IOStream.IOStream_Handle;
-                                            Base_URI: RDF.Raptor.URI.URI_Handle) return int
+                                            Base_URI: URI_Handle) return int
       with Import, Convention=>C;
 
    procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
                              Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
-                             Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+                             Base_URI: URI_Type_Without_Finalize) is
       use RDF.Raptor.IOStream;
    begin
       if raptor_parser_parse_iostream(Get_Handle(Parser), Get_Handle(Stream), Get_Handle(Base_URI)) /= 0 then
@@ -131,10 +131,10 @@ package body RDF.Raptor.Parser is
       end if;
    end;
 
-   function raptor_parser_parse_start (Parser: Parser_Handle; URI: RDF.Raptor.URI.URI_Handle) return int
+   function raptor_parser_parse_start (Parser: Parser_Handle; URI: URI_Handle) return int
       with Import, Convention=>C;
 
-   procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+   procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: URI_Type_Without_Finalize) is
    begin
       if raptor_parser_parse_start(Get_Handle(Parser), Get_Handle(URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -142,12 +142,12 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_parse_uri (Parser: Parser_Handle;
-                                     URI, Base_URI: RDF.Raptor.URI.URI_Handle) return int
+                                     URI, Base_URI: URI_Handle) return int
       with Import, Convention=>C;
 
    procedure Parse_URI (Parser: Parser_Type_Without_Finalize;
-                        URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null)) is
+                        URI: URI_Type_Without_Finalize;
+                        Base_URI: URI_Type_Without_Finalize := From_Handle(null)) is
    begin
       if raptor_parser_parse_uri(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -155,14 +155,14 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_parse_uri_with_connection (Parser: Parser_Handle;
-                                                     URI, Base_URI: RDF.Raptor.URI.URI_Handle;
+                                                     URI, Base_URI: URI_Handle;
                                                      Connection: RDF.Raptor.WWW.Connection_Type)
                                                      return int
       with Import, Convention=>C;
 
    procedure Parse_URI_With_Connection (Parser: Parser_Type_Without_Finalize;
-                                        URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null);
+                                        URI: URI_Type_Without_Finalize;
+                                        Base_URI: URI_Type_Without_Finalize := From_Handle(null);
                                         Connection: RDF.Raptor.WWW.Connection_Type := null) is
    begin
       if raptor_parser_parse_uri_with_connection(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI), Connection) /= 0 then
@@ -170,10 +170,10 @@ package body RDF.Raptor.Parser is
       end if;
    end;
 
-   function raptor_parser_get_graph (Parser: Parser_Handle) return RDF.Raptor.URI.URI_Handle
+   function raptor_parser_get_graph (Parser: Parser_Handle) return URI_Handle
          with Import, Convention=>C;
 
-   function Get_Graph (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type is
+   function Get_Graph (Parser: Parser_Type_Without_Finalize) return URI_Type is
    begin
       return From_Handle(raptor_parser_get_graph(Get_Handle(Parser)));
    end;
@@ -273,25 +273,25 @@ package body RDF.Raptor.Parser is
    type raptor_statement_handler is access procedure (Data: chars_ptr; Statement: RDF.Raptor.Statement.Statement_Handle)
      with Convention=>C;
 
-   type raptor_graph_mark_handler is access procedure (Data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle; Flags: int)
+   type raptor_graph_mark_handler is access procedure (Data: chars_ptr; URI: URI_Handle; Flags: int)
      with Convention=>C;
 
    type raptor_namespace_handler is access procedure (Data: chars_ptr; NS: RDF.Raptor.Namespace.Namespace_Handle)
      with Convention=>C;
 
-   type raptor_uri_filter_func is access function (Data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle) return int
+   type raptor_uri_filter_func is access function (Data: chars_ptr; URI: URI_Handle) return int
      with Convention=>C;
 
    procedure raptor_statement_handler_impl (Data: Chars_Ptr; Statement: RDF.Raptor.Statement.Statement_Handle)
      with Convention=>C;
 
-   procedure raptor_graph_mark_handler_impl (Data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle; Flags: int)
+   procedure raptor_graph_mark_handler_impl (Data: chars_ptr; URI: URI_Handle; Flags: int)
      with Convention=>C;
 
    procedure raptor_namespace_handler_impl (Data: Chars_Ptr; NS: RDF.Raptor.Namespace.Namespace_Handle)
      with Convention=>C;
 
-   function raptor_uri_filter_impl (Data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle) return int
+   function raptor_uri_filter_impl (Data: chars_ptr; URI: URI_Handle) return int
      with Convention=>C;
 
    procedure raptor_statement_handler_impl (Data: Chars_Ptr; Statement: RDF.Raptor.Statement.Statement_Handle) is
@@ -299,7 +299,7 @@ package body RDF.Raptor.Parser is
       Statement_Handler(Ptr_To_Obj(Data).all, Statement_Type_Without_Finalize'(From_Non_Null_Handle(Statement)));
    end;
 
-   procedure raptor_graph_mark_handler_impl (Data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle; Flags: int) is
+   procedure raptor_graph_mark_handler_impl (Data: chars_ptr; URI: URI_Handle; Flags: int) is
       function Conv is new Ada.Unchecked_Conversion(int, Graph_Mark_Flags);
    begin
       Graph_Mark_Handler(Ptr_To_Obj(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI)), Conv(Flags));
@@ -310,7 +310,7 @@ package body RDF.Raptor.Parser is
       Namespace_Handler(Ptr_To_Obj(Data).all, Namespace_Type_Without_Finalize'(From_Non_Null_Handle(NS)));
    end;
 
-   function raptor_uri_filter_impl (Data: chars_ptr; URI: RDF.Raptor.URI.URI_Handle) return int is
+   function raptor_uri_filter_impl (Data: chars_ptr; URI: URI_Handle) return int is
    begin
       return (if URI_Filter(Ptr_To_Obj(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI))) then 1 else 0);
    end;

@@ -20,9 +20,9 @@ package RDF.Rasqal.Data_Graph is
 
    function Get_World (Graph: Data_Graph_Type_Without_Finalize) return RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
 
-   function Get_URI (Graph: Data_Graph_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type_Without_Finalize;
+   function Get_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type_Without_Finalize;
 
-   function Get_Name_URI (Graph: Data_Graph_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type_Without_Finalize;
+   function Get_Name_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type_Without_Finalize;
 
    type Flags_Type is (None, -- unused
                        Named,
@@ -35,11 +35,11 @@ package RDF.Rasqal.Data_Graph is
 
    function Get_Format_Name (Graph: Data_Graph_Type_Without_Finalize) return String;
 
-   function Get_Format_URI (Graph: Data_Graph_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type;
+   function Get_Format_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type;
 
    function Get_Iostream (Graph: Data_Graph_Type_Without_Finalize) return RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
 
-   function Get_Base_URI (Graph: Data_Graph_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type;
+   function Get_Base_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type;
 
    function Get_Usage_Count (Graph: Data_Graph_Type_Without_Finalize) return Natural;
 
@@ -55,18 +55,18 @@ package RDF.Rasqal.Data_Graph is
 
    not overriding function From_IOStream (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
                                           IOStream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
-                                          Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
-                                          Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
+                                          Base_URI: URI_Type_Without_Finalize'Class;
+                                          Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
                                           Flags: Flags_Type := Background;
                                           Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
-                                          Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
+                                          Format_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
                                           return Data_Graph_Type;
 
    not overriding function From_URI (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
-                                     URI, Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                     URI, Name_URI: URI_Type_Without_Finalize'Class;
                                      Flags: Flags_Type;
                                      Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder;
-                                     Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
+                                     Format_URI: URI_Type_Without_Finalize'Class)
                                      return Data_Graph_Type;
 
 --     type Streamed_Data_Graph_Type is new Data_Graph_Type with private;
@@ -75,21 +75,21 @@ package RDF.Rasqal.Data_Graph is
 --     -- Not binding, but a wrapper
 --     not overriding function From_File (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
 --                                        Filename: String;
---                                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
---                                        Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
+--                                        Base_URI: URI_Type_Without_Finalize'Class;
+--                                        Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
 --                                        Flags: Flags_Type := Background;
 --                                        Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
---                                        Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
+--                                        Format_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
 --                                        return Streamed_Data_Graph_Type;
 --
 --     -- Not binding, but a wrapper
 --     not overriding function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
 --                                          Str: String;
---                                          Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
---                                          Name_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
+--                                          Base_URI: URI_Type_Without_Finalize'Class;
+--                                          Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
 --                                          Flags: Flags_Type := Background;
 --                                          Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
---                                          Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
+--                                          Format_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
 --                                          return Streamed_Data_Graph_Type;
 
 private
@@ -97,12 +97,12 @@ private
    type Data_Graph_Record is
       record
          World: RDF.Rasqal.World.Rasqal_World_Handle;
-         URI, Name_URI: RDF.Raptor.URI.URI_Handle;
+         URI, Name_URI: URI_Handle;
          Flags: unsigned;
          Format_Type, Format_Name: chars_ptr;
-         Format_URI: RDF.Raptor.URI.URI_Handle;
+         Format_URI: URI_Handle;
          IOStr: RDF.Raptor.IOStream.IOStream_Handle;
-         Base_URI: RDF.Raptor.URI.URI_Handle;
+         Base_URI: URI_Handle;
          Usage: int;
       end record
      with Convention=>C;

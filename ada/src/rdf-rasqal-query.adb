@@ -36,13 +36,13 @@ package body RDF.Rasqal.Query is
       return From_Non_Null_Handle(rasqal_query_execute(Get_Handle(Query)));
    end;
 
-   function rasqal_query_prepare (Query: Query_Handle; Query_String: char_array; Base_URI: RDF.Raptor.URI.URI_Handle)
+   function rasqal_query_prepare (Query: Query_Handle; Query_String: char_array; Base_URI: URI_Handle)
                                   return int
      with Import, Convention=>C;
 
    procedure Prepare (Query: Query_Type_Without_Finalize;
                       Query_String: String;
-                      Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := RDF.Raptor.URI.From_Handle(null)) is
+                      Base_URI: URI_Type_Without_Finalize := From_Handle(null)) is
       use RDF.Raptor.URI;
    begin
       if rasqal_query_prepare(Get_Handle(Query), To_C(Query_String), Get_Handle(Base_URI)) /= 0 then
@@ -70,13 +70,13 @@ package body RDF.Rasqal.Query is
 
    function rasqal_query_write (Stream: RDF.Raptor.IOStream.IOStream_Handle;
                                 Query: Query_Handle;
-                                Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle)
+                                Format_URI, Base_URI: URI_Handle)
                                 return Int
      with Import, Convention=>C;
 
    procedure Write_Query (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                           Query: Query_Type_Without_Finalize;
-                          Format_URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+                          Format_URI, Base_URI: URI_Type_Without_Finalize) is
       use RDF.Raptor.IOStream, RDF.Raptor.URI;
    begin
       if rasqal_query_write(Get_Handle(Stream), Get_Handle(Query), Get_Handle(Format_URI), Get_Handle(Base_URI)) /= 0 then

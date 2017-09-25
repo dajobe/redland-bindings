@@ -1,7 +1,7 @@
 with Ada.Iterator_Interfaces;
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
-with RDF.Raptor.URI;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Statement;
 with RDF.Raptor.IOStream;
 with RDF.Rasqal.World;
@@ -75,15 +75,15 @@ package RDF.Rasqal.Query_Results is
                                   Results: Query_Results_Type_Without_Finalize;
                                   Format_Name: String; -- "" for no format name
                                   Mime_Type: String; -- "" for no MIME type
-                                  Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                                  Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+                                  Format_URI: URI_Type_Without_Finalize;
+                                  Base_URI: URI_Type_Without_Finalize);
 
    not overriding procedure Write (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
                                    Results: Query_Results_Type_Without_Finalize;
                                    Format_Name: String; -- "" for no format name
                                    Mime_Type: String; -- "" for no MIME type
-                                   Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                                   Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+                                   Format_URI: URI_Type_Without_Finalize;
+                                   Base_URI: URI_Type_Without_Finalize);
 
    not overriding function Type_Label (Kind: Query_Results_Type_Enum) return String;
 
@@ -101,7 +101,7 @@ package RDF.Rasqal.Query_Results is
    -- TODO: Not supported as of Rasqal 0.9.32
 --     not overriding function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
 --                                          Kind: Query_Results_Type_Enum;
---                                          Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+--                                          Base_URI: URI_Type_Without_Finalize;
 --                                          Value: String)
 --                                          return Query_Results_Type;
 

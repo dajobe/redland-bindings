@@ -1,7 +1,7 @@
 with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary.Handled_Record;
 with RDF.Rasqal.World;
-with RDF.Raptor.URI;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Auxiliary; use RDF.Auxiliary;
 use RDF.Auxiliary.String_Holders;
 
@@ -60,7 +60,7 @@ package RDF.Rasqal.Literal is
                                     return RDF.Auxiliary.Comparison_Result;
 
    not overriding function Get_Datatype (Literal: Literal_Type_Without_Finalize)
-                                         return RDF.Raptor.URI.URI_Type_Without_Finalize;
+                                         return URI_Type_Without_Finalize;
 
    -- TODO: Not supported as of Rasqal 0.9.32
 --     not overriding function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder;
@@ -134,7 +134,7 @@ package RDF.Rasqal.Literal is
    not overriding function New_String_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                                Value: String;
                                                Language: RDF.Auxiliary.String_Holders.Holder;
-                                               Datatype: RDF.Raptor.URI.URI_Type_Without_Finalize)
+                                               Datatype: URI_Type_Without_Finalize)
                                                return Literal_Type;
 
    not overriding function New_String_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
@@ -154,7 +154,7 @@ package RDF.Rasqal.Literal is
      is (New_String_Literal(World, Value));
 
    not overriding function From_URI (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
-                                     Value: RDF.Raptor.URI.URI_Type_Without_Finalize)
+                                     Value: URI_Type_Without_Finalize)
                                      return Literal_Type;
 
    not overriding function Value (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type;

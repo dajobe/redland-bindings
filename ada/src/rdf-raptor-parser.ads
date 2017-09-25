@@ -34,7 +34,7 @@ package RDF.Raptor.Parser is
    not overriding procedure Initialize_URI_Filter         (Object: Parser_Type_Without_Finalize);
 
    not overriding procedure Graph_Mark_Handler (Object: Parser_Type_Without_Finalize;
-                                                URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                                URI: URI_Type_Without_Finalize'Class;
                                                 Flags: Graph_Mark_Flags) is null;
 
    not overriding procedure Statement_Handler (Object: Parser_Type_Without_Finalize;
@@ -44,7 +44,7 @@ package RDF.Raptor.Parser is
                                                Namespace: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize'Class) is null;
 
    not overriding function URI_Filter (Object: Parser_Type_Without_Finalize;
-                                       URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class) return Boolean is (True);
+                                       URI: URI_Type_Without_Finalize'Class) return Boolean is (True);
 
    not overriding function Get_Locator (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type;
 
@@ -55,33 +55,33 @@ package RDF.Raptor.Parser is
                                          Is_End: Boolean);
 
    not overriding procedure Parse_File (Parser: Parser_Type_Without_Finalize;
-                                        URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                                        Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null));
+                                        URI: URI_Type_Without_Finalize;
+                                        Base_URI: URI_Type_Without_Finalize := From_Handle(null));
 
    not overriding procedure Parse_Stdin (Parser: Parser_Type_Without_Finalize;
-                                         Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null));
+                                         Base_URI: URI_Type_Without_Finalize := From_Handle(null));
 
    not overriding procedure Parse_File_Stream (Parser: Parser_Type_Without_Finalize;
                                                Stream: RDF.Auxiliary.C_File_Access;
                                                Filename: String;
-                                               Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+                                               Base_URI: URI_Type_Without_Finalize);
 
    not overriding procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
                                             Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
-                                            Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+                                            Base_URI: URI_Type_Without_Finalize);
 
-   not overriding procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: RDF.Raptor.URI.URI_Type_Without_Finalize);
+   not overriding procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: URI_Type_Without_Finalize);
 
    not overriding procedure Parse_URI (Parser: Parser_Type_Without_Finalize;
-                                       URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                                       Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null));
+                                       URI: URI_Type_Without_Finalize;
+                                       Base_URI: URI_Type_Without_Finalize := From_Handle(null));
 
    not overriding procedure Parse_URI_With_Connection (Parser: Parser_Type_Without_Finalize;
-                                                       URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                                                       Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize := From_Handle(null);
+                                                       URI: URI_Type_Without_Finalize;
+                                                       Base_URI: URI_Type_Without_Finalize := From_Handle(null);
                                                        Connection: RDF.Raptor.WWW.Connection_Type := null);
 
-   not overriding function Get_Graph (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.URI.URI_Type;
+   not overriding function Get_Graph (Parser: Parser_Type_Without_Finalize) return URI_Type;
 
    not overriding function Get_Description (Parser: Parser_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type;
 
@@ -108,7 +108,7 @@ package RDF.Raptor.Parser is
    not overriding function Create (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Name: String) return Parser_Type;
 
    not overriding function Create_From_Content (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class;
-                                                URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
+                                                URI: URI_Type_Without_Finalize'Class;
                                                 Mime_Type: String_Holders.Holder;
                                                 Buffer: String_Holders.Holder;
                                                 Identifier: String_Holders.Holder)

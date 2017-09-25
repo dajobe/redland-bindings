@@ -97,7 +97,7 @@ package body RDF.Raptor.Namespace_Stack is
    end;
 
    function raptor_namespaces_find_namespace_by_uri (Stack: Namespace_Stack_Handle;
-                                                       URI: RDF.Raptor.URI.URI_Handle)
+                                                       URI: URI_Handle)
                                                        return Namespace_Handle
      with Import, Convention=>C;
 

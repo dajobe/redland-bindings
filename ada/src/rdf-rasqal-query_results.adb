@@ -174,7 +174,7 @@ package body RDF.Rasqal.Query_Results is
    function rasqal_query_results_read (Stream: RDF.Raptor.IOStream.IOStream_Handle;
                                        Results: Query_Results_Handle;
                                        Name, Mime_Type: chars_ptr;
-                                       Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle)
+                                       Format_URI, Base_URI: URI_Handle)
                                        return Int
      with Import, Convention=>C;
 
@@ -182,8 +182,8 @@ package body RDF.Rasqal.Query_Results is
                    Results: Query_Results_Type_Without_Finalize;
                    Format_Name: String; -- "" for no format name
                    Mime_Type: String; -- "" for no MIME type
-                   Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                   Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+                   Format_URI: URI_Type_Without_Finalize;
+                   Base_URI: URI_Type_Without_Finalize) is
       use RDF.Raptor.URI, RDF.Raptor.IOStream;
       Format_Name2: aliased char_array := To_C(Format_Name);
       Mime_Type2  : aliased char_array := To_C(Mime_Type);
@@ -202,7 +202,7 @@ package body RDF.Rasqal.Query_Results is
    function rasqal_query_results_write (Stream: RDF.Raptor.IOStream.IOStream_Handle;
                                         Results: Query_Results_Handle;
                                         Name, Mime_Type: Chars_Ptr;
-                                        Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle)
+                                        Format_URI, Base_URI: URI_Handle)
                                         return Int
      with Import, Convention=>C;
 
@@ -210,8 +210,8 @@ package body RDF.Rasqal.Query_Results is
                     Results: Query_Results_Type_Without_Finalize;
                     Format_Name: String; -- "" for no format name
                     Mime_Type: String; -- "" for no MIME type
-                    Format_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
-                    Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize) is
+                    Format_URI: URI_Type_Without_Finalize;
+                    Base_URI: URI_Type_Without_Finalize) is
       use RDF.Raptor.URI, RDF.Raptor.IOStream;
       Format_Name2: aliased char_array := To_C(Format_Name);
       Mime_Type2  : aliased char_array := To_C(Mime_Type);
@@ -291,7 +291,7 @@ package body RDF.Rasqal.Query_Results is
 
 --     function rasqal_new_query_results_from_string (World: RDF.Rasqal.World.Rasqal_World_Handle;
 --                                                    Kind: Query_Results_Type_Enum;
---                                                    Base_URI: RDF.Raptor.URI.Handle_Type;
+--                                                    Base_URI: Handle_Type;
 --                                                    Value: char_array;
 --                                                    Length: size_t)
 --                                                    return Query_Results_Handle
@@ -299,7 +299,7 @@ package body RDF.Rasqal.Query_Results is
 --
 --     function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
 --                           Kind: Query_Results_Type_Enum;
---                           Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize;
+--                           Base_URI: URI_Type_Without_Finalize;
 --                           Value: String)
 --                           return Query_Results_Type is
 --        use RDF.Rasqal.World, RDF.Raptor.URI;

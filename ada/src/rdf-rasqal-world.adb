@@ -81,7 +81,7 @@ package body RDF.Rasqal.World is
    end;
 
    function rasqal_world_guess_query_results_format_name (World: RDF.Rasqal.World.Rasqal_World_Handle;
-                                                          URI: RDF.Raptor.URI.URI_Handle;
+                                                          URI: URI_Handle;
                                                           Mime_Type: chars_ptr;
                                                           Buffer: chars_ptr;
                                                           Len: size_t;

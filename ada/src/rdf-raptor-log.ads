@@ -78,7 +78,7 @@ private
 
    type Locator_Type_Record is
       record
-         URI: RDF.Raptor.URI.URI_Handle;
+         URI: URI_Handle;
          File: chars_ptr;
          Line, Column, Byte: int;
       end record
