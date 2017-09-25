@@ -96,13 +96,13 @@ private
 
    type Data_Graph_Record is
       record
-         World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
-         URI, Name_URI: RDF.Raptor.URI.URI_Handle_Type;
+         World: RDF.Rasqal.World.Rasqal_World_Handle;
+         URI, Name_URI: RDF.Raptor.URI.URI_Handle;
          Flags: unsigned;
          Format_Type, Format_Name: chars_ptr;
-         Format_URI: RDF.Raptor.URI.URI_Handle_Type;
-         IOStr: RDF.Raptor.IOStream.IOStream_Handle_Type;
-         Base_URI: RDF.Raptor.URI.URI_Handle_Type;
+         Format_URI: RDF.Raptor.URI.URI_Handle;
+         IOStr: RDF.Raptor.IOStream.IOStream_Handle;
+         Base_URI: RDF.Raptor.URI.URI_Handle;
          Usage: int;
       end record
      with Convention=>C;

@@ -106,7 +106,7 @@ private
       record
          str: chars_ptr;
          Len: unsigned;
-         Datatype: RDF.Raptor.URI.URI_Handle_Type;
+         Datatype: RDF.Raptor.URI.URI_Handle;
          Language: chars_ptr;
          Language_Len: unsigned;
       end record
@@ -123,7 +123,7 @@ private
       record
          case Kind is
             when Unknown => null;
-            when URI     => URI: RDF.Raptor.URI.URI_Handle_Type;
+            when URI     => URI: RDF.Raptor.URI.URI_Handle;
             when Literal => Literal: Term_Literal_Value;
             when Blank   => Blank: Term_Blank_Value;
          end case;
@@ -132,7 +132,7 @@ private
 
    type Term_Record is
       record
-         World: RDF.Raptor.World.Raptor_World_Handle_Type;
+         World: RDF.Raptor.World.Raptor_World_Handle;
          Usage: Interfaces.C.int; -- intentionally not accessible from our Ada bindings
          Kind: Term_Kind;
          Value: Term_Value;

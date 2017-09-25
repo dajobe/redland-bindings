@@ -26,7 +26,7 @@ package body RDF.Raptor.Statement is
 --        return Is_Null(Term) or not (Term in RDF.Raptor.Term.Term_Type'Class);
 --     end;
 
-   function raptor_new_statement (World: RDF.Raptor.World.Raptor_World_Handle_Type)
+   function raptor_new_statement (World: RDF.Raptor.World.Raptor_World_Handle)
                                                   return Statement_Handle
      with Import, Convention=>C;
 
@@ -35,7 +35,7 @@ package body RDF.Raptor.Statement is
 --        return From_Non_Null_Handle( raptor_new_statement(Get_Handle(World)) );
 --     end;
 
-   function raptor_new_statement_from_nodes (World: RDF.Raptor.World.Raptor_World_Handle_Type; Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Handle)
+   function raptor_new_statement_from_nodes (World: RDF.Raptor.World.Raptor_World_Handle; Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Handle)
                                                return Statement_Handle
      with Import, Convention=>C;
 
@@ -115,7 +115,7 @@ package body RDF.Raptor.Statement is
       end if;
    end;
 
-   function raptor_statement_ntriples_write (Statement: Statement_Handle; Stream: RDF.Raptor.IOStream.IOStream_Handle_Type; Write_Graph_Term: int)
+   function raptor_statement_ntriples_write (Statement: Statement_Handle; Stream: RDF.Raptor.IOStream.IOStream_Handle; Write_Graph_Term: int)
                                                return Int
       with Import, Convention=>C;
 

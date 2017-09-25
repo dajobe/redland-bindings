@@ -13,7 +13,7 @@ package RDF.Raptor.Serializer is
 
    package Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype Serializer_Handle_Type is Handled_Record.Access_Type;
+   subtype Serializer_Handle is Handled_Record.Access_Type;
 
    type Serializer_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
 
@@ -69,6 +69,6 @@ package RDF.Raptor.Serializer is
    not overriding function New_Serializer (World: Raptor_World_Type) return Serializer_Type;
    not overriding function New_Serializer (World: Raptor_World_Type; Syntax_Name: String) return Serializer_Type;
 
-   overriding procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Serializer_Handle_Type);
+   overriding procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Serializer_Handle);
 
 end RDF.Raptor.Serializer;

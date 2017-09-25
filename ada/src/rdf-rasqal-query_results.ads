@@ -12,7 +12,7 @@ package RDF.Rasqal.Query_Results is
 
    package Query_Results_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype Query_Results_Handle_Type is Query_Results_Handled_Record.Access_Type;
+   subtype Query_Results_Handle is Query_Results_Handled_Record.Access_Type;
 
    type Query_Results_Type_Without_Finalize is new Query_Results_Handled_Record.Base_Object with null record;
 
@@ -91,7 +91,7 @@ package RDF.Rasqal.Query_Results is
 
    type Query_Results_Type is new Query_Results_Type_Without_Finalize with null record;
 
-   overriding procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle_Type);
+   overriding procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle);
 
    not overriding function New_Query_Results (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                               Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;

@@ -65,7 +65,7 @@ package body RDF.Raptor.Log is
       Log_Message(Ptr_To_Obj(Data).all, Msg);
    end;
 
-   function raptor_world_set_log_handler(World: RDF.Raptor.World.Raptor_World_Handle_Type; Data: chars_ptr; Handler: Log_Handler_Procedure_Type) return int
+   function raptor_world_set_log_handler(World: RDF.Raptor.World.Raptor_World_Handle; Data: chars_ptr; Handler: Log_Handler_Procedure_Type) return int
      with Import, Convention=>C;
 
    procedure Set_Log_Handler(World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Handler: access Log_Handler) is
@@ -91,7 +91,7 @@ package body RDF.Raptor.Log is
       return Value(raptor_domain_get_label(Level));
    end;
 
-   function raptor_locator_print (Locator: Locator_Handle_Type; Stream: RDF.Auxiliary.C_File_Access) return int
+   function raptor_locator_print (Locator: Locator_Handle; Stream: RDF.Auxiliary.C_File_Access) return int
      with Import, Convention=>C;
 
    procedure Print (Locator: Locator_Type; File: RDF.Auxiliary.C_File_Access) is
@@ -101,7 +101,7 @@ package body RDF.Raptor.Log is
       end if;
    end;
 
-   function raptor_locator_format (Buffer: chars_ptr; Length: size_t; Locator: Locator_Handle_Type) return int
+   function raptor_locator_format (Buffer: chars_ptr; Length: size_t; Locator: Locator_Handle) return int
      with Import, Convention=>C;
 
    function Format (Locator: Locator_Type) return String is
@@ -120,22 +120,22 @@ package body RDF.Raptor.Log is
       end;
    end;
 
-   procedure raptor_free_uri (Handle: RDF.Raptor.URI.URI_Handle_Type)
+   procedure raptor_free_uri (Handle: RDF.Raptor.URI.URI_Handle)
      with Import, Convention=>C;
 
-   function raptor_uri_copy (Handle: RDF.Raptor.URI.URI_Handle_Type)
-                               return RDF.Raptor.URI.URI_Handle_Type
+   function raptor_uri_copy (Handle: RDF.Raptor.URI.URI_Handle)
+                               return RDF.Raptor.URI.URI_Handle
    with Import, Convention=>C;
 
-   procedure Finalize_Locator (Handle: Locator_Handle_Type) is
-      function Conv is new Ada.Unchecked_Conversion(Locator_Handle_Type, Chars_Ptr);
+   procedure Finalize_Locator (Handle: Locator_Handle) is
+      function Conv is new Ada.Unchecked_Conversion(Locator_Handle, Chars_Ptr);
    begin
       Raptor_Free_Uri(Handle.URI);
       RDF.Raptor.Memory.Raptor_Free_Memory(Handle.File);
       RDF.Raptor.Memory.Raptor_Free_Memory(Conv(Handle));
    end;
 
-   procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle_Type) is
+   procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle) is
    begin
       Finalize_Locator(Handle);
    end;
@@ -146,7 +146,7 @@ package body RDF.Raptor.Log is
       Get_Handle(Object).File := RDF.Raptor.Memory.Copy_C_String(Get_Handle(Object).File);
    end;
 
-   procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle_Type) is
+   procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle) is
    begin
       RDF.Raptor.Memory.Raptor_Free_Memory(Get_Handle(Object).Text);
       Finalize_Locator(Get_Handle(Object).Locator);

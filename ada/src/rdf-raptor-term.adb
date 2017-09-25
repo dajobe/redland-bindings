@@ -39,7 +39,7 @@ package body RDF.Raptor.Term is
    end;
 
    function Datatype (Literal: Term_Literal_Value) return RDF.Raptor.URI.URI_Type_Without_Finalize is
-      use type RDF.Raptor.URI.URI_Handle_Type;
+      use type RDF.Raptor.URI.URI_Handle;
    begin
       if Literal.Datatype = null then
          return From_Handle(null);
@@ -60,7 +60,7 @@ package body RDF.Raptor.Term is
       return Value(Blank.Str, size_t(Blank.Len));
    end;
 
-   function raptor_new_term_from_counted_blank (World: RDF.Raptor.World.Raptor_World_Handle_Type;
+   function raptor_new_term_from_counted_blank (World: RDF.Raptor.World.Raptor_World_Handle;
                                                   Blank: chars_ptr;
                                                   Length: size_t)
                                                   return Term_Handle
@@ -86,10 +86,10 @@ package body RDF.Raptor.Term is
       return From_Non_Null_Handle(raptor_new_term_from_counted_blank(Get_Handle(World), C_String(ID_N), Length(ID_N)));
    end;
 
-   function raptor_new_term_from_counted_literal (World: RDF.Raptor.World.Raptor_World_Handle_Type;
+   function raptor_new_term_from_counted_literal (World: RDF.Raptor.World.Raptor_World_Handle;
                                                     Literal: chars_ptr;
                                                     Literal_Len: size_t;
-                                                    Datatype: RDF.Raptor.URI.URI_Handle_Type;
+                                                    Datatype: RDF.Raptor.URI.URI_Handle;
                                                     Language: chars_ptr;
                                                     Language_Len: size_t)
                                                     return Term_Handle
@@ -113,7 +113,7 @@ package body RDF.Raptor.Term is
                                                                           Length(Language_N)) );
    end;
 
-   function raptor_new_term_from_counted_uri_string (World: RDF.Raptor.World.Raptor_World_Handle_Type;
+   function raptor_new_term_from_counted_uri_string (World: RDF.Raptor.World.Raptor_World_Handle;
                                                        Str: char_array;
                                                        Str_Len: size_t)
                                                        return Term_Handle
@@ -124,7 +124,7 @@ package body RDF.Raptor.Term is
       return From_Non_Null_Handle( raptor_new_term_from_counted_uri_string(Get_Handle(World), My_To_C_Without_Nul(String(URI)), URI'Length) );
    end;
 
-   function raptor_new_term_from_uri (World: RDF.Raptor.World.Raptor_World_Handle_Type; URI: RDF.Raptor.URI.URI_Handle_Type) return Term_Handle
+   function raptor_new_term_from_uri (World: RDF.Raptor.World.Raptor_World_Handle; URI: RDF.Raptor.URI.URI_Handle) return Term_Handle
       with Import, Convention=>C;
 
    function From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class)
@@ -133,7 +133,7 @@ package body RDF.Raptor.Term is
       return From_Non_Null_Handle( raptor_new_term_from_uri(Get_Handle(World), Get_Handle(URI)) );
    end;
 
-   function raptor_new_term_from_counted_string (World: RDF.Raptor.World.Raptor_World_Handle_Type; Str: char_array; Len: size_t) return Term_Handle
+   function raptor_new_term_from_counted_string (World: RDF.Raptor.World.Raptor_World_Handle; Str: char_array; Len: size_t) return Term_Handle
       with Import, Convention=>C;
 
    function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String) return Term_Type is
@@ -198,8 +198,8 @@ package body RDF.Raptor.Term is
    end;
 
    function raptor_term_to_turtle_string (Term: Term_Handle;
-                                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
-                                            Base_URI: RDF.Raptor.URI.URI_Handle_Type)
+                                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
+                                            Base_URI: RDF.Raptor.URI.URI_Handle)
                                             return chars_ptr
       with Import, Convention=>C;
 
@@ -220,10 +220,10 @@ package body RDF.Raptor.Term is
       end;
    end;
 
-   function raptor_term_turtle_write (Stream: RDF.Raptor.IOStream.IOStream_Handle_Type;
+   function raptor_term_turtle_write (Stream: RDF.Raptor.IOStream.IOStream_Handle;
                                         Term: Term_Handle;
-                                        Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
-                                        Base_URI: RDF.Raptor.URI.URI_Handle_Type)
+                                        Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
+                                        Base_URI: RDF.Raptor.URI.URI_Handle)
                                         return Int
       with Import, Convention=>C;
 

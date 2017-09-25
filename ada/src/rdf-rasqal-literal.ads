@@ -9,7 +9,7 @@ package RDF.Rasqal.Literal is
 
    package Literal_Handled_Record is new RDF.Auxiliary.Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype Literal_Handle_Type is Literal_Handled_Record.Access_Type;
+   subtype Literal_Handle is Literal_Handled_Record.Access_Type;
 
    type Literal_Type_Without_Finalize is new Literal_Handled_Record.Base_Object with null record;
 
@@ -80,7 +80,7 @@ package RDF.Rasqal.Literal is
 
    type Literal_Type is new Literal_Type_Without_Finalize with null record;
 
-   overriding procedure Finalize_Handle (Object: Literal_Type; Handle: Literal_Handle_Type);
+   overriding procedure Finalize_Handle (Object: Literal_Type; Handle: Literal_Handle);
 
    not overriding function New_Typed_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
                                               Type_Of_Literal: Literal_Type_Enum;

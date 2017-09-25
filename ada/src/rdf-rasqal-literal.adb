@@ -7,10 +7,10 @@ with RDF.Auxiliary.Convert;
 
 package body RDF.Rasqal.Literal is
 
-   function rasqal_new_typed_literal (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
+   function rasqal_new_typed_literal (World: RDF.Rasqal.World.Rasqal_World_Handle;
                                       Type_Of_Literal: Literal_Type_Enum;
                                       Value: char_array)
-                                      return Literal_Handle_Type
+                                      return Literal_Handle
      with Import, Convention=>C;
 
 
@@ -23,9 +23,9 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_typed_literal(Get_Handle(World), Type_Of_Literal, To_C(Value)));
    end;
 
-   function rasqal_new_boolean_literal (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
+   function rasqal_new_boolean_literal (World: RDF.Rasqal.World.Rasqal_World_Handle;
                                         Value: int)
-                                        return Literal_Handle_Type
+                                        return Literal_Handle
      with Import, Convention=>C;
 
    function From_Boolean (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
@@ -36,9 +36,9 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_boolean_literal(Get_Handle(World), Boolean'Pos(Value)));
    end;
 
-   function rasqal_new_decimal_literal (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
+   function rasqal_new_decimal_literal (World: RDF.Rasqal.World.Rasqal_World_Handle;
                                         Value: char_array)
-                                        return Literal_Handle_Type
+                                        return Literal_Handle
      with Import, Convention=>C;
 
    function From_Decimal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
@@ -49,12 +49,12 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_decimal_literal(Get_Handle(World), To_C(Value)));
    end;
 
-   function rasqal_new_double_literal (World: RDF.Rasqal.World.Rasqal_World_Handle_Type; Value: double)
-                                       return Literal_Handle_Type
+   function rasqal_new_double_literal (World: RDF.Rasqal.World.Rasqal_World_Handle; Value: double)
+                                       return Literal_Handle
      with Import, Convention=>C;
 
-   function rasqal_new_floating_literal (World: RDF.Rasqal.World.Rasqal_World_Handle_Type; Kind: Literal_Type_Enum; Value: double)
-                                         return Literal_Handle_Type
+   function rasqal_new_floating_literal (World: RDF.Rasqal.World.Rasqal_World_Handle; Kind: Literal_Type_Enum; Value: double)
+                                         return Literal_Handle
      with Import, Convention=>C;
 
    function From_Float (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
@@ -81,10 +81,10 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_double_literal(Get_Handle(World), double(Value)));
    end;
 
-   function rasqal_new_numeric_literal_from_long (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
+   function rasqal_new_numeric_literal_from_long (World: RDF.Rasqal.World.Rasqal_World_Handle;
                                                   Kind: Literal_Type_Enum;
                                                   Value: Long)
-                                                  return Literal_Handle_Type
+                                                  return Literal_Handle
      with Import, Convention=>C;
 
    function From_Integer (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize; Value: long)
@@ -94,10 +94,10 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_numeric_literal_from_long(Get_Handle(World), Literal_Integer, Value));
    end;
 
-   function rasqal_new_simple_literal (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
+   function rasqal_new_simple_literal (World: RDF.Rasqal.World.Rasqal_World_Handle;
                                        Kind: Literal_Type_Enum_Simple;
                                        Value: chars_ptr)
-                                       return Literal_Handle_Type
+                                       return Literal_Handle
      with Import, Convention=>C;
 
    function New_Simple_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
@@ -110,12 +110,12 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_simple_literal(Get_Handle(World), Kind, Value2));
    end;
 
-   function rasqal_new_string_literal (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
+   function rasqal_new_string_literal (World: RDF.Rasqal.World.Rasqal_World_Handle;
                                        Value: chars_ptr;
                                        Language: chars_ptr;
-                                       Datatype: RDF.Raptor.URI.URI_Handle_Type;
+                                       Datatype: RDF.Raptor.URI.URI_Handle;
                                        Datatype_Qname: chars_ptr)
-                                       return Literal_Handle_Type
+                                       return Literal_Handle
      with Import, Convention=>C;
 
    function New_String_Literal (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
@@ -162,9 +162,9 @@ package body RDF.Rasqal.Literal is
                                   Null_Ptr));
    end;
 
-   function rasqal_new_uri_literal (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
-                                    Value: RDF.Raptor.URI.URI_Handle_Type)
-                                    return Literal_Handle_Type
+   function rasqal_new_uri_literal (World: RDF.Rasqal.World.Rasqal_World_Handle;
+                                    Value: RDF.Raptor.URI.URI_Handle)
+                                    return Literal_Handle
      with Import, Convention=>C;
 
    function From_URI (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
@@ -175,21 +175,21 @@ package body RDF.Rasqal.Literal is
       return From_Non_Null_Handle(rasqal_new_uri_literal(Get_Handle(World), Get_Handle(Value)));
    end;
 
-   function rasqal_literal_same_term (Left, Right: Literal_Handle_Type) return int
+   function rasqal_literal_same_term (Left, Right: Literal_Handle) return int
      with Import, Convention=>C;
 
    function "=" (Left, Right: Literal_Type_Without_Finalize) return Boolean is
      (rasqal_literal_same_term(Get_Handle(Left), Get_Handle(Right)) /= 0);
 
-   procedure rasqal_free_literal (Handle: Literal_Handle_Type)
+   procedure rasqal_free_literal (Handle: Literal_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Literal_Type; Handle: Literal_Handle_Type) is
+   procedure Finalize_Handle (Object: Literal_Type; Handle: Literal_Handle) is
    begin
       rasqal_free_literal(Handle);
    end;
 
-   function rasqal_literal_as_node (Literal: Literal_Handle_Type) return Literal_Handle_Type
+   function rasqal_literal_as_node (Literal: Literal_Handle) return Literal_Handle
      with Import, Convention=>C;
 
    function As_Node (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type is
@@ -207,7 +207,7 @@ package body RDF.Rasqal.Literal is
    type Size_T_P is access all size_t with Convention=>C;
    type Int_P is access all int with Convention=>C;
 
-   function rasqal_literal_as_counted_string (Literal: Literal_Handle_Type;
+   function rasqal_literal_as_counted_string (Literal: Literal_Handle;
                                               Len_P: Size_T_P;
                                               Flags: int;
                                               Error_P: Int_P)
@@ -227,7 +227,7 @@ package body RDF.Rasqal.Literal is
       return Value_With_Possible_NULs(Item, Length);
    end;
 
-   function rasqal_literal_compare (Left, Right: Literal_Handle_Type; Flags: int; Error_P: Int_P) return int
+   function rasqal_literal_compare (Left, Right: Literal_Handle; Flags: int; Error_P: Int_P) return int
      with Import, Convention=>C;
 
    function Compare (Left, Right: Literal_Type_Without_Finalize; Flags: Compare_Flags)
@@ -238,7 +238,7 @@ package body RDF.Rasqal.Literal is
       return Sign(rasqal_literal_compare(Get_Handle(Left), Get_Handle(Right),  Compare_Flags'Pos(Flags), Error'Unchecked_Access));
    end;
 
-   function rasqal_literal_datatype (Literal: Literal_Handle_Type) return RDF.Raptor.URI.URI_Handle_Type
+   function rasqal_literal_datatype (Literal: Literal_Handle) return RDF.Raptor.URI.URI_Handle
      with Import, Convention=>C;
 
    function Get_Datatype (Literal: Literal_Type_Without_Finalize)
@@ -249,7 +249,7 @@ package body RDF.Rasqal.Literal is
    end;
 
    -- TODO: Not supported as of Rasqal 0.9.32
---     function rasqal_literal_get_language (Literal: Literal_Handle_Type) return Chars_Ptr
+--     function rasqal_literal_get_language (Literal: Literal_Handle) return Chars_Ptr
 --       with Import, Convention=>C;
 --
 --     function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder is
@@ -257,10 +257,10 @@ package body RDF.Rasqal.Literal is
 --        return New_Holder(rasqal_literal_get_language(Get_Handle(Literal)));
 --     end;
 
-   function rasqal_literal_get_rdf_term_type (Literal: Literal_Handle_Type) return Literal_Type_Enum
+   function rasqal_literal_get_rdf_term_type (Literal: Literal_Handle) return Literal_Type_Enum
      with Import, Convention=>C;
 
---     function rasqal_literal_get_type (Literal: Literal_Handle_Type) return Literal_Type_Enum
+--     function rasqal_literal_get_type (Literal: Literal_Handle) return Literal_Type_Enum
 --       with Import, Convention=>C;
 
    function Get_Rdf_Term_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum is
@@ -269,13 +269,13 @@ package body RDF.Rasqal.Literal is
 --     function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum is
 --       (rasqal_literal_get_type(Get_Handle(Literal)));
 
-   function rasqal_literal_is_rdf_literal (Literal: Literal_Handle_Type) return int
+   function rasqal_literal_is_rdf_literal (Literal: Literal_Handle) return int
      with Import, Convention=>C;
 
    function Is_Rdf_Literal (Literal: Literal_Type_Without_Finalize) return Boolean is
       (rasqal_literal_is_rdf_literal(Get_Handle(Literal)) /= 0);
 
-   function rasqal_literal_print (Literal: Literal_Handle_Type; File: RDF.Auxiliary.C_File_Access) return int
+   function rasqal_literal_print (Literal: Literal_Handle; File: RDF.Auxiliary.C_File_Access) return int
      with Import, Convention=>C;
 
    procedure Print (Literal: Literal_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
@@ -285,7 +285,7 @@ package body RDF.Rasqal.Literal is
       end if;
    end;
 
-   procedure rasqal_literal_print_type (Literal: Literal_Handle_Type; File: RDF.Auxiliary.C_File_Access)
+   procedure rasqal_literal_print_type (Literal: Literal_Handle; File: RDF.Auxiliary.C_File_Access)
      with Import, Convention=>C;
 
    procedure Print_Type (Literal: Literal_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
@@ -299,7 +299,7 @@ package body RDF.Rasqal.Literal is
    function Type_Label (Kind: Literal_Type_Enum) return String is
      (Value(rasqal_literal_type_label(Kind)));
 
-   function rasqal_literal_value (Literal: Literal_Handle_Type) return Literal_Handle_Type
+   function rasqal_literal_value (Literal: Literal_Handle) return Literal_Handle
      with Import, Convention=>C;
 
    function Value (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type is

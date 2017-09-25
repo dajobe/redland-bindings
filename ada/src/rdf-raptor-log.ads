@@ -26,17 +26,17 @@ package RDF.Raptor.Log is
    type Log_Message_Record_Access is access Log_Message_Record with Convention=>C;
 
    package Locator_Handled_Record is new RDF.Auxiliary.Handled_Record(Locator_Type_Record, Locator_Type_Record_Access);
-   subtype Locator_Handle_Type is Locator_Handled_Record.Access_Type;
+   subtype Locator_Handle is Locator_Handled_Record.Access_Type;
    type Locator_Type is new Locator_Handled_Record.Base_Object with null record;
 
-   overriding procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle_Type);
+   overriding procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle);
    overriding procedure Adjust (Object: in out Locator_Type);
 
    package Log_Message_Handled_Record is new RDF.Auxiliary.Handled_Record(Log_Message_Record, Log_Message_Record_Access);
-   subtype Log_Message_Handle_Type is Log_Message_Handled_Record.Access_Type;
+   subtype Log_Message_Handle is Log_Message_Handled_Record.Access_Type;
    type Log_Message_Type is new Log_Message_Handled_Record.Base_Object with null record;
 
-   overriding procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle_Type);
+   overriding procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle);
    overriding procedure Adjust (Object: in out Log_Message_Type);
 
    not overriding function Get_URI (Locator: Locator_Type) return URI_Type_Without_Finalize;
@@ -78,7 +78,7 @@ private
 
    type Locator_Type_Record is
       record
-         URI: RDF.Raptor.URI.URI_Handle_Type;
+         URI: RDF.Raptor.URI.URI_Handle;
          File: chars_ptr;
          Line, Column, Byte: int;
       end record
@@ -90,7 +90,7 @@ private
          Domain: Domain_Type;
          Log_Level: Log_Level_Type;
 --           Locator: access Locator_Type;
-         Locator: Locator_Handle_Type;
+         Locator: Locator_Handle;
          Text: chars_ptr;
       end record
       with Convention => C;

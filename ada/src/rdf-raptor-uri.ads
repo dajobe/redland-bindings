@@ -9,7 +9,7 @@ package RDF.Raptor.URI is
 
    package Handled_Record is new RDF.Auxiliary.Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype URI_Handle_Type is Handled_Record.Access_Type;
+   subtype URI_Handle is Handled_Record.Access_Type;
 
    -- Only absolute URIs!
    type URI_Type_Without_Finalize is new Handled_Record.Base_Object with null record;
@@ -71,7 +71,7 @@ package RDF.Raptor.URI is
 
    overriding procedure Adjust(Object: in out URI_Type);
 
-   overriding procedure Finalize_Handle(Object: URI_Type; Handle: URI_Handle_Type);
+   overriding procedure Finalize_Handle(Object: URI_Type; Handle: URI_Handle);
 
    not overriding function From_String(World: Raptor_World_Type_Without_Finalize'Class; Arg: URI_String) return URI_Type;
 

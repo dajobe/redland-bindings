@@ -9,7 +9,7 @@ package RDF.Raptor.Namespace_Stack is
 
    package Namespace_Stack_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype Namespace_Stack_Handle_Type is Namespace_Stack_Handled_Record.Access_Type;
+   subtype Namespace_Stack_Handle is Namespace_Stack_Handled_Record.Access_Type;
 
    type Namespace_Stack_Type_Without_Finalize is new Namespace_Stack_Handled_Record.Base_Object with null record;
 
@@ -41,7 +41,7 @@ package RDF.Raptor.Namespace_Stack is
 
    type Namespace_Stack_Type is new Namespace_Stack_Type_Without_Finalize with null record;
 
-   overriding procedure Finalize_Handle(Object: Namespace_Stack_Type; Handle: Namespace_Stack_Handle_Type);
+   overriding procedure Finalize_Handle(Object: Namespace_Stack_Type; Handle: Namespace_Stack_Handle);
 
    type Defaults_Type is (None_Type, XML_Type, RDF_Type, Undefined_Type)
       with Convention => C;

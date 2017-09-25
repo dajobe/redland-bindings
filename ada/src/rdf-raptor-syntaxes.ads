@@ -104,34 +104,34 @@ private
 
    type Parser_Description_Cursor is
       record
-         World: RDF.Raptor.World.Raptor_World_Handle_Type;
+         World: RDF.Raptor.World.Raptor_World_Handle;
          Position: Natural;
       end record;
 
    type Serializer_Description_Cursor is
       record
-         World: RDF.Raptor.World.Raptor_World_Handle_Type;
+         World: RDF.Raptor.World.Raptor_World_Handle;
          Position: Natural;
       end record;
 
    type Parser_Description_Iterator is new Parser_Description_Iterators.Forward_Iterator with
       record
-         World: RDF.Raptor.World.Raptor_World_Handle_Type;
+         World: RDF.Raptor.World.Raptor_World_Handle;
       end record;
 
    type Serializer_Description_Iterator is new Serializer_Description_Iterators.Forward_Iterator with
       record
-         World: RDF.Raptor.World.Raptor_World_Handle_Type;
+         World: RDF.Raptor.World.Raptor_World_Handle;
       end record;
 
    type Parser_Descriptions_List is tagged
       record
-         World: RDF.Raptor.World.Raptor_World_Handle_Type;
+         World: RDF.Raptor.World.Raptor_World_Handle;
       end record;
 
    type Serializer_Descriptions_List is tagged
       record
-         World: RDF.Raptor.World.Raptor_World_Handle_Type;
+         World: RDF.Raptor.World.Raptor_World_Handle;
       end record;
 
 end RDF.Raptor.Syntaxes;

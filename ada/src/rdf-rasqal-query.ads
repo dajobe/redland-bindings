@@ -13,7 +13,7 @@ package RDF.Rasqal.Query is
 
    package Query_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype Query_Handle_Type is Query_Handled_Record.Access_Type;
+   subtype Query_Handle is Query_Handled_Record.Access_Type;
 
    type Query_Type_Without_Finalize is new Query_Handled_Record.Base_Object with null record;
 
@@ -65,7 +65,7 @@ package RDF.Rasqal.Query is
 
    type Query_Type is new Query_Type_Without_Finalize with null record;
 
-   overriding procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle_Type);
+   overriding procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle);
 
    not overriding function New_Query (World: RDF.Rasqal.World.Rasqal_World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type;
 

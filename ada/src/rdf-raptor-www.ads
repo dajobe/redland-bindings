@@ -6,7 +6,7 @@ package RDF.Raptor.WWW is
 
    package WWW_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
-   subtype WWW_Handle_Type is WWW_Handled_Record.Access_Type;
+   subtype WWW_Handle is WWW_Handled_Record.Access_Type;
 
    -- I deliberately expose that it is an access type (not just a private type),
    -- to simplify libcurl and libxml interaction
@@ -67,6 +67,6 @@ package RDF.Raptor.WWW is
 
    not overriding function New_WWW (World: RDF.Raptor.World.Raptor_World_Type'Class; Connection: Connection_Type) return WWW_Type;
 
-   overriding procedure Finalize_Handle (Object: WWW_Type; Handle: WWW_Handle_Type);
+   overriding procedure Finalize_Handle (Object: WWW_Type; Handle: WWW_Handle);
 
 end RDF.Raptor.WWW;

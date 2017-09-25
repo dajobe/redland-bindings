@@ -4,7 +4,7 @@ with RDF.Raptor.Memory;
 
 package body RDF.Raptor.Bnode is
 
-   function raptor_world_generate_bnodeid (World: RDF.Raptor.World.Raptor_World_Handle_Type) return Chars_Ptr
+   function raptor_world_generate_bnodeid (World: RDF.Raptor.World.Raptor_World_Handle) return Chars_Ptr
      with Import, Convention=>C;
 
    function Generate_Bnodeid (World: Raptor_World_Type_Without_Finalize'Class) return String is
@@ -15,7 +15,7 @@ package body RDF.Raptor.Bnode is
       return Result;
    end;
 
-   procedure raptor_world_set_generate_bnodeid_parameters (World: Raptor_World_Handle_Type; Prefix: chars_ptr; Base: int)
+   procedure raptor_world_set_generate_bnodeid_parameters (World: Raptor_World_Handle; Prefix: chars_ptr; Base: int)
      with Import, Convention=>C;
 
    procedure Set_Generate_Bnodeid_Parameters (World: Raptor_World_Type_Without_Finalize'Class;
@@ -51,7 +51,7 @@ package body RDF.Raptor.Bnode is
       end;
    end;
 
-   procedure raptor_world_set_generate_bnodeid_handler (World: RDF.Raptor.World.Raptor_World_Handle_Type; Data: chars_ptr; Handler: C_BNode_ID_Handler)
+   procedure raptor_world_set_generate_bnodeid_handler (World: RDF.Raptor.World.Raptor_World_Handle; Data: chars_ptr; Handler: C_BNode_ID_Handler)
      with Import, Convention=>C;
 
    procedure Set_BNode_ID_Handler (World: Raptor_World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class) is

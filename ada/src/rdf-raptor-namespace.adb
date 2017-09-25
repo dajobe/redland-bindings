@@ -9,11 +9,11 @@ with RDF.Raptor.Memory;
 
 package body RDF.Raptor.Namespace is
 
-   function raptor_new_namespace (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
+   function raptor_new_namespace (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
                                     Prefix: Char_Array;
                                     NS: Char_Array;
                                     Depth: Int)
-                                    return Namespace_Handle_Type
+                                    return Namespace_Handle
      with Import, Convention=>C;
 
    function New_Namespace (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
@@ -25,10 +25,10 @@ package body RDF.Raptor.Namespace is
       return From_Non_Null_Handle( raptor_new_namespace(Get_Handle(Stack), To_C(Prefix, Append_Nul=>True), To_C(NS, Append_Nul=>True), Int(Depth)) );
    end;
 
-   function raptor_new_namespace_from_uri (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle_Type;
+   function raptor_new_namespace_from_uri (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
                                              Prefix: char_array;
-                                             URI: RDF.Raptor.URI.URI_Handle_Type)
-                                             return Namespace_Handle_Type
+                                             URI: RDF.Raptor.URI.URI_Handle)
+                                             return Namespace_Handle
      with Import, Convention=>C;
 
    function From_URI (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
@@ -40,15 +40,15 @@ package body RDF.Raptor.Namespace is
       return From_Non_Null_Handle( raptor_new_namespace_from_uri (Get_Handle(Stack), To_C(Prefix, Append_Nul=>True), Get_Handle(URI)) );
    end;
 
-   procedure raptor_free_namespace (Handle: Namespace_Handle_Type)
+   procedure raptor_free_namespace (Handle: Namespace_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Namespace_Type; Handle: Namespace_Handle_Type) is
+   procedure Finalize_Handle (Object: Namespace_Type; Handle: Namespace_Handle) is
    begin
       raptor_free_namespace(Handle);
    end;
 
-   function raptor_namespace_get_uri (Handle: Namespace_Handle_Type) return RDF.Raptor.URI.URI_Handle_Type
+   function raptor_namespace_get_uri (Handle: Namespace_Handle) return RDF.Raptor.URI.URI_Handle
      with Import, Convention=>C;
 
    -- raptor_namespace_get_uri() may return NULL (for xmlns="")
@@ -57,7 +57,7 @@ package body RDF.Raptor.Namespace is
       return From_Handle( raptor_namespace_get_uri(Get_Handle(NS)) );
    end;
 
-   function raptor_namespace_get_prefix (Handle: Namespace_Handle_Type) return chars_ptr
+   function raptor_namespace_get_prefix (Handle: Namespace_Handle) return chars_ptr
      with Import, Convention=>C;
 
    function Get_Prefix (NS: Namespace_Type_Without_Finalize) return String is
@@ -65,7 +65,7 @@ package body RDF.Raptor.Namespace is
       return Value( raptor_namespace_get_prefix(Get_Handle(NS)) );
    end;
 
-   function raptor_namespace_write (NS: Namespace_Handle_Type; Stream: RDF.Raptor.IOStream.IOStream_Handle_Type) return int
+   function raptor_namespace_write (NS: Namespace_Handle; Stream: RDF.Raptor.IOStream.IOStream_Handle) return int
      with Import, Convention=>C;
 
    procedure Write (NS: Namespace_Type_Without_Finalize; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class) is
@@ -76,7 +76,7 @@ package body RDF.Raptor.Namespace is
       end if;
    end;
 
-   function raptor_namespace_format_as_xml (NS: Namespace_Handle_Type; Stream: access size_t) return chars_ptr
+   function raptor_namespace_format_as_xml (NS: Namespace_Handle; Stream: access size_t) return chars_ptr
      with Import, Convention=>C;
 
    function Format_As_XML (NS: Namespace_Type_Without_Finalize) return String is

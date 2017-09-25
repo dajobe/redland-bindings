@@ -77,12 +77,12 @@ package body RDF.Rasqal.Data_Graph is
       rasqal_free_data_graph(Handle);
    end;
 
-   function rasqal_new_data_graph_from_iostream (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
-                                                 IOStream: RDF.Raptor.IOStream.IOStream_Handle_Type;
-                                                 Base_URI, Name_URI: RDF.Raptor.URI.URI_Handle_Type;
+   function rasqal_new_data_graph_from_iostream (World: RDF.Rasqal.World.Rasqal_World_Handle;
+                                                 IOStream: RDF.Raptor.IOStream.IOStream_Handle;
+                                                 Base_URI, Name_URI: RDF.Raptor.URI.URI_Handle;
                                                  Flags: unsigned;
                                                  Format_Type, Format_Name: chars_ptr;
-                                                 Format_URI: RDF.Raptor.URI.URI_Handle_Type)
+                                                 Format_URI: RDF.Raptor.URI.URI_Handle)
                                                  return Data_Graph_Handle
      with Import, Convention=>C;
 
@@ -113,11 +113,11 @@ package body RDF.Rasqal.Data_Graph is
       return From_Handle(Result);
    end;
 
-   function rasqal_new_data_graph_from_uri (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
-                                            URI, Name_URI: RDF.Raptor.URI.URI_Handle_Type;
+   function rasqal_new_data_graph_from_uri (World: RDF.Rasqal.World.Rasqal_World_Handle;
+                                            URI, Name_URI: RDF.Raptor.URI.URI_Handle;
                                             Flags: Unsigned;
                                             Format_Type, Format_Name: Chars_Ptr;
-                                            Format_URI: RDF.Raptor.URI.URI_Handle_Type)
+                                            Format_URI: RDF.Raptor.URI.URI_Handle)
                                             return Data_Graph_Handle
      with Import, Convention=>C;
 

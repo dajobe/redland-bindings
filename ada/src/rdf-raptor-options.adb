@@ -19,7 +19,7 @@ package body RDF.Raptor.Options is
    end;
 
    function Get_Name (Description: Option_Description_Type_Without_Finalize) return String is
-      Handle: constant Option_Description_Handle_Type := Get_Handle(Description);
+      Handle: constant Option_Description_Handle := Get_Handle(Description);
    begin
       return Value(Handle.Name, Handle.Len);
    end;
@@ -54,7 +54,7 @@ package body RDF.Raptor.Options is
       return Value(Ptr);
    end;
 
-   function raptor_world_get_option_description (World: RDF.Raptor.World.Raptor_World_Handle_Type; Domain: Domain_Type; Option: Raptor_Option) return Option_Description_Handle_Type
+   function raptor_world_get_option_description (World: RDF.Raptor.World.Raptor_World_Handle; Domain: Domain_Type; Option: Raptor_Option) return Option_Description_Handle
      with Import, Convention=>C;
 
    function Get_Option_Description (World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Natural)
@@ -69,15 +69,15 @@ package body RDF.Raptor.Options is
       return From_Non_Null_Handle( raptor_world_get_option_description(Get_Handle(World), Domain, Option) );
    end;
 
-   procedure raptor_world_get_option_description (Descrition: Option_Description_Handle_Type)
+   procedure raptor_world_get_option_description (Descrition: Option_Description_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Option_Description_Type; Handle: Option_Description_Handle_Type) is
+   procedure Finalize_Handle (Object: Option_Description_Type; Handle: Option_Description_Handle) is
    begin
       raptor_world_get_option_description(Handle);
    end;
 
-   function raptor_world_get_option_from_uri (World: RDF.Raptor.World.Raptor_World_Handle_Type; URI: RDF.Raptor.URI.URI_Handle_Type) return Raptor_Option
+   function raptor_world_get_option_from_uri (World: RDF.Raptor.World.Raptor_World_Handle; URI: RDF.Raptor.URI.URI_Handle) return Raptor_Option
      with Import, Convention=>C;
 
    -- Crude hack

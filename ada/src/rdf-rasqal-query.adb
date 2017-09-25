@@ -7,7 +7,7 @@ with RDF.Rasqal.Memory;
 
 package body RDF.Rasqal.Query is
 
-   function rasqal_query_add_data_graph (Query: Query_Handle_Type; Graph: RDF.Rasqal.Data_Graph.Data_Graph_Handle)
+   function rasqal_query_add_data_graph (Query: Query_Handle; Graph: RDF.Rasqal.Data_Graph.Data_Graph_Handle)
                                          return int
      with Import, Convention=>C;
 
@@ -27,7 +27,7 @@ package body RDF.Rasqal.Query is
       end loop;
    end;
 
-   function rasqal_query_execute (Query: Query_Handle_Type) return RDF.Rasqal.Query_Results.Query_Results_Handle_Type
+   function rasqal_query_execute (Query: Query_Handle) return RDF.Rasqal.Query_Results.Query_Results_Handle
      with Import, Convention=>C;
 
    function Execute (Query: Query_Type_Without_Finalize) return RDF.Rasqal.Query_Results.Query_Results_Type is
@@ -36,7 +36,7 @@ package body RDF.Rasqal.Query is
       return From_Non_Null_Handle(rasqal_query_execute(Get_Handle(Query)));
    end;
 
-   function rasqal_query_prepare (Query: Query_Handle_Type; Query_String: char_array; Base_URI: RDF.Raptor.URI.URI_Handle_Type)
+   function rasqal_query_prepare (Query: Query_Handle; Query_String: char_array; Base_URI: RDF.Raptor.URI.URI_Handle)
                                   return int
      with Import, Convention=>C;
 
@@ -50,7 +50,7 @@ package body RDF.Rasqal.Query is
       end if;
    end;
 
-   function rasqal_query_set_store_results (Query: Query_Handle_Type; Store: int) return int
+   function rasqal_query_set_store_results (Query: Query_Handle; Store: int) return int
      with Import, Convention=>C;
 
    procedure Set_Store_Results (Query: Query_Type_Without_Finalize; Store: Boolean) is
@@ -60,7 +60,7 @@ package body RDF.Rasqal.Query is
       end if;
    end;
 
-   procedure rasqal_query_set_wildcard (Query: Query_Handle_Type; Store: int)
+   procedure rasqal_query_set_wildcard (Query: Query_Handle; Store: int)
      with Import, Convention=>C;
 
    procedure Set_Wildcard (Query: Query_Type_Without_Finalize; Store: Boolean) is
@@ -68,9 +68,9 @@ package body RDF.Rasqal.Query is
       rasqal_query_set_wildcard(Get_Handle(Query), (if Store then 1 else 0));
    end;
 
-   function rasqal_query_write (Stream: RDF.Raptor.IOStream.IOStream_Handle_Type;
-                                Query: Query_Handle_Type;
-                                Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle_Type)
+   function rasqal_query_write (Stream: RDF.Raptor.IOStream.IOStream_Handle;
+                                Query: Query_Handle;
+                                Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle)
                                 return Int
      with Import, Convention=>C;
 
@@ -84,8 +84,8 @@ package body RDF.Rasqal.Query is
       end if;
    end;
 
-   function rasqal_query_iostream_write_escaped_counted_string (Query: Query_Handle_Type;
-                                                                Stream: RDF.Raptor.IOStream.IOStream_Handle_Type;
+   function rasqal_query_iostream_write_escaped_counted_string (Query: Query_Handle;
+                                                                Stream: RDF.Raptor.IOStream.IOStream_Handle;
                                                                 Str: char_array;
                                                                 Len: size_t)
                                                                 return int
@@ -107,7 +107,7 @@ package body RDF.Rasqal.Query is
 
    type Size_T_P is access all size_t with Convention=>C;
 
-   function Rasqal_Query_Escape_Counted_String (Query: Query_Handle_Type;
+   function Rasqal_Query_Escape_Counted_String (Query: Query_Handle;
                                                 Str: char_array;
                                                 Len: size_t;
                                                 Out_Len: Size_T_P)
@@ -134,7 +134,7 @@ package body RDF.Rasqal.Query is
       end;
    end;
 
-   function rasqal_query_set_feature (Query: Query_Handle_Type;
+   function rasqal_query_set_feature (Query: Query_Handle;
                                       Feature: RDF.Rasqal.Features.Feature_Type;
                                       Value: int)
                                       return int
@@ -147,7 +147,7 @@ package body RDF.Rasqal.Query is
       end if;
    end;
 
-   function rasqal_query_set_feature_string (Query: Query_Handle_Type;
+   function rasqal_query_set_feature_string (Query: Query_Handle;
                                              Feature: RDF.Rasqal.Features.Feature_Type;
                                              Value: char_array)
                                              return int
@@ -160,7 +160,7 @@ package body RDF.Rasqal.Query is
       end if;
    end;
 
-   function rasqal_query_get_feature (Query: Query_Handle_Type; Feature: RDF.Rasqal.Features.Feature_Type) return int
+   function rasqal_query_get_feature (Query: Query_Handle; Feature: RDF.Rasqal.Features.Feature_Type) return int
      with Import, Convention=>C;
 
    function Get_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type) return Natural is
@@ -172,7 +172,7 @@ package body RDF.Rasqal.Query is
       return Natural(Result);
    end;
 
-   function rasqal_query_get_feature_string (Query: Query_Handle_Type; Feature: RDF.Rasqal.Features.Feature_Type) return chars_ptr
+   function rasqal_query_get_feature_string (Query: Query_Handle; Feature: RDF.Rasqal.Features.Feature_Type) return chars_ptr
      with Import, Convention=>C;
 
    function Get_Feature (Query: Query_Type_Without_Finalize; Feature: RDF.Rasqal.Features.Feature_Type) return String is
@@ -189,7 +189,7 @@ package body RDF.Rasqal.Query is
       end;
    end;
 
-   function rasqal_query_get_result_type (Query: Query_Handle_Type) return RDF.Rasqal.Query_Results.Query_Results_Type_Enum
+   function rasqal_query_get_result_type (Query: Query_Handle) return RDF.Rasqal.Query_Results.Query_Results_Type_Enum
      with Import, Convention=>C;
 
    function Get_Result_Type (Query: Query_Type_Without_Finalize) return RDF.Rasqal.Query_Results.Query_Results_Type_Enum is
@@ -203,7 +203,7 @@ package body RDF.Rasqal.Query is
       return Result;
    end;
 
-   function rasqal_new_query (World: RDF.Rasqal.World.Rasqal_World_Handle_Type; Name, URI: chars_ptr) return Query_Handle_Type
+   function rasqal_new_query (World: RDF.Rasqal.World.Rasqal_World_Handle; Name, URI: chars_ptr) return Query_Handle
      with Import, Convention=>C;
 
    function New_Query (World: RDF.Rasqal.World.Rasqal_World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type is
@@ -211,17 +211,17 @@ package body RDF.Rasqal.Query is
       Name2: chars_ptr := New_String(Name);
       URI2 : chars_ptr := New_String(URI );
       use RDF.Rasqal.World;
-      Result: constant Query_Handle_Type := rasqal_new_query(Get_Handle(World), Name2, URI2);
+      Result: constant Query_Handle := rasqal_new_query(Get_Handle(World), Name2, URI2);
    begin
       Free(Name2);
       Free(URI2);
       return From_Non_Null_Handle(Result);
    end;
 
-   procedure rasqal_free_query (Handle: Query_Handle_Type)
+   procedure rasqal_free_query (Handle: Query_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle_Type) is
+   procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle) is
    begin
       rasqal_free_query(Handle);
    end;

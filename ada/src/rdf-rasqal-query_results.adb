@@ -6,13 +6,13 @@ with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Rasqal.Query_Results is
 
-   function rasqal_query_results_finished (Results: Query_Results_Handle_Type) return int
+   function rasqal_query_results_finished (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
    function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean is
      (rasqal_query_results_finished(Get_Handle(Results)) /= 0);
 
-   function rasqal_query_results_get_binding_name (Results: Query_Results_Handle_Type;
+   function rasqal_query_results_get_binding_name (Results: Query_Results_Handle;
                                                    Offset: int)
                                                    return chars_ptr
      with Import, Convention=>C;
@@ -28,9 +28,9 @@ package body RDF.Rasqal.Query_Results is
       return Value(Ptr);
    end;
 
-   function rasqal_query_results_get_binding_value (Results: Query_Results_Handle_Type;
+   function rasqal_query_results_get_binding_value (Results: Query_Results_Handle;
                                                     Offset: int)
-                                                    return RDF.Rasqal.Literal.Literal_Handle_Type
+                                                    return RDF.Rasqal.Literal.Literal_Handle
      with Import, Convention=>C;
 
    function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize;
@@ -41,9 +41,9 @@ package body RDF.Rasqal.Query_Results is
       return From_Non_Null_Handle(rasqal_query_results_get_binding_value(Get_Handle(Results), int(Offset)));
    end;
 
-   function rasqal_query_results_get_binding_value_by_name (Results: Query_Results_Handle_Type;
+   function rasqal_query_results_get_binding_value_by_name (Results: Query_Results_Handle;
                                                             Name: char_array)
-                                                            return RDF.Rasqal.Literal.Literal_Handle_Type
+                                                            return RDF.Rasqal.Literal.Literal_Handle
      with Import, Convention=>C;
 
    function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize;
@@ -54,7 +54,7 @@ package body RDF.Rasqal.Query_Results is
       return From_Non_Null_Handle(rasqal_query_results_get_binding_value_by_name(Get_Handle(Results), To_C(Name)));
    end;
 
-   function rasqal_query_results_get_bindings_count (Results: Query_Results_Handle_Type) return int
+   function rasqal_query_results_get_bindings_count (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
    function Get_Bindings_Count (Results: Query_Results_Type_Without_Finalize) return Natural is
@@ -66,7 +66,7 @@ package body RDF.Rasqal.Query_Results is
       return Positive(Count);
    end;
 
-   function rasqal_query_results_get_boolean (Results: Query_Results_Handle_Type) return int
+   function rasqal_query_results_get_boolean (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
    function Get_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean is
@@ -78,7 +78,7 @@ package body RDF.Rasqal.Query_Results is
       return Value /= 0;
    end;
 
-   function rasqal_query_results_get_count (Results: Query_Results_Handle_Type) return int
+   function rasqal_query_results_get_count (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
    function Get_Current_Count (Results: Query_Results_Type_Without_Finalize) return Natural is
@@ -90,8 +90,8 @@ package body RDF.Rasqal.Query_Results is
       return Natural(Value);
    end;
 
-   function rasqal_query_results_get_query (Results: Query_Results_Handle_Type)
-                                            return RDF.Rasqal.Query.Query_Handle_Type
+   function rasqal_query_results_get_query (Results: Query_Results_Handle)
+                                            return RDF.Rasqal.Query.Query_Handle
      with Import, Convention=>C;
 
    function Get_Query (Results: Query_Results_Type_Without_Finalize)
@@ -102,7 +102,7 @@ package body RDF.Rasqal.Query_Results is
       return From_Handle(rasqal_query_results_get_query(Get_Handle(Results)));
    end;
 
-   function rasqal_query_results_get_triple (Results: Query_Results_Handle_Type)
+   function rasqal_query_results_get_triple (Results: Query_Results_Handle)
                                              return RDF.Raptor.Statement.Statement_Handle
      with Import, Convention=>C;
 
@@ -113,7 +113,7 @@ package body RDF.Rasqal.Query_Results is
       return From_Non_Null_Handle(rasqal_query_results_get_triple(Get_Handle(Results)));
    end;
 
-   function rasqal_query_results_get_type (Results: Query_Results_Handle_Type) return Query_Results_Type_Enum
+   function rasqal_query_results_get_type (Results: Query_Results_Handle) return Query_Results_Type_Enum
      with Import, Convention=>C;
 
    function Get_Type (Results: Query_Results_Type_Without_Finalize) return Query_Results_Type_Enum is
@@ -123,25 +123,25 @@ package body RDF.Rasqal.Query_Results is
 
    -------------------------------------
 
-   function rasqal_query_results_is_bindings (Results: Query_Results_Handle_Type) return int
+   function rasqal_query_results_is_bindings (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
    function Is_Bindings (Results: Query_Results_Type_Without_Finalize) return Boolean is
      (rasqal_query_results_is_bindings(Get_Handle(Results)) /= 0);
 
-   function rasqal_query_results_is_boolean (Results: Query_Results_Handle_Type) return int
+   function rasqal_query_results_is_boolean (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
    function Is_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean is
      (rasqal_query_results_is_boolean(Get_Handle(Results)) /= 0);
 
-   function rasqal_query_results_is_graph (Results: Query_Results_Handle_Type) return int
+   function rasqal_query_results_is_graph (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
    function Is_Graph (Results: Query_Results_Type_Without_Finalize) return Boolean is
      (rasqal_query_results_is_graph(Get_Handle(Results)) /= 0);
 
-   function rasqal_query_results_is_syntax (Results: Query_Results_Handle_Type) return int
+   function rasqal_query_results_is_syntax (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
    function Is_Syntax (Results: Query_Results_Type_Without_Finalize) return Boolean is
@@ -149,7 +149,7 @@ package body RDF.Rasqal.Query_Results is
 
    -------------------------------------
 
-   function rasqal_query_results_next (Results: Query_Results_Handle_Type) return int
+   function rasqal_query_results_next (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
    procedure Next (Results: Query_Results_Type_Without_Finalize) is
@@ -160,7 +160,7 @@ package body RDF.Rasqal.Query_Results is
       end if;
    end;
 
-   function rasqal_query_results_next_triple (Results: Query_Results_Handle_Type) return int
+   function rasqal_query_results_next_triple (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
    procedure Next_Triple (Results: Query_Results_Type_Without_Finalize) is
@@ -171,10 +171,10 @@ package body RDF.Rasqal.Query_Results is
       end if;
    end;
 
-   function rasqal_query_results_read (Stream: RDF.Raptor.IOStream.IOStream_Handle_Type;
-                                       Results: Query_Results_Handle_Type;
+   function rasqal_query_results_read (Stream: RDF.Raptor.IOStream.IOStream_Handle;
+                                       Results: Query_Results_Handle;
                                        Name, Mime_Type: chars_ptr;
-                                       Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle_Type)
+                                       Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle)
                                        return Int
      with Import, Convention=>C;
 
@@ -199,10 +199,10 @@ package body RDF.Rasqal.Query_Results is
       end if;
    end;
 
-   function rasqal_query_results_write (Stream: RDF.Raptor.IOStream.IOStream_Handle_Type;
-                                        Results: Query_Results_Handle_Type;
+   function rasqal_query_results_write (Stream: RDF.Raptor.IOStream.IOStream_Handle;
+                                        Results: Query_Results_Handle;
                                         Name, Mime_Type: Chars_Ptr;
-                                        Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle_Type)
+                                        Format_URI, Base_URI: RDF.Raptor.URI.URI_Handle)
                                         return Int
      with Import, Convention=>C;
 
@@ -239,7 +239,7 @@ package body RDF.Rasqal.Query_Results is
       return Value(Ptr);
    end;
 
-   function rasqal_query_results_rewind (Results: Query_Results_Handle_Type) return Int
+   function rasqal_query_results_rewind (Results: Query_Results_Handle) return Int
      with Import, Convention=>C;
 
    procedure Rewind (Results: Query_Results_Type_Without_Finalize) is
@@ -249,19 +249,19 @@ package body RDF.Rasqal.Query_Results is
       end if;
    end;
 
-   procedure rasqal_free_query_results (Handle: Query_Results_Handle_Type)
+   procedure rasqal_free_query_results (Handle: Query_Results_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle_Type) is
+   procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle) is
    begin
       rasqal_free_query_results(Handle);
    end;
 
    -- TODO: Not supported as of Rasqal 0.9.32
---     function rasqal_new_query_results2 (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
---                                         Query: RDF.Rasqal.Query.Query_Handle_Type;
+--     function rasqal_new_query_results2 (World: RDF.Rasqal.World.Rasqal_World_Handle;
+--                                         Query: RDF.Rasqal.Query.Query_Handle;
 --                                         Kind: Query_Results_Type_Enum)
---                                         return Query_Results_Handle_Type
+--                                         return Query_Results_Handle
 --       with Import, Convention=>C;
 --
 --     function New_Query_Results (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
@@ -273,11 +273,11 @@ package body RDF.Rasqal.Query_Results is
 --        return From_Non_Null_Handle(rasqal_new_query_results2(Get_Handle(World), Get_Handle(Query), Kind));
 --     end;
 
-   function rasqal_new_query_results (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
-                                      Query: RDF.Rasqal.Query.Query_Handle_Type;
+   function rasqal_new_query_results (World: RDF.Rasqal.World.Rasqal_World_Handle;
+                                      Query: RDF.Rasqal.Query.Query_Handle;
                                       Kind: Query_Results_Type_Enum;
                                       Vars_Table: RDF.Auxiliary.Dummy_Record_Access)
-                                      return Query_Results_Handle_Type
+                                      return Query_Results_Handle
      with Import, Convention=>C;
 
    function New_Query_Results (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
@@ -289,12 +289,12 @@ package body RDF.Rasqal.Query_Results is
       return From_Non_Null_Handle(rasqal_new_query_results(Get_Handle(World), Get_Handle(Query), Kind, null));
    end;
 
---     function rasqal_new_query_results_from_string (World: RDF.Rasqal.World.Rasqal_World_Handle_Type;
+--     function rasqal_new_query_results_from_string (World: RDF.Rasqal.World.Rasqal_World_Handle;
 --                                                    Kind: Query_Results_Type_Enum;
 --                                                    Base_URI: RDF.Raptor.URI.Handle_Type;
 --                                                    Value: char_array;
 --                                                    Length: size_t)
---                                                    return Query_Results_Handle_Type
+--                                                    return Query_Results_Handle
 --       with Import, Convention=>C;
 --
 --     function From_String (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize;
