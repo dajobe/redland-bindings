@@ -2,14 +2,14 @@ with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Term; use RDF.Raptor.Term;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
-with RDF.Raptor.World;
+with RDF.Raptor.World; use RDF.Raptor.World;
 with Ada.Text_IO;
 with RDF.Auxiliary;
 
 package body Statement_Test is
 
    procedure Test_Statements(T : in out Test_Cases.Test_Case'Class) is
-      World: RDF.Raptor.World.Raptor_World_Type;
+      World: Raptor_World_Type;
 
       URI_1: constant URI_String := "http://example.org/xyz";
       URI_2: constant URI_String := "http://example.org/qqq";

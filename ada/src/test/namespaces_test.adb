@@ -2,12 +2,12 @@ with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
-with RDF.Raptor.World;
+with RDF.Raptor.World; use RDF.Raptor.World;
 
 package body Namespaces_Test is
 
    procedure Test_Stacks(T : in out Test_Cases.Test_Case'Class) is
-      World: RDF.Raptor.World.Raptor_World_Type;
+      World: Raptor_World_Type;
 
       Stack: Namespace_Stack_Type := Create_Stack (World, XML_Type);
 

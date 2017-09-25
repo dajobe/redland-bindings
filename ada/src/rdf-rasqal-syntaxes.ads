@@ -5,6 +5,7 @@ with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 
 package RDF.Rasqal.Syntaxes is
 
+   -- TODO: Rename?
    subtype Rasqal_Syntax_Description_Type is Raptor_Syntax_Description_Type;
 
    -- FIXME: Shouldn't here be Rasqal_World_Type_Without_Finalize?

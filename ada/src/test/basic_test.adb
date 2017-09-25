@@ -1,17 +1,17 @@
 with AUnit.Test_Cases;
-with RDF.Raptor.World;
-with RDF.Rasqal.World;
-use all type RDF.Raptor.World.Flag_Type;
+with RDF.Raptor.World; use RDF.Raptor.World;
+with RDF.Rasqal.World; use RDF.Rasqal.World;
+--  use all type Raptor_Flag_Type;
 
 package body Basic_Test is
 
    -- This just creates and assigns some variables (and ignores their values)
    procedure Test_Open(T : in out Test_Cases.Test_Case'Class) is
-      Default_World: RDF.Raptor.World.Raptor_World_Type := RDF.Raptor.World.Open;
-      World_With_Some_Flags: RDF.Raptor.World.Raptor_World_Type := RDF.Raptor.World.Open((1=>(Flag=>URI_Interning, Value=>False)));
+      Default_World: Raptor_World_Type := Open;
+      World_With_Some_Flags: Raptor_World_Type := Open((1=>(Flag=>URI_Interning, Value=>False)));
 
-      World2: RDF.Rasqal.World.Rasqal_World_Type := RDF.Rasqal.World.Open;
-      World: RDF.Raptor.World.Raptor_World_Type_Without_Finalize := RDF.Rasqal.World.Get_Raptor(World2);
+      World2: Rasqal_World_Type := Open;
+      World: Raptor_World_Type_Without_Finalize := Get_Raptor(World2);
    begin
       null;
    end;

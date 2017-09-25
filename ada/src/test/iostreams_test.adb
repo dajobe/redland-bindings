@@ -2,14 +2,14 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with AUnit.Test_Cases;
 with AUnit.Assertions; use AUnit.Assertions;
-with RDF.Raptor.World;
+with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Iostream; use RDF.Raptor.Iostream;
 with Ada.Text_IO;
 
 package body Iostreams_Test is
 
    procedure Test_Sinks(T : in out Test_Cases.Test_Case'Class) is
-      World: RDF.Raptor.World.Raptor_World_Type;
+      World: Raptor_World_Type;
       Str: aliased char_array := "qqq";
       In_Sink:  Stream_Type := From_Sink (World);
       Out_Sink: Stream_Type := To_Sink (World);
@@ -19,7 +19,7 @@ package body Iostreams_Test is
    end;
 
    procedure Test_Strings(T : in out Test_Cases.Test_Case'Class) is
-      World: RDF.Raptor.World.Raptor_World_Type;
+      World: Raptor_World_Type;
       Str  : String := "xqqq";
       Buf: aliased char_array := (1..99=>'w', 100=>NUL);
       In_String: Stream_From_String := Open_From_String (World, Str);

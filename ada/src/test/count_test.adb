@@ -25,11 +25,11 @@ package body Count_Test is
       RDF_File: constant String := Directory & "/../data/dc.nt";
       SPARQL: constant String := "SELECT (count(*) as ?count) WHERE { ?s ?p ?o . }";
 
-      World: RDF.Rasqal.World.Rasqal_World_Type := RDF.Rasqal.World.Open;
+      World: Rasqal_World_Type := Open;
       Graph_Stream: RDF.Raptor.IOStream.Stream_Type := From_Filename(Get_Raptor(World), RDF_File);
       Graph: Data_Graph_Type := From_IOStream(World,
                                               Graph_Stream,
-                                              Base_URI => RDF.Raptor.URI.From_String(Get_Raptor(World), "http://example.org")
+                                              Base_URI => From_String(Get_Raptor(World), "http://example.org")
                                               --                                                 Name_URI => URI_Type'(From_Handle(null)),
                                               --                                                 Flags => RDF.Rasqal.Data_Graph.Background,
                                               --                                                 Format_Type => Empty_Holder,
