@@ -40,7 +40,7 @@ package body RDF.Rasqal.Data_Graph is
    end;
 
    function Get_Iostream (Graph: Data_Graph_Type_Without_Finalize)
-                          return RDF.Raptor.IOStream.Stream_Type_Without_Finalize is
+                          return Stream_Type_Without_Finalize is
       use RDF.Raptor.IOStream;
    begin
       return From_Handle(Get_Handle(Graph).IOStr);
@@ -78,7 +78,7 @@ package body RDF.Rasqal.Data_Graph is
    end;
 
    function rasqal_new_data_graph_from_iostream (World: RDF.Rasqal.World.Rasqal_World_Handle;
-                                                 IOStream: RDF.Raptor.IOStream.IOStream_Handle;
+                                                 IOStream: IOStream_Handle;
                                                  Base_URI, Name_URI: URI_Handle;
                                                  Flags: unsigned;
                                                  Format_Type, Format_Name: chars_ptr;
@@ -87,7 +87,7 @@ package body RDF.Rasqal.Data_Graph is
      with Import, Convention=>C;
 
    function From_IOStream (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
-                           IOStream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                           IOStream: Base_Stream_Type'Class;
                            Base_URI: URI_Type_Without_Finalize'Class;
                            Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
                            Flags: Flags_Type := Background;

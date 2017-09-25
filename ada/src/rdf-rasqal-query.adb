@@ -68,13 +68,13 @@ package body RDF.Rasqal.Query is
       rasqal_query_set_wildcard(Get_Handle(Query), (if Store then 1 else 0));
    end;
 
-   function rasqal_query_write (Stream: RDF.Raptor.IOStream.IOStream_Handle;
+   function rasqal_query_write (Stream: IOStream_Handle;
                                 Query: Query_Handle;
                                 Format_URI, Base_URI: URI_Handle)
                                 return Int
      with Import, Convention=>C;
 
-   procedure Write_Query (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+   procedure Write_Query (Stream: Base_Stream_Type'Class;
                           Query: Query_Type_Without_Finalize;
                           Format_URI, Base_URI: URI_Type_Without_Finalize) is
       use RDF.Raptor.IOStream, RDF.Raptor.URI;
@@ -85,14 +85,14 @@ package body RDF.Rasqal.Query is
    end;
 
    function rasqal_query_iostream_write_escaped_counted_string (Query: Query_Handle;
-                                                                Stream: RDF.Raptor.IOStream.IOStream_Handle;
+                                                                Stream: IOStream_Handle;
                                                                 Str: char_array;
                                                                 Len: size_t)
                                                                 return int
      with Import, Convention=>C;
 
    procedure Write_Escaped_String (Query: Query_Type_Without_Finalize;
-                                   Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                                   Stream: Base_Stream_Type'Class;
                                    Str: String) is
       use RDF.Raptor.IOStream;
    begin

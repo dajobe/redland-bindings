@@ -219,7 +219,7 @@ package body RDF.Raptor.URI is
    procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
    begin
       if raptor_uri_print (Get_Handle (URI), File) /= 0 then
-         raise RDF.Raptor.IOStream.IOStream_Exception;
+         raise IOStream_Exception;
       end if;
    end;
 
@@ -231,14 +231,14 @@ package body RDF.Raptor.URI is
       return From_Handle (raptor_uri_get_world (Get_Handle (URI)));
    end;
 
-   function raptor_uri_write (URI: URI_Handle; Stream: RDF.Raptor.IOStream.IOStream_Handle) return int
+   function raptor_uri_write (URI: URI_Handle; Stream: IOStream_Handle) return int
       with Import, Convention=>C;
 
-   procedure Write (URI: URI_Type_Without_Finalize; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class) is
-      use all type RDF.Raptor.IOStream.Base_Stream_Type;
+   procedure Write (URI: URI_Type_Without_Finalize; Stream: Base_Stream_Type'Class) is
+      use all type Base_Stream_Type;
    begin
       if raptor_uri_write (Get_Handle(URI), Get_Handle(Stream)) /= 0 then
-         raise RDF.Raptor.IOStream.IOStream_Exception;
+         raise IOStream_Exception;
       end if;
    end;
 
@@ -323,7 +323,7 @@ package body RDF.Raptor.URI is
    end;
 
    function raptor_uri_turtle_write(Handle: RDF.Raptor.World.Raptor_World_Handle;
-                                      Stream: RDF.Raptor.IOStream.IOStream_Handle;
+                                      Stream: IOStream_Handle;
                                       URI: URI_Handle;
                                       Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
                                       Base_URI: URI_Handle)
@@ -331,7 +331,7 @@ package body RDF.Raptor.URI is
      with Import, Convention=>C;
 
    procedure Turtle_Write (World: Raptor_World_Type_Without_Finalize'Class;
-                           Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                           Stream: Base_Stream_Type'Class;
                            URI: URI_Type_Without_Finalize;
                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                            Base_URI: URI_Type_Without_Finalize) is

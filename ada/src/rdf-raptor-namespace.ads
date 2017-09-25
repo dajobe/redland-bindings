@@ -3,7 +3,7 @@ with RDF.Raptor.URI; use RDF.Raptor.URI;
 with Interfaces.C;
 with RDF.Raptor.World;
 with RDF.Auxiliary; use RDF.Auxiliary;
-with RDF.Raptor.IOStream;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 limited with RDF.Raptor.Namespace_Stack;
 
 package RDF.Raptor.Namespace is
@@ -18,7 +18,7 @@ package RDF.Raptor.Namespace is
 
    not overriding function Get_Prefix (NS: Namespace_Type_Without_Finalize) return String;
 
-   not overriding procedure Write (NS: Namespace_Type_Without_Finalize; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class);
+   not overriding procedure Write (NS: Namespace_Type_Without_Finalize; Stream: Base_Stream_Type'Class);
 
    not overriding function Format_As_XML (NS: Namespace_Type_Without_Finalize) return String;
 

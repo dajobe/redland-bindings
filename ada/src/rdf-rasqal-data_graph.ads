@@ -4,7 +4,7 @@ with RDF.Auxiliary;
 with RDF.Auxiliary.Handled_Record;
 with RDF.Rasqal.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.IOStream;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 
 package RDF.Rasqal.Data_Graph is
 
@@ -37,7 +37,7 @@ package RDF.Rasqal.Data_Graph is
 
    function Get_Format_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type;
 
-   function Get_Iostream (Graph: Data_Graph_Type_Without_Finalize) return RDF.Raptor.IOStream.Stream_Type_Without_Finalize;
+   function Get_Iostream (Graph: Data_Graph_Type_Without_Finalize) return Stream_Type_Without_Finalize;
 
    function Get_Base_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type;
 
@@ -54,7 +54,7 @@ package RDF.Rasqal.Data_Graph is
    overriding procedure Finalize_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle);
 
    not overriding function From_IOStream (World: RDF.Rasqal.World.Rasqal_World_Type_Without_Finalize'Class;
-                                          IOStream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                                          IOStream: Base_Stream_Type'Class;
                                           Base_URI: URI_Type_Without_Finalize'Class;
                                           Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
                                           Flags: Flags_Type := Background;
@@ -101,7 +101,7 @@ private
          Flags: unsigned;
          Format_Type, Format_Name: chars_ptr;
          Format_URI: URI_Handle;
-         IOStr: RDF.Raptor.IOStream.IOStream_Handle;
+         IOStr: IOStream_Handle;
          Base_URI: URI_Handle;
          Usage: int;
       end record
@@ -109,7 +109,7 @@ private
 
 --     type Streamed_Data_Graph_Type is new Data_Graph_Type with
 --        record
---           Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+--           Stream: Base_Stream_Type'Class;
 --        end record;
 
 end RDF.Rasqal.Data_Graph;

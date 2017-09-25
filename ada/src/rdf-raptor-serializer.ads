@@ -1,7 +1,7 @@
 with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Raptor.Iostream;
+with RDF.Raptor.Iostream; use RDF.Raptor.IOStream;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace;
 with RDF.Raptor.Statement;
@@ -19,13 +19,13 @@ package RDF.Raptor.Serializer is
 
    -- WARNING: Other order of arguments than in C
    not overriding procedure Start_To_Iostream (Serializer: Serializer_Type_Without_Finalize;
-                                               Iostream: RDF.Raptor.Iostream.Base_Stream_Type'Class;
+                                               Iostream: Base_Stream_Type'Class;
                                                URI: URI_Type_Without_Finalize := From_Handle(null));
 
    not overriding procedure Start_To_Filename (Serializer: Serializer_Type_Without_Finalize; Filename: String);
 
    -- raptor_serializer_start_to_string() is deliberately not used.
-   -- Use RDF.Raptor.IOStream.Stream_To_String instead.
+   -- Use Stream_To_String instead.
 
    not overriding procedure Start_To_Filehandle (Serializer: Serializer_Type_Without_Finalize;
                                                  URI: URI_Type_Without_Finalize'Class;
@@ -51,7 +51,7 @@ package RDF.Raptor.Serializer is
 
    not overriding function Get_Description (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Syntaxes.Syntax_Description_Type;
 
-   not overriding function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Iostream.Stream_Type_Without_Finalize;
+   not overriding function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return Stream_Type_Without_Finalize;
 
    not overriding function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Log.Locator_Type;
 

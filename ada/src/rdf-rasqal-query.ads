@@ -1,7 +1,7 @@
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.IOStream;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Rasqal.World;
 with RDF.Rasqal.Features;
 with RDF.Rasqal.Data_Graph;
@@ -34,13 +34,13 @@ package RDF.Rasqal.Query is
 
    not overriding procedure Set_Wildcard (Query: Query_Type_Without_Finalize; Store: Boolean);
 
-   not overriding procedure Write_Query (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+   not overriding procedure Write_Query (Stream: Base_Stream_Type'Class;
                                          Query: Query_Type_Without_Finalize;
                                          Format_URI, Base_URI: URI_Type_Without_Finalize);
 
    -- Is it really useful? Maybe remove from public API?
    not overriding procedure Write_Escaped_String (Query: Query_Type_Without_Finalize;
-                                                  Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                                                  Stream: Base_Stream_Type'Class;
                                                   Str: String);
 
    not overriding function Escape_String (Query: Query_Type_Without_Finalize; Str: String)

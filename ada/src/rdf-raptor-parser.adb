@@ -9,7 +9,7 @@ with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Statement; use RDF.Raptor.Statement;
 with RDF.Raptor.Log; use RDF.Raptor.Log;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.IOStream;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.Parser is
@@ -117,12 +117,12 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_parse_iostream (Parser: Parser_Handle;
-                                            Stream: RDF.Raptor.IOStream.IOStream_Handle;
+                                            Stream: IOStream_Handle;
                                             Base_URI: URI_Handle) return int
       with Import, Convention=>C;
 
    procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
-                             Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                             Stream: Base_Stream_Type'Class;
                              Base_URI: URI_Type_Without_Finalize) is
       use RDF.Raptor.IOStream;
    begin

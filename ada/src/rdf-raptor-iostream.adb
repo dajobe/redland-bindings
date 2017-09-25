@@ -405,7 +405,7 @@ package body RDF.Raptor.IOStream is
       return int(Size*Count);
    end;
 
-   function raptor_term_escaped_write (Term: RDF.Raptor.Term.Term_Handle; Flags: unsigned; Stream: RDF.Raptor.IOStream.IOStream_Handle) return int
+   function raptor_term_escaped_write (Term: RDF.Raptor.Term.Term_Handle; Flags: unsigned; Stream: IOStream_Handle) return int
      with Import, Convention=>C;
 
    procedure Term_Escaped_Write (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type) is
@@ -417,7 +417,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_uri_escaped_write (URI, Base_URI: URI_Handle; Flags: unsigned; Stream: RDF.Raptor.IOStream.IOStream_Handle) return int
+   function raptor_uri_escaped_write (URI, Base_URI: URI_Handle; Flags: unsigned; Stream: IOStream_Handle) return int
      with Import, Convention=>C;
 
    procedure URI_Escaped_Write (URI, Base_URI: URI_Type_Without_Finalize'Class; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type) is

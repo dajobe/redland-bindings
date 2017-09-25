@@ -9,12 +9,12 @@ package body RDF.Raptor.Serializer is
 
    function raptor_serializer_start_to_iostream (Serializer: Serializer_Handle;
                                                  URI: URI_Handle;
-                                                 Iostream: RDF.Raptor.Iostream.IOStream_Handle)
+                                                 Iostream: IOStream_Handle)
                                                  return int
       with Import, Convention=>C;
 
    procedure Start_To_Iostream (Serializer: Serializer_Type_Without_Finalize;
-                                Iostream: RDF.Raptor.Iostream.Base_Stream_Type'Class;
+                                Iostream: Base_Stream_Type'Class;
                                 URI: URI_Type_Without_Finalize := From_Handle(null)) is
       use RDF.Raptor.Iostream;
    begin
@@ -121,10 +121,10 @@ package body RDF.Raptor.Serializer is
       return raptor_serializer_get_description(Get_Handle(Serializer));
    end;
 
-   function raptor_serializer_get_iostream (Serializer: Serializer_Handle) return RDF.Raptor.Iostream.IOStream_Handle
+   function raptor_serializer_get_iostream (Serializer: Serializer_Handle) return IOStream_Handle
       with Import, Convention=>C;
 
-   function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return RDF.Raptor.Iostream.Stream_Type_Without_Finalize is
+   function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return Stream_Type_Without_Finalize is
       use RDF.Raptor.Iostream;
    begin
       return From_Handle(raptor_serializer_get_iostream(Get_Handle(Serializer)));

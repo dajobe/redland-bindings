@@ -101,7 +101,7 @@ package body RDF.Raptor.Statement is
    procedure Print (Statement: Statement_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
    begin
       if raptor_statement_print(Get_Handle(Statement), File) /= 0 then
-         raise RDF.Raptor.IOStream.IOStream_Exception;
+         raise IOStream_Exception;
       end if;
    end;
 
@@ -111,21 +111,21 @@ package body RDF.Raptor.Statement is
    procedure Print_As_Ntriples (Statement: Statement_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
    begin
       if raptor_statement_print_as_ntriples(Get_Handle(Statement), File) /= 0 then
-         raise RDF.Raptor.IOStream.IOStream_Exception;
+         raise IOStream_Exception;
       end if;
    end;
 
-   function raptor_statement_ntriples_write (Statement: Statement_Handle; Stream: RDF.Raptor.IOStream.IOStream_Handle; Write_Graph_Term: int)
+   function raptor_statement_ntriples_write (Statement: Statement_Handle; Stream: IOStream_Handle; Write_Graph_Term: int)
                                                return Int
       with Import, Convention=>C;
 
    procedure Ntriples_Write (Statement: Statement_Type_Without_Finalize;
-                             Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                             Stream: Base_Stream_Type'Class;
                              Write_Graph_Term: Boolean) is
       Flag: constant int := (if Write_Graph_Term then 1 else 0);
    begin
       if raptor_statement_ntriples_write(Get_Handle(Statement), Get_Handle(Stream), Flag) /= 0 then
-         raise RDF.Raptor.IOStream.IOStream_Exception;
+         raise IOStream_Exception;
       end if;
    end;
 

@@ -220,14 +220,14 @@ package body RDF.Raptor.Term is
       end;
    end;
 
-   function raptor_term_turtle_write (Stream: RDF.Raptor.IOStream.IOStream_Handle;
+   function raptor_term_turtle_write (Stream: IOStream_Handle;
                                         Term: Term_Handle;
                                         Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Handle;
                                         Base_URI: URI_Handle)
                                         return Int
       with Import, Convention=>C;
 
-   procedure Turtle_Write (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+   procedure Turtle_Write (Stream: Base_Stream_Type'Class;
                            Term: Term_Type_Without_Finalize;
                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                            Base_URI: URI_Type'Class) is

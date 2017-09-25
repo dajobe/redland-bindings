@@ -1,6 +1,6 @@
 with RDF.Auxiliary.Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Raptor.IOStream;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 limited with RDF.Raptor.Namespace_Stack;
 
 package RDF.Raptor.URI is
@@ -47,7 +47,7 @@ package RDF.Raptor.URI is
 
    not overriding function Get_World (URI: URI_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
 
-   not overriding procedure Write (URI: URI_Type_Without_Finalize; Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class);
+   not overriding procedure Write (URI: URI_Type_Without_Finalize; Stream: Base_Stream_Type'Class);
 
    not overriding function URI_File_Exists (URI: URI_Type_Without_Finalize) return Boolean;
 
@@ -60,7 +60,7 @@ package RDF.Raptor.URI is
                                              return String;
 
    not overriding procedure Turtle_Write (World: Raptor_World_Type_Without_Finalize'Class;
-                                          Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                                          Stream: Base_Stream_Type'Class;
                                           URI: URI_Type_Without_Finalize;
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                           Base_URI: URI_Type_Without_Finalize);

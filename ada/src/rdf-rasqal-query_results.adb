@@ -171,14 +171,14 @@ package body RDF.Rasqal.Query_Results is
       end if;
    end;
 
-   function rasqal_query_results_read (Stream: RDF.Raptor.IOStream.IOStream_Handle;
+   function rasqal_query_results_read (Stream: IOStream_Handle;
                                        Results: Query_Results_Handle;
                                        Name, Mime_Type: chars_ptr;
                                        Format_URI, Base_URI: URI_Handle)
                                        return Int
      with Import, Convention=>C;
 
-   procedure Read (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+   procedure Read (Stream: Base_Stream_Type'Class;
                    Results: Query_Results_Type_Without_Finalize;
                    Format_Name: String; -- "" for no format name
                    Mime_Type: String; -- "" for no MIME type
@@ -199,14 +199,14 @@ package body RDF.Rasqal.Query_Results is
       end if;
    end;
 
-   function rasqal_query_results_write (Stream: RDF.Raptor.IOStream.IOStream_Handle;
+   function rasqal_query_results_write (Stream: IOStream_Handle;
                                         Results: Query_Results_Handle;
                                         Name, Mime_Type: Chars_Ptr;
                                         Format_URI, Base_URI: URI_Handle)
                                         return Int
      with Import, Convention=>C;
 
-   procedure Write (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+   procedure Write (Stream: Base_Stream_Type'Class;
                     Results: Query_Results_Type_Without_Finalize;
                     Format_Name: String; -- "" for no format name
                     Mime_Type: String; -- "" for no MIME type

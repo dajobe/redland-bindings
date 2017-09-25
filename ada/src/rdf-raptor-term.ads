@@ -5,7 +5,7 @@ with RDF.Auxiliary;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace_Stack;
-with RDF.Raptor.IOStream;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 
 package RDF.Raptor.Term is
 
@@ -70,7 +70,7 @@ package RDF.Raptor.Term is
                                             Base_URI: URI_Type'Class)
                                             return String;
 
-   not overriding procedure Turtle_Write (Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+   not overriding procedure Turtle_Write (Stream: Base_Stream_Type'Class;
                                           Term: Term_Type_Without_Finalize;
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                                           Base_URI: URI_Type'Class);

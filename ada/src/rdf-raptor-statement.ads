@@ -2,7 +2,7 @@ with Interfaces.C;
 with RDF.Auxiliary.Handled_Record;
 with RDF.Raptor.World;
 with RDF.Raptor.Term; use RDF.Raptor.Term;
-with RDF.Raptor.IOStream;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 
 package RDF.Raptor.Statement is
 
@@ -36,7 +36,7 @@ package RDF.Raptor.Statement is
    -- raptor_statement_init(), raptor_statement_clear() are not boound, because they are probably internal
 
    not overriding procedure Ntriples_Write (Statement: Statement_Type_Without_Finalize;
-                                            Stream: RDF.Raptor.IOStream.Base_Stream_Type'Class;
+                                            Stream: Base_Stream_Type'Class;
                                             Write_Graph_Term: Boolean);
 
    not overriding function Copy (Object: Statement_Type_Without_Finalize'Class) return Statement_Type_Without_Finalize;
