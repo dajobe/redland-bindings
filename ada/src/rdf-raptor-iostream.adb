@@ -1,5 +1,4 @@
 with Ada.Unchecked_Conversion;
-with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Term; use RDF.Raptor.Term;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -77,16 +76,16 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
-   function raptor_iostream_read_bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: IOStream_Handle) return size_t
+   function raptor_iostream_read_bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: IOStream_Handle) return int
      with Import, Convention=>C;
 
    function Read_Bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Base_Stream_Type) return size_t is
-      Result: constant size_t := raptor_iostream_read_bytes (Ptr, size, nmemb, Get_Handle (Stream));
+      Result: constant int := raptor_iostream_read_bytes (Ptr, size, nmemb, Get_Handle (Stream));
    begin
       if Result < 0 then
          raise IOStream_Exception;
       end if;
-      return Result;
+      return size_t(Result);
    end;
 
    function raptor_iostream_read_eof (Stream: IOStream_Handle) return int
@@ -313,7 +312,6 @@ package body RDF.Raptor.IOStream is
 
    function Open (World: Raptor_World_Type_Without_Finalize'Class) return User_Defined_Stream_Type is
       Handle: IOStream_Handle;
-      use all type Raptor_World_Type;
    begin
       return Stream: User_Defined_Stream_Type do
          Handle := raptor_new_iostream_from_handler (Get_Handle (World),
@@ -409,8 +407,6 @@ package body RDF.Raptor.IOStream is
      with Import, Convention=>C;
 
    procedure Term_Escaped_Write (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type) is
-      use Term_Handled_Record;
-      use type Term_Handled_Record.Base_Object;
    begin
       if raptor_term_escaped_write(Get_Handle(Term), Unsigned(Flags), Get_Handle(Stream)) /= 0 then
          raise IOStream_Exception;

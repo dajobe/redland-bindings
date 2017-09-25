@@ -1,8 +1,3 @@
-with Interfaces.C; use Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
---  with Interfaces.C.Pointers;
---  with RDF.Rasqal.World; use RDF.Rasqal.World;
-
 package body RDF.Rasqal.Syntaxes is
 
    type Rasqal_Syntax_Description_Access is access all Rasqal_Syntax_Description_Type

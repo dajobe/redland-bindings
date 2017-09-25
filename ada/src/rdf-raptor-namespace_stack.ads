@@ -1,6 +1,5 @@
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
-with Interfaces.C;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Raptor.Namespace;

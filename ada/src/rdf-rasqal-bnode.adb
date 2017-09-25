@@ -31,7 +31,6 @@ package body RDF.Rasqal.Bnode is
          Replace_Element(User_ID2, Value(User_ID));
       end if;
       declare
-         use RDF.Rasqal.World;
          Result: constant Chars_Ptr := New_String(Do_Handle(Rasqal_World_Type_Without_Finalize'(From_Non_Null_Handle(World)),
                                                             Ptr_To_Obj(Data).all,
                                                             User_ID2));

@@ -1,5 +1,6 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.Memory;
 
 package body RDF.Raptor.Bnode is
@@ -8,7 +9,7 @@ package body RDF.Raptor.Bnode is
      with Import, Convention=>C;
 
    function Generate_Bnodeid (World: Raptor_World_Type_Without_Finalize'Class) return String is
-      C_Str: chars_ptr := raptor_world_generate_bnodeid(Get_Handle(World));
+      C_Str: constant chars_ptr := raptor_world_generate_bnodeid(Get_Handle(World));
       Result: constant String := Value(C_Str);
    begin
       RDF.Raptor.Memory.raptor_free_memory(C_Str);
@@ -21,7 +22,7 @@ package body RDF.Raptor.Bnode is
    procedure Set_Generate_Bnodeid_Parameters (World: Raptor_World_Type_Without_Finalize'Class;
                                               Prefix: String_Holders.Holder;
                                               Base: int) is
-      Prefix_N : C_String_Holder := To_C_String_Holder(Prefix);
+      Prefix_N: constant C_String_Holder := To_C_String_Holder(Prefix);
    begin
       raptor_world_set_generate_bnodeid_parameters(Get_Handle(World), C_String(Prefix_N), Base);
    end;

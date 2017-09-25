@@ -13,7 +13,7 @@ package body RDF.Raptor.Memory is
       Len: constant size_t := Strlen(Str) + 1;
       New_Str: constant Chars_Ptr := Raptor_Alloc_Memory(Len);
    begin
-      C_Strncpy(New_Str, Str, size_t(Len));
+      C_Strncpy(New_Str, Str, Len);
       return New_Str;
    end;
 

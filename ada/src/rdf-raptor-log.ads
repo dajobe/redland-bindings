@@ -1,4 +1,3 @@
-with Ada.Finalization;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.Handled_Record;

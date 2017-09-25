@@ -28,7 +28,9 @@ library project Librdf is
 
 
    package Compiler is
-      Common_Ada_Flags := ("-gnat2012", "-gnaty3", "-gnatya", "-gnatyA", "-gnatyb", "-gnatyd", "-gnatyf", "-gnatyh", "-gnatyi", "-gnatyl", "-gnatyp", "-gnatyx");
+      Common_Ada_Flags := ("-gnat2012",
+                           "-gnaty3", "-gnatya", "-gnatyA", "-gnatyb", "-gnatyd", "-gnatyf", "-gnatyh", "-gnatyi", "-gnatyl", "-gnatyp", "-gnatyx",
+                           "-gnatwe", "-gnatwa", "-gnatwF");
 
       Debug_Flags := ();
       case Debug_Mode is

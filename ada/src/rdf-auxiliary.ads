@@ -1,6 +1,4 @@
 with Interfaces.C; use Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
---  private with Ada.Strings.Unbounded;
 with Ada.Containers.Indefinite_Holders;
 
 package RDF.Auxiliary is

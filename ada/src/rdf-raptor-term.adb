@@ -1,8 +1,5 @@
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.Memory;
-with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
@@ -67,13 +64,11 @@ package body RDF.Raptor.Term is
      with Import, Convention=>C;
 
    function From_Blank (World: Raptor_World_Type_Without_Finalize'Class) return Term_Type is
-      use RDF.Raptor.World;
    begin
       return From_Non_Null_Handle(raptor_new_term_from_counted_blank(Get_Handle(World), Null_Ptr, 0));
    end;
 
    function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: String) return Term_Type is
-      use RDF.Raptor.World;
       Str: aliased char_array := To_C(ID);
    begin
       return From_Non_Null_Handle(raptor_new_term_from_counted_blank(Get_Handle(World), To_Chars_Ptr(Str'Unchecked_Access), ID'Length));
@@ -81,7 +76,7 @@ package body RDF.Raptor.Term is
 
    function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: RDF.Auxiliary.String_Holders.Holder) return Term_Type is
       use RDF.Auxiliary.C_String_Holders;
-      ID_N : C_String_Holder := To_C_String_Holder(ID);
+      ID_N: constant C_String_Holder := To_C_String_Holder(ID);
    begin
       return From_Non_Null_Handle(raptor_new_term_from_counted_blank(Get_Handle(World), C_String(ID_N), Length(ID_N)));
    end;
@@ -102,8 +97,8 @@ package body RDF.Raptor.Term is
                           return Term_Type
    is
       use RDF.Auxiliary.C_String_Holders;
-      Literal_N : C_String_Holder := To_C_String_Holder(Literal );
-      Language_N: C_String_Holder := To_C_String_Holder(Language);
+      Literal_N : constant C_String_Holder := To_C_String_Holder(Literal );
+      Language_N: constant C_String_Holder := To_C_String_Holder(Language);
    begin
       return From_Non_Null_Handle( raptor_new_term_from_counted_literal(Get_Handle(World),
                                                                           C_String(Literal_N),
@@ -231,7 +226,6 @@ package body RDF.Raptor.Term is
                            Term: Term_Type_Without_Finalize;
                            Stack: Namespace_Stack_Type'Class;
                            Base_URI: URI_Type'Class) is
-      use RDF.Raptor.IOStream;
    begin
       if raptor_term_turtle_write(Get_Handle(Stream), Get_Handle(Term), Get_Handle(Stack), Get_Handle(Base_URI)) /= 0 then
          raise IOStream_Exception;

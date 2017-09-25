@@ -1,7 +1,3 @@
-with Interfaces.C; use Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
-with Ada.Unchecked_Deallocation;
-
 package body RDF.Auxiliary is
 
    function Length (Object: String_Holders.Holder) return size_t is

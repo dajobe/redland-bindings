@@ -1,6 +1,4 @@
 with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary; use RDF.Auxiliary;
 

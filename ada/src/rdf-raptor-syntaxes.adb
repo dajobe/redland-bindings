@@ -1,7 +1,4 @@
-with Interfaces.C; use Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Interfaces.C.Pointers;
-with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.Syntaxes is

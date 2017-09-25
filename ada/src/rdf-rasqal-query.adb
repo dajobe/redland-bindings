@@ -13,7 +13,6 @@ package body RDF.Rasqal.Query is
 
    procedure Add_Data_Graph (Query: Query_Type_Without_Finalize;
                              Graph: Data_Graph_Type_Without_Finalize'Class) is
-      use RDF.Rasqal.Data_Graph;
    begin
       if rasqal_query_add_data_graph (Get_Handle(Query), Get_Handle(Graph)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -31,7 +30,6 @@ package body RDF.Rasqal.Query is
      with Import, Convention=>C;
 
    function Execute (Query: Query_Type_Without_Finalize) return Query_Results_Type is
-      use RDF.Rasqal.Query_Results;
    begin
       return From_Non_Null_Handle(rasqal_query_execute(Get_Handle(Query)));
    end;
@@ -43,7 +41,6 @@ package body RDF.Rasqal.Query is
    procedure Prepare (Query: Query_Type_Without_Finalize;
                       Query_String: String;
                       Base_URI: URI_Type_Without_Finalize := From_Handle(null)) is
-      use RDF.Raptor.URI;
    begin
       if rasqal_query_prepare(Get_Handle(Query), To_C(Query_String), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -77,7 +74,6 @@ package body RDF.Rasqal.Query is
    procedure Write_Query (Stream: Base_Stream_Type'Class;
                           Query: Query_Type_Without_Finalize;
                           Format_URI, Base_URI: URI_Type_Without_Finalize) is
-      use RDF.Raptor.IOStream, RDF.Raptor.URI;
    begin
       if rasqal_query_write(Get_Handle(Stream), Get_Handle(Query), Get_Handle(Format_URI), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -94,7 +90,6 @@ package body RDF.Rasqal.Query is
    procedure Write_Escaped_String (Query: Query_Type_Without_Finalize;
                                    Stream: Base_Stream_Type'Class;
                                    Str: String) is
-      use RDF.Raptor.IOStream;
    begin
       if rasqal_query_iostream_write_escaped_counted_string(Get_Handle(Query),
                                                             Get_Handle(Stream),
@@ -116,7 +111,7 @@ package body RDF.Rasqal.Query is
 
    function Escape_String (Query: Query_Type_Without_Finalize; Str: String)
                            return String is
-      In_Str2: char_array := My_To_C_Without_Nul(Str);
+      In_Str2: constant char_array := My_To_C_Without_Nul(Str);
       Out_Len: aliased size_t;
       Result: constant RDF.Auxiliary.C_Pointers.Pointer :=
         rasqal_query_escape_counted_string(Get_Handle(Query), In_Str2, Str'Length, Out_Len'Unchecked_Access);
@@ -126,7 +121,6 @@ package body RDF.Rasqal.Query is
          raise RDF.Auxiliary.RDF_Exception;
       end if;
       declare
-         use RDF.Auxiliary.Convert;
          Out_Str: constant String := Value_With_Possible_NULs(Result, Out_Len);
       begin
          RDF.Rasqal.Memory.rasqal_free_memory(Convert(Result));
@@ -193,7 +187,6 @@ package body RDF.Rasqal.Query is
      with Import, Convention=>C;
 
    function Get_Result_Type (Query: Query_Type_Without_Finalize) return Query_Results_Type_Enum is
-      use RDF.Rasqal.Query_Results;
       Result: constant Query_Results_Type_Enum :=
         rasqal_query_get_result_type(Get_Handle(Query));
    begin
@@ -210,7 +203,6 @@ package body RDF.Rasqal.Query is
       use RDF.Auxiliary.C_String_Holders;
       Name2: chars_ptr := New_String(Name);
       URI2 : chars_ptr := New_String(URI );
-      use RDF.Rasqal.World;
       Result: constant Query_Handle := rasqal_new_query(Get_Handle(World), Name2, URI2);
    begin
       Free(Name2);

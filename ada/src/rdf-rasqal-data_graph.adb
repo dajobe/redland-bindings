@@ -4,21 +4,18 @@ package body RDF.Rasqal.Data_Graph is
 
    function Get_World (Graph: Data_Graph_Type_Without_Finalize)
                        return Rasqal_World_Type_Without_Finalize is
-      use RDF.Rasqal.World;
    begin
       return From_Handle(Get_Handle(Graph).World);
    end;
 
    function Get_URI (Graph: Data_Graph_Type_Without_Finalize)
                      return URI_Type_Without_Finalize is
-      use RDF.Raptor.URI;
    begin
       return From_Handle(Get_Handle(Graph).URI);
    end;
 
    function Get_Name_URI (Graph: Data_Graph_Type_Without_Finalize)
                      return URI_Type_Without_Finalize is
-      use RDF.Raptor.URI;
    begin
       return From_Handle(Get_Handle(Graph).Name_URI);
    end;
@@ -34,20 +31,17 @@ package body RDF.Rasqal.Data_Graph is
 
 
    function Get_Format_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type is
-      use RDF.Raptor.URI;
    begin
       return From_Handle(Get_Handle(Graph).Format_URI);
    end;
 
    function Get_Iostream (Graph: Data_Graph_Type_Without_Finalize)
                           return Stream_Type_Without_Finalize is
-      use RDF.Raptor.IOStream;
    begin
       return From_Handle(Get_Handle(Graph).IOStr);
    end;
 
    function Get_Base_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type is
-      use RDF.Raptor.URI;
    begin
       return From_Handle(Get_Handle(Graph).Base_URI);
    end;
@@ -97,7 +91,6 @@ package body RDF.Rasqal.Data_Graph is
       use RDF.Auxiliary.C_String_Holders;
       Format_Type2: chars_ptr := New_String(Format_Type);
       Format_Name2: chars_ptr := New_String(Format_Name);
-      use RDF.Rasqal.World, RDF.Raptor.IOStream, RDF.Raptor.URI;
       Result: constant Data_Graph_Handle :=
         rasqal_new_data_graph_from_iostream(Get_Handle(World),
                                             Get_Handle(IOStream),
@@ -130,7 +123,6 @@ package body RDF.Rasqal.Data_Graph is
       use RDF.Auxiliary.C_String_Holders;
       Format_Type2: chars_ptr := New_String(Format_Type);
       Format_Name2: chars_ptr := New_String(Format_Name);
-      use RDF.Rasqal.World, RDF.Raptor.IOStream, RDF.Raptor.URI;
       Result: constant Data_Graph_Handle :=
         rasqal_new_data_graph_from_uri(Get_Handle(World),
                                        Get_Handle(URI),

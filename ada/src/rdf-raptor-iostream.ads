@@ -6,7 +6,6 @@ with RDF.Auxiliary;
 with RDF.Raptor.World; use RDF.Raptor.World;
 limited with RDF.Raptor.URI;
 limited with RDF.Raptor.Term;
-limited with RDF.Raptor.Statement;
 
 package RDF.Raptor.IOStream is
 

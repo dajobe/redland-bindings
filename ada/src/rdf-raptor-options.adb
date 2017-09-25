@@ -1,5 +1,4 @@
 with RDF.Auxiliary;
-with RDF.Raptor.World; use RDF.Raptor.World;
 
 package body RDF.Raptor.Options is
 
@@ -82,7 +81,7 @@ package body RDF.Raptor.Options is
 
    -- Crude hack
    function Option_From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type'Class) return Raptor_Option is
-      Result: constant Raptor_Option'Base := raptor_world_get_option_from_uri(Get_Handle(World), Get_Handle(URI));
+      Result: constant Raptor_Option := raptor_world_get_option_from_uri(Get_Handle(World), Get_Handle(URI));
    begin
       if not Result'Valid then
          raise Constraint_Error;

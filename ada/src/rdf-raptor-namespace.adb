@@ -1,9 +1,5 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxiliary; use RDF.Auxiliary;
-with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
-with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
 with RDF.Raptor.Memory;
 
@@ -69,7 +65,6 @@ package body RDF.Raptor.Namespace is
      with Import, Convention=>C;
 
    procedure Write (NS: Namespace_Type_Without_Finalize; Stream: Base_Stream_Type'Class) is
-      use RDF.Raptor.IOStream;
    begin
       if raptor_namespace_write(Get_Handle(NS), Get_Handle(Stream)) /= 0 then
          raise IOStream_Exception;
@@ -80,7 +75,7 @@ package body RDF.Raptor.Namespace is
      with Import, Convention=>C;
 
    function Format_As_XML (NS: Namespace_Type_Without_Finalize) return String is
-      C_Str: chars_ptr := raptor_namespace_format_as_xml(Get_Handle(NS), null);
+      C_Str: constant chars_ptr := raptor_namespace_format_as_xml(Get_Handle(NS), null);
    begin
       if C_Str = Null_Ptr then
          raise RDF.Auxiliary.RDF_Exception;

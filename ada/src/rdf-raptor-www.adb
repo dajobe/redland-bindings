@@ -4,7 +4,6 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_Pointers;
 with RDF.Raptor.Memory;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
-with RDF.Raptor.URI;
 
 package body RDF.Raptor.WWW is
 
@@ -75,7 +74,6 @@ package body RDF.Raptor.WWW is
       with Import, Convention=>C;
 
    function Get_Final_URI (WWW: WWW_Type_Without_Finalize) return URI_Type is
-      use RDF.Raptor.URI;
    begin
       -- may return object with NULL handle
       return From_Handle(raptor_www_get_final_uri(Get_Handle(WWW)));
@@ -85,7 +83,6 @@ package body RDF.Raptor.WWW is
       with Import, Convention=>C;
 
    procedure Fetch (WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize) is
-      use RDF.Raptor.URI;
    begin
       if raptor_www_fetch(Get_Handle(WWW), Get_Handle(URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -105,7 +102,6 @@ package body RDF.Raptor.WWW is
        with Import, Convention=>C;
 
    function Fetch_To_String(WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize) return String is
-      use RDF.Raptor.URI;
       String_P: aliased chars_ptr;
       Length_P: aliased size_t;
    begin
@@ -163,7 +159,6 @@ package body RDF.Raptor.WWW is
       with Import, Convention=>C;
 
    function New_WWW (World: Raptor_World_Type'Class) return WWW_Type is
-      use RDF.Raptor.World;
    begin
       return From_Non_Null_Handle(raptor_new_www(Get_Handle(World)));
    end;
@@ -172,7 +167,6 @@ package body RDF.Raptor.WWW is
       with Import, Convention=>C;
 
    function New_WWW (World: Raptor_World_Type'Class; Connection: Connection_Type) return WWW_Type is
-      use RDF.Raptor.World;
    begin
       return From_Non_Null_Handle(raptor_new_www_with_connection(Get_Handle(World), Connection));
    end;
@@ -231,7 +225,6 @@ package body RDF.Raptor.WWW is
    end;
 
    function URI_Filter_Impl (User_data: chars_ptr; URI: URI_Handle) return int is
-      use RDF.Raptor.URI;
       Result: constant Boolean := URI_Filter(Ptr_To_Obj(User_Data).all,
                                              URI_Type_Without_Finalize'(From_Non_Null_Handle(URI)));
    begin
@@ -239,7 +232,6 @@ package body RDF.Raptor.WWW is
    end;
 
    procedure Final_URI_Handler_Impl (WWW: WWW_Handle; User_Data: chars_ptr; URI: URI_Handle) is
-      use RDF.Raptor.URI;
    begin
       Final_URI_Handler(--WWW_Type_Without_Finalize'(From_Handle(WWW)), -- ignored
                         Ptr_To_Obj(User_Data).all,

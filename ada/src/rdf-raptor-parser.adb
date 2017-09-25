@@ -1,15 +1,7 @@
 with Ada.Unchecked_Conversion;
-with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.Memory;
-with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
-with RDF.Raptor.Statement; use RDF.Raptor.Statement;
-with RDF.Raptor.Log; use RDF.Raptor.Log;
-with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.Parser is
@@ -38,15 +30,15 @@ package body RDF.Raptor.Parser is
                                  Buffer    : String_Holders.Holder;
                                  Identifier: String_Holders.Holder)
                                  return Parser_Type is
-      Mime_Type_N : C_String_Holder := To_C_String_Holder(Mime_Type);
-      Buffer_N    : C_String_Holder := To_C_String_Holder(Buffer);
-      Identifier_N: C_String_Holder := To_C_String_Holder(Identifier);
+      Mime_Type_N : constant C_String_Holder := To_C_String_Holder(Mime_Type);
+      Buffer_N    : constant C_String_Holder := To_C_String_Holder(Buffer);
+      Identifier_N: constant C_String_Holder := To_C_String_Holder(Identifier);
    begin
       return  From_Non_Null_Handle( raptor_new_parser_for_content(Get_Handle(World),
                                                                     Get_Handle(URI),
                                                                     C_String(Mime_Type_N),
                                                                     C_String(Buffer_N),
-                                                                    size_t(Length(Buffer)),
+                                                                    Length(Buffer),
                                                                     C_String(Identifier_N)) );
    end;
 
@@ -124,7 +116,6 @@ package body RDF.Raptor.Parser is
    procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
                              Stream: Base_Stream_Type'Class;
                              Base_URI: URI_Type_Without_Finalize) is
-      use RDF.Raptor.IOStream;
    begin
       if raptor_parser_parse_iostream(Get_Handle(Parser), Get_Handle(Stream), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;

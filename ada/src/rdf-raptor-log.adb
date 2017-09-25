@@ -1,8 +1,5 @@
 with Ada.Unchecked_Conversion;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.Memory;
-with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Auxiliary;
 
 package body RDF.Raptor.Log is
 

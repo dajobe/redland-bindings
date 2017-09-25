@@ -1,9 +1,5 @@
-with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
--- with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.Options;
 
 package body RDF.Raptor.Serializer is
 
@@ -16,7 +12,6 @@ package body RDF.Raptor.Serializer is
    procedure Start_To_Iostream (Serializer: Serializer_Type_Without_Finalize;
                                 Iostream: Base_Stream_Type'Class;
                                 URI: URI_Type_Without_Finalize := From_Handle(null)) is
-      use RDF.Raptor.Iostream;
    begin
       if raptor_serializer_start_to_iostream(Get_Handle(Serializer), Get_Handle(URI), Get_Handle(Iostream)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -73,7 +68,6 @@ package body RDF.Raptor.Serializer is
 
    procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
                             Namespace: Namespace_Type_Without_Finalize) is
-      use RDF.Raptor.Namespace;
    begin
       if raptor_serializer_set_namespace_from_namespace(Get_Handle(Serializer), Get_Handle(Namespace)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -86,7 +80,6 @@ package body RDF.Raptor.Serializer is
 
    procedure Serialize_Statement (Serializer: Serializer_Type_Without_Finalize;
                                   Statement: Statement_Type_Without_Finalize'Class) is
-      use RDF.Raptor.Statement;
    begin
       if raptor_serializer_serialize_statement(Get_Handle(Serializer), Get_Handle(Statement)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -108,7 +101,7 @@ package body RDF.Raptor.Serializer is
 
    procedure Serialize_Flush (Serializer: Serializer_Type_Without_Finalize) is
    begin
-      if raptor_serializer_serialize_end(Get_Handle(Serializer)) /= 0 then
+      if raptor_serializer_serialize_flush(Get_Handle(Serializer)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
@@ -125,7 +118,6 @@ package body RDF.Raptor.Serializer is
       with Import, Convention=>C;
 
    function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return Stream_Type_Without_Finalize is
-      use RDF.Raptor.Iostream;
    begin
       return From_Handle(raptor_serializer_get_iostream(Get_Handle(Serializer)));
    end;
@@ -134,7 +126,6 @@ package body RDF.Raptor.Serializer is
       with Import, Convention=>C;
 
    function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return Locator_Type is
-      use RDF.Raptor.Log;
    begin
       return From_Handle(raptor_serializer_get_locator(Get_Handle(Serializer)));
    end;

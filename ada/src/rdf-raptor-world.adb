@@ -1,8 +1,5 @@
 with Interfaces.C; use Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Raptor.Constants;
-with RDF.Raptor.Memory;
-with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 
 package body RDF.Raptor.World is
 
@@ -44,7 +41,6 @@ package body RDF.Raptor.World is
    end;
 
    function Open return Raptor_World_Type is
-      Object: Raptor_World_Type;
    begin
       return Object: Raptor_World_Type do
          Open(Object);
@@ -52,7 +48,6 @@ package body RDF.Raptor.World is
    end;
 
    function Open(Flags: Flags_Array) return Raptor_World_Type is
-      Object: Raptor_World_Type;
    begin
       return Object: Raptor_World_Type do
          Open(Object, Flags);

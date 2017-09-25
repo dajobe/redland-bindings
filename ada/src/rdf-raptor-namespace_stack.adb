@@ -1,9 +1,6 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
-with RDF.Raptor.World; use RDF.Raptor.World;
-with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace; use RDF.Raptor.Namespace;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
@@ -36,8 +33,8 @@ package body RDF.Raptor.Namespace_Stack is
                               Prefix: String_Holders.Holder;
                               NS_URI: String_Holders.Holder;
                               Depth: Natural) is
-      Prefix_N : C_String_Holder := To_C_String_Holder(Prefix);
-      URI_N    : C_String_Holder := To_C_String_Holder(NS_URI);
+      Prefix_N: constant C_String_Holder := To_C_String_Holder(Prefix);
+      URI_N   : constant C_String_Holder := To_C_String_Holder(NS_URI);
    begin
       if raptor_namespaces_start_namespace_full(Get_Handle(Stack), C_String(Prefix_N), C_String(URI_N), int(Depth)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;

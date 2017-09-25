@@ -1,5 +1,4 @@
 with Ada.Unchecked_Conversion;
-with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Auxiliary.C_Pointers;
@@ -18,7 +17,6 @@ package body RDF.Rasqal.Literal is
                                Type_Of_Literal: Literal_Type_Enum;
                                Value: String)
                                return Literal_Type is
-      use RDF.Rasqal.World;
    begin
       return From_Non_Null_Handle(rasqal_new_typed_literal(Get_Handle(World), Type_Of_Literal, To_C(Value)));
    end;
@@ -31,7 +29,6 @@ package body RDF.Rasqal.Literal is
    function From_Boolean (World: Rasqal_World_Type_Without_Finalize;
                           Value: Boolean)
                           return Literal_Type is
-      use RDF.Rasqal.World;
    begin
       return From_Non_Null_Handle(rasqal_new_boolean_literal(Get_Handle(World), Boolean'Pos(Value)));
    end;
@@ -44,7 +41,6 @@ package body RDF.Rasqal.Literal is
    function From_Decimal (World: Rasqal_World_Type_Without_Finalize;
                           Value: String)
                           return Literal_Type is
-      use RDF.Rasqal.World;
    begin
       return From_Non_Null_Handle(rasqal_new_decimal_literal(Get_Handle(World), To_C(Value)));
    end;
@@ -60,7 +56,6 @@ package body RDF.Rasqal.Literal is
    function From_Float (World: Rasqal_World_Type_Without_Finalize;
                         Value: Float)
                         return Literal_Type is
-      use RDF.Rasqal.World;
    begin
       return From_Non_Null_Handle(rasqal_new_floating_literal(Get_Handle(World), Literal_Float, double(Value)));
    end;
@@ -68,7 +63,6 @@ package body RDF.Rasqal.Literal is
    function From_Float (World: Rasqal_World_Type_Without_Finalize;
                         Value: Long_Float)
                         return Literal_Type is
-      use RDF.Rasqal.World;
    begin
       return From_Non_Null_Handle(rasqal_new_floating_literal(Get_Handle(World), Literal_Float, double(Value)));
    end;
@@ -76,7 +70,6 @@ package body RDF.Rasqal.Literal is
    function From_Long_Float (World: Rasqal_World_Type_Without_Finalize;
                              Value: Long_Float)
                              return Literal_Type is
-      use RDF.Rasqal.World;
    begin
       return From_Non_Null_Handle(rasqal_new_double_literal(Get_Handle(World), double(Value)));
    end;
@@ -89,7 +82,6 @@ package body RDF.Rasqal.Literal is
 
    function From_Integer (World: Rasqal_World_Type_Without_Finalize; Value: long)
                           return Literal_Type is
-      use RDF.Rasqal.World;
    begin
       return From_Non_Null_Handle(rasqal_new_numeric_literal_from_long(Get_Handle(World), Literal_Integer, Value));
    end;
@@ -104,8 +96,7 @@ package body RDF.Rasqal.Literal is
                                 Kind: Literal_Type_Enum_Simple;
                                 Value: String)
                                 return Literal_Type is
-      Value2: chars_ptr := New_String(Value); -- freed by rasqal_new_simple_literal
-      use RDF.Rasqal.World;
+      Value2: constant chars_ptr := New_String(Value); -- freed by rasqal_new_simple_literal
    begin
       return From_Non_Null_Handle(rasqal_new_simple_literal(Get_Handle(World), Kind, Value2));
    end;
@@ -123,7 +114,6 @@ package body RDF.Rasqal.Literal is
                                 Language: RDF.Auxiliary.String_Holders.Holder;
                                 Datatype: URI_Type_Without_Finalize)
                                 return Literal_Type is
-      use RDF.Rasqal.World, RDF.Raptor.URI;
    begin
       return From_Non_Null_Handle(rasqal_new_string_literal(
                                   Get_Handle(World),
@@ -138,7 +128,6 @@ package body RDF.Rasqal.Literal is
                                 Language: RDF.Auxiliary.String_Holders.Holder;
                                 Datatype_Qname: String)
                                 return Literal_Type is
-      use RDF.Rasqal.World, RDF.Raptor.URI;
    begin
       return From_Non_Null_Handle(rasqal_new_string_literal(
                                   Get_Handle(World),
@@ -152,7 +141,6 @@ package body RDF.Rasqal.Literal is
                                 Value: String;
                                 Language: RDF.Auxiliary.String_Holders.Holder := Empty_Holder)
                                 return Literal_Type is
-      use RDF.Rasqal.World;
    begin
       return From_Non_Null_Handle(rasqal_new_string_literal(
                                   Get_Handle(World),
@@ -170,7 +158,6 @@ package body RDF.Rasqal.Literal is
    function From_URI (World: Rasqal_World_Type_Without_Finalize;
                       Value: URI_Type_Without_Finalize)
                       return Literal_Type is
-      use RDF.Rasqal.World, RDF.Raptor.URI;
    begin
       return From_Non_Null_Handle(rasqal_new_uri_literal(Get_Handle(World), Get_Handle(Value)));
    end;
@@ -217,7 +204,7 @@ package body RDF.Rasqal.Literal is
    function As_String (Literal: Literal_Type_Without_Finalize; Flags: Compare_Flags := Compare_None) return String is
       Error: aliased Int := 0;
       Length: aliased size_t;
-      Item: RDF.Auxiliary.C_Pointers.Pointer :=
+      Item: constant RDF.Auxiliary.C_Pointers.Pointer :=
         rasqal_literal_as_counted_string(Get_Handle(Literal), Length'Unchecked_Access, Compare_Flags'Pos(Flags), Error'Unchecked_Access);
       use RDF.Auxiliary.Convert;
    begin
@@ -233,7 +220,6 @@ package body RDF.Rasqal.Literal is
    function Compare (Left, Right: Literal_Type_Without_Finalize; Flags: Compare_Flags)
                      return RDF.Auxiliary.Comparison_Result is
       Error: aliased Int := 0;
-      use RDF.Auxiliary;
    begin
       return Sign(rasqal_literal_compare(Get_Handle(Left), Get_Handle(Right),  Compare_Flags'Pos(Flags), Error'Unchecked_Access));
    end;
@@ -243,7 +229,6 @@ package body RDF.Rasqal.Literal is
 
    function Get_Datatype (Literal: Literal_Type_Without_Finalize)
                           return URI_Type_Without_Finalize is
-      use RDF.Raptor.URI;
    begin
       return From_Handle(rasqal_literal_datatype(Get_Handle(Literal)));
    end;

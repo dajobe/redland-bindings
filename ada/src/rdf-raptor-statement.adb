@@ -1,12 +1,6 @@
-with Ada.Tags;
-with RDF.Raptor.Term;
 with Interfaces.C; use Interfaces.C;
-with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 
 package body RDF.Raptor.Statement is
-
-   use RDF.Raptor.World;
-   use RDF.Raptor.Term;
 
    function Get_World (Statement: Statement_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
    begin
@@ -30,10 +24,10 @@ package body RDF.Raptor.Statement is
                                                   return Statement_Handle
      with Import, Convention=>C;
 
---     function New_Statement (World: Raptor_World_Type_Without_Finalize) return Statement_Type is
---     begin
---        return From_Non_Null_Handle( raptor_new_statement(Get_Handle(World)) );
---     end;
+   function New_Statement (World: Raptor_World_Type_Without_Finalize) return Statement_Type is
+   begin
+      return From_Non_Null_Handle( raptor_new_statement(Get_Handle(World)) );
+   end;
 
    function raptor_new_statement_from_nodes (World: Raptor_World_Handle; Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Handle)
                                                return Statement_Handle

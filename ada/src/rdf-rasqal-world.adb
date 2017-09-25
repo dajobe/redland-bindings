@@ -1,9 +1,7 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Auxiliary;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
-with RDF.Raptor.URI;
 with RDF.Rasqal.Memory;
 
 package body RDF.Rasqal.World is
@@ -25,7 +23,6 @@ package body RDF.Rasqal.World is
    end;
 
    function Open return Rasqal_World_Type is
-      Object: Rasqal_World_Type;
    begin
       return Object: Rasqal_World_Type do
          Open(Object);
@@ -46,7 +43,6 @@ package body RDF.Rasqal.World is
       with Import, Convention=>C;
 
    function Get_Raptor (World: Rasqal_World_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
-      use RDF.Raptor.World;
    begin
       return From_Non_Null_Handle(rasqal_world_get_raptor(Get_Handle(World)));
    end;
@@ -55,7 +51,6 @@ package body RDF.Rasqal.World is
       with Import, Convention=>C;
 
    procedure Set_Raptor (World: Rasqal_World_Type_Without_Finalize; Raptor_World: Raptor_World_Type_Without_Finalize) is
-      use RDF.Raptor.World;
    begin
       rasqal_world_set_raptor(Get_Handle(World), Get_Handle(Raptor_World));
    end;
@@ -69,7 +64,7 @@ package body RDF.Rasqal.World is
    end;
 
    type Log_Handler_Access is access constant Log_Handler'Class;
-   function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, Log_Handler_Access);
+--     function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, Log_Handler_Access);
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(Log_Handler_Access, chars_ptr);
 
    procedure rasqal_world_set_log_handler (World: Rasqal_World_Handle; Data: chars_ptr; Handler: Log_Handler_Procedure_Type)

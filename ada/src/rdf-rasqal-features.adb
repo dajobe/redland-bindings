@@ -1,5 +1,4 @@
 with Ada.Unchecked_Conversion;
-with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
 with RDF.Raptor.World; use RDF.Raptor.World;

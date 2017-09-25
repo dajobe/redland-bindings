@@ -1,5 +1,5 @@
 with Ada.Containers.Indefinite_Holders;
-with Interfaces.C; use Interfaces.C;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 
 package RDF.Auxiliary.C_String_Holders is
 

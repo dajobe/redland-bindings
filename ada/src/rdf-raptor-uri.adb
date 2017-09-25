@@ -1,9 +1,6 @@
-with Ada.IO_Exceptions;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Memory;
-with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
@@ -147,7 +144,7 @@ package body RDF.Raptor.URI is
 
    function Resolve_URI_Reference (Base_URI, Reference_URI: URI_String) return URI_String is
       Buffer_Length: constant size_t := Base_URI'Length + Reference_URI'Length + 1;
-      Buffer       : char_array (1..Buffer_Length) := (others=>NUL);
+      Buffer       : constant char_array (1..Buffer_Length) := (others=>NUL);
       Dummy        : constant size_t := raptor_uri_resolve_uri_reference (To_C (String(Base_URI)), To_C (String(Reference_URI)), Buffer, Buffer_Length);
    begin
       return URI_String(To_Ada(Buffer));
@@ -235,7 +232,6 @@ package body RDF.Raptor.URI is
       with Import, Convention=>C;
 
    procedure Write (URI: URI_Type_Without_Finalize; Stream: Base_Stream_Type'Class) is
-      use all type Base_Stream_Type;
    begin
       if raptor_uri_write (Get_Handle(URI), Get_Handle(Stream)) /= 0 then
          raise IOStream_Exception;

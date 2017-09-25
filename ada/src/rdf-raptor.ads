@@ -1,5 +1,3 @@
-with Interfaces.C;
-
 package RDF.Raptor is
 
    type Domain_Type is (None_Domain,

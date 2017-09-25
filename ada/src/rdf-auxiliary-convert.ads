@@ -1,5 +1,6 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_Pointers;
 
 package RDF.Auxiliary.Convert is
