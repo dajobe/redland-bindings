@@ -1,6 +1,6 @@
 package body RDF.Rasqal.Syntaxes is
 
-   type Rasqal_Syntax_Description_Access is access all Rasqal_Syntax_Description_Type
+   type Rasqal_Syntax_Description_Access is access all Raptor_Syntax_Description_Type
       with Convention=>C;
 
    function rasqal_world_get_query_language_description (World: Rasqal_World_Handle; Counter: unsigned)
@@ -11,12 +11,12 @@ package body RDF.Rasqal.Syntaxes is
                                                                return Rasqal_Syntax_Description_Access
       with Import, Convention=>C;
 
-   function Get_Query_Language_Description (World: Rasqal_World_Type_Without_Finalize; Counter: Unsigned) return Rasqal_Syntax_Description_Type is
+   function Get_Query_Language_Description (World: Rasqal_World_Type_Without_Finalize; Counter: Unsigned) return Raptor_Syntax_Description_Type is
    begin
       return rasqal_world_get_query_language_description(Get_Handle(World), Counter).all;
    end;
 
-   function Get_Query_Results_Format_Description (World: Rasqal_World_Type_Without_Finalize; Counter: Unsigned) return Rasqal_Syntax_Description_Type is
+   function Get_Query_Results_Format_Description (World: Rasqal_World_Type_Without_Finalize; Counter: Unsigned) return Raptor_Syntax_Description_Type is
    begin
       return rasqal_world_get_query_results_format_description(Get_Handle(World), Counter).all;
    end;
@@ -28,12 +28,12 @@ package body RDF.Rasqal.Syntaxes is
    function Get_Position (Cursor: Query_Language_Description_Cursor      ) return Natural is (Cursor.Position);
    function Get_Position (Cursor: Query_Results_Format_Description_Cursor) return Natural is (Cursor.Position);
 
-   function Get_Description (Cursor: Query_Language_Description_Cursor    ) return Rasqal_Syntax_Description_Type is
+   function Get_Description (Cursor: Query_Language_Description_Cursor    ) return Raptor_Syntax_Description_Type is
    begin
       return Get_Query_Language_Description (From_Handle(Cursor.World), unsigned(Cursor.Position));
    end;
 
-   function Get_Description (Cursor: Query_Results_Format_Description_Cursor) return Rasqal_Syntax_Description_Type is
+   function Get_Description (Cursor: Query_Results_Format_Description_Cursor) return Raptor_Syntax_Description_Type is
    begin
       return Get_Query_Results_Format_Description (From_Handle(Cursor.World), unsigned(Cursor.Position));
    end;
