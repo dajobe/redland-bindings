@@ -16,3 +16,5 @@
 * Subprograms which modify an object should have "in out" mode.
 
 * Should Base_Stream be an interface rather than a tagged type?
+
+* Check sources with AdaControl.
