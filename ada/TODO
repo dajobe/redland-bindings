@@ -17,4 +17,4 @@
 
 * Should Base_Stream be an interface rather than a tagged type?
 
-* Check sources with AdaControl.
+* Check sources with AdaControl and gnatcheck.
