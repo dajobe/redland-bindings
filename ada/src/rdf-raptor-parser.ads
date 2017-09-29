@@ -55,29 +55,29 @@ package RDF.Raptor.Parser is
 
    not overriding procedure Parse_File (Parser: Parser_Type_Without_Finalize;
                                         URI: URI_Type_Without_Finalize;
-                                        Base_URI: URI_Type_Without_Finalize := From_Handle(null));
+                                        Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding procedure Parse_Stdin (Parser: Parser_Type_Without_Finalize;
-                                         Base_URI: URI_Type_Without_Finalize := From_Handle(null));
+                                         Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding procedure Parse_File_Stream (Parser: Parser_Type_Without_Finalize;
                                                Stream: RDF.Auxiliary.C_File_Access;
                                                Filename: String;
-                                               Base_URI: URI_Type_Without_Finalize);
+                                               Base_URI: URI_Type_Without_Finalize'Class);
 
    not overriding procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
                                             Stream: Base_Stream_Type'Class;
-                                            Base_URI: URI_Type_Without_Finalize);
+                                            Base_URI: URI_Type_Without_Finalize'Class);
 
-   not overriding procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: URI_Type_Without_Finalize);
+   not overriding procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class);
 
    not overriding procedure Parse_URI (Parser: Parser_Type_Without_Finalize;
-                                       URI: URI_Type_Without_Finalize;
-                                       Base_URI: URI_Type_Without_Finalize := From_Handle(null));
+                                       URI: URI_Type_Without_Finalize'Class;
+                                       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding procedure Parse_URI_With_Connection (Parser: Parser_Type_Without_Finalize;
-                                                       URI: URI_Type_Without_Finalize;
-                                                       Base_URI: URI_Type_Without_Finalize := From_Handle(null);
+                                                       URI: URI_Type_Without_Finalize'Class;
+                                                       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null));
                                                        Connection: Connection_Type := null);
 
    not overriding function Get_Graph (Parser: Parser_Type_Without_Finalize) return URI_Type;

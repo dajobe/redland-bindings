@@ -82,7 +82,7 @@ package body RDF.Raptor.WWW is
    function raptor_www_fetch (WWW: WWW_Handle; URI: URI_Handle) return int
       with Import, Convention=>C;
 
-   procedure Fetch (WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize) is
+   procedure Fetch (WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class) is
    begin
       if raptor_www_fetch(Get_Handle(WWW), Get_Handle(URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -101,7 +101,7 @@ package body RDF.Raptor.WWW is
                                         Malloc_Handler: chars_ptr) return int
        with Import, Convention=>C;
 
-   function Fetch_To_String(WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize) return String is
+   function Fetch_To_String(WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class) return String is
       String_P: aliased chars_ptr;
       Length_P: aliased size_t;
    begin
@@ -235,7 +235,7 @@ package body RDF.Raptor.WWW is
    begin
       Final_URI_Handler(--WWW_Type_Without_Finalize'(From_Handle(WWW)), -- ignored
                         Ptr_To_Obj(User_Data).all,
-                        From_Handle(URI));
+                        URI_Type_Without_Finalize'(From_Handle(URI)));
    end;
 
    procedure Initialize_All_Callbacks (WWW: WWW_Type_Without_Finalize) is

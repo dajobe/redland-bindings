@@ -16,7 +16,7 @@ package RDF.Rasqal.World is
 
    not overriding procedure Open(Object: Rasqal_World_Type_Without_Finalize);
 
-   not overriding procedure Set_Log_Handler(World: Rasqal_World_Type_Without_Finalize; Handler: access Log_Handler);
+   not overriding procedure Set_Log_Handler(World: Rasqal_World_Type_Without_Finalize; Handler: access Log_Handler'Class);
 
    type Warning_Level is range 0 .. 100;
 
@@ -24,7 +24,7 @@ package RDF.Rasqal.World is
 
    not overriding function Get_Raptor (World: Rasqal_World_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
 
-   not overriding procedure Set_Raptor (World: Rasqal_World_Type_Without_Finalize; Raptor_World: Raptor_World_Type_Without_Finalize);
+   not overriding procedure Set_Raptor (World: Rasqal_World_Type_Without_Finalize; Raptor_World: Raptor_World_Type_Without_Finalize'Class);
 
    not overriding function Guess_Query_Results_Format_Name (World: Rasqal_World_Type_Without_Finalize;
                                                             URI: URI_Type_Without_Finalize'Class;

@@ -56,14 +56,14 @@ package RDF.Raptor.URI is
    not overriding function To_Turtle_String (World: Raptor_World_Type_Without_Finalize'Class;
                                              URI: URI_Type_Without_Finalize;
                                              Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
-                                             Base_URI: URI_Type_Without_Finalize)
+                                             Base_URI: URI_Type_Without_Finalize'Class)
                                              return String;
 
    not overriding procedure Turtle_Write (World: Raptor_World_Type_Without_Finalize'Class;
                                           Stream: Base_Stream_Type'Class;
                                           URI: URI_Type_Without_Finalize;
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
-                                          Base_URI: URI_Type_Without_Finalize);
+                                          Base_URI: URI_Type_Without_Finalize'Class);
 
    not overriding function Copy (Object: URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize;
 

@@ -1,3 +1,5 @@
+Remove RDF.Raptor.Term. name prefixes.
+
 * "TODO" in the sources.
 
 * Can Adjust be done without Set_Handle_Hack, using class-wide types?
@@ -5,8 +7,6 @@
 * Add "with Inline" whereever feasible.
 
 * Add "limited" to records where appropriate.
-
-* Check that we use T'Class rather then T where appropriate.
 
 * Some raptor_parser_*() functions return <0 on missing required base URI.
   Should we raise a different exception in this case?

@@ -5,8 +5,8 @@ with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 
 package RDF.Rasqal.Syntaxes is
 
-   function Get_Query_Language_Description (World: Rasqal_World_Type_Without_Finalize; Counter: unsigned) return Raptor_Syntax_Description_Type;
-   function Get_Query_Results_Format_Description (World: Rasqal_World_Type_Without_Finalize; Counter: unsigned) return Raptor_Syntax_Description_Type;
+   function Get_Query_Language_Description (World: Rasqal_World_Type_Without_Finalize'Class; Counter: unsigned) return Raptor_Syntax_Description_Type;
+   function Get_Query_Results_Format_Description (World: Rasqal_World_Type_Without_Finalize'Class; Counter: unsigned) return Raptor_Syntax_Description_Type;
 
    type Query_Language_Description_Cursor is private;
    type Query_Results_Format_Description_Cursor is private;

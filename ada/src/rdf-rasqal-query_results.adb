@@ -176,8 +176,8 @@ package body RDF.Rasqal.Query_Results is
                    Results: Query_Results_Type_Without_Finalize;
                    Format_Name: String; -- "" for no format name
                    Mime_Type: String; -- "" for no MIME type
-                   Format_URI: URI_Type_Without_Finalize;
-                   Base_URI: URI_Type_Without_Finalize) is
+                   Format_URI: URI_Type_Without_Finalize'Class;
+                   Base_URI: URI_Type_Without_Finalize'Class) is
       Format_Name2: aliased char_array := To_C(Format_Name);
       Mime_Type2  : aliased char_array := To_C(Mime_Type);
    begin
@@ -203,8 +203,8 @@ package body RDF.Rasqal.Query_Results is
                     Results: Query_Results_Type_Without_Finalize;
                     Format_Name: String; -- "" for no format name
                     Mime_Type: String; -- "" for no MIME type
-                    Format_URI: URI_Type_Without_Finalize;
-                    Base_URI: URI_Type_Without_Finalize) is
+                    Format_URI: URI_Type_Without_Finalize'Class;
+                    Base_URI: URI_Type_Without_Finalize'Class) is
       Format_Name2: aliased char_array := To_C(Format_Name);
       Mime_Type2  : aliased char_array := To_C(Mime_Type);
    begin
@@ -272,7 +272,7 @@ package body RDF.Rasqal.Query_Results is
                                       return Query_Results_Handle
      with Import, Convention=>C;
 
-   function New_Query_Results (World: Rasqal_World_Type_Without_Finalize;
+   function New_Query_Results (World: Rasqal_World_Type_Without_Finalize'Class;
                                Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
                                Kind: Query_Results_Type_Enum)
                                return Query_Results_Type is

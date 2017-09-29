@@ -300,7 +300,7 @@ package body RDF.Raptor.URI is
    function To_Turtle_String (World: Raptor_World_Type_Without_Finalize'Class;
                               URI: URI_Type_Without_Finalize;
                               Stack: Namespace_Stack_Type_Without_Finalize'Class;
-                              Base_URI: URI_Type_Without_Finalize)
+                              Base_URI: URI_Type_Without_Finalize'Class)
                               return String is
       C_Str: constant chars_ptr := raptor_uri_to_turtle_string(Get_Handle(World),
                                                                  Get_Handle(URI),
@@ -330,7 +330,7 @@ package body RDF.Raptor.URI is
                            Stream: Base_Stream_Type'Class;
                            URI: URI_Type_Without_Finalize;
                            Stack: Namespace_Stack_Type_Without_Finalize'Class;
-                           Base_URI: URI_Type_Without_Finalize) is
+                           Base_URI: URI_Type_Without_Finalize'Class) is
    begin
       if raptor_uri_turtle_write(Get_Handle(World),
                                    Get_Handle(Stream),

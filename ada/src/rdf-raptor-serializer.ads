@@ -20,7 +20,7 @@ package RDF.Raptor.Serializer is
    -- WARNING: Other order of arguments than in C
    not overriding procedure Start_To_Iostream (Serializer: Serializer_Type_Without_Finalize;
                                                Iostream: Base_Stream_Type'Class;
-                                               URI: URI_Type_Without_Finalize := From_Handle(null));
+                                               URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding procedure Start_To_Filename (Serializer: Serializer_Type_Without_Finalize; Filename: String);
 
@@ -34,13 +34,13 @@ package RDF.Raptor.Serializer is
    -- WARNING: Other order of arguments than in C
    not overriding procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
                                            Prefix: String;
-                                           URI: URI_Type_Without_Finalize := From_Handle(null));
+                                           URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding procedure Set_Namespace_Without_Prefix (Serializer: Serializer_Type_Without_Finalize;
-                                                          URI: URI_Type_Without_Finalize := From_Handle(null));
+                                                          URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
-                                           Namespace: Namespace_Type_Without_Finalize);
+                                           Namespace: Namespace_Type_Without_Finalize'Class);
 
    not overriding procedure Serialize_Statement (Serializer: Serializer_Type_Without_Finalize;
                                                  Statement: Statement_Type_Without_Finalize'Class);
@@ -66,8 +66,8 @@ package RDF.Raptor.Serializer is
 
    type Serializer_Type is new Serializer_Type_Without_Finalize with null record;
 
-   not overriding function New_Serializer (World: Raptor_World_Type) return Serializer_Type;
-   not overriding function New_Serializer (World: Raptor_World_Type; Syntax_Name: String) return Serializer_Type;
+   not overriding function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Type;
+   not overriding function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class; Syntax_Name: String) return Serializer_Type;
 
    overriding procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Serializer_Handle);
 

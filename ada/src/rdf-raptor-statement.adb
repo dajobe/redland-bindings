@@ -24,7 +24,7 @@ package body RDF.Raptor.Statement is
                                                   return Statement_Handle
      with Import, Convention=>C;
 
-   function New_Statement (World: Raptor_World_Type_Without_Finalize) return Statement_Type is
+   function New_Statement (World: Raptor_World_Type_Without_Finalize'Class) return Statement_Type is
    begin
       return From_Non_Null_Handle( raptor_new_statement(Get_Handle(World)) );
    end;
@@ -38,12 +38,16 @@ package body RDF.Raptor.Statement is
                            Graph: RDF.Raptor.Term.Term_Type_Without_Finalize'Class := RDF.Raptor.Term.Term_Type_Without_Finalize'(From_Handle(null)))
                            return Statement_Type is
    begin
-      return New_Statement_Without_Copies(World, Copy(Subject), Copy(Predicate), Copy(Object), Copy(Graph));
+      return New_Statement_Without_Copies(World,
+                                          Term_Type_Without_Finalize'(Copy(Subject)),
+                                          Term_Type_Without_Finalize'(Copy(Predicate)),
+                                          Term_Type_Without_Finalize'(Copy(Object)),
+                                          Term_Type_Without_Finalize'(Copy(Graph)));
    end;
 
    function New_Statement_Without_Copies (World: Raptor_World_Type_Without_Finalize'Class;
-                                          Subject, Predicate, Object: RDF.Raptor.Term.Term_Type_Without_Finalize;
-                                          Graph: RDF.Raptor.Term.Term_Type_Without_Finalize := From_Handle(null))
+                                          Subject, Predicate, Object: RDF.Raptor.Term.Term_Type_Without_Finalize'Class;
+                                          Graph: RDF.Raptor.Term.Term_Type_Without_Finalize'Class := RDF.Raptor.Term.Term_Type_Without_Finalize'(From_Handle(null)))
                                           return Statement_Type is
    begin
       return From_Non_Null_Handle( raptor_new_statement_from_nodes(Get_Handle(World),

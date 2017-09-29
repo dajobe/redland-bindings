@@ -79,7 +79,7 @@ package body RDF.Raptor.Parser is
 
    procedure Parse_File (Parser: Parser_Type_Without_Finalize;
                          URI: URI_Type_Without_Finalize;
-                         Base_URI: URI_Type_Without_Finalize := From_Handle(null)) is
+                         Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
       if raptor_parser_parse_file(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -87,7 +87,7 @@ package body RDF.Raptor.Parser is
    end;
 
    procedure Parse_Stdin (Parser: Parser_Type_Without_Finalize;
-                          Base_URI: URI_Type_Without_Finalize := From_Handle(null)) is
+                          Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
       Parse_File (Parser, From_Handle(null), Base_URI);
    end;
@@ -101,7 +101,7 @@ package body RDF.Raptor.Parser is
    procedure Parse_File_Stream (Parser: Parser_Type_Without_Finalize;
                                 Stream: RDF.Auxiliary.C_File_Access;
                                 Filename: String;
-                                Base_URI: URI_Type_Without_Finalize) is
+                                Base_URI: URI_Type_Without_Finalize'Class) is
    begin
       if raptor_parser_parse_file_stream(Get_Handle(Parser), Stream, To_C(Filename), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -115,7 +115,7 @@ package body RDF.Raptor.Parser is
 
    procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
                              Stream: Base_Stream_Type'Class;
-                             Base_URI: URI_Type_Without_Finalize) is
+                             Base_URI: URI_Type_Without_Finalize'Class) is
    begin
       if raptor_parser_parse_iostream(Get_Handle(Parser), Get_Handle(Stream), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -125,7 +125,7 @@ package body RDF.Raptor.Parser is
    function raptor_parser_parse_start (Parser: Parser_Handle; URI: URI_Handle) return int
       with Import, Convention=>C;
 
-   procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: URI_Type_Without_Finalize) is
+   procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class) is
    begin
       if raptor_parser_parse_start(Get_Handle(Parser), Get_Handle(URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -137,8 +137,8 @@ package body RDF.Raptor.Parser is
       with Import, Convention=>C;
 
    procedure Parse_URI (Parser: Parser_Type_Without_Finalize;
-                        URI: URI_Type_Without_Finalize;
-                        Base_URI: URI_Type_Without_Finalize := From_Handle(null)) is
+                        URI: URI_Type_Without_Finalize'Class;
+                        Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
       if raptor_parser_parse_uri(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -152,8 +152,8 @@ package body RDF.Raptor.Parser is
       with Import, Convention=>C;
 
    procedure Parse_URI_With_Connection (Parser: Parser_Type_Without_Finalize;
-                                        URI: URI_Type_Without_Finalize;
-                                        Base_URI: URI_Type_Without_Finalize := From_Handle(null);
+                                        URI: URI_Type_Without_Finalize'Class;
+                                        Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null));
                                         Connection: Connection_Type := null) is
    begin
       if raptor_parser_parse_uri_with_connection(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI), Connection) /= 0 then

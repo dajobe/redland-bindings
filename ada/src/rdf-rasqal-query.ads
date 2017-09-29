@@ -28,7 +28,7 @@ package RDF.Rasqal.Query is
 
    not overriding procedure Prepare (Query: Query_Type_Without_Finalize;
                                      Query_String: String;
-                                     Base_URI: URI_Type_Without_Finalize := From_Handle(null));
+                                     Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding procedure Set_Store_Results (Query: Query_Type_Without_Finalize; Store: Boolean);
 
@@ -36,7 +36,7 @@ package RDF.Rasqal.Query is
 
    not overriding procedure Write_Query (Stream: Base_Stream_Type'Class;
                                          Query: Query_Type_Without_Finalize;
-                                         Format_URI, Base_URI: URI_Type_Without_Finalize);
+                                         Format_URI, Base_URI: URI_Type_Without_Finalize'Class);
 
    -- Is it really useful? Maybe remove from public API?
    not overriding procedure Write_Escaped_String (Query: Query_Type_Without_Finalize;
@@ -67,6 +67,6 @@ package RDF.Rasqal.Query is
 
    overriding procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle);
 
-   not overriding function New_Query (World: Rasqal_World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type;
+   not overriding function New_Query (World: Rasqal_World_Type'Class; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type;
 
 end RDF.Rasqal.Query;

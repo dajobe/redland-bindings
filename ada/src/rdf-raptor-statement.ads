@@ -50,7 +50,7 @@ package RDF.Raptor.Statement is
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
 --     function No_Auto_Finalization (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class) return Boolean;
 
-   not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize) return Statement_Type;
+   not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class) return Statement_Type;
 
    -- Makes copies of the terms (unlike the C library)
    not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class;
@@ -60,8 +60,8 @@ package RDF.Raptor.Statement is
 
    -- Does not make copies of the terms (as the C library)
    not overriding function New_Statement_Without_Copies (World: Raptor_World_Type_Without_Finalize'Class;
-                                                         Subject, Predicate, Object: RDF.Raptor.Term.Term_Type_Without_Finalize;
-                                                         Graph: RDF.Raptor.Term.Term_Type_Without_Finalize := From_Handle(null))
+                                                         Subject, Predicate, Object: RDF.Raptor.Term.Term_Type_Without_Finalize'Class;
+                                                         Graph: RDF.Raptor.Term.Term_Type_Without_Finalize'Class := RDF.Raptor.Term.Term_Type_Without_Finalize'(From_Handle(null)))
                                                          return Statement_Type;
 --     not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class;
 --                                            Subject, Predicate, Object, Graph: RDF.Raptor.Term.Term_Type_Without_Finalize'Class)

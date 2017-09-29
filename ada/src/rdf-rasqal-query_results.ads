@@ -75,15 +75,15 @@ package RDF.Rasqal.Query_Results is
                                   Results: Query_Results_Type_Without_Finalize;
                                   Format_Name: String; -- "" for no format name
                                   Mime_Type: String; -- "" for no MIME type
-                                  Format_URI: URI_Type_Without_Finalize;
-                                  Base_URI: URI_Type_Without_Finalize);
+                                  Format_URI: URI_Type_Without_Finalize'Class;
+                                  Base_URI: URI_Type_Without_Finalize'Class);
 
    not overriding procedure Write (Stream: Base_Stream_Type'Class;
                                    Results: Query_Results_Type_Without_Finalize;
                                    Format_Name: String; -- "" for no format name
                                    Mime_Type: String; -- "" for no MIME type
-                                   Format_URI: URI_Type_Without_Finalize;
-                                   Base_URI: URI_Type_Without_Finalize);
+                                   Format_URI: URI_Type_Without_Finalize'Class;
+                                   Base_URI: URI_Type_Without_Finalize'Class);
 
    not overriding function Type_Label (Kind: Query_Results_Type_Enum) return String;
 
@@ -93,7 +93,7 @@ package RDF.Rasqal.Query_Results is
 
    overriding procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle);
 
-   not overriding function New_Query_Results (World: Rasqal_World_Type_Without_Finalize;
+   not overriding function New_Query_Results (World: Rasqal_World_Type_Without_Finalize'Class;
                                               Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
                                               Kind: Query_Results_Type_Enum)
                                               return Query_Results_Type;

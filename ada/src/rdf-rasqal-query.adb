@@ -40,7 +40,7 @@ package body RDF.Rasqal.Query is
 
    procedure Prepare (Query: Query_Type_Without_Finalize;
                       Query_String: String;
-                      Base_URI: URI_Type_Without_Finalize := From_Handle(null)) is
+                      Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
       if rasqal_query_prepare(Get_Handle(Query), To_C(Query_String), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -73,7 +73,7 @@ package body RDF.Rasqal.Query is
 
    procedure Write_Query (Stream: Base_Stream_Type'Class;
                           Query: Query_Type_Without_Finalize;
-                          Format_URI, Base_URI: URI_Type_Without_Finalize) is
+                          Format_URI, Base_URI: URI_Type_Without_Finalize'Class) is
    begin
       if rasqal_query_write(Get_Handle(Stream), Get_Handle(Query), Get_Handle(Format_URI), Get_Handle(Base_URI)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -199,7 +199,7 @@ package body RDF.Rasqal.Query is
    function rasqal_new_query (World: Rasqal_World_Handle; Name, URI: chars_ptr) return Query_Handle
      with Import, Convention=>C;
 
-   function New_Query (World: Rasqal_World_Type; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type is
+   function New_Query (World: Rasqal_World_Type'Class; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type is
       use RDF.Auxiliary.C_String_Holders;
       Name2: chars_ptr := New_String(Name);
       URI2 : chars_ptr := New_String(URI );
