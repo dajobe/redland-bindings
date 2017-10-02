@@ -41,7 +41,7 @@ package body Count_Test is
       Prepare(Query, SPARQL);
       Add_Data_Graph(Query, Graph);
       declare
-         Results: Query_Results_Type := Execute(Query);
+         Results: Bindings_Query_Results_Type := Execute(Query);
          package Rows_Holder is new Ada.Containers.Indefinite_Vectors(Positive, String);
          use Ada.Containers, Rows_Holder;
          Rows: Vector;

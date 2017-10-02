@@ -161,6 +161,24 @@ package RDF.Rasqal.Query_Results is
 
    not overriding function Get_Name (Position: Variables_Cursor) return String;
 
+   subtype Bindings_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Bindings(Bindings_Query_Results_Type_Without_Finalize);
+   subtype Boolean_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Boolean(Boolean_Query_Results_Type_Without_Finalize);
+   subtype Graph_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Graph(Graph_Query_Results_Type_Without_Finalize);
+   subtype Syntax_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type_Without_Finalize);
+
+   subtype Bindings_Query_Results_Type is Query_Results_Type
+     with Dynamic_Predicate => Is_Bindings(Bindings_Query_Results_Type);
+   subtype Boolean_Query_Results_Type is Query_Results_Type
+     with Dynamic_Predicate => Is_Boolean(Boolean_Query_Results_Type);
+   subtype Graph_Query_Results_Type is Query_Results_Type
+     with Dynamic_Predicate => Is_Graph(Graph_Query_Results_Type);
+   subtype Syntax_Query_Results_Type is Query_Results_Type
+     with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type);
+
 private
 
    type Cursor is access constant Query_Results_Type_Without_Finalize'Class;
