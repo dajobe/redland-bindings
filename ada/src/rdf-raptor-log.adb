@@ -65,7 +65,7 @@ package body RDF.Raptor.Log is
    function raptor_world_set_log_handler(World: Raptor_World_Handle; Data: chars_ptr; Handler: Log_Handler_Procedure_Type) return int
      with Import, Convention=>C;
 
-   procedure Set_Log_Handler(World: Raptor_World_Type_Without_Finalize'Class; Handler: access Log_Handler) is
+   procedure Set_Log_Handler(World: in out Raptor_World_Type_Without_Finalize'Class; Handler: access Log_Handler) is
    begin
       if raptor_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), Our_Raptor_Log_Handler'Access) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;

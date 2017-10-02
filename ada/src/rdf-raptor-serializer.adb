@@ -44,7 +44,7 @@ package body RDF.Raptor.Serializer is
    function raptor_serializer_set_namespace (Serializer: Serializer_Handle; URI: URI_Handle; Prefix: chars_ptr) return int
       with Import, Convention=>C;
 
-   procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
+   procedure Set_Namespace (Serializer: in out Serializer_Type_Without_Finalize;
                             Prefix: String;
                             URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
       V: aliased char_array := To_C(Prefix);
@@ -54,7 +54,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   procedure Set_Namespace_Without_Prefix (Serializer: Serializer_Type_Without_Finalize;
+   procedure Set_Namespace_Without_Prefix (Serializer: in out Serializer_Type_Without_Finalize;
                                            URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
       if raptor_serializer_set_namespace(Get_Handle(Serializer), Get_Handle(URI), Null_Ptr) /= 0 then
@@ -66,7 +66,7 @@ package body RDF.Raptor.Serializer is
                                                             return int
       with Import, Convention=>C;
 
-   procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
+   procedure Set_Namespace (Serializer: in out Serializer_Type_Without_Finalize;
                             Namespace: Namespace_Type_Without_Finalize'Class) is
    begin
       if raptor_serializer_set_namespace_from_namespace(Get_Handle(Serializer), Get_Handle(Namespace)) /= 0 then
@@ -133,7 +133,7 @@ package body RDF.Raptor.Serializer is
    function raptor_parser_set_option (Serializer: Serializer_Handle; Option: Raptor_Option; Value: chars_ptr; Int_Value: int) return int
       with Import, Convention=>C;
 
-   procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: String) is
+   procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: String) is
       Value2: aliased char_array := To_C(Value);
    begin
       if raptor_parser_set_option(Get_Handle(Serializer), Option, To_Chars_Ptr(Value2'Unchecked_Access), 0) /= 0 then
@@ -141,7 +141,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: int) is
+   procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: int) is
    begin
       if raptor_parser_set_option(Get_Handle(Serializer), Option, Null_Ptr, Value) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;

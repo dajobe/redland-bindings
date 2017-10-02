@@ -29,13 +29,13 @@ package RDF.Raptor.World is
 
    overriding function Default_Handle(Object: Raptor_World_Type_Without_Finalize) return Raptor_World_Handle;
 
-   not overriding procedure Open(Object: Raptor_World_Type_Without_Finalize);
+   not overriding procedure Open(Object: in out Raptor_World_Type_Without_Finalize);
 
-   not overriding procedure Open(Object: Raptor_World_Type_Without_Finalize; Flags: Flags_Array);
+   not overriding procedure Open(Object: in out Raptor_World_Type_Without_Finalize; Flags: Flags_Array);
 
-   not overriding procedure Set_Flag(Object: Raptor_World_Type_Without_Finalize; Flag: Raptor_Flag_Type; Value: Boolean);
+   not overriding procedure Set_Flag(Object: in out Raptor_World_Type_Without_Finalize; Flag: Raptor_Flag_Type; Value: Boolean);
 
-   not overriding procedure Set_Flags(Object: Raptor_World_Type_Without_Finalize; Flags: Flags_Array);
+   not overriding procedure Set_Flags(Object: in out Raptor_World_Type_Without_Finalize; Flags: Flags_Array);
 
    type Raptor_World_Type is new Raptor_World_Type_Without_Finalize with null record;
 

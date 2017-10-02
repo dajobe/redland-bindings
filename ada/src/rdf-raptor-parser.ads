@@ -25,12 +25,12 @@ package RDF.Raptor.Parser is
    for Graph_Mark_Flags use (Graph_Mark_Start=>1, Graph_Mark_Declared=>2);
 
    -- You can call this function or initialize only callbacks you need (below).
-   not overriding procedure Initialize_All_Callbacks (Parser: Parser_Type_Without_Finalize);
+   not overriding procedure Initialize_All_Callbacks (Parser: in out Parser_Type_Without_Finalize);
 
-   not overriding procedure Initialize_Graph_Mark_Handler (Object: Parser_Type_Without_Finalize);
-   not overriding procedure Initialize_Statement_Handler  (Object: Parser_Type_Without_Finalize);
-   not overriding procedure Initialize_Namespace_Handler  (Object: Parser_Type_Without_Finalize);
-   not overriding procedure Initialize_URI_Filter         (Object: Parser_Type_Without_Finalize);
+   not overriding procedure Initialize_Graph_Mark_Handler (Object: in out Parser_Type_Without_Finalize);
+   not overriding procedure Initialize_Statement_Handler  (Object: in out Parser_Type_Without_Finalize);
+   not overriding procedure Initialize_Namespace_Handler  (Object: in out Parser_Type_Without_Finalize);
+   not overriding procedure Initialize_URI_Filter         (Object: in out Parser_Type_Without_Finalize);
 
    not overriding procedure Graph_Mark_Handler (Object: Parser_Type_Without_Finalize;
                                                 URI: URI_Type_Without_Finalize'Class;
@@ -86,8 +86,8 @@ package RDF.Raptor.Parser is
 
    not overriding function Get_Name (Parser: Parser_Type_Without_Finalize) return String;
 
-   not overriding procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option; Value: String);
-   not overriding procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option; Value: int);
+   not overriding procedure Set_Option (Parser: in out Parser_Type_Without_Finalize; Option: Raptor_Option; Value: String);
+   not overriding procedure Set_Option (Parser: in out Parser_Type_Without_Finalize; Option: Raptor_Option; Value: int);
 
    -- Not sure if we should be able to query here whether the option is numeric
    not overriding function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option) return Natural;

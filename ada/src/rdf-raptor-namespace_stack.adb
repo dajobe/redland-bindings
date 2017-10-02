@@ -9,7 +9,7 @@ package body RDF.Raptor.Namespace_Stack is
    procedure raptor_namespaces_clear (Stack: Namespace_Stack_Handle)
      with Import, Convention=>C;
 
-   procedure Clear (Stack: Namespace_Stack_Type_Without_Finalize) is
+   procedure Clear (Stack: in out Namespace_Stack_Type_Without_Finalize) is
    begin
       raptor_namespaces_clear(Get_Handle(Stack));
    end;
@@ -29,7 +29,7 @@ package body RDF.Raptor.Namespace_Stack is
                                                       return Int
      with Import, Convention=>C;
 
-   procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize;
+   procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize;
                               Prefix: String_Holders.Holder;
                               NS_URI: String_Holders.Holder;
                               Depth: Natural) is
@@ -44,7 +44,7 @@ package body RDF.Raptor.Namespace_Stack is
    procedure raptor_namespaces_end_for_depth (Stack: Namespace_Stack_Handle; Depth: int)
      with Import, Convention=>C;
 
-   procedure End_For_Depth (Stack: Namespace_Stack_Type_Without_Finalize; Depth: Natural) is
+   procedure End_For_Depth (Stack: in out Namespace_Stack_Type_Without_Finalize; Depth: Natural) is
    begin
       raptor_namespaces_end_for_depth(Get_Handle(Stack), Int(Depth));
    end;
@@ -60,7 +60,7 @@ package body RDF.Raptor.Namespace_Stack is
    procedure raptor_namespaces_start_namespace (Stack: Namespace_Stack_Handle; Namespace: Namespace_Handle)
      with Import, Convention=>C;
 
-   procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Namespace: Namespace_Type'Class) is
+   procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize; Namespace: Namespace_Type'Class) is
    begin
       raptor_namespaces_start_namespace(Get_Handle(Stack), Get_Handle(Namespace));
    end;
@@ -121,7 +121,7 @@ package body RDF.Raptor.Namespace_Stack is
                                                       return Int
      with Import, Convention=>C;
 
-   procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; NS: Namespace_Type_Without_Finalize'Class; New_Depth: Natural) is
+   procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize; NS: Namespace_Type_Without_Finalize'Class; New_Depth: Natural) is
    begin
       if raptor_namespace_stack_start_namespace(Get_Handle(Stack), Get_Handle(NS), int(New_Depth)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;

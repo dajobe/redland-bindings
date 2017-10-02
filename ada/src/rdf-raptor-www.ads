@@ -15,12 +15,12 @@ package RDF.Raptor.WWW is
    type WWW_Type_Without_Finalize is new WWW_Handled_Record.Base_Object with null record;
 
    -- You can call this function or initialize only callbacks you need (below).
-   not overriding procedure Initialize_All_Callbacks (WWW: WWW_Type_Without_Finalize);
+   not overriding procedure Initialize_All_Callbacks (WWW: in out WWW_Type_Without_Finalize);
 
-   not overriding procedure Initialize_Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize);
-   not overriding procedure Initialize_Content_Type_Handler (WWW: WWW_Type_Without_Finalize);
-   not overriding procedure Initialize_URI_Filter (WWW: WWW_Type_Without_Finalize);
-   not overriding procedure Initialize_Final_URI_Handler (WWW: WWW_Type_Without_Finalize);
+   not overriding procedure Initialize_Write_Bytes_Handler (WWW: in out WWW_Type_Without_Finalize);
+   not overriding procedure Initialize_Content_Type_Handler (WWW: in out WWW_Type_Without_Finalize);
+   not overriding procedure Initialize_URI_Filter (WWW: in out WWW_Type_Without_Finalize);
+   not overriding procedure Initialize_Final_URI_Handler (WWW: in out WWW_Type_Without_Finalize);
 
    not overriding procedure Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize; Value: String) is null;
    not overriding procedure Content_Type_Handler (WWW: WWW_Type_Without_Finalize; Content_Type: String) is null;
@@ -32,20 +32,20 @@ package RDF.Raptor.WWW is
                                        return Boolean is (True);
 
    -- Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
-   not overriding procedure Set_User_Agent (WWW: WWW_Type_Without_Finalize; User_Agent: String);
+   not overriding procedure Set_User_Agent (WWW: in out WWW_Type_Without_Finalize; User_Agent: String);
 
-   not overriding procedure Set_Proxy (WWW: WWW_Type_Without_Finalize; Proxy: String);
+   not overriding procedure Set_Proxy (WWW: in out WWW_Type_Without_Finalize; Proxy: String);
 
    -- The same as for User-Agent
-   not overriding procedure Set_HTTP_Accept (WWW: WWW_Type_Without_Finalize; Value: String);
+   not overriding procedure Set_HTTP_Accept (WWW: in out WWW_Type_Without_Finalize; Value: String);
 
    -- Empty Cache_Control is not the same as Unset_Cache_Control
-   not overriding procedure Set_Cache_Control (WWW: WWW_Type_Without_Finalize; Cache_Control: String);
+   not overriding procedure Set_Cache_Control (WWW: in out WWW_Type_Without_Finalize; Cache_Control: String);
 
    -- Remove Cache-Control: header altogether
-   not overriding procedure Unset_Cache_Control (WWW: WWW_Type_Without_Finalize);
+   not overriding procedure Unset_Cache_Control (WWW: in out WWW_Type_Without_Finalize);
 
-   not overriding procedure Set_Connection_Timeout (WWW: WWW_Type_Without_Finalize; Timeout: Natural);
+   not overriding procedure Set_Connection_Timeout (WWW: in out WWW_Type_Without_Finalize; Timeout: Natural);
 
    not overriding function Get_Final_URI (WWW: WWW_Type_Without_Finalize) return URI_Type;
 
@@ -55,9 +55,9 @@ package RDF.Raptor.WWW is
 
    not overriding function Get_Connection (WWW: WWW_Type_Without_Finalize) return Connection_Type;
 
-   not overriding procedure Set_SSL_Cert_Options (WWW: WWW_Type_Without_Finalize; Cert_Filename, Cert_Type, Cert_Passphrase: String);
+   not overriding procedure Set_SSL_Cert_Options (WWW: in out WWW_Type_Without_Finalize; Cert_Filename, Cert_Type, Cert_Passphrase: String);
 
-   not overriding procedure Set_SSL_Verify_Options (WWW: WWW_Type_Without_Finalize; Verify_Peer, Verify_Host: Boolean);
+   not overriding procedure Set_SSL_Verify_Options (WWW: in out WWW_Type_Without_Finalize; Verify_Peer, Verify_Host: Boolean);
 
    not overriding procedure Abort_Operation (WWW: WWW_Type_Without_Finalize; Reason: String);
 

@@ -234,7 +234,7 @@ package body RDF.Rasqal.Query_Results is
    function rasqal_query_results_rewind (Results: Query_Results_Handle) return Int
      with Import, Convention=>C;
 
-   procedure Rewind (Results: Query_Results_Type_Without_Finalize) is
+   procedure Rewind (Results: in out Query_Results_Type_Without_Finalize) is
    begin
       if rasqal_query_results_rewind(Get_Handle(Results)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -302,7 +302,7 @@ package body RDF.Rasqal.Query_Results is
    function Has_Element (Position: Cursor) return Boolean is
      (Not_Finished(Position.all));
 
-   function Create_Bindings_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+   function Create_Bindings_Iterator (Results: in out Query_Results_Type_Without_Finalize'Class)
                                       return Bindings_Iterator is
      (Ref=>Results'Unchecked_Access);
 
@@ -325,7 +325,7 @@ package body RDF.Rasqal.Query_Results is
                                        return Literal_Type_Without_Finalize is
       (Get_Binding_Value_By_Name(Position.all, Name));
 
-   function Create_Triples_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+   function Create_Triples_Iterator (Results: in out Query_Results_Type_Without_Finalize'Class)
                                      return Bindings_Iterator is
      (Ref=>Results'Unchecked_Access);
 

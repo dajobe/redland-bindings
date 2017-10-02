@@ -17,23 +17,23 @@ package body RDF.Raptor.World is
       return raptor_new_world_internal(RDF.Raptor.Constants.version_decimal);
    end;
 
-   procedure Open(Object: Raptor_World_Type_Without_Finalize) is
+   procedure Open(Object: in out Raptor_World_Type_Without_Finalize) is
    begin
       raptor_world_open(Get_Handle(Object));
    end;
 
-   procedure Open(Object: Raptor_World_Type_Without_Finalize; Flags: Flags_Array) is
+   procedure Open(Object: in out Raptor_World_Type_Without_Finalize; Flags: Flags_Array) is
    begin
       Set_Flags(Object, Flags);
       Open(Object);
    end;
 
-   procedure Set_Flag(Object: Raptor_World_Type_Without_Finalize; Flag: Raptor_Flag_Type; Value: Boolean) is
+   procedure Set_Flag(Object: in out Raptor_World_Type_Without_Finalize; Flag: Raptor_Flag_Type; Value: Boolean) is
    begin
       raptor_world_set_flag(Get_Handle(Object), Flag, (if Value then 1 else 0));
    end;
 
-   procedure Set_Flags(Object: Raptor_World_Type_Without_Finalize; Flags: Flags_Array) is
+   procedure Set_Flags(Object: in out Raptor_World_Type_Without_Finalize; Flags: Flags_Array) is
    begin
       for Element of Flags loop
          Set_Flag(Object, Element.Flag, Element.Value);

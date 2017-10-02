@@ -32,14 +32,14 @@ package RDF.Raptor.Serializer is
                                                  FH: RDF.Auxiliary.C_File_Access);
 
    -- WARNING: Other order of arguments than in C
-   not overriding procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
+   not overriding procedure Set_Namespace (Serializer: in out Serializer_Type_Without_Finalize;
                                            Prefix: String;
                                            URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
-   not overriding procedure Set_Namespace_Without_Prefix (Serializer: Serializer_Type_Without_Finalize;
+   not overriding procedure Set_Namespace_Without_Prefix (Serializer: in out Serializer_Type_Without_Finalize;
                                                           URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
-   not overriding procedure Set_Namespace (Serializer: Serializer_Type_Without_Finalize;
+   not overriding procedure Set_Namespace (Serializer: in out Serializer_Type_Without_Finalize;
                                            Namespace: Namespace_Type_Without_Finalize'Class);
 
    not overriding procedure Serialize_Statement (Serializer: Serializer_Type_Without_Finalize;
@@ -55,8 +55,8 @@ package RDF.Raptor.Serializer is
 
    not overriding function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return Locator_Type;
 
-   not overriding procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: String);
-   not overriding procedure Set_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: int);
+   not overriding procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: String);
+   not overriding procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: int);
 
    -- Not sure if we should be able to query here whether the option is numeric
    not overriding function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option) return Natural;

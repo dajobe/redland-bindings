@@ -12,17 +12,17 @@ package RDF.Raptor.Namespace_Stack is
 
    type Namespace_Stack_Type_Without_Finalize is new Namespace_Stack_Handled_Record.Base_Object with null record;
 
-   not overriding procedure Clear (Stack: Namespace_Stack_Type_Without_Finalize);
+   not overriding procedure Clear (Stack: in out Namespace_Stack_Type_Without_Finalize);
 
    -- See also below
-   not overriding procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Namespace: RDF.Raptor.Namespace.Namespace_Type'Class);
+   not overriding procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize; Namespace: RDF.Raptor.Namespace.Namespace_Type'Class);
 
-   not overriding procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize;
+   not overriding procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize;
                                              Prefix: String_Holders.Holder;
                                              NS_URI: String_Holders.Holder;
                                              Depth: Natural);
 
-   not overriding procedure End_For_Depth (Stack: Namespace_Stack_Type_Without_Finalize; Depth: Natural);
+   not overriding procedure End_For_Depth (Stack: in out Namespace_Stack_Type_Without_Finalize; Depth: Natural);
 
    not overriding function Get_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return RDF.Raptor.Namespace.Namespace_Type;
 
@@ -36,7 +36,7 @@ package RDF.Raptor.Namespace_Stack is
    not overriding function In_Scope (Stack: Namespace_Stack_Type_Without_Finalize; NS: RDF.Raptor.Namespace.Namespace_Type'Class)
                                      return Boolean;
 
-   not overriding procedure Start_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; NS: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize'Class; New_Depth: Natural);
+   not overriding procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize; NS: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize'Class; New_Depth: Natural);
 
    type Namespace_Stack_Type is new Namespace_Stack_Type_Without_Finalize with null record;
 

@@ -11,7 +11,7 @@ package body RDF.Rasqal.Query is
                                          return int
      with Import, Convention=>C;
 
-   procedure Add_Data_Graph (Query: Query_Type_Without_Finalize;
+   procedure Add_Data_Graph (Query: in out Query_Type_Without_Finalize;
                              Graph: Data_Graph_Type_Without_Finalize'Class) is
    begin
       if rasqal_query_add_data_graph (Get_Handle(Query), Get_Handle(Graph)) /= 0 then
@@ -19,7 +19,7 @@ package body RDF.Rasqal.Query is
       end if;
    end;
 
-   procedure Add_Data_Graphs (Query: Query_Type_Without_Finalize; Graphs: Data_Graphs_Array) is
+   procedure Add_Data_Graphs (Query: in out Query_Type_Without_Finalize; Graphs: Data_Graphs_Array) is
    begin
       for Graph of Graphs loop
          Add_Data_Graph(Query, Graph);
@@ -38,7 +38,7 @@ package body RDF.Rasqal.Query is
                                   return int
      with Import, Convention=>C;
 
-   procedure Prepare (Query: Query_Type_Without_Finalize;
+   procedure Prepare (Query: in out Query_Type_Without_Finalize;
                       Query_String: String;
                       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
@@ -50,7 +50,7 @@ package body RDF.Rasqal.Query is
    function rasqal_query_set_store_results (Query: Query_Handle; Store: int) return int
      with Import, Convention=>C;
 
-   procedure Set_Store_Results (Query: Query_Type_Without_Finalize; Store: Boolean) is
+   procedure Set_Store_Results (Query: in out Query_Type_Without_Finalize; Store: Boolean) is
    begin
       if rasqal_query_set_store_results(Get_Handle(Query), (if Store then 1 else 0)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -60,7 +60,7 @@ package body RDF.Rasqal.Query is
    procedure rasqal_query_set_wildcard (Query: Query_Handle; Store: int)
      with Import, Convention=>C;
 
-   procedure Set_Wildcard (Query: Query_Type_Without_Finalize; Store: Boolean) is
+   procedure Set_Wildcard (Query: in out Query_Type_Without_Finalize; Store: Boolean) is
    begin
       rasqal_query_set_wildcard(Get_Handle(Query), (if Store then 1 else 0));
    end;
@@ -134,7 +134,7 @@ package body RDF.Rasqal.Query is
                                       return int
      with Import, Convention=>C;
 
-   procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type; Value: Natural) is
+   procedure Set_Feature (Query: in out Query_Type_Without_Finalize; Feature: Feature_Type; Value: Natural) is
    begin
       if rasqal_query_set_feature(Get_Handle(Query), Feature, int(Value)) /= 0  then
          raise RDF.Auxiliary.RDF_Exception;
@@ -147,7 +147,7 @@ package body RDF.Rasqal.Query is
                                              return int
      with Import, Convention=>C;
 
-   procedure Set_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type; Value: String) is
+   procedure Set_Feature (Query: in out Query_Type_Without_Finalize; Feature: Feature_Type; Value: String) is
    begin
       if rasqal_query_set_feature_string(Get_Handle(Query), Feature, To_C(Value)) /= 0  then
          raise RDF.Auxiliary.RDF_Exception;

@@ -43,7 +43,7 @@ package body RDF.Rasqal.Bnode is
    procedure rasqal_world_set_generate_bnodeid_handler (World: Rasqal_World_Handle; Data: chars_ptr; Handler: C_BNode_ID_Handler)
      with Import, Convention=>C;
 
-   procedure Set_BNode_ID_Handler (World: Rasqal_World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class) is
+   procedure Set_BNode_ID_Handler (World: in out Rasqal_World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class) is
    begin
       rasqal_world_set_generate_bnodeid_handler(Get_Handle(World), Obj_To_Ptr(Handler), C_BNode_ID_Handle_Impl'Access);
    end;
@@ -54,7 +54,7 @@ package body RDF.Rasqal.Bnode is
                                                                   return int
      with Import, Convention=>C;
 
-   procedure Set_Default_Generate_Bnodeid_Parameters (World: Rasqal_World_Type_Without_Finalize'Class;
+   procedure Set_Default_Generate_Bnodeid_Parameters (World: in out Rasqal_World_Type_Without_Finalize'Class;
                                                       Prefix: String_Holders.Holder;
                                                       Base: int) is
       use RDF.Auxiliary.C_String_Holders;

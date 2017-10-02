@@ -26,7 +26,7 @@ package body RDF.Raptor.WWW is
    procedure raptor_www_set_user_agent (WWW: WWW_Handle; User_Agent: chars_ptr)
       with Import, Convention=>C;
 
-   procedure Set_User_Agent (WWW: WWW_Type_Without_Finalize; User_Agent: String) is
+   procedure Set_User_Agent (WWW: in out WWW_Type_Without_Finalize; User_Agent: String) is
    begin
       Set_Or_Null(raptor_www_set_user_agent'Access, WWW, User_Agent);
    end;
@@ -34,7 +34,7 @@ package body RDF.Raptor.WWW is
    procedure raptor_www_set_proxy (WWW: WWW_Handle; Proxy: char_array)
       with Import, Convention=>C;
 
-   procedure Set_Proxy (WWW: WWW_Type_Without_Finalize; Proxy: String) is
+   procedure Set_Proxy (WWW: in out WWW_Type_Without_Finalize; Proxy: String) is
    begin
       raptor_www_set_proxy(Get_Handle(WWW), To_C(Proxy));
    end;
@@ -42,7 +42,7 @@ package body RDF.Raptor.WWW is
    procedure raptor_www_set_http_accept (WWW: WWW_Handle; Value: chars_ptr)
       with Import, Convention=>C;
 
-   procedure Set_HTTP_Accept (WWW: WWW_Type_Without_Finalize; Value: String) is
+   procedure Set_HTTP_Accept (WWW: in out WWW_Type_Without_Finalize; Value: String) is
    begin
       Set_Or_Null(raptor_www_set_http_accept'Access, WWW, Value);
    end;
@@ -50,14 +50,14 @@ package body RDF.Raptor.WWW is
    procedure raptor_set_cache_control (WWW: WWW_Handle; Cache_Control: chars_ptr)
       with Import, Convention=>C;
 
-   procedure Set_Cache_Control (WWW: WWW_Type_Without_Finalize; Cache_Control: String) is
+   procedure Set_Cache_Control (WWW: in out WWW_Type_Without_Finalize; Cache_Control: String) is
       Str: aliased char_array := To_C(Cache_Control);
    begin
       raptor_set_cache_control(Get_Handle(WWW), To_Chars_Ptr(Str'Unchecked_Access));
    end;
 
    -- Remove Cache-Control: header altogether
-   procedure Unset_Cache_Control (WWW: WWW_Type_Without_Finalize) is
+   procedure Unset_Cache_Control (WWW: in out WWW_Type_Without_Finalize) is
    begin
       raptor_set_cache_control(Get_Handle(WWW), Null_Ptr);
    end;
@@ -65,7 +65,7 @@ package body RDF.Raptor.WWW is
    procedure raptor_www_set_connection_timeout (WWW: WWW_Handle; Timeout: int)
       with Import, Convention=>C;
 
-   procedure Set_Connection_Timeout (WWW: WWW_Type_Without_Finalize; Timeout: Natural) is
+   procedure Set_Connection_Timeout (WWW: in out WWW_Type_Without_Finalize; Timeout: Natural) is
    begin
       raptor_www_set_connection_timeout(Get_Handle(WWW), int(Timeout));
    end;
@@ -127,7 +127,7 @@ package body RDF.Raptor.WWW is
    function raptor_www_set_ssl_cert_options (WWW: WWW_Handle; Cert_Filename, Cert_Type, Cert_Passphrase: char_array) return int
       with Import, Convention=>C;
 
-   procedure Set_SSL_Cert_Options (WWW: WWW_Type_Without_Finalize; Cert_Filename, Cert_Type, Cert_Passphrase: String) is
+   procedure Set_SSL_Cert_Options (WWW: in out WWW_Type_Without_Finalize; Cert_Filename, Cert_Type, Cert_Passphrase: String) is
    begin
       if raptor_www_set_ssl_cert_options(Get_Handle(WWW), To_C(Cert_Filename), To_C(Cert_Type), To_C(Cert_Passphrase)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -137,7 +137,7 @@ package body RDF.Raptor.WWW is
    function raptor_www_set_ssl_verify_options (WWW: WWW_Handle; Verify_Peer, Verify_Host: int) return int
       with Import, Convention=>C;
 
-   procedure Set_SSL_Verify_Options (WWW: WWW_Type_Without_Finalize; Verify_Peer, Verify_Host: Boolean) is
+   procedure Set_SSL_Verify_Options (WWW: in out WWW_Type_Without_Finalize; Verify_Peer, Verify_Host: Boolean) is
    begin
       if raptor_www_set_ssl_verify_options(Get_Handle(WWW),
                                            (if Verify_Peer then 1 else 0),
@@ -238,7 +238,7 @@ package body RDF.Raptor.WWW is
                         URI_Type_Without_Finalize'(From_Handle(URI)));
    end;
 
-   procedure Initialize_All_Callbacks (WWW: WWW_Type_Without_Finalize) is
+   procedure Initialize_All_Callbacks (WWW: in out WWW_Type_Without_Finalize) is
    begin
       Initialize_Write_Bytes_Handler(WWW);
       Initialize_Content_Type_Handler(WWW);
@@ -249,7 +249,7 @@ package body RDF.Raptor.WWW is
    procedure raptor_www_set_write_bytes_handler(WWW: WWW_Handle; Handler: raptor_www_write_bytes_handler; User_Data: chars_ptr)
       with Import, Convention=>C;
 
-   procedure Initialize_Write_Bytes_Handler (WWW: WWW_Type_Without_Finalize) is
+   procedure Initialize_Write_Bytes_Handler (WWW: in out WWW_Type_Without_Finalize) is
    begin
       raptor_www_set_write_bytes_handler(Get_Handle(WWW), Write_Bytes_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
    end;
@@ -260,7 +260,7 @@ package body RDF.Raptor.WWW is
    procedure raptor_www_set_final_uri_handler (WWW: WWW_Handle; Handler: raptor_www_final_uri_handler; User_Data: chars_ptr)
       with Import, Convention=>C;
 
-   procedure Initialize_Content_Type_Handler (WWW: WWW_Type_Without_Finalize) is
+   procedure Initialize_Content_Type_Handler (WWW: in out WWW_Type_Without_Finalize) is
    begin
       raptor_www_set_content_type_handler(Get_Handle(WWW), Content_Type_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
    end;
@@ -268,12 +268,12 @@ package body RDF.Raptor.WWW is
    procedure raptor_www_set_uri_filter (WWW: WWW_Handle; Handler: raptor_www_uri_filter_func; User_Data: chars_ptr)
       with Import, Convention=>C;
 
-   procedure Initialize_URI_Filter (WWW: WWW_Type_Without_Finalize) is
+   procedure Initialize_URI_Filter (WWW: in out WWW_Type_Without_Finalize) is
    begin
       raptor_www_set_uri_filter(Get_Handle(WWW), URI_Filter_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
    end;
 
-   procedure Initialize_Final_URI_Handler (WWW: WWW_Type_Without_Finalize) is
+   procedure Initialize_Final_URI_Handler (WWW: in out WWW_Type_Without_Finalize) is
    begin
       raptor_www_set_final_uri_handler(Get_Handle(WWW), Final_URI_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
    end;

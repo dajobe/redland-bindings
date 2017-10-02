@@ -87,7 +87,7 @@ package RDF.Rasqal.Query_Results is
 
    not overriding function Type_Label (Kind: Query_Results_Type_Enum) return String;
 
-   not overriding procedure Rewind (Results: Query_Results_Type_Without_Finalize);
+   not overriding procedure Rewind (Results: in out Query_Results_Type_Without_Finalize);
 
    type Query_Results_Type is new Query_Results_Type_Without_Finalize with null record;
 
@@ -117,7 +117,7 @@ package RDF.Rasqal.Query_Results is
 
    type Bindings_Iterator is new Base_Iterators.Forward_Iterator with private;
 
-   not overriding function Create_Bindings_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+   not overriding function Create_Bindings_Iterator (Results: in out Query_Results_Type_Without_Finalize'Class)
                                                      return Bindings_Iterator;
 
    overriding function First (Object: Bindings_Iterator) return Cursor;
@@ -134,7 +134,7 @@ package RDF.Rasqal.Query_Results is
 
    type Triples_Iterator is new Base_Iterators.Forward_Iterator with private;
 
-   not overriding function Create_Triples_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+   not overriding function Create_Triples_Iterator (Results: in out Query_Results_Type_Without_Finalize'Class)
                                                     return Bindings_Iterator;
 
    overriding function First (Object: Triples_Iterator) return Cursor;

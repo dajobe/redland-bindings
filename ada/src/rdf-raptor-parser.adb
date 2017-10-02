@@ -188,7 +188,7 @@ package body RDF.Raptor.Parser is
    function raptor_parser_set_option (Parser: Parser_Handle; Option: Raptor_Option; Value: chars_ptr; Int_Value: int) return int
       with Import, Convention=>C;
 
-   procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option; Value: String) is
+   procedure Set_Option (Parser: in out Parser_Type_Without_Finalize; Option: Raptor_Option; Value: String) is
       Value2: aliased char_array := To_C(Value);
    begin
       if raptor_parser_set_option(Get_Handle(Parser), Option, To_Chars_Ptr(Value2'Unchecked_Access), 0) /= 0 then
@@ -196,7 +196,7 @@ package body RDF.Raptor.Parser is
       end if;
    end;
 
-   procedure Set_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option; Value: int) is
+   procedure Set_Option (Parser: in out Parser_Type_Without_Finalize; Option: Raptor_Option; Value: int) is
    begin
       if raptor_parser_set_option(Get_Handle(Parser), Option, Null_Ptr, Value) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -306,7 +306,7 @@ package body RDF.Raptor.Parser is
       return (if URI_Filter(Ptr_To_Obj(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI))) then 1 else 0);
    end;
 
-   procedure Initialize_All_Callbacks (Parser: Parser_Type_Without_Finalize) is
+   procedure Initialize_All_Callbacks (Parser: in out Parser_Type_Without_Finalize) is
    begin
       Initialize_Graph_Mark_Handler(Parser);
       Initialize_Statement_Handler (Parser);
@@ -326,22 +326,22 @@ package body RDF.Raptor.Parser is
    procedure raptor_parser_set_uri_filter (Parser: Parser_Handle; Handler: raptor_uri_filter_func; Data: chars_ptr)
       with Import, Convention=>C;
 
-   procedure Initialize_Graph_Mark_Handler (Object: Parser_Type_Without_Finalize) is
+   procedure Initialize_Graph_Mark_Handler (Object: in out Parser_Type_Without_Finalize) is
    begin
       raptor_parser_set_graph_mark_handler(Get_Handle(Object), Obj_To_Ptr(Object'Unchecked_Access), raptor_graph_mark_handler_impl'Access);
    end;
 
-   procedure Initialize_Statement_Handler (Object: Parser_Type_Without_Finalize) is
+   procedure Initialize_Statement_Handler (Object: in out Parser_Type_Without_Finalize) is
    begin
       raptor_parser_set_statement_handler(Get_Handle(Object), Obj_To_Ptr(Object'Unchecked_Access), raptor_statement_handler_impl'Access);
    end;
 
-   procedure Initialize_Namespace_Handler (Object: Parser_Type_Without_Finalize) is
+   procedure Initialize_Namespace_Handler (Object: in out Parser_Type_Without_Finalize) is
    begin
       raptor_parser_set_namespace_handler(Get_Handle(Object), Obj_To_Ptr(Object'Unchecked_Access), raptor_namespace_handler_impl'Access);
    end;
 
-   procedure Initialize_URI_Filter (Object: Parser_Type_Without_Finalize) is
+   procedure Initialize_URI_Filter (Object: in out Parser_Type_Without_Finalize) is
    begin
       raptor_parser_set_uri_filter(Get_Handle(Object), raptor_uri_filter_impl'Access, Obj_To_Ptr(Object'Unchecked_Access));
    end;

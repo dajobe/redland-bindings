@@ -17,7 +17,7 @@ package body RDF.Rasqal.World is
       return rasqal_new_world;
    end;
 
-   procedure Open(Object: Rasqal_World_Type_Without_Finalize) is
+   procedure Open(Object: in out Rasqal_World_Type_Without_Finalize) is
    begin
       rasqal_world_open(Get_Handle(Object));
    end;
@@ -32,7 +32,7 @@ package body RDF.Rasqal.World is
    function rasqal_world_set_warning_level (World: Rasqal_World_Handle; Level: unsigned) return int
       with Import, Convention=>C;
 
-   procedure Set_Warning_Level (World: Rasqal_World_Type_Without_Finalize; Level: Warning_Level) is
+   procedure Set_Warning_Level (World: in out Rasqal_World_Type_Without_Finalize; Level: Warning_Level) is
    begin
       if rasqal_world_set_warning_level(Get_Handle(World), unsigned(Level)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -50,7 +50,7 @@ package body RDF.Rasqal.World is
    procedure rasqal_world_set_raptor (World: Rasqal_World_Handle; Raptor_World: Raptor_World_Handle)
       with Import, Convention=>C;
 
-   procedure Set_Raptor (World: Rasqal_World_Type_Without_Finalize; Raptor_World: Raptor_World_Type_Without_Finalize'Class) is
+   procedure Set_Raptor (World: in out Rasqal_World_Type_Without_Finalize; Raptor_World: Raptor_World_Type_Without_Finalize'Class) is
    begin
       rasqal_world_set_raptor(Get_Handle(World), Get_Handle(Raptor_World));
    end;
@@ -70,7 +70,7 @@ package body RDF.Rasqal.World is
    procedure rasqal_world_set_log_handler (World: Rasqal_World_Handle; Data: chars_ptr; Handler: Log_Handler_Procedure_Type)
       with Import, Convention=>C;
 
-   procedure Set_Log_Handler(World: Rasqal_World_Type_Without_Finalize; Handler: access Log_Handler'Class) is
+   procedure Set_Log_Handler(World: in out Rasqal_World_Type_Without_Finalize; Handler: access Log_Handler'Class) is
    begin
       rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), Our_Raptor_Log_Handler'Access);
    end;
