@@ -16,7 +16,7 @@ package RDF.Rasqal.Syntaxes is
    function Get_Position (Cursor: Query_Language_Description_Cursor      ) return Natural;
    function Get_Position (Cursor: Query_Results_Format_Description_Cursor) return Natural;
 
-   function Get_Description (Cursor: Query_Language_Description_Curso  r    ) return Raptor_Syntax_Description_Type;
+   function Get_Description (Cursor: Query_Language_Description_Cursor      ) return Raptor_Syntax_Description_Type;
    function Get_Description (Cursor: Query_Results_Format_Description_Cursor) return Raptor_Syntax_Description_Type;
 
    function Has_Element (Position: Query_Language_Description_Cursor      ) return Boolean;
