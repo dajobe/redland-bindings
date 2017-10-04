@@ -1,5 +1,7 @@
 * "TODO" in the sources.
 
+* Add "pragma Pure()" where appropriate.
+
 * Can Adjust be done without Set_Handle_Hack, using class-wide types?
 
 * Add "with Inline" whereever feasible.
