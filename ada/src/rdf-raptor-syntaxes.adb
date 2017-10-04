@@ -63,11 +63,11 @@ package body RDF.Raptor.Syntaxes is
    end;
 
    function raptor_world_guess_parser_name (World: Raptor_World_Handle;
-                                              URI: URI_Handle;
-                                              MIME_Type: Char_Array;
-                                              Buffer: Char_Array;
-                                              Len: Size_T;
-                                              Identifier: Char_Array) return chars_ptr
+                                            URI: URI_Handle;
+                                            MIME_Type: Char_Array;
+                                            Buffer: Char_Array;
+                                            Len: Size_T;
+                                            Identifier: Char_Array) return chars_ptr
      with Import, Convention=>C;
 
 
@@ -75,10 +75,10 @@ package body RDF.Raptor.Syntaxes is
                                return String is
    begin
       return Value( raptor_world_guess_parser_name(Get_Handle(World),
-                                                     Get_Handle(URI),
-                                                     To_C(MIME_Type, Append_Nul=>True),
-                                                     My_To_C_Without_Nul(Buffer),
-                                                     size_t(Buffer'Length),
+                    Get_Handle(URI),
+                    To_C(MIME_Type, Append_Nul=>True),
+                    My_To_C_Without_Nul(Buffer),
+                    size_t(Buffer'Length),
                     To_C(Identifier, Append_Nul=>True)) );
    end;
 
@@ -94,7 +94,7 @@ package body RDF.Raptor.Syntaxes is
    function Get_Position (Cursor: Serializer_Description_Cursor) return Natural is (Cursor.Position);
 
    type Syntax_Description_Access is access all Raptor_Syntax_Description_Type
-      with Convention=>C;
+     with Convention=>C;
 
    function raptor_world_get_parser_description (World: Raptor_World_Handle; Counter: unsigned) return Syntax_Description_Access
      with Import, Convention=>C;
@@ -153,7 +153,7 @@ package body RDF.Raptor.Syntaxes is
    end;
 
    --     function Parser_Descriptions     (World: Raptor_World_Type_Without_Finalize'Class) return Parser_Description_List is (World=>Get_Handle(World));
---
---     function Serializer_Descriptions (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Description_List is (World=>Get_Handle(World));
+   --
+   --     function Serializer_Descriptions (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Description_List is (World=>Get_Handle(World));
 
 end RDF.Raptor.Syntaxes;

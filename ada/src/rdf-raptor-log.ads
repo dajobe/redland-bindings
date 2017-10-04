@@ -8,7 +8,7 @@ with RDF.Auxiliary;
 package RDF.Raptor.Log is
 
    type Log_Level_Type is (None, Trace, Debug, Info, Warn, Error, Fatal)
-      with Convention => C;
+     with Convention => C;
    for Log_Level_Type use (None => 0,
                            Trace => 1,
                            Debug => 2,
@@ -59,11 +59,11 @@ package RDF.Raptor.Log is
    type Log_Handler is abstract tagged null record;
 
    type Log_Handler_Procedure_Type is access procedure (Data: Chars_Ptr; Msg: Log_Message_Type)
-      with Convention=>C;
+     with Convention=>C;
 
    -- Internal
    procedure Our_Raptor_Log_Handler(Data: chars_ptr; Msg: Log_Message_Type)
-      with Convention=>C;
+     with Convention=>C;
 
    -- hack: 'Class to avoid "operation can be dispatching in only one type"
    not overriding procedure Log_Message(Handler: Log_Handler; Info: Log_Message_Type'Class) is abstract;
@@ -81,17 +81,17 @@ private
          File: chars_ptr;
          Line, Column, Byte: int;
       end record
-      with Convention => C;
+     with Convention => C;
 
    type Log_Message_Record is
       record
          Code: Interfaces.C.int;
          Domain: Domain_Type;
          Log_Level: Log_Level_Type;
---           Locator: access Locator_Type;
+         --           Locator: access Locator_Type;
          Locator: Locator_Handle;
          Text: chars_ptr;
       end record
-      with Convention => C;
+     with Convention => C;
 
 end RDF.Raptor.Log;

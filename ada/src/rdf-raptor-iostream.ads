@@ -86,7 +86,7 @@ package RDF.Raptor.IOStream is
    procedure Ntriples_Write (Value: String; Delim: Character; Stream: Base_Stream_Type);
 
    type Python_Write_Mode is (NTriples, Turtle, Turtle_Long_String, JSON)
-      with Convention => C;
+     with Convention => C;
    for Python_Write_Mode use (NTriples=>0, Turtle=>1, Turtle_Long_String=>2, JSON=>3);
 
    procedure String_Python_Write (Value: String; Delim: Character; Mode: Python_Write_Mode; Stream: Base_Stream_Type);
@@ -101,19 +101,19 @@ package RDF.Raptor.IOStream is
                               return Stream_Type_Without_Finalize;
 
    -- See below type Stream_From_String instead
---     function From_String (World: Raptor_World_Type_Without_Finalize; Str: String)
---                           return Stream_Type_Without_Finalize;
+   --     function From_String (World: Raptor_World_Type_Without_Finalize; Str: String)
+   --                           return Stream_Type_Without_Finalize;
 
    function To_Sink (World: Raptor_World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize;
 
    function To_Filename (World: Raptor_World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize;
 
    function To_File_Handle (World: Raptor_World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
-                              return Stream_Type_Without_Finalize;
+                            return Stream_Type_Without_Finalize;
 
    -- See below type Stream_To_String instead
---     function To_String (World: Raptor_World_Type_Without_Finalize; Str: String)
---                         return Stream_Type_Without_Finalize;
+   --     function To_String (World: Raptor_World_Type_Without_Finalize; Str: String)
+   --                         return Stream_Type_Without_Finalize;
 
    type Stream_Type is new Stream_Type_Without_Finalize with null record;
 

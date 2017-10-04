@@ -13,7 +13,7 @@ package RDF.Raptor is
                         World_Domain,
                         WWW_Domain,
                         XML_Writer_Domain)
-      with Convention => C;
+     with Convention => C;
    for Domain_Type use (None_Domain => 0,
                         Iostream_Domain => 1,
                         Namespace_Domain => 2,

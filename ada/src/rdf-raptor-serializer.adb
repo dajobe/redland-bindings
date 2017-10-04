@@ -7,7 +7,7 @@ package body RDF.Raptor.Serializer is
                                                  URI: URI_Handle;
                                                  Iostream: IOStream_Handle)
                                                  return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Start_To_Iostream (Serializer: Serializer_Type_Without_Finalize;
                                 Iostream: Base_Stream_Type'Class;
@@ -19,7 +19,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    function raptor_serializer_start_to_filename (Serializer: Serializer_Handle; Filename: char_array) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Start_To_Filename (Serializer: Serializer_Type_Without_Finalize; Filename: String) is
    begin
@@ -30,7 +30,7 @@ package body RDF.Raptor.Serializer is
 
    function raptor_serializer_start_to_file_handle (Serializer: Serializer_Handle; URI: URI_Handle;  FH: RDF.Auxiliary.C_File_Access)
                                                     return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Start_To_Filehandle (Serializer: Serializer_Type_Without_Finalize;
                                   URI: URI_Type_Without_Finalize'Class;
@@ -42,7 +42,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    function raptor_serializer_set_namespace (Serializer: Serializer_Handle; URI: URI_Handle; Prefix: chars_ptr) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Set_Namespace (Serializer: in out Serializer_Type_Without_Finalize;
                             Prefix: String;
@@ -64,7 +64,7 @@ package body RDF.Raptor.Serializer is
 
    function raptor_serializer_set_namespace_from_namespace (Serializer: Serializer_Handle; Namespace: Namespace_Handle)
                                                             return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Set_Namespace (Serializer: in out Serializer_Type_Without_Finalize;
                             Namespace: Namespace_Type_Without_Finalize'Class) is
@@ -76,7 +76,7 @@ package body RDF.Raptor.Serializer is
 
    function raptor_serializer_serialize_statement (Serializer: Serializer_Handle; Statement: Statement_Handle)
                                                    return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Serialize_Statement (Serializer: Serializer_Type_Without_Finalize;
                                   Statement: Statement_Type_Without_Finalize'Class) is
@@ -87,7 +87,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    function raptor_serializer_serialize_end (Serializer: Serializer_Handle) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Serialize_End (Serializer: Serializer_Type_Without_Finalize) is
    begin
@@ -97,7 +97,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    function raptor_serializer_serialize_flush (Serializer: Serializer_Handle) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Serialize_Flush (Serializer: Serializer_Type_Without_Finalize) is
    begin
@@ -107,7 +107,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    function raptor_serializer_get_description (Serializer: Serializer_Handle) return Raptor_Syntax_Description_Type
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Description (Serializer: Serializer_Type_Without_Finalize) return Raptor_Syntax_Description_Type is
    begin
@@ -115,7 +115,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    function raptor_serializer_get_iostream (Serializer: Serializer_Handle) return IOStream_Handle
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return Stream_Type_Without_Finalize is
    begin
@@ -123,7 +123,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    function raptor_serializer_get_locator (Serializer: Serializer_Handle) return Locator_Handle
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return Locator_Type is
    begin
@@ -131,7 +131,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    function raptor_parser_set_option (Serializer: Serializer_Handle; Option: Raptor_Option; Value: chars_ptr; Int_Value: int) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: String) is
       Value2: aliased char_array := To_C(Value);
@@ -155,7 +155,7 @@ package body RDF.Raptor.Serializer is
                                       Option: Raptor_Option;
                                       String_P: String_P_Type;
                                       Integer_P: Int_P_Type) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option) return Natural is
       V: aliased int;
@@ -176,7 +176,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    function raptor_serializer_get_world (Serializer: Serializer_Handle) return Raptor_World_Handle
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_World (Serializer: Serializer_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
    begin
@@ -184,7 +184,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    function raptor_new_serializer (World: Raptor_World_Handle; Syntax_Name: chars_ptr) return Serializer_Handle
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Type is
    begin
@@ -198,7 +198,7 @@ package body RDF.Raptor.Serializer is
    end;
 
    procedure raptor_free_serializer (Serializer: Serializer_Handle)
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Serializer_Handle) is
    begin

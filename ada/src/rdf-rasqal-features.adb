@@ -6,7 +6,7 @@ with RDF.Raptor.World; use RDF.Raptor.World;
 package body RDF.Rasqal.Features is
 
    function rasqal_feature_from_uri (World: Rasqal_World_Handle; URI: URI_Handle) return Feature_Type
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Feature_From_URI (World: Rasqal_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class) return Feature_Type is
       Value: constant Feature_Type := rasqal_feature_from_uri(Get_Handle(World), Get_Handle(URI));
@@ -15,7 +15,7 @@ package body RDF.Rasqal.Features is
    end;
 
    function rasqal_feature_value_type (Feature: Feature_Type) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Type (Feature: Feature_Type) return Feature_Value_Type is
       Value_Type: constant int := rasqal_feature_value_type(Feature);
@@ -38,7 +38,7 @@ package body RDF.Rasqal.Features is
                                        URI: URI_P_Type;
                                        Label: String_P_Type)
                                        return Int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Feature_Description (World: Rasqal_World_Type_Without_Finalize'Class; Feature: Feature_Type) return Feature_Description is
       Name, Label: aliased chars_ptr;
@@ -61,7 +61,7 @@ package body RDF.Rasqal.Features is
    end;
 
    function rasqal_get_feature_count return unsigned
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Feature_Count return unsigned is (Rasqal_Get_Feature_Count);
 

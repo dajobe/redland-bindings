@@ -6,8 +6,7 @@ with RDF.Raptor.URI; use RDF.Raptor.URI;
 
 package RDF.Raptor.Syntaxes is
 
-   type Syntax_Bitflags is (Need_Base_URI)
-      with Convention => C;
+   type Syntax_Bitflags is (Need_Base_URI) with Convention=>C;
    for Syntax_Bitflags use (Need_Base_URI => 1);
 
    type Mime_Type_Q is private;
@@ -22,19 +21,19 @@ package RDF.Raptor.Syntaxes is
    function Get_Q (Object: Mime_Type_Q) return Q_Type;
 
    function Get_Name (Object: Raptor_Syntax_Description_Type; Index: Natural) return String
-      with Pre => Index < Get_Names_Count(Object);
+     with Pre => Index < Get_Names_Count(Object);
 
    function Get_Names_Count (Object: Raptor_Syntax_Description_Type) return Natural;
 
    function Get_Label (Object: Raptor_Syntax_Description_Type) return String;
 
    function Get_MIME_Type (Object: Raptor_Syntax_Description_Type; Index: Natural) return Mime_Type_Q
-      with Pre => Index < Get_MIME_Types_Count(Object);
+     with Pre => Index < Get_MIME_Types_Count(Object);
 
    function Get_MIME_Types_Count (Object: Raptor_Syntax_Description_Type) return Natural;
 
    function Get_URI (Object: Raptor_Syntax_Description_Type; Index: Natural) return URI_String
-      with Pre => Index < Get_URIs_Count(Object);
+     with Pre => Index < Get_URIs_Count(Object);
 
    function Get_URIs_Count (Object: Raptor_Syntax_Description_Type) return Natural;
 
@@ -84,7 +83,7 @@ private
          Mime_Type_Len: size_t;
          Q: unsigned_char;
       end record
-      with Convention => C;
+     with Convention => C;
 
    type Syntax_Description_Record is limited
       record

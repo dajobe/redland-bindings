@@ -1,7 +1,7 @@
 package body RDF.Rasqal.Memory is
 
    function C_Strncpy (Target, Source: Chars_Ptr; Len: size_t) return chars_ptr
-      with Import, Convention=>C, External_Name=>"strncpy";
+     with Import, Convention=>C, External_Name=>"strncpy";
 
    procedure C_Strncpy (Target, Source: chars_ptr; Len: size_t) is
       Dummy: chars_ptr := C_Strncpy(Target, Source, Len);

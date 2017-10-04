@@ -250,20 +250,20 @@ package body RDF.Rasqal.Query_Results is
    end;
 
    -- TODO: Not supported as of Rasqal 0.9.32
---     function rasqal_new_query_results2 (World: Rasqal_World_Handle;
---                                         Query: RDF.Rasqal.Query.Query_Handle;
---                                         Kind: Query_Results_Type_Enum)
---                                         return Query_Results_Handle
---       with Import, Convention=>C;
---
---     function New_Query_Results (World: Rasqal_World_Type_Without_Finalize;
---                                 Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
---                                 Kind: Query_Results_Type_Enum)
---                                 return Query_Results_Type is
---        use RDF.Rasqal.World, RDF.Rasqal.Query;
---     begin
---        return From_Non_Null_Handle(rasqal_new_query_results2(Get_Handle(World), Get_Handle(Query), Kind));
---     end;
+   --     function rasqal_new_query_results2 (World: Rasqal_World_Handle;
+   --                                         Query: RDF.Rasqal.Query.Query_Handle;
+   --                                         Kind: Query_Results_Type_Enum)
+   --                                         return Query_Results_Handle
+   --       with Import, Convention=>C;
+   --
+   --     function New_Query_Results (World: Rasqal_World_Type_Without_Finalize;
+   --                                 Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
+   --                                 Kind: Query_Results_Type_Enum)
+   --                                 return Query_Results_Type is
+   --        use RDF.Rasqal.World, RDF.Rasqal.Query;
+   --     begin
+   --        return From_Non_Null_Handle(rasqal_new_query_results2(Get_Handle(World), Get_Handle(Query), Kind));
+   --     end;
 
    function rasqal_new_query_results (World: Rasqal_World_Handle;
                                       Query: RDF.Rasqal.Query.Query_Handle;
@@ -280,24 +280,24 @@ package body RDF.Rasqal.Query_Results is
       return From_Non_Null_Handle(rasqal_new_query_results(Get_Handle(World), Get_Handle(Query), Kind, null));
    end;
 
---     function rasqal_new_query_results_from_string (World: Rasqal_World_Handle;
---                                                    Kind: Query_Results_Type_Enum;
---                                                    Base_URI: Handle_Type;
---                                                    Value: char_array;
---                                                    Length: size_t)
---                                                    return Query_Results_Handle
---       with Import, Convention=>C;
---
---     function From_String (World: Rasqal_World_Type_Without_Finalize;
---                           Kind: Query_Results_Type_Enum;
---                           Base_URI: URI_Type_Without_Finalize;
---                           Value: String)
---                           return Query_Results_Type is
---        use RDF.Rasqal.World, RDF.Raptor.URI;
---     begin
---        return From_Non_Null_Handle(Rasqal_New_Query_Results_From_String(
---                                    Get_Handle(World), Kind, Get_Handle(Base_URI), My_To_C_Without_Nul(Value), Value'Length));
---     end;
+   --     function rasqal_new_query_results_from_string (World: Rasqal_World_Handle;
+   --                                                    Kind: Query_Results_Type_Enum;
+   --                                                    Base_URI: Handle_Type;
+   --                                                    Value: char_array;
+   --                                                    Length: size_t)
+   --                                                    return Query_Results_Handle
+   --       with Import, Convention=>C;
+   --
+   --     function From_String (World: Rasqal_World_Type_Without_Finalize;
+   --                           Kind: Query_Results_Type_Enum;
+   --                           Base_URI: URI_Type_Without_Finalize;
+   --                           Value: String)
+   --                           return Query_Results_Type is
+   --        use RDF.Rasqal.World, RDF.Raptor.URI;
+   --     begin
+   --        return From_Non_Null_Handle(Rasqal_New_Query_Results_From_String(
+   --                                    Get_Handle(World), Kind, Get_Handle(Base_URI), My_To_C_Without_Nul(Value), Value'Length));
+   --     end;
 
    function Has_Element (Position: Cursor) return Boolean is
      (Not_Finished(Position.all));
@@ -307,7 +307,7 @@ package body RDF.Rasqal.Query_Results is
      (Ref=>Results'Unchecked_Access);
 
    function First (Object: Bindings_Iterator) return Cursor is
-      (Object.Ref);
+     (Object.Ref);
 
    function Next (Object: Bindings_Iterator; Position: Cursor) return Cursor is
    begin
@@ -318,19 +318,19 @@ package body RDF.Rasqal.Query_Results is
    function Get_Binding_Value (Position: Cursor;
                                Offset: Natural)
                                return Literal_Type_Without_Finalize is
-      (Get_Binding_Value(Position.all, Offset));
+     (Get_Binding_Value(Position.all, Offset));
 
    function Get_Binding_Value_By_Name (Position: Cursor;
                                        Name: String)
                                        return Literal_Type_Without_Finalize is
-      (Get_Binding_Value_By_Name(Position.all, Name));
+     (Get_Binding_Value_By_Name(Position.all, Name));
 
    function Create_Triples_Iterator (Results: in out Query_Results_Type_Without_Finalize'Class)
                                      return Bindings_Iterator is
      (Ref=>Results'Unchecked_Access);
 
    function First (Object: Triples_Iterator) return Cursor is
-      (Object.Ref);
+     (Object.Ref);
 
    function Next (Object: Triples_Iterator; Position: Cursor) return Cursor is
    begin
@@ -339,12 +339,12 @@ package body RDF.Rasqal.Query_Results is
    end;
 
    function Get_Triple (Position: Cursor) return Statement_Type_Without_Finalize is
-      (Get_Triple(Position.all));
+     (Get_Triple(Position.all));
 
    -----------------
 
    function Has_Element (Position: Variables_Cursor) return Boolean is
-      (Position.Count < Get_Bindings_Count(Position.Ref.all));
+     (Position.Count < Get_Bindings_Count(Position.Ref.all));
 
    function Create_Variables_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
                                        return Variables_Iterator is

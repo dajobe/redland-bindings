@@ -35,7 +35,7 @@ package body RDF.Raptor.Bnode is
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
 
    function C_BNode_ID_Handle_Impl(Data: chars_ptr; User_ID: chars_ptr) return Chars_Ptr
-      with Convention=>C;
+     with Convention=>C;
 
    function C_BNode_ID_Handle_Impl(Data: chars_ptr; User_ID: chars_ptr) return Chars_Ptr is
       use RDF.Auxiliary.String_Holders;

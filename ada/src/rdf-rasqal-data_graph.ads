@@ -27,7 +27,7 @@ package RDF.Rasqal.Data_Graph is
    type Flags_Type is (None, -- unused
                        Named,
                        Background)
-      with Convention=>C;
+     with Convention=>C;
 
    function Get_Flags (Graph: Data_Graph_Type_Without_Finalize) return Flags_Type;
 
@@ -69,28 +69,28 @@ package RDF.Rasqal.Data_Graph is
                                      Format_URI: URI_Type_Without_Finalize'Class)
                                      return Data_Graph_Type;
 
---     type Streamed_Data_Graph_Type is new Data_Graph_Type with private;
+   --     type Streamed_Data_Graph_Type is new Data_Graph_Type with private;
 
    -- TODO: Implement
---     -- Not binding, but a wrapper
---     not overriding function From_File (World: Rasqal_World_Type_Without_Finalize'Class;
---                                        Filename: String;
---                                        Base_URI: URI_Type_Without_Finalize'Class;
---                                        Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
---                                        Flags: Flags_Type := Background;
---                                        Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
---                                        Format_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
---                                        return Streamed_Data_Graph_Type;
---
---     -- Not binding, but a wrapper
---     not overriding function From_String (World: Rasqal_World_Type_Without_Finalize'Class;
---                                          Str: String;
---                                          Base_URI: URI_Type_Without_Finalize'Class;
---                                          Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
---                                          Flags: Flags_Type := Background;
---                                          Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
---                                          Format_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
---                                          return Streamed_Data_Graph_Type;
+   --     -- Not binding, but a wrapper
+   --     not overriding function From_File (World: Rasqal_World_Type_Without_Finalize'Class;
+   --                                        Filename: String;
+   --                                        Base_URI: URI_Type_Without_Finalize'Class;
+   --                                        Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
+   --                                        Flags: Flags_Type := Background;
+   --                                        Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
+   --                                        Format_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
+   --                                        return Streamed_Data_Graph_Type;
+   --
+   --     -- Not binding, but a wrapper
+   --     not overriding function From_String (World: Rasqal_World_Type_Without_Finalize'Class;
+   --                                          Str: String;
+   --                                          Base_URI: URI_Type_Without_Finalize'Class;
+   --                                          Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
+   --                                          Flags: Flags_Type := Background;
+   --                                          Format_Type, Format_Name: RDF.Auxiliary.String_Holders.Holder := RDF.Auxiliary.String_Holders.Empty_Holder;
+   --                                          Format_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
+   --                                          return Streamed_Data_Graph_Type;
 
 private
 
@@ -107,9 +107,9 @@ private
       end record
      with Convention=>C;
 
---     type Streamed_Data_Graph_Type is new Data_Graph_Type with
---        record
---           Stream: Base_Stream_Type'Class;
---        end record;
+   --     type Streamed_Data_Graph_Type is new Data_Graph_Type with
+   --        record
+   --           Stream: Base_Stream_Type'Class;
+   --        end record;
 
 end RDF.Rasqal.Data_Graph;

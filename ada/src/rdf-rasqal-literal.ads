@@ -63,12 +63,12 @@ package RDF.Rasqal.Literal is
                                          return URI_Type_Without_Finalize;
 
    -- TODO: Not supported as of Rasqal 0.9.32
---     not overriding function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder;
+   --     not overriding function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder;
 
    not overriding function Get_Rdf_Term_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum;
 
    -- TODO: Not supported as of Rasqal 0.9.32
---     not overriding function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum;
+   --     not overriding function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum;
 
    not overriding function Is_Rdf_Literal (Literal: Literal_Type_Without_Finalize) return Boolean;
 
@@ -92,18 +92,18 @@ package RDF.Rasqal.Literal is
                                          return Literal_Type;
 
    -- Not implemented
---     not overriding function From_Datetime (World: Rasqal_World_Type_Without_Finalize;
---                                            Value: XSD_Datetime)
---                                            return Literal_Type;
+   --     not overriding function From_Datetime (World: Rasqal_World_Type_Without_Finalize;
+   --                                            Value: XSD_Datetime)
+   --                                            return Literal_Type;
 
    not overriding function From_Decimal (World: Rasqal_World_Type_Without_Finalize'Class;
                                          Value: String)
                                          return Literal_Type;
 
    -- Not implemented
---     not overriding function From_Decimal (World: Rasqal_World_Type_Without_Finalize;
---                                           Value: XSD_Decimal)
---                                           return Literal_Type;
+   --     not overriding function From_Decimal (World: Rasqal_World_Type_Without_Finalize;
+   --                                           Value: XSD_Decimal)
+   --                                           return Literal_Type;
 
    -- From_Float API is experimental
 
@@ -151,7 +151,7 @@ package RDF.Rasqal.Literal is
    not overriding function From_String (World: Rasqal_World_Type_Without_Finalize'Class;
                                         Value: String)
                                         return Literal_Type
-     is (New_String_Literal(World, Value));
+   is (New_String_Literal(World, Value));
 
    not overriding function From_URI (World: Rasqal_World_Type_Without_Finalize'Class;
                                      Value: URI_Type_Without_Finalize)

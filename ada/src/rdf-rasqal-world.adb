@@ -30,7 +30,7 @@ package body RDF.Rasqal.World is
    end;
 
    function rasqal_world_set_warning_level (World: Rasqal_World_Handle; Level: unsigned) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Set_Warning_Level (World: in out Rasqal_World_Type_Without_Finalize; Level: Warning_Level) is
    begin
@@ -40,7 +40,7 @@ package body RDF.Rasqal.World is
    end;
 
    function rasqal_world_get_raptor (World: Rasqal_World_Handle) return Raptor_World_Handle
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Raptor (World: Rasqal_World_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
    begin
@@ -48,7 +48,7 @@ package body RDF.Rasqal.World is
    end;
 
    procedure rasqal_world_set_raptor (World: Rasqal_World_Handle; Raptor_World: Raptor_World_Handle)
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Set_Raptor (World: in out Rasqal_World_Type_Without_Finalize; Raptor_World: Raptor_World_Type_Without_Finalize'Class) is
    begin
@@ -56,7 +56,7 @@ package body RDF.Rasqal.World is
    end;
 
    procedure rasqal_free_world (World: Rasqal_World_Handle)
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Finalize_Handle (Object: Rasqal_World_Type; Handle: Rasqal_World_Handle) is
    begin
@@ -64,11 +64,11 @@ package body RDF.Rasqal.World is
    end;
 
    type Log_Handler_Access is access constant Log_Handler'Class;
---     function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, Log_Handler_Access);
+   --     function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, Log_Handler_Access);
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(Log_Handler_Access, chars_ptr);
 
    procedure rasqal_world_set_log_handler (World: Rasqal_World_Handle; Data: chars_ptr; Handler: Log_Handler_Procedure_Type)
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Set_Log_Handler(World: in out Rasqal_World_Type_Without_Finalize; Handler: access Log_Handler'Class) is
    begin
@@ -82,7 +82,7 @@ package body RDF.Rasqal.World is
                                                           Len: size_t;
                                                           Identifier: chars_ptr)
                                                           return chars_ptr
-         with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Guess_Query_Results_Format_Name (World: Rasqal_World_Type_Without_Finalize;
                                              URI: URI_Type_Without_Finalize'Class;

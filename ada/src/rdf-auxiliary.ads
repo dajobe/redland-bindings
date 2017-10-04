@@ -5,17 +5,17 @@ package RDF.Auxiliary is
 
    -- Internal
    type Dummy_Record is null record
-      with Convention=>C;
+     with Convention=>C;
 
    type Dummy_Record_Access is access Dummy_Record
-      with Convention=>C;
+     with Convention=>C;
 
    type C_File_Record is null record
-      with Convention=>C;
+     with Convention=>C;
 
    -- Represents C FILE* record
    type C_File_Access is access C_File_Record
-      with Convention=>C;
+     with Convention=>C;
 
    type Comparison_Result is range -1..1;
 

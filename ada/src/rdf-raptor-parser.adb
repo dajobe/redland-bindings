@@ -6,7 +6,7 @@ with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.Parser is
 
---     use all type Parser_Type;
+   --     use all type Parser_Type;
 
    function raptor_new_parser (World: Raptor_World_Handle; Name: char_array) return Parser_Handle
      with Import, Convention=>C;
@@ -17,11 +17,11 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_new_parser_for_content (World: Raptor_World_Handle;
-                                             URI: URI_Handle;
-                                             MIME_Type: chars_ptr;
-                                             Buffer: chars_ptr;
-                                             Len: size_t;
-                                             Identifier: chars_ptr) return Parser_Handle
+                                           URI: URI_Handle;
+                                           MIME_Type: chars_ptr;
+                                           Buffer: chars_ptr;
+                                           Len: size_t;
+                                           Identifier: chars_ptr) return Parser_Handle
      with Import, Convention=>C;
 
    function Create_From_Content (World: Raptor_World_Type_Without_Finalize'Class;
@@ -35,15 +35,15 @@ package body RDF.Raptor.Parser is
       Identifier_N: constant C_String_Holder := To_C_String_Holder(Identifier);
    begin
       return  From_Non_Null_Handle( raptor_new_parser_for_content(Get_Handle(World),
-                                                                    Get_Handle(URI),
-                                                                    C_String(Mime_Type_N),
-                                                                    C_String(Buffer_N),
-                                                                    Length(Buffer),
-                                                                    C_String(Identifier_N)) );
+                                    Get_Handle(URI),
+                                    C_String(Mime_Type_N),
+                                    C_String(Buffer_N),
+                                    Length(Buffer),
+                                    C_String(Identifier_N)) );
    end;
 
    function raptor_parser_get_locator (Parser: Parser_Handle) return Locator_Handle
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Locator (Parser: Parser_Type_Without_Finalize) return Locator_Type is
    begin
@@ -51,7 +51,7 @@ package body RDF.Raptor.Parser is
    end;
 
    procedure raptor_parser_parse_abort (Parser: Parser_Handle)
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Parse_Abort (Parser: Parser_Type_Without_Finalize) is
    begin
@@ -59,7 +59,7 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_parse_chunk (Parser: Parser_Handle; Buffer: char_array; Len: size_t; Is_End: int) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Parse_Chunk (Parser: Parser_Type_Without_Finalize;
                           Buffer: String;
@@ -75,7 +75,7 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_parse_file (Parser: Parser_Handle; URI, Base_URI: URI_Handle) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Parse_File (Parser: Parser_Type_Without_Finalize;
                          URI: URI_Type_Without_Finalize;
@@ -93,10 +93,10 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_parse_file_stream (Parser: Parser_Handle;
-                                               Stream: RDF.Auxiliary.C_File_Access;
-                                               Filename: char_array;
-                                               Base_URI: URI_Handle) return int
-      with Import, Convention=>C;
+                                             Stream: RDF.Auxiliary.C_File_Access;
+                                             Filename: char_array;
+                                             Base_URI: URI_Handle) return int
+     with Import, Convention=>C;
 
    procedure Parse_File_Stream (Parser: Parser_Type_Without_Finalize;
                                 Stream: RDF.Auxiliary.C_File_Access;
@@ -109,9 +109,9 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_parse_iostream (Parser: Parser_Handle;
-                                            Stream: IOStream_Handle;
-                                            Base_URI: URI_Handle) return int
-      with Import, Convention=>C;
+                                          Stream: IOStream_Handle;
+                                          Base_URI: URI_Handle) return int
+     with Import, Convention=>C;
 
    procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
                              Stream: Base_Stream_Type'Class;
@@ -123,7 +123,7 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_parse_start (Parser: Parser_Handle; URI: URI_Handle) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class) is
    begin
@@ -134,7 +134,7 @@ package body RDF.Raptor.Parser is
 
    function raptor_parser_parse_uri (Parser: Parser_Handle;
                                      URI, Base_URI: URI_Handle) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Parse_URI (Parser: Parser_Type_Without_Finalize;
                         URI: URI_Type_Without_Finalize'Class;
@@ -149,7 +149,7 @@ package body RDF.Raptor.Parser is
                                                      URI, Base_URI: URI_Handle;
                                                      Connection: Connection_Type)
                                                      return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Parse_URI_With_Connection (Parser: Parser_Type_Without_Finalize;
                                         URI: URI_Type_Without_Finalize'Class;
@@ -162,7 +162,7 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_get_graph (Parser: Parser_Handle) return URI_Handle
-         with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Graph (Parser: Parser_Type_Without_Finalize) return URI_Type is
    begin
@@ -170,7 +170,7 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_get_description (Parser: Parser_Handle) return Raptor_Syntax_Description_Type
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Description (Parser: Parser_Type_Without_Finalize) return Raptor_Syntax_Description_Type is
    begin
@@ -178,7 +178,7 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_get_name (Parser: Parser_Handle) return chars_ptr
-         with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Name (Parser: Parser_Type_Without_Finalize) return String is
    begin
@@ -186,7 +186,7 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_set_option (Parser: Parser_Handle; Option: Raptor_Option; Value: chars_ptr; Int_Value: int) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Set_Option (Parser: in out Parser_Type_Without_Finalize; Option: Raptor_Option; Value: String) is
       Value2: aliased char_array := To_C(Value);
@@ -210,7 +210,7 @@ package body RDF.Raptor.Parser is
                                       Option: Raptor_Option;
                                       String_P: String_P_Type;
                                       Integer_P: Int_P_Type) return int
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option) return Natural is
       V: aliased int;
@@ -231,7 +231,7 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_get_accept_header (Parser: Parser_Handle) return chars_ptr
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String is
       V: constant chars_ptr := raptor_parser_get_accept_header(Get_Handle(Parser));
@@ -242,7 +242,7 @@ package body RDF.Raptor.Parser is
    end;
 
    function raptor_parser_get_world (Parser: Parser_Handle) return Raptor_World_Handle
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_World (Parser: Parser_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
    begin
@@ -315,16 +315,16 @@ package body RDF.Raptor.Parser is
    end;
 
    procedure raptor_parser_set_statement_handler (Parser: Parser_Handle; Data: chars_ptr; Handler: raptor_statement_handler)
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure raptor_parser_set_graph_mark_handler (Parser: Parser_Handle; Data: chars_ptr; Handler: raptor_graph_mark_handler)
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure raptor_parser_set_namespace_handler (Parser: Parser_Handle; Data: chars_ptr; Handler: raptor_namespace_handler)
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure raptor_parser_set_uri_filter (Parser: Parser_Handle; Handler: raptor_uri_filter_func; Data: chars_ptr)
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    procedure Initialize_Graph_Mark_Handler (Object: in out Parser_Type_Without_Finalize) is
    begin
@@ -347,6 +347,6 @@ package body RDF.Raptor.Parser is
    end;
 
    type My_Dummy_Access is access constant RDF.Auxiliary.Dummy_Record
-      with Convention=>C;
+     with Convention=>C;
 
 end RDF.Raptor.Parser;

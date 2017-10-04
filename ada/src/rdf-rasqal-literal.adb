@@ -234,31 +234,31 @@ package body RDF.Rasqal.Literal is
    end;
 
    -- TODO: Not supported as of Rasqal 0.9.32
---     function rasqal_literal_get_language (Literal: Literal_Handle) return Chars_Ptr
---       with Import, Convention=>C;
---
---     function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder is
---     begin
---        return New_Holder(rasqal_literal_get_language(Get_Handle(Literal)));
---     end;
+   --     function rasqal_literal_get_language (Literal: Literal_Handle) return Chars_Ptr
+   --       with Import, Convention=>C;
+   --
+   --     function Get_Language (Literal: Literal_Type_Without_Finalize) return String_Holders.Holder is
+   --     begin
+   --        return New_Holder(rasqal_literal_get_language(Get_Handle(Literal)));
+   --     end;
 
    function rasqal_literal_get_rdf_term_type (Literal: Literal_Handle) return Literal_Type_Enum
      with Import, Convention=>C;
 
---     function rasqal_literal_get_type (Literal: Literal_Handle) return Literal_Type_Enum
---       with Import, Convention=>C;
+   --     function rasqal_literal_get_type (Literal: Literal_Handle) return Literal_Type_Enum
+   --       with Import, Convention=>C;
 
    function Get_Rdf_Term_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum is
-      (rasqal_literal_get_rdf_term_type(Get_Handle(Literal)));
+     (rasqal_literal_get_rdf_term_type(Get_Handle(Literal)));
 
---     function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum is
---       (rasqal_literal_get_type(Get_Handle(Literal)));
+   --     function Get_Type (Literal: Literal_Type_Without_Finalize) return Literal_Type_Enum is
+   --       (rasqal_literal_get_type(Get_Handle(Literal)));
 
    function rasqal_literal_is_rdf_literal (Literal: Literal_Handle) return int
      with Import, Convention=>C;
 
    function Is_Rdf_Literal (Literal: Literal_Type_Without_Finalize) return Boolean is
-      (rasqal_literal_is_rdf_literal(Get_Handle(Literal)) /= 0);
+     (rasqal_literal_is_rdf_literal(Get_Handle(Literal)) /= 0);
 
    function rasqal_literal_print (Literal: Literal_Handle; File: RDF.Auxiliary.C_File_Access) return int
      with Import, Convention=>C;

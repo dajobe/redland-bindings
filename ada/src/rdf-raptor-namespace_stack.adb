@@ -23,10 +23,10 @@ package body RDF.Raptor.Namespace_Stack is
    end;
 
    function raptor_namespaces_start_namespace_full (Stack: Namespace_Stack_Handle;
-                                                      Prefix: chars_ptr;
-                                                      URI: chars_ptr;
-                                                      Depth: int)
-                                                      return Int
+                                                    Prefix: chars_ptr;
+                                                    URI: chars_ptr;
+                                                    Depth: int)
+                                                    return Int
      with Import, Convention=>C;
 
    procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize;
@@ -66,8 +66,8 @@ package body RDF.Raptor.Namespace_Stack is
    end;
 
    function raptor_new_namespaces (World: Raptor_World_Handle;
-                                     Defaults: Defaults_Type)
-                                     return Namespace_Stack_Handle
+                                   Defaults: Defaults_Type)
+                                   return Namespace_Stack_Handle
      with Import, Convention=>C;
 
    function Create_Stack (World: Raptor_World_Type_Without_Finalize'Class; Defaults: Defaults_Type)
@@ -77,9 +77,9 @@ package body RDF.Raptor.Namespace_Stack is
    end;
 
    function raptor_namespaces_find_namespace (Stack: Namespace_Stack_Handle;
-                                                Prefix: chars_ptr;
-                                                Len: int)
-                                                return Namespace_Handle
+                                              Prefix: chars_ptr;
+                                              Len: int)
+                                              return Namespace_Handle
      with Import, Convention=>C;
 
    function Find_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Prefix: String) return Namespace_Type is
@@ -94,8 +94,8 @@ package body RDF.Raptor.Namespace_Stack is
    end;
 
    function raptor_namespaces_find_namespace_by_uri (Stack: Namespace_Stack_Handle;
-                                                       URI: URI_Handle)
-                                                       return Namespace_Handle
+                                                     URI: URI_Handle)
+                                                     return Namespace_Handle
      with Import, Convention=>C;
 
    function Find_Namespace_By_URI (Stack: Namespace_Stack_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class)
@@ -105,8 +105,8 @@ package body RDF.Raptor.Namespace_Stack is
    end;
 
    function raptor_namespaces_namespace_in_scope (Stack: Namespace_Stack_Handle;
-                                                    NS: Namespace_Handle)
-                                                    return int
+                                                  NS: Namespace_Handle)
+                                                  return int
      with Import, Convention=>C;
 
    function In_Scope (Stack: Namespace_Stack_Type_Without_Finalize; NS: Namespace_Type'Class)
@@ -116,9 +116,9 @@ package body RDF.Raptor.Namespace_Stack is
    end;
 
    function raptor_namespace_stack_start_namespace (Stack: Namespace_Stack_Handle;
-                                                      NS: Namespace_Handle;
-                                                      New_Depth: int)
-                                                      return Int
+                                                    NS: Namespace_Handle;
+                                                    New_Depth: int)
+                                                    return Int
      with Import, Convention=>C;
 
    procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize; NS: Namespace_Type_Without_Finalize'Class; New_Depth: Natural) is

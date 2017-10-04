@@ -19,7 +19,7 @@ package body RDF.Rasqal.Bnode is
                                    Data: chars_ptr;
                                    User_ID: chars_ptr)
                                    return Chars_Ptr
-      with Convention=>C;
+     with Convention=>C;
 
    function C_BNode_ID_Handle_Impl(World: Rasqal_World_Handle;
                                    Data: chars_ptr;
@@ -32,8 +32,8 @@ package body RDF.Rasqal.Bnode is
       end if;
       declare
          Result: constant Chars_Ptr := New_String(Do_Handle(Rasqal_World_Type_Without_Finalize'(From_Non_Null_Handle(World)),
-                                                            Ptr_To_Obj(Data).all,
-                                                            User_ID2));
+                                                  Ptr_To_Obj(Data).all,
+                                                  User_ID2));
       begin
          RDF.Rasqal.Memory.rasqal_free_memory(User_ID);
          return Result;

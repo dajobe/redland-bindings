@@ -27,7 +27,7 @@ package RDF.Raptor.Term is
                       URI,
                       Literal,
                       Blank)
-      with Convention => C;
+     with Convention => C;
    for Term_Kind use (Unknown => 0,
                       URI     => 1,
                       Literal => 2,
@@ -39,13 +39,13 @@ package RDF.Raptor.Term is
    not overriding function Get_Kind (Term: Term_Type_Without_Finalize) return Term_Kind;
 
    not overriding function Get_URI (Term: Term_Type_Without_Finalize) return URI_Type_Without_Finalize
-      with Pre => Get_Kind(Term) = URI;
+     with Pre => Get_Kind(Term) = URI;
 
    not overriding function Get_Literal (Term: Term_Type_Without_Finalize) return Term_Literal_Value
-      with Pre => Get_Kind(Term) = Literal;
+     with Pre => Get_Kind(Term) = Literal;
 
    not overriding function Get_Blank (Term: Term_Type_Without_Finalize) return Term_Blank_Value
-      with Pre => Get_Kind(Term) = Blank;
+     with Pre => Get_Kind(Term) = Blank;
 
    not overriding function Value (Literal: Term_Literal_Value) return String;
 
@@ -110,14 +110,14 @@ private
          Language: chars_ptr;
          Language_Len: unsigned;
       end record
-      with Convention => C;
+     with Convention => C;
 
    type Term_Blank_Value is
       record
          str: chars_ptr;
          Len: unsigned;
       end record
-      with Convention => C;
+     with Convention => C;
 
    type Term_Value (Kind: Term_Kind := Term_Kind'First) is
       record
@@ -128,7 +128,7 @@ private
             when Blank   => Blank: Term_Blank_Value;
          end case;
       end record
-      with Unchecked_Union, Convention => C;
+     with Unchecked_Union, Convention => C;
 
    type Term_Record is
       record
@@ -137,6 +137,6 @@ private
          Kind: Term_Kind;
          Value: Term_Value;
       end record
-      with Convention => C;
+     with Convention => C;
 
 end RDF.Raptor.Term;

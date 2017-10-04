@@ -3,13 +3,13 @@ with Interfaces.C;
 package RDF.Raptor.Constants is
 
    version_major: constant Interfaces.C.unsigned
-      with Import, Convention=>C, External_Name=>"raptor_version_major";
+     with Import, Convention=>C, External_Name=>"raptor_version_major";
    version_minor: constant Interfaces.C.unsigned
-      with Import, Convention=>C, External_Name=>"raptor_version_minor";
+     with Import, Convention=>C, External_Name=>"raptor_version_minor";
    version_release: constant Interfaces.C.unsigned
-      with Import, Convention=>C, External_Name=>"raptor_version_release";
+     with Import, Convention=>C, External_Name=>"raptor_version_release";
    version_decimal: constant Interfaces.C.unsigned
-      with Import, Convention=>C, External_Name=>"raptor_version_decimal";
+     with Import, Convention=>C, External_Name=>"raptor_version_decimal";
 
    function copyright_string return String;
    function home_url_string return String;

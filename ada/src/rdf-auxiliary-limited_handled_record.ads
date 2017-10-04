@@ -6,8 +6,8 @@ generic
 package RDF.Auxiliary.Limited_Handled_Record is
 
    -- Does not compile because https://gcc.gnu.org/bugzilla/show_bug.cgi?id=62235
---    subtype Access_Type is access Record_Type
---       with Convention=>C;
+   --    subtype Access_Type is access Record_Type
+   --       with Convention=>C;
 
    subtype Access_Type is Record_Type_Access;
 

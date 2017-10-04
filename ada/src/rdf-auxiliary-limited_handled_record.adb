@@ -8,7 +8,7 @@ package body RDF.Auxiliary.Limited_Handled_Record is
    function Get_Handle(Object: Base_Object) return Access_Type is (Object.Handle);
 
    function From_Handle(Handle: Access_Type) return Base_Object is
-      (Ada.Finalization.Limited_Controlled with Handle=>Handle);
+     (Ada.Finalization.Limited_Controlled with Handle=>Handle);
 
    function From_Non_Null_Handle(Handle: Access_Type) return Base_Object is
    begin

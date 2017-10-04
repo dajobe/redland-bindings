@@ -121,8 +121,8 @@ package body RDF.Raptor.Log is
      with Import, Convention=>C;
 
    function raptor_uri_copy (Handle: URI_Handle)
-                               return URI_Handle
-   with Import, Convention=>C;
+                             return URI_Handle
+     with Import, Convention=>C;
 
    procedure Finalize_Locator (Handle: Locator_Handle) is
       function Conv is new Ada.Unchecked_Conversion(Locator_Handle, Chars_Ptr);

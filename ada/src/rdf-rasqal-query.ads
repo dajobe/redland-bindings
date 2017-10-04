@@ -60,8 +60,8 @@ package RDF.Rasqal.Query is
                                             return Query_Results_Type_Enum;
 
    -- Deliberately not implemented
---     function Get_Update_Operation;
---     function Get_Update_Operations_Sequence;
+   --     function Get_Update_Operation;
+   --     function Get_Update_Operations_Sequence;
 
    type Query_Type is new Query_Type_Without_Finalize with null record;
 

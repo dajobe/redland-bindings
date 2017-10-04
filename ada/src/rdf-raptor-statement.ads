@@ -48,7 +48,7 @@ package RDF.Raptor.Statement is
    overriding procedure Finalize_Handle (Object: Statement_Type; Handle: Statement_Handle);
 
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
---     function No_Auto_Finalization (Term: Term_Type_Without_Finalize'Class) return Boolean;
+   --     function No_Auto_Finalization (Term: Term_Type_Without_Finalize'Class) return Boolean;
 
    not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class) return Statement_Type;
 
@@ -63,10 +63,10 @@ package RDF.Raptor.Statement is
                                                          Subject, Predicate, Object: Term_Type_Without_Finalize'Class;
                                                          Graph: Term_Type_Without_Finalize'Class := Term_Type_Without_Finalize'(From_Handle(null)))
                                                          return Statement_Type;
---     not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class;
---                                            Subject, Predicate, Object, Graph: Term_Type_Without_Finalize'Class)
---                                            return Statement_Type
---        with Pre => No_Auto_Finalization(Subject) and No_Auto_Finalization(Predicate) and No_Auto_Finalization(Object) and No_Auto_Finalization(Graph);
+   --     not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class;
+   --                                            Subject, Predicate, Object, Graph: Term_Type_Without_Finalize'Class)
+   --                                            return Statement_Type
+   --        with Pre => No_Auto_Finalization(Subject) and No_Auto_Finalization(Predicate) and No_Auto_Finalization(Object) and No_Auto_Finalization(Graph);
 
 private
 
@@ -76,6 +76,6 @@ private
          usage: Interfaces.C.int;
          Subject, Predicate, Object, Graph: Term_Handle;
       end record
-         with Convention=>C;
+     with Convention=>C;
 
 end RDF.Raptor.Statement;

@@ -1,15 +1,15 @@
 package body RDF.Rasqal.Syntaxes is
 
    type Rasqal_Syntax_Description_Access is access all Raptor_Syntax_Description_Type
-      with Convention=>C;
+     with Convention=>C;
 
    function rasqal_world_get_query_language_description (World: Rasqal_World_Handle; Counter: unsigned)
                                                          return Rasqal_Syntax_Description_Access
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function rasqal_world_get_query_results_format_description (World: Rasqal_World_Handle; Counter: unsigned)
                                                                return Rasqal_Syntax_Description_Access
-      with Import, Convention=>C;
+     with Import, Convention=>C;
 
    function Get_Query_Language_Description (World: Rasqal_World_Type_Without_Finalize'Class; Counter: Unsigned) return Raptor_Syntax_Description_Type is
    begin

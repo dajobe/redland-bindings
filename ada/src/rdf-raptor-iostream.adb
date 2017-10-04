@@ -47,21 +47,21 @@ package body RDF.Raptor.IOStream is
       return From_Non_Null_Handle( raptor_new_iostream_to_filename (Get_Handle (World), To_C (Filename)) );
    end;
 
---     function raptor_new_iostream_to_string (World: Raptor_World_Handle; str: char_array; length: size_t) return Handle_Type
---       with Import, Convention=>C;
---
---     function To_String (World: Raptor_World_Type_Without_Finalize'Class; Str: String)
---                           return Stream_Type_Without_Finalize is
---        Handle: constant Handle_Type := raptor_new_iostream_to_string (Get_Handle (World), To_C (Str), Str'Length);
---     begin
---        return From_Handle (Handle);
---     end;
+   --     function raptor_new_iostream_to_string (World: Raptor_World_Handle; str: char_array; length: size_t) return Handle_Type
+   --       with Import, Convention=>C;
+   --
+   --     function To_String (World: Raptor_World_Type_Without_Finalize'Class; Str: String)
+   --                           return Stream_Type_Without_Finalize is
+   --        Handle: constant Handle_Type := raptor_new_iostream_to_string (Get_Handle (World), To_C (Str), Str'Length);
+   --     begin
+   --        return From_Handle (Handle);
+   --     end;
 
    function raptor_new_iostream_to_file_handle (World: Raptor_World_Handle; File: RDF.Auxiliary.C_File_Access) return IOStream_Handle
      with Import, Convention=>C;
 
    function To_File_Handle (World: Raptor_World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
-                              return Stream_Type_Without_Finalize is
+                            return Stream_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( raptor_new_iostream_to_file_handle (Get_Handle (World), File) );
    end;
@@ -205,19 +205,19 @@ package body RDF.Raptor.IOStream is
    end;
 
    type raptor_iostream_init_func is access function (context: chars_ptr) return int
-      with Convention=>C;
+     with Convention=>C;
    type raptor_iostream_finish_func is access procedure (context: chars_ptr)
-      with Convention=>C;
+     with Convention=>C;
    type raptor_iostream_write_byte_func is access function (context: chars_ptr; byte: int) return int
-      with Convention=>C;
+     with Convention=>C;
    type raptor_iostream_write_bytes_func is access function (context: chars_ptr; ptr: chars_ptr; size, nmemb: size_t) return int
-      with Convention=>C;
+     with Convention=>C;
    type raptor_iostream_write_end_func is access function (context: chars_ptr) return int
-      with Convention=>C;
+     with Convention=>C;
    type raptor_iostream_read_bytes_func is access function (context: chars_ptr; ptr: chars_ptr; size, nmemb: size_t) return int
-      with Convention=>C;
+     with Convention=>C;
    type raptor_iostream_read_eof_func is access function (context: chars_ptr) return int
-      with Convention=>C;
+     with Convention=>C;
 
    type Dispatcher_Type is
       record
@@ -232,26 +232,26 @@ package body RDF.Raptor.IOStream is
          read_bytes : raptor_iostream_read_bytes_func;
          read_eof   : raptor_iostream_read_eof_func;
       end record
-         with Convention=>C;
+     with Convention=>C;
 
    type User_Defined_Access is access all User_Defined_Stream_Type'Class;
    function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
    function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
 
---     function raptor_iostream_init_impl (context: chars_ptr) return int
---        with Convention=>C;
---     procedure raptor_iostream_finish_impl (context: chars_ptr)
---        with Convention=>C;
+   --     function raptor_iostream_init_impl (context: chars_ptr) return int
+   --        with Convention=>C;
+   --     procedure raptor_iostream_finish_impl (context: chars_ptr)
+   --        with Convention=>C;
    function raptor_iostream_write_byte_impl (context: chars_ptr; byte: int) return int
-      with Convention=>C;
+     with Convention=>C;
    function raptor_iostream_write_bytes_impl (context: chars_ptr; ptr: chars_ptr; size, nmemb: size_t) return int
-      with Convention=>C;
+     with Convention=>C;
    function raptor_iostream_write_end_impl (context: chars_ptr) return int
-      with Convention=>C;
+     with Convention=>C;
    function raptor_iostream_read_bytes_impl (context: chars_ptr; ptr: chars_ptr; size, nmemb: size_t) return int
-      with Convention=>C;
+     with Convention=>C;
    function raptor_iostream_read_eof_impl (context: chars_ptr) return int
-      with Convention=>C;
+     with Convention=>C;
 
    function raptor_iostream_write_byte_impl (context: chars_ptr; byte: int) return int is
    begin
@@ -305,9 +305,9 @@ package body RDF.Raptor.IOStream is
       read_eof   => raptor_iostream_read_eof_impl'Access);
 
    function raptor_new_iostream_from_handler(world: Raptor_World_Handle;
-                                               user_data: chars_ptr;
-                                               Dispatcher: access constant Dispatcher_Type)
-                                               return IOStream_Handle
+                                             user_data: chars_ptr;
+                                             Dispatcher: access constant Dispatcher_Type)
+                                             return IOStream_Handle
      with Import, Convention=>C;
 
    function Open (World: Raptor_World_Type_Without_Finalize'Class) return User_Defined_Stream_Type is
@@ -315,8 +315,8 @@ package body RDF.Raptor.IOStream is
    begin
       return Stream: User_Defined_Stream_Type do
          Handle := raptor_new_iostream_from_handler (Get_Handle (World),
-                                                       Obj_To_Ptr (User_Defined_Stream_Type'Class(Stream)'Unchecked_Access),
-                                                       Dispatch'Access);
+                                                     Obj_To_Ptr (User_Defined_Stream_Type'Class(Stream)'Unchecked_Access),
+                                                     Dispatch'Access);
          Set_Handle_Hack (Stream, Handle);
       end return;
    end;

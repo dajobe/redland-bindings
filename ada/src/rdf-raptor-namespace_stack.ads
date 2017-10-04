@@ -43,7 +43,7 @@ package RDF.Raptor.Namespace_Stack is
    overriding procedure Finalize_Handle(Object: Namespace_Stack_Type; Handle: Namespace_Stack_Handle);
 
    type Defaults_Type is (None_Type, XML_Type, RDF_Type, Undefined_Type)
-      with Convention => C;
+     with Convention => C;
    for Defaults_Type use (None_Type=>0, XML_Type=>1, RDF_Type=>2, Undefined_Type=>3);
 
    not overriding function Create_Stack (World: Raptor_World_Type_Without_Finalize'Class; Defaults: Defaults_Type)

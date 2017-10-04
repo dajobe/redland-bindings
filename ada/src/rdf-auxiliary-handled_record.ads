@@ -6,8 +6,8 @@ generic
 package RDF.Auxiliary.Handled_Record is
 
    -- Does not compile because https://gcc.gnu.org/bugzilla/show_bug.cgi?id=62235
---    subtype Access_Type is access Record_Type
---       with Convention=>C;
+   --    subtype Access_Type is access Record_Type
+   --       with Convention=>C;
 
    subtype Access_Type is Record_Type_Access;
 
@@ -28,7 +28,7 @@ package RDF.Auxiliary.Handled_Record is
 
    overriding procedure Finalize(Object: in out Base_Object);
 
---     overriding procedure Adjust(Object: in out Base_Object);
+   --     overriding procedure Adjust(Object: in out Base_Object);
 
    -- Don't call this procedure unless you really need it.
    not overriding procedure Set_Handle_Hack(Object: in out Base_Object; Handle: Access_Type);

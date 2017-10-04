@@ -58,7 +58,7 @@ package RDF.Rasqal.Query_Results is
                                        return Statement_Type_Without_Finalize;
 
    -- Deliberately not implemented:
---     function Get_Row_By_Offset (Results: Query_Results_Type_Without_Finalize; Offset: Natural) return XXX;
+   --     function Get_Row_By_Offset (Results: Query_Results_Type_Without_Finalize; Offset: Natural) return XXX;
 
    not overriding function Get_Type (Results: Query_Results_Type_Without_Finalize) return Query_Results_Type_Enum;
 
@@ -99,11 +99,11 @@ package RDF.Rasqal.Query_Results is
                                               return Query_Results_Type;
 
    -- TODO: Not supported as of Rasqal 0.9.32
---     not overriding function From_String (World: Rasqal_World_Type_Without_Finalize;
---                                          Kind: Query_Results_Type_Enum;
---                                          Base_URI: URI_Type_Without_Finalize;
---                                          Value: String)
---                                          return Query_Results_Type;
+   --     not overriding function From_String (World: Rasqal_World_Type_Without_Finalize;
+   --                                          Kind: Query_Results_Type_Enum;
+   --                                          Base_URI: URI_Type_Without_Finalize;
+   --                                          Value: String)
+   --                                          return Query_Results_Type;
 
    -- The same cursor is used for bindings iterator and for triples iterator.
    -- However, don't rely on using the same type.
