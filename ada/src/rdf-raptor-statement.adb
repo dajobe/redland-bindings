@@ -10,18 +10,21 @@ package body RDF.Raptor.Statement is
       end return;
    end;
 
-   function Get_Subject   (Statement: Statement_Type_Without_Finalize) return Term_Type_Without_Finalize is (From_Handle(Get_Handle(Statement).Subject));
-   function Get_Predicate (Statement: Statement_Type_Without_Finalize) return Term_Type_Without_Finalize is (From_Handle(Get_Handle(Statement).Predicate));
-   function Get_Object    (Statement: Statement_Type_Without_Finalize) return Term_Type_Without_Finalize is (From_Handle(Get_Handle(Statement).Object));
-   function Get_Graph     (Statement: Statement_Type_Without_Finalize) return Term_Type_Without_Finalize is (From_Handle(Get_Handle(Statement).Graph)); -- may return null handle
+   function Get_Subject   (Statement: Statement_Type_Without_Finalize) return Term_Type_Without_Finalize is
+     (From_Handle(Get_Handle(Statement).Subject));
+   function Get_Predicate (Statement: Statement_Type_Without_Finalize) return Term_Type_Without_Finalize is
+     (From_Handle(Get_Handle(Statement).Predicate));
+   function Get_Object    (Statement: Statement_Type_Without_Finalize) return Term_Type_Without_Finalize is
+     (From_Handle(Get_Handle(Statement).Object));
+   function Get_Graph     (Statement: Statement_Type_Without_Finalize) return Term_Type_Without_Finalize is
+     (From_Handle(Get_Handle(Statement).Graph)); -- may return null handle
 
    --     function No_Auto_Finalization (Term: Term_Type_Without_Finalize'Class) return Boolean is
    --     begin
    --        return Is_Null(Term) or not (Term in Term_Type'Class);
    --     end;
 
-   function raptor_new_statement (World: Raptor_World_Handle)
-                                  return Statement_Handle
+   function raptor_new_statement (World: Raptor_World_Handle) return Statement_Handle
      with Import, Convention=>C;
 
    function New_Statement (World: Raptor_World_Type_Without_Finalize'Class) return Statement_Type is
@@ -29,7 +32,8 @@ package body RDF.Raptor.Statement is
       return From_Non_Null_Handle( raptor_new_statement(Get_Handle(World)) );
    end;
 
-   function raptor_new_statement_from_nodes (World: Raptor_World_Handle; Subject, Predicate, Object, Graph: Term_Handle)
+   function raptor_new_statement_from_nodes (World: Raptor_World_Handle;
+                                             Subject, Predicate, Object, Graph: Term_Handle)
                                              return Statement_Handle
      with Import, Convention=>C;
 
@@ -72,7 +76,8 @@ package body RDF.Raptor.Statement is
       end if;
    end;
 
-   function Copy (Object: Statement_Type_Without_Finalize'Class) return Statement_Type_Without_Finalize is
+   function Copy (Object: Statement_Type_Without_Finalize'Class)
+                  return Statement_Type_Without_Finalize is
    begin
       return From_Handle (raptor_statement_copy (Get_Handle(Object)) );
    end;
@@ -93,7 +98,8 @@ package body RDF.Raptor.Statement is
       return raptor_statement_equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
    end;
 
-   function raptor_statement_print (Statement: Statement_Handle; File: RDF.Auxiliary.C_File_Access) return int
+   function raptor_statement_print (Statement: Statement_Handle; File: RDF.Auxiliary.C_File_Access)
+                                    return int
      with Import, Convention=>C;
 
    procedure Print (Statement: Statement_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
@@ -103,7 +109,8 @@ package body RDF.Raptor.Statement is
       end if;
    end;
 
-   function raptor_statement_print_as_ntriples (Statement: Statement_Handle; File: RDF.Auxiliary.C_File_Access) return int
+   function raptor_statement_print_as_ntriples (Statement: Statement_Handle; File: RDF.Auxiliary.C_File_Access)
+                                                return int
      with Import, Convention=>C;
 
    procedure Print_As_Ntriples (Statement: Statement_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
@@ -113,7 +120,9 @@ package body RDF.Raptor.Statement is
       end if;
    end;
 
-   function raptor_statement_ntriples_write (Statement: Statement_Handle; Stream: IOStream_Handle; Write_Graph_Term: int)
+   function raptor_statement_ntriples_write (Statement: Statement_Handle;
+                                             Stream: IOStream_Handle;
+                                             Write_Graph_Term: int)
                                              return Int
      with Import, Convention=>C;
 

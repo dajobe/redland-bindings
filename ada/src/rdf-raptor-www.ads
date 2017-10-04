@@ -55,9 +55,11 @@ package RDF.Raptor.WWW is
 
    not overriding function Get_Connection (WWW: WWW_Type_Without_Finalize) return Connection_Type;
 
-   not overriding procedure Set_SSL_Cert_Options (WWW: in out WWW_Type_Without_Finalize; Cert_Filename, Cert_Type, Cert_Passphrase: String);
+   not overriding procedure Set_SSL_Cert_Options (WWW: in out WWW_Type_Without_Finalize;
+                                                  Cert_Filename, Cert_Type, Cert_Passphrase: String);
 
-   not overriding procedure Set_SSL_Verify_Options (WWW: in out WWW_Type_Without_Finalize; Verify_Peer, Verify_Host: Boolean);
+   not overriding procedure Set_SSL_Verify_Options (WWW: in out WWW_Type_Without_Finalize;
+                                                    Verify_Peer, Verify_Host: Boolean);
 
    not overriding procedure Abort_Operation (WWW: WWW_Type_Without_Finalize; Reason: String);
 
@@ -65,7 +67,8 @@ package RDF.Raptor.WWW is
 
    not overriding function New_WWW (World: Raptor_World_Type'Class) return WWW_Type;
 
-   not overriding function New_WWW (World: Raptor_World_Type'Class; Connection: Connection_Type) return WWW_Type;
+   not overriding function New_WWW (World: Raptor_World_Type'Class; Connection: Connection_Type)
+                                    return WWW_Type;
 
    overriding procedure Finalize_Handle (Object: WWW_Type; Handle: WWW_Handle);
 

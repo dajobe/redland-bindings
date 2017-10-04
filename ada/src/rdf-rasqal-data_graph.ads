@@ -18,11 +18,13 @@ package RDF.Rasqal.Data_Graph is
 
    subtype Data_Graph_Handle is Data_Graph_Handled_Record.Access_Type;
 
-   function Get_World (Graph: Data_Graph_Type_Without_Finalize) return Rasqal_World_Type_Without_Finalize;
+   function Get_World (Graph: Data_Graph_Type_Without_Finalize)
+                       return Rasqal_World_Type_Without_Finalize;
 
    function Get_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type_Without_Finalize;
 
-   function Get_Name_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type_Without_Finalize;
+   function Get_Name_URI (Graph: Data_Graph_Type_Without_Finalize)
+                          return URI_Type_Without_Finalize;
 
    type Flags_Type is (None, -- unused
                        Named,
@@ -43,9 +45,11 @@ package RDF.Rasqal.Data_Graph is
 
    function Get_Usage_Count (Graph: Data_Graph_Type_Without_Finalize) return Natural;
 
-   not overriding function Copy (Object: Data_Graph_Type_Without_Finalize'Class) return Data_Graph_Type_Without_Finalize;
+   not overriding function Copy (Object: Data_Graph_Type_Without_Finalize'Class)
+                                 return Data_Graph_Type_Without_Finalize;
 
-   not overriding procedure Print (Graph: Data_Graph_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
+   not overriding procedure Print (Graph: Data_Graph_Type_Without_Finalize;
+                                   File: RDF.Auxiliary.C_File_Access);
 
    type Data_Graph_Type is new Data_Graph_Type_Without_Finalize with null record;
 

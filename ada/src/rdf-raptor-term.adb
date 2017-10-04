@@ -70,11 +70,17 @@ package body RDF.Raptor.Term is
 
    function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: String) return Term_Type is
       Str: aliased char_array := To_C(ID);
+      Handle: constant Term_Handle :=
+        raptor_new_term_from_counted_blank(Get_Handle(World),
+                                           To_Chars_Ptr(Str'Unchecked_Access),
+                                           ID'Length);
    begin
-      return From_Non_Null_Handle(raptor_new_term_from_counted_blank(Get_Handle(World), To_Chars_Ptr(Str'Unchecked_Access), ID'Length));
+      return From_Non_Null_Handle(Handle);
    end;
 
-   function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: RDF.Auxiliary.String_Holders.Holder) return Term_Type is
+   function From_Blank (World: Raptor_World_Type_Without_Finalize'Class;
+                        ID: RDF.Auxiliary.String_Holders.Holder)
+                        return Term_Type is
       use RDF.Auxiliary.C_String_Holders;
       ID_N: constant C_String_Holder := To_C_String_Holder(ID);
    begin
@@ -114,26 +120,34 @@ package body RDF.Raptor.Term is
                                                      return Term_Handle
      with Import, Convention=>C;
 
-   function From_URI_String (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_String) return Term_Type is
+   function From_URI_String (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_String)
+                             return Term_Type is
+      Handle: constant Term_Handle :=
+        raptor_new_term_from_counted_uri_string(Get_Handle(World), My_To_C_Without_Nul(String(URI)), URI'Length);
    begin
-      return From_Non_Null_Handle( raptor_new_term_from_counted_uri_string(Get_Handle(World), My_To_C_Without_Nul(String(URI)), URI'Length) );
+      return From_Non_Null_Handle(Handle);
    end;
 
    function raptor_new_term_from_uri (World: Raptor_World_Handle; URI: URI_Handle) return Term_Handle
      with Import, Convention=>C;
 
-   function From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class)
+   function From_URI (World: Raptor_World_Type_Without_Finalize'Class;
+                      URI: URI_Type_Without_Finalize'Class)
                       return Term_Type is
    begin
       return From_Non_Null_Handle( raptor_new_term_from_uri(Get_Handle(World), Get_Handle(URI)) );
    end;
 
-   function raptor_new_term_from_counted_string (World: Raptor_World_Handle; Str: char_array; Len: size_t) return Term_Handle
+   function raptor_new_term_from_counted_string (World: Raptor_World_Handle; Str: char_array; Len: size_t)
+                                                 return Term_Handle
      with Import, Convention=>C;
 
-   function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String) return Term_Type is
+   function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String)
+                         return Term_Type is
+      Handle: constant Term_Handle :=
+        raptor_new_term_from_counted_string(Get_Handle(World), My_To_C_Without_Nul(Value), Value'Length);
    begin
-      return From_Non_Null_Handle( raptor_new_term_from_counted_string(Get_Handle(World), My_To_C_Without_Nul(Value), Value'Length) );
+      return From_Non_Null_Handle(Handle);
    end;
 
    function raptor_term_copy (Term: Term_Handle) return Term_Handle
@@ -202,7 +216,9 @@ package body RDF.Raptor.Term is
                              Stack: Namespace_Stack_Type'Class;
                              Base_URI: URI_Type'Class)
                              return String is
-      Str: constant chars_ptr := raptor_term_to_turtle_string(Get_Handle(Term), Get_Handle(Stack), Get_Handle(Base_URI));
+      Str: constant chars_ptr := raptor_term_to_turtle_string(Get_Handle(Term),
+                                                              Get_Handle(Stack),
+                                                              Get_Handle(Base_URI));
    begin
       if Str = Null_Ptr then
          raise RDF.Auxiliary.RDF_Exception;

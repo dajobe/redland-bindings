@@ -101,7 +101,8 @@ package body RDF.Raptor.WWW is
                                         Malloc_Handler: chars_ptr) return int
      with Import, Convention=>C;
 
-   function Fetch_To_String(WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class) return String is
+   function Fetch_To_String(WWW: WWW_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class)
+                            return String is
       String_P: aliased chars_ptr;
       Length_P: aliased size_t;
    begin
@@ -124,10 +125,13 @@ package body RDF.Raptor.WWW is
       return raptor_www_get_connection(Get_Handle(WWW));
    end;
 
-   function raptor_www_set_ssl_cert_options (WWW: WWW_Handle; Cert_Filename, Cert_Type, Cert_Passphrase: char_array) return int
+   function raptor_www_set_ssl_cert_options (WWW: WWW_Handle;
+                                             Cert_Filename, Cert_Type, Cert_Passphrase: char_array)
+                                             return int
      with Import, Convention=>C;
 
-   procedure Set_SSL_Cert_Options (WWW: in out WWW_Type_Without_Finalize; Cert_Filename, Cert_Type, Cert_Passphrase: String) is
+   procedure Set_SSL_Cert_Options (WWW: in out WWW_Type_Without_Finalize;
+                                   Cert_Filename, Cert_Type, Cert_Passphrase: String) is
    begin
       if raptor_www_set_ssl_cert_options(Get_Handle(WWW), To_C(Cert_Filename), To_C(Cert_Type), To_C(Cert_Passphrase)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -137,7 +141,8 @@ package body RDF.Raptor.WWW is
    function raptor_www_set_ssl_verify_options (WWW: WWW_Handle; Verify_Peer, Verify_Host: int) return int
      with Import, Convention=>C;
 
-   procedure Set_SSL_Verify_Options (WWW: in out WWW_Type_Without_Finalize; Verify_Peer, Verify_Host: Boolean) is
+   procedure Set_SSL_Verify_Options (WWW: in out WWW_Type_Without_Finalize;
+                                     Verify_Peer, Verify_Host: Boolean) is
    begin
       if raptor_www_set_ssl_verify_options(Get_Handle(WWW),
                                            (if Verify_Peer then 1 else 0),
@@ -163,7 +168,9 @@ package body RDF.Raptor.WWW is
       return From_Non_Null_Handle(raptor_new_www(Get_Handle(World)));
    end;
 
-   function raptor_new_www_with_connection (World: Raptor_World_Handle; Connection: Connection_Type) return WWW_Handle
+   function raptor_new_www_with_connection (World: Raptor_World_Handle;
+                                            Connection: Connection_Type)
+                                            return WWW_Handle
      with Import, Convention=>C;
 
    function New_WWW (World: Raptor_World_Type'Class; Connection: Connection_Type) return WWW_Type is
@@ -189,16 +196,23 @@ package body RDF.Raptor.WWW is
                                                             Size, Nmemb: size_t)
      with Convention=>C;
 
-   type raptor_www_content_type_handler is access procedure (WWW: WWW_Handle; User_data: chars_ptr; Content_Type: chars_ptr)
+   type raptor_www_content_type_handler is access procedure (WWW: WWW_Handle;
+                                                             User_data: chars_ptr;
+                                                             Content_Type: chars_ptr)
      with Convention=>C;
 
    type raptor_www_uri_filter_func is access function (User_data: chars_ptr; URI: URI_Handle) return int
      with Convention=>C;
 
-   type raptor_www_final_uri_handler is access procedure (WWW: WWW_Handle; User_data: chars_ptr; URI: URI_Handle)
+   type raptor_www_final_uri_handler is access procedure (WWW: WWW_Handle;
+                                                          User_data: chars_ptr;
+                                                          URI: URI_Handle)
      with Convention=>C;
 
-   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle; User_data: chars_ptr; Ptr: RDF.Auxiliary.C_Pointers.Pointer; Size, Nmemb: size_t)
+   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle;
+                                       User_data: chars_ptr;
+                                       Ptr: RDF.Auxiliary.C_Pointers.Pointer;
+                                       Size, Nmemb: size_t)
      with Convention=>C;
 
    procedure Content_Type_Handler_Impl (WWW: WWW_Handle; User_data: chars_ptr; Content_Type: chars_ptr)
@@ -210,7 +224,10 @@ package body RDF.Raptor.WWW is
    procedure Final_URI_Handler_Impl (WWW: WWW_Handle; User_data: chars_ptr; URI: URI_Handle)
      with Convention=>C;
 
-   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle; User_data: chars_ptr; Ptr: RDF.Auxiliary.C_Pointers.Pointer; Size, Nmemb: size_t) is
+   procedure Write_Bytes_Handler_Impl (WWW: WWW_Handle;
+                                       User_data: chars_ptr;
+                                       Ptr: RDF.Auxiliary.C_Pointers.Pointer;
+                                       Size, Nmemb: size_t) is
    begin
       Write_Bytes_Handler(--WWW_Type_Without_Finalize'(From_Handle(WWW)), -- ignored
                           Ptr_To_Obj(User_Data).all,
@@ -246,26 +263,38 @@ package body RDF.Raptor.WWW is
       Initialize_Final_URI_Handler(WWW);
    end;
 
-   procedure raptor_www_set_write_bytes_handler(WWW: WWW_Handle; Handler: raptor_www_write_bytes_handler; User_Data: chars_ptr)
+   procedure raptor_www_set_write_bytes_handler(WWW: WWW_Handle;
+                                                Handler: raptor_www_write_bytes_handler;
+                                                User_Data: chars_ptr)
      with Import, Convention=>C;
 
    procedure Initialize_Write_Bytes_Handler (WWW: in out WWW_Type_Without_Finalize) is
    begin
-      raptor_www_set_write_bytes_handler(Get_Handle(WWW), Write_Bytes_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
+      raptor_www_set_write_bytes_handler(Get_Handle(WWW),
+                                         Write_Bytes_Handler_Impl'Access,
+                                         Obj_To_Ptr(WWW'Unchecked_Access));
    end;
 
-   procedure raptor_www_set_content_type_handler (WWW: WWW_Handle; Handler: raptor_www_content_type_handler; User_Data: chars_ptr)
+   procedure raptor_www_set_content_type_handler (WWW: WWW_Handle;
+                                                  Handler: raptor_www_content_type_handler;
+                                                  User_Data: chars_ptr)
      with Import, Convention=>C;
 
-   procedure raptor_www_set_final_uri_handler (WWW: WWW_Handle; Handler: raptor_www_final_uri_handler; User_Data: chars_ptr)
+   procedure raptor_www_set_final_uri_handler (WWW: WWW_Handle;
+                                               Handler: raptor_www_final_uri_handler;
+                                               User_Data: chars_ptr)
      with Import, Convention=>C;
 
    procedure Initialize_Content_Type_Handler (WWW: in out WWW_Type_Without_Finalize) is
    begin
-      raptor_www_set_content_type_handler(Get_Handle(WWW), Content_Type_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
+      raptor_www_set_content_type_handler(Get_Handle(WWW),
+                                          Content_Type_Handler_Impl'Access,
+                                          Obj_To_Ptr(WWW'Unchecked_Access));
    end;
 
-   procedure raptor_www_set_uri_filter (WWW: WWW_Handle; Handler: raptor_www_uri_filter_func; User_Data: chars_ptr)
+   procedure raptor_www_set_uri_filter (WWW: WWW_Handle;
+                                        Handler: raptor_www_uri_filter_func;
+                                        User_Data: chars_ptr)
      with Import, Convention=>C;
 
    procedure Initialize_URI_Filter (WWW: in out WWW_Type_Without_Finalize) is

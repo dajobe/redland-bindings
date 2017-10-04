@@ -15,7 +15,8 @@ package RDF.Raptor.Namespace_Stack is
    not overriding procedure Clear (Stack: in out Namespace_Stack_Type_Without_Finalize);
 
    -- See also below
-   not overriding procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize; Namespace: RDF.Raptor.Namespace.Namespace_Type'Class);
+   not overriding procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize;
+                                             Namespace: RDF.Raptor.Namespace.Namespace_Type'Class);
 
    not overriding procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize;
                                              Prefix: String_Holders.Holder;
@@ -24,19 +25,26 @@ package RDF.Raptor.Namespace_Stack is
 
    not overriding procedure End_For_Depth (Stack: in out Namespace_Stack_Type_Without_Finalize; Depth: Natural);
 
-   not overriding function Get_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return RDF.Raptor.Namespace.Namespace_Type;
-
-   not overriding function Find_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Prefix: String) return RDF.Raptor.Namespace.Namespace_Type;
-
-   not overriding function Find_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return RDF.Raptor.Namespace.Namespace_Type;
-
-   not overriding function Find_Namespace_By_URI (Stack: Namespace_Stack_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class)
+   not overriding function Get_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize)
                                                   return RDF.Raptor.Namespace.Namespace_Type;
 
-   not overriding function In_Scope (Stack: Namespace_Stack_Type_Without_Finalize; NS: RDF.Raptor.Namespace.Namespace_Type'Class)
+   not overriding function Find_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Prefix: String)
+                                           return RDF.Raptor.Namespace.Namespace_Type;
+
+   not overriding function Find_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize)
+                                                   return RDF.Raptor.Namespace.Namespace_Type;
+
+   not overriding function Find_Namespace_By_URI (Stack: Namespace_Stack_Type_Without_Finalize;
+                                                  URI: URI_Type_Without_Finalize'Class)
+                                                  return RDF.Raptor.Namespace.Namespace_Type;
+
+   not overriding function In_Scope (Stack: Namespace_Stack_Type_Without_Finalize;
+                                     NS: RDF.Raptor.Namespace.Namespace_Type'Class)
                                      return Boolean;
 
-   not overriding procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize; NS: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize'Class; New_Depth: Natural);
+   not overriding procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize;
+                                             NS: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize'Class;
+                                             New_Depth: Natural);
 
    type Namespace_Stack_Type is new Namespace_Stack_Type_Without_Finalize with null record;
 
@@ -46,7 +54,8 @@ package RDF.Raptor.Namespace_Stack is
      with Convention => C;
    for Defaults_Type use (None_Type=>0, XML_Type=>1, RDF_Type=>2, Undefined_Type=>3);
 
-   not overriding function Create_Stack (World: Raptor_World_Type_Without_Finalize'Class; Defaults: Defaults_Type)
+   not overriding function Create_Stack (World: Raptor_World_Type_Without_Finalize'Class;
+                                         Defaults: Defaults_Type)
                                          return Namespace_Stack_Type;
 
    -- raptor_namespaces_init() not bound (it seems that function is internal for Raptor implementation).

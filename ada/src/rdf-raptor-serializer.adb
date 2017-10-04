@@ -18,7 +18,8 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_start_to_filename (Serializer: Serializer_Handle; Filename: char_array) return int
+   function raptor_serializer_start_to_filename (Serializer: Serializer_Handle; Filename: char_array)
+                                                 return int
      with Import, Convention=>C;
 
    procedure Start_To_Filename (Serializer: Serializer_Type_Without_Finalize; Filename: String) is
@@ -28,7 +29,9 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_start_to_file_handle (Serializer: Serializer_Handle; URI: URI_Handle;  FH: RDF.Auxiliary.C_File_Access)
+   function raptor_serializer_start_to_file_handle (Serializer: Serializer_Handle;
+                                                    URI: URI_Handle;
+                                                    FH: RDF.Auxiliary.C_File_Access)
                                                     return int
      with Import, Convention=>C;
 
@@ -41,7 +44,8 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_set_namespace (Serializer: Serializer_Handle; URI: URI_Handle; Prefix: chars_ptr) return int
+   function raptor_serializer_set_namespace (Serializer: Serializer_Handle; URI: URI_Handle; Prefix: chars_ptr)
+                                             return int
      with Import, Convention=>C;
 
    procedure Set_Namespace (Serializer: in out Serializer_Type_Without_Finalize;
@@ -62,7 +66,8 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_set_namespace_from_namespace (Serializer: Serializer_Handle; Namespace: Namespace_Handle)
+   function raptor_serializer_set_namespace_from_namespace (Serializer: Serializer_Handle;
+                                                            Namespace: Namespace_Handle)
                                                             return int
      with Import, Convention=>C;
 
@@ -74,7 +79,8 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_serialize_statement (Serializer: Serializer_Handle; Statement: Statement_Handle)
+   function raptor_serializer_serialize_statement (Serializer: Serializer_Handle;
+                                                   Statement: Statement_Handle)
                                                    return int
      with Import, Convention=>C;
 
@@ -106,10 +112,12 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   function raptor_serializer_get_description (Serializer: Serializer_Handle) return Raptor_Syntax_Description_Type
+   function raptor_serializer_get_description (Serializer: Serializer_Handle)
+                                               return Raptor_Syntax_Description_Type
      with Import, Convention=>C;
 
-   function Get_Description (Serializer: Serializer_Type_Without_Finalize) return Raptor_Syntax_Description_Type is
+   function Get_Description (Serializer: Serializer_Type_Without_Finalize)
+                             return Raptor_Syntax_Description_Type is
    begin
       return raptor_serializer_get_description(Get_Handle(Serializer));
    end;
@@ -117,7 +125,8 @@ package body RDF.Raptor.Serializer is
    function raptor_serializer_get_iostream (Serializer: Serializer_Handle) return IOStream_Handle
      with Import, Convention=>C;
 
-   function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return Stream_Type_Without_Finalize is
+   function Get_Iostream (Serializer: Serializer_Type_Without_Finalize)
+                          return Stream_Type_Without_Finalize is
    begin
       return From_Handle(raptor_serializer_get_iostream(Get_Handle(Serializer)));
    end;
@@ -130,10 +139,16 @@ package body RDF.Raptor.Serializer is
       return From_Handle(raptor_serializer_get_locator(Get_Handle(Serializer)));
    end;
 
-   function raptor_parser_set_option (Serializer: Serializer_Handle; Option: Raptor_Option; Value: chars_ptr; Int_Value: int) return int
+   function raptor_parser_set_option (Serializer: Serializer_Handle;
+                                      Option: Raptor_Option;
+                                      Value: chars_ptr;
+                                      Int_Value: int)
+                                      return int
      with Import, Convention=>C;
 
-   procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: String) is
+   procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize;
+                         Option: Raptor_Option;
+                         Value: String) is
       Value2: aliased char_array := To_C(Value);
    begin
       if raptor_parser_set_option(Get_Handle(Serializer), Option, To_Chars_Ptr(Value2'Unchecked_Access), 0) /= 0 then
@@ -141,7 +156,9 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
-   procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: int) is
+   procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize;
+                         Option: Raptor_Option;
+                         Value: int) is
    begin
       if raptor_parser_set_option(Get_Handle(Serializer), Option, Null_Ptr, Value) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -157,7 +174,8 @@ package body RDF.Raptor.Serializer is
                                       Integer_P: Int_P_Type) return int
      with Import, Convention=>C;
 
-   function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option) return Natural is
+   function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option)
+                                return Natural is
       V: aliased int;
    begin
       if raptor_parser_get_option(Get_Handle(Serializer), Option, null, V'Unchecked_Access) < 0 then
@@ -166,7 +184,8 @@ package body RDF.Raptor.Serializer is
       return Natural(V);
    end;
 
-   function Get_String_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option) return String is
+   function Get_String_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option)
+                               return String is
       V: aliased chars_ptr;
    begin
       if raptor_parser_get_option(Get_Handle(Serializer), Option, V'Unchecked_Access, null) < 0 then
@@ -178,12 +197,14 @@ package body RDF.Raptor.Serializer is
    function raptor_serializer_get_world (Serializer: Serializer_Handle) return Raptor_World_Handle
      with Import, Convention=>C;
 
-   function Get_World (Serializer: Serializer_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
+   function Get_World (Serializer: Serializer_Type_Without_Finalize)
+                       return Raptor_World_Type_Without_Finalize is
    begin
       return From_Handle(raptor_serializer_get_world(Get_Handle(Serializer)));
    end;
 
-   function raptor_new_serializer (World: Raptor_World_Handle; Syntax_Name: chars_ptr) return Serializer_Handle
+   function raptor_new_serializer (World: Raptor_World_Handle; Syntax_Name: chars_ptr)
+                                   return Serializer_Handle
      with Import, Convention=>C;
 
    function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Type is
@@ -191,7 +212,8 @@ package body RDF.Raptor.Serializer is
       return From_Non_Null_Handle(raptor_new_serializer(Get_Handle(World), Null_Ptr));
    end;
 
-   function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class; Syntax_Name: String) return Serializer_Type is
+   function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class; Syntax_Name: String)
+                            return Serializer_Type is
       V: aliased char_array := To_C(Syntax_Name);
    begin
       return From_Non_Null_Handle(raptor_new_serializer(Get_Handle(World), To_Chars_Ptr(V'Unchecked_Access)));

@@ -62,7 +62,10 @@ package body RDF.Raptor.Log is
       Log_Message(Ptr_To_Obj(Data).all, Msg);
    end;
 
-   function raptor_world_set_log_handler(World: Raptor_World_Handle; Data: chars_ptr; Handler: Log_Handler_Procedure_Type) return int
+   function raptor_world_set_log_handler(World: Raptor_World_Handle;
+                                         Data: chars_ptr;
+                                         Handler: Log_Handler_Procedure_Type)
+                                         return int
      with Import, Convention=>C;
 
    procedure Set_Log_Handler(World: in out Raptor_World_Type_Without_Finalize'Class; Handler: access Log_Handler) is
@@ -110,7 +113,8 @@ package body RDF.Raptor.Log is
       declare
          Buffer: aliased char_array := (1..size_t(Res1) => Interfaces.C.Nul);
       begin
-         if raptor_locator_format(To_Chars_Ptr(Buffer'Unchecked_Access, Nul_Check=>False), 0, Get_Handle(Locator)) < 0 then
+         if raptor_locator_format(To_Chars_Ptr(Buffer'Unchecked_Access, Nul_Check=>False), 0, Get_Handle(Locator)) < 0
+         then
             raise RDF.Auxiliary.RDF_Exception;
          end if;
          return To_Ada(Buffer);

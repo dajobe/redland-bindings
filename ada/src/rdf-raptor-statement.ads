@@ -31,7 +31,8 @@ package RDF.Raptor.Statement is
 
    not overriding procedure Print (Statement: Statement_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
 
-   not overriding procedure Print_As_Ntriples (Statement: Statement_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
+   not overriding procedure Print_As_Ntriples (Statement: Statement_Type_Without_Finalize;
+                                               File: RDF.Auxiliary.C_File_Access);
 
    -- raptor_statement_init(), raptor_statement_clear() are not boound, because they are probably internal
 
@@ -39,7 +40,8 @@ package RDF.Raptor.Statement is
                                             Stream: Base_Stream_Type'Class;
                                             Write_Graph_Term: Boolean);
 
-   not overriding function Copy (Object: Statement_Type_Without_Finalize'Class) return Statement_Type_Without_Finalize;
+   not overriding function Copy (Object: Statement_Type_Without_Finalize'Class)
+                                 return Statement_Type_Without_Finalize;
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
@@ -50,7 +52,8 @@ package RDF.Raptor.Statement is
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
    --     function No_Auto_Finalization (Term: Term_Type_Without_Finalize'Class) return Boolean;
 
-   not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class) return Statement_Type;
+   not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class)
+                                          return Statement_Type;
 
    -- Makes copies of the terms (unlike the C library)
    not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class;

@@ -22,7 +22,8 @@ package RDF.Rasqal.Query is
 
    type Data_Graphs_Array is array(Integer range <>) of Data_Graph_Type_Without_Finalize;
 
-   not overriding procedure Add_Data_Graphs (Query: in out Query_Type_Without_Finalize; Graphs: Data_Graphs_Array);
+   not overriding procedure Add_Data_Graphs (Query: in out Query_Type_Without_Finalize;
+                                             Graphs: Data_Graphs_Array);
 
    not overriding function Execute (Query: Query_Type_Without_Finalize) return Query_Results_Type;
 
@@ -46,8 +47,12 @@ package RDF.Rasqal.Query is
    not overriding function Escape_String (Query: Query_Type_Without_Finalize; Str: String)
                                           return String;
 
-   not overriding procedure Set_Feature (Query: in out Query_Type_Without_Finalize; Feature: Feature_Type; Value: Natural);
-   not overriding procedure Set_Feature (Query: in out Query_Type_Without_Finalize; Feature: Feature_Type; Value: String);
+   not overriding procedure Set_Feature (Query: in out Query_Type_Without_Finalize;
+                                         Feature: Feature_Type;
+                                         Value: Natural);
+   not overriding procedure Set_Feature (Query: in out Query_Type_Without_Finalize;
+                                         Feature: Feature_Type;
+                                         Value: String);
 
    not overriding function Get_Feature (Query: Query_Type_Without_Finalize; Feature: Feature_Type)
                                         return Natural;
@@ -67,6 +72,8 @@ package RDF.Rasqal.Query is
 
    overriding procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle);
 
-   not overriding function New_Query (World: Rasqal_World_Type'Class; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type;
+   not overriding function New_Query (World: Rasqal_World_Type'Class;
+                                      Name, URI: RDF.Auxiliary.String_Holders.Holder)
+                                      return Query_Type;
 
 end RDF.Rasqal.Query;

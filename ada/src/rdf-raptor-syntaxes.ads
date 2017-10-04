@@ -60,20 +60,29 @@ package RDF.Raptor.Syntaxes is
    type Serializer_Description_Iterator is new Serializer_Description_Iterators.Forward_Iterator with private;
 
    overriding function First (Object: Parser_Description_Iterator) return Parser_Description_Cursor;
-   overriding function Next (Object: Parser_Description_Iterator; Position: Parser_Description_Cursor) return Parser_Description_Cursor;
+   overriding function Next (Object: Parser_Description_Iterator; Position: Parser_Description_Cursor)
+                             return Parser_Description_Cursor;
 
    overriding function First (Object: Serializer_Description_Iterator) return Serializer_Description_Cursor;
-   overriding function Next (Object: Serializer_Description_Iterator; Position: Serializer_Description_Cursor) return Serializer_Description_Cursor;
+   overriding function Next (Object: Serializer_Description_Iterator; Position: Serializer_Description_Cursor)
+                             return Serializer_Description_Cursor;
 
-   not overriding function Create_Parser_Descriptions_Iterator     (World: Raptor_World_Type_Without_Finalize'Class) return Parser_Description_Iterator;
-   not overriding function Create_Serializer_Descriptions_Iterator (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Description_Iterator;
+   not overriding function Create_Parser_Descriptions_Iterator     (World: Raptor_World_Type_Without_Finalize'Class)
+                                                                    return Parser_Description_Iterator;
+   not overriding function Create_Serializer_Descriptions_Iterator (World: Raptor_World_Type_Without_Finalize'Class)
+                                                                    return Serializer_Description_Iterator;
 
    function Is_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean;
 
-   function Guess_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type; MIME_Type: String; Buffer: String; Identifier: String)
+   function Guess_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class;
+                               URI: URI_Type;
+                               MIME_Type: String;
+                               Buffer: String;
+                               Identifier: String)
                                return String;
 
-   function Is_Serializer_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean;
+   function Is_Serializer_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String)
+                                return Boolean;
 
 private
 

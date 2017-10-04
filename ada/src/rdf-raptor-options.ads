@@ -135,13 +135,18 @@ package RDF.Raptor.Options is
 
    overriding procedure Finalize_Handle (Object: Option_Description_Type; Handle: Option_Description_Handle);
 
-   not overriding function Get_Option_Description (World: Raptor_World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Natural)
+   not overriding function Get_Option_Description (World: Raptor_World_Type_Without_Finalize'Class;
+                                                   Domain: Domain_Type;
+                                                   Option: Natural)
                                                    return Option_Description_Type;
 
-   not overriding function Get_Option_Description (World: Raptor_World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Raptor_Option)
+   not overriding function Get_Option_Description (World: Raptor_World_Type_Without_Finalize'Class;
+                                                   Domain: Domain_Type;
+                                                   Option: Raptor_Option)
                                                    return Option_Description_Type;
 
-   function Option_From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type'Class) return Raptor_Option;
+   function Option_From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type'Class)
+                             return Raptor_Option;
 
 private
 

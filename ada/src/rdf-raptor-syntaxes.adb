@@ -26,7 +26,8 @@ package body RDF.Raptor.Syntaxes is
       return Value(Ptr.all);
    end;
 
-   function Get_Names_Count (Object: Raptor_Syntax_Description_Type) return Natural is (Natural(Object.Names_Count));
+   function Get_Names_Count (Object: Raptor_Syntax_Description_Type) return Natural is
+     (Natural(Object.Names_Count));
 
    function Get_Label (Object: Raptor_Syntax_Description_Type) return String is
    begin
@@ -39,7 +40,8 @@ package body RDF.Raptor.Syntaxes is
       return Ptr.all;
    end;
 
-   function Get_MIME_Types_Count (Object: Raptor_Syntax_Description_Type) return Natural is (Natural(Object.Mime_Types_Count));
+   function Get_MIME_Types_Count (Object: Raptor_Syntax_Description_Type) return Natural is
+     (Natural(Object.Mime_Types_Count));
 
    function Get_URI (Object: Raptor_Syntax_Description_Type; Index: Natural) return URI_String is
       Ptr: constant access chars_ptr := String_Ptrs.Pointer(Object.URI_Strings) + ptrdiff_t(Index);
@@ -47,7 +49,8 @@ package body RDF.Raptor.Syntaxes is
       return URI_String(String'(Value(Ptr.all)));
    end;
 
-   function Get_URIs_Count (Object: Raptor_Syntax_Description_Type) return Natural is (Natural(Object.URI_Strings_Count));
+   function Get_URIs_Count (Object: Raptor_Syntax_Description_Type) return Natural is
+     (Natural(Object.URI_Strings_Count));
 
    function Get_Flags (Object: Raptor_Syntax_Description_Type) return Syntax_Bitflags is
    begin
@@ -57,7 +60,8 @@ package body RDF.Raptor.Syntaxes is
    function raptor_world_is_parser_name(World: Raptor_World_Handle; Name: char_array) return int
      with Import, Convention=>C;
 
-   function Is_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean is
+   function Is_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String)
+                            return Boolean is
    begin
       return raptor_world_is_parser_name(Get_Handle(World), To_C(Name, Append_Nul=>True)) /= 0;
    end;
@@ -71,21 +75,27 @@ package body RDF.Raptor.Syntaxes is
      with Import, Convention=>C;
 
 
-   function Guess_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type; MIME_Type: String; Buffer: String; Identifier: String)
+   function Guess_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class;
+                               URI: URI_Type;
+                               MIME_Type: String;
+                               Buffer: String;
+                               Identifier: String)
                                return String is
+      Str: constant chars_ptr := raptor_world_guess_parser_name(Get_Handle(World),
+                                                                Get_Handle(URI),
+                                                                To_C(MIME_Type, Append_Nul=>True),
+                                                                My_To_C_Without_Nul(Buffer),
+                                                                size_t(Buffer'Length),
+                                                                To_C(Identifier, Append_Nul=>True));
    begin
-      return Value( raptor_world_guess_parser_name(Get_Handle(World),
-                    Get_Handle(URI),
-                    To_C(MIME_Type, Append_Nul=>True),
-                    My_To_C_Without_Nul(Buffer),
-                    size_t(Buffer'Length),
-                    To_C(Identifier, Append_Nul=>True)) );
+      return Value(Str);
    end;
 
    function raptor_world_is_serializer_name(World: Raptor_World_Handle; Name: char_array) return int
      with Import, Convention=>C;
 
-   function Is_Serializer_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean is
+   function Is_Serializer_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String)
+                                return Boolean is
    begin
       return raptor_world_is_serializer_name(Get_Handle(World), To_C(Name, Append_Nul=>True)) /= 0;
    end;
@@ -96,18 +106,22 @@ package body RDF.Raptor.Syntaxes is
    type Syntax_Description_Access is access all Raptor_Syntax_Description_Type
      with Convention=>C;
 
-   function raptor_world_get_parser_description (World: Raptor_World_Handle; Counter: unsigned) return Syntax_Description_Access
+   function raptor_world_get_parser_description (World: Raptor_World_Handle; Counter: unsigned)
+                                                 return Syntax_Description_Access
      with Import, Convention=>C;
 
-   function raptor_world_get_serializer_description (World: Raptor_World_Handle; Counter: unsigned) return Syntax_Description_Access
+   function raptor_world_get_serializer_description (World: Raptor_World_Handle; Counter: unsigned)
+                                                     return Syntax_Description_Access
      with Import, Convention=>C;
 
-   function Get_Description (Cursor: Parser_Description_Cursor    ) return Raptor_Syntax_Description_Type is
+   function Get_Description (Cursor: Parser_Description_Cursor)
+                             return Raptor_Syntax_Description_Type is
    begin
       return raptor_world_get_parser_description(Cursor.World, unsigned(Cursor.Position)).all;
    end;
 
-   function Get_Description (Cursor: Serializer_Description_Cursor) return Raptor_Syntax_Description_Type is
+   function Get_Description (Cursor: Serializer_Description_Cursor)
+                             return Raptor_Syntax_Description_Type is
    begin
       return raptor_world_get_serializer_description(Cursor.World, unsigned(Cursor.Position)).all;
    end;
@@ -127,7 +141,8 @@ package body RDF.Raptor.Syntaxes is
       return (Position=>0, World=>Object.World);
    end;
 
-   function Next (Object: Parser_Description_Iterator; Position: Parser_Description_Cursor) return Parser_Description_Cursor is
+   function Next (Object: Parser_Description_Iterator; Position: Parser_Description_Cursor)
+                  return Parser_Description_Cursor is
    begin
       return (Position=>Position.Position+1, World=>Position.World);
    end;
@@ -137,17 +152,20 @@ package body RDF.Raptor.Syntaxes is
       return (Position=>0, World=>Object.World);
    end;
 
-   function Next (Object: Serializer_Description_Iterator; Position: Serializer_Description_Cursor) return Serializer_Description_Cursor is
+   function Next (Object: Serializer_Description_Iterator; Position: Serializer_Description_Cursor)
+                  return Serializer_Description_Cursor is
    begin
       return (Position=>Position.Position+1, World=>Position.World);
    end;
 
-   function Create_Parser_Descriptions_Iterator(World: Raptor_World_Type_Without_Finalize'Class) return Parser_Description_Iterator is
+   function Create_Parser_Descriptions_Iterator(World: Raptor_World_Type_Without_Finalize'Class)
+                                                return Parser_Description_Iterator is
    begin
       return (World=>Get_Handle(World));
    end;
 
-   function Create_Serializer_Descriptions_Iterator (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Description_Iterator is
+   function Create_Serializer_Descriptions_Iterator (World: Raptor_World_Type_Without_Finalize'Class)
+                                                     return Serializer_Description_Iterator is
    begin
       return (World=>Get_Handle(World));
    end;

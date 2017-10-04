@@ -34,14 +34,17 @@ package RDF.Raptor.Term is
                       -- unused type 3
                       Blank   => 4);
 
-   not overriding function Get_World (Term: Term_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
+   not overriding function Get_World (Term: Term_Type_Without_Finalize)
+                                      return Raptor_World_Type_Without_Finalize;
 
    not overriding function Get_Kind (Term: Term_Type_Without_Finalize) return Term_Kind;
 
-   not overriding function Get_URI (Term: Term_Type_Without_Finalize) return URI_Type_Without_Finalize
+   not overriding function Get_URI (Term: Term_Type_Without_Finalize)
+                                    return URI_Type_Without_Finalize
      with Pre => Get_Kind(Term) = URI;
 
-   not overriding function Get_Literal (Term: Term_Type_Without_Finalize) return Term_Literal_Value
+   not overriding function Get_Literal (Term: Term_Type_Without_Finalize)
+                                        return Term_Literal_Value
      with Pre => Get_Kind(Term) = Literal;
 
    not overriding function Get_Blank (Term: Term_Type_Without_Finalize) return Term_Blank_Value
@@ -59,7 +62,8 @@ package RDF.Raptor.Term is
 
    not overriding function To_String (Term: Term_Type_Without_Finalize) return String;
 
-   not overriding function Compare (Left, Right: Term_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result;
+   not overriding function Compare (Left, Right: Term_Type_Without_Finalize)
+                                    return RDF.Auxiliary.Comparison_Result;
 
    not overriding function Equals (Left, Right: Term_Type_Without_Finalize) return Boolean;
 
@@ -79,9 +83,12 @@ package RDF.Raptor.Term is
 
    type Term_Type is new Term_Type_Without_Finalize with null record;
 
-   not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class) return Term_Type;
-   not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: String) return Term_Type;
-   not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: RDF.Auxiliary.String_Holders.Holder) return Term_Type;
+   not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class)
+                                       return Term_Type;
+   not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: String)
+                                       return Term_Type;
+   not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: RDF.Auxiliary.String_Holders.Holder)
+                                       return Term_Type;
 
    not overriding function From_Literal (World   : Raptor_World_Type_Without_Finalize'Class;
                                          Literal : RDF.Auxiliary.String_Holders.Holder;
@@ -89,12 +96,15 @@ package RDF.Raptor.Term is
                                          Language: RDF.Auxiliary.String_Holders.Holder)
                                          return Term_Type;
 
-   not overriding function From_URI_String (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_String) return Term_Type;
+   not overriding function From_URI_String (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_String)
+                                            return Term_Type;
 
-   not overriding function From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class)
+   not overriding function From_URI (World: Raptor_World_Type_Without_Finalize'Class;
+                                     URI: URI_Type_Without_Finalize'Class)
                                      return Term_Type;
 
-   not overriding function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String) return Term_Type;
+   not overriding function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String)
+                                        return Term_Type;
 
    overriding procedure Adjust (Object: in out Term_Type);
 

@@ -17,8 +17,13 @@ package body RDF.Raptor.Namespace is
                            NS: String;
                            Depth: Natural)
                            return Namespace_Type is
+      Handle: constant Namespace_Handle :=
+        raptor_new_namespace(Get_Handle(Stack),
+                             To_C(Prefix, Append_Nul=>True),
+                             To_C(NS, Append_Nul=>True),
+                             Int(Depth));
    begin
-      return From_Non_Null_Handle( raptor_new_namespace(Get_Handle(Stack), To_C(Prefix, Append_Nul=>True), To_C(NS, Append_Nul=>True), Int(Depth)) );
+      return From_Non_Null_Handle(Handle);
    end;
 
    function raptor_new_namespace_from_uri (Stack: Namespace_Stack_Handle;
@@ -32,8 +37,12 @@ package body RDF.Raptor.Namespace is
                       URI: URI_Type_Without_Finalize'Class;
                       Depth: Integer)
                       return Namespace_Type is
+      Handle: constant Namespace_Handle :=
+        raptor_new_namespace_from_uri (Get_Handle(Stack),
+                                       To_C(Prefix, Append_Nul=>True),
+                                       Get_Handle(URI));
    begin
-      return From_Non_Null_Handle( raptor_new_namespace_from_uri (Get_Handle(Stack), To_C(Prefix, Append_Nul=>True), Get_Handle(URI)) );
+      return From_Non_Null_Handle(Handle);
    end;
 
    procedure raptor_free_namespace (Handle: Namespace_Handle)

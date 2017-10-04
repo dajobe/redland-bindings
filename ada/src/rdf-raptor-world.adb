@@ -28,7 +28,9 @@ package body RDF.Raptor.World is
       Open(Object);
    end;
 
-   procedure Set_Flag(Object: in out Raptor_World_Type_Without_Finalize; Flag: Raptor_Flag_Type; Value: Boolean) is
+   procedure Set_Flag(Object: in out Raptor_World_Type_Without_Finalize;
+                      Flag: Raptor_Flag_Type;
+                      Value: Boolean) is
    begin
       raptor_world_set_flag(Get_Handle(Object), Flag, (if Value then 1 else 0));
    end;

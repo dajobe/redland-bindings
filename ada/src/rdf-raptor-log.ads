@@ -68,7 +68,8 @@ package RDF.Raptor.Log is
    -- hack: 'Class to avoid "operation can be dispatching in only one type"
    not overriding procedure Log_Message(Handler: Log_Handler; Info: Log_Message_Type'Class) is abstract;
 
-   not overriding procedure Set_Log_Handler(World: in out Raptor_World_Type_Without_Finalize'Class; Handler: access Log_Handler);
+   not overriding procedure Set_Log_Handler(World: in out Raptor_World_Type_Without_Finalize'Class;
+                                            Handler: access Log_Handler);
 
    not overriding function Get_Label (Level: Log_Level_Type) return String;
    function Get_Label (Level: Domain_Type) return String;

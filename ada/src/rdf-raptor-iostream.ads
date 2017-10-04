@@ -75,13 +75,17 @@ package RDF.Raptor.IOStream is
 
    end Escaped_Write_Bitflags;
 
-   procedure Escaped_Write (Value: String; Delim: Character; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type);
+   procedure Escaped_Write (Value: String; Delim: Character;
+                            Flags: Escaped_Write_Bitflags.Bitflags;
+                            Stream: Base_Stream_Type);
 
    procedure URI_Escaped_Write (URI, Base_URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class;
                                 Flags: Escaped_Write_Bitflags.Bitflags;
                                 Stream: Base_Stream_Type);
 
-   procedure Term_Escaped_Write (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class; Flags: Escaped_Write_Bitflags.Bitflags; Stream: Base_Stream_Type);
+   procedure Term_Escaped_Write (Term: RDF.Raptor.Term.Term_Type_Without_Finalize'Class;
+                                 Flags: Escaped_Write_Bitflags.Bitflags;
+                                 Stream: Base_Stream_Type);
 
    procedure Ntriples_Write (Value: String; Delim: Character; Stream: Base_Stream_Type);
 
@@ -89,15 +93,20 @@ package RDF.Raptor.IOStream is
      with Convention => C;
    for Python_Write_Mode use (NTriples=>0, Turtle=>1, Turtle_Long_String=>2, JSON=>3);
 
-   procedure String_Python_Write (Value: String; Delim: Character; Mode: Python_Write_Mode; Stream: Base_Stream_Type);
+   procedure String_Python_Write (Value: String;
+                                  Delim: Character;
+                                  Mode: Python_Write_Mode;
+                                  Stream: Base_Stream_Type);
 
    type Stream_Type_Without_Finalize is new Base_Stream_Type with null record;
 
    function From_Sink (World: Raptor_World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize;
 
-   function From_Filename (World: Raptor_World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize;
+   function From_Filename (World: Raptor_World_Type_Without_Finalize'Class; Filename: String)
+                           return Stream_Type_Without_Finalize;
 
-   function From_File_Handle (World: Raptor_World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
+   function From_File_Handle (World: Raptor_World_Type_Without_Finalize'Class;
+                              File: RDF.Auxiliary.C_File_Access)
                               return Stream_Type_Without_Finalize;
 
    -- See below type Stream_From_String instead
@@ -106,7 +115,8 @@ package RDF.Raptor.IOStream is
 
    function To_Sink (World: Raptor_World_Type_Without_Finalize'Class) return Stream_Type_Without_Finalize;
 
-   function To_Filename (World: Raptor_World_Type_Without_Finalize'Class; Filename: String) return Stream_Type_Without_Finalize;
+   function To_Filename (World: Raptor_World_Type_Without_Finalize'Class; Filename: String)
+                         return Stream_Type_Without_Finalize;
 
    function To_File_Handle (World: Raptor_World_Type_Without_Finalize'Class; File: RDF.Auxiliary.C_File_Access)
                             return Stream_Type_Without_Finalize;
@@ -123,7 +133,8 @@ package RDF.Raptor.IOStream is
    type User_Defined_Stream_Type is new Base_Stream_Type with private;
 
    --overriding function Default_Handle(Object: User_Defined_Stream_Type) return Handle_Type;
-   not overriding function Open (World: Raptor_World_Type_Without_Finalize'Class) return User_Defined_Stream_Type;
+   not overriding function Open (World: Raptor_World_Type_Without_Finalize'Class)
+                                 return User_Defined_Stream_Type;
 
    -- We can do initizization and finalization on Ada level.
    -- No need to provide such callbacks to the underlying C library
@@ -134,11 +145,16 @@ package RDF.Raptor.IOStream is
 
    not overriding procedure Do_Write_Byte (Stream: in out User_Defined_Stream_Type; Byte: char);
 
-   not overriding function Do_Write_Bytes (Stream: in out User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t) return int;
+   not overriding function Do_Write_Bytes (Stream: in out User_Defined_Stream_Type;
+                                           Data: chars_ptr;
+                                           Size, Count: size_t)
+                                           return int;
 
    not overriding procedure Do_Write_End (Stream: in out User_Defined_Stream_Type);
 
-   not overriding function Do_Read_Bytes (Stream: in out User_Defined_Stream_Type; Data: chars_ptr; Size, Count: size_t) return size_t;
+   not overriding function Do_Read_Bytes (Stream: in out User_Defined_Stream_Type;
+                                          Data: chars_ptr;
+                                          Size, Count: size_t) return size_t;
 
    not overriding function Do_Read_Eof (Stream: in out User_Defined_Stream_Type) return Boolean;
 
@@ -148,7 +164,8 @@ package RDF.Raptor.IOStream is
    overriding function From_Handle(Handle: IOStream_Handle) return Stream_From_String;
    overriding function From_Non_Null_Handle(Handle: IOStream_Handle) return Stream_From_String;
 
-   not overriding function Open_From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String) return Stream_From_String;
+   not overriding function Open_From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String)
+                                             return Stream_From_String;
 
    -- I decided to implement it in Ada instead of using corresponding C functions
    type Stream_To_String is new Base_Stream_Type with private;
@@ -175,6 +192,7 @@ private
    overriding function From_Handle(Handle: IOStream_Handle) return Stream_To_String;
    overriding function From_Non_Null_Handle(Handle: IOStream_Handle) return Stream_To_String;
 
-   overriding function Do_Write_Bytes (Stream: in out Stream_To_String; Data: chars_ptr; Size, Count: size_t) return int;
+   overriding function Do_Write_Bytes (Stream: in out Stream_To_String; Data: chars_ptr; Size, Count: size_t)
+                                       return int;
 
 end RDF.Raptor.IOStream;

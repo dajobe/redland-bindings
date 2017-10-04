@@ -49,7 +49,8 @@ package body RDF.Rasqal.Data_Graph is
    function Get_Usage_Count (Graph: Data_Graph_Type_Without_Finalize) return Natural is
      (Natural(Get_Handle(Graph).Usage));
 
-   function rasqal_new_data_graph_from_data_graph (Graph: Data_Graph_Handle) return Data_Graph_Handle
+   function rasqal_new_data_graph_from_data_graph (Graph: Data_Graph_Handle)
+                                                   return Data_Graph_Handle
      with Import, Convention=>C;
 
    procedure Adjust (Object: in out Data_Graph_Type) is
@@ -58,7 +59,8 @@ package body RDF.Rasqal.Data_Graph is
       Set_Handle_Hack(Object, rasqal_new_data_graph_from_data_graph(Get_Handle(Object)));
    end;
 
-   function Copy (Object: Data_Graph_Type_Without_Finalize'Class) return Data_Graph_Type_Without_Finalize is
+   function Copy (Object: Data_Graph_Type_Without_Finalize'Class)
+                  return Data_Graph_Type_Without_Finalize is
    begin
       return From_Handle(rasqal_new_data_graph_from_data_graph(Get_Handle(Object)));
    end;
@@ -167,7 +169,8 @@ package body RDF.Rasqal.Data_Graph is
    --  --        return From_String(World, Str, Base_URI, Name_URI, Flags, Format_Type, Format_Name, Format_URI);
    --     end;
 
-   function rasqal_data_graph_print (Graph: Data_Graph_Handle; File: RDF.Auxiliary.C_File_Access) return int
+   function rasqal_data_graph_print (Graph: Data_Graph_Handle; File: RDF.Auxiliary.C_File_Access)
+                                     return int
      with Import, Convention=>C;
 
    procedure Print (Graph: Data_Graph_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is

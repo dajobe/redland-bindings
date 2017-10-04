@@ -8,7 +8,9 @@ package body RDF.Rasqal.Features is
    function rasqal_feature_from_uri (World: Rasqal_World_Handle; URI: URI_Handle) return Feature_Type
      with Import, Convention=>C;
 
-   function Feature_From_URI (World: Rasqal_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class) return Feature_Type is
+   function Feature_From_URI (World: Rasqal_World_Type_Without_Finalize'Class;
+                              URI: URI_Type_Without_Finalize'Class)
+                              return Feature_Type is
       Value: constant Feature_Type := rasqal_feature_from_uri(Get_Handle(World), Get_Handle(URI));
    begin
       return (if Value'Valid then Value else Unknown);
@@ -40,11 +42,17 @@ package body RDF.Rasqal.Features is
                                        return Int
      with Import, Convention=>C;
 
-   function Get_Feature_Description (World: Rasqal_World_Type_Without_Finalize'Class; Feature: Feature_Type) return Feature_Description is
+   function Get_Feature_Description (World: Rasqal_World_Type_Without_Finalize'Class;
+                                     Feature: Feature_Type)
+                                     return Feature_Description is
       Name, Label: aliased chars_ptr;
       URI: aliased URI_Handle;
    begin
-      if rasqal_features_enumerate(Get_Handle(World), Feature, Name'Unchecked_Access, URI'Unchecked_Access, Label'Unchecked_Access) /= 0
+      if rasqal_features_enumerate(Get_Handle(World),
+                                   Feature,
+                                   Name'Unchecked_Access,
+                                   URI'Unchecked_Access,
+                                   Label'Unchecked_Access) /= 0
       then
          raise RDF.Auxiliary.RDF_Exception;
       end if;

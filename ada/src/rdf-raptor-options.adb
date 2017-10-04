@@ -53,16 +53,23 @@ package body RDF.Raptor.Options is
       return Value(Ptr);
    end;
 
-   function raptor_world_get_option_description (World: Raptor_World_Handle; Domain: Domain_Type; Option: Raptor_Option) return Option_Description_Handle
+   function raptor_world_get_option_description (World: Raptor_World_Handle;
+                                                 Domain: Domain_Type;
+                                                 Option: Raptor_Option)
+                                                 return Option_Description_Handle
      with Import, Convention=>C;
 
-   function Get_Option_Description (World: Raptor_World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Natural)
+   function Get_Option_Description (World: Raptor_World_Type_Without_Finalize'Class;
+                                    Domain: Domain_Type;
+                                    Option: Natural)
                                     return Option_Description_Type is
    begin
       return Get_Option_Description(World, Domain, Raptor_Option'Val(Option));
    end;
 
-   function Get_Option_Description (World: Raptor_World_Type_Without_Finalize'Class; Domain: Domain_Type; Option: Raptor_Option)
+   function Get_Option_Description (World: Raptor_World_Type_Without_Finalize'Class;
+                                    Domain: Domain_Type;
+                                    Option: Raptor_Option)
                                     return Option_Description_Type is
    begin
       return From_Non_Null_Handle( raptor_world_get_option_description(Get_Handle(World), Domain, Option) );
@@ -76,7 +83,8 @@ package body RDF.Raptor.Options is
       raptor_world_get_option_description(Handle);
    end;
 
-   function raptor_world_get_option_from_uri (World: Raptor_World_Handle; URI: URI_Handle) return Raptor_Option
+   function raptor_world_get_option_from_uri (World: Raptor_World_Handle; URI: URI_Handle)
+                                              return Raptor_Option
      with Import, Convention=>C;
 
    -- Crude hack

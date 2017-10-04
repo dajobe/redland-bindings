@@ -8,14 +8,17 @@ package body RDF.Raptor.URI is
 
    function raptor_new_uri_from_counted_string (World_Handle: Raptor_World_Handle;
                                                 URI_String: char_array;
-                                                Length    : size_t)
+                                                Length: size_t)
                                                 return URI_Handle
      with Import, Convention=>C;
 
-   function From_String(World: Raptor_World_Type_Without_Finalize'Class; Arg: URI_String) return URI_Type is
+   function From_String(World: Raptor_World_Type_Without_Finalize'Class; Arg: URI_String)
+                        return URI_Type is
+      Handle: constant URI_Handle :=
+        raptor_new_uri_from_counted_string (Get_Handle (World), My_To_C_Without_Nul(String(Arg)), Arg'Length);
    begin
       -- LD_LIBRARY_PATH="" ltrace -n4 -llibraptor2.so.0 ./obj/test/debug/run_all_tests 2>&1| egrep ^[a-z]
-      return From_Non_Null_Handle (raptor_new_uri_from_counted_string (Get_Handle (World), My_To_C_Without_Nul(String(Arg)), Arg'Length));
+      return From_Non_Null_Handle(Handle);
    end;
 
    function raptor_new_uri_from_uri_local_name (World_Handle: Raptor_World_Handle;
@@ -24,9 +27,14 @@ package body RDF.Raptor.URI is
                                                 return URI_Handle
      with Import, Convention=>C;
 
-   function From_URI_With_Local_Name(World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type_Without_Finalize'Class; Local_Name: String) return URI_Type is
+   function From_URI_With_Local_Name(World: Raptor_World_Type_Without_Finalize'Class;
+                                     URI: URI_Type_Without_Finalize'Class;
+                                     Local_Name: String)
+                                     return URI_Type is
+      Handle: constant URI_Handle :=
+        raptor_new_uri_from_uri_local_name (Get_Handle (World), Get_Handle (URI), To_C (Local_Name));
    begin
-      return From_Non_Null_Handle (raptor_new_uri_from_uri_local_name (Get_Handle (World), Get_Handle (URI), To_C (Local_Name)));
+      return From_Non_Null_Handle(Handle);
    end;
 
    function raptor_new_uri_from_uri_or_file_string(World_Handle: Raptor_World_Handle;
@@ -39,8 +47,10 @@ package body RDF.Raptor.URI is
                                     Base_URI: URI_Type_Without_Finalize'Class;
                                     Uri_Or_File: String)
                                     return URI_Type is
+      Handle: constant URI_Handle :=
+        raptor_new_uri_from_uri_or_file_string (Get_Handle (World), Get_Handle (Base_URI), To_C (Uri_Or_File));
    begin
-      return From_Non_Null_Handle (raptor_new_uri_from_uri_or_file_string (Get_Handle (World), Get_Handle (Base_URI), To_C (Uri_Or_File)));
+      return From_Non_Null_Handle(Handle);
    end;
 
    function raptor_new_uri_relative_to_base_counted(World_Handle: Raptor_World_Handle;
@@ -54,11 +64,13 @@ package body RDF.Raptor.URI is
                                       Base_URI: URI_Type_Without_Finalize'Class;
                                       URI: URI_String)
                                       return URI_Type is
+      Handle: constant URI_Handle :=
+        raptor_new_uri_relative_to_base_counted(Get_Handle (World),
+                                                Get_Handle (Base_URI),
+                                                My_To_C_Without_Nul(String(URI)),
+                                                URI'Length);
    begin
-      return From_Non_Null_Handle (raptor_new_uri_relative_to_base_counted(Get_Handle (World),
-                                   Get_Handle (Base_URI),
-                                   My_To_C_Without_Nul(String(URI)),
-                                   URI'Length));
+      return From_Non_Null_Handle(Handle);
    end;
 
    function raptor_new_uri_from_id(World_Handle: Raptor_World_Handle;
@@ -67,9 +79,14 @@ package body RDF.Raptor.URI is
                                    return URI_Handle
      with Import, Convention=>C;
 
-   function From_ID(World: Raptor_World_Type_Without_Finalize'Class; Base_URI: URI_Type_Without_Finalize'Class; ID: String) return URI_Type is
+   function From_ID(World: Raptor_World_Type_Without_Finalize'Class;
+                    Base_URI: URI_Type_Without_Finalize'Class;
+                    ID: String)
+                    return URI_Type is
+      Handle: constant URI_Handle :=
+        raptor_new_uri_from_id (Get_Handle (World), Get_Handle (Base_URI), To_C (ID));
    begin
-      return From_Non_Null_Handle (raptor_new_uri_from_id (Get_Handle (World), Get_Handle (Base_URI), To_C (ID)));
+      return From_Non_Null_Handle(Handle);
    end;
 
    function raptor_new_uri_for_rdf_concept (World_Handle: Raptor_World_Handle;
@@ -77,13 +94,13 @@ package body RDF.Raptor.URI is
                                             return URI_Handle
      with Import, Convention=>C;
 
-   function From_RDF_Concept(World: Raptor_World_Type_Without_Finalize'Class; Name: String) return URI_Type is
+   function From_RDF_Concept(World: Raptor_World_Type_Without_Finalize'Class; Name: String)
+                             return URI_Type is
    begin
-      return From_Non_Null_Handle (raptor_new_uri_for_rdf_concept (Get_Handle (World), To_C (Name)));
+      return From_Non_Null_Handle(raptor_new_uri_for_rdf_concept(Get_Handle (World), To_C (Name)));
    end;
 
-   function raptor_new_uri_for_xmlbase (Old_URI: URI_Handle)
-                                        return URI_Handle
+   function raptor_new_uri_for_xmlbase (Old_URI: URI_Handle) return URI_Handle
      with Import, Convention=>C;
 
    function For_XML_Base(Old_URI: URI_Type_Without_Finalize'Class) return URI_Type is
@@ -132,29 +149,38 @@ package body RDF.Raptor.URI is
      with Import, Convention=>C;
 
    function To_Relative_URI_String(Base_URI, Reference_URI: URI_Type_Without_Finalize) return URI_String is
-      C_Str: constant chars_ptr := raptor_uri_to_relative_uri_string (Get_Handle (Base_URI),Get_Handle (Reference_URI));
+      C_Str: constant chars_ptr :=
+        raptor_uri_to_relative_uri_string (Get_Handle(Base_URI), Get_Handle(Reference_URI));
       Result: constant String := Value (C_Str);
    begin
       RDF.Raptor.Memory.raptor_free_memory (C_Str);
       return URI_String(Result);
    end;
 
-   function raptor_uri_resolve_uri_reference(Base_URI, Reference_URI: char_array; buffer: char_array; length: size_t) return size_t
+   function raptor_uri_resolve_uri_reference(Base_URI, Reference_URI: char_array;
+                                             buffer: char_array;
+                                             length: size_t) return size_t
      with Import, Convention=>C;
 
    function Resolve_URI_Reference (Base_URI, Reference_URI: URI_String) return URI_String is
       Buffer_Length: constant size_t := Base_URI'Length + Reference_URI'Length + 1;
       Buffer       : constant char_array (1..Buffer_Length) := (others=>NUL);
-      Dummy        : constant size_t := raptor_uri_resolve_uri_reference (To_C (String(Base_URI)), To_C (String(Reference_URI)), Buffer, Buffer_Length);
+      Dummy        : constant size_t :=
+        raptor_uri_resolve_uri_reference(To_C(String(Base_URI)),
+                                         To_C(String(Reference_URI)),
+                                         Buffer,
+                                         Buffer_Length);
    begin
       return URI_String(To_Ada(Buffer));
    end;
 
-   function raptor_uri_counted_filename_to_uri_string(filename: char_array; filename_len: size_t) return chars_ptr
+   function raptor_uri_counted_filename_to_uri_string(filename: char_array; filename_len: size_t)
+                                                      return chars_ptr
      with Import, Convention=>C;
 
    function Filename_To_URI_String (Filename: String) return URI_String is
-      Result1: constant chars_ptr := raptor_uri_counted_filename_to_uri_string (To_C (Filename, Append_Nul=>False), Filename'Length);
+      Result1: constant chars_ptr :=
+        raptor_uri_counted_filename_to_uri_string(To_C(Filename, Append_Nul=>False), Filename'Length);
       Result: constant String := Value (Result1);
    begin
       RDF.Raptor.Memory.raptor_free_memory (Result1);
@@ -188,19 +214,28 @@ package body RDF.Raptor.URI is
       return Result;
    end;
 
-   function raptor_uri_uri_string_to_filename_fragment (URI_String: char_array; Fragment_P: access chars_ptr) return chars_ptr
+   type Fragment_P_Type is access all chars_ptr
+     with Convention=>C;
+
+   function raptor_uri_uri_string_to_filename_fragment (URI_String: char_array;
+                                                        Fragment_P: Fragment_P_Type)
+                                                        return chars_ptr
      with Import, Convention=>C;
 
    function URI_String_To_Filename_And_Fragment(Str: URI_String) return Filename_And_Fragment is
       C_Filename : chars_ptr;
       C_Fragment : aliased chars_ptr;
    begin
-      C_Filename := raptor_uri_uri_string_to_filename_fragment (To_C(String(Str)), C_Fragment'Unchecked_Access);
+      C_Filename := raptor_uri_uri_string_to_filename_fragment(To_C(String(Str)),
+                                                               C_Fragment'Unchecked_Access);
       declare
          Filename: constant String := Value (C_Filename);
          Fragment: constant String := Value (C_Fragment);
          Result  : constant Filename_And_Fragment :=
-           (Filename_Length => Filename'Length, Fragment_Length => Fragment'Length, Filename => Filename, Fragment => Fragment);
+           (Filename_Length => Filename'Length,
+            Fragment_Length => Fragment'Length,
+            Filename => Filename,
+            Fragment => Fragment);
       begin
          RDF.Raptor.Memory.raptor_free_memory (C_Filename);
          if C_Fragment /= Null_Ptr then

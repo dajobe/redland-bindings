@@ -36,7 +36,11 @@ package body RDF.Raptor.Namespace_Stack is
       Prefix_N: constant C_String_Holder := To_C_String_Holder(Prefix);
       URI_N   : constant C_String_Holder := To_C_String_Holder(NS_URI);
    begin
-      if raptor_namespaces_start_namespace_full(Get_Handle(Stack), C_String(Prefix_N), C_String(URI_N), int(Depth)) /= 0 then
+      if raptor_namespaces_start_namespace_full(Get_Handle(Stack),
+                                                C_String(Prefix_N),
+                                                C_String(URI_N),
+                                                int(Depth)) /= 0
+      then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
@@ -84,8 +88,12 @@ package body RDF.Raptor.Namespace_Stack is
 
    function Find_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Prefix: String) return Namespace_Type is
       C_Prefix: aliased char_array := My_To_C_Without_Nul(Prefix);
+      Handle: constant Namespace_Handle :=
+        raptor_namespaces_find_namespace(Get_Handle(Stack),
+                                         To_Chars_Ptr(C_Prefix'Unchecked_Access),
+                                         Prefix'Length);
    begin
-      return From_Non_Null_Handle( raptor_namespaces_find_namespace(Get_Handle(Stack), To_Chars_Ptr(C_Prefix'Unchecked_Access), Prefix'Length) );
+      return From_Non_Null_Handle(Handle);
    end;
 
    function Find_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return Namespace_Type is
@@ -98,7 +106,8 @@ package body RDF.Raptor.Namespace_Stack is
                                                      return Namespace_Handle
      with Import, Convention=>C;
 
-   function Find_Namespace_By_URI (Stack: Namespace_Stack_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class)
+   function Find_Namespace_By_URI (Stack: Namespace_Stack_Type_Without_Finalize;
+                                   URI: URI_Type_Without_Finalize'Class)
                                    return Namespace_Type is
    begin
       return From_Non_Null_Handle( raptor_namespaces_find_namespace_by_uri(Get_Handle(Stack), Get_Handle(URI)) ) ;
@@ -121,7 +130,9 @@ package body RDF.Raptor.Namespace_Stack is
                                                     return Int
      with Import, Convention=>C;
 
-   procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize; NS: Namespace_Type_Without_Finalize'Class; New_Depth: Natural) is
+   procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize;
+                              NS: Namespace_Type_Without_Finalize'Class;
+                              New_Depth: Natural) is
    begin
       if raptor_namespace_stack_start_namespace(Get_Handle(Stack), Get_Handle(NS), int(New_Depth)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;

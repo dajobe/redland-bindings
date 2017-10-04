@@ -49,25 +49,40 @@ package RDF.Raptor.Serializer is
 
    not overriding procedure Serialize_Flush (Serializer: Serializer_Type_Without_Finalize);
 
-   not overriding function Get_Description (Serializer: Serializer_Type_Without_Finalize) return Raptor_Syntax_Description_Type;
+   not overriding function Get_Description (Serializer: Serializer_Type_Without_Finalize)
+                                            return Raptor_Syntax_Description_Type;
 
-   not overriding function Get_Iostream (Serializer: Serializer_Type_Without_Finalize) return Stream_Type_Without_Finalize;
+   not overriding function Get_Iostream (Serializer: Serializer_Type_Without_Finalize)
+                                         return Stream_Type_Without_Finalize;
 
-   not overriding function Get_Locator (Serializer: Serializer_Type_Without_Finalize) return Locator_Type;
+   not overriding function Get_Locator (Serializer: Serializer_Type_Without_Finalize)
+                                        return Locator_Type;
 
-   not overriding procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: String);
-   not overriding procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize; Option: Raptor_Option; Value: int);
+   not overriding procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize;
+                                        Option: Raptor_Option;
+                                        Value: String);
+   not overriding procedure Set_Option (Serializer: in out Serializer_Type_Without_Finalize;
+                                        Option: Raptor_Option;
+                                        Value: int);
 
    -- Not sure if we should be able to query here whether the option is numeric
-   not overriding function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option) return Natural;
-   not overriding function Get_String_Option (Serializer: Serializer_Type_Without_Finalize; Option: Raptor_Option) return String;
+   not overriding function Get_Numeric_Option (Serializer: Serializer_Type_Without_Finalize;
+                                               Option: Raptor_Option)
+                                               return Natural;
+   not overriding function Get_String_Option (Serializer: Serializer_Type_Without_Finalize;
+                                              Option: Raptor_Option)
+                                              return String;
 
-   not overriding function Get_World (Serializer: Serializer_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
+   not overriding function Get_World (Serializer: Serializer_Type_Without_Finalize)
+                                      return Raptor_World_Type_Without_Finalize;
 
    type Serializer_Type is new Serializer_Type_Without_Finalize with null record;
 
-   not overriding function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Type;
-   not overriding function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class; Syntax_Name: String) return Serializer_Type;
+   not overriding function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class)
+                                           return Serializer_Type;
+   not overriding function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class;
+                                           Syntax_Name: String)
+                                           return Serializer_Type;
 
    overriding procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Serializer_Handle);
 

@@ -75,7 +75,11 @@ package body RDF.Rasqal.Query is
                           Query: Query_Type_Without_Finalize;
                           Format_URI, Base_URI: URI_Type_Without_Finalize'Class) is
    begin
-      if rasqal_query_write(Get_Handle(Stream), Get_Handle(Query), Get_Handle(Format_URI), Get_Handle(Base_URI)) /= 0 then
+      if rasqal_query_write(Get_Handle(Stream),
+                            Get_Handle(Query),
+                            Get_Handle(Format_URI),
+                            Get_Handle(Base_URI)) /= 0
+      then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
@@ -109,8 +113,7 @@ package body RDF.Rasqal.Query is
                                                 return RDF.Auxiliary.C_Pointers.Pointer
      with Import, Convention=>C;
 
-   function Escape_String (Query: Query_Type_Without_Finalize; Str: String)
-                           return String is
+   function Escape_String (Query: Query_Type_Without_Finalize; Str: String) return String is
       In_Str2: constant char_array := My_To_C_Without_Nul(Str);
       Out_Len: aliased size_t;
       Result: constant RDF.Auxiliary.C_Pointers.Pointer :=
@@ -134,7 +137,9 @@ package body RDF.Rasqal.Query is
                                       return int
      with Import, Convention=>C;
 
-   procedure Set_Feature (Query: in out Query_Type_Without_Finalize; Feature: Feature_Type; Value: Natural) is
+   procedure Set_Feature (Query: in out Query_Type_Without_Finalize;
+                          Feature: Feature_Type;
+                          Value: Natural) is
    begin
       if rasqal_query_set_feature(Get_Handle(Query), Feature, int(Value)) /= 0  then
          raise RDF.Auxiliary.RDF_Exception;
@@ -147,7 +152,9 @@ package body RDF.Rasqal.Query is
                                              return int
      with Import, Convention=>C;
 
-   procedure Set_Feature (Query: in out Query_Type_Without_Finalize; Feature: Feature_Type; Value: String) is
+   procedure Set_Feature (Query: in out Query_Type_Without_Finalize;
+                          Feature: Feature_Type;
+                          Value: String) is
    begin
       if rasqal_query_set_feature_string(Get_Handle(Query), Feature, To_C(Value)) /= 0  then
          raise RDF.Auxiliary.RDF_Exception;
@@ -199,7 +206,8 @@ package body RDF.Rasqal.Query is
    function rasqal_new_query (World: Rasqal_World_Handle; Name, URI: chars_ptr) return Query_Handle
      with Import, Convention=>C;
 
-   function New_Query (World: Rasqal_World_Type'Class; Name, URI: RDF.Auxiliary.String_Holders.Holder) return Query_Type is
+   function New_Query (World: Rasqal_World_Type'Class; Name, URI: RDF.Auxiliary.String_Holders.Holder)
+                       return Query_Type is
       use RDF.Auxiliary.C_String_Holders;
       Name2: chars_ptr := New_String(Name);
       URI2 : chars_ptr := New_String(URI );

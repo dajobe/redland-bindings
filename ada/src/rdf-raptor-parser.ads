@@ -69,7 +69,8 @@ package RDF.Raptor.Parser is
                                             Stream: Base_Stream_Type'Class;
                                             Base_URI: URI_Type_Without_Finalize'Class);
 
-   not overriding procedure Parse_Start (Parser: Parser_Type_Without_Finalize; URI: URI_Type_Without_Finalize'Class);
+   not overriding procedure Parse_Start (Parser: Parser_Type_Without_Finalize;
+                                         URI: URI_Type_Without_Finalize'Class);
 
    not overriding procedure Parse_URI (Parser: Parser_Type_Without_Finalize;
                                        URI: URI_Type_Without_Finalize'Class;
@@ -82,20 +83,30 @@ package RDF.Raptor.Parser is
 
    not overriding function Get_Graph (Parser: Parser_Type_Without_Finalize) return URI_Type;
 
-   not overriding function Get_Description (Parser: Parser_Type_Without_Finalize) return Raptor_Syntax_Description_Type;
+   not overriding function Get_Description (Parser: Parser_Type_Without_Finalize)
+                                            return Raptor_Syntax_Description_Type;
 
    not overriding function Get_Name (Parser: Parser_Type_Without_Finalize) return String;
 
-   not overriding procedure Set_Option (Parser: in out Parser_Type_Without_Finalize; Option: Raptor_Option; Value: String);
-   not overriding procedure Set_Option (Parser: in out Parser_Type_Without_Finalize; Option: Raptor_Option; Value: int);
+   not overriding procedure Set_Option (Parser: in out Parser_Type_Without_Finalize;
+                                        Option: Raptor_Option;
+                                        Value: String);
+   not overriding procedure Set_Option (Parser: in out Parser_Type_Without_Finalize;
+                                        Option: Raptor_Option;
+                                        Value: int);
 
    -- Not sure if we should be able to query here whether the option is numeric
-   not overriding function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option) return Natural;
-   not overriding function Get_String_Option (Parser: Parser_Type_Without_Finalize; Option: Raptor_Option) return String;
+   not overriding function Get_Numeric_Option (Parser: Parser_Type_Without_Finalize;
+                                               Option: Raptor_Option)
+                                               return Natural;
+   not overriding function Get_String_Option (Parser: Parser_Type_Without_Finalize;
+                                              Option: Raptor_Option)
+                                              return String;
 
    not overriding function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String;
 
-   not overriding function Get_World (Parser: Parser_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize;
+   not overriding function Get_World (Parser: Parser_Type_Without_Finalize)
+                                      return Raptor_World_Type_Without_Finalize;
 
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
@@ -104,7 +115,8 @@ package RDF.Raptor.Parser is
 
    overriding procedure Finalize_Handle (Object: Parser_Type; Handle: Parser_Handle);
 
-   not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Parser_Type;
+   not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class; Name: String)
+                                   return Parser_Type;
 
    not overriding function Create_From_Content (World: Raptor_World_Type_Without_Finalize'Class;
                                                 URI: URI_Type_Without_Finalize'Class;

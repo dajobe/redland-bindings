@@ -19,7 +19,8 @@ package RDF.Rasqal.Bnode is
                        User_ID: RDF.Auxiliary.String_Holders.Holder)
                        return String is abstract;
 
-   procedure Set_BNode_ID_Handler (World: in out Rasqal_World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class);
+   procedure Set_BNode_ID_Handler (World: in out Rasqal_World_Type_Without_Finalize'Class;
+                                   Handler: access BNode_ID_Handler'Class);
 
    procedure Set_Default_Generate_Bnodeid_Parameters (World: in out Rasqal_World_Type_Without_Finalize'Class;
                                                       Prefix: String_Holders.Holder;

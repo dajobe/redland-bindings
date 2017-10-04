@@ -21,7 +21,8 @@ package body RDF.Raptor.Parser is
                                            MIME_Type: chars_ptr;
                                            Buffer: chars_ptr;
                                            Len: size_t;
-                                           Identifier: chars_ptr) return Parser_Handle
+                                           Identifier: chars_ptr)
+                                           return Parser_Handle
      with Import, Convention=>C;
 
    function Create_From_Content (World: Raptor_World_Type_Without_Finalize'Class;
@@ -58,7 +59,8 @@ package body RDF.Raptor.Parser is
       raptor_parser_parse_abort(Get_Handle(Parser));
    end;
 
-   function raptor_parser_parse_chunk (Parser: Parser_Handle; Buffer: char_array; Len: size_t; Is_End: int) return int
+   function raptor_parser_parse_chunk (Parser: Parser_Handle; Buffer: char_array; Len: size_t; Is_End: int)
+                                       return int
      with Import, Convention=>C;
 
    procedure Parse_Chunk (Parser: Parser_Type_Without_Finalize;
@@ -156,7 +158,11 @@ package body RDF.Raptor.Parser is
                                         Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null));
                                         Connection: Connection_Type := null) is
    begin
-      if raptor_parser_parse_uri_with_connection(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI), Connection) /= 0 then
+      if raptor_parser_parse_uri_with_connection(Get_Handle(Parser),
+                                                 Get_Handle(URI),
+                                                 Get_Handle(Base_URI),
+                                                 Connection) /= 0
+      then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
@@ -185,7 +191,8 @@ package body RDF.Raptor.Parser is
       return Value(raptor_parser_get_name(Get_Handle(Parser)));
    end;
 
-   function raptor_parser_set_option (Parser: Parser_Handle; Option: Raptor_Option; Value: chars_ptr; Int_Value: int) return int
+   function raptor_parser_set_option (Parser: Parser_Handle; Option: Raptor_Option; Value: chars_ptr; Int_Value: int)
+                                      return int
      with Import, Convention=>C;
 
    procedure Set_Option (Parser: in out Parser_Type_Without_Finalize; Option: Raptor_Option; Value: String) is
@@ -314,39 +321,52 @@ package body RDF.Raptor.Parser is
       Initialize_URI_Filter        (Parser);
    end;
 
-   procedure raptor_parser_set_statement_handler (Parser: Parser_Handle; Data: chars_ptr; Handler: raptor_statement_handler)
+   procedure raptor_parser_set_statement_handler (Parser: Parser_Handle;
+                                                  Data: chars_ptr;
+                                                  Handler: raptor_statement_handler)
      with Import, Convention=>C;
 
-   procedure raptor_parser_set_graph_mark_handler (Parser: Parser_Handle; Data: chars_ptr; Handler: raptor_graph_mark_handler)
+   procedure raptor_parser_set_graph_mark_handler (Parser: Parser_Handle;
+                                                   Data: chars_ptr;
+                                                   Handler: raptor_graph_mark_handler)
      with Import, Convention=>C;
 
-   procedure raptor_parser_set_namespace_handler (Parser: Parser_Handle; Data: chars_ptr; Handler: raptor_namespace_handler)
+   procedure raptor_parser_set_namespace_handler (Parser: Parser_Handle;
+                                                  Data: chars_ptr;
+                                                  Handler: raptor_namespace_handler)
      with Import, Convention=>C;
 
-   procedure raptor_parser_set_uri_filter (Parser: Parser_Handle; Handler: raptor_uri_filter_func; Data: chars_ptr)
+   procedure raptor_parser_set_uri_filter (Parser: Parser_Handle;
+                                           Handler: raptor_uri_filter_func;
+                                           Data: chars_ptr)
      with Import, Convention=>C;
 
    procedure Initialize_Graph_Mark_Handler (Object: in out Parser_Type_Without_Finalize) is
    begin
-      raptor_parser_set_graph_mark_handler(Get_Handle(Object), Obj_To_Ptr(Object'Unchecked_Access), raptor_graph_mark_handler_impl'Access);
+      raptor_parser_set_graph_mark_handler(Get_Handle(Object),
+                                           Obj_To_Ptr(Object'Unchecked_Access),
+                                           raptor_graph_mark_handler_impl'Access);
    end;
 
    procedure Initialize_Statement_Handler (Object: in out Parser_Type_Without_Finalize) is
    begin
-      raptor_parser_set_statement_handler(Get_Handle(Object), Obj_To_Ptr(Object'Unchecked_Access), raptor_statement_handler_impl'Access);
+      raptor_parser_set_statement_handler(Get_Handle(Object),
+                                          Obj_To_Ptr(Object'Unchecked_Access),
+                                          raptor_statement_handler_impl'Access);
    end;
 
    procedure Initialize_Namespace_Handler (Object: in out Parser_Type_Without_Finalize) is
    begin
-      raptor_parser_set_namespace_handler(Get_Handle(Object), Obj_To_Ptr(Object'Unchecked_Access), raptor_namespace_handler_impl'Access);
+      raptor_parser_set_namespace_handler(Get_Handle(Object),
+                                          Obj_To_Ptr(Object'Unchecked_Access),
+                                          raptor_namespace_handler_impl'Access);
    end;
 
    procedure Initialize_URI_Filter (Object: in out Parser_Type_Without_Finalize) is
    begin
-      raptor_parser_set_uri_filter(Get_Handle(Object), raptor_uri_filter_impl'Access, Obj_To_Ptr(Object'Unchecked_Access));
+      raptor_parser_set_uri_filter(Get_Handle(Object),
+                                   raptor_uri_filter_impl'Access,
+                                   Obj_To_Ptr(Object'Unchecked_Access));
    end;
-
-   type My_Dummy_Access is access constant RDF.Auxiliary.Dummy_Record
-     with Convention=>C;
 
 end RDF.Raptor.Parser;
