@@ -33,6 +33,6 @@ package RDF.Redland.World is
 
    not overriding function Open return Redland_World_Type;
 
-   -- TODO: Stopped at librdf_world_set_error()
+   -- TODO: Stopped at librdf_world_set_error() (in RDF.Redland.Log)
 
 end RDF.Redland.World;
