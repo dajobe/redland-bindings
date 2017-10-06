@@ -1,7 +1,8 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with RDF.Raptor.Log;
 with RDF.Auxiliary;
+with RDF.Raptor.Log;
+with RDF.Redland.World; use RDF.Redland.World;
 
 package RDF.Redland.Log is
 
@@ -39,6 +40,9 @@ package RDF.Redland.Log is
    function Last return Log_Facility_Type renames Raptor;
 
    type Log_Message_Type is private;
+--     package Log_Message_Handled_Record is new RDF.Auxiliary.Handled_Record(Log_Message_Record, Log_Message_Record_Access);
+--     subtype Log_Message_Handle is Log_Message_Handled_Record.Access_Type;
+--     type Log_Message_Type is new Log_Message_Handled_Record.Base_Object with null record;
 
    function Get_Code (Message: Log_Message_Type) return int;
    function Get_Level (Message: Log_Message_Type) return Log_Level_Type;
@@ -52,11 +56,13 @@ package RDF.Redland.Log is
      with Convention=>C;
 
    -- Internal
-   -- FIXME: Uncomment
---     procedure Our_Raptor_Log_Handler(Data: chars_ptr; Msg: Log_Message_Type)
---       with Convention=>C;
+   procedure Our_Raptor_Log_Handler(Data: chars_ptr; Msg: Log_Message_Type)
+     with Convention=>C;
 
-   -- TODO: Stopped at librdf_log_message_code()
+   not overriding procedure Log_Message(Handler: Log_Handler; Info: Log_Message_Type) is abstract;
+
+   not overriding procedure Set_Log_Handler(World: in out Redland_World_Type_Without_Finalize'Class;
+                                            Handler: access Log_Handler);
 
 private
 

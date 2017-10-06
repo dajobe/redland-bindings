@@ -1,3 +1,5 @@
+with Ada.Unchecked_Conversion;
+
 package body RDF.Redland.Log is
 
    function librdf_log_message_code (Message: Log_Message_Type) return int
@@ -39,6 +41,23 @@ package body RDF.Redland.Log is
       use RDF.Raptor.Log;
    begin
       return From_Handle(librdf_log_message_locator(Message));
+   end;
+
+   type User_Defined_Access is access constant Log_Handler'Class;
+   function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
+   function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
+
+   procedure Our_Raptor_Log_Handler(Data: chars_ptr; Msg: Log_Message_Type) is
+   begin
+      Log_Message(Ptr_To_Obj(Data).all, Msg);
+   end;
+
+   procedure librdf_world_set_logger (World: Redland_World_Handle; Data: chars_ptr; Handler: Log_Handler_Procedure_Type)
+     with Import, Convention=>C;
+
+   procedure Set_Log_Handler(World: in out Redland_World_Type_Without_Finalize'Class; Handler: access Log_Handler) is
+   begin
+      librdf_world_set_logger(Get_Handle(World), Obj_To_Ptr(Handler), Our_Raptor_Log_Handler'Access);
    end;
 
 end RDF.Redland.Log;
