@@ -65,7 +65,6 @@ package RDF.Raptor.Log is
    procedure Our_Raptor_Log_Handler(Data: chars_ptr; Msg: Log_Message_Type)
      with Convention=>C;
 
-   -- hack: 'Class to avoid "operation can be dispatching in only one type"
    not overriding procedure Log_Message(Handler: Log_Handler; Info: Log_Message_Type'Class) is abstract;
 
    not overriding procedure Set_Log_Handler(World: in out Raptor_World_Type_Without_Finalize'Class;
