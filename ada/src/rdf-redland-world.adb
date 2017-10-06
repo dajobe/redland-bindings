@@ -50,8 +50,6 @@ package body RDF.Redland.World is
       return From_Non_Null_Handle(librdf_world_get_rasqal(Get_Handle(World)));
    end;
 
-   ----
-
    procedure librdf_world_set_raptor (World: Redland_World_Handle; Raptor_World: Raptor_World_Handle)
      with Import, Convention=>C;
 
