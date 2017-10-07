@@ -107,4 +107,30 @@ package body RDF.Redland.Node is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_new_node_from_typed_counted_literal (World: Redland_World_Handle;
+                                                        Text: char_array;
+                                                        Text_Len: size_t;
+                                                        Language: char_array;
+                                                        Language_Len: size_t;
+                                                        Datatype: URI_Handle)
+                                                        return Node_Handle
+     with Import, Convention=>C;
+
+   function From_Typed_Literal (World: Redland_World_Type_Without_Finalize'Class;
+                                Text: String;
+                                Language: String;
+                                Datatype: URI_Type_Without_Finalize'Class)
+                                return Node_Type is
+      Handle: constant Node_Handle :=
+        librdf_new_node_from_typed_counted_literal(Get_Handle(World),
+                                                   My_To_C_Without_Nul(Text),
+                                                   size_t(Text'Length),
+                                                   My_To_C_Without_Nul(Language),
+                                                   size_t(Language'Length),
+                                                   Get_Handle(Datatype));
+
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.Node;

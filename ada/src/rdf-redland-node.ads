@@ -36,6 +36,12 @@ package RDF.Redland.Node is
                                                        Source_URI, Base_URI: URI_Type_Without_Finalize'Class)
                                                        return Node_Type;
 
-   -- TODO: Stopped at librdf_new_node_from_typed_counted_literal()
+   not overriding function From_Typed_Literal (World: Redland_World_Type_Without_Finalize'Class;
+                                               Text: String;
+                                               Language: String;
+                                               Datatype: URI_Type_Without_Finalize'Class)
+                                               return Node_Type;
+
+   -- TODO: Stopped at librdf_new_node_from_uri()
 
 end RDF.Redland.Node;
