@@ -18,6 +18,6 @@ package RDF.Redland.Node is
                                                   ID: String)
                                                   return Node_Type;
 
-   -- TODO: Stopped at librdf_new_node_from_blank_identifier()
+   -- TODO: Stopped at librdf_new_node_from_counted_uri_string()
 
 end RDF.Redland.Node;

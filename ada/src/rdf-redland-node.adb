@@ -25,7 +25,11 @@ package body RDF.Redland.Node is
 --                                                     return Node_Handle
 --       with Import, Convention=>C;
 
-   -- FIXME: Use librdf_new_node_from_counted_blank_identifier() instead
+   function librdf_new_node_from_counted_blank_identifier (World: Redland_World_Handle;
+                                                           Pointer: char_array_access;
+                                                           Len: size_t)
+                                                           return Node_Handle
+     with Import, Convention=>C;
 
    function From_Blank_Identifier (World: Redland_World_Type_Without_Finalize'Class;
                                    ID: String)
@@ -33,7 +37,7 @@ package body RDF.Redland.Node is
       ID2: aliased char_array := My_To_C_Without_Nul(ID);
       Pointer: constant char_array_access := (if ID = "" then null else ID2'Unchecked_Access);
       Handle: constant Node_Handle :=
-        librdf_new_node_from_blank_identifier(Get_Handle(World), Pointer);
+        librdf_new_node_from_counted_blank_identifier(Get_Handle(World), Pointer, ID'Length);
    begin
       return From_Non_Null_Handle(Handle);
    end;
