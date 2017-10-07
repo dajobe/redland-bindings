@@ -4,6 +4,8 @@ with RDF.Raptor.Term;
 
 package RDF.Redland.Node is
 
+   -- FIXME: Use RDF.Redland.URI.URI_Type instead of RDF.Raptor.URI.URI_Type
+
    -- TODO: Add subtypes with dynamic predicates here and in RDF.Raptor.Term
 
    subtype Node_Handle is RDF.Raptor.Term.Term_Handle;
@@ -26,6 +28,7 @@ package RDF.Redland.Node is
    not overriding function As_Latin1 (Node: Node_Type_Without_Finalize) return String;
 
    -- TODO: Stopped at librdf_node_get_literal_value_datatype_uri()
+   -- Will continue after RDF.Redland.URI
 
    type Node_Type is new Node_Type_Without_Finalize with null record;
 
