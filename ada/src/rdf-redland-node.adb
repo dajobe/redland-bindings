@@ -214,4 +214,16 @@ package body RDF.Redland.Node is
       return Value_With_Possible_NULs(Buffer, Length);
    end;
 
+   function librdf_node_get_li_ordinal (Node: Node_Handle) return int
+     with Import, Convention=>C;
+
+   function Get_Li_Ordinal (Node: Node_Type_Without_Finalize) return Positive is
+      Result: constant int := librdf_node_get_li_ordinal(Get_Handle(Node));
+   begin
+      if Result <= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Positive(Result);
+   end;
+
 end RDF.Redland.Node;
