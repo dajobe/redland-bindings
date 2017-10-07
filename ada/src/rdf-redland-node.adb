@@ -1,6 +1,7 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
+with RDF.Auxiliary.C_Pointers;
 
 package body RDF.Redland.Node is
 
@@ -197,6 +198,20 @@ package body RDF.Redland.Node is
    function Equals (Left, Right: Node_Type_Without_Finalize) return Boolean is
    begin
       return librdf_node_equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
+   end;
+
+   type Size_T_P is access all size_t with Convention=>C;
+
+   function librdf_node_get_counted_blank_identifier (Node: Node_Handle; Length: Size_T_P)
+                                                      return RDF.Auxiliary.C_Pointers.Pointer
+     with Import, Convention=>C;
+
+   function Get_Blank_Identifier (Node: Node_Type_Without_Finalize) return String is
+      Length: aliased size_t;
+      Buffer: constant RDF.Auxiliary.C_Pointers.Pointer :=
+        librdf_node_get_counted_blank_identifier(Get_Handle(Node), Length'Unchecked_Access);
+   begin
+      return Value_With_Possible_NULs(Buffer, Length);
    end;
 
 end RDF.Redland.Node;
