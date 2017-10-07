@@ -18,6 +18,10 @@ package RDF.Redland.Node is
                                                   ID: String)
                                                   return Node_Type;
 
-   -- TODO: Stopped at librdf_new_node_from_counted_uri_string()
+   not overriding function From_URI_String (World: Redland_World_Type_Without_Finalize'Class;
+                                            URI: String)
+                                            return Node_Type;
+
+   -- TODO: Stopped at librdf_new_node_from_literal()
 
 end RDF.Redland.Node;

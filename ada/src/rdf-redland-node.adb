@@ -42,4 +42,19 @@ package body RDF.Redland.Node is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_new_node_from_counted_uri_string (World: Redland_World_Handle;
+                                                     Pointer: char_array;
+                                                     Len: size_t)
+                                                     return Node_Handle
+     with Import, Convention=>C;
+
+   function From_URI_String (World: Redland_World_Type_Without_Finalize'Class;
+                             URI: String)
+                             return Node_Type is
+      Handle: constant Node_Handle :=
+        librdf_new_node_from_counted_uri_string(Get_Handle(World), To_C(URI), URI'Length);
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.Node;
