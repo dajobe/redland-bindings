@@ -226,4 +226,33 @@ package body RDF.Redland.Node is
       return Positive(Result);
    end;
 
+   function librdf_node_get_literal_value_as_counted_string (Node: Node_Handle;
+                                                             Length: Size_T_P)
+                                                             return RDF.Auxiliary.C_Pointers.Pointer
+     with Import, Convention=>C;
+
+   function As_String (Node: Node_Type_Without_Finalize) return String is
+      Length: aliased size_t;
+      Buffer: constant RDF.Auxiliary.C_Pointers.Pointer :=
+        librdf_node_get_literal_value_as_counted_string(Get_Handle(Node), Length'Unchecked_Access);
+      use RDF.Auxiliary.C_Pointers;
+   begin
+      if Buffer = null then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Value_With_Possible_NULs(Buffer, Length);
+   end;
+
+   function librdf_node_get_literal_value_as_latin1 (Node: Node_Handle) return chars_ptr
+     with Import, Convention=>C;
+
+   function As_Latin1 (Node: Node_Type_Without_Finalize) return String is
+      Result: constant chars_ptr := librdf_node_get_literal_value_as_latin1(Get_Handle(Node));
+   begin
+      if Result = Null_Ptr then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Value(Result);
+   end;
+
 end RDF.Redland.Node;

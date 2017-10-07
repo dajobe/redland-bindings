@@ -21,7 +21,11 @@ package RDF.Redland.Node is
 
    not overriding function Get_Li_Ordinal (Node: Node_Type_Without_Finalize) return Positive;
 
-   -- TODO: Stopped at librdf_node_get_literal_value_as_counted_string()
+   not overriding function As_String (Node: Node_Type_Without_Finalize) return String;
+
+   not overriding function As_Latin1 (Node: Node_Type_Without_Finalize) return String;
+
+   -- TODO: Stopped at librdf_node_get_literal_value_datatype_uri()
 
    type Node_Type is new Node_Type_Without_Finalize with null record;
 
