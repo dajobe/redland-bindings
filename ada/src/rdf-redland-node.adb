@@ -49,10 +49,10 @@ package body RDF.Redland.Node is
      with Import, Convention=>C;
 
    function From_URI_String (World: Redland_World_Type_Without_Finalize'Class;
-                             URI: String)
+                             URI: URI_String)
                              return Node_Type is
       Handle: constant Node_Handle :=
-        librdf_new_node_from_counted_uri_string(Get_Handle(World), To_C(URI), URI'Length);
+        librdf_new_node_from_counted_uri_string(Get_Handle(World), To_C(String(URI)), URI'Length);
    begin
       return From_Non_Null_Handle(Handle);
    end;
@@ -95,12 +95,12 @@ package body RDF.Redland.Node is
      with Import, Convention=>C;
 
    function From_Normalised_URI_String (World: Redland_World_Type_Without_Finalize'Class;
-                                        URI_String: String;
+                                        URI: URI_String;
                                         Source_URI, Base_URI: URI_Type_Without_Finalize'Class)
                                         return Node_Type is
       Handle: constant Node_Handle :=
         librdf_new_node_from_normalised_uri_string(Get_Handle(World),
-                                                   My_To_C_Without_Nul(URI_String),
+                                                   My_To_C_Without_Nul(String(URI)),
                                                    Get_Handle(Source_URI),
                                                    Get_Handle(Base_URI));
    begin
@@ -129,6 +129,35 @@ package body RDF.Redland.Node is
                                                    size_t(Language'Length),
                                                    Get_Handle(Datatype));
 
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
+   function librdf_new_node_from_uri (World: Redland_World_Handle; URI: URI_Handle)
+                                      return Node_Handle
+     with Import, Convention=>C;
+
+   function From_URI (World: Redland_World_Type_Without_Finalize'Class;
+                      URI: URI_Type_Without_Finalize'Class)
+                      return Node_Type is
+   begin
+      return From_Non_Null_Handle(librdf_new_node_from_uri(Get_Handle(World), Get_Handle(URI)));
+   end;
+
+   function librdf_new_node_from_uri_local_name (World: Redland_World_Handle;
+                                                 URI: URI_Handle;
+                                                 Local_Name: char_array)
+                                                 return Node_Handle
+     with Import, Convention=>C;
+
+   function From_URI_Local_Name (World: Redland_World_Type_Without_Finalize'Class;
+                                 URI: URI_Type_Without_Finalize'Class;
+                                 Local_Name: String)
+                                 return Node_Type is
+      Handle: constant Node_Handle :=
+        librdf_new_node_from_uri_local_name(Get_Handle(World),
+                                            Get_Handle(URI),
+                                            My_To_C_Without_Nul(Local_Name));
    begin
       return From_Non_Null_Handle(Handle);
    end;

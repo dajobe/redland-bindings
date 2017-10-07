@@ -22,7 +22,7 @@ package RDF.Redland.Node is
                                                   return Node_Type;
 
    not overriding function From_URI_String (World: Redland_World_Type_Without_Finalize'Class;
-                                            URI: String)
+                                            URI: URI_String)
                                             return Node_Type;
 
    not overriding function From_Literal (World: Redland_World_Type_Without_Finalize'Class;
@@ -32,16 +32,24 @@ package RDF.Redland.Node is
                                          return Node_Type;
 
    not overriding function From_Normalised_URI_String (World: Redland_World_Type_Without_Finalize'Class;
-                                                       URI_String: String;
+                                                       URI: URI_String;
                                                        Source_URI, Base_URI: URI_Type_Without_Finalize'Class)
                                                        return Node_Type;
 
-   not overriding function From_Typed_Literal (World: Redland_World_Type_Without_Finalize'Class;
-                                               Text: String;
+   not overriding function From_Typed_Literal (World: Redland_World_Type_Without_Finalize'Class;                                               Text: String;
                                                Language: String;
                                                Datatype: URI_Type_Without_Finalize'Class)
                                                return Node_Type;
 
-   -- TODO: Stopped at librdf_new_node_from_uri()
+   not overriding function From_URI (World: Redland_World_Type_Without_Finalize'Class;
+                                     URI: URI_Type_Without_Finalize'Class)
+                                     return Node_Type;
+
+   not overriding function From_URI_Local_Name (World: Redland_World_Type_Without_Finalize'Class;
+                                                URI: URI_Type_Without_Finalize'Class;
+                                                Local_Name: String)
+                                                return Node_Type;
+
+   -- TODO: Stopped at librdf_node_decode()
 
 end RDF.Redland.Node;
