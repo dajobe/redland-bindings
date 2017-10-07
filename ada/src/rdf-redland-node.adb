@@ -88,4 +88,23 @@ package body RDF.Redland.Node is
       end if;
    end;
 
+   function librdf_new_node_from_normalised_uri_string (World: Redland_World_Handle;
+                                                        URI_String: char_array;
+                                                        Source_URI, Base_URI: URI_Handle)
+                                                        return Node_Handle
+     with Import, Convention=>C;
+
+   function From_Normalised_URI_String (World: Redland_World_Type_Without_Finalize'Class;
+                                        URI_String: String;
+                                        Source_URI, Base_URI: URI_Type_Without_Finalize'Class)
+                                        return Node_Type is
+      Handle: constant Node_Handle :=
+        librdf_new_node_from_normalised_uri_string(Get_Handle(World),
+                                                   My_To_C_Without_Nul(URI_String),
+                                                   Get_Handle(Source_URI),
+                                                   Get_Handle(Base_URI));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.Node;

@@ -1,4 +1,5 @@
 with RDF.Redland.World; use RDF.Redland.World;
+with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Term;
 
 package RDF.Redland.Node is
@@ -30,6 +31,11 @@ package RDF.Redland.Node is
                                          Is_XML: Boolean := False)
                                          return Node_Type;
 
-   -- TODO: Stopped at librdf_new_node_from_normalised_uri_string()
+   not overriding function From_Normalised_URI_String (World: Redland_World_Type_Without_Finalize'Class;
+                                                       URI_String: String;
+                                                       Source_URI, Base_URI: URI_Type_Without_Finalize'Class)
+                                                       return Node_Type;
+
+   -- TODO: Stopped at librdf_new_node_from_typed_counted_literal()
 
 end RDF.Redland.Node;
