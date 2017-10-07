@@ -8,6 +8,10 @@ package RDF.Redland.Node is
 
    type Node_Type_Without_Finalize is new RDF.Raptor.Term.Term_Type_Without_Finalize with null record;
 
+   not overriding function Encode (Node: Node_Type_Without_Finalize) return String;
+
+   -- TODO: Stopped at librdf_node_equals()
+
    type Node_Type is new Node_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle (Object: Node_Type; Handle: Node_Handle);
@@ -50,6 +54,8 @@ package RDF.Redland.Node is
                                                 Local_Name: String)
                                                 return Node_Type;
 
-   -- TODO: Stopped at librdf_node_decode()
+   not overriding function Decode (World: Redland_World_Type_Without_Finalize'Class;
+                                   Buffer: String)
+                                   return Node_Type;
 
 end RDF.Redland.Node;

@@ -162,4 +162,33 @@ package body RDF.Redland.Node is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_node_decode (World: Redland_World_Handle;
+                                Size_P: chars_ptr;
+                                Buffer: char_array;
+                                Length: size_t)
+                                return Node_Handle
+     with Import, Convention=>C;
+
+   function Decode (World: Redland_World_Type_Without_Finalize'Class;
+                    Buffer: String)
+                    return Node_Type is
+      Handle: constant Node_Handle :=
+        librdf_node_decode(Get_Handle(World), Null_Ptr, My_To_C_Without_Nul(Buffer), Buffer'Length);
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
+   function librdf_node_encode (Node: Node_Handle; Buffer: char_array_access; Length: size_t) return size_t
+     with Import, Convention=>C;
+
+   function Encode (Node: Node_Type_Without_Finalize) return String is
+      Length: constant size_t := librdf_node_encode(Get_Handle(Node), null, 0);
+--        Buffer: aliased char_array(1..Length); -- GNAT 7.2.0 produces a warning
+      Buffer: aliased char_array := (1..Length => NUL); --
+      Length2: constant size_t := librdf_node_encode(Get_Handle(Node), Buffer'Unchecked_Access, Length);
+      pragma Unreferenced(Length2);
+   begin
+      return To_Ada(Buffer, Trim_Nul=>False);
+   end;
+
 end RDF.Redland.Node;
