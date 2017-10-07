@@ -13,6 +13,11 @@ package RDF.Redland.Node is
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Node_Type;
 
+   -- "No identifier" is signified by empty string
+   not overriding function From_Blank_Identifier (World: Redland_World_Type_Without_Finalize'Class;
+                                                  ID: String)
+                                                  return Node_Type;
+
    -- TODO: Stopped at librdf_new_node_from_blank_identifier()
 
 end RDF.Redland.Node;
