@@ -11,6 +11,8 @@ package RDF.Redland.Node is
 
    overriding procedure Finalize_Handle (Object: Node_Type; Handle: Node_Handle);
 
+   overriding procedure Adjust (Object: in out Node_Type);
+
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Node_Type;
 
    -- "No identifier" is signified by empty string
@@ -28,6 +30,6 @@ package RDF.Redland.Node is
                                          Is_XML: Boolean := False)
                                          return Node_Type;
 
-   -- TODO: Stopped at librdf_new_node_from_node()
+   -- TODO: Stopped at librdf_new_node_from_normalised_uri_string()
 
 end RDF.Redland.Node;

@@ -77,4 +77,15 @@ package body RDF.Redland.Node is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_new_node_from_node (Node: Node_Handle) return Node_Handle
+     with Import, Convention=>C;
+
+   procedure Adjust (Object: in out Node_Type) is
+      use RDF.Raptor.Term;
+   begin
+      if Get_Handle(Object) /= null then
+         Set_Handle_Hack(Object, librdf_new_node_from_node(Get_Handle(Object)));
+      end if;
+   end;
+
 end RDF.Redland.Node;

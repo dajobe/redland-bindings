@@ -156,7 +156,7 @@ package body RDF.Raptor.Term is
    procedure Adjust (Object: in out Term_Type) is
    begin
       if Get_Handle(Object) /= null then
-         Set_Handle_Hack(Object, Raptor_Term_Copy(Get_Handle(Object)));
+         Set_Handle_Hack(Object, raptor_term_copy(Get_Handle(Object)));
       end if;
    end;
 
