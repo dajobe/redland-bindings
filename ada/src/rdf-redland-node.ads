@@ -22,6 +22,12 @@ package RDF.Redland.Node is
                                             URI: String)
                                             return Node_Type;
 
-   -- TODO: Stopped at librdf_new_node_from_literal()
+   not overriding function From_Literal (World: Redland_World_Type_Without_Finalize'Class;
+                                         Text: String;
+                                         Language: String;
+                                         Is_XML: Boolean := False)
+                                         return Node_Type;
+
+   -- TODO: Stopped at librdf_new_node_from_node()
 
 end RDF.Redland.Node;

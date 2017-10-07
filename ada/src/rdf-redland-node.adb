@@ -57,4 +57,24 @@ package body RDF.Redland.Node is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_new_node_from_literal (World: Redland_World_Handle;
+                                          Text, Language: char_array;
+                                          Is_XML: int)
+                                          return Node_Handle
+     with Import, Convention=>C;
+
+   function From_Literal (World: Redland_World_Type_Without_Finalize'Class;
+                          Text: String;
+                          Language: String;
+                          Is_XML: Boolean := False)
+                          return Node_Type is
+      Handle: constant Node_Handle :=
+        librdf_new_node_from_literal(Get_Handle(World),
+                                     My_To_C_Without_Nul(Text),
+                                     My_To_C_Without_Nul(Language),
+                                     (if Is_XML then 1 else 0));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.Node;
