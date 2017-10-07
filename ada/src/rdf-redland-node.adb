@@ -191,4 +191,12 @@ package body RDF.Redland.Node is
       return To_Ada(Buffer, Trim_Nul=>False);
    end;
 
+   function librdf_node_equals (Left, Right: Node_Handle) return int
+     with Import, Convention=>C;
+
+   function Equals (Left, Right: Node_Type_Without_Finalize) return Boolean is
+   begin
+      return librdf_node_equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
+   end;
+
 end RDF.Redland.Node;

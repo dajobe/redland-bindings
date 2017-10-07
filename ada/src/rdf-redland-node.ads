@@ -10,7 +10,12 @@ package RDF.Redland.Node is
 
    not overriding function Encode (Node: Node_Type_Without_Finalize) return String;
 
-   -- TODO: Stopped at librdf_node_equals()
+   overriding function Equals (Left, Right: Node_Type_Without_Finalize) return Boolean;
+
+   overriding function "=" (Left, Right: Node_Type_Without_Finalize) return Boolean
+                            renames Equals;
+
+   -- TODO: Stopped at librdf_node_get_blank_identifier()
 
    type Node_Type is new Node_Type_Without_Finalize with null record;
 
