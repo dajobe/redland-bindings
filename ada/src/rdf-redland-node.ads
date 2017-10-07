@@ -1,3 +1,4 @@
+with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Raptor.Term;
 
 package RDF.Redland.Node is
@@ -10,6 +11,8 @@ package RDF.Redland.Node is
 
    overriding procedure Finalize_Handle (Object: Node_Type; Handle: Node_Handle);
 
-   -- TODO: Stopped at librdf_new_node()
+   not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Node_Type;
+
+   -- TODO: Stopped at librdf_new_node_from_blank_identifier()
 
 end RDF.Redland.Node;

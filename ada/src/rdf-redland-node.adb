@@ -8,4 +8,12 @@ package body RDF.Redland.Node is
       librdf_free_node(Handle);
    end;
 
+   function librdf_new_node (World: Redland_World_Handle) return Node_Handle
+     with Import, Convention=>C;
+
+   function Create (World: Redland_World_Type_Without_Finalize'Class) return Node_Type is
+   begin
+      return From_Non_Null_Handle(librdf_new_node(Get_Handle(World)));
+   end;
+
 end RDF.Redland.Node;
