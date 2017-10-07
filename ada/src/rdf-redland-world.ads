@@ -33,7 +33,7 @@ package RDF.Redland.World is
    not overriding procedure Set_Digest (World: Redland_World_Type_Without_Finalize; Name: String);
 
    -- TODO: Stopped at librdf_world_get_feature(), will continue after RDF.Redland.Node
---     not overriding function Get_Feature (World: Redland_World_Type_Without_Finalize; Feature: URI_Type_Without_Finalize'Class)
+--     not overriding function Get_Feature (World: Redland_World_Type_Without_Finalize; Feature: URI_Type_Without_Finalize'Class) return Node_Type;
 
    type Redland_World_Type is new Redland_World_Type_Without_Finalize with null record;
 
