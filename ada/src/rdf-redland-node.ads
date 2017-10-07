@@ -4,6 +4,8 @@ with RDF.Raptor.Term;
 
 package RDF.Redland.Node is
 
+   -- TODO: Add subtypes with dynamic predicates here and in RDF.Raptor.Term
+
    subtype Node_Handle is RDF.Raptor.Term.Term_Handle;
 
    type Node_Type_Without_Finalize is new RDF.Raptor.Term.Term_Type_Without_Finalize with null record;
