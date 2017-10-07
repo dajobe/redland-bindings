@@ -1,3 +1,5 @@
+with Interfaces.C; use Interfaces.C;
+
 package body RDF.Redland.World is
 
    function librdf_new_world return Redland_World_Handle
@@ -66,6 +68,14 @@ package body RDF.Redland.World is
                         return Raptor_World_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle(librdf_world_get_raptor(Get_Handle(World)));
+   end;
+
+   procedure librdf_world_set_digest (World: Redland_World_Handle; Name: char_array)
+     with Import, Convention=>C;
+
+   procedure Set_Digest (World: Redland_World_Type_Without_Finalize; Name: String) is
+   begin
+      librdf_world_set_digest(Get_Handle(World), To_C(Name));
    end;
 
 end RDF.Redland.World;
