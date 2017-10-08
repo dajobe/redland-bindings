@@ -13,6 +13,8 @@ package RDF.Redland.URI is
 
    overriding procedure Adjust(Object: in out URI_Type);
 
+   overriding procedure Finalize_Handle(Object: URI_Type; Handle: URI_Handle);
+
    not overriding function From_String (World: Redland_World_Type_Without_Finalize'Class; URI: URI_String)
                                         return URI_Type;
 

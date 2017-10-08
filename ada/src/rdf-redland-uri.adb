@@ -39,5 +39,13 @@ package body RDF.Redland.URI is
       return From_Non_Null_Handle(Handle);
    end;
 
+   procedure librdf_free_uri (Handle: URI_Handle)
+     with Import, Convention=>C;
+
+   procedure Finalize_Handle(Object: URI_Type; Handle: URI_Handle) is
+   begin
+      librdf_free_uri (Handle);
+   end;
+
 
 end RDF.Redland.URI;
