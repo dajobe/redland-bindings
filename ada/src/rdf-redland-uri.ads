@@ -8,13 +8,15 @@ package RDF.Redland.URI is
 
    subtype URI_Handle is RDF.Raptor.URI.URI_Handle;
 
-   type URI_Type_Without_Finalize is new RDF.Raptor.URI.URI_Type_Without_Finalize with null record;
+   -- TODO: Define the same way Node_Type
+   type URI_Type_Without_Finalize is new RDF.Raptor.URI.URI_Handled_Record.Base_Object with null record;
+   -- TODO: Convert to/from RDF.Raptor.URI.URI_Type (and also for Node_Type)
 
    not overriding function As_String (URI: URI_Type_Without_Finalize) return String;
 
-   overriding procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
+   not overriding procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
 
-   overriding function Equals (Left, Right: URI_Type_Without_Finalize) return Boolean;
+   not overriding function Equals (Left, Right: URI_Type_Without_Finalize) return Boolean;
 
    overriding function "=" (Left, Right: URI_Type_Without_Finalize) return Boolean
                             renames Equals;
@@ -33,5 +35,6 @@ package RDF.Redland.URI is
                                                 return URI_Type;
 
    -- TODO: Stopped at librdf_uri_is_file_uri()
+
 
 end RDF.Redland.URI;
