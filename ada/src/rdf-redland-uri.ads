@@ -9,6 +9,8 @@ package RDF.Redland.URI is
 
    type URI_Type_Without_Finalize is new RDF.Raptor.URI.URI_Type_Without_Finalize with null record;
 
+   not overriding function As_String (URI: URI_Type_Without_Finalize) return String;
+
    type URI_Type is new URI_Type_Without_Finalize with null record;
 
    overriding procedure Adjust(Object: in out URI_Type);
@@ -22,6 +24,6 @@ package RDF.Redland.URI is
                                                 Local_Name: String)
                                                 return URI_Type;
 
-   -- TODO: Stopped at librdf_uri_as_counted_string()
+   -- TODO: Stopped at librdf_uri_print()
 
 end RDF.Redland.URI;

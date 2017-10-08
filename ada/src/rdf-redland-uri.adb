@@ -1,5 +1,7 @@
 with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary;
+with RDF.Auxiliary.C_Pointers;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Redland.URI is
 
@@ -47,5 +49,18 @@ package body RDF.Redland.URI is
       librdf_free_uri (Handle);
    end;
 
+   type Size_T_P is access all size_t with Convention=>C;
+
+   function librdf_uri_as_counted_string(URI: URI_Handle; Length: Size_T_P)
+                                         return RDF.Auxiliary.C_Pointers.Pointer
+     with Import, Convention=>C;
+
+   function As_String (URI: URI_Type_Without_Finalize) return String is
+      Length: aliased size_t;
+      Str: constant RDF.Auxiliary.C_Pointers.Pointer :=
+        librdf_uri_as_counted_string(Get_Handle(URI), Length'Unchecked_Access);
+   begin
+      return Value_With_Possible_NULs(Str, Length);
+   end;
 
 end RDF.Redland.URI;
