@@ -1,3 +1,4 @@
+with RDF.Auxiliary;
 with RDF.Raptor.URI;
 with RDF.Redland.World; use RDF.Redland.World;
 
@@ -10,6 +11,13 @@ package RDF.Redland.URI is
    type URI_Type_Without_Finalize is new RDF.Raptor.URI.URI_Type_Without_Finalize with null record;
 
    not overriding function As_String (URI: URI_Type_Without_Finalize) return String;
+
+   overriding procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
+
+   overriding function Equals (Left, Right: URI_Type_Without_Finalize) return Boolean;
+
+   overriding function "=" (Left, Right: URI_Type_Without_Finalize) return Boolean
+                            renames Equals;
 
    type URI_Type is new URI_Type_Without_Finalize with null record;
 
@@ -24,6 +32,6 @@ package RDF.Redland.URI is
                                                 Local_Name: String)
                                                 return URI_Type;
 
-   -- TODO: Stopped at librdf_uri_print()
+   -- TODO: Stopped at librdf_uri_is_file_uri()
 
 end RDF.Redland.URI;

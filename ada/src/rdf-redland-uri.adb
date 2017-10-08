@@ -63,4 +63,20 @@ package body RDF.Redland.URI is
       return Value_With_Possible_NULs(Str, Length);
    end;
 
+   procedure librdf_uri_print (URI: URI_Handle; File: RDF.Auxiliary.C_File_Access)
+     with Import, Convention=>C;
+
+   procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
+   begin
+      librdf_uri_print(Get_Handle(URI), File);
+   end;
+
+   function librdf_uri_equals (Left, Right: URI_Handle) return int
+     with Import, Convention=>C;
+
+   function Equals (Left, Right: URI_Type_Without_Finalize) return Boolean is
+   begin
+      return librdf_uri_equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
+   end;
+
 end RDF.Redland.URI;
