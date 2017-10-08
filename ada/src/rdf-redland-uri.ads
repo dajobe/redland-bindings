@@ -22,6 +22,6 @@ package RDF.Redland.URI is
                                                 Local_Name: String)
                                                 return URI_Type;
 
-   -- TODO: Stopped at librdf_free_uri()
+   -- TODO: Stopped at librdf_uri_as_counted_string()
 
 end RDF.Redland.URI;
