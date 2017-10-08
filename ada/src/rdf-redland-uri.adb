@@ -26,4 +26,18 @@ package body RDF.Redland.URI is
       end if;
    end;
 
+   function librdf_new_uri_from_uri_local_name (Old_URI: URI_Handle; Local_Name: char_array)
+                                                return URI_Handle
+     with Import, Convention=>C;
+
+   function From_URI_Local_Name (Old_URI: URI_Type_Without_Finalize'Class;
+                                 Local_Name: String)
+                                 return URI_Type is
+      Handle: constant URI_Handle :=
+        librdf_new_uri_from_uri_local_name(Get_Handle(Old_URI), To_C(Local_Name));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
+
 end RDF.Redland.URI;

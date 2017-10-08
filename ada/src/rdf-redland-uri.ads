@@ -16,6 +16,10 @@ package RDF.Redland.URI is
    not overriding function From_String (World: Redland_World_Type_Without_Finalize'Class; URI: URI_String)
                                         return URI_Type;
 
-   -- TODO: Stopped at librdf_new_uri_from_uri_local_name()
+   not overriding function From_URI_Local_Name (Old_URI: URI_Type_Without_Finalize'Class;
+                                                Local_Name: String)
+                                                return URI_Type;
+
+   -- TODO: Stopped at librdf_free_uri()
 
 end RDF.Redland.URI;
