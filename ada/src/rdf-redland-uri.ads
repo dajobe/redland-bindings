@@ -11,9 +11,11 @@ package RDF.Redland.URI is
 
    type URI_Type is new URI_Type_Without_Finalize with null record;
 
+   overriding procedure Adjust(Object: in out URI_Type);
+
    not overriding function From_String (World: Redland_World_Type_Without_Finalize'Class; URI: URI_String)
                                         return URI_Type;
 
-   -- TODO: Stopped at librdf_new_uri_from_uri()
+   -- TODO: Stopped at librdf_new_uri_from_uri_local_name()
 
 end RDF.Redland.URI;
