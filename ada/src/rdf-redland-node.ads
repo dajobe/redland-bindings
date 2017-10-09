@@ -31,7 +31,9 @@ package RDF.Redland.Node is
 
    not overriding function Get_Datatype_URI (Node: Node_Type_Without_Finalize) return URI_Type_Without_Finalize;
 
-   -- TODO: Stopped at librdf_node_get_literal_value_is_wf_xml()
+   not overriding function Is_WF_XML (Node: Node_Type_Without_Finalize) return Boolean;
+
+   -- TODO: Stopped at librdf_node_get_literal_value_language()
 
    type Node_Type is new Node_Type_Without_Finalize with null record;
 

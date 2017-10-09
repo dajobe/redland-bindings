@@ -272,4 +272,12 @@ package body RDF.Redland.Node is
       return From_Handle(librdf_node_get_literal_value_datatype_uri(Get_Handle(Node)));
    end;
 
+   function librdf_node_get_literal_value_is_wf_xml (Node: Node_Handle) return int
+     with Import, Convention=>C;
+
+   function Is_WF_XML (Node: Node_Type_Without_Finalize) return Boolean is
+   begin
+      return librdf_node_get_literal_value_is_wf_xml(Get_Handle(Node)) /= 0;
+   end;
+
 end RDF.Redland.Node;
