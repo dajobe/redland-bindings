@@ -23,6 +23,13 @@ package RDF.Redland.URI is
    overriding function "=" (Left, Right: URI_Type_Without_Finalize) return Boolean
                             renames Equals;
 
+   -- TODO: Create subtypes with dynamic predicate?
+   not overriding function Is_File_URI (URI: URI_Type_Without_Finalize) return Boolean;
+
+   not overriding function To_Filename (URI: URI_Type_Without_Finalize) return String;
+
+   -- TODO: Stopped at librdf_new_uri_normalised_to_base()
+
    type URI_Type is new URI_Type_Without_Finalize with null record;
 
    overriding procedure Adjust(Object: in out URI_Type);
@@ -35,8 +42,5 @@ package RDF.Redland.URI is
    not overriding function From_URI_Local_Name (Old_URI: URI_Type_Without_Finalize'Class;
                                                 Local_Name: String)
                                                 return URI_Type;
-
-   -- TODO: Stopped at librdf_uri_is_file_uri()
-
 
 end RDF.Redland.URI;

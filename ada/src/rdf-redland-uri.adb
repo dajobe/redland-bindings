@@ -1,7 +1,9 @@
 with Interfaces.C; use Interfaces.C;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
 with RDF.Auxiliary.C_Pointers;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
+with RDF.Redland.Memory;
 
 package body RDF.Redland.URI is
 
@@ -89,6 +91,25 @@ package body RDF.Redland.URI is
    function Equals (Left, Right: URI_Type_Without_Finalize) return Boolean is
    begin
       return librdf_uri_equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
+   end;
+
+   function librdf_uri_is_file_uri (URI: URI_Handle) return int
+     with Import, Convention=>C;
+
+   function Is_File_URI (URI: URI_Type_Without_Finalize) return Boolean is
+   begin
+      return librdf_uri_is_file_uri(Get_Handle(URI)) /= 0;
+   end;
+
+   function librdf_uri_to_filename (URI: URI_Handle) return chars_ptr
+     with Import, Convention=>C;
+
+   function To_Filename (URI: URI_Type_Without_Finalize) return String is
+      Pointer: constant chars_ptr := librdf_uri_to_filename(Get_Handle(URI));
+      Result: constant String := Value(Pointer);
+   begin
+      RDF.Redland.Memory.redland_free_memory(Pointer);
+      return Result;
    end;
 
 end RDF.Redland.URI;
