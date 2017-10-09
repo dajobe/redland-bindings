@@ -29,7 +29,9 @@ package RDF.Redland.Node is
 
    not overriding function As_Latin1 (Node: Node_Type_Without_Finalize) return String;
 
-   -- TODO: Stopped at librdf_node_get_literal_value_datatype_uri()
+   not overriding function Get_Datatype_URI (Node: Node_Type_Without_Finalize) return URI_Type_Without_Finalize;
+
+   -- TODO: Stopped at librdf_node_get_literal_value_is_wf_xml()
 
    type Node_Type is new Node_Type_Without_Finalize with null record;
 

@@ -264,4 +264,12 @@ package body RDF.Redland.Node is
       return Value(Result);
    end;
 
+   function librdf_node_get_literal_value_datatype_uri (Node: Node_Handle) return URI_Handle
+     with Import, Convention=>C;
+
+   function Get_Datatype_URI (Node: Node_Type_Without_Finalize) return URI_Type_Without_Finalize is
+   begin
+      return From_Handle(librdf_node_get_literal_value_datatype_uri(Get_Handle(Node)));
+   end;
+
 end RDF.Redland.Node;
