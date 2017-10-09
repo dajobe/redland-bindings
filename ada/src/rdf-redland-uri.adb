@@ -149,4 +149,12 @@ package body RDF.Redland.URI is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_uri_compare (URI1, URI2: URI_Handle) return int
+     with Import, Convention=>C;
+
+   function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result is
+   begin
+      return RDF.Auxiliary.Comparison_Result (librdf_uri_compare (Get_Handle(URI1), Get_Handle(URI2)));
+   end;
+
 end RDF.Redland.URI;

@@ -23,6 +23,8 @@ package RDF.Redland.URI is
    overriding function "=" (Left, Right: URI_Type_Without_Finalize) return Boolean
                             renames Equals;
 
+   not overriding function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result;
+
    -- TODO: Create subtypes with dynamic predicate?
    not overriding function Is_File_URI (URI: URI_Type_Without_Finalize) return Boolean;
 
@@ -53,6 +55,6 @@ package RDF.Redland.URI is
                                           Filename: String)
                                           return URI_Type;
 
-   -- TODO: Stopped at librdf_uri_compare()
+   -- TODO: Stopped at librdf_uri_filter_func()
 
 end RDF.Redland.URI;
