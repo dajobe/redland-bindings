@@ -55,6 +55,4 @@ package RDF.Redland.URI is
                                           Filename: String)
                                           return URI_Type;
 
-   -- TODO: Stopped at librdf_uri_filter_func()
-
 end RDF.Redland.URI;
