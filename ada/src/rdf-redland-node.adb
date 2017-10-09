@@ -5,6 +5,16 @@ with RDF.Auxiliary.C_Pointers;
 
 package body RDF.Redland.Node is
 
+   function To_Raptor (Node: Node_Type_Without_Finalize'Class) return Term_Type_Without_Finalize is
+   begin
+      return From_Handle(Get_Handle(Node));
+   end;
+
+   function From_Raptor (Term: Term_Type_Without_Finalize'Class) return Node_Type_Without_Finalize is
+   begin
+      return From_Handle(Get_Handle(Term));
+   end;
+
    procedure librdf_free_node (Node: Node_Handle)
      with Import, Convention=>C;
 
@@ -82,7 +92,6 @@ package body RDF.Redland.Node is
      with Import, Convention=>C;
 
    procedure Adjust (Object: in out Node_Type) is
-      use RDF.Raptor.Term;
    begin
       if Get_Handle(Object) /= null then
          Set_Handle_Hack(Object, librdf_new_node_from_node(Get_Handle(Object)));

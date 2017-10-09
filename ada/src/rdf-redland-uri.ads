@@ -8,9 +8,11 @@ package RDF.Redland.URI is
 
    subtype URI_Handle is RDF.Raptor.URI.URI_Handle;
 
-   -- TODO: Define the same way Node_Type
    type URI_Type_Without_Finalize is new RDF.Raptor.URI.URI_Handled_Record.Base_Object with null record;
-   -- TODO: Convert to/from RDF.Raptor.URI.URI_Type (and also for Node_Type)
+
+   function To_Raptor (URI: URI_Type_Without_Finalize'Class) return RDF.Raptor.URI.URI_Type_Without_Finalize;
+
+   not overriding function From_Raptor (URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize;
 
    not overriding function As_String (URI: URI_Type_Without_Finalize) return String;
 

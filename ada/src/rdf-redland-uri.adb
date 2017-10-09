@@ -5,6 +5,18 @@ with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Redland.URI is
 
+   function To_Raptor (URI: URI_Type_Without_Finalize'Class) return RDF.Raptor.URI.URI_Type_Without_Finalize is
+      use RDF.Raptor.URI;
+   begin
+      return From_Handle(Get_Handle(URI));
+   end;
+
+   function From_Raptor (URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize is
+      use RDF.Raptor.URI;
+   begin
+      return From_Handle(Get_Handle(URI));
+   end;
+
    function librdf_new_uri2 (World: Redland_World_Handle; URI: char_array; Length: size_t)
                              return URI_Handle
      with Import, Convention=>C;

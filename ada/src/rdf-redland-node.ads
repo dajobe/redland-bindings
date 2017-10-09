@@ -1,20 +1,23 @@
 with RDF.Redland.World; use RDF.Redland.World;
-with RDF.Raptor.URI; use RDF.Raptor.URI;
-with RDF.Raptor.Term;
+with RDF.Redland.URI; use RDF.Redland.URI;
+with RDF.Raptor.Term; use RDF.Raptor.Term;
 
 package RDF.Redland.Node is
-
-   -- FIXME: Use RDF.Redland.URI.URI_Type instead of RDF.Raptor.URI.URI_Type
 
    -- TODO: Add subtypes with dynamic predicates here and in RDF.Raptor.Term
 
    subtype Node_Handle is RDF.Raptor.Term.Term_Handle;
 
-   type Node_Type_Without_Finalize is new RDF.Raptor.Term.Term_Type_Without_Finalize with null record;
+   type Node_Type_Without_Finalize is new RDF.Raptor.Term.Term_Handled_Record.Base_Object with null record;
+
+
+   function To_Raptor (Node: Node_Type_Without_Finalize'Class) return Term_Type_Without_Finalize;
+
+   not overriding function From_Raptor (Term: Term_Type_Without_Finalize'Class) return Node_Type_Without_Finalize;
 
    not overriding function Encode (Node: Node_Type_Without_Finalize) return String;
 
-   overriding function Equals (Left, Right: Node_Type_Without_Finalize) return Boolean;
+   not overriding function Equals (Left, Right: Node_Type_Without_Finalize) return Boolean;
 
    overriding function "=" (Left, Right: Node_Type_Without_Finalize) return Boolean
                             renames Equals;
