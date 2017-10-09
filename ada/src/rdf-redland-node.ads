@@ -10,7 +10,6 @@ package RDF.Redland.Node is
 
    type Node_Type_Without_Finalize is new RDF.Raptor.Term.Term_Handled_Record.Base_Object with null record;
 
-
    function To_Raptor (Node: Node_Type_Without_Finalize'Class) return Term_Type_Without_Finalize;
 
    not overriding function From_Raptor (Term: Term_Type_Without_Finalize'Class) return Node_Type_Without_Finalize;
