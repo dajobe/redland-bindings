@@ -137,4 +137,16 @@ package body RDF.Redland.URI is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_new_uri_from_filename (World: Redland_World_Handle; Filename: char_array) return URI_Handle
+     with Import, Convention=>C;
+
+   function From_Filename (World: Redland_World_Type_Without_Finalize'Class;
+                           Filename: String)
+                           return URI_Type is
+      Handle: constant URI_Handle :=
+        librdf_new_uri_from_filename(Get_Handle(World), To_C(Filename));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.URI;
