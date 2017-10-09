@@ -112,4 +112,29 @@ package body RDF.Redland.URI is
       return Result;
    end;
 
+   function librdf_new_uri_normalised_to_base (URI_Str: char_array; Source_URI, Base_URI: URI_Handle)
+                                               return URI_Handle
+     with Import, Convention=>C;
+
+   function Normalised_To_Base (URI_Str: URI_String;
+                                Source_URI, Base_URI: URI_Type_Without_Finalize'Class)
+                                return URI_Type is
+      Handle: constant URI_Handle :=
+        librdf_new_uri_normalised_to_base(To_C(String(URI_Str)), Get_Handle(Source_URI), Get_Handle(Base_URI));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
+   function librdf_new_uri_relative_to_base (Base_URI: URI_Handle; Str: char_array) return URI_Handle
+     with Import, Convention=>C;
+
+   function Relative_To_Base (Base_URI: URI_Type_Without_Finalize'Class;
+                              Str: URI_String)
+                              return URI_Type is
+      Handle: constant URI_Handle :=
+        librdf_new_uri_relative_to_base(Get_Handle(Base_URI), To_C(String(Str)));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.URI;

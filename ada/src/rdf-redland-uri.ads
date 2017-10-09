@@ -28,8 +28,6 @@ package RDF.Redland.URI is
 
    not overriding function To_Filename (URI: URI_Type_Without_Finalize) return String;
 
-   -- TODO: Stopped at librdf_new_uri_normalised_to_base()
-
    type URI_Type is new URI_Type_Without_Finalize with null record;
 
    overriding procedure Adjust(Object: in out URI_Type);
@@ -42,5 +40,14 @@ package RDF.Redland.URI is
    not overriding function From_URI_Local_Name (Old_URI: URI_Type_Without_Finalize'Class;
                                                 Local_Name: String)
                                                 return URI_Type;
+
+   not overriding function Normalised_To_Base (URI_Str: URI_String;
+                                               Source_URI, Base_URI: URI_Type_Without_Finalize'Class)
+                                               return URI_Type;
+
+   not overriding function Relative_To_Base (Base_URI: URI_Type_Without_Finalize'Class; Str: URI_String)
+                                             return URI_Type;
+
+   -- TODO: Stopped at librdf_new_uri_from_filename()
 
 end RDF.Redland.URI;
