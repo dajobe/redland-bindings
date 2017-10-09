@@ -88,7 +88,7 @@ package body RDF.Redland.URI is
    function librdf_uri_equals (Left, Right: URI_Handle) return int
      with Import, Convention=>C;
 
-   function Equals (Left, Right: URI_Type_Without_Finalize) return Boolean is
+   function Equals (Left, Right: URI_Type_Without_Finalize'Class) return Boolean is
    begin
       return librdf_uri_equals(Get_Handle(Left), Get_Handle(Right)) /= 0;
    end;

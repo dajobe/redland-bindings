@@ -18,10 +18,10 @@ package RDF.Redland.URI is
 
    not overriding procedure Print (URI: URI_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
 
-   not overriding function Equals (Left, Right: URI_Type_Without_Finalize) return Boolean;
+   function Equals (Left, Right: URI_Type_Without_Finalize'Class) return Boolean;
 
-   overriding function "=" (Left, Right: URI_Type_Without_Finalize) return Boolean
-                            renames Equals;
+   function "=" (Left, Right: URI_Type_Without_Finalize'Class) return Boolean
+                 renames Equals;
 
    -- TODO: Create subtypes with dynamic predicate?
    not overriding function Is_File_URI (URI: URI_Type_Without_Finalize) return Boolean;
