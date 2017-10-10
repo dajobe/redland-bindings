@@ -1,10 +1,11 @@
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.URI; use RDF.Redland.URI;
+with RDF.Auxiliary;
 with RDF.Raptor.Term; use RDF.Raptor.Term;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 
 package RDF.Redland.Node is
 
-   -- TODO: Add subtypes with dynamic predicates here and in RDF.Raptor.Term
    subtype Node_Kind is RDF.Raptor.Term.Term_Kind;
 
    subtype Node_Handle is RDF.Raptor.Term.Term_Handle;
@@ -45,7 +46,11 @@ package RDF.Redland.Node is
    not overriding function Is_Literal  (Node: Node_Type_Without_Finalize) return Boolean;
    not overriding function Is_Resource (Node: Node_Type_Without_Finalize) return Boolean;
 
-   -- TODO: Stopped at librdf_node_is_blank()
+   -- librdf_node_write() deliberately not bound
+
+   not overriding procedure Print (Node: Node_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
+
+   not overriding procedure Write (Node: Node_Type_Without_Finalize; Stream: Base_Stream_Type'Class);
 
    type Node_Type is new Node_Type_Without_Finalize with null record;
 
@@ -92,5 +97,19 @@ package RDF.Redland.Node is
    not overriding function Decode (World: Redland_World_Type_Without_Finalize'Class;
                                    Buffer: String)
                                    return Node_Type;
+
+   subtype Blank_Node_Type_Without_Finalize is Node_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Blank(Blank_Node_Type_Without_Finalize);
+   subtype Literal_Node_Type_Without_Finalize is Node_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Literal(Literal_Node_Type_Without_Finalize);
+   subtype Resource_Node_Type_Without_Finalize is Node_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Resource(Resource_Node_Type_Without_Finalize);
+
+   subtype Blank_Node_Type is Node_Type
+     with Dynamic_Predicate => Is_Blank(Blank_Node_Type);
+   subtype Literal_Node_Type is Node_Type
+     with Dynamic_Predicate => Is_Literal(Literal_Node_Type);
+   subtype Resource_Node_Type is Node_Type
+     with Dynamic_Predicate => Is_Resource(Resource_Node_Type);
 
 end RDF.Redland.Node;

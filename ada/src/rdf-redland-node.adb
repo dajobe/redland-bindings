@@ -319,4 +319,22 @@ package body RDF.Redland.Node is
    function Is_Resource (Node: Node_Type_Without_Finalize) return Boolean is
       (librdf_node_is_resource(Get_Handle(Node)) /= 0);
 
+   procedure librdf_node_print (Node: Node_Handle)
+     with Import, Convention=>C;
+
+   procedure Print (Node: Node_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access) is
+   begin
+      librdf_node_print(Get_Handle(Node));
+   end;
+
+   function librdf_node_write (Node: Node_Handle; Stream: IOStream_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Write (Node: Node_Type_Without_Finalize; Stream: Base_Stream_Type'Class) is
+   begin
+      if librdf_node_write(Get_Handle(Node), Get_Handle(Stream)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Node;
