@@ -157,4 +157,22 @@ package body RDF.Redland.URI is
       return RDF.Auxiliary.Comparison_Result (librdf_uri_compare (Get_Handle(URI1), Get_Handle(URI2)));
    end;
 
+   function librdf_get_concept_ms_namespace (World: Redland_World_Handle) return URI_Handle
+     with Import, Convention=>C;
+
+   function Concept_Ms_Namespace (World: Redland_World_Type_Without_Finalize'Class)
+                                  return URI_Type_Without_Finalize is
+   begin
+      return From_Non_Null_Handle(librdf_get_concept_ms_namespace(Get_Handle(World)));
+   end;
+
+   function librdf_get_schema_namespace (World: Redland_World_Handle) return URI_Handle
+     with Import, Convention=>C;
+
+   function Concept_Schema_Namespace (World: Redland_World_Type_Without_Finalize'Class)
+                                      return URI_Type_Without_Finalize is
+   begin
+      return From_Non_Null_Handle(librdf_get_schema_namespace(Get_Handle(World)));
+   end;
+
 end RDF.Redland.URI;

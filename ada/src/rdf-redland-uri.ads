@@ -30,6 +30,12 @@ package RDF.Redland.URI is
 
    not overriding function To_Filename (URI: URI_Type_Without_Finalize) return String;
 
+   -- From http://librdf.org/docs/api/redland-concepts.html:
+   not overriding function Concept_Ms_Namespace (World: Redland_World_Type_Without_Finalize'Class)
+                                                 return URI_Type_Without_Finalize;
+   not overriding function Concept_Schema_Namespace (World: Redland_World_Type_Without_Finalize'Class)
+                                                     return URI_Type_Without_Finalize;
+
    type URI_Type is new URI_Type_Without_Finalize with null record;
 
    overriding procedure Adjust(Object: in out URI_Type);
