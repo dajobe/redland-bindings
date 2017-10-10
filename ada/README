@@ -31,6 +31,12 @@ Ada):
 * Query Results Formatter
 * Query Result Row (C API is too rudimentary)
 * Service (requires Sequences which are not yet implemented)
+* Redland Digests (internals)
+* Redland Files (internals)
+* Redland Hashes (internals)
+* Redland Heuristics (internals)
+* Redland Iterator (internals) # FIXME: Should be bound
+* Redland List (internals)
 
 The following APIs are implemented partially:
 
