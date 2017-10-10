@@ -5,6 +5,7 @@ with RDF.Raptor.Term; use RDF.Raptor.Term;
 package RDF.Redland.Node is
 
    -- TODO: Add subtypes with dynamic predicates here and in RDF.Raptor.Term
+   subtype Node_Kind is RDF.Raptor.Term.Term_Kind;
 
    subtype Node_Handle is RDF.Raptor.Term.Term_Handle;
 
@@ -36,7 +37,11 @@ package RDF.Redland.Node is
    -- Return "" if no language
    not overriding function Get_Language (Node: Node_Type_Without_Finalize) return String;
 
-   -- TODO: Stopped at librdf_node_get_type()
+   not overriding function Get_Type (Node: Node_Type_Without_Finalize) return Node_Kind;
+
+   not overriding function Get_URI (Node: Node_Type_Without_Finalize) return URI_Type_Without_Finalize;
+
+   -- TODO: Stopped at librdf_node_is_blank()
 
    type Node_Type is new Node_Type_Without_Finalize with null record;
 

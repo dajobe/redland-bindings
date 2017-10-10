@@ -289,4 +289,20 @@ package body RDF.Redland.Node is
       return (if Ptr /= Null_Ptr then Value(Ptr) else "");
    end;
 
+   function librdf_node_get_type (Node: Node_Handle) return Node_Kind
+     with Import, Convention=>C;
+
+   function Get_Type (Node: Node_Type_Without_Finalize) return Node_Kind is
+   begin
+      return librdf_node_get_type(Get_Handle(Node));
+   end;
+
+   function librdf_node_get_uri (Node: Node_Handle) return URI_Handle
+     with Import, Convention=>C;
+
+   function Get_URI (Node: Node_Type_Without_Finalize) return URI_Type_Without_Finalize is
+   begin
+      return From_Non_Null_Handle(librdf_node_get_uri(Get_Handle(Node)));
+   end;
+
 end RDF.Redland.Node;
