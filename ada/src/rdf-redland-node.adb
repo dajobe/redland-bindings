@@ -280,4 +280,13 @@ package body RDF.Redland.Node is
       return librdf_node_get_literal_value_is_wf_xml(Get_Handle(Node)) /= 0;
    end;
 
+   function librdf_node_get_literal_value_language (Node: Node_Handle) return chars_ptr
+     with Import, Convention=>C;
+
+   function Get_Language (Node: Node_Type_Without_Finalize) return String is
+      Ptr: constant chars_ptr := librdf_node_get_literal_value_language(Get_Handle(Node));
+   begin
+      return (if Ptr /= Null_Ptr then Value(Ptr) else "");
+   end;
+
 end RDF.Redland.Node;

@@ -33,7 +33,10 @@ package RDF.Redland.Node is
 
    not overriding function Is_WF_XML (Node: Node_Type_Without_Finalize) return Boolean;
 
-   -- TODO: Stopped at librdf_node_get_literal_value_language()
+   -- Return "" if no language
+   not overriding function Get_Language (Node: Node_Type_Without_Finalize) return String;
+
+   -- TODO: Stopped at librdf_node_get_type()
 
    type Node_Type is new Node_Type_Without_Finalize with null record;
 
