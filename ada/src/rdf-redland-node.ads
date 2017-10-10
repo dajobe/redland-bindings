@@ -41,6 +41,10 @@ package RDF.Redland.Node is
 
    not overriding function Get_URI (Node: Node_Type_Without_Finalize) return URI_Type_Without_Finalize;
 
+   not overriding function Is_Blank    (Node: Node_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Literal  (Node: Node_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Resource (Node: Node_Type_Without_Finalize) return Boolean;
+
    -- TODO: Stopped at librdf_node_is_blank()
 
    type Node_Type is new Node_Type_Without_Finalize with null record;

@@ -305,4 +305,18 @@ package body RDF.Redland.Node is
       return From_Non_Null_Handle(librdf_node_get_uri(Get_Handle(Node)));
    end;
 
+   function librdf_node_is_blank (Node: Node_Handle) return int
+     with Import, Convention=>C;
+   function librdf_node_is_literal (Node: Node_Handle) return int
+     with Import, Convention=>C;
+   function librdf_node_is_resource (Node: Node_Handle) return int
+     with Import, Convention=>C;
+
+   function Is_Blank    (Node: Node_Type_Without_Finalize) return Boolean is
+      (librdf_node_is_blank(Get_Handle(Node)) /= 0);
+   function Is_Literal  (Node: Node_Type_Without_Finalize) return Boolean is
+      (librdf_node_is_literal(Get_Handle(Node)) /= 0);
+   function Is_Resource (Node: Node_Type_Without_Finalize) return Boolean is
+      (librdf_node_is_resource(Get_Handle(Node)) /= 0);
+
 end RDF.Redland.Node;
