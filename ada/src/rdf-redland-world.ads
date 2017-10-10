@@ -1,6 +1,8 @@
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
+limited with RDF.Redland.Node;
+limited with RDF.Redland.URI;
 
 package RDF.Redland.World is
 
@@ -32,8 +34,13 @@ package RDF.Redland.World is
 
    not overriding procedure Set_Digest (World: Redland_World_Type_Without_Finalize; Name: String);
 
-   -- TODO: Stopped at librdf_world_get_feature(), will continue after RDF.Redland.Node
---     not overriding function Get_Feature (World: Redland_World_Type_Without_Finalize; Feature: URI_Type_Without_Finalize'Class) return Node_Type;
+   not overriding function Get_Feature (World: Redland_World_Type_Without_Finalize;
+                                        Feature: RDF.Redland.URI.URI_Type_Without_Finalize'Class)
+                                        return RDF.Redland.Node.Node_Type;
+
+   not overriding procedure Set_Feature (World: Redland_World_Type_Without_Finalize;
+                                         Feature: RDF.Redland.URI.URI_Type_Without_Finalize'Class;
+                                         Value: RDF.Redland.Node.Node_Type_Without_Finalize'Class);
 
    type Redland_World_Type is new Redland_World_Type_Without_Finalize with null record;
 

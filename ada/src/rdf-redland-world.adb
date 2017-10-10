@@ -1,4 +1,6 @@
 with Interfaces.C; use Interfaces.C;
+with RDF.Redland.Node; use RDF.Redland.Node;
+with RDF.Redland.URI; use RDF.Redland.URI;
 
 package body RDF.Redland.World is
 
@@ -76,6 +78,29 @@ package body RDF.Redland.World is
    procedure Set_Digest (World: Redland_World_Type_Without_Finalize; Name: String) is
    begin
       librdf_world_set_digest(Get_Handle(World), To_C(Name));
+   end;
+
+   function librdf_world_get_feature (World: Redland_World_Handle; Feature: URI_Handle) return Node_Handle
+     with Import, Convention=>C;
+
+   function Get_Feature (World: Redland_World_Type_Without_Finalize;
+                         Feature: RDF.Redland.URI.URI_Type_Without_Finalize'Class)
+                         return RDF.Redland.Node.Node_Type is
+   begin
+      return From_Handle(librdf_world_get_feature(Get_Handle(World), Get_Handle(Feature)));
+   end;
+
+   function librdf_world_set_feature (World: Redland_World_Handle; Feature: URI_Handle; Value: Node_Handle)
+                                      return int
+     with Import, Convention=>C;
+
+   procedure Set_Feature (World: Redland_World_Type_Without_Finalize;
+                          Feature: RDF.Redland.URI.URI_Type_Without_Finalize'Class;
+                          Value: RDF.Redland.Node.Node_Type_Without_Finalize'Class) is
+   begin
+      if librdf_world_set_feature(Get_Handle(World), Get_Handle(Feature), Get_Handle(Value)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
    end;
 
 end RDF.Redland.World;
