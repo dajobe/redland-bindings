@@ -6,6 +6,8 @@ with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 
 package RDF.Redland.Node is
 
+   -- TODO: Add "Pre" aspects for getters
+
    subtype Node_Kind is RDF.Raptor.Term.Term_Kind;
 
    subtype Node_Handle is RDF.Raptor.Term.Term_Handle;
