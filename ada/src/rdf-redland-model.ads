@@ -15,9 +15,10 @@ package RDF.Redland.Model is
 
    subtype Model_Handle is Model_Handled_Record.Access_Type;
 
-   type Model_Info is
+   type Model_Info (Name_Length, Label_Length: Natural) is
       record
-         Name, Label: RDF.Auxiliary.String_Holders.Holder;
+         Name : String(1..Name_Length );
+         Label: String(1..Label_Length);
       end record;
 
    package Model_Info_Holders is new Ada.Containers.Indefinite_Holders(Model_Info);
