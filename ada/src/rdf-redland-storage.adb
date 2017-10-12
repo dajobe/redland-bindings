@@ -70,4 +70,22 @@ package body RDF.Redland.Storage is
       return From_Non_Null_Handle(librdf_new_storage_from_storage(Get_Handle(Storage)));
    end;
 
+   procedure librdf_free_storage (Handle: Storage_Handle)
+     with Import, Convention=>C;
+
+   procedure Finalize_Handle (Object: Storage_Type; Handle: Storage_Handle) is
+   begin
+      librdf_free_storage(Handle);
+   end;
+
+   function librdf_storage_sync (Storage: Storage_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Sync (Storage: Storage_Type_Without_Finalize) is
+   begin
+      if librdf_storage_sync(Get_Handle(Storage)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Storage;

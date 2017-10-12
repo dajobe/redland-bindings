@@ -42,7 +42,11 @@ package RDF.Redland.Storage is
    overriding function Next (Object: Enumerate_Storages_Iterator; Position: Enumerate_Storages_Cursor)
                              return Enumerate_Storages_Cursor;
 
+   not overriding procedure Sync (Storage: Storage_Type_Without_Finalize);
+
    type Storage_Type is new Storage_Type_Without_Finalize with null record;
+
+   overriding procedure Finalize_Handle (Object: Storage_Type; Handle: Storage_Handle);
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Factory_Name: String;
@@ -55,7 +59,7 @@ package RDF.Redland.Storage is
 
    not overriding function Copy (Storage: Storage_Type_Without_Finalize'Class) return Storage_Type;
 
-   -- Stopped at librdf_free_storage()
+   -- Stopped at librdf_storage_get_feature()
 
 private
 
