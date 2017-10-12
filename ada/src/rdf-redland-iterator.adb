@@ -26,4 +26,30 @@ package body RDF.Redland.Iterator is
       null;
    end;
 
+   function librdf_iterator_get_object (Iterator: Iterator_Handle) return chars_ptr
+     with Import, Convention=>C;
+   function librdf_iterator_get_context (Iterator: Iterator_Handle) return chars_ptr
+     with Import, Convention=>C;
+   function librdf_iterator_get_key (Iterator: Iterator_Handle) return chars_ptr
+     with Import, Convention=>C;
+   function librdf_iterator_get_value (Iterator: Iterator_Handle) return chars_ptr
+     with Import, Convention=>C;
+
+   function Get_Object_Internal (Iterator: Iterator_Type_Without_Finalize) return chars_ptr is
+     (librdf_iterator_get_object(Get_Handle(Iterator)));
+   function Get_Context_Internal (Iterator: Iterator_Type_Without_Finalize) return chars_ptr is
+     (librdf_iterator_get_context(Get_Handle(Iterator)));
+   function Get_Key_Internal (Iterator: Iterator_Type_Without_Finalize) return chars_ptr is
+     (librdf_iterator_get_key(Get_Handle(Iterator)));
+   function Get_Value_Internal (Iterator: Iterator_Type_Without_Finalize) return chars_ptr is
+     (librdf_iterator_get_value(Get_Handle(Iterator)));
+
+   function librdf_new_empty_iterator return Iterator_Handle
+     with Import, Convention=>C;
+
+   function Empty_Iterator return Iterator_Type is
+   begin
+      return From_Non_Null_Handle(librdf_new_empty_iterator);
+   end;
+
 end RDF.Redland.Iterator;
