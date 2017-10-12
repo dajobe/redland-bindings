@@ -11,6 +11,10 @@ package RDF.Redland.Iterator is
    -- TODO: librdf_iterator_map_handler, librdf_iterator_map_free_context_handler,
    -- librdf_new_iterator() are unimplemented
 
-   -- Stopped at librdf_free_iterator()
+   type Iterator_Type is new Iterator_Type_Without_Finalize with null record;
+
+   overriding procedure Finalize_Handle (Object: Iterator_Type; Handle: Iterator_Handle);
+
+   -- Stopped at librdf_iterator_end()
 
 end RDF.Redland.Iterator;
