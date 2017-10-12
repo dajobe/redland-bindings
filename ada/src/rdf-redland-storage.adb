@@ -62,4 +62,12 @@ package body RDF.Redland.Storage is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_new_storage_from_storage (Storage: Storage_Handle) return Storage_Handle
+     with Import, Convention=>C;
+
+   function Copy (Storage: Storage_Type_Without_Finalize'Class) return Storage_Type is
+   begin
+      return From_Non_Null_Handle(librdf_new_storage_from_storage(Get_Handle(Storage)));
+   end;
+
 end RDF.Redland.Storage;

@@ -51,9 +51,11 @@ package RDF.Redland.Storage is
                                    return Storage_Type;
 
    -- TODO: librdf_new_storage_with_options() not implemented, because
-   -- We have not implemented librdf_hash
+   -- we have not implemented librdf_hash
 
-   -- Stopped at librdf_new_storage_from_storage()
+   not overriding function Copy (Storage: Storage_Type_Without_Finalize'Class) return Storage_Type;
+
+   -- Stopped at librdf_free_storage()
 
 private
 
