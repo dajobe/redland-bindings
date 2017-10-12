@@ -34,4 +34,7 @@ package RDF.Redland.Iterator is
 
    not overriding function Empty_Iterator return Iterator_Type;
 
+   -- Implementing Ada2012 iterators does not seem possible, because we start
+   -- iterators from a return value of a function, not from a "Forward_Iterator" object
+
 end RDF.Redland.Iterator;
