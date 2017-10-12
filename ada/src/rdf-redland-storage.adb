@@ -88,4 +88,14 @@ package body RDF.Redland.Storage is
       end if;
    end;
 
+   function librdf_storage_get_world (Storage: Storage_Handle) return Redland_World_Handle
+     with Import, Convention=>C;
+
+   function Get_World (Storage: Storage_Type_Without_Finalize)
+                       return Redland_World_Type_Without_Finalize is
+   begin
+      -- Or just From_Handle?
+      return From_Non_Null_Handle(librdf_storage_get_world(Get_Handle(Storage)));
+   end;
+
 end RDF.Redland.Storage;

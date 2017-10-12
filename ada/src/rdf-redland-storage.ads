@@ -44,6 +44,17 @@ package RDF.Redland.Storage is
 
    not overriding procedure Sync (Storage: Storage_Type_Without_Finalize);
 
+   -- Will implement after http://bugs.librdf.org/mantis/view.php?id=636 bug fix
+--     not overriding function Get_Feature (Storage: Storage_Type_Without_Finalize;
+--                                          Feature: URI_Type_Without_Finalize'Class)
+--                                          return Node_Type_Without_Finalize;
+--     not overriding procedure Set_Feature (Storage: Storage_Type_Without_Finalize;
+--                                           Feature: URI_Type_Without_Finalize'Class;
+--                                           Value: Node_Type_Without_Finalize'Class);
+
+   not overriding function Get_World (Storage: Storage_Type_Without_Finalize)
+                                      return Redland_World_Type_Without_Finalize;
+
    type Storage_Type is new Storage_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle (Object: Storage_Type; Handle: Storage_Handle);
@@ -58,8 +69,6 @@ package RDF.Redland.Storage is
    -- we have not implemented librdf_hash
 
    not overriding function Copy (Storage: Storage_Type_Without_Finalize'Class) return Storage_Type;
-
-   -- Stopped at librdf_storage_get_feature()
 
 private
 

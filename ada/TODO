@@ -10,8 +10,8 @@
 
 * Add "limited" to records where appropriate.
 
-* Some raptor_parser_*() functions return <0 on missing required base URI.
-  Should we raise a different exception in this case?
+* Some raptor_parser_*() and librdf_storage_() functions return <0 on missing
+  required base URI. Should we raise a different exception in this case?
 
 * Add strings to exception raised.
 
