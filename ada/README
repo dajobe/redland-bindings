@@ -42,6 +42,7 @@ The following APIs are implemented partially:
 
 * Rasqal Query
 * Literals (not implemented things related to patterns)
+* Redland iterators (we only use iterators, not construct them)
 
 It may be downgraded to Ada2005 but this isn't a priority for me.
 

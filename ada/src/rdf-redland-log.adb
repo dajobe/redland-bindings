@@ -1,4 +1,3 @@
-with Ada.Unchecked_Conversion;
 with RDF.Auxiliary.Convert_Void;
 
 package body RDF.Redland.Log is

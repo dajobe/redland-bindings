@@ -8,6 +8,9 @@ package RDF.Redland.Iterator is
 
    subtype Iterator_Handle is Iterator_Handled_Record.Access_Type;
 
-   -- Stopped here
+   -- TODO: librdf_iterator_map_handler, librdf_iterator_map_free_context_handler,
+   -- librdf_new_iterator() are unimplemented
+
+   -- Stopped at librdf_free_iterator()
 
 end RDF.Redland.Iterator;
