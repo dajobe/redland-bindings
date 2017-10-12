@@ -42,7 +42,9 @@ package RDF.Redland.Model is
    overriding function Next (Object: Enumerate_Models_Iterator; Position: Enumerate_Models_Cursor)
                              return Enumerate_Models_Cursor;
 
-   -- Stopped at librdf_model_enumerate()
+   type Model_Type is new Model_Type_Without_Finalize with null record;
+
+   -- Stopped at librdf_new_model() (will continue after RDF.Redland.Storage)
 
 private
 
