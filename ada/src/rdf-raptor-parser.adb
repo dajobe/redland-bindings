@@ -1,5 +1,6 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.Convert_Void;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.Memory;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
@@ -264,9 +265,8 @@ package body RDF.Raptor.Parser is
       raptor_free_parser(Handle);
    end;
 
-   type User_Defined_Access is access constant Parser_Type_Without_Finalize'Class;
-   function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
-   function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
+--     type User_Defined_Access is access constant Parser_Type_Without_Finalize'Class;
+   package My_Conv is new RDF.Auxiliary.Convert_Void(Parser_Type_Without_Finalize'Class);
 
    type raptor_statement_handler is access procedure (Data: chars_ptr; Statement: Statement_Handle)
      with Convention=>C;
@@ -294,23 +294,23 @@ package body RDF.Raptor.Parser is
 
    procedure raptor_statement_handler_impl (Data: Chars_Ptr; Statement: Statement_Handle) is
    begin
-      Statement_Handler(Ptr_To_Obj(Data).all, Statement_Type_Without_Finalize'(From_Non_Null_Handle(Statement)));
+      Statement_Handler(My_Conv.To_Access(Data).all, Statement_Type_Without_Finalize'(From_Non_Null_Handle(Statement)));
    end;
 
    procedure raptor_graph_mark_handler_impl (Data: chars_ptr; URI: URI_Handle; Flags: int) is
       function Conv is new Ada.Unchecked_Conversion(int, Graph_Mark_Flags);
    begin
-      Graph_Mark_Handler(Ptr_To_Obj(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI)), Conv(Flags));
+      Graph_Mark_Handler(My_Conv.To_Access(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI)), Conv(Flags));
    end;
 
    procedure raptor_namespace_handler_impl (Data: Chars_Ptr; NS: Namespace_Handle) is
    begin
-      Namespace_Handler(Ptr_To_Obj(Data).all, Namespace_Type_Without_Finalize'(From_Non_Null_Handle(NS)));
+      Namespace_Handler(My_Conv.To_Access(Data).all, Namespace_Type_Without_Finalize'(From_Non_Null_Handle(NS)));
    end;
 
    function raptor_uri_filter_impl (Data: chars_ptr; URI: URI_Handle) return int is
    begin
-      return (if URI_Filter(Ptr_To_Obj(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI))) then 1 else 0);
+      return (if URI_Filter(My_Conv.To_Access(Data).all, URI_Type_Without_Finalize'(From_Non_Null_Handle(URI))) then 1 else 0);
    end;
 
    procedure Initialize_All_Callbacks (Parser: in out Parser_Type_Without_Finalize) is
@@ -344,21 +344,21 @@ package body RDF.Raptor.Parser is
    procedure Initialize_Graph_Mark_Handler (Object: in out Parser_Type_Without_Finalize) is
    begin
       raptor_parser_set_graph_mark_handler(Get_Handle(Object),
-                                           Obj_To_Ptr(Object'Unchecked_Access),
+                                           My_Conv.To_C_Pointer(Object'Unchecked_Access),
                                            raptor_graph_mark_handler_impl'Access);
    end;
 
    procedure Initialize_Statement_Handler (Object: in out Parser_Type_Without_Finalize) is
    begin
       raptor_parser_set_statement_handler(Get_Handle(Object),
-                                          Obj_To_Ptr(Object'Unchecked_Access),
+                                          My_Conv.To_C_Pointer(Object'Unchecked_Access),
                                           raptor_statement_handler_impl'Access);
    end;
 
    procedure Initialize_Namespace_Handler (Object: in out Parser_Type_Without_Finalize) is
    begin
       raptor_parser_set_namespace_handler(Get_Handle(Object),
-                                          Obj_To_Ptr(Object'Unchecked_Access),
+                                          My_Conv.To_C_Pointer(Object'Unchecked_Access),
                                           raptor_namespace_handler_impl'Access);
    end;
 
@@ -366,7 +366,7 @@ package body RDF.Raptor.Parser is
    begin
       raptor_parser_set_uri_filter(Get_Handle(Object),
                                    raptor_uri_filter_impl'Access,
-                                   Obj_To_Ptr(Object'Unchecked_Access));
+                                   My_Conv.To_C_Pointer(Object'Unchecked_Access));
    end;
 
 end RDF.Raptor.Parser;

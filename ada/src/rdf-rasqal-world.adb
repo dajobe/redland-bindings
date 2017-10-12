@@ -1,6 +1,7 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.Convert_Void;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Rasqal.Memory;
 
@@ -68,9 +69,8 @@ package body RDF.Rasqal.World is
       rasqal_free_world(Handle);
    end;
 
-   type Log_Handler_Access is access constant Log_Handler'Class;
-   --     function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, Log_Handler_Access);
-   function Obj_To_Ptr is new Ada.Unchecked_Conversion(Log_Handler_Access, chars_ptr);
+--     type Log_Handler_Access is access constant Log_Handler'Class;
+   package My_Conv is new RDF.Auxiliary.Convert_Void(Log_Handler'Class);
 
    procedure rasqal_world_set_log_handler (World: Rasqal_World_Handle;
                                            Data: chars_ptr;
@@ -80,7 +80,9 @@ package body RDF.Rasqal.World is
    procedure Set_Log_Handler(World: in out Rasqal_World_Type_Without_Finalize;
                              Handler: access Log_Handler'Class) is
    begin
-      rasqal_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), Our_Raptor_Log_Handler'Access);
+      rasqal_world_set_log_handler(Get_Handle(World),
+                                   My_Conv.To_C_Pointer(My_Conv.Object_Pointer(Handler)),
+                                   Our_Raptor_Log_Handler'Access);
    end;
 
    function rasqal_world_guess_query_results_format_name (World: Rasqal_World_Handle;

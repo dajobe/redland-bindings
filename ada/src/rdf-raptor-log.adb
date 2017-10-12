@@ -1,4 +1,4 @@
-with Ada.Unchecked_Conversion;
+with RDF.Auxiliary.Convert_Void;
 with RDF.Raptor.Memory;
 
 package body RDF.Raptor.Log is
@@ -53,13 +53,12 @@ package body RDF.Raptor.Log is
       return From_Non_Null_Handle(Get_Handle(Message).Locator);
    end;
 
-   type User_Defined_Access is access constant Log_Handler'Class;
-   function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
-   function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
+--     type User_Defined_Access is access constant Log_Handler'Class;
+   package My_Conv is new RDF.Auxiliary.Convert_Void(Log_Handler'Class);
 
    procedure Our_Raptor_Log_Handler(Data: chars_ptr; Msg: Log_Message_Type) is
    begin
-      Log_Message(Ptr_To_Obj(Data).all, Msg);
+      Log_Message(My_Conv.To_Access(Data).all, Msg);
    end;
 
    function raptor_world_set_log_handler(World: Raptor_World_Handle;
@@ -70,7 +69,7 @@ package body RDF.Raptor.Log is
 
    procedure Set_Log_Handler(World: in out Raptor_World_Type_Without_Finalize'Class; Handler: access Log_Handler) is
    begin
-      if raptor_world_set_log_handler(Get_Handle(World), Obj_To_Ptr(Handler), Our_Raptor_Log_Handler'Access) /= 0 then
+      if raptor_world_set_log_handler(Get_Handle(World), My_Conv.To_C_Pointer(Handler), Our_Raptor_Log_Handler'Access) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
@@ -129,11 +128,11 @@ package body RDF.Raptor.Log is
      with Import, Convention=>C;
 
    procedure Finalize_Locator (Handle: Locator_Handle) is
-      function Conv is new Ada.Unchecked_Conversion(Locator_Handle, Chars_Ptr);
+      package My_Conv is new RDF.Auxiliary.Convert_Void(Locator_Type_Record);
    begin
       Raptor_Free_Uri(Handle.URI);
       RDF.Raptor.Memory.Raptor_Free_Memory(Handle.File);
-      RDF.Raptor.Memory.Raptor_Free_Memory(Conv(Handle));
+      RDF.Raptor.Memory.Raptor_Free_Memory(My_Conv.To_C_Pointer(My_Conv.Object_Pointer(Handle)));
    end;
 
    procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle) is

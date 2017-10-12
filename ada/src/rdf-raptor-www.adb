@@ -1,6 +1,7 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.Convert_Void;
 with RDF.Auxiliary.C_Pointers;
 with RDF.Raptor.Memory;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
@@ -186,9 +187,8 @@ package body RDF.Raptor.WWW is
       raptor_free_www(Handle);
    end;
 
-   type User_Defined_Access is access constant WWW_Type_Without_Finalize'Class;
-   function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
-   function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
+--     type User_Defined_Access is access constant WWW_Type_Without_Finalize'Class;
+   package My_Conv is new RDF.Auxiliary.Convert_Void(WWW_Type_Without_Finalize'Class);
 
    type raptor_www_write_bytes_handler is access procedure (WWW: WWW_Handle;
                                                             User_data: chars_ptr;
@@ -230,19 +230,19 @@ package body RDF.Raptor.WWW is
                                        Size, Nmemb: size_t) is
    begin
       Write_Bytes_Handler(--WWW_Type_Without_Finalize'(From_Handle(WWW)), -- ignored
-                          Ptr_To_Obj(User_Data).all,
+                          My_Conv.To_Access(User_Data).all,
                           Value_With_Possible_NULs(Ptr, Size*Nmemb));
    end;
 
    procedure Content_Type_Handler_Impl (WWW: WWW_Handle; User_data: chars_ptr; Content_Type: chars_ptr) is
    begin
       Content_Type_Handler(--WWW_Type_Without_Finalize'(From_Handle(WWW)), -- ignored
-                           Ptr_To_Obj(User_Data).all,
+                           My_Conv.To_Access(User_Data).all,
                            Value(Content_Type));
    end;
 
    function URI_Filter_Impl (User_data: chars_ptr; URI: URI_Handle) return int is
-      Result: constant Boolean := URI_Filter(Ptr_To_Obj(User_Data).all,
+      Result: constant Boolean := URI_Filter(My_Conv.To_Access(User_Data).all,
                                              URI_Type_Without_Finalize'(From_Non_Null_Handle(URI)));
    begin
       return (if Result then 0 else 1);
@@ -251,7 +251,7 @@ package body RDF.Raptor.WWW is
    procedure Final_URI_Handler_Impl (WWW: WWW_Handle; User_Data: chars_ptr; URI: URI_Handle) is
    begin
       Final_URI_Handler(--WWW_Type_Without_Finalize'(From_Handle(WWW)), -- ignored
-                        Ptr_To_Obj(User_Data).all,
+                        My_Conv.To_Access(User_Data).all,
                         URI_Type_Without_Finalize'(From_Handle(URI)));
    end;
 
@@ -272,7 +272,7 @@ package body RDF.Raptor.WWW is
    begin
       raptor_www_set_write_bytes_handler(Get_Handle(WWW),
                                          Write_Bytes_Handler_Impl'Access,
-                                         Obj_To_Ptr(WWW'Unchecked_Access));
+                                         My_Conv.To_C_Pointer(WWW'Unchecked_Access));
    end;
 
    procedure raptor_www_set_content_type_handler (WWW: WWW_Handle;
@@ -289,7 +289,7 @@ package body RDF.Raptor.WWW is
    begin
       raptor_www_set_content_type_handler(Get_Handle(WWW),
                                           Content_Type_Handler_Impl'Access,
-                                          Obj_To_Ptr(WWW'Unchecked_Access));
+                                          My_Conv.To_C_Pointer(WWW'Unchecked_Access));
    end;
 
    procedure raptor_www_set_uri_filter (WWW: WWW_Handle;
@@ -299,12 +299,12 @@ package body RDF.Raptor.WWW is
 
    procedure Initialize_URI_Filter (WWW: in out WWW_Type_Without_Finalize) is
    begin
-      raptor_www_set_uri_filter(Get_Handle(WWW), URI_Filter_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
+      raptor_www_set_uri_filter(Get_Handle(WWW), URI_Filter_Impl'Access, My_Conv.To_C_Pointer(WWW'Unchecked_Access));
    end;
 
    procedure Initialize_Final_URI_Handler (WWW: in out WWW_Type_Without_Finalize) is
    begin
-      raptor_www_set_final_uri_handler(Get_Handle(WWW), Final_URI_Handler_Impl'Access, Obj_To_Ptr(WWW'Unchecked_Access));
+      raptor_www_set_final_uri_handler(Get_Handle(WWW), Final_URI_Handler_Impl'Access, My_Conv.To_C_Pointer(WWW'Unchecked_Access));
    end;
 
 end RDF.Raptor.WWW;

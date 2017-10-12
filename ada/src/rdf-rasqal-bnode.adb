@@ -1,5 +1,6 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.Convert_Void;
 with RDF.Auxiliary.C_String_Holders;
 with RDF.Rasqal.Memory;
 
@@ -11,9 +12,8 @@ package body RDF.Rasqal.Bnode is
                                                return Chars_Ptr
      with Convention=>C;
 
-   type User_Defined_Access is access constant BNode_ID_Handler'Class;
-   function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
-   function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
+--     type User_Defined_Access is access constant BNode_ID_Handler'Class;
+   package My_Conv is new RDF.Auxiliary.Convert_Void(BNode_ID_Handler'Class);
 
    function C_BNode_ID_Handle_Impl(World: Rasqal_World_Handle;
                                    Data: chars_ptr;
@@ -32,7 +32,7 @@ package body RDF.Rasqal.Bnode is
       end if;
       declare
          Result: constant Chars_Ptr := New_String(Do_Handle(Rasqal_World_Type_Without_Finalize'(From_Non_Null_Handle(World)),
-                                                  Ptr_To_Obj(Data).all,
+                                                  My_Conv.To_Access(Data).all,
                                                   User_ID2));
       begin
          RDF.Rasqal.Memory.rasqal_free_memory(User_ID);
@@ -48,7 +48,7 @@ package body RDF.Rasqal.Bnode is
    procedure Set_BNode_ID_Handler (World: in out Rasqal_World_Type_Without_Finalize'Class;
                                    Handler: access BNode_ID_Handler'Class) is
    begin
-      rasqal_world_set_generate_bnodeid_handler(Get_Handle(World), Obj_To_Ptr(Handler), C_BNode_ID_Handle_Impl'Access);
+      rasqal_world_set_generate_bnodeid_handler(Get_Handle(World), My_Conv.To_C_Pointer(Handler), C_BNode_ID_Handle_Impl'Access);
    end;
 
    function rasqal_world_set_default_generate_bnodeid_parameters (World: Rasqal_World_Handle;

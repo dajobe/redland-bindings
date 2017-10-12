@@ -1,5 +1,6 @@
 with Ada.Unchecked_Conversion;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.Convert_Void;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 with RDF.Raptor.Memory;
 
@@ -30,9 +31,8 @@ package body RDF.Raptor.Bnode is
    type C_BNode_ID_Handler is access function (Data: chars_ptr; User_ID: chars_ptr) return Chars_Ptr
      with Convention=>C;
 
-   type User_Defined_Access is access constant BNode_ID_Handler'Class;
-   function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
-   function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
+--     type User_Defined_Access is access constant BNode_ID_Handler'Class;
+   package My_Conv is new RDF.Auxiliary.Convert_Void(BNode_ID_Handler'Class);
 
    function C_BNode_ID_Handle_Impl(Data: chars_ptr; User_ID: chars_ptr) return Chars_Ptr
      with Convention=>C;
@@ -45,7 +45,7 @@ package body RDF.Raptor.Bnode is
          Replace_Element(User_ID2, Value(User_ID));
       end if;
       declare
-         Result: constant Chars_Ptr := New_String(Do_Handle(Ptr_To_Obj(Data).all, User_ID2));
+         Result: constant Chars_Ptr := New_String(Do_Handle(My_Conv.To_Access(Data).all, User_ID2));
       begin
          RDF.Raptor.Memory.raptor_free_memory(User_ID);
          return Result;
@@ -57,7 +57,7 @@ package body RDF.Raptor.Bnode is
 
    procedure Set_BNode_ID_Handler (World: in out Raptor_World_Type_Without_Finalize'Class; Handler: access BNode_ID_Handler'Class) is
    begin
-      raptor_world_set_generate_bnodeid_handler(Get_Handle(World), Obj_To_Ptr(Handler), C_BNode_ID_Handle_Impl'Access);
+      raptor_world_set_generate_bnodeid_handler(Get_Handle(World), My_Conv.To_C_Pointer(Handler), C_BNode_ID_Handle_Impl'Access);
    end;
 
 end RDF.Raptor.Bnode;

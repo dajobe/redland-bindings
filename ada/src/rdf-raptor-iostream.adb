@@ -1,8 +1,9 @@
 with Ada.Unchecked_Conversion;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with RDF.Auxiliary.Convert_Void;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Term; use RDF.Raptor.Term;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
 package body RDF.Raptor.IOStream is
 
@@ -271,9 +272,8 @@ package body RDF.Raptor.IOStream is
       end record
      with Convention=>C;
 
-   type User_Defined_Access is access all User_Defined_Stream_Type'Class;
-   function Ptr_To_Obj is new Ada.Unchecked_Conversion(chars_ptr, User_Defined_Access);
-   function Obj_To_Ptr is new Ada.Unchecked_Conversion(User_Defined_Access, chars_ptr);
+--     type User_Defined_Access is access all User_Defined_Stream_Type'Class;
+   package My_Conv is new RDF.Auxiliary.Convert_Void(User_Defined_Stream_Type'Class);
 
    --     function raptor_iostream_init_impl (context: chars_ptr) return int
    --        with Convention=>C;
@@ -292,7 +292,7 @@ package body RDF.Raptor.IOStream is
 
    function raptor_iostream_write_byte_impl (context: chars_ptr; byte: int) return int is
    begin
-      Do_Write_Byte (Ptr_To_Obj (context).all, char'Val(byte));
+      Do_Write_Byte (My_Conv.To_Access (context).all, char'Val(byte));
       return 0;
    exception
       when others =>
@@ -301,7 +301,7 @@ package body RDF.Raptor.IOStream is
 
    function raptor_iostream_write_bytes_impl (context: chars_ptr; ptr: chars_ptr; size, nmemb: size_t)
                                               return int is
-      Result: constant int := Do_Write_Bytes (Ptr_To_Obj (context).all, ptr, size, nmemb);
+      Result: constant int := Do_Write_Bytes (My_Conv.To_Access (context).all, ptr, size, nmemb);
    begin
       return Result;
    exception
@@ -311,7 +311,7 @@ package body RDF.Raptor.IOStream is
 
    function raptor_iostream_write_end_impl (context: chars_ptr) return int is
    begin
-      Do_Write_End (Ptr_To_Obj (context).all);
+      Do_Write_End (My_Conv.To_Access (context).all);
       return 0;
    exception
       when others =>
@@ -320,7 +320,7 @@ package body RDF.Raptor.IOStream is
 
    function raptor_iostream_read_bytes_impl (context: chars_ptr; ptr: chars_ptr; size, nmemb: size_t)
                                              return int is
-      Ret: constant size_t := Do_Read_Bytes (Ptr_To_Obj (context).all, ptr, size, nmemb);
+      Ret: constant size_t := Do_Read_Bytes (My_Conv.To_Access (context).all, ptr, size, nmemb);
    begin
       return int(Ret);
    exception
@@ -330,7 +330,7 @@ package body RDF.Raptor.IOStream is
 
    function raptor_iostream_read_eof_impl (context: chars_ptr) return int is
    begin
-      return (if Do_Read_Eof (Ptr_To_Obj (context).all) then 1 else 0);
+      return (if Do_Read_Eof (My_Conv.To_Access (context).all) then 1 else 0);
    end;
 
    Dispatch: aliased constant Dispatcher_Type :=
@@ -354,7 +354,7 @@ package body RDF.Raptor.IOStream is
    begin
       return Stream: User_Defined_Stream_Type do
          Handle := raptor_new_iostream_from_handler (Get_Handle (World),
-                                                     Obj_To_Ptr (User_Defined_Stream_Type'Class(Stream)'Unchecked_Access),
+                                                     My_Conv.To_C_Pointer (User_Defined_Stream_Type'Class(Stream)'Unchecked_Access),
                                                      Dispatch'Access);
          Set_Handle_Hack (Stream, Handle);
       end return;
