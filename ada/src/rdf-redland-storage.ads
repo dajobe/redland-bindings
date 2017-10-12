@@ -42,7 +42,18 @@ package RDF.Redland.Storage is
    overriding function Next (Object: Enumerate_Storages_Iterator; Position: Enumerate_Storages_Cursor)
                              return Enumerate_Storages_Cursor;
 
-   -- Stopped at librdf_storage_enumerate()
+   type Storage_Type is new Storage_Type_Without_Finalize with null record;
+
+   not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
+                                   Factory_Name: String;
+                                   Name: String;
+                                   Options: String)
+                                   return Storage_Type;
+
+   -- TODO: librdf_new_storage_with_options() not implemented, because
+   -- We have not implemented librdf_hash
+
+   -- Stopped at librdf_new_storage_from_storage()
 
 private
 

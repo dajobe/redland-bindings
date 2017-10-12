@@ -47,4 +47,19 @@ package body RDF.Redland.Storage is
       return (World => Position.World, Counter => Position.Counter + 1);
    end;
 
+   function librdf_new_storage (World: Redland_World_Handle; Factory_Name, Name, Options: char_array)
+                                return Storage_Handle
+     with Import, Convention=>C;
+
+   function Create (World: Redland_World_Type_Without_Finalize'Class;
+                    Factory_Name: String;
+                    Name: String;
+                    Options: String)
+                    return Storage_Type is
+      Handle: constant Storage_Handle :=
+        librdf_new_storage(Get_Handle(World), To_C(Factory_Name), To_C(Name), To_C(Options));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.Storage;
