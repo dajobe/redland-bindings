@@ -31,4 +31,20 @@ package body RDF.Redland.Model is
       end;
    end;
 
+   function Has_Element (Position: Enumerate_Models_Cursor) return Boolean is
+   begin
+      return librdf_model_enumerate(Position.World, Position.Counter, null, null) = 0;
+   end;
+
+   function First (Object: Enumerate_Models_Iterator) return Enumerate_Models_Cursor is
+   begin
+      return (World => Object.World, Counter => 0);
+   end;
+
+   function Next (Object: Enumerate_Models_Iterator; Position: Enumerate_Models_Cursor)
+                  return Enumerate_Models_Cursor is
+   begin
+      return (World => Position.World, Counter => Position.Counter + 1);
+   end;
+
 end RDF.Redland.Model;

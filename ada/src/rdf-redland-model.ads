@@ -2,6 +2,7 @@ with Ada.Containers.Indefinite_Holders;
 with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Redland.World; use RDF.Redland.World;
+with Ada.Iterator_Interfaces;
 with RDF.Auxiliary;
 
 package RDF.Redland.Model is
@@ -27,6 +28,33 @@ package RDF.Redland.Model is
                               Counter: unsigned)
                               return Model_Info_Holders.Holder;
 
+   type Enumerate_Models_Cursor is private;
+
+   function Has_Element (Position: Enumerate_Models_Cursor) return Boolean;
+
+   package Enumerate_Models_Interfaces is
+     new Ada.Iterator_Interfaces(Enumerate_Models_Cursor, Has_Element);
+
+   type Enumerate_Models_Iterator is new Enumerate_Models_Interfaces.Forward_Iterator with private;
+
+   overriding function First (Object: Enumerate_Models_Iterator) return Enumerate_Models_Cursor;
+
+   overriding function Next (Object: Enumerate_Models_Iterator; Position: Enumerate_Models_Cursor)
+                             return Enumerate_Models_Cursor;
+
    -- Stopped at librdf_model_enumerate()
+
+private
+
+   type Enumerate_Models_Cursor is
+      record
+         World: Redland_World_Handle;
+         Counter: unsigned;
+      end record;
+
+   type Enumerate_Models_Iterator is new Enumerate_Models_Interfaces.Forward_Iterator with
+      record
+         World: Redland_World_Handle;
+      end record;
 
 end RDF.Redland.Model;
