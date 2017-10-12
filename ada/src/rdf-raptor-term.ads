@@ -11,7 +11,7 @@ package RDF.Raptor.Term is
 
    type Term_Record is private;
 
-   type Term_Record_Access is access Term_Record with Convention=>C;
+   type Term_Record_Access is access all Term_Record with Convention=>C;
 
    package Term_Handled_Record is new RDF.Auxiliary.Handled_Record(Term_Record, Term_Record_Access);
 

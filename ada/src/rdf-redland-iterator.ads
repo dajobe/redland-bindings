@@ -3,6 +3,8 @@ with RDF.Auxiliary.Limited_Handled_Record;
 
 package RDF.Redland.Iterator is
 
+   -- Usually you should use derived types, such as defined in RDF.Redland.Node_Iterator
+
    -- TODO: Necessarily test that it works as expected
 
    package Iterator_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
