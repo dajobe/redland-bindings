@@ -11,6 +11,6 @@ package RDF.Redland.Model is
 
    subtype Model_Handle is Model_Handled_Record.Access_Type;
 
-   -- Stopped here
+   -- Stopped at librdf_model_enumerate()
 
 end RDF.Redland.Model;
