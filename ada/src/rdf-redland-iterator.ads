@@ -28,8 +28,6 @@ package RDF.Redland.Iterator is
 
    -- librdf_iterator_add_map() not implemented
 
-   -- Stopped at librdf_new_empty_iterator()
-
    type Iterator_Type is new Iterator_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle (Object: Iterator_Type; Handle: Iterator_Handle);
