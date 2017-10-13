@@ -1,5 +1,6 @@
 with RDF.Raptor.Statement;
 with RDF.Redland.World; use RDF.Redland.World;
+with RDF.Redland.Node; use RDF.Redland.Node;
 
 package RDF.Redland.Statement is
 
@@ -20,8 +21,21 @@ package RDF.Redland.Statement is
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
+   overriding procedure Adjust(Object: in out Statement_Type);
+
+   -- librdf_new_statement_from_statement2() not bound.
+   -- (It is unclear how this would interact with Ada copying.)
+
+--     overriding procedure Finalize_Handle(Object: Statement_Type; Handle: Statement_Handle);
+
+   -- Stopped at librdf_statement_clear()
+
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Statement_Type;
 
-   -- Stopped at librdf_new_statement_from_statement()
+   not overriding function From_Nodes (World: Redland_World_Type_Without_Finalize'Class;
+                                       Subject, Predicate, Object: Node_Type_Without_Finalize'Class)
+                                       return Statement_Type;
+
+   -- librdf_statement_init() not bound because we don't support statistially declared objects.
 
 end RDF.Redland.Statement;
