@@ -57,8 +57,12 @@ package body RDF.Redland.Statement is
       librdf_statement_clear(Get_Handle(Statement));
    end;
 
---     procedure Finalize_Handle(Object: Statement_Type; Handle: Statement_Handle) is
---     begin
---     end;
+   procedure librdf_free_statement (Statement: Statement_Handle)
+     with Import, Convention=>C;
+
+   procedure Finalize_Handle (Object: Statement_Type; Handle: Statement_Handle) is
+   begin
+      librdf_free_statement(Handle);
+   end;
 
 end RDF.Redland.Statement;

@@ -21,6 +21,8 @@ package RDF.Redland.Statement is
 
    not overriding procedure Clear (Statement: in out Statement_Type_Without_Finalize);
 
+   -- Stopped at librdf_statement_get_subject()
+
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
    overriding procedure Adjust(Object: in out Statement_Type);
@@ -28,9 +30,7 @@ package RDF.Redland.Statement is
    -- librdf_new_statement_from_statement2() not bound.
    -- (It is unclear how this would interact with Ada copying.)
 
---     overriding procedure Finalize_Handle(Object: Statement_Type; Handle: Statement_Handle);
-
-   -- Stopped at librdf_free_statement()
+   overriding procedure Finalize_Handle(Object: Statement_Type; Handle: Statement_Handle);
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Statement_Type;
 
