@@ -2,6 +2,7 @@ with Ada.Unchecked_Conversion;
 --  with System.Address_To_Access_Conversions;
 with RDF.Auxiliary.Convert_Void;
 with RDF.Raptor.Memory;
+with System;
 
 package body RDF.Raptor.Log is
 
@@ -146,9 +147,10 @@ package body RDF.Raptor.Log is
 
    -- This could be simplified using a custom storage pool (but what's about alignment?)
    function Adjust_Handle (Object: Locator_Type; Handle: Locator_Handle) return Locator_Handle is
-      Ptr: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Locator_Handle'Storage_Size);
+      Ptr: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Handle.all'Size / System.Storage_Unit);
       Result: constant Locator_Handle := Locator_Handle(Locator_Conv.To_Access(Ptr));
    begin
+      pragma Assert(Result'Size <= Handle.all'Size); -- not sure if Ada compiler enforces this
       Result.all := Handle.all;
       Result.URI := raptor_uri_copy(Handle.URI);
       Result.File := RDF.Raptor.Memory.Copy_C_String(Handle.File);
@@ -167,9 +169,10 @@ package body RDF.Raptor.Log is
 
    function Adjust_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle)
                            return Log_Message_Handle is
-      Ptr: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Log_Message_Handle'Storage_Size);
+      Ptr: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Handle.all'Size / System.Storage_Unit);
       Result: constant Log_Message_Handle := Log_Message_Handle(Log_Message_Conv.To_Access(Ptr));
    begin
+      pragma Assert(Result'Size <= Handle.all'Size); -- not sure if Ada compiler enforces this
       Result.Text := RDF.Raptor.Memory.Copy_C_String(Handle.Text);
       Result.Locator.URI := raptor_uri_copy(Handle.Locator.URI);
       Result.Locator.File := RDF.Raptor.Memory.Copy_C_String(Handle.Locator.File);
