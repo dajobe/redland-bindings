@@ -35,22 +35,14 @@ package RDF.Rasqal.Literal is
 
    overriding function "=" (Left, Right: Literal_Type_Without_Finalize) return Boolean;
 
-   type Compare_Flags is (Compare_None,
-                          Compare_Nocase,
-                          Compare_XQuery,
-                          Compare_RDF,
-                          Compare_URI,
-                          Compare_Sameterm);
+   type Compare_Flags is mod 256; -- the number may change in a future version
 
-   for Compare_Flags use (Compare_None     => 0,
-                          Compare_Nocase   => 1,
-                          Compare_XQuery   => 2,
-                          Compare_RDF      => 4,
-                          Compare_URI      => 8,
-                          Compare_Sameterm => 16);
-
-   -- FIXME: Result is not in Compare_Flags
-   not overriding function "or" (Left, Right: Compare_Flags) return Compare_Flags;
+   Compare_None:     constant Compare_Flags := 0;
+   Compare_Nocase:   constant Compare_Flags := 1;
+   Compare_XQuery:   constant Compare_Flags := 2;
+   Compare_RDF:      constant Compare_Flags := 4;
+   Compare_URI:      constant Compare_Flags := 8;
+   Compare_Sameterm: constant Compare_Flags := 16;
 
    not overriding function As_String (Literal: Literal_Type_Without_Finalize;
                                       Flags: Compare_Flags := Compare_None)

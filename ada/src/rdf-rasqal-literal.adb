@@ -186,15 +186,6 @@ package body RDF.Rasqal.Literal is
    function As_Node (Literal: Literal_Type_Without_Finalize'Class) return Literal_Type is
      (From_Handle(rasqal_literal_as_node(Get_Handle(Literal))));
 
-   type Compare_Flags_Code is mod 2**(Compare_Flags'Size);
-   function Conv is new Ada.Unchecked_Conversion(Compare_Flags, Compare_Flags_Code);
-   function Conv is new Ada.Unchecked_Conversion(Compare_Flags_Code, Compare_Flags);
-
-   function "or" (Left, Right: Compare_Flags) return Compare_Flags is
-   begin
-      return Conv(Conv(Left) or Conv(Right));
-   end;
-
    type Size_T_P is access all size_t with Convention=>C;
    type Int_P is access all int with Convention=>C;
 
@@ -212,7 +203,7 @@ package body RDF.Rasqal.Literal is
       Item: constant RDF.Auxiliary.C_Pointers.Pointer :=
         rasqal_literal_as_counted_string(Get_Handle(Literal),
                                          Length'Unchecked_Access,
-                                         Compare_Flags'Pos(Flags),
+                                         int(Flags),
                                          Error'Unchecked_Access);
       use RDF.Auxiliary.Convert;
    begin
@@ -230,7 +221,7 @@ package body RDF.Rasqal.Literal is
                      return RDF.Auxiliary.Comparison_Result is
       Error: aliased Int := 0;
    begin
-      return Sign(rasqal_literal_compare(Get_Handle(Left), Get_Handle(Right),  Compare_Flags'Pos(Flags), Error'Unchecked_Access));
+      return Sign(rasqal_literal_compare(Get_Handle(Left), Get_Handle(Right), int(Flags), Error'Unchecked_Access));
    end;
 
    function rasqal_literal_datatype (Literal: Literal_Handle) return URI_Handle
