@@ -2,6 +2,7 @@
 
 * Add functions Copy to explicitly copy a _Without_Finalize object.
   Copy shall have controlling result.
+  Using controlling result we can define Copy in Handed_Record package?
 
 * Unify function names: New_* vs Create.
 
