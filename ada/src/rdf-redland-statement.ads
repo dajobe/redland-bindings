@@ -19,6 +19,8 @@ package RDF.Redland.Statement is
    Object_Part   : Statement_Part_Flags := 4;
    All_Parts     : Statement_Part_Flags := Subject_Part or Predicate_Part or Object_Part;
 
+   not overriding procedure Clear (Statement: in out Statement_Type_Without_Finalize);
+
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
    overriding procedure Adjust(Object: in out Statement_Type);
@@ -28,7 +30,7 @@ package RDF.Redland.Statement is
 
 --     overriding procedure Finalize_Handle(Object: Statement_Type; Handle: Statement_Handle);
 
-   -- Stopped at librdf_statement_clear()
+   -- Stopped at librdf_free_statement()
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Statement_Type;
 
