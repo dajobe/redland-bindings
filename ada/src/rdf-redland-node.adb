@@ -91,11 +91,9 @@ package body RDF.Redland.Node is
    function librdf_new_node_from_node (Node: Node_Handle) return Node_Handle
      with Import, Convention=>C;
 
-   procedure Adjust (Object: in out Node_Type) is
+   function Adjust_Handle (Object: Node_Type; Handle: Node_Handle) return Node_Handle is
    begin
-      if Get_Handle(Object) /= null then
-         Set_Handle_Hack(Object, librdf_new_node_from_node(Get_Handle(Object)));
-      end if;
+      return librdf_new_node_from_node(Handle);
    end;
 
    function librdf_new_node_from_normalised_uri_string (World: Redland_World_Handle;

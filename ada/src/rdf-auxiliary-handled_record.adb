@@ -33,6 +33,18 @@ package body RDF.Auxiliary.Handled_Record is
       end if;
    end Finalize;
 
+   procedure Adjust(Object: in out Base_Object) is
+   begin
+      if Object.Handle /= null then
+         Object.Handle := Adjust_Handle(Base_Object'Class(Object), Object.Handle);
+      end if;
+   end;
+
+   function Adjust_Handle(Object: Base_Object; Handle: Access_Type) return Access_Type is
+   begin
+      return Handle; -- default for _Without_Finalize
+   end;
+
    function Is_Null (Object: Base_Object) return Boolean is
    begin
       return Object.Handle = null;

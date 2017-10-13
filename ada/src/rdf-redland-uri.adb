@@ -34,12 +34,9 @@ package body RDF.Redland.URI is
    function librdf_new_uri_from_uri (Old_URI: URI_Handle) return URI_Handle
      with Import, Convention=>C;
 
-   procedure Adjust(Object: in out URI_Type) is
-      use RDF.Auxiliary;
+   function Adjust_Handle (Object: URI_Type; Handle: URI_Handle) return URI_Handle is
    begin
-      if Get_Handle(Object) /= null then
-         Set_Handle_Hack(Object, librdf_new_uri_from_uri(Get_Handle(Object)));
-      end if;
+      return librdf_new_uri_from_uri(Handle);
    end;
 
    function librdf_new_uri_from_uri_local_name (Old_URI: URI_Handle; Local_Name: char_array)

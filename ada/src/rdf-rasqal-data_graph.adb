@@ -53,10 +53,11 @@ package body RDF.Rasqal.Data_Graph is
                                                    return Data_Graph_Handle
      with Import, Convention=>C;
 
-   procedure Adjust (Object: in out Data_Graph_Type) is
+   function Adjust_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle)
+                            return Data_Graph_Handle is
    begin
-      -- rasqal_new_data_graph_from_data_graph() accepts NULL
-      Set_Handle_Hack(Object, rasqal_new_data_graph_from_data_graph(Get_Handle(Object)));
+      -- FIXME: rasqal_new_data_graph_from_data_graph() accepts NULL
+      return rasqal_new_data_graph_from_data_graph(Handle);
    end;
 
    function Copy (Object: Data_Graph_Type_Without_Finalize'Class)

@@ -38,7 +38,7 @@ package RDF.Redland.URI is
 
    type URI_Type is new URI_Type_Without_Finalize with null record;
 
-   overriding procedure Adjust(Object: in out URI_Type);
+   overriding function Adjust_Handle(Object: URI_Type; Handle: URI_Handle) return URI_Handle;
 
    overriding procedure Finalize_Handle(Object: URI_Type; Handle: URI_Handle);
 

@@ -28,7 +28,7 @@ package RDF.Redland.Statement is
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
-   overriding procedure Adjust(Object: in out Statement_Type);
+   overriding function Adjust_Handle (Object: Statement_Type; Handle: Statement_Handle) return Statement_Handle;
 
    -- librdf_new_statement_from_statement2() not bound.
    -- (It is unclear how this would interact with Ada copying.)

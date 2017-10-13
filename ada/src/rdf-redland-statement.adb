@@ -25,12 +25,10 @@ package body RDF.Redland.Statement is
    function librdf_new_statement_from_statement (Statement: Statement_Handle) return Statement_Handle
      with Import, Convention=>C;
 
-   procedure Adjust (Object: in out Statement_Type) is
-      use RDF.Raptor.Statement;
+   function Adjust_Handle (Object: Statement_Type; Handle: Statement_Handle)
+                           return Statement_Handle is
    begin
-      if Get_Handle(Object) /= null then
-         Set_Handle_Hack(Object, librdf_new_statement_from_statement(Get_Handle(Object)));
-      end if;
+      return librdf_new_statement_from_statement(Handle);
    end;
 
    function librdf_new_statement_from_nodes (World: Redland_World_Handle;

@@ -153,11 +153,9 @@ package body RDF.Raptor.Term is
    function raptor_term_copy (Term: Term_Handle) return Term_Handle
      with Import, Convention=>C;
 
-   procedure Adjust (Object: in out Term_Type) is
+   function Adjust_Handle (Object: Term_Type; Handle: Term_Handle) return Term_Handle is
    begin
-      if Get_Handle(Object) /= null then
-         Set_Handle_Hack(Object, raptor_term_copy(Get_Handle(Object)));
-      end if;
+      return raptor_term_copy(Handle);
    end;
 
    function Copy (Object: Term_Type_Without_Finalize'Class) return Term_Type_Without_Finalize is

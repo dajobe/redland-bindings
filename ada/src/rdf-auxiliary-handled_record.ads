@@ -28,9 +28,10 @@ package RDF.Auxiliary.Handled_Record is
 
    overriding procedure Finalize(Object: in out Base_Object);
 
-   --     overriding procedure Adjust(Object: in out Base_Object);
+   overriding procedure Adjust(Object: in out Base_Object);
 
    -- Don't call this procedure unless you really need it.
+   -- TODO: Do we need this procedure at all?
    not overriding procedure Set_Handle_Hack(Object: in out Base_Object; Handle: Access_Type);
 
    not overriding function Get_Handle(Object: Base_Object) return Access_Type with Inline;
@@ -42,6 +43,8 @@ package RDF.Auxiliary.Handled_Record is
    not overriding function Default_Handle(Object: Base_Object) return Access_Type;
 
    not overriding procedure Finalize_Handle(Object: Base_Object; Handle: Access_Type) is null;
+
+   not overriding function Adjust_Handle(Object: Base_Object; Handle: Access_Type) return Access_Type;
 
    not overriding function Is_Null (Object: Base_Object) return Boolean;
 

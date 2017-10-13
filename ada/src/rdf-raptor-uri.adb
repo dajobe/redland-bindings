@@ -309,12 +309,9 @@ package body RDF.Raptor.URI is
                              return URI_Handle
      with Import, Convention=>C;
 
-   procedure Adjust(Object: in out URI_Type) is
-      use RDF.Auxiliary;
+   function Adjust_Handle(Object: URI_Type; Handle: URI_Handle) return URI_Handle is
    begin
-      if Get_Handle(Object) /= null then
-         Set_Handle_Hack(Object, raptor_uri_copy(Get_Handle(Object)));
-      end if;
+      return raptor_uri_copy(Handle);
    end;
 
    function Copy (Object: URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize is
