@@ -49,6 +49,7 @@ package RDF.Rasqal.Literal is
                           Compare_URI      => 8,
                           Compare_Sameterm => 16);
 
+   -- FIXME: Result is not in Compare_Flags
    not overriding function "or" (Left, Right: Compare_Flags) return Compare_Flags;
 
    not overriding function As_String (Literal: Literal_Type_Without_Finalize;
