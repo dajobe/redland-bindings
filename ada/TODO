@@ -1,6 +1,7 @@
 * Stopped at http://librdf.org/docs/api/redland-concepts.html
 
 * Add functions Copy to explicitly copy a _Without_Finalize object.
+  Copy shall have controlling result.
 
 * Unify function names: New_* vs Create.
 
