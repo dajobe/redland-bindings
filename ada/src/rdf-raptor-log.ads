@@ -21,7 +21,7 @@ package RDF.Raptor.Log is
    type Locator_Type_Record is private;
    type Log_Message_Record  is private;
 
-   type Locator_Type_Record_Access is access Locator_Type_Record with Convention=>C;
+   type Locator_Type_Record_Access is access all Locator_Type_Record with Convention=>C;
    type Log_Message_Record_Access is access Log_Message_Record with Convention=>C;
 
    package Locator_Handled_Record is new RDF.Auxiliary.Handled_Record(Locator_Type_Record, Locator_Type_Record_Access);
