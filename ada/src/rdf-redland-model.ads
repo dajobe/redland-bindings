@@ -4,6 +4,8 @@ with Interfaces.C; use Interfaces.C;
 with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Redland.World; use RDF.Redland.World;
+with RDF.Redland.URI; use RDF.Redland.URI;
+with RDF.Redland.Node; use RDF.Redland.Node;
 with RDF.Redland.Storage; use RDF.Redland.Storage;
 
 package RDF.Redland.Model is
@@ -48,6 +50,26 @@ package RDF.Redland.Model is
 
    not overriding function Size (Model: Model_Type_Without_Finalize) return Natural;
 
+   not overriding procedure Add (Model: Model_Type_Without_Finalize;
+                                 Subject, Predicate, Object: Node_Type_Without_Finalize'Class);
+
+--     not overriding procedure Add (Model: Model_Type_Without_Finalize;
+--                                   Statement: Statement_Type_Without_Finalize'Class);
+   -- Stopped at librdf_model_add_statement() (continue after RDF.Redland.Statement)
+
+   not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
+                                                          Subject, Predicate: Node_Type_Without_Finalize'Class;
+                                                          Literal: String;
+                                                          Language: String;
+                                                          Is_XML: Boolean := False);
+
+   not overriding procedure Add_Typed_Literal_Statement (Model: Model_Type_Without_Finalize;
+                                                         Subject, Predicate: Node_Type_Without_Finalize'Class;
+                                                         Literal: String;
+                                                         Language: String;
+                                                         Datatype: URI_Type_Without_Finalize'Class);
+
+
    type Model_Type is new Model_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle (Object: Model_Type; Handle: Model_Handle);
@@ -60,8 +82,6 @@ package RDF.Redland.Model is
    -- librdf_new_model_with_options() not implemented, because librdf_hash is not implemented
 
    not overriding function Copy (Model: Model_Type_Without_Finalize'Class) return Model_Type;
-
-   -- Stopped at librdf_model_add()
 
 private
 

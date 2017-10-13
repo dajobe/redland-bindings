@@ -95,4 +95,64 @@ package body RDF.Redland.Model is
       return Natural(Result);
    end;
 
+   function librdf_model_add (Model: Model_Handle; Subject, Predicate, Object: Node_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Add (Model: Model_Type_Without_Finalize; Subject, Predicate, Object: Node_Type_Without_Finalize'Class) is
+   begin
+      if librdf_model_add(Get_Handle(Model), Get_Handle(Subject), Get_Handle(Predicate), Get_Handle(Object)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function librdf_model_add_string_literal_statement (Model: Model_Handle;
+                                                       Subject, Predicate: Node_Handle;
+                                                       Literal: char_array;
+                                                       Language: char_array;
+                                                       Is_XML: int)
+                                                       return int
+     with Import, Convention=>C;
+
+   procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
+                                           Subject, Predicate: Node_Type_Without_Finalize'Class;
+                                           Literal: String;
+                                           Language: String;
+                                           Is_XML: Boolean := False) is
+   begin
+      if librdf_model_add_string_literal_statement(Get_Handle(Model),
+                                                   Get_Handle(Subject),
+                                                   Get_Handle(Predicate),
+                                                   To_C(Literal),
+                                                   To_C(Language),
+                                                   (if Is_XML then 1 else 0)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function librdf_model_add_typed_literal_statement (Model: Model_Handle;
+                                                      Subject, Predicate: Node_Handle;
+                                                      Literal: char_array;
+                                                      Language: char_array;
+                                                      Datatype: URI_Handle)
+                                                      return int
+     with Import, Convention=>C;
+
+   procedure Add_Typed_Literal_Statement (Model: Model_Type_Without_Finalize;
+                                          Subject, Predicate: Node_Type_Without_Finalize'Class;
+                                          Literal: String;
+                                          Language: String;
+                                          Datatype: URI_Type_Without_Finalize'Class) is
+   begin
+      if librdf_model_add_typed_literal_statement(Get_Handle(Model),
+                                                  Get_Handle(Subject),
+                                                  Get_Handle(Predicate),
+                                                  To_C(Literal),
+                                                  To_C(Language),
+                                                  Get_Handle(Datatype)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Model;
