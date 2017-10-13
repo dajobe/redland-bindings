@@ -1,5 +1,5 @@
 with RDF.Raptor.Statement;
---  with RDF.Redland.World; use RDF.Redland.World;
+with RDF.Redland.World; use RDF.Redland.World;
 
 package RDF.Redland.Statement is
 
@@ -18,6 +18,10 @@ package RDF.Redland.Statement is
    Object_Part   : Statement_Part_Flags := 4;
    All_Parts     : Statement_Part_Flags := Subject_Part or Predicate_Part or Object_Part;
 
-   -- Stopped at librdf_new_statement()
+   type Statement_Type is new Statement_Type_Without_Finalize with null record;
+
+   not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Statement_Type;
+
+   -- Stopped at librdf_new_statement_from_statement()
 
 end RDF.Redland.Statement;
