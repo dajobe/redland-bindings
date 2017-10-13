@@ -1,9 +1,10 @@
 with Ada.Containers.Indefinite_Holders;
+with Ada.Iterator_Interfaces;
 with Interfaces.C; use Interfaces.C;
+with RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Redland.World; use RDF.Redland.World;
-with Ada.Iterator_Interfaces;
-with RDF.Auxiliary;
+with RDF.Redland.Storage; use RDF.Redland.Storage;
 
 package RDF.Redland.Model is
 
@@ -44,7 +45,18 @@ package RDF.Redland.Model is
 
    type Model_Type is new Model_Type_Without_Finalize with null record;
 
-   -- Stopped at librdf_new_model() (will continue after RDF.Redland.Storage)
+   overriding procedure Finalize_Handle (Object: Model_Type; Handle: Model_Handle);
+
+   not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
+                                   Storage: Storage_Type_Without_Finalize'Class;
+                                   Options: String)
+                                   return Model_Type;
+
+   -- librdf_new_model_with_options() not implemented, because librdf_hash is not implemented
+
+   not overriding function Copy (Model: Model_Type_Without_Finalize'Class) return Model_Type;
+
+   -- Stopped at librdf_model_size()
 
 private
 

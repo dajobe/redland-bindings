@@ -47,4 +47,34 @@ package body RDF.Redland.Model is
       return (World => Position.World, Counter => Position.Counter + 1);
    end;
 
+   function librdf_new_model (World: Redland_World_Handle; Storage: Storage_Handle; Options: char_array)
+                              return Model_Handle
+     with Import, Convention=>C;
+
+   function Create (World: Redland_World_Type_Without_Finalize'Class;
+                    Storage: Storage_Type_Without_Finalize'Class;
+                    Options: String)
+                    return Model_Type is
+      Handle: constant Model_Handle :=
+        librdf_new_model(Get_Handle(World), Get_Handle(Storage), To_C(Options));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
+   function librdf_new_model_from_model (Model: Model_Handle) return Model_Handle
+     with Import, Convention=>C;
+
+   function Copy (Model: Model_Type_Without_Finalize'Class) return Model_Type is
+   begin
+      return From_Non_Null_Handle(librdf_new_model_from_model(Get_Handle(Model)));
+   end;
+
+   procedure librdf_free_model (Handle: Model_Handle)
+     with Import, Convention=>C;
+
+   procedure Finalize_Handle (Object: Model_Type; Handle: Model_Handle) is
+   begin
+      librdf_free_model(Handle);
+   end;
+
 end RDF.Redland.Model;
