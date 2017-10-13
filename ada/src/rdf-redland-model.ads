@@ -43,6 +43,11 @@ package RDF.Redland.Model is
    overriding function Next (Object: Enumerate_Models_Iterator; Position: Enumerate_Models_Cursor)
                              return Enumerate_Models_Cursor;
 
+   not overriding function Size_Without_Exception (Model: Model_Type_Without_Finalize)
+                                                   return Integer;
+
+   not overriding function Size (Model: Model_Type_Without_Finalize) return Natural;
+
    type Model_Type is new Model_Type_Without_Finalize with null record;
 
    overriding procedure Finalize_Handle (Object: Model_Type; Handle: Model_Handle);
@@ -56,7 +61,7 @@ package RDF.Redland.Model is
 
    not overriding function Copy (Model: Model_Type_Without_Finalize'Class) return Model_Type;
 
-   -- Stopped at librdf_model_size()
+   -- Stopped at librdf_model_add()
 
 private
 

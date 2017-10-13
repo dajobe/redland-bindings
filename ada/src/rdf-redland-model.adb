@@ -77,4 +77,22 @@ package body RDF.Redland.Model is
       librdf_free_model(Handle);
    end;
 
+   function librdf_model_size (Model: Model_Handle) return int
+     with Import, Convention=>C;
+
+   function Size_Without_Exception (Model: Model_Type_Without_Finalize)
+                                    return Integer is
+   begin
+      return Integer(librdf_model_size(Get_Handle(Model)));
+   end;
+
+   function Size (Model: Model_Type_Without_Finalize) return Natural is
+      Result: constant int := librdf_model_size(Get_Handle(Model));
+   begin
+      if Result < 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Natural(Result);
+   end;
+
 end RDF.Redland.Model;
