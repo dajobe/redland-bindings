@@ -2,7 +2,6 @@ with Ada.Unchecked_Conversion;
 --  with System.Address_To_Access_Conversions;
 with RDF.Auxiliary.Convert_Void;
 with RDF.Raptor.Memory;
-with System;
 
 package body RDF.Raptor.Log is
 
@@ -143,18 +142,16 @@ package body RDF.Raptor.Log is
       Finalize_Locator(Handle);
    end;
 
-   package Locator_Conv is new RDF.Auxiliary.Convert_Void(Locator_Type_Record);
+   type My_Locator_Access is access Locator_Type_Record;
+   for My_Locator_Access'Storage_Pool use RDF.Raptor.Memory.Raptor_Storage_Pool_Instance;
 
-   -- FIXME: Rewrite with storage pools
    function Adjust_Handle (Object: Locator_Type; Handle: Locator_Handle) return Locator_Handle is
-      Ptr: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Handle.all'Size / System.Storage_Unit);
-      Result: constant Locator_Handle := Locator_Handle(Locator_Conv.To_Access(Ptr));
+      Result: constant My_Locator_Access := new Locator_Type_Record'(Handle.all);
    begin
-      pragma Assert(Result'Size <= Handle.all'Size); -- not sure if Ada compiler enforces this
       Result.all := Handle.all;
       Result.URI := raptor_uri_copy(Handle.URI);
       Result.File := RDF.Raptor.Memory.Copy_C_String(Handle.File);
-      return Result;
+      return Locator_Handle(Result);
    end;
 
    procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle) is
@@ -165,19 +162,17 @@ package body RDF.Raptor.Log is
       RDF.Raptor.Memory.Raptor_Free_Memory(My_Conv.To_C_Pointer(My_Conv.Object_Pointer(Handle)));
    end;
 
-   package Log_Message_Conv is new RDF.Auxiliary.Convert_Void(Log_Message_Record);
+   type My_Log_Message_Access is access Log_Message_Record;
+   for My_Log_Message_Access'Storage_Pool use RDF.Raptor.Memory.Raptor_Storage_Pool_Instance;
 
-   -- FIXME: Rewrite with storage pools
    function Adjust_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle)
                            return Log_Message_Handle is
-      Ptr: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Handle.all'Size / System.Storage_Unit);
-      Result: constant Log_Message_Handle := Log_Message_Handle(Log_Message_Conv.To_Access(Ptr));
+      Result: constant My_Log_Message_Access := new Log_Message_Record'(Handle.all);
    begin
-      pragma Assert(Result'Size <= Handle.all'Size); -- not sure if Ada compiler enforces this
       Result.Text := RDF.Raptor.Memory.Copy_C_String(Handle.Text);
       Result.Locator.URI := raptor_uri_copy(Handle.Locator.URI);
       Result.Locator.File := RDF.Raptor.Memory.Copy_C_String(Handle.Locator.File);
-      return Result;
+      return Log_Message_Handle(Result);
    end;
 
 end RDF.Raptor.Log;

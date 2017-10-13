@@ -23,8 +23,7 @@ package body RDF.Raptor.Memory is
    end;
 
    type My_Char_Pointer is access all char with Convention=>C;
-   -- TODO: Remove unused
-   package My_Conv is new System.Address_To_Access_Conversions(char);
+   package My_Conv1 is new System.Address_To_Access_Conversions(char);
    package My_Conv2 is new RDF.Auxiliary.Convert_Void(char);
    function My_Conv3 is new Ada.Unchecked_Conversion(chars_ptr, My_Char_Pointer);
 
@@ -36,8 +35,9 @@ package body RDF.Raptor.Memory is
       pragma Assert(RDF.Auxiliary.Dummy_Record'Alignment mod Alignment = 0);
       declare
          Size: constant size_t := size_t(Size_In_Storage_Elements * char'Size / Storage_Unit);
+         Ptr: constant My_Char_Pointer := My_Conv3(raptor_alloc_memory(Size));
       begin
-         Storage_Address := My_Conv.To_Address(My_Conv.Object_Pointer(My_Conv3(raptor_alloc_memory(Size))));
+         Storage_Address := My_Conv1.To_Address(My_Conv1.Object_Pointer(Ptr));
       end;
    end;
 
@@ -47,7 +47,12 @@ package body RDF.Raptor.Memory is
                                    Alignment : in Storage_Count) is
    begin
       pragma Assert(RDF.Auxiliary.Dummy_Record'Alignment mod Alignment = 0);
-      raptor_free_memory(My_Conv2.To_C_Pointer(My_Conv2.Object_Pointer(My_Conv.To_Pointer(Storage_Address))));
+      declare
+         Ptr: constant My_Conv2.Object_Pointer :=
+           My_Conv2.Object_Pointer(My_Conv1.To_Pointer(Storage_Address));
+      begin
+         raptor_free_memory(My_Conv2.To_C_Pointer(Ptr));
+      end;
    end;
 
    overriding function Storage_Size(Pool : Raptor_Storage_Pool)
