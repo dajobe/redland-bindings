@@ -1,5 +1,4 @@
 with RDF.Auxiliary.C_String_Holders;
-with RDF.Raptor.Memory;
 with RDF.Raptor.Namespace_Stack; use RDF.Raptor.Namespace_Stack;
 with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 
