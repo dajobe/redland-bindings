@@ -21,6 +21,9 @@ package RDF.Redland.Statement is
 
    not overriding procedure Clear (Statement: in out Statement_Type_Without_Finalize);
 
+   not overriding function Get_Subject (Statement: Statement_Type_Without_Finalize)
+                                        return Node_Type_Without_Finalize;
+
    -- Stopped at librdf_statement_get_subject()
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;

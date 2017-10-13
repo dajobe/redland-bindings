@@ -65,4 +65,12 @@ package body RDF.Redland.Statement is
       librdf_free_statement(Handle);
    end;
 
+   function librdf_statement_get_subject (Statement: Statement_Handle) return Node_Handle
+     with Import, Convention=>C;
+
+   function Get_Subject (Statement: Statement_Type_Without_Finalize) return Node_Type_Without_Finalize is
+   begin
+      return From_Handle(librdf_statement_get_subject(Get_Handle(Statement)));
+   end;
+
 end RDF.Redland.Statement;
