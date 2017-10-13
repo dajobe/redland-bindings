@@ -145,7 +145,7 @@ package body RDF.Raptor.Log is
 
    package Locator_Conv is new RDF.Auxiliary.Convert_Void(Locator_Type_Record);
 
-   -- This could be simplified using a custom storage pool (but what's about alignment?)
+   -- FIXME: Rewrite with storage pools
    function Adjust_Handle (Object: Locator_Type; Handle: Locator_Handle) return Locator_Handle is
       Ptr: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Handle.all'Size / System.Storage_Unit);
       Result: constant Locator_Handle := Locator_Handle(Locator_Conv.To_Access(Ptr));
@@ -167,6 +167,7 @@ package body RDF.Raptor.Log is
 
    package Log_Message_Conv is new RDF.Auxiliary.Convert_Void(Log_Message_Record);
 
+   -- FIXME: Rewrite with storage pools
    function Adjust_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle)
                            return Log_Message_Handle is
       Ptr: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Handle.all'Size / System.Storage_Unit);
