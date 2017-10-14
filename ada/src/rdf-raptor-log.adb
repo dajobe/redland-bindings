@@ -144,7 +144,7 @@ package body RDF.Raptor.Log is
 
    package Locator_Conv is new RDF.Auxiliary.Convert_Void(Locator_Type_Record);
 
-   function Adjust_Handle (Object: Locator_Type; Handle: Locator_Handle) return Locator_Handle is
+   function Copy_Locator (Handle: Locator_Handle) return Locator_Handle is
       Size: constant size_t := size_t((Locator_Type'Max_Size_In_Storage_Elements * Storage_Unit + (char'Size-1)) / char'Size);
       Result2: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Size);
       Result: constant Locator_Handle := Locator_Handle(Locator_Conv.To_Access(Result2));
@@ -153,6 +153,11 @@ package body RDF.Raptor.Log is
       Result.URI := raptor_uri_copy(Handle.URI);
       Result.File := RDF.Raptor.Memory.Copy_C_String(Handle.File);
       return Result;
+   end;
+
+   function Adjust_Handle (Object: Locator_Type; Handle: Locator_Handle) return Locator_Handle is
+   begin
+      return Copy_Locator(Handle);
    end;
 
    procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle) is
@@ -165,17 +170,21 @@ package body RDF.Raptor.Log is
 
    package Log_Message_Conv is new RDF.Auxiliary.Convert_Void(Log_Message_Record);
 
-   function Adjust_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle)
-                           return Log_Message_Handle is
+   function Copy_Log_Message (Handle: Log_Message_Handle) return Log_Message_Handle is
       Size: constant size_t := size_t((Log_Message_Type'Max_Size_In_Storage_Elements * Storage_Unit + (char'Size-1)) / char'Size);
       Result2: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Size);
       Result: constant Log_Message_Handle := Log_Message_Handle(Log_Message_Conv.To_Access(Result2));
    begin
       Result.all := Handle.all;
       Result.Text := RDF.Raptor.Memory.Copy_C_String(Handle.Text);
-      Result.Locator.URI := raptor_uri_copy(Handle.Locator.URI);
-      Result.Locator.File := RDF.Raptor.Memory.Copy_C_String(Handle.Locator.File);
+      Result.Locator := Copy_Locator(Handle.Locator);
       return Result;
+   end;
+
+   function Adjust_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle)
+                           return Log_Message_Handle is
+   begin
+      return Copy_Log_Message(Handle);
    end;
 
 end RDF.Raptor.Log;
