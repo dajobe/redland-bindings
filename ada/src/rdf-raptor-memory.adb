@@ -34,6 +34,7 @@ package body RDF.Raptor.Memory is
    begin
       -- FIXME: 'Max_Alignment_For_Allocation here and in other places (13.11 21.5/3)
       -- (use S'Max_Size_In_Storage_Elements) instead of allocator, because allocator receives wrong alignment
+      -- FIXME: Remove allocators altogether, they don't align well
       pragma Assert(RDF.Auxiliary.Dummy_Record'Alignment mod Alignment = 0);
       declare
          Size: constant size_t := size_t((Size_In_Storage_Elements * char'Size + (Storage_Unit-1)) / Storage_Unit);
