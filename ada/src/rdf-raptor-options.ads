@@ -1,7 +1,6 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.Limited_Handled_Record;
-with RDF.Raptor.Memory;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.World; use RDF.Raptor.World;
 
@@ -108,7 +107,6 @@ package RDF.Raptor.Options is
 
    type Option_Description_Record_Access is access Option_Description_Record
      with Convention => C;
-   for Option_Description_Record_Access'Storage_Pool use RDF.Raptor.Memory.Raptor_Storage_Pool_Instance;
 
    package Option_Description_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(Option_Description_Record, Option_Description_Record_Access);
 

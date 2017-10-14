@@ -2,7 +2,6 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
 with RDF.Auxiliary.Handled_Record;
-with RDF.Raptor.Memory;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
@@ -12,7 +11,6 @@ package RDF.Rasqal.Data_Graph is
    type Data_Graph_Record is private;
 
    type Data_Graph_Record_Access is access Data_Graph_Record with Convention=>C;
-   for Data_Graph_Record_Access'Storage_Pool use RDF.Raptor.Memory.Raptor_Storage_Pool_Instance;
 
    package Data_Graph_Handled_Record is new RDF.Auxiliary.Handled_Record(Data_Graph_Record, Data_Graph_Record_Access);
 

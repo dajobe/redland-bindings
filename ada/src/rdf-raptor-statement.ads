@@ -1,6 +1,5 @@
 with Interfaces.C;
 with RDF.Auxiliary.Handled_Record;
-with RDF.Raptor.Memory;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Term; use RDF.Raptor.Term;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
@@ -10,7 +9,6 @@ package RDF.Raptor.Statement is
    type Statement_Record is private;
 
    type Statement_Record_Access is access Statement_Record with Convention=>C;
-   for Statement_Record_Access'Storage_Pool use RDF.Raptor.Memory.Raptor_Storage_Pool_Instance;
 
    package Statement_Handled_Record is new RDF.Auxiliary.Handled_Record(Statement_Record, Statement_Record_Access);
 

@@ -2,7 +2,6 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
 with RDF.Auxiliary.Handled_Record;
-with RDF.Raptor.Memory;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.World; use RDF.Raptor.World;
 
@@ -23,9 +22,7 @@ package RDF.Raptor.Log is
    type Log_Message_Record  is private;
 
    type Locator_Type_Record_Access is access all Locator_Type_Record with Convention=>C;
-   for Locator_Type_Record_Access'Storage_Pool use RDF.Raptor.Memory.Raptor_Storage_Pool_Instance;
    type Log_Message_Record_Access is access all Log_Message_Record with Convention=>C;
-   for Log_Message_Record_Access'Storage_Pool use RDF.Raptor.Memory.Raptor_Storage_Pool_Instance;
 
    package Locator_Handled_Record is new RDF.Auxiliary.Handled_Record(Locator_Type_Record, Locator_Type_Record_Access);
    subtype Locator_Handle is Locator_Handled_Record.Access_Type;

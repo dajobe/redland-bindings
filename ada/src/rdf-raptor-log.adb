@@ -1,6 +1,6 @@
 with Ada.Unchecked_Conversion;
---  with System.Address_To_Access_Conversions;
 with RDF.Auxiliary.Convert_Void;
+with RDF.Raptor.Memory;
 with System; use System;
 
 package body RDF.Raptor.Log is

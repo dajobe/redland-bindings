@@ -2,7 +2,6 @@ with RDF.Auxiliary.Handled_Record;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary;
-with RDF.Raptor.Memory;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Namespace_Stack;
@@ -13,7 +12,6 @@ package RDF.Raptor.Term is
    type Term_Record is private;
 
    type Term_Record_Access is access all Term_Record with Convention=>C;
-   for Term_Record_Access'Storage_Pool use RDF.Raptor.Memory.Raptor_Storage_Pool_Instance;
 
    package Term_Handled_Record is new RDF.Auxiliary.Handled_Record(Term_Record, Term_Record_Access);
 
