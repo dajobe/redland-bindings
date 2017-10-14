@@ -1,6 +1,7 @@
 with Ada.Unchecked_Conversion;
 --  with System.Address_To_Access_Conversions;
 with RDF.Auxiliary.Convert_Void;
+with System; use System;
 
 package body RDF.Raptor.Log is
 
@@ -141,13 +142,17 @@ package body RDF.Raptor.Log is
       Finalize_Locator(Handle);
    end;
 
+   package Locator_Conv is new RDF.Auxiliary.Convert_Void(Locator_Type_Record);
+
    function Adjust_Handle (Object: Locator_Type; Handle: Locator_Handle) return Locator_Handle is
-      Result: constant Locator_Type_Record_Access := new Locator_Type_Record'(Handle.all);
+      Size: constant size_t := size_t((Locator_Type'Max_Size_In_Storage_Elements * Storage_Unit + (char'Size-1)) / char'Size);
+      Result2: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Size);
+      Result: constant Locator_Handle := Locator_Handle(Locator_Conv.To_Access(Result2));
    begin
       Result.all := Handle.all;
       Result.URI := raptor_uri_copy(Handle.URI);
       Result.File := RDF.Raptor.Memory.Copy_C_String(Handle.File);
-      return Locator_Handle(Result);
+      return Result;
    end;
 
    procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle) is
@@ -158,14 +163,18 @@ package body RDF.Raptor.Log is
       RDF.Raptor.Memory.Raptor_Free_Memory(My_Conv.To_C_Pointer(My_Conv.Object_Pointer(Handle)));
    end;
 
+   package Log_Message_Conv is new RDF.Auxiliary.Convert_Void(Log_Message_Record);
+
    function Adjust_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle)
                            return Log_Message_Handle is
-      Result: constant Log_Message_Record_Access := new Log_Message_Record'(Handle.all);
+      Size: constant size_t := size_t((Log_Message_Type'Max_Size_In_Storage_Elements * Storage_Unit + (char'Size-1)) / char'Size);
+      Result2: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Size);
+      Result: constant Log_Message_Handle := Log_Message_Handle(Log_Message_Conv.To_Access(Result2));
    begin
       Result.Text := RDF.Raptor.Memory.Copy_C_String(Handle.Text);
       Result.Locator.URI := raptor_uri_copy(Handle.Locator.URI);
       Result.Locator.File := RDF.Raptor.Memory.Copy_C_String(Handle.Locator.File);
-      return Log_Message_Handle(Result);
+      return Result;
    end;
 
 end RDF.Raptor.Log;
