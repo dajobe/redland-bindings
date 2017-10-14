@@ -171,6 +171,7 @@ package body RDF.Raptor.Log is
       Result2: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Size);
       Result: constant Log_Message_Handle := Log_Message_Handle(Log_Message_Conv.To_Access(Result2));
    begin
+      Result.all := Handle.all;
       Result.Text := RDF.Raptor.Memory.Copy_C_String(Handle.Text);
       Result.Locator.URI := raptor_uri_copy(Handle.Locator.URI);
       Result.Locator.File := RDF.Raptor.Memory.Copy_C_String(Handle.Locator.File);
