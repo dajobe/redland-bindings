@@ -34,7 +34,7 @@ package body RDF.Raptor.Memory is
    begin
       pragma Assert(RDF.Auxiliary.Dummy_Record'Alignment mod Alignment = 0);
       declare
-         Size: constant size_t := size_t(Size_In_Storage_Elements * char'Size / Storage_Unit);
+         Size: constant size_t := size_t((Size_In_Storage_Elements * char'Size + (Storage_Unit-1)) / Storage_Unit);
          Ptr: constant My_Char_Pointer := My_Conv3(raptor_alloc_memory(Size));
       begin
          Storage_Address := My_Conv1.To_Address(My_Conv1.Object_Pointer(Ptr));
