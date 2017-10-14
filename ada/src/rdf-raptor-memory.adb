@@ -32,7 +32,7 @@ package body RDF.Raptor.Memory is
                       Size_In_Storage_Elements : in Storage_Count;
                       Alignment : in Storage_Count) is
    begin
-      pragma Assert(RDF.Auxiliary.Dummy_Record'Alignment mod Alignment = 0);
+      pragma Assert(RDF.Auxiliary.Dummy_Record'Alignment mod Alignment = 0); -- FIXME: 'Max_Alignment_For_Allocation here and in other places
       declare
          Size: constant size_t := size_t((Size_In_Storage_Elements * char'Size + (Storage_Unit-1)) / Storage_Unit);
          Ptr: constant My_Char_Pointer := My_Conv3(raptor_alloc_memory(Size));
