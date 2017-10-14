@@ -35,7 +35,7 @@ package body RDF.Rasqal.Memory is
       pragma Assert(RDF.Auxiliary.Dummy_Record'Alignment mod Alignment = 0);
       declare
          Size: constant size_t := size_t(Size_In_Storage_Elements * char'Size / Storage_Unit);
-         Ptr: constant My_Char_Pointer := My_Conv3(Rasqal_alloc_memory(Size));
+         Ptr: constant My_Char_Pointer := My_Conv3(rasqal_alloc_memory(Size));
       begin
          Storage_Address := My_Conv1.To_Address(My_Conv1.Object_Pointer(Ptr));
       end;
@@ -51,7 +51,7 @@ package body RDF.Rasqal.Memory is
          Ptr: constant My_Conv2.Object_Pointer :=
            My_Conv2.Object_Pointer(My_Conv1.To_Pointer(Storage_Address));
       begin
-         Rasqal_free_memory(My_Conv2.To_C_Pointer(Ptr));
+         rasqal_free_memory(My_Conv2.To_C_Pointer(Ptr));
       end;
    end;
 
