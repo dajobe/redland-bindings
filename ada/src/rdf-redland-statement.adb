@@ -65,10 +65,39 @@ package body RDF.Redland.Statement is
 
    function librdf_statement_get_subject (Statement: Statement_Handle) return Node_Handle
      with Import, Convention=>C;
+   function librdf_statement_get_predicate (Statement: Statement_Handle) return Node_Handle
+     with Import, Convention=>C;
+   function librdf_statement_get_object (Statement: Statement_Handle) return Node_Handle
+     with Import, Convention=>C;
 
    function Get_Subject (Statement: Statement_Type_Without_Finalize) return Node_Type_Without_Finalize is
+     (From_Handle(librdf_statement_get_subject(Get_Handle(Statement))));
+   function Get_Predicate (Statement: Statement_Type_Without_Finalize) return Node_Type_Without_Finalize is
+     (From_Handle(librdf_statement_get_predicate(Get_Handle(Statement))));
+   function Get_Object (Statement: Statement_Type_Without_Finalize) return Node_Type_Without_Finalize is
+     (From_Handle(librdf_statement_get_object(Get_Handle(Statement))));
+
+   -- FIXME: Implement the below three Set_* procedures using Copy
+
+   procedure Set_Subject (Statement: Statement_Type_Without_Finalize;
+                          Node: Node_Type_Without_Finalize'Class) is
    begin
-      return From_Handle(librdf_statement_get_subject(Get_Handle(Statement)));
+      null;
    end;
+
+   procedure Set_Predicate (Statement: Statement_Type_Without_Finalize;
+                            Node: Node_Type_Without_Finalize'Class) is
+   begin
+      null;
+   end;
+
+
+   procedure Set_Object (Statement: Statement_Type_Without_Finalize;
+                         Node: Node_Type_Without_Finalize'Class) is
+   begin
+      null;
+   end;
+
+
 
 end RDF.Redland.Statement;

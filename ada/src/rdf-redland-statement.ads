@@ -23,6 +23,17 @@ package RDF.Redland.Statement is
 
    not overriding function Get_Subject (Statement: Statement_Type_Without_Finalize)
                                         return Node_Type_Without_Finalize;
+   not overriding function Get_Predicate (Statement: Statement_Type_Without_Finalize)
+                                        return Node_Type_Without_Finalize;
+   not overriding function Get_Object (Statement: Statement_Type_Without_Finalize)
+                                        return Node_Type_Without_Finalize;
+
+   not overriding procedure Set_Subject (Statement: Statement_Type_Without_Finalize;
+                                         Node: Node_Type_Without_Finalize'Class);
+   not overriding procedure Set_Predicate (Statement: Statement_Type_Without_Finalize;
+                                           Node: Node_Type_Without_Finalize'Class);
+   not overriding procedure Set_Object (Statement: Statement_Type_Without_Finalize;
+                                        Node: Node_Type_Without_Finalize'Class);
 
    -- Stopped at librdf_statement_get_subject()
 
