@@ -43,10 +43,10 @@ package body RDF.Raptor.Statement is
                            return Statement_Type is
    begin
       return New_Statement_Without_Copies(World,
-                                          Term_Type_Without_Finalize'(Copy(Subject)),
-                                          Term_Type_Without_Finalize'(Copy(Predicate)),
-                                          Term_Type_Without_Finalize'(Copy(Object)),
-                                          Term_Type_Without_Finalize'(Copy(Graph)));
+                                          Copy(Term_Type_Without_Finalize(Subject)),
+                                          Copy(Term_Type_Without_Finalize(Predicate)),
+                                          Copy(Term_Type_Without_Finalize(Object)),
+                                          Copy(Term_Type_Without_Finalize(Graph)));
    end;
 
    function New_Statement_Without_Copies (World: Raptor_World_Type_Without_Finalize'Class;

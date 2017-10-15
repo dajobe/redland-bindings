@@ -158,11 +158,6 @@ package body RDF.Raptor.Term is
       return raptor_term_copy(Handle);
    end;
 
-   function Copy (Object: Term_Type_Without_Finalize'Class) return Term_Type_Without_Finalize is
-   begin
-      return From_Handle (raptor_term_copy (Get_Handle(Object)) );
-   end;
-
    function raptor_term_compare (Left, Right: Term_Handle) return int
      with Import, Convention=>C;
 
