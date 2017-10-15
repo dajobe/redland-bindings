@@ -77,27 +77,36 @@ package body RDF.Redland.Statement is
    function Get_Object (Statement: Statement_Type_Without_Finalize) return Node_Type_Without_Finalize is
      (From_Handle(librdf_statement_get_object(Get_Handle(Statement))));
 
-   -- FIXME: Implement the below three Set_* procedures using Copy
+   function librdf_new_node_from_node (Node: Node_Handle) return Node_Handle
+     with Import, Convention=>C;
+
+   procedure librdf_statement_set_subject (Statement: Statement_Handle; Node: Node_Handle)
+     with Import, Convention=>C;
+   procedure librdf_statement_set_predicate (Statement: Statement_Handle; Node: Node_Handle)
+     with Import, Convention=>C;
+   procedure librdf_statement_set_object (Statement: Statement_Handle; Node: Node_Handle)
+     with Import, Convention=>C;
 
    procedure Set_Subject (Statement: Statement_Type_Without_Finalize;
                           Node: Node_Type_Without_Finalize'Class) is
    begin
-      null;
+      librdf_statement_set_subject(Get_Handle(Statement),
+                                   librdf_new_node_from_node(Get_Handle(Node)));
    end;
 
    procedure Set_Predicate (Statement: Statement_Type_Without_Finalize;
                             Node: Node_Type_Without_Finalize'Class) is
    begin
-      null;
+      librdf_statement_set_predicate(Get_Handle(Statement),
+                                     librdf_new_node_from_node(Get_Handle(Node)));
    end;
 
 
    procedure Set_Object (Statement: Statement_Type_Without_Finalize;
                          Node: Node_Type_Without_Finalize'Class) is
    begin
-      null;
+      librdf_statement_set_object(Get_Handle(Statement),
+                                  librdf_new_node_from_node(Get_Handle(Node)));
    end;
-
-
 
 end RDF.Redland.Statement;
