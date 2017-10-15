@@ -314,11 +314,6 @@ package body RDF.Raptor.URI is
       return raptor_uri_copy(Handle);
    end;
 
-   function Copy (Object: URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize is
-   begin
-      return From_Handle (raptor_uri_copy(Get_Handle(Object)) );
-   end;
-
    function Get_Filename (Pair: Filename_And_Fragment) return String is (Pair.Filename);
    function Get_Fragment (Pair: Filename_And_Fragment) return String is (Pair.Fragment);
 

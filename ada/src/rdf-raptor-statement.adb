@@ -74,12 +74,6 @@ package body RDF.Raptor.Statement is
       return raptor_statement_copy(Handle);
    end;
 
-   function Copy (Object: Statement_Type_Without_Finalize'Class)
-                  return Statement_Type_Without_Finalize is
-   begin
-      return From_Handle (raptor_statement_copy (Get_Handle(Object)) );
-   end;
-
    function raptor_statement_compare (Left, Right: Statement_Handle) return int
      with Import, Convention=>C;
 

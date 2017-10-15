@@ -40,9 +40,6 @@ package RDF.Raptor.Statement is
                                             Stream: Base_Stream_Type'Class;
                                             Write_Graph_Term: Boolean);
 
-   not overriding function Copy (Object: Statement_Type_Without_Finalize'Class)
-                                 return Statement_Type_Without_Finalize;
-
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
    overriding function Adjust_Handle (Object: Statement_Type; Handle: Statement_Handle) return Statement_Handle;

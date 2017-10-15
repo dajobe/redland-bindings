@@ -67,8 +67,6 @@ package RDF.Raptor.URI is
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                           Base_URI: URI_Type_Without_Finalize'Class);
 
-   not overriding function Copy (Object: URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize;
-
    type URI_Type is new URI_Type_Without_Finalize with null record;
 
    overriding function Adjust_Handle(Object: URI_Type; Handle: URI_Handle) return URI_Handle;
