@@ -155,4 +155,14 @@ package body RDF.Redland.Model is
       end if;
    end;
 
+   function librdf_model_add_statement (Model: Model_Handle; Statement: Statement_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Add (Model: Model_Type_Without_Finalize; Statement: Statement_Type_Without_Finalize'Class) is
+   begin
+      if librdf_model_add_statement(Get_Handle(Model), Get_Handle(Statement)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Model;

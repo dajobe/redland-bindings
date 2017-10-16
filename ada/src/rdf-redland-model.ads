@@ -6,6 +6,7 @@ with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.URI; use RDF.Redland.URI;
 with RDF.Redland.Node; use RDF.Redland.Node;
+with RDF.Redland.Statement; use RDF.Redland.Statement;
 with RDF.Redland.Storage; use RDF.Redland.Storage;
 
 package RDF.Redland.Model is
@@ -53,9 +54,11 @@ package RDF.Redland.Model is
    not overriding procedure Add (Model: Model_Type_Without_Finalize;
                                  Subject, Predicate, Object: Node_Type_Without_Finalize'Class);
 
---     not overriding procedure Add (Model: Model_Type_Without_Finalize;
---                                   Statement: Statement_Type_Without_Finalize'Class);
-   -- Stopped at librdf_model_add_statement() (continue after RDF.Redland.Statement)
+   not overriding procedure Add (Model: Model_Type_Without_Finalize;
+                                 Statement: Statement_Type_Without_Finalize'Class)
+     with Pre => Is_Complete(Statement);
+
+   -- Stopped at librdf_model_add_statements() (will continue after RDF.Redland.Stream)
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;
