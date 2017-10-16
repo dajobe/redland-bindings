@@ -159,4 +159,46 @@ package body RDF.Redland.Statement is
       return To_Ada(Buffer, Trim_Nul=>False);
    end;
 
+   function librdf_statement_encode_parts2 (World: Redland_World_Handle;
+                                            Statement: Statement_Handle;
+                                            Context_Node: Node_Handle;
+                                            Buffer: chars_ptr;
+                                            Length: size_t;
+                                            Fields: Statement_Part_Flags)
+                                            return size_t
+     with Import, Convention=>C;
+
+   function Encode_Parts (World: Redland_World_Type_Without_Finalize'Class;
+                          Statement: Statement_Type_Without_Finalize;
+                          Context_Node: Node_Type_Without_Finalize'Class;
+                          Fields: Statement_Part_Flags)
+                          return String is
+      Length: size_t := librdf_statement_encode_parts2(Get_Handle(World),
+                                                       Get_Handle(Statement),
+                                                       Get_Handle(Context_Node),
+                                                       Null_Ptr,
+                                                       0,
+                                                       Fields);
+--        Buffer: aliased char_array(1..Length); -- GCC 7.2.0 warning
+      Buffer: aliased char_array := (1..Length => nul);
+   begin
+      Length := librdf_statement_encode_parts2(Get_Handle(World),
+                                               Get_Handle(Statement),
+                                               Get_Handle(Context_Node),
+                                               To_Chars_Ptr(Buffer'Unchecked_Access),
+                                               Length,
+                                               Fields);
+      return To_Ada(Buffer, Trim_Nul=>False);
+   end;
+
+   function librdf_statement_write (Statement: Statement_Handle; Stream: IOStream_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Write (Statement: Statement_Type_Without_Finalize; Stream: Base_Stream_Type'Class) is
+   begin
+      if librdf_statement_write(Get_Handle(Statement), Get_Handle(Stream)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Statement;

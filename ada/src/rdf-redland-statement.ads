@@ -1,4 +1,5 @@
 with RDF.Auxiliary; use RDF.Auxiliary;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Raptor.Statement;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.Node; use RDF.Redland.Node;
@@ -51,7 +52,15 @@ package RDF.Redland.Statement is
                                    Statement: Statement_Type_Without_Finalize)
                                    return String;
 
-   -- TODO: Stopped at librdf_statement_encode_parts2()
+   not overriding function Encode_Parts (World: Redland_World_Type_Without_Finalize'Class;
+                                         Statement: Statement_Type_Without_Finalize;
+                                         Context_Node: Node_Type_Without_Finalize'Class;
+                                         Fields: Statement_Part_Flags)
+                                         return String;
+
+   -- librdf_statement_decode2() not implemented (not so important and somehow hard to do)
+
+   not overriding procedure Write (Statement: Statement_Type_Without_Finalize; Stream: Base_Stream_Type'Class);
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
