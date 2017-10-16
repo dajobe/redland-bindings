@@ -1,4 +1,5 @@
 with Interfaces.C; use Interfaces.C;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 
 package body RDF.Redland.Statement is
 
@@ -135,5 +136,27 @@ package body RDF.Redland.Statement is
 
    function Match (Statement, Partial: Statement_Type_Without_Finalize) return Boolean is
      (librdf_statement_match(Get_Handle(Statement), Get_Handle(Partial)) /= 0);
+
+   function librdf_statement_encode2 (World: Redland_World_Handle;
+                                      Statement: Statement_Handle;
+                                      Buffer: chars_ptr;
+                                      Length: size_t)
+                                      return size_t
+     with Import, Convention=>C;
+
+   function Encode (World: Redland_World_Type_Without_Finalize'Class;
+                    Statement: Statement_Type_Without_Finalize)
+                    return String is
+      Length: size_t :=
+        librdf_statement_encode2(Get_Handle(World), Get_Handle(Statement), Null_Ptr, 0);
+--        Buffer: aliased char_array(1..Length); -- GCC 7.2.0 warning
+      Buffer: aliased char_array := (1..Length => nul);
+   begin
+      Length := librdf_statement_encode2(Get_Handle(World),
+                                         Get_Handle(Statement),
+                                         To_Chars_Ptr(Buffer'Unchecked_Access),
+                                         Length);
+      return To_Ada(Buffer, Trim_Nul=>False);
+   end;
 
 end RDF.Redland.Statement;

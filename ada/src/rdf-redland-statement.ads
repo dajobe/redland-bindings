@@ -47,7 +47,11 @@ package RDF.Redland.Statement is
 
    not overriding function Match (Statement, Partial: Statement_Type_Without_Finalize) return Boolean;
 
-   -- TODO: Stopped at librdf_statement_encode2()
+   not overriding function Encode (World: Redland_World_Type_Without_Finalize'Class;
+                                   Statement: Statement_Type_Without_Finalize)
+                                   return String;
+
+   -- TODO: Stopped at librdf_statement_encode_parts2()
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
