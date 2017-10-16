@@ -1,3 +1,4 @@
+with Interfaces.C; use Interfaces.C;
 with RDF.Redland.Iterator; use RDF.Redland.Iterator;
 
 package body RDF.Redland.Stream is
@@ -32,6 +33,24 @@ package body RDF.Redland.Stream is
    procedure Finalize_Handle (Object: Stream_Type; Handle: Stream_Handle) is
    begin
       librdf_free_stream(Handle);
+   end;
+
+   function librdf_stream_end (Stream: Stream_Handle) return int
+     with Import, Convention=>C;
+
+   function Is_End (Stream: Stream_Type_Without_Finalize) return Boolean is
+   begin
+      return librdf_stream_end(Get_Handle(Stream)) /= 0;
+   end;
+
+   function librdf_stream_next (Stream: Stream_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Next(Stream: Stream_Type_Without_Finalize) is
+      Result: constant int := librdf_stream_next(Get_Handle(Stream));
+      pragma Unreferenced(Result);
+   begin
+      null;
    end;
 
 end RDF.Redland.Stream;

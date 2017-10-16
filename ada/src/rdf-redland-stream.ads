@@ -11,7 +11,12 @@ package RDF.Redland.Stream is
 
    subtype Stream_Handle is Stream_Handled_Record.Access_Type;
 
-   -- TODO: Stopped at librdf_stream_end()
+   not overriding function Is_End (Stream: Stream_Type_Without_Finalize) return Boolean;
+
+   -- FIXME: What to do with the return value?
+   not overriding procedure Next(Stream: Stream_Type_Without_Finalize);
+
+   -- TODO: Stopped at librdf_stream_get_object()
 
    type Stream_Type is new Stream_Type_Without_Finalize with null record;
 
