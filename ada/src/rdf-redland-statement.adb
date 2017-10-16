@@ -116,4 +116,12 @@ package body RDF.Redland.Statement is
    function Is_Complete (Statement: Statement_Type_Without_Finalize) return Boolean is
       (librdf_statement_is_complete(Get_Handle(Statement)) /= 0);
 
+   procedure librdf_statement_print (Statement: Statement_Handle; File: C_File_Access)
+     with Import, Convention=>C;
+
+   procedure Print (Statement: Statement_Type_Without_Finalize; File: C_File_Access) is
+   begin
+      librdf_statement_print(Get_Handle(Statement), File);
+   end;
+
 end RDF.Redland.Statement;

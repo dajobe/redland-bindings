@@ -1,3 +1,4 @@
+with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Raptor.Statement;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.Node; use RDF.Redland.Node;
@@ -37,7 +38,9 @@ package RDF.Redland.Statement is
 
    not overriding function Is_Complete (Statement: Statement_Type_Without_Finalize) return Boolean;
 
-   -- TODO: Stopped at librdf_statement_print()
+   not overriding procedure Print (Statement: Statement_Type_Without_Finalize; File: C_File_Access);
+
+   -- TODO: Stopped at librdf_statement_equals()
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
