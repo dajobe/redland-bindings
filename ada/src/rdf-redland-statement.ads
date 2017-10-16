@@ -35,7 +35,9 @@ package RDF.Redland.Statement is
    not overriding procedure Set_Object (Statement: Statement_Type_Without_Finalize;
                                         Node: Node_Type_Without_Finalize'Class);
 
-   -- TODO: Stopped at librdf_statement_is_complete()
+   not overriding function Is_Complete (Statement: Statement_Type_Without_Finalize) return Boolean;
+
+   -- TODO: Stopped at librdf_statement_print()
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 

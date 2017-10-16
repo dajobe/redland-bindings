@@ -1,3 +1,5 @@
+with Interfaces.C; use Interfaces.C;
+
 package body RDF.Redland.Statement is
 
    function To_Raptor (Statement: Statement_Type_Without_Finalize'Class)
@@ -101,12 +103,17 @@ package body RDF.Redland.Statement is
                                      librdf_new_node_from_node(Get_Handle(Node)));
    end;
 
-
    procedure Set_Object (Statement: Statement_Type_Without_Finalize;
                          Node: Node_Type_Without_Finalize'Class) is
    begin
       librdf_statement_set_object(Get_Handle(Statement),
                                   librdf_new_node_from_node(Get_Handle(Node)));
    end;
+
+   function librdf_statement_is_complete (Statement: Statement_Handle) return int
+     with Import, Convention=>C;
+
+   function Is_Complete (Statement: Statement_Type_Without_Finalize) return Boolean is
+      (librdf_statement_is_complete(Get_Handle(Statement)) /= 0);
 
 end RDF.Redland.Statement;
