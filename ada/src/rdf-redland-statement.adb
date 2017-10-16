@@ -124,4 +124,16 @@ package body RDF.Redland.Statement is
       librdf_statement_print(Get_Handle(Statement), File);
    end;
 
+   function librdf_statement_equals (Left, Right: Statement_Handle) return int
+     with Import, Convention=>C;
+
+   function Equals (Left, Right: Statement_Type_Without_Finalize) return Boolean is
+     (librdf_statement_equals(Get_Handle(Left), Get_Handle(Right)) /= 0);
+
+   function librdf_statement_match (Statement, Partial: Statement_Handle) return int
+     with Import, Convention=>C;
+
+   function Match (Statement, Partial: Statement_Type_Without_Finalize) return Boolean is
+     (librdf_statement_match(Get_Handle(Statement), Get_Handle(Partial)) /= 0);
+
 end RDF.Redland.Statement;

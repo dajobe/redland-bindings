@@ -40,7 +40,14 @@ package RDF.Redland.Statement is
 
    not overriding procedure Print (Statement: Statement_Type_Without_Finalize; File: C_File_Access);
 
-   -- TODO: Stopped at librdf_statement_equals()
+   not overriding function Equals (Left, Right: Statement_Type_Without_Finalize) return Boolean;
+
+   overriding function "=" (Left, Right: Statement_Type_Without_Finalize) return Boolean
+     renames Equals;
+
+   not overriding function Match (Statement, Partial: Statement_Type_Without_Finalize) return Boolean;
+
+   -- TODO: Stopped at librdf_statement_encode2()
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 
