@@ -14,9 +14,13 @@ package RDF.Redland.Stream is
    not overriding function Is_End (Stream: Stream_Type_Without_Finalize) return Boolean;
 
    -- FIXME: What to do with the return value?
+   -- TODO: Ada iterator
    not overriding procedure Next(Stream: Stream_Type_Without_Finalize);
 
-   -- TODO: Stopped at librdf_stream_get_object()
+   not overriding function Get_Object (Stream: Stream_Type_Without_Finalize)
+                                       return Statement_Type_Without_Finalize;
+
+   -- TODO: Stopped at librdf_stream_get_context2()
 
    type Stream_Type is new Stream_Type_Without_Finalize with null record;
 

@@ -53,4 +53,12 @@ package body RDF.Redland.Stream is
       null;
    end;
 
+   function librdf_stream_get_object (Stream: Stream_Handle) return Statement_Handle
+     with Import, Convention=>C;
+
+   function Get_Object (Stream: Stream_Type_Without_Finalize) return Statement_Type_Without_Finalize is
+   begin
+      return From_Handle(librdf_stream_get_object(Get_Handle(Stream)));
+   end;
+
 end RDF.Redland.Stream;
