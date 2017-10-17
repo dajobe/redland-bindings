@@ -408,4 +408,10 @@ package body RDF.Redland.Model is
       return librdf_model_contains_context(Get_Handle(Model), Get_Handle(Context)) /= 0;
    end;
 
+   function librdf_model_supports_contexts (Model: Model_Handle) return int
+     with Import, Convention=>C;
+
+   function Supports_Context (Model: Model_Type_Without_Finalize) return Boolean is
+     (librdf_model_supports_contexts(Get_Handle(Model)) /= 0);
+
 end RDF.Redland.Model;

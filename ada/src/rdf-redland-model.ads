@@ -136,7 +136,11 @@ package RDF.Redland.Model is
                                              Context: Node_Type_Without_Finalize'Class)
                                              return Boolean;
 
-   -- Stopped at librdf_model_supports_contexts()
+   not overriding function Supports_Context (Model: Model_Type_Without_Finalize) return Boolean;
+
+   -- librdf_model_query_execute() not bound (use librdf_query_execute() instead)
+
+   -- Stopped at librdf_model_sync()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;
