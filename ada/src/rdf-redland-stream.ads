@@ -1,4 +1,5 @@
 with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.Node; use RDF.Redland.Node;
 with RDF.Redland.Statement; use RDF.Redland.Statement;
@@ -28,7 +29,7 @@ package RDF.Redland.Stream is
 
    -- librdf_stream_add_map() not implemented
 
-   -- TODO: Stopped at librdf_stream_print()
+   not overriding procedure Write (Stream: Stream_Type_Without_Finalize; Raptor_Stream: Base_Stream_Type'Class);
 
    type Stream_Type is new Stream_Type_Without_Finalize with null record;
 

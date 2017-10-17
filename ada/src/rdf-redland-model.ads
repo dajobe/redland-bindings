@@ -58,7 +58,7 @@ package RDF.Redland.Model is
                                  Statement: Statement_Type_Without_Finalize'Class)
      with Pre => Is_Complete(Statement);
 
-   -- Stopped at librdf_model_add_statements() (will continue after RDF.Redland.Stream)
+   -- Stopped at librdf_model_add_statements()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;
