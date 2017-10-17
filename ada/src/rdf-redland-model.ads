@@ -138,6 +138,7 @@ package RDF.Redland.Model is
 
    not overriding function Supports_Context (Model: Model_Type_Without_Finalize) return Boolean;
 
+   -- FIXME: These two functions seem different
    -- librdf_model_query_execute() not bound (use librdf_query_execute() instead)
 
    -- Stopped at librdf_model_sync()
