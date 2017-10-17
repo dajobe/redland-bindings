@@ -156,22 +156,74 @@ package body RDF.Redland.Model is
       end if;
    end;
 
-   function librdf_model_add_statement (Model: Model_Handle; Statement: Statement_Handle) return int
+   function librdf_model_context_add_statement (Model: Model_Handle;
+                                                Context: Node_Handle;
+                                                Statement: Statement_Handle)
+                                                return int
      with Import, Convention=>C;
 
-   procedure Add (Model: in out Model_Type_Without_Finalize; Statement: Statement_Type_Without_Finalize'Class) is
+   procedure Add (Model: in out Model_Type_Without_Finalize;
+                  Statement: Statement_Type_Without_Finalize'Class;
+                  Context: Node_Type_Without_Finalize'Class := Node_Type_Without_Finalize'(From_Handle(null))) is
    begin
-      if librdf_model_add_statement(Get_Handle(Model), Get_Handle(Statement)) /= 0 then
+      if librdf_model_context_add_statement(Get_Handle(Model),
+                                            Get_Handle(Context),
+                                            Get_Handle(Statement)) /= 0
+      then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
 
-   function librdf_model_add_statements (Model_Type: Model_Handle; Statements: Stream_Handle) return int
+   function librdf_model_context_add_statements (Model_Type: Model_Handle;
+                                                 Context: Node_Handle;
+                                                 Statements: Stream_Handle)
+                                                 return int
      with Import, Convention=>C;
 
-   procedure Add (Model: in out Model_Type_Without_Finalize; Statements: Stream_Type_Without_Finalize'Class) is
+   procedure Add (Model: in out Model_Type_Without_Finalize;
+                  Statements: Stream_Type_Without_Finalize'Class;
+                  Context: Node_Type_Without_Finalize'Class := Node_Type_Without_Finalize'(From_Handle(null))) is
    begin
-      if librdf_model_add_statements(Get_Handle(Model), Get_Handle(Statements)) /= 0 then
+      if librdf_model_context_add_statements(Get_Handle(Model),
+                                             Get_Handle(Context),
+                                             Get_Handle(Statements)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function librdf_model_context_remove_statement (Model: Model_Handle;
+                                                   Context: Node_Handle;
+                                                   Statement: Statement_Handle)
+                                                   return int
+     with Import, Convention=>C;
+
+   procedure Remove (Model: in out Model_Type_Without_Finalize;
+                     Statement: Statement_Type_Without_Finalize'Class;
+                     Context: Node_Type_Without_Finalize'Class := Node_Type_Without_Finalize'(From_Handle(null))) is
+   begin
+      if librdf_model_context_remove_statement(Get_Handle(Model),
+                                               Get_Handle(Context),
+                                               Get_Handle(Statement)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function librdf_model_context_remove_statements (Model_Type: Model_Handle;
+                                                    Context: Node_Handle;
+                                                    Statements: Stream_Handle)
+                                                    return int
+     with Import, Convention=>C;
+
+   procedure Remove (Model: in out Model_Type_Without_Finalize;
+                     Statements: Stream_Type_Without_Finalize'Class;
+                     Context: Node_Type_Without_Finalize'Class := Node_Type_Without_Finalize'(From_Handle(null))) is
+   begin
+      if librdf_model_context_remove_statements(Get_Handle(Model),
+                                                Get_Handle(Context),
+                                                Get_Handle(Statements)) /= 0
+      then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;

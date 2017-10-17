@@ -57,14 +57,25 @@ package RDF.Redland.Model is
                                  Subject, Predicate, Object: Node_Type_Without_Finalize'Class);
 
    not overriding procedure Add (Model: in out Model_Type_Without_Finalize;
-                                 Statement: Statement_Type_Without_Finalize'Class)
+                                 Statement: Statement_Type_Without_Finalize'Class;
+                                 Context: Node_Type_Without_Finalize'Class := Node_Type_Without_Finalize'(From_Handle(null)))
      with Pre => Is_Complete(Statement);
 
    not overriding procedure Add (Model: in out Model_Type_Without_Finalize;
-                                 Statements: Stream_Type_Without_Finalize'Class);
+                                 Statements: Stream_Type_Without_Finalize'Class;
+                                 Context: Node_Type_Without_Finalize'Class := Node_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding procedure Remove (Model: Model_Type_Without_Finalize;
                                     Statement: Statement_Type_Without_Finalize'Class);
+
+   not overriding procedure Remove (Model: in out Model_Type_Without_Finalize;
+                                    Statement: Statement_Type_Without_Finalize'Class;
+                                    Context: Node_Type_Without_Finalize'Class := Node_Type_Without_Finalize'(From_Handle(null)))
+   with Pre => Is_Complete(Statement);
+
+   not overriding procedure Remove (Model: in out Model_Type_Without_Finalize;
+                                    Statements: Stream_Type_Without_Finalize'Class;
+                                    Context: Node_Type_Without_Finalize'Class := Node_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding function Contains (Model: Model_Type_Without_Finalize;
                                      Statement: Statement_Type_Without_Finalize'Class)
@@ -117,7 +128,7 @@ package RDF.Redland.Model is
    not overriding procedure Remove_Submodel (Model: Model_Type_Without_Finalize;
                                              Submodel: Model_Type_Without_Finalize'Class);
 
-   -- Stopped at librdf_model_context_add_statement()
+   -- Stopped at librdf_model_context_as_stream()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;
