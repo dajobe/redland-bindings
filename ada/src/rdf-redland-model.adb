@@ -252,4 +252,30 @@ package body RDF.Redland.Model is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_model_get_arcs (Model: Model_Handle; Source, Target: Node_Handle)
+                                   return Node_Iterator_Handle
+     with Import, Convention=>C;
+
+   function Get_Arcs (Model: Model_Type_Without_Finalize;
+                      Source, Target: Node_Type_Without_Finalize'Class)
+                      return Node_Iterator_Type is
+      Handle: constant Node_Iterator_Handle :=
+        librdf_model_get_arcs(Get_Handle(Model), Get_Handle(Source), Get_Handle(Target));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
+   function librdf_model_get_targets (Model: Model_Handle; Source, Arc: Node_Handle)
+                                      return Node_Iterator_Handle
+     with Import, Convention=>C;
+
+   function Get_Targets (Model: Model_Type_Without_Finalize;
+                         Source, Arc: Node_Type_Without_Finalize'Class)
+                         return Node_Iterator_Type is
+      Handle: constant Node_Iterator_Handle :=
+        librdf_model_get_targets(Get_Handle(Model), Get_Handle(Source), Get_Handle(Arc));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.Model;
