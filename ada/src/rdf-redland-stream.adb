@@ -61,4 +61,12 @@ package body RDF.Redland.Stream is
       return From_Handle(librdf_stream_get_object(Get_Handle(Stream)));
    end;
 
+   function librdf_stream_get_context2 (Stream: Stream_Handle) return Node_Handle
+     with Import, Convention=>C;
+
+   function Get_Context (Stream: Stream_Type_Without_Finalize) return Node_Type_Without_Finalize is
+   begin
+      return From_Handle(librdf_stream_get_context2(Get_Handle(Stream)));
+   end;
+
 end RDF.Redland.Stream;

@@ -1,5 +1,6 @@
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Redland.World; use RDF.Redland.World;
+with RDF.Redland.Node; use RDF.Redland.Node;
 with RDF.Redland.Statement; use RDF.Redland.Statement;
 with RDF.Redland.Node_Iterator; use RDF.Redland.Node_Iterator;
 
@@ -17,10 +18,17 @@ package RDF.Redland.Stream is
    -- TODO: Ada iterator
    not overriding procedure Next(Stream: Stream_Type_Without_Finalize);
 
+   -- Should we instead return a copy of the statement?
    not overriding function Get_Object (Stream: Stream_Type_Without_Finalize)
                                        return Statement_Type_Without_Finalize;
 
-   -- TODO: Stopped at librdf_stream_get_context2()
+   -- Should we instead return a copy of the node?
+   not overriding function Get_Context (Stream: Stream_Type_Without_Finalize)
+                                        return Node_Type_Without_Finalize;
+
+   -- librdf_stream_add_map() not implemented
+
+   -- TODO: Stopped at librdf_stream_print()
 
    type Stream_Type is new Stream_Type_Without_Finalize with null record;
 
