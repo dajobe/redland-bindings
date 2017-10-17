@@ -8,6 +8,7 @@ with RDF.Redland.URI; use RDF.Redland.URI;
 with RDF.Redland.Node; use RDF.Redland.Node;
 with RDF.Redland.Statement; use RDF.Redland.Statement;
 with RDF.Redland.Storage; use RDF.Redland.Storage;
+with RDF.Redland.Stream; use RDF.Redland.Stream;
 
 package RDF.Redland.Model is
 
@@ -58,7 +59,13 @@ package RDF.Redland.Model is
                                  Statement: Statement_Type_Without_Finalize'Class)
      with Pre => Is_Complete(Statement);
 
-   -- Stopped at librdf_model_add_statements()
+   not overriding procedure Add (Model: Model_Type_Without_Finalize;
+                                 Statements: Stream_Type_Without_Finalize'Class);
+
+   not overriding procedure Remove (Model: Model_Type_Without_Finalize;
+                                    Statement: Statement_Type_Without_Finalize'Class);
+
+   -- Stopped at librdf_model_contains_statement()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;

@@ -165,4 +165,24 @@ package body RDF.Redland.Model is
       end if;
    end;
 
+   function librdf_model_add_statements (Model_Type: Model_Handle; Statements: Stream_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Add (Model: Model_Type_Without_Finalize; Statements: Stream_Type_Without_Finalize'Class) is
+   begin
+      if librdf_model_add_statements(Get_Handle(Model), Get_Handle(Statements)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function librdf_model_remove_statement (Model: Model_Handle; Statement: Statement_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Remove (Model: Model_Type_Without_Finalize; Statement: Statement_Type_Without_Finalize'Class) is
+   begin
+      if librdf_model_remove_statement(Get_Handle(Model), Get_Handle(Statement)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Model;
