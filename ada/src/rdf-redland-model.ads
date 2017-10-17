@@ -111,7 +111,13 @@ package RDF.Redland.Model is
                                        Source, Arc: Node_Type_Without_Finalize'Class)
                                        return Node_Type;
 
-   -- Stopped at librdf_model_add_submodel()
+   not overriding procedure Add_Submodel (Model: Model_Type_Without_Finalize;
+                                          Submodel: Model_Type_Without_Finalize'Class);
+
+   not overriding procedure Remove_Submodel (Model: Model_Type_Without_Finalize;
+                                             Submodel: Model_Type_Without_Finalize'Class);
+
+   -- Stopped at librdf_model_context_add_statement()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;

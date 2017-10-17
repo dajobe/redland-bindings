@@ -314,4 +314,26 @@ package body RDF.Redland.Model is
       return From_Handle(Handle);
    end;
 
+   function librdf_model_add_submodel (Model, Submodel: Model_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Add_Submodel (Model: Model_Type_Without_Finalize;
+                           Submodel: Model_Type_Without_Finalize'Class) is
+   begin
+      if librdf_model_add_submodel(Get_Handle(Model), Get_Handle(Submodel)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function librdf_model_remove_submodel (Model, Submodel: Model_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Remove_Submodel (Model: Model_Type_Without_Finalize;
+                              Submodel: Model_Type_Without_Finalize'Class) is
+   begin
+      if librdf_model_remove_submodel(Get_Handle(Model), Get_Handle(Submodel)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Model;
