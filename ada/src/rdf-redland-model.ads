@@ -149,7 +149,12 @@ package RDF.Redland.Model is
    not overriding function Get_Storage (Model: Model_Type_Without_Finalize)
                                         return Storage_Type_Without_Finalize;
 
-   -- Stopped at librdf_model_load()
+   not overriding procedure Load (Model: Model_Type_Without_Finalize;
+                                  URI: URI_Type_Without_Finalize'Class;
+                                  Name, Mime_Type: String := "";
+                                  Type_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+
+   -- Stopped at librdf_model_to_counted_string()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;

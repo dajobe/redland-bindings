@@ -445,4 +445,28 @@ package body RDF.Redland.Model is
       return From_Handle(librdf_model_get_storage(Get_Handle(Model)));
    end;
 
+   function librdf_model_load (Model: Model_Handle;
+                               URI: URI_Handle;
+                               Name, Mime_Type: chars_ptr;
+                               Type_URI: URI_Handle)
+                               return int
+     with Import, Convention=>C;
+
+   procedure Load (Model: Model_Type_Without_Finalize;
+                   URI: URI_Type_Without_Finalize'Class;
+                   Name, Mime_Type: String := "";
+                   Type_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
+      Name2: aliased char_array := To_C(Name);
+      Mime_Type2: aliased char_array := To_C(Mime_Type);
+   begin
+      if librdf_model_load(Get_Handle(Model),
+                           Get_Handle(URI),
+                           (if Name = "" then Null_Ptr else To_Chars_Ptr(Name2'Unchecked_Access)),
+                           (if Mime_Type = "" then Null_Ptr else To_Chars_Ptr(Mime_Type2'Unchecked_Access)),
+                           Get_Handle(Type_URI)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Model;
