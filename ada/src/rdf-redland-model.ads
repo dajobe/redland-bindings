@@ -77,7 +77,13 @@ package RDF.Redland.Model is
                                         Node, Property: Node_Type_Without_Finalize'Class)
                                         return Boolean;
 
-   -- Stopped at librdf_model_as_stream()
+   not overriding function As_Stream (Model: Model_Type_Without_Finalize) return Stream_Type;
+
+   not overriding function Find (Model: Model_Type_Without_Finalize;
+                                 Statement: Statement_Type_Without_Finalize'Class)
+                                 return Stream_Type;
+
+   -- Stopped at LIBRDF_MODEL_FIND_OPTION_MATCH_SUBSTRING_LITERAL
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;

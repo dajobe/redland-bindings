@@ -220,4 +220,22 @@ package body RDF.Redland.Model is
       return librdf_model_has_arc_out(Get_Handle(Model), Get_Handle(Node), Get_Handle(Property)) /= 0;
    end;
 
+   function librdf_model_as_stream (Model: Model_Handle) return Stream_Handle
+     with Import, Convention=>C;
+
+   function As_Stream (Model: Model_Type_Without_Finalize) return Stream_Type is
+   begin
+      return From_Non_Null_Handle(librdf_model_as_stream(Get_Handle(Model)));
+   end;
+
+   function librdf_model_find_statements (Model: Model_Handle; Statement: Statement_Handle) return Stream_Handle
+     with Import, Convention=>C;
+
+   function Find (Model: Model_Type_Without_Finalize;
+                  Statement: Statement_Type_Without_Finalize'Class)
+                  return Stream_Type is
+   begin
+      return From_Non_Null_Handle(librdf_model_find_statements(Get_Handle(Model), Get_Handle(Statement)));
+   end;
+
 end RDF.Redland.Model;
