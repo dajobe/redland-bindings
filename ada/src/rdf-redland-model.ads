@@ -144,7 +144,12 @@ package RDF.Redland.Model is
                                           Query: RDF.Redland.Query.Query_Type_Without_Finalize'Class)
                                           return RDF.Redland.Query_Results.Query_Results_Type_Without_Finalize;
 
-   -- Stopped at librdf_model_sync()
+   not overriding procedure Sync (Model: Model_Type_Without_Finalize);
+
+   not overriding function Get_Storage (Model: Model_Type_Without_Finalize)
+                                        return Storage_Type_Without_Finalize;
+
+   -- Stopped at librdf_model_load()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;

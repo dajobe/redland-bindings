@@ -427,4 +427,22 @@ package body RDF.Redland.Model is
       return From_Non_Null_Handle(librdf_model_query_execute(Get_Handle(Model), Get_Handle(Query)));
    end;
 
+   function librdf_model_sync (Model: Model_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Sync (Model: Model_Type_Without_Finalize) is
+   begin
+      if librdf_model_sync(Get_Handle(Model)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function librdf_model_get_storage (Model: Model_Handle) return Storage_Handle
+     with Import, Convention=>C;
+
+   function Get_Storage (Model: Model_Type_Without_Finalize) return Storage_Type_Without_Finalize is
+   begin
+      return From_Handle(librdf_model_get_storage(Get_Handle(Model)));
+   end;
+
 end RDF.Redland.Model;
