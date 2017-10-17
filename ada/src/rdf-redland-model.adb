@@ -278,4 +278,40 @@ package body RDF.Redland.Model is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_model_get_source (Model: Model_Handle; Arc, Target: Node_Handle) return Node_Handle
+     with Import, Convention=>C;
+
+   function Get_Source (Model: Model_Type_Without_Finalize;
+                        Arc, Target: Node_Type_Without_Finalize'Class)
+                        return Node_Type is
+      Handle: constant Node_Handle :=
+        librdf_model_get_source(Get_Handle(Model), Get_Handle(Arc), Get_Handle(Target));
+   begin
+      return From_Handle(Handle);
+   end;
+
+   function librdf_model_get_arc (Model: Model_Handle; Source, Target: Node_Handle) return Node_Handle
+     with Import, Convention=>C;
+
+   function Get_Arc (Model: Model_Type_Without_Finalize;
+                     Source, Target: Node_Type_Without_Finalize'Class)
+                     return Node_Type is
+      Handle: constant Node_Handle :=
+        librdf_model_get_arc(Get_Handle(Model), Get_Handle(Source), Get_Handle(Target));
+   begin
+      return From_Handle(Handle);
+   end;
+
+   function librdf_model_get_target (Model: Model_Handle; Source, Arc: Node_Handle) return Node_Handle
+     with Import, Convention=>C;
+
+   function Get_Target (Model: Model_Type_Without_Finalize;
+                        Source, Arc: Node_Type_Without_Finalize'Class)
+                        return Node_Type is
+      Handle: constant Node_Handle :=
+        librdf_model_get_target(Get_Handle(Model), Get_Handle(Source), Get_Handle(Arc));
+   begin
+      return From_Handle(Handle);
+   end;
+
 end RDF.Redland.Model;

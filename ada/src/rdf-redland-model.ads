@@ -99,7 +99,19 @@ package RDF.Redland.Model is
                                         Source, Arc: Node_Type_Without_Finalize'Class)
                                         return Node_Iterator_Type;
 
-   -- Stopped at librdf_model_get_source()
+   not overriding function Get_Source (Model: Model_Type_Without_Finalize;
+                                       Arc, Target: Node_Type_Without_Finalize'Class)
+                                       return Node_Type;
+
+   not overriding function Get_Arc (Model: Model_Type_Without_Finalize;
+                                    Source, Target: Node_Type_Without_Finalize'Class)
+                                    return Node_Type;
+
+   not overriding function Get_Target (Model: Model_Type_Without_Finalize;
+                                       Source, Arc: Node_Type_Without_Finalize'Class)
+                                       return Node_Type;
+
+   -- Stopped at librdf_model_add_submodel()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;
