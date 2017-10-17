@@ -65,7 +65,11 @@ package RDF.Redland.Model is
    not overriding procedure Remove (Model: Model_Type_Without_Finalize;
                                     Statement: Statement_Type_Without_Finalize'Class);
 
-   -- Stopped at librdf_model_contains_statement()
+   not overriding function Contains (Model: Model_Type_Without_Finalize;
+                                     Statement: Statement_Type_Without_Finalize'Class)
+                                     return Boolean;
+
+   -- Stopped at librdf_model_has_arc_in()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;

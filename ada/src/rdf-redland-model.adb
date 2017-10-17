@@ -185,4 +185,19 @@ package body RDF.Redland.Model is
       end if;
    end;
 
+   function librdf_model_contains_statement (Model: Model_Handle; Statement: Statement_Handle) return int
+     with Import, Convention=>C;
+
+   function Contains (Model: Model_Type_Without_Finalize;
+                      Statement: Statement_Type_Without_Finalize'Class)
+                      return Boolean is
+      Result: constant int :=
+        librdf_model_contains_statement(Get_Handle(Model), Get_Handle(Statement));
+   begin
+      if Result > 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Result /= 0;
+   end;
+
 end RDF.Redland.Model;
