@@ -1,4 +1,6 @@
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Redland.Query; use RDF.Redland.Query;
+with RDF.Redland.Query_Results; use RDF.Redland.Query_Results;
 
 package body RDF.Redland.Model is
 
@@ -413,5 +415,16 @@ package body RDF.Redland.Model is
 
    function Supports_Context (Model: Model_Type_Without_Finalize) return Boolean is
      (librdf_model_supports_contexts(Get_Handle(Model)) /= 0);
+
+   function librdf_model_query_execute (Model: Model_Handle; Query: Query_Handle)
+                                        return Query_Results_Handle
+     with Import, Convention=>C;
+
+   function Query_Execute (Model: Model_Type_Without_Finalize;
+                           Query: RDF.Redland.Query.Query_Type_Without_Finalize'Class)
+                           return RDF.Redland.Query_Results.Query_Results_Type_Without_Finalize is
+   begin
+      return From_Non_Null_Handle(librdf_model_query_execute(Get_Handle(Model), Get_Handle(Query)));
+   end;
 
 end RDF.Redland.Model;

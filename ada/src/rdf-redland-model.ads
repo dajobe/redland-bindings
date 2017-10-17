@@ -10,6 +10,8 @@ with RDF.Redland.Statement; use RDF.Redland.Statement;
 with RDF.Redland.Storage; use RDF.Redland.Storage;
 with RDF.Redland.Stream; use RDF.Redland.Stream;
 with RDF.Redland.Node_Iterator; use RDF.Redland.Node_Iterator;
+limited with RDF.Redland.Query;
+limited with RDF.Redland.Query_Results;
 
 package RDF.Redland.Model is
 
@@ -138,8 +140,9 @@ package RDF.Redland.Model is
 
    not overriding function Supports_Context (Model: Model_Type_Without_Finalize) return Boolean;
 
-   -- FIXME: These two functions seem different
-   -- librdf_model_query_execute() not bound (use librdf_query_execute() instead)
+   not overriding function Query_Execute (Model: Model_Type_Without_Finalize;
+                                          Query: RDF.Redland.Query.Query_Type_Without_Finalize'Class)
+                                          return RDF.Redland.Query_Results.Query_Results_Type_Without_Finalize;
 
    -- Stopped at librdf_model_sync()
 
