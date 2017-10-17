@@ -9,6 +9,7 @@ with RDF.Redland.Node; use RDF.Redland.Node;
 with RDF.Redland.Statement; use RDF.Redland.Statement;
 with RDF.Redland.Storage; use RDF.Redland.Storage;
 with RDF.Redland.Stream; use RDF.Redland.Stream;
+with RDF.Redland.Node_Iterator; use RDF.Redland.Node_Iterator;
 
 package RDF.Redland.Model is
 
@@ -52,14 +53,14 @@ package RDF.Redland.Model is
 
    not overriding function Size (Model: Model_Type_Without_Finalize) return Natural;
 
-   not overriding procedure Add (Model: Model_Type_Without_Finalize;
+   not overriding procedure Add (Model: in out Model_Type_Without_Finalize;
                                  Subject, Predicate, Object: Node_Type_Without_Finalize'Class);
 
-   not overriding procedure Add (Model: Model_Type_Without_Finalize;
+   not overriding procedure Add (Model: in out Model_Type_Without_Finalize;
                                  Statement: Statement_Type_Without_Finalize'Class)
      with Pre => Is_Complete(Statement);
 
-   not overriding procedure Add (Model: Model_Type_Without_Finalize;
+   not overriding procedure Add (Model: in out Model_Type_Without_Finalize;
                                  Statements: Stream_Type_Without_Finalize'Class);
 
    not overriding procedure Remove (Model: Model_Type_Without_Finalize;
@@ -83,7 +84,14 @@ package RDF.Redland.Model is
                                  Statement: Statement_Type_Without_Finalize'Class)
                                  return Stream_Type;
 
-   -- Stopped at LIBRDF_MODEL_FIND_OPTION_MATCH_SUBSTRING_LITERAL
+   -- LIBRDF_MODEL_FIND_OPTION_MATCH_SUBSTRING_LITERAL not implemented.
+   -- TODO: librdf_model_find_statements_with_options() not implemented as requires rdf_hash.
+
+   not overriding function Get_Sources (Model: Model_Type_Without_Finalize;
+                                        Arc, Target: Node_Type_Without_Finalize'Class)
+                                        return Node_Iterator_Type;
+
+   -- Stopped at librdf_model_get_sources()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;

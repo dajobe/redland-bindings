@@ -8,6 +8,8 @@ package RDF.Redland.Node_Iterator is
 
    type Node_Iterator_Type is new Iterator_Type with null record;
 
+   subtype Node_Iterator_Handle is Iterator_Handle;
+
    not overriding function Get_Node (Iterator: Node_Iterator_Type) return Node_Type_Without_Finalize;
 
 end RDF.Redland.Node_Iterator;

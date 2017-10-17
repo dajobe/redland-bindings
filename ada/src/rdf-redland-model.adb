@@ -98,7 +98,8 @@ package body RDF.Redland.Model is
    function librdf_model_add (Model: Model_Handle; Subject, Predicate, Object: Node_Handle) return int
      with Import, Convention=>C;
 
-   procedure Add (Model: Model_Type_Without_Finalize; Subject, Predicate, Object: Node_Type_Without_Finalize'Class) is
+   procedure Add (Model: in out Model_Type_Without_Finalize;
+                  Subject, Predicate, Object: Node_Type_Without_Finalize'Class) is
    begin
       if librdf_model_add(Get_Handle(Model), Get_Handle(Subject), Get_Handle(Predicate), Get_Handle(Object)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -158,7 +159,7 @@ package body RDF.Redland.Model is
    function librdf_model_add_statement (Model: Model_Handle; Statement: Statement_Handle) return int
      with Import, Convention=>C;
 
-   procedure Add (Model: Model_Type_Without_Finalize; Statement: Statement_Type_Without_Finalize'Class) is
+   procedure Add (Model: in out Model_Type_Without_Finalize; Statement: Statement_Type_Without_Finalize'Class) is
    begin
       if librdf_model_add_statement(Get_Handle(Model), Get_Handle(Statement)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -168,7 +169,7 @@ package body RDF.Redland.Model is
    function librdf_model_add_statements (Model_Type: Model_Handle; Statements: Stream_Handle) return int
      with Import, Convention=>C;
 
-   procedure Add (Model: Model_Type_Without_Finalize; Statements: Stream_Type_Without_Finalize'Class) is
+   procedure Add (Model: in out Model_Type_Without_Finalize; Statements: Stream_Type_Without_Finalize'Class) is
    begin
       if librdf_model_add_statements(Get_Handle(Model), Get_Handle(Statements)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
@@ -236,6 +237,19 @@ package body RDF.Redland.Model is
                   return Stream_Type is
    begin
       return From_Non_Null_Handle(librdf_model_find_statements(Get_Handle(Model), Get_Handle(Statement)));
+   end;
+
+   function librdf_model_get_sources (Model: Model_Handle; Arc, Target: Node_Handle)
+                                      return Node_Iterator_Handle
+     with Import, Convention=>C;
+
+   function Get_Sources (Model: Model_Type_Without_Finalize;
+                         Arc, Target: Node_Type_Without_Finalize'Class)
+                         return Node_Iterator_Type is
+      Handle: constant Node_Iterator_Handle :=
+        librdf_model_get_sources(Get_Handle(Model), Get_Handle(Arc), Get_Handle(Target));
+   begin
+      return From_Non_Null_Handle(Handle);
    end;
 
 end RDF.Redland.Model;
