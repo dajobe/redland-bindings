@@ -69,7 +69,15 @@ package RDF.Redland.Model is
                                      Statement: Statement_Type_Without_Finalize'Class)
                                      return Boolean;
 
-   -- Stopped at librdf_model_has_arc_in()
+   not overriding function Has_Arc_In (Model: Model_Type_Without_Finalize;
+                                       Node, Property: Node_Type_Without_Finalize'Class)
+                                       return Boolean;
+
+   not overriding function Has_Arc_Out (Model: Model_Type_Without_Finalize;
+                                        Node, Property: Node_Type_Without_Finalize'Class)
+                                        return Boolean;
+
+   -- Stopped at librdf_model_as_stream()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;

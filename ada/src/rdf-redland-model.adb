@@ -200,4 +200,24 @@ package body RDF.Redland.Model is
       return Result /= 0;
    end;
 
+   function librdf_model_has_arc_in (Model: Model_Handle; Node, Property: Node_Handle) return int
+     with Import, Convention=>C;
+
+   not overriding function Has_Arc_In (Model: Model_Type_Without_Finalize;
+                                       Node, Property: Node_Type_Without_Finalize'Class)
+                                       return Boolean is
+   begin
+      return librdf_model_has_arc_in(Get_Handle(Model), Get_Handle(Node), Get_Handle(Property)) /= 0;
+   end;
+
+   function librdf_model_has_arc_out (Model: Model_Handle; Node, Property: Node_Handle) return int
+     with Import, Convention=>C;
+
+   not overriding function Has_Arc_Out (Model: Model_Type_Without_Finalize;
+                                        Node, Property: Node_Type_Without_Finalize'Class)
+                                        return Boolean is
+   begin
+      return librdf_model_has_arc_out(Get_Handle(Model), Get_Handle(Node), Get_Handle(Property)) /= 0;
+   end;
+
 end RDF.Redland.Model;
