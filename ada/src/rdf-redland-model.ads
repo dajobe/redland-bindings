@@ -128,7 +128,15 @@ package RDF.Redland.Model is
    not overriding procedure Remove_Submodel (Model: Model_Type_Without_Finalize;
                                              Submodel: Model_Type_Without_Finalize'Class);
 
-   -- Stopped at librdf_model_context_as_stream()
+   not overriding function Context_As_Stream (Model: Model_Type_Without_Finalize;
+                                              Context: Node_Type_Without_Finalize'Class)
+                                              return Stream_Type;
+
+   not overriding function Contains_Context (Model: Model_Type_Without_Finalize;
+                                             Context: Node_Type_Without_Finalize'Class)
+                                             return Boolean;
+
+   -- Stopped at librdf_model_supports_contexts()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;

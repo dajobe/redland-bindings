@@ -388,4 +388,24 @@ package body RDF.Redland.Model is
       end if;
    end;
 
+   function librdf_model_context_as_stream (Model: Model_Handle; Context: Node_Handle) return Stream_Handle
+     with Import, Convention=>C;
+
+   function Context_As_Stream (Model: Model_Type_Without_Finalize;
+                               Context: Node_Type_Without_Finalize'Class)
+                               return Stream_Type is
+   begin
+      return From_Non_Null_Handle(librdf_model_context_as_stream(Get_Handle(Model), Get_Handle(Context)));
+   end;
+
+   function librdf_model_contains_context (Model: Model_Handle; Context: Node_Handle) return int
+     with Import, Convention=>C;
+
+   function Contains_Context (Model: Model_Type_Without_Finalize;
+                              Context: Node_Type_Without_Finalize'Class)
+                              return Boolean is
+   begin
+      return librdf_model_contains_context(Get_Handle(Model), Get_Handle(Context)) /= 0;
+   end;
+
 end RDF.Redland.Model;
