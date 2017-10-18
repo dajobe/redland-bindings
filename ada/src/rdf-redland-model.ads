@@ -154,7 +154,22 @@ package RDF.Redland.Model is
                                   Name, Mime_Type: String := "";
                                   Type_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
-   -- Stopped at librdf_model_to_counted_string()
+   not overriding function To_String (Model: Model_Type_Without_Finalize;
+                                      URI: URI_Type_Without_Finalize'Class;
+                                      Name, Mime_Type: String := "";
+                                      Type_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                                      return String;
+
+   not overriding function Find_In_Context (Model: Model_Type_Without_Finalize;
+                                            Statement: Statement_Type_Without_Finalize'Class;
+                                            Context: Node_Type_Without_Finalize'Class)
+                                            return Stream_Type;
+
+   not overriding function Get_Contexts (Model: Model_Type_Without_Finalize) return Node_Iterator_Type;
+
+   Feature_Contexts: constant URI_String := "http://feature.librdf.org/model-contexts";
+
+   -- Stopped at librdf_model_get_feature()
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;

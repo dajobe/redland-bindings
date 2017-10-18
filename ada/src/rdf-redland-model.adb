@@ -1,4 +1,5 @@
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
 with RDF.Redland.Query; use RDF.Redland.Query;
 with RDF.Redland.Query_Results; use RDF.Redland.Query_Results;
 
@@ -467,6 +468,59 @@ package body RDF.Redland.Model is
       then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
+   end;
+
+   type Size_T_P is access all size_t with Convention=>C;
+
+   function librdf_model_to_counted_string (Model: Model_Handle;
+                                            URI: URI_Handle;
+                                            Name, Mime_Type: chars_ptr;
+                                            Type_URI: URI_Handle;
+                                            Length: Size_T_P)
+                                            return chars_ptr
+     with Import, Convention=>C;
+
+   function To_String (Model: Model_Type_Without_Finalize;
+                       URI: URI_Type_Without_Finalize'Class;
+                       Name, Mime_Type: String := "";
+                       Type_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                       return String is
+      Name2: aliased char_array := To_C(Name);
+      Mime_Type2: aliased char_array := To_C(Mime_Type);
+      Length: aliased size_t;
+      Result: constant chars_ptr :=
+        librdf_model_to_counted_string(Get_Handle(Model),
+                                       Get_Handle(URI),
+                                       (if Name = "" then Null_Ptr else To_Chars_Ptr(Name2'Unchecked_Access)),
+                                       (if Mime_Type = "" then Null_Ptr else To_Chars_Ptr(Mime_Type2'Unchecked_Access)),
+                                       Get_Handle(Type_URI),
+                                       Length'Unchecked_Access);
+   begin
+      return Value_With_Possible_NULs(Convert(Result), Length);
+   end;
+
+   function librdf_model_find_statements_in_context (Model: Model_Handle;
+                                                     Statement: Statement_Handle;
+                                                     Context: Node_Handle)
+                                                     return Stream_Handle
+     with Import, Convention=>C;
+
+   function Find_In_Context (Model: Model_Type_Without_Finalize;
+                             Statement: Statement_Type_Without_Finalize'Class;
+                             Context: Node_Type_Without_Finalize'Class)
+                             return Stream_Type is
+      Handle: constant Stream_Handle :=
+        librdf_model_find_statements_in_context(Get_Handle(Model), Get_Handle(Statement), Get_Handle(Context));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
+   function librdf_model_get_contexts (Model: Model_Handle) return Node_Iterator_Handle
+     with Import, Convention=>C;
+
+   function Get_Contexts (Model: Model_Type_Without_Finalize) return Node_Iterator_Type is
+   begin
+      return From_Non_Null_Handle(librdf_model_get_contexts(Get_Handle(Model)));
    end;
 
 end RDF.Redland.Model;
