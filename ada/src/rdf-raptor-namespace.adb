@@ -73,7 +73,7 @@ package body RDF.Raptor.Namespace is
    function raptor_namespace_write (NS: Namespace_Handle; Stream: IOStream_Handle) return int
      with Import, Convention=>C;
 
-   procedure Write (NS: Namespace_Type_Without_Finalize; Stream: Base_Stream_Type'Class) is
+   procedure Write (NS: Namespace_Type_Without_Finalize; Stream: Base_IOStream_Type'Class) is
    begin
       if raptor_namespace_write(Get_Handle(NS), Get_Handle(Stream)) /= 0 then
          raise IOStream_Exception;

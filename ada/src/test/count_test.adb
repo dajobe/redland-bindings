@@ -26,7 +26,7 @@ package body Count_Test is
       SPARQL: constant String := "SELECT (count(*) as ?count) WHERE { ?s ?p ?o . }";
 
       World: Rasqal_World_Type := Open;
-      Graph_Stream: RDF.Raptor.IOStream.Stream_Type := From_Filename(Get_Raptor(World), RDF_File);
+      Graph_Stream: RDF.Raptor.IOStream.IOStream_Type := From_Filename(Get_Raptor(World), RDF_File);
       Graph: Data_Graph_Type := From_IOStream(World,
                                               Graph_Stream,
                                               Base_URI => From_String(Get_Raptor(World), "http://example.org")

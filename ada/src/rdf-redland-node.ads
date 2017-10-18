@@ -52,7 +52,7 @@ package RDF.Redland.Node is
 
    not overriding procedure Print (Node: Node_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
 
-   not overriding procedure Write (Node: Node_Type_Without_Finalize; Stream: Base_Stream_Type'Class);
+   not overriding procedure Write (Node: Node_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
    type Node_Type is new Node_Type_Without_Finalize with null record;
 

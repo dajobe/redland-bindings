@@ -19,7 +19,7 @@ package RDF.Raptor.Serializer is
 
    -- WARNING: Other order of arguments than in C
    not overriding procedure Start_To_Iostream (Serializer: Serializer_Type_Without_Finalize;
-                                               Iostream: Base_Stream_Type'Class;
+                                               Iostream: Base_IOStream_Type'Class;
                                                URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding procedure Start_To_Filename (Serializer: Serializer_Type_Without_Finalize; Filename: String);
@@ -53,7 +53,7 @@ package RDF.Raptor.Serializer is
                                             return Raptor_Syntax_Description_Type;
 
    not overriding function Get_Iostream (Serializer: Serializer_Type_Without_Finalize)
-                                         return Stream_Type_Without_Finalize;
+                                         return IOStream_Type_Without_Finalize;
 
    not overriding function Get_Locator (Serializer: Serializer_Type_Without_Finalize)
                                         return Locator_Type;

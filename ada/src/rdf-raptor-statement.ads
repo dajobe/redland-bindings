@@ -37,7 +37,7 @@ package RDF.Raptor.Statement is
    -- raptor_statement_init(), raptor_statement_clear() are not boound, because they are probably internal
 
    not overriding procedure Ntriples_Write (Statement: Statement_Type_Without_Finalize;
-                                            Stream: Base_Stream_Type'Class;
+                                            Stream: Base_IOStream_Type'Class;
                                             Write_Graph_Term: Boolean);
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;

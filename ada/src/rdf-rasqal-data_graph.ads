@@ -39,7 +39,7 @@ package RDF.Rasqal.Data_Graph is
 
    function Get_Format_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type;
 
-   function Get_Iostream (Graph: Data_Graph_Type_Without_Finalize) return Stream_Type_Without_Finalize;
+   function Get_Iostream (Graph: Data_Graph_Type_Without_Finalize) return IOStream_Type_Without_Finalize;
 
    function Get_Base_URI (Graph: Data_Graph_Type_Without_Finalize) return URI_Type;
 
@@ -58,7 +58,7 @@ package RDF.Rasqal.Data_Graph is
    overriding procedure Finalize_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle);
 
    not overriding function From_IOStream (World: Rasqal_World_Type_Without_Finalize'Class;
-                                          IOStream: Base_Stream_Type'Class;
+                                          IOStream: Base_IOStream_Type'Class;
                                           Base_URI: URI_Type_Without_Finalize'Class;
                                           Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
                                           Flags: Flags_Type := Background;

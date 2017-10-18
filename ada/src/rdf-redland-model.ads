@@ -7,10 +7,11 @@ with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.URI; use RDF.Redland.URI;
 with RDF.Redland.Node; use RDF.Redland.Node;
 with RDF.Redland.Statement; use RDF.Redland.Statement;
-with RDF.Redland.Storage; use RDF.Redland.Storage;
 with RDF.Redland.Stream; use RDF.Redland.Stream;
+with RDF.Redland.Storage; use RDF.Redland.Storage;
 with RDF.Redland.Node_Iterator; use RDF.Redland.Node_Iterator;
 limited with RDF.Redland.Query;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 limited with RDF.Redland.Query_Results;
 
 package RDF.Redland.Model is
@@ -169,7 +170,14 @@ package RDF.Redland.Model is
 
    Feature_Contexts: constant URI_String := "http://feature.librdf.org/model-contexts";
 
-   -- Stopped at librdf_model_get_feature()
+   not overriding function Get_Feature (Model: Model_Type_Without_Finalize;
+                                        Feature: URI_Type_Without_Finalize'Class)
+                                        return Node_Type;
+
+   -- TODO: Differentiate negative and positive return values
+   not overriding procedure Set_Feature (Model: in out Model_Type_Without_Finalize;
+                                         Feature: URI_Type_Without_Finalize'Class;
+                                         Value: Node_Type);
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;
@@ -183,6 +191,9 @@ package RDF.Redland.Model is
                                                          Language: String;
                                                          Datatype: URI_Type_Without_Finalize'Class);
 
+   -- TODO: Implement transactions
+
+   not overriding procedure Write (Model: Model_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
    type Model_Type is new Model_Type_Without_Finalize with null record;
 

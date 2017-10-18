@@ -11,8 +11,8 @@ package body Iostreams_Test is
    procedure Test_Sinks(T : in out Test_Cases.Test_Case'Class) is
       World: Raptor_World_Type;
       Str: aliased char_array := "qqq";
-      In_Sink:  Stream_Type := From_Sink (World);
-      Out_Sink: Stream_Type := To_Sink (World);
+      In_Sink:  IOStream_Type := From_Sink(World);
+      Out_Sink: IOStream_Type := To_Sink  (World);
    begin
       Assert (Read_Bytes (To_Chars_Ptr (Str'Unchecked_Access), 10, 10, In_Sink) = 0, "Read zero bytes from a sink");
       Write ("XYZ", Out_Sink); -- does nothing

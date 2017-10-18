@@ -10,7 +10,7 @@ package body RDF.Raptor.Serializer is
      with Import, Convention=>C;
 
    procedure Start_To_Iostream (Serializer: Serializer_Type_Without_Finalize;
-                                Iostream: Base_Stream_Type'Class;
+                                Iostream: Base_IOStream_Type'Class;
                                 URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
       if raptor_serializer_start_to_iostream(Get_Handle(Serializer), Get_Handle(URI), Get_Handle(Iostream)) /= 0 then
@@ -126,7 +126,7 @@ package body RDF.Raptor.Serializer is
      with Import, Convention=>C;
 
    function Get_Iostream (Serializer: Serializer_Type_Without_Finalize)
-                          return Stream_Type_Without_Finalize is
+                          return IOStream_Type_Without_Finalize is
    begin
       return From_Handle(raptor_serializer_get_iostream(Get_Handle(Serializer)));
    end;

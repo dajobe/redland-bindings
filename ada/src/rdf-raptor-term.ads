@@ -75,7 +75,7 @@ package RDF.Raptor.Term is
                                             Base_URI: URI_Type'Class)
                                             return String;
 
-   not overriding procedure Turtle_Write (Stream: Base_Stream_Type'Class;
+   not overriding procedure Turtle_Write (Stream: Base_IOStream_Type'Class;
                                           Term: Term_Type_Without_Finalize;
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                                           Base_URI: URI_Type'Class);

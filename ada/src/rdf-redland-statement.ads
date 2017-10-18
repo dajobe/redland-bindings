@@ -60,7 +60,7 @@ package RDF.Redland.Statement is
 
    -- librdf_statement_decode2() not implemented (not so important and somehow hard to do)
 
-   not overriding procedure Write (Statement: Statement_Type_Without_Finalize; Stream: Base_Stream_Type'Class);
+   not overriding procedure Write (Statement: Statement_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
    type Statement_Type is new Statement_Type_Without_Finalize with null record;
 

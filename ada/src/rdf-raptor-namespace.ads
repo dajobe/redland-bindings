@@ -16,7 +16,7 @@ package RDF.Raptor.Namespace is
 
    not overriding function Get_Prefix (NS: Namespace_Type_Without_Finalize) return String;
 
-   not overriding procedure Write (NS: Namespace_Type_Without_Finalize; Stream: Base_Stream_Type'Class);
+   not overriding procedure Write (NS: Namespace_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
    not overriding function Format_As_XML (NS: Namespace_Type_Without_Finalize) return String;
 

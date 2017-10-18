@@ -523,4 +523,37 @@ package body RDF.Redland.Model is
       return From_Non_Null_Handle(librdf_model_get_contexts(Get_Handle(Model)));
    end;
 
+   function librdf_model_get_feature (Model: Model_Handle; Feature: URI_Handle) return Node_Handle
+     with Import, Convention=>C;
+
+   function Get_Feature (Model: Model_Type_Without_Finalize;
+                         Feature: URI_Type_Without_Finalize'Class)
+                         return Node_Type is
+   begin
+      return From_Handle(librdf_model_get_feature(Get_Handle(Model), Get_Handle(Feature)));
+   end;
+
+   function librdf_model_set_feature (Model: Model_Handle; Feature: URI_Handle; Value: Node_Handle)
+                                      return int
+     with Import, Convention=>C;
+
+   procedure Set_Feature (Model: in out Model_Type_Without_Finalize;
+                          Feature: URI_Type_Without_Finalize'Class;
+                          Value: Node_Type) is
+   begin
+      if librdf_model_set_feature(Get_Handle(Model), Get_Handle(Feature), Get_Handle(Value)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function librdf_model_write (Model: Model_Handle; Stream: IOStream_Handle) return int
+     with Import, Convention=>C;
+
+   procedure Write (Model: Model_Type_Without_Finalize; Stream: Base_IOStream_Type'Class) is
+   begin
+      if librdf_model_write(Get_Handle(Model), Get_Handle(Stream)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Model;

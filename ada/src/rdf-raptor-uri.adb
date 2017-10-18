@@ -266,7 +266,7 @@ package body RDF.Raptor.URI is
    function raptor_uri_write (URI: URI_Handle; Stream: IOStream_Handle) return int
      with Import, Convention=>C;
 
-   procedure Write (URI: URI_Type_Without_Finalize; Stream: Base_Stream_Type'Class) is
+   procedure Write (URI: URI_Type_Without_Finalize; Stream: Base_IOStream_Type'Class) is
    begin
       if raptor_uri_write (Get_Handle(URI), Get_Handle(Stream)) /= 0 then
          raise IOStream_Exception;
@@ -354,7 +354,7 @@ package body RDF.Raptor.URI is
      with Import, Convention=>C;
 
    procedure Turtle_Write (World: Raptor_World_Type_Without_Finalize'Class;
-                           Stream: Base_Stream_Type'Class;
+                           Stream: Base_IOStream_Type'Class;
                            URI: URI_Type_Without_Finalize;
                            Stack: Namespace_Stack_Type_Without_Finalize'Class;
                            Base_URI: URI_Type_Without_Finalize'Class) is
