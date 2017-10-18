@@ -5,15 +5,15 @@ package body RDF.Raptor.Serializer is
 
    function raptor_serializer_start_to_iostream (Serializer: Serializer_Handle;
                                                  URI: URI_Handle;
-                                                 Iostream: IOStream_Handle)
+                                                 IOStream: IOStream_Handle)
                                                  return int
      with Import, Convention=>C;
 
-   procedure Start_To_Iostream (Serializer: Serializer_Type_Without_Finalize;
-                                Iostream: Base_IOStream_Type'Class;
+   procedure Start_To_IOStream (Serializer: Serializer_Type_Without_Finalize;
+                                IOStream: Base_IOStream_Type'Class;
                                 URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
-      if raptor_serializer_start_to_iostream(Get_Handle(Serializer), Get_Handle(URI), Get_Handle(Iostream)) /= 0 then
+      if raptor_serializer_start_to_iostream(Get_Handle(Serializer), Get_Handle(URI), Get_Handle(IOStream)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;
@@ -125,7 +125,7 @@ package body RDF.Raptor.Serializer is
    function raptor_serializer_get_iostream (Serializer: Serializer_Handle) return IOStream_Handle
      with Import, Convention=>C;
 
-   function Get_Iostream (Serializer: Serializer_Type_Without_Finalize)
+   function Get_IOStream (Serializer: Serializer_Type_Without_Finalize)
                           return IOStream_Type_Without_Finalize is
    begin
       return From_Handle(raptor_serializer_get_iostream(Get_Handle(Serializer)));

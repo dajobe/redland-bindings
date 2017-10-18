@@ -65,7 +65,7 @@ package RDF.Raptor.Parser is
                                                Filename: String;
                                                Base_URI: URI_Type_Without_Finalize'Class);
 
-   not overriding procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
+   not overriding procedure Parse_IOStream (Parser: Parser_Type_Without_Finalize;
                                             Stream: Base_IOStream_Type'Class;
                                             Base_URI: URI_Type_Without_Finalize'Class);
 

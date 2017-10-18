@@ -1,7 +1,7 @@
 package RDF.Raptor is
 
    type Domain_Type is (None_Domain,
-                        Iostream_Domain,
+                        IOStream_Domain,
                         Namespace_Domain,
                         Parser_Domain,
                         Qname_Domain,
@@ -15,7 +15,7 @@ package RDF.Raptor is
                         XML_Writer_Domain)
      with Convention => C;
    for Domain_Type use (None_Domain => 0,
-                        Iostream_Domain => 1,
+                        IOStream_Domain => 1,
                         Namespace_Domain => 2,
                         Parser_Domain => 3,
                         Qname_Domain => 4,

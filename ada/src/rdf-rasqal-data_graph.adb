@@ -35,7 +35,7 @@ package body RDF.Rasqal.Data_Graph is
       return From_Handle(Get_Handle(Graph).Format_URI);
    end;
 
-   function Get_Iostream (Graph: Data_Graph_Type_Without_Finalize)
+   function Get_IOStream (Graph: Data_Graph_Type_Without_Finalize)
                           return IOStream_Type_Without_Finalize is
    begin
       return From_Handle(Get_Handle(Graph).IOStr);

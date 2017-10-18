@@ -116,7 +116,7 @@ package body RDF.Raptor.Parser is
                                           Base_URI: URI_Handle) return int
      with Import, Convention=>C;
 
-   procedure Parse_Iostream (Parser: Parser_Type_Without_Finalize;
+   procedure Parse_IOStream (Parser: Parser_Type_Without_Finalize;
                              Stream: Base_IOStream_Type'Class;
                              Base_URI: URI_Type_Without_Finalize'Class) is
    begin
