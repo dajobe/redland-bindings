@@ -1,6 +1,7 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
+with RDF.Redland.Memory;
 
 package body RDF.Redland.Parser is
 
@@ -285,6 +286,23 @@ package body RDF.Redland.Parser is
       if librdf_parser_set_feature(Get_Handle(Parser), Get_Handle(Feature), Get_Handle(Value)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
+   end;
+
+   function librdf_parser_get_accept_header (Parser: Parser_Handle) return chars_ptr
+     with Import, Convention=>C;
+
+   function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String is
+      Ptr: constant chars_ptr := librdf_parser_get_accept_header(Get_Handle(Parser));
+   begin
+      if Ptr = Null_Ptr then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      declare
+         Result: constant String := Value(Ptr);
+      begin
+         RDF.Redland.Memory.redland_free_memory(Ptr);
+         return Result;
+      end;
    end;
 
 end RDF.Redland.Parser;

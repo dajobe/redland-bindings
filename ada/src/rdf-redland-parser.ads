@@ -113,6 +113,8 @@ package RDF.Redland.Parser is
                                          Feature: URI_Type_Without_Finalize'Class;
                                          Value: Node_Type'Class);
 
+   not overriding function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String;
+
    -- TODO: Stopped at librdf_parser_get_accept_header()
 
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
