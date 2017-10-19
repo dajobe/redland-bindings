@@ -64,8 +64,8 @@ package body RDF.Redland.Parser is
      with Import, Convention=>C;
 
    function Create (World: Redland_World_Type_Without_Finalize'Class;
-                    Name, Mime_Type: String;
-                    Type_URI: URI_Type_Without_Finalize'Class)
+                    Name, Mime_Type: String := "";
+                    Type_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
                     return Parser_Type is
       Mime_Type2: aliased char_array := To_C(Mime_Type);
       Handle: constant Parser_Handle :=
@@ -83,6 +83,40 @@ package body RDF.Redland.Parser is
    procedure Finalize_Handle (Object: Parser_Type; Handle: Parser_Handle) is
    begin
       librdf_free_parser(Handle);
+   end;
+
+   function librdf_parser_parse_as_stream (Parser: Parser_Handle; URI, Base_URI: URI_Handle)
+                                           return Stream_Handle
+     with Import, Convention=>C;
+
+   function As_Stream (Parser: Parser_Type_Without_Finalize;
+                       URI: URI_Type_Without_Finalize'Class;
+                       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                       return Stream_Type is
+      Handle: constant Stream_Handle :=
+        librdf_parser_parse_as_stream(Get_Handle(Parser), Get_Handle(URI), Get_Handle(Base_URI));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
+   function librdf_parser_parse_into_model (Parser: Parser_Handle;
+                                            URI, Base_URI: URI_Handle;
+                                            Model: Model_Handle)
+                                            return int
+     with Import, Convention=>C;
+
+   procedure Parse_Into_Model (Parser: Parser_Type_Without_Finalize;
+                               Model: Model_Type_Without_Finalize'Class;
+                               URI: URI_Type_Without_Finalize'Class;
+                               Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
+   begin
+      if librdf_parser_parse_into_model(Get_Handle(Parser),
+                                        Get_Handle(URI),
+                                        Get_Handle(Base_URI),
+                                        Get_Handle(Model)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
    end;
 
 end RDF.Redland.Parser;
