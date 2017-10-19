@@ -179,7 +179,7 @@ package body RDF.Redland.Parser is
                                                     File,
                                                     (if Close then 1 else 0),
                                                     Get_Handle(Base_URI),
-                                                    Get_Handle(model)) /= 0
+                                                    Get_Handle(Model)) /= 0
       then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
@@ -200,6 +200,29 @@ package body RDF.Redland.Parser is
                                                      Get_Handle(Base_URI));
    begin
       return From_Non_Null_Handle(Handle);
+   end;
+
+   function librdf_parser_parse_counted_string_into_model (Parser: Parser_Handle;
+                                                           Text: char_array;
+                                                           Length: size_t;
+                                                           Base_URI: URI_Handle;
+                                                           Model: Model_Handle)
+                                                           return int
+     with Import, Convention=>C;
+
+   procedure Parse_String_Into_Model (Parser: Parser_Type_Without_Finalize;
+                                      Model: Model_Type_Without_Finalize'Class;
+                                      Text: String;
+                                      Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
+   begin
+      if librdf_parser_parse_counted_string_into_model(Get_Handle(Parser),
+                                                       To_C(Text, Append_Nul=>False),
+                                                       Text'Length,
+                                                       Get_Handle(Base_URI),
+                                                       Get_Handle(Model)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
    end;
 
 end RDF.Redland.Parser;

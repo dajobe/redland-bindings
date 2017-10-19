@@ -80,7 +80,15 @@ package RDF.Redland.Parser is
                                     return Stream_Type
      with Pre => (Text /= "");
 
-   -- TODO: Stopped at librdf_parser_parse_counted_string_into_model()
+   -- order of arguments differs of C function
+   not overriding
+   procedure Parse_String_Into_Model (Parser: Parser_Type_Without_Finalize;
+                                      Model: Model_Type_Without_Finalize'Class;
+                                      Text: String;
+                                      Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+
+
+   -- TODO: Stopped at librdf_parser_parse_iostream_as_stream()
 
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
 
