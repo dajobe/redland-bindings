@@ -1,5 +1,6 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.C_String_Holders; use RDF.Auxiliary.C_String_Holders;
 
 package body RDF.Redland.Parser is
 
@@ -10,6 +11,26 @@ package body RDF.Redland.Parser is
                                return Boolean is
    begin
       return librdf_parser_check_name(Get_Handle(World), To_C(Name)) /= 0;
+   end;
+
+   function librdf_parser_guess_name2 (World: Redland_World_Handle;
+                                       Mime_Type, Buffer, Identifier: chars_ptr)
+                                       return chars_ptr
+     with Import, Convention=>C;
+
+   function Parser_Guess_Name (World: Redland_World_Type_Without_Finalize'Class;
+                               Mime_Type, Identifier: String;
+                               Buffer: String_Holders.Holder := String_Holders.Empty_Holder)
+                               return String is
+      Mime_Type2 : aliased char_array := To_C(Mime_Type );
+      Identifier2: aliased char_array := To_C(Identifier);
+      Result: constant chars_ptr :=
+        librdf_parser_guess_name2(Get_Handle(World),
+                                  (if Mime_Type = "" then Null_Ptr else To_Chars_Ptr(Mime_Type2'Unchecked_Access)),
+                                  C_String(To_C_String_Holder(Buffer)),
+                                  (if Identifier = "" then Null_Ptr else To_Chars_Ptr(Identifier2'Unchecked_Access)));
+   begin
+      return (if Result = Null_Ptr then "" else Value(Result));
    end;
 
    function librdf_parser_get_description (World: Redland_World_Handle; Counter: unsigned)

@@ -1,4 +1,5 @@
 with Ada.Iterator_Interfaces;
+with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Redland.World; use RDF.Redland.World;
@@ -16,6 +17,12 @@ package RDF.Redland.Parser is
 
    function Parser_Check_Name (World: Redland_World_Type_Without_Finalize'Class; Name: String)
                                return Boolean;
+
+   -- Order of arguments not the same as in C
+   function Parser_Guess_Name (World: Redland_World_Type_Without_Finalize'Class;
+                               Mime_Type, Identifier: String;
+                               Buffer: String_Holders.Holder := String_Holders.Empty_Holder)
+                               return String;
 
    function Get_Parser_Description (World: Redland_World_Type_Without_Finalize'Class;
                                     Counter: Natural)
@@ -39,9 +46,6 @@ package RDF.Redland.Parser is
 
    function Create_Parser_Descriptions_Iterator (World: Redland_World_Type_Without_Finalize'Class)
                                                  return Parser_Description_Iterator;
-
-   -- I do not bind librdf_parser_guess_name() and librdf_parser_guess_name2()
-   -- because of http://bugs.librdf.org/mantis/view.php?id=637
 
    not overriding function As_Stream (Parser: Parser_Type_Without_Finalize;
                                       URI: URI_Type_Without_Finalize'Class;
@@ -69,7 +73,7 @@ package RDF.Redland.Parser is
                                            Model: in out Model_Type_Without_Finalize'Class;
                                            Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
-   -- Stopped at librdf_parser_parse_counted_string_as_stream()
+   -- TODO: Stopped at librdf_parser_parse_counted_string_as_stream()
 
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
 
