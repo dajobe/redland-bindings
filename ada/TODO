@@ -1,3 +1,5 @@
+* Move Redland syntax description info into a separate package?
+
 * Stopped at http://librdf.org/docs/api/redland-concepts.html
 
 * Add functions Copy to explicitly copy a _Without_Finalize object.
