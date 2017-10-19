@@ -41,14 +41,16 @@ package RDF.Redland.Parser is
    -- I do not bind librdf_parser_guess_name() and librdf_parser_guess_name2()
    -- because of http://bugs.librdf.org/mantis/view.php?id=637
 
+   -- Stopped at librdf_parser_parse_as_stream()
+
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
+
+   overriding procedure Finalize_Handle (Object: Parser_Type; Handle: Parser_Handle);
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Name, Mime_Type: String;
                                    Type_URI: URI_Type_Without_Finalize'Class)
                                    return Parser_Type;
-
-   -- Stopped at librdf_free_parser()
 
 private
 
