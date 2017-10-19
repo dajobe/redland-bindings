@@ -262,4 +262,29 @@ package body RDF.Redland.Parser is
       end if;
    end;
 
+   function librdf_parser_get_feature (Parser: Parser_Handle; Feature: URI_Handle)
+                                       return Node_Handle
+     with Import, Convention=>C;
+
+   function Get_Feature (Parser: Parser_Type_Without_Finalize; Feature: URI_Type_Without_Finalize'Class)
+                         return Node_Type is
+   begin
+      return From_Handle(librdf_parser_get_feature(Get_Handle(Parser), Get_Handle(Feature)));
+   end;
+
+   function librdf_parser_set_feature (Parser: Parser_Handle;
+                                       Feature: URI_Handle;
+                                       Value: Node_Handle)
+                                       return int
+     with Import, Convention=>C;
+
+   procedure Set_Feature (Parser: Parser_Type_Without_Finalize;
+                          Feature: URI_Type_Without_Finalize'Class;
+                          Value: Node_Type'Class) is
+   begin
+      if librdf_parser_set_feature(Get_Handle(Parser), Get_Handle(Feature), Get_Handle(Value)) /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Parser;

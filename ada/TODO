@@ -18,6 +18,7 @@
 
 * Some raptor_parser_*() and librdf_storage_() functions return <0 on missing
   required base URI. Should we raise a different exception in this case?
+  Also librdf_parser_set_feature().
 
 * Add strings to exception raised.
 

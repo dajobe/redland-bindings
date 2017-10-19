@@ -5,6 +5,7 @@ with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.URI; use RDF.Redland.URI;
+with RDF.Redland.Node; use RDF.Redland.Node;
 with RDF.Redland.Stream; use RDF.Redland.Stream;
 with RDF.Redland.Model; use RDF.Redland.Model;
 
@@ -104,7 +105,15 @@ package RDF.Redland.Parser is
    FEATURE_ERROR_COUNT  : URI_String := "http://feature.librdf.org/parser-error-count";
    FEATURE_WARNING_COUNT: URI_String := "http://feature.librdf.org/parser-warning-count";
 
-   -- TODO: Stopped at librdf_parser_get_feature()
+   not overriding
+   function Get_Feature (Parser: Parser_Type_Without_Finalize; Feature: URI_Type_Without_Finalize'Class)
+                         return Node_Type;
+
+   not overriding procedure Set_Feature (Parser: Parser_Type_Without_Finalize;
+                                         Feature: URI_Type_Without_Finalize'Class;
+                                         Value: Node_Type'Class);
+
+   -- TODO: Stopped at librdf_parser_get_accept_header()
 
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
 
