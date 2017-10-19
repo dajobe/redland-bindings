@@ -140,4 +140,28 @@ package body RDF.Redland.Parser is
       return From_Non_Null_Handle(Handle);
    end;
 
+   function librdf_parser_parse_file_handle_into_model (Parser: Parser_Handle;
+                                                        File: RDF.Auxiliary.C_File_Access;
+                                                        Close: int;
+                                                        Base_URI: URI_Handle;
+                                                        Model: Model_Handle)
+                                                        return int
+     with Import, Convention=>C;
+
+   procedure Parse_File_Handle_Into_Model (Parser: Parser_Type_Without_Finalize;
+                                           File: RDF.Auxiliary.C_File_Access;
+                                           Close: Boolean;
+                                           Model: in out Model_Type_Without_Finalize'Class;
+                                           Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
+   begin
+      if librdf_parser_parse_file_handle_into_model(Get_Handle(Parser),
+                                                    File,
+                                                    (if Close then 1 else 0),
+                                                    Get_Handle(Base_URI),
+                                                    Get_Handle(model)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Parser;

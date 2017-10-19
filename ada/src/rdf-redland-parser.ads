@@ -61,7 +61,15 @@ package RDF.Redland.Parser is
                                          Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
                                          return Stream_Type;
 
-   -- Stopped at librdf_parser_parse_file_handle_into_model()
+   -- order of arguments differs of C function
+   not overriding
+   procedure Parse_File_Handle_Into_Model (Parser: Parser_Type_Without_Finalize;
+                                           File: RDF.Auxiliary.C_File_Access;
+                                           Close: Boolean;
+                                           Model: in out Model_Type_Without_Finalize'Class;
+                                           Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+
+   -- Stopped at librdf_parser_parse_string_as_stream()
 
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
 
