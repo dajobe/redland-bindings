@@ -2,6 +2,7 @@ with Ada.Iterator_Interfaces;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Redland.World; use RDF.Redland.World;
+with RDF.Redland.URI; use RDF.Redland.URI;
 
 package RDF.Redland.Parser is
 
@@ -37,7 +38,17 @@ package RDF.Redland.Parser is
    function Create_Parser_Descriptions_Iterator (World: Redland_World_Type_Without_Finalize'Class)
                                                  return Parser_Description_Iterator;
 
-   -- Stopped at librdf_parser_guess_name()
+   -- I do not bind librdf_parser_guess_name() and librdf_parser_guess_name2()
+   -- because of http://bugs.librdf.org/mantis/view.php?id=637
+
+   type Parser_Type is new Parser_Type_Without_Finalize with null record;
+
+   not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
+                                   Name, Mime_Type: String;
+                                   Type_URI: URI_Type_Without_Finalize'Class)
+                                   return Parser_Type;
+
+   -- Stopped at librdf_free_parser()
 
 private
 
