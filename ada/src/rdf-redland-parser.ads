@@ -1,6 +1,7 @@
 with Ada.Iterator_Interfaces;
 with RDF.Auxiliary; use RDF.Auxiliary;
 with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.URI; use RDF.Redland.URI;
@@ -28,7 +29,7 @@ package RDF.Redland.Parser is
                                     Counter: Natural)
                                     return Raptor_Syntax_Description_Type;
 
-   type Parser_Description_Cursor   is private;
+   type Parser_Description_Cursor is private;
 
    function Get_Position (Cursor: Parser_Description_Cursor) return Natural;
 
@@ -87,8 +88,23 @@ package RDF.Redland.Parser is
                                       Text: String;
                                       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
+   not overriding
+   function Parse_IOStream_As_Stream (Parser: Parser_Type_Without_Finalize;
+                                      IOStream: Base_IOStream_Type'Class;
+                                      Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                                      return Stream_Type;
 
-   -- TODO: Stopped at librdf_parser_parse_iostream_as_stream()
+   -- order of arguments differs of C function
+   not overriding
+   procedure Parse_IOStream_Into_Model (Parser: Parser_Type_Without_Finalize;
+                                        Model: Model_Type_Without_Finalize'Class;
+                                        IOStream: Base_IOStream_Type'Class;
+                                        Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+
+   FEATURE_ERROR_COUNT  : URI_String := "http://feature.librdf.org/parser-error-count";
+   FEATURE_WARNING_COUNT: URI_String := "http://feature.librdf.org/parser-warning-count";
+
+   -- TODO: Stopped at librdf_parser_get_feature()
 
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
 

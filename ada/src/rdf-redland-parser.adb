@@ -225,4 +225,41 @@ package body RDF.Redland.Parser is
       end if;
    end;
 
+   function librdf_parser_parse_iostream_as_stream (Parser: Parser_Handle;
+                                                    IOStream: IOStream_Handle;
+                                                    Base_URI: URI_Handle)
+                                                    return Stream_Handle
+     with Import, Convention=>C;
+
+   function Parse_IOStream_As_Stream (Parser: Parser_Type_Without_Finalize;
+                                      IOStream: Base_IOStream_Type'Class;
+                                      Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                                      return Stream_Type is
+      Handle: constant Stream_Handle :=
+        librdf_parser_parse_iostream_as_stream(Get_Handle(Parser), Get_Handle(IOStream), Get_Handle(Base_URI));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
+   function librdf_parser_parse_iostream_into_model (Parser: Parser_Handle;
+                                                     IOStream: IOStream_Handle;
+                                                     Base_URI: URI_Handle;
+                                                     Model: Model_Handle)
+                                                     return int
+     with Import, Convention=>C;
+
+   procedure Parse_IOStream_Into_Model (Parser: Parser_Type_Without_Finalize;
+                                        Model: Model_Type_Without_Finalize'Class;
+                                        IOStream: Base_IOStream_Type'Class;
+                                        Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
+   begin
+      if librdf_parser_parse_iostream_into_model(Get_Handle(Parser),
+                                                 Get_Handle(IOStream),
+                                                 Get_Handle(Base_URI),
+                                                 Get_Handle(Model)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Parser;
