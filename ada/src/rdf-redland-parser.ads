@@ -120,7 +120,7 @@ package RDF.Redland.Parser is
    -- librdf_parser_get_namespaces_seen_uri()
    -- not bound as internals
 
-   -- TODO: Stopped at librdf_parser_get_uri_filter()
+   -- TODO: librdf_parser_get_uri_filter() and librdf_parser_set_uri_filter()
 
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
 
