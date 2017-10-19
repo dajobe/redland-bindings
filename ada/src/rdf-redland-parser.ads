@@ -115,7 +115,12 @@ package RDF.Redland.Parser is
 
    not overriding function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String;
 
-   -- TODO: Stopped at librdf_parser_get_accept_header()
+   -- librdf_parser_get_namespaces_seen_count(),
+   -- librdf_parser_get_namespaces_seen_prefix(),
+   -- librdf_parser_get_namespaces_seen_uri()
+   -- not bound as internals
+
+   -- TODO: Stopped at librdf_parser_get_uri_filter()
 
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
 
