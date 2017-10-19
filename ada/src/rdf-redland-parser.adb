@@ -106,7 +106,7 @@ package body RDF.Redland.Parser is
      with Import, Convention=>C;
 
    procedure Parse_Into_Model (Parser: Parser_Type_Without_Finalize;
-                               Model: Model_Type_Without_Finalize'Class;
+                               Model: in out Model_Type_Without_Finalize'Class;
                                URI: URI_Type_Without_Finalize'Class;
                                Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
@@ -117,6 +117,27 @@ package body RDF.Redland.Parser is
       then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
+   end;
+
+   function librdf_parser_parse_file_handle_as_stream (Parser: Parser_Handle;
+                                                       File: RDF.Auxiliary.C_File_Access;
+                                                       Close: int;
+                                                       Base_URI: URI_Handle)
+                                                       return Stream_Handle
+     with Import, Convention=>C;
+
+   function Parse_File_Handle_As_Stream (Parser: Parser_Type_Without_Finalize;
+                                         File: RDF.Auxiliary.C_File_Access;
+                                         Close: Boolean;
+                                         Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                                         return Stream_Type is
+      Handle: constant Stream_Handle :=
+        librdf_parser_parse_file_handle_as_stream(Get_Handle(Parser),
+                                                  File,
+                                                  (if Close then 1 else 0),
+                                                  Get_Handle(Base_URI));
+   begin
+      return From_Non_Null_Handle(Handle);
    end;
 
 end RDF.Redland.Parser;
