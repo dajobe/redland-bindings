@@ -185,4 +185,21 @@ package body RDF.Redland.Parser is
       end if;
    end;
 
+   function librdf_parser_parse_counted_string_as_stream (Parser: Parser_Handle; Text: char_array; Length: size_t; Base_URI: URI_Handle)
+                                                          return Stream_Handle
+     with Import, Convention=>C;
+
+   function Parse_String_As_Stream (Parser: Parser_Type_Without_Finalize;
+                                    Text: String;
+                                    Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                                    return Stream_Type is
+      Handle: constant Stream_Handle :=
+        librdf_parser_parse_counted_string_as_stream(Get_Handle(Parser),
+                                                     To_C(Text, Append_Nul=>False),
+                                                     size_t(Text'Length),
+                                                     Get_Handle(Base_URI));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.Parser;

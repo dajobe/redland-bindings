@@ -73,7 +73,14 @@ package RDF.Redland.Parser is
                                            Model: in out Model_Type_Without_Finalize'Class;
                                            Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
-   -- TODO: Stopped at librdf_parser_parse_counted_string_as_stream()
+   not overriding
+   function Parse_String_As_Stream (Parser: Parser_Type_Without_Finalize;
+                                    Text: String;
+                                    Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                                    return Stream_Type
+     with Pre => (Text /= "");
+
+   -- TODO: Stopped at librdf_parser_parse_counted_string_into_model()
 
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
 
