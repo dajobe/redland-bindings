@@ -69,7 +69,7 @@ package RDF.Redland.Parser is
                                            Model: in out Model_Type_Without_Finalize'Class;
                                            Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
-   -- Stopped at librdf_parser_parse_string_as_stream()
+   -- Stopped at librdf_parser_parse_counted_string_as_stream()
 
    type Parser_Type is new Parser_Type_Without_Finalize with null record;
 
