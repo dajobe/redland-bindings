@@ -11,8 +11,11 @@ package RDF.Raptor.Syntaxes is
 
    type Mime_Type_Q is private;
 
+   type Syntax_Description_Record is limited private; -- internal
+
    -- Internally represented as an access to a C record. (It is used for Ada.Unchecked_Conversion in some other packages.)
-   type Raptor_Syntax_Description_Type is private;
+   type Raptor_Syntax_Description_Type is access constant Syntax_Description_Record
+     with Convention => C;
 
    type Q_Type is range 0..10;
 
@@ -107,8 +110,8 @@ private
       end record
      with Convention => C;
 
-   type Raptor_Syntax_Description_Type is access constant Syntax_Description_Record
-     with Convention => C;
+--     type Raptor_Syntax_Description_Type is access constant Syntax_Description_Record
+--       with Convention => C;
 
    type Parser_Description_Cursor is
       record
@@ -132,14 +135,14 @@ private
          World: Raptor_World_Handle;
       end record;
 
-   type Parser_Descriptions_List is tagged
-      record
-         World: Raptor_World_Handle;
-      end record;
-
-   type Serializer_Descriptions_List is tagged
-      record
-         World: Raptor_World_Handle;
-      end record;
+--     type Parser_Descriptions_List is tagged
+--        record
+--           World: Raptor_World_Handle;
+--        end record;
+--
+--     type Serializer_Descriptions_List is tagged
+--        record
+--           World: Raptor_World_Handle;
+--        end record;
 
 end RDF.Raptor.Syntaxes;
