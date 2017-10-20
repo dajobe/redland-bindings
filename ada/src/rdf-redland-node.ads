@@ -6,13 +6,18 @@ with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 
 package RDF.Redland.Node is
 
-   -- TODO: Add "Pre" aspects for getters
-
    subtype Node_Kind is RDF.Raptor.Term.Term_Kind;
 
    subtype Node_Handle is RDF.Raptor.Term.Term_Handle;
 
    type Node_Type_Without_Finalize is new RDF.Raptor.Term.Term_Handled_Record.Base_Object with null record;
+
+   subtype Blank_Node_Type_Without_Finalize is Node_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Blank(Blank_Node_Type_Without_Finalize);
+   subtype Literal_Node_Type_Without_Finalize is Node_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Literal(Literal_Node_Type_Without_Finalize);
+   subtype Resource_Node_Type_Without_Finalize is Node_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Resource(Resource_Node_Type_Without_Finalize);
 
    overriding procedure Finalize_Handle (Object: Node_Type_Without_Finalize; Handle: Node_Handle);
 
@@ -29,7 +34,7 @@ package RDF.Redland.Node is
    overriding function "=" (Left, Right: Node_Type_Without_Finalize) return Boolean
                             renames Equals;
 
-   not overriding function Get_Blank_Identifier (Node: Node_Type_Without_Finalize) return String;
+   function Get_Blank_Identifier (Node: Blank_Node_Type_Without_Finalize'Class) return String;
 
    not overriding function Get_Li_Ordinal (Node: Node_Type_Without_Finalize) return Positive;
 
@@ -101,13 +106,6 @@ package RDF.Redland.Node is
    not overriding function Decode (World: Redland_World_Type_Without_Finalize'Class;
                                    Buffer: String)
                                    return Node_Type;
-
-   subtype Blank_Node_Type_Without_Finalize is Node_Type_Without_Finalize
-     with Dynamic_Predicate => Is_Blank(Blank_Node_Type_Without_Finalize);
-   subtype Literal_Node_Type_Without_Finalize is Node_Type_Without_Finalize
-     with Dynamic_Predicate => Is_Literal(Literal_Node_Type_Without_Finalize);
-   subtype Resource_Node_Type_Without_Finalize is Node_Type_Without_Finalize
-     with Dynamic_Predicate => Is_Resource(Resource_Node_Type_Without_Finalize);
 
    subtype Blank_Node_Type is Node_Type
      with Dynamic_Predicate => Is_Blank(Blank_Node_Type);

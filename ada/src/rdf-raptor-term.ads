@@ -16,6 +16,7 @@ package RDF.Raptor.Term is
    package Term_Handled_Record is new RDF.Auxiliary.Handled_Record(Term_Record, Term_Record_Access);
 
    -- TODO: Add subtypes with dynamic predicates (first make Is_* functions)
+   -- and use them in argument types
    type Term_Type_Without_Finalize is new Term_Handled_Record.Base_Object with null record;
 
    subtype Term_Handle is Term_Handled_Record.Access_Type;

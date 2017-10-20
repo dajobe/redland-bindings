@@ -213,7 +213,7 @@ package body RDF.Redland.Node is
                                                       return RDF.Auxiliary.C_Pointers.Pointer
      with Import, Convention=>C;
 
-   function Get_Blank_Identifier (Node: Node_Type_Without_Finalize) return String is
+   function Get_Blank_Identifier (Node: Blank_Node_Type_Without_Finalize'Class) return String is
       Length: aliased size_t;
       Buffer: constant RDF.Auxiliary.C_Pointers.Pointer :=
         librdf_node_get_counted_blank_identifier(Get_Handle(Node), Length'Unchecked_Access);
