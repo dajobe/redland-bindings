@@ -53,7 +53,6 @@ package RDF.Auxiliary.Handled_Record is
 
    not overriding function Is_Null (Object: Base_Object) return Boolean;
 
-   -- FIXME: Properly use this
    generic
       type Base is new Base_Object with private;
    package With_Finalization is
