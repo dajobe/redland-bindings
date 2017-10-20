@@ -2,6 +2,7 @@ with Ada.Iterator_Interfaces;
 with RDF.Auxiliary.Handled_Record;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Redland.World; use RDF.Redland.World;
+with RDF.Redland.URI; use RDF.Redland.URI;
 
 package RDF.Redland.Query is
 
@@ -10,6 +11,10 @@ package RDF.Redland.Query is
    type Query_Type_Without_Finalize is new RDF.Redland.Query.Query_Handled_Record.Base_Object with null record;
 
    subtype Query_Handle is Query_Handled_Record.Access_Type;
+
+   overriding procedure Finalize_Handle (Object: Query_Type_Without_Finalize; Handle: Query_Handle);
+
+   overriding function Adjust_Handle (Object: Query_Type_Without_Finalize; Handle: Query_Handle) return Query_Handle;
 
    function Get_Query_Language_Description (World: Redland_World_Type_Without_Finalize'Class;
                                             Counter: Natural)
@@ -34,7 +39,19 @@ package RDF.Redland.Query is
    function Create_Query_Language_Descriptions_Iterator (World: Redland_World_Type_Without_Finalize'Class)
                                                          return Query_Language_Description_Iterator;
 
-   -- TODO: Stopped at librdf_new_query()
+   package Finalizer is new Query_Handled_Record.With_Finalization(Query_Type_Without_Finalize);
+
+   type Query_Type is new Finalizer.Derived with null record;
+
+   -- Order of arguments not the same as in C
+   not overriding
+   function Create (World: Redland_World_Type_Without_Finalize'Class;
+                    Name: String;
+                    Query_String: String;
+                    URI, Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                    return Query_Type;
+
+   -- TODO: Stopped at librdf_query_execute()
 
 private
 

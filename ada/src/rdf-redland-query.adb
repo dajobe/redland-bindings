@@ -46,4 +46,42 @@ package body RDF.Redland.Query is
       return (World=>Get_Handle(World));
    end;
 
+   function librdf_new_query (World: Redland_World_Handle;
+                              Name: char_array;
+                              URI: URI_Handle;
+                              Query_String: char_array;
+                              Base_URI: URI_Handle)
+                              return Query_Handle
+     with Import, Convention=>C;
+
+   function Create (World: Redland_World_Type_Without_Finalize'Class;
+                    Name: String;
+                    Query_String: String;
+                    URI, Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                    return Query_Type is
+      Handle: constant Query_Handle := librdf_new_query(Get_Handle(World),
+                                                        To_C(Name),
+                                                        Get_Handle(URI),
+                                                        To_C(Query_String),
+                                                        Get_Handle(Base_URI));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
+   function librdf_new_query_from_query (Query: Query_Handle) return Query_Handle
+     with Import, Convention=>C;
+
+   function Adjust_Handle (Object: Query_Type_Without_Finalize; Handle: Query_Handle) return Query_Handle is
+   begin
+      return librdf_new_query_from_query(Handle);
+   end;
+
+   procedure librdf_free_query (Query: Query_Handle)
+     with Import, Convention=>C;
+
+   procedure Finalize_Handle (Object: Query_Type_Without_Finalize; Handle: Query_Handle) is
+   begin
+      librdf_free_query(Handle);
+   end;
+
 end RDF.Redland.Query;
