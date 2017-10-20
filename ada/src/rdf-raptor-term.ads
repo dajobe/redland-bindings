@@ -44,7 +44,7 @@ package RDF.Raptor.Term is
                                     return URI_Type_Without_Finalize
      with Pre => Get_Kind(Term) = URI;
 
-   -- FIXME: Make private
+   -- FIXME: Should be private - https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82639
    type Term_Literal_Value is
       record
          str: chars_ptr;
@@ -55,7 +55,7 @@ package RDF.Raptor.Term is
       end record
      with Convention => C;
 
-   -- FIXME: Make private
+   -- FIXME: Should be private - https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82639
    type Term_Blank_Value is
       record
          str: chars_ptr;
