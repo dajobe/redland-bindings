@@ -125,7 +125,7 @@ package RDF.Raptor.IOStream is
    --     function To_String (World: Raptor_World_Type_Without_Finalize; Str: String)
    --                         return IOStream_Type_Without_Finalize;
 
-   package Finalizer is new With_Finalization(IOStream_Type_Without_Finalize);
+   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(IOStream_Type_Without_Finalize);
 
    type IOStream_Type is new Finalizer.Derived with null record;
 

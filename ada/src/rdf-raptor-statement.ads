@@ -40,13 +40,13 @@ package RDF.Raptor.Statement is
                                             Stream: Base_IOStream_Type'Class;
                                             Write_Graph_Term: Boolean);
 
-   package Finalizer is new With_Finalization(Statement_Type_Without_Finalize);
+   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Statement_Type_Without_Finalize);
 
    type Statement_Type is new Finalizer.Derived with null record;
 
    overriding function Adjust_Handle (Object: Statement_Type; Handle: Statement_Handle) return Statement_Handle;
 
-   overriding procedure Finalize_Handle (Object: Statement_Type; Handle: Statement_Handle);
+   overriding procedure Finalize_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle);
 
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
    --     function No_Auto_Finalization (Term: Term_Type_Without_Finalize'Class) return Boolean;

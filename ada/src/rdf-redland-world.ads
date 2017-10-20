@@ -42,11 +42,11 @@ package RDF.Redland.World is
                                          Feature: RDF.Redland.URI.URI_Type_Without_Finalize'Class;
                                          Value: RDF.Redland.Node.Node_Type_Without_Finalize'Class);
 
-   package Finalizer is new With_Finalization(Redland_World_Type_Without_Finalize);
+   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Redland_World_Type_Without_Finalize);
 
    type Redland_World_Type is new Finalizer.Derived with null record;
 
-   overriding procedure Finalize_Handle (Object: Redland_World_Type; Handle: Redland_World_Handle);
+   overriding procedure Finalize_Handle (Object: Redland_World_Type_Without_Finalize; Handle: Redland_World_Handle);
 
    not overriding function Open return Redland_World_Type;
 

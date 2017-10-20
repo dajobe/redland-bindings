@@ -131,11 +131,11 @@ package RDF.Raptor.Options is
 
    function Value_Type_Label (Value_Type: Value_Type_Type) return String;
 
-   package Finalizer is new With_Finalization(Option_Description_Type_Without_Finalize);
+   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Option_Description_Type_Without_Finalize);
 
    type Option_Description_Type is new Finalizer.Derived with null record;
 
-   overriding procedure Finalize_Handle (Object: Option_Description_Type; Handle: Option_Description_Handle);
+   overriding procedure Finalize_Handle (Object: Option_Description_Type_Without_Finalize; Handle: Option_Description_Handle);
 
    not overriding function Get_Option_Description (World: Raptor_World_Type_Without_Finalize'Class;
                                                    Domain: Domain_Type;

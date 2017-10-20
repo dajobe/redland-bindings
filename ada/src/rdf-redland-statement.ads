@@ -62,7 +62,7 @@ package RDF.Redland.Statement is
 
    not overriding procedure Write (Statement: Statement_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
-   package Finalizer is new With_Finalization(Statement_Type_Without_Finalize);
+   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Statement_Type_Without_Finalize);
 
    type Statement_Type is new Finalizer.Derived with null record;
 

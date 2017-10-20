@@ -28,11 +28,11 @@ package RDF.Redland.Iterator is
 
    -- librdf_iterator_add_map() not implemented
 
-   package Finalizer is new With_Finalization(Iterator_Type_Without_Finalize);
+   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Iterator_Type_Without_Finalize);
 
    type Iterator_Type is new Finalizer.Derived with null record;
 
-   overriding procedure Finalize_Handle (Object: Iterator_Type; Handle: Iterator_Handle);
+   overriding procedure Finalize_Handle (Object: Iterator_Type_Without_Finalize; Handle: Iterator_Handle);
 
    not overriding function Empty_Iterator return Iterator_Type;
 

@@ -80,7 +80,7 @@ package RDF.Raptor.Term is
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                                           Base_URI: URI_Type'Class);
 
-   package Finalizer is new With_Finalization(Term_Type_Without_Finalize);
+   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Term_Type_Without_Finalize);
 
    type Term_Type is new Finalizer.Derived with null record;
 
@@ -109,7 +109,7 @@ package RDF.Raptor.Term is
 
    overriding function Adjust_Handle (Object: Term_Type; Handle: Term_Handle) return Term_Handle;
 
-   overriding procedure Finalize_Handle (Object: Term_Type; Handle: Term_Handle);
+   overriding procedure Finalize_Handle (Object: Term_Type_Without_Finalize; Handle: Term_Handle);
 
 private
 

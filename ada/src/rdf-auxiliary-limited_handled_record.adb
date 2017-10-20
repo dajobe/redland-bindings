@@ -25,7 +25,7 @@ package body RDF.Auxiliary.Limited_Handled_Record is
       Object.Handle := Default_Handle(Base_Object'Class(Object));
    end Initialize;
 
-   procedure Finalize (Object : in out Base_Object) is
+   procedure Do_Finalize (Object : in out Base_Object) is
    begin
       if Object.Handle /= null then
          Finalize_Handle(Base_Object'Class(Object), Object.Handle);

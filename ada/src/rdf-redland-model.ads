@@ -195,11 +195,11 @@ package RDF.Redland.Model is
 
    not overriding procedure Write (Model: Model_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
-   package Finalizer is new With_Finalization(Model_Type_Without_Finalize);
+   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Model_Type_Without_Finalize);
 
    type Model_Type is new Finalizer.Derived with null record;
 
-   overriding procedure Finalize_Handle (Object: Model_Type; Handle: Model_Handle);
+   overriding procedure Finalize_Handle (Object: Model_Type_Without_Finalize; Handle: Model_Handle);
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Storage: Storage_Type_Without_Finalize'Class;

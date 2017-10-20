@@ -14,6 +14,8 @@ package RDF.Rasqal.World is
 
    overriding function Default_Handle(Object: Rasqal_World_Type_Without_Finalize) return Rasqal_World_Handle;
 
+   overriding procedure Finalize_Handle (Object: Rasqal_World_Type_Without_Finalize; Handle: Rasqal_World_Handle);
+
    not overriding procedure Open(Object: in out Rasqal_World_Type_Without_Finalize);
 
    not overriding procedure Set_Log_Handler(World: in out Rasqal_World_Type_Without_Finalize;
@@ -37,11 +39,9 @@ package RDF.Rasqal.World is
                                                             Identifier: String_Holders.Holder)
                                                             return String_Holders.Holder;
 
-   package Finalizer is new With_Finalization(Rasqal_World_Type_Without_Finalize);
+   package Finalizer is new Rasqal_World_Handled_Record.With_Finalization(Rasqal_World_Type_Without_Finalize);
 
    type Rasqal_World_Type is new Finalizer.Derived with null record;
-
-   overriding procedure Finalize_Handle (Object: Rasqal_World_Type; Handle: Rasqal_World_Handle);
 
    not overriding function Open return Rasqal_World_Type;
 

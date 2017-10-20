@@ -111,11 +111,11 @@ package RDF.Raptor.Parser is
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
    -- you may wish use Parser_Type defined below.
-   package Finalizer is new With_Finalization(Parser_Type_Without_Finalize);
+   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Parser_Type_Without_Finalize);
 
    type Parser_Type is new Finalizer.Derived with null record;
 
-   overriding procedure Finalize_Handle (Object: Parser_Type; Handle: Parser_Handle);
+   overriding procedure Finalize_Handle (Object: Parser_Type_Without_Finalize; Handle: Parser_Handle);
 
    not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class; Name: String)
                                    return Parser_Type;

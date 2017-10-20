@@ -68,7 +68,7 @@ package RDF.Rasqal.Query is
    --     function Get_Update_Operation;
    --     function Get_Update_Operations_Sequence;
 
-   package Finalizer is new With_Finalization(Query_Type_Without_Finalize);
+   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Query_Type_Without_Finalize);
 
    type Query_Type is new Finalizer.Derived with null record;
 

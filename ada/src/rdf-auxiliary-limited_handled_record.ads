@@ -17,7 +17,7 @@ package RDF.Auxiliary.Limited_Handled_Record is
 
    overriding procedure Initialize(Object: in out Base_Object);
 
-   overriding procedure Finalize(Object: in out Base_Object);
+   not overriding procedure Do_Finalize(Object: in out Base_Object);
 
    -- Don't call this procedure unless you really need it.
    not overriding procedure Set_Handle_Hack(Object: in out Base_Object; Handle: Access_Type);
@@ -33,6 +33,14 @@ package RDF.Auxiliary.Limited_Handled_Record is
    not overriding procedure Finalize_Handle(Object: Base_Object; Handle: Access_Type) is null;
 
    not overriding function Is_Null (Object: Base_Object) return Boolean;
+
+   generic
+      type Base is new Base_Object with private;
+   package With_Finalization is
+      type Derived is new Base with null record;
+      overriding procedure Finalize(Object: in out Derived)
+                                    renames Do_Finalize;
+   end;
 
 private
 
