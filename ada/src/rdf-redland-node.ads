@@ -14,6 +14,10 @@ package RDF.Redland.Node is
 
    type Node_Type_Without_Finalize is new RDF.Raptor.Term.Term_Handled_Record.Base_Object with null record;
 
+   overriding procedure Finalize_Handle (Object: Node_Type_Without_Finalize; Handle: Node_Handle);
+
+   overriding function Adjust_Handle (Object: Node_Type_Without_Finalize; Handle: Node_Handle) return Node_Handle;
+
    function To_Raptor (Node: Node_Type_Without_Finalize'Class) return Term_Type_Without_Finalize;
 
    not overriding function From_Raptor (Term: Term_Type_Without_Finalize'Class) return Node_Type_Without_Finalize;
@@ -54,13 +58,9 @@ package RDF.Redland.Node is
 
    not overriding procedure Write (Node: Node_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Node_Type_Without_Finalize);
+   package Finalizer is new RDF.Raptor.Term.Term_Handled_Record.With_Finalization(Node_Type_Without_Finalize);
 
    type Node_Type is new Finalizer.Derived with null record;
-
-   overriding procedure Finalize_Handle (Object: Node_Type_Without_Finalize; Handle: Node_Handle);
-
-   overriding function Adjust_Handle (Object: Node_Type_Without_Finalize; Handle: Node_Handle) return Node_Handle;
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Node_Type;
 

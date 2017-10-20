@@ -60,11 +60,11 @@ package body RDF.Rasqal.Data_Graph is
       return rasqal_new_data_graph_from_data_graph(Handle);
    end;
 
-   function Copy (Object: Data_Graph_Type_Without_Finalize'Class)
-                  return Data_Graph_Type_Without_Finalize is
-   begin
-      return From_Handle(rasqal_new_data_graph_from_data_graph(Get_Handle(Object)));
-   end;
+--     function Copy (Object: Data_Graph_Type_Without_Finalize'Class)
+--                    return Data_Graph_Type_Without_Finalize is
+--     begin
+--        return From_Handle(rasqal_new_data_graph_from_data_graph(Get_Handle(Object)));
+--     end;
 
    procedure rasqal_free_data_graph (Handle: Data_Graph_Handle)
      with Import, Convention=>C;

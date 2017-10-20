@@ -13,6 +13,8 @@ package RDF.Redland.Stream is
 
    subtype Stream_Handle is Stream_Handled_Record.Access_Type;
 
+   overriding procedure Finalize_Handle (Object: Stream_Type_Without_Finalize; Handle: Stream_Handle);
+
    not overriding function Is_End (Stream: Stream_Type_Without_Finalize) return Boolean;
 
    -- FIXME: What to do with the return value?
@@ -31,11 +33,9 @@ package RDF.Redland.Stream is
 
    not overriding procedure Write (Stream: Stream_Type_Without_Finalize; Raptor_Stream: Base_IOStream_Type'Class);
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Stream_Type_Without_Finalize);
+   package Finalizer is new Stream_Handled_Record.With_Finalization(Stream_Type_Without_Finalize);
 
    type Stream_Type is new Finalizer.Derived with null record;
-
-   overriding procedure Finalize_Handle (Object: Stream_Type_Without_Finalize; Handle: Stream_Handle);
 
    function Empty_Stream (World: Redland_World_Type_Without_Finalize'Class) return Stream_Type;
 

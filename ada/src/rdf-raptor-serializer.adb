@@ -222,7 +222,7 @@ package body RDF.Raptor.Serializer is
    procedure raptor_free_serializer (Serializer: Serializer_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Serializer_Handle) is
+   procedure Finalize_Handle (Serializer: Serializer_Type_Without_Finalize; Handle: Serializer_Handle) is
    begin
       raptor_free_serializer(Handle);
    end;

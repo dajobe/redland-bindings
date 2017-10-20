@@ -20,9 +20,9 @@ package RDF.Raptor.Term is
 
    subtype Term_Handle is Term_Handled_Record.Access_Type;
 
-   type Term_Literal_Value is private;
+   overriding function Adjust_Handle (Object: Term_Type_Without_Finalize; Handle: Term_Handle) return Term_Handle;
 
-   type Term_Blank_Value is private;
+   overriding procedure Finalize_Handle (Object: Term_Type_Without_Finalize; Handle: Term_Handle);
 
    type Term_Kind is (Unknown,
                       URI,
@@ -43,6 +43,25 @@ package RDF.Raptor.Term is
    not overriding function Get_URI (Term: Term_Type_Without_Finalize)
                                     return URI_Type_Without_Finalize
      with Pre => Get_Kind(Term) = URI;
+
+   -- FIXME: Make private
+   type Term_Literal_Value is
+      record
+         str: chars_ptr;
+         Len: unsigned;
+         Datatype: URI_Handle;
+         Language: chars_ptr;
+         Language_Len: unsigned;
+      end record
+     with Convention => C;
+
+   -- FIXME: Make private
+   type Term_Blank_Value is
+      record
+         str: chars_ptr;
+         Len: unsigned;
+      end record
+     with Convention => C;
 
    not overriding function Get_Literal (Term: Term_Type_Without_Finalize)
                                         return Term_Literal_Value
@@ -80,7 +99,7 @@ package RDF.Raptor.Term is
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                                           Base_URI: URI_Type'Class);
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Term_Type_Without_Finalize);
+   package Finalizer is new Term_Handled_Record.With_Finalization(Term_Type_Without_Finalize);
 
    type Term_Type is new Finalizer.Derived with null record;
 
@@ -107,28 +126,24 @@ package RDF.Raptor.Term is
    not overriding function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String)
                                         return Term_Type;
 
-   overriding function Adjust_Handle (Object: Term_Type_Without_Finalize; Handle: Term_Handle) return Term_Handle;
-
-   overriding procedure Finalize_Handle (Object: Term_Type_Without_Finalize; Handle: Term_Handle);
-
 private
 
-   type Term_Literal_Value is
-      record
-         str: chars_ptr;
-         Len: unsigned;
-         Datatype: URI_Handle;
-         Language: chars_ptr;
-         Language_Len: unsigned;
-      end record
-     with Convention => C;
+--     type Term_Literal_Value is
+--        record
+--           str: chars_ptr;
+--           Len: unsigned;
+--           Datatype: URI_Handle;
+--           Language: chars_ptr;
+--           Language_Len: unsigned;
+--        end record
+--       with Convention => C;
 
-   type Term_Blank_Value is
-      record
-         str: chars_ptr;
-         Len: unsigned;
-      end record
-     with Convention => C;
+--     type Term_Blank_Value is
+--        record
+--           str: chars_ptr;
+--           Len: unsigned;
+--        end record
+--       with Convention => C;
 
    type Term_Value (Kind: Term_Kind := Term_Kind'First) is
       record

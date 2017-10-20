@@ -17,6 +17,8 @@ package RDF.Raptor.Serializer is
 
    type Serializer_Type_Without_Finalize is new Serializer_Handled_Record.Base_Object with null record;
 
+   overriding procedure Finalize_Handle (Serializer: Serializer_Type_Without_Finalize; Handle: Serializer_Handle);
+
    -- WARNING: Other order of arguments than in C
    not overriding procedure Start_To_IOStream (Serializer: Serializer_Type_Without_Finalize;
                                                IOStream: Base_IOStream_Type'Class;
@@ -85,7 +87,5 @@ package RDF.Raptor.Serializer is
    not overriding function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class;
                                            Syntax_Name: String)
                                            return Serializer_Type;
-
-   overriding procedure Finalize_Handle (Serializer: Serializer_Type; Handle: Serializer_Handle);
 
 end RDF.Raptor.Serializer;

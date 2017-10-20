@@ -14,6 +14,8 @@ package RDF.Raptor.WWW is
 
    type WWW_Type_Without_Finalize is new WWW_Handled_Record.Base_Object with null record;
 
+   overriding procedure Finalize_Handle (Object: WWW_Type_Without_Finalize; Handle: WWW_Handle);
+
    -- You can call this function or initialize only callbacks you need (below).
    not overriding procedure Initialize_All_Callbacks (WWW: in out WWW_Type_Without_Finalize);
 
@@ -63,7 +65,7 @@ package RDF.Raptor.WWW is
 
    not overriding procedure Abort_Operation (WWW: WWW_Type_Without_Finalize; Reason: String);
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(WWW_Type_Without_Finalize);
+   package Finalizer is new WWW_Handled_Record.With_Finalization(WWW_Type_Without_Finalize);
 
    type WWW_Type is new Finalizer.Derived with null record;
 
@@ -71,7 +73,5 @@ package RDF.Raptor.WWW is
 
    not overriding function New_WWW (World: Raptor_World_Type'Class; Connection: Connection_Type)
                                     return WWW_Type;
-
-   overriding procedure Finalize_Handle (Object: WWW_Type_Without_Finalize; Handle: WWW_Handle);
 
 end RDF.Raptor.WWW;

@@ -10,6 +10,10 @@ package RDF.Redland.URI is
 
    type URI_Type_Without_Finalize is new RDF.Raptor.URI.URI_Handled_Record.Base_Object with null record;
 
+   overriding function Adjust_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle) return URI_Handle;
+
+   overriding procedure Finalize_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle);
+
    function To_Raptor (URI: URI_Type_Without_Finalize'Class) return RDF.Raptor.URI.URI_Type_Without_Finalize;
 
    not overriding function From_Raptor (URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize;
@@ -36,13 +40,9 @@ package RDF.Redland.URI is
    not overriding function Concept_Schema_Namespace (World: Redland_World_Type_Without_Finalize'Class)
                                                      return URI_Type_Without_Finalize;
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(URI_Type_Without_Finalize);
+   package Finalizer is new RDF.Raptor.URI.URI_Handled_Record.With_Finalization(URI_Type_Without_Finalize);
 
    type URI_Type is new Finalizer.Derived with null record;
-
-   overriding function Adjust_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle) return URI_Handle;
-
-   overriding procedure Finalize_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle);
 
    not overriding function From_String (World: Redland_World_Type_Without_Finalize'Class; URI: URI_String)
                                         return URI_Type;

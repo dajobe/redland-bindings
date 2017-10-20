@@ -20,6 +20,8 @@ package RDF.Raptor.Parser is
 
    type Parser_Type_Without_Finalize is new Parser_Handled_Record.Base_Object with null record;
 
+   overriding procedure Finalize_Handle (Object: Parser_Type_Without_Finalize; Handle: Parser_Handle);
+
    type Graph_Mark_Flags is (Graph_Mark_Start, Graph_Mark_Declared);
    for Graph_Mark_Flags'Size use int'Size; -- hack
    for Graph_Mark_Flags use (Graph_Mark_Start=>1, Graph_Mark_Declared=>2);
@@ -111,11 +113,9 @@ package RDF.Raptor.Parser is
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
    -- you may wish use Parser_Type defined below.
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Parser_Type_Without_Finalize);
+   package Finalizer is new Parser_Handled_Record.With_Finalization(Parser_Type_Without_Finalize);
 
    type Parser_Type is new Finalizer.Derived with null record;
-
-   overriding procedure Finalize_Handle (Object: Parser_Type_Without_Finalize; Handle: Parser_Handle);
 
    not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class; Name: String)
                                    return Parser_Type;

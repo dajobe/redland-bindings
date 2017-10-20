@@ -13,6 +13,8 @@ package RDF.Redland.Iterator is
 
    subtype Iterator_Handle is Iterator_Handled_Record.Access_Type;
 
+   overriding procedure Finalize_Handle (Object: Iterator_Type_Without_Finalize; Handle: Iterator_Handle);
+
    -- TODO: librdf_iterator_map_handler, librdf_iterator_map_free_context_handler,
    -- librdf_new_iterator() are unimplemented
 
@@ -28,11 +30,9 @@ package RDF.Redland.Iterator is
 
    -- librdf_iterator_add_map() not implemented
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Iterator_Type_Without_Finalize);
+   package Finalizer is new Iterator_Handled_Record.With_Finalization(Iterator_Type_Without_Finalize);
 
    type Iterator_Type is new Finalizer.Derived with null record;
-
-   overriding procedure Finalize_Handle (Object: Iterator_Type_Without_Finalize; Handle: Iterator_Handle);
 
    not overriding function Empty_Iterator return Iterator_Type;
 

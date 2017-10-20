@@ -17,6 +17,8 @@ package RDF.Rasqal.Query is
 
    type Query_Type_Without_Finalize is new Query_Handled_Record.Base_Object with null record;
 
+   overriding procedure Finalize_Handle (Query: Query_Type_Without_Finalize; Handle: Query_Handle);
+
    not overriding procedure Add_Data_Graph (Query: in out Query_Type_Without_Finalize;
                                             Graph: Data_Graph_Type_Without_Finalize'Class);
 
@@ -68,11 +70,9 @@ package RDF.Rasqal.Query is
    --     function Get_Update_Operation;
    --     function Get_Update_Operations_Sequence;
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Query_Type_Without_Finalize);
+   package Finalizer is new Query_Handled_Record.With_Finalization(Query_Type_Without_Finalize);
 
    type Query_Type is new Finalizer.Derived with null record;
-
-   overriding procedure Finalize_Handle (Query: Query_Type; Handle: Query_Handle);
 
    not overriding function New_Query (World: Rasqal_World_Type'Class;
                                       Name, URI: RDF.Auxiliary.String_Holders.Holder)

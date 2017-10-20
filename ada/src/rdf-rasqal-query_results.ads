@@ -16,6 +16,8 @@ package RDF.Rasqal.Query_Results is
 
    type Query_Results_Type_Without_Finalize is new Query_Results_Handled_Record.Base_Object with null record;
 
+   overriding procedure Finalize_Handle (Object: Query_Results_Type_Without_Finalize; Handle: Query_Results_Handle);
+
    type Query_Results_Type_Enum is (Results_Bindings,
                                     Results_Boolean,
                                     Results_Graph,
@@ -90,11 +92,9 @@ package RDF.Rasqal.Query_Results is
 
    not overriding procedure Rewind (Results: in out Query_Results_Type_Without_Finalize);
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
+   package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
    type Query_Results_Type is new Finalizer.Derived with null record;
-
-   overriding procedure Finalize_Handle (Object: Query_Results_Type_Without_Finalize; Handle: Query_Results_Handle);
 
    not overriding function New_Query_Results (World: Rasqal_World_Type_Without_Finalize'Class;
                                               Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;

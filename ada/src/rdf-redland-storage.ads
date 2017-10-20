@@ -16,6 +16,8 @@ package RDF.Redland.Storage is
 
    subtype Storage_Handle is Storage_Handled_Record.Access_Type;
 
+   overriding procedure Finalize_Handle (Object: Storage_Type_Without_Finalize; Handle: Storage_Handle);
+
    type Storage_Info (Name_Length, Label_Length: Natural) is
       record
          Name : String(1..Name_Length );
@@ -55,11 +57,9 @@ package RDF.Redland.Storage is
    not overriding function Get_World (Storage: Storage_Type_Without_Finalize)
                                       return Redland_World_Type_Without_Finalize;
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Storage_Type_Without_Finalize);
+   package Finalizer is new Storage_Handled_Record.With_Finalization(Storage_Type_Without_Finalize);
 
    type Storage_Type is new Finalizer.Derived with null record;
-
-   overriding procedure Finalize_Handle (Object: Storage_Type_Without_Finalize; Handle: Storage_Handle);
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Factory_Name: String;

@@ -12,6 +12,8 @@ package RDF.Raptor.Namespace_Stack is
 
    type Namespace_Stack_Type_Without_Finalize is new Namespace_Stack_Handled_Record.Base_Object with null record;
 
+   overriding procedure Finalize_Handle (Object: Namespace_Stack_Type_Without_Finalize; Handle: Namespace_Stack_Handle);
+
    not overriding procedure Clear (Stack: in out Namespace_Stack_Type_Without_Finalize);
 
    -- See also below
@@ -46,11 +48,9 @@ package RDF.Raptor.Namespace_Stack is
                                              NS: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize'Class;
                                              New_Depth: Natural);
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Namespace_Stack_Type_Without_Finalize);
+   package Finalizer is new Namespace_Stack_Handled_Record.With_Finalization(Namespace_Stack_Type_Without_Finalize);
 
    type Namespace_Stack_Type is new Finalizer.Derived with null record;
-
-   overriding procedure Finalize_Handle (Object: Namespace_Stack_Type_Without_Finalize; Handle: Namespace_Stack_Handle);
 
    type Defaults_Type is (None_Type, XML_Type, RDF_Type, Undefined_Type)
      with Convention => C;

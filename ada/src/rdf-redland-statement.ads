@@ -12,6 +12,10 @@ package RDF.Redland.Statement is
 
    function To_Raptor (Statement: Statement_Type_Without_Finalize'Class) return RDF.Raptor.Statement.Statement_Type_Without_Finalize;
 
+   overriding function Adjust_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle) return Statement_Handle;
+
+   overriding procedure Finalize_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle);
+
    not overriding function From_Raptor (Statement: RDF.Raptor.Statement.Statement_Type_Without_Finalize'Class) return Statement_Type_Without_Finalize;
 
    type Statement_Part_Flags is mod 256; -- the number may change in a future version
@@ -62,16 +66,12 @@ package RDF.Redland.Statement is
 
    not overriding procedure Write (Statement: Statement_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Statement_Type_Without_Finalize);
+   package Finalizer is new RDF.Raptor.Statement.Statement_Handled_Record.With_Finalization(Statement_Type_Without_Finalize);
 
    type Statement_Type is new Finalizer.Derived with null record;
 
-   overriding function Adjust_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle) return Statement_Handle;
-
    -- librdf_new_statement_from_statement2() not bound.
    -- (It is unclear how this would interact with Ada copying.)
-
-   overriding procedure Finalize_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle);
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Statement_Type;
 
