@@ -102,7 +102,7 @@ package body RDF.Redland.Parser is
    procedure librdf_free_parser (Handle: Parser_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Parser_Type; Handle: Parser_Handle) is
+   procedure Finalize_Handle (Object: Parser_Type_Without_Finalize; Handle: Parser_Handle) is
    begin
       librdf_free_parser(Handle);
    end;

@@ -231,7 +231,7 @@ package body RDF.Raptor.IOStream is
    procedure raptor_free_iostream(Handle: IOStream_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle(Object: IOStream_Type; Handle: IOStream_Handle) is
+   procedure Finalize_Handle (Object: Base_IOStream_Type; Handle: IOStream_Handle) is
    begin
       raptor_free_iostream (Handle);
    end;

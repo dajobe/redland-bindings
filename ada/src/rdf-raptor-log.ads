@@ -28,14 +28,14 @@ package RDF.Raptor.Log is
    subtype Locator_Handle is Locator_Handled_Record.Access_Type;
    type Locator_Type is new Locator_Handled_Record.Base_Object with null record;
 
-   overriding procedure Finalize_Handle (Object: Locator_Type_Without_Finalize; Handle: Locator_Handle);
+   overriding procedure Finalize_Handle (Object: Locator_Type; Handle: Locator_Handle);
    overriding function Adjust_Handle (Object: Locator_Type; Handle: Locator_Handle) return Locator_Handle;
 
    package Log_Message_Handled_Record is new RDF.Auxiliary.Handled_Record(Log_Message_Record, Log_Message_Record_Access);
    subtype Log_Message_Handle is Log_Message_Handled_Record.Access_Type;
    type Log_Message_Type is new Log_Message_Handled_Record.Base_Object with null record;
 
-   overriding procedure Finalize_Handle (Object: Log_Message_Type_Without_Finalize; Handle: Log_Message_Handle);
+   overriding procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle);
    overriding function Adjust_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle)
                                       return Log_Message_Handle;
 

@@ -17,7 +17,7 @@ package body RDF.Raptor.Namespace_Stack is
    procedure raptor_free_namespaces (Stack: Namespace_Stack_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle(Object: Namespace_Stack_Type; Handle: Namespace_Stack_Handle) is
+   procedure Finalize_Handle (Object: Namespace_Stack_Type_Without_Finalize; Handle: Namespace_Stack_Handle) is
    begin
       raptor_free_namespaces(Handle);
    end;

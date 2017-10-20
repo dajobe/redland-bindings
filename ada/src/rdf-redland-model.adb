@@ -75,7 +75,7 @@ package body RDF.Redland.Model is
    procedure librdf_free_model (Handle: Model_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Model_Type; Handle: Model_Handle) is
+   procedure Finalize_Handle (Object: Model_Type_Without_Finalize; Handle: Model_Handle) is
    begin
       librdf_free_model(Handle);
    end;

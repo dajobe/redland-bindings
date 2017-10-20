@@ -34,7 +34,7 @@ package body RDF.Redland.URI is
    function librdf_new_uri_from_uri (Old_URI: URI_Handle) return URI_Handle
      with Import, Convention=>C;
 
-   function Adjust_Handle (Object: URI_Type; Handle: URI_Handle) return URI_Handle is
+   function Adjust_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle) return URI_Handle is
    begin
       return librdf_new_uri_from_uri(Handle);
    end;
@@ -55,7 +55,7 @@ package body RDF.Redland.URI is
    procedure librdf_free_uri (Handle: URI_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle(Object: URI_Type; Handle: URI_Handle) is
+   procedure Finalize_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle) is
    begin
       librdf_free_uri (Handle);
    end;

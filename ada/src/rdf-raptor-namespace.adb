@@ -48,7 +48,7 @@ package body RDF.Raptor.Namespace is
    procedure raptor_free_namespace (Handle: Namespace_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Namespace_Type; Handle: Namespace_Handle) is
+   procedure Finalize_Handle (Object: Namespace_Type_Without_Finalize; Handle: Namespace_Handle) is
    begin
       raptor_free_namespace(Handle);
    end;

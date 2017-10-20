@@ -27,6 +27,8 @@ package RDF.Raptor.World is
 
    type Flags_Array is array(Integer range <>) of Flag_And_Value;
 
+   overriding procedure Finalize_Handle (Object: Raptor_World_Type_Without_Finalize; Handle: Raptor_World_Handle);
+
    overriding function Default_Handle(Object: Raptor_World_Type_Without_Finalize)
                                       return Raptor_World_Handle;
 
@@ -41,15 +43,13 @@ package RDF.Raptor.World is
    not overriding procedure Set_Flags(Object: in out Raptor_World_Type_Without_Finalize;
                                       Flags: Flags_Array);
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(Raptor_World_Type_Without_Finalize);
+   package Finalizer is new Raptor_World_Handled_Record.With_Finalization(Raptor_World_Type_Without_Finalize);
 
    type Raptor_World_Type is new Finalizer.Derived with null record;
 
    not overriding function Open return Raptor_World_Type;
 
    not overriding function Open(Flags: Flags_Array) return Raptor_World_Type;
-
-   overriding procedure Finalize_Handle(Object: Raptor_World_Type; Handle: Raptor_World_Handle);
 
    -- Not implemented
    -- procedure Set_Libxslt_Security_Preferences

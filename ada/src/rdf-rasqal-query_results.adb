@@ -244,7 +244,7 @@ package body RDF.Rasqal.Query_Results is
    procedure rasqal_free_query_results (Handle: Query_Results_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle) is
+   procedure Finalize_Handle (Object: Query_Results_Type_Without_Finalize; Handle: Query_Results_Handle) is
    begin
       rasqal_free_query_results(Handle);
    end;

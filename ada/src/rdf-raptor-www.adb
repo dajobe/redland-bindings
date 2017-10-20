@@ -182,7 +182,7 @@ package body RDF.Raptor.WWW is
    procedure raptor_free_www (Handle: WWW_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: WWW_Type; Handle: WWW_Handle) is
+   procedure Finalize_Handle (Object: WWW_Type_Without_Finalize; Handle: WWW_Handle) is
    begin
       raptor_free_www(Handle);
    end;

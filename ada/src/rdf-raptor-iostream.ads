@@ -23,6 +23,8 @@ package RDF.Raptor.IOStream is
 
    type Base_IOStream_Type is new IOStream_Handled_Record.Base_Object with null record;
 
+   overriding procedure Finalize_Handle (Object: Base_IOStream_Type; Handle: IOStream_Handle);
+
    procedure Hexadecimal_Write (Value: Natural; Width: Natural; Stream: Base_IOStream_Type);
 
    function Read_Bytes (Ptr: chars_ptr; size, nmemb: size_t; Stream: Base_IOStream_Type) return size_t;
@@ -125,11 +127,9 @@ package RDF.Raptor.IOStream is
    --     function To_String (World: Raptor_World_Type_Without_Finalize; Str: String)
    --                         return IOStream_Type_Without_Finalize;
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(IOStream_Type_Without_Finalize);
+   package Finalizer is new IOStream_Handled_Record.With_Finalization(IOStream_Type_Without_Finalize);
 
    type IOStream_Type is new Finalizer.Derived with null record;
-
-   overriding procedure Finalize_Handle(Object: IOStream_Type; Handle: IOStream_Handle);
 
    -- essentially abstract
    type User_Defined_IOStream_Type is new Base_IOStream_Type with private;

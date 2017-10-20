@@ -175,7 +175,7 @@ package body RDF.Rasqal.Literal is
    procedure rasqal_free_literal (Handle: Literal_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Literal_Type; Handle: Literal_Handle) is
+   procedure Finalize_Handle (Object: Literal_Type_Without_Finalize; Handle: Literal_Handle) is
    begin
       rasqal_free_literal(Handle);
    end;

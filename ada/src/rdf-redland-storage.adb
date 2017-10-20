@@ -73,7 +73,7 @@ package body RDF.Redland.Storage is
    procedure librdf_free_storage (Handle: Storage_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Storage_Type; Handle: Storage_Handle) is
+   procedure Finalize_Handle (Object: Storage_Type_Without_Finalize; Handle: Storage_Handle) is
    begin
       librdf_free_storage(Handle);
    end;

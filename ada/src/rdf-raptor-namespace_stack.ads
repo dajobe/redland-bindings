@@ -50,7 +50,7 @@ package RDF.Raptor.Namespace_Stack is
 
    type Namespace_Stack_Type is new Finalizer.Derived with null record;
 
-   overriding procedure Finalize_Handle(Object: Namespace_Stack_Type; Handle: Namespace_Stack_Handle);
+   overriding procedure Finalize_Handle (Object: Namespace_Stack_Type_Without_Finalize; Handle: Namespace_Stack_Handle);
 
    type Defaults_Type is (None_Type, XML_Type, RDF_Type, Undefined_Type)
      with Convention => C;

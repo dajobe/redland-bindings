@@ -107,7 +107,7 @@ package RDF.Raptor.Term is
    not overriding function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String)
                                         return Term_Type;
 
-   overriding function Adjust_Handle (Object: Term_Type; Handle: Term_Handle) return Term_Handle;
+   overriding function Adjust_Handle (Object: Term_Type_Without_Finalize; Handle: Term_Handle) return Term_Handle;
 
    overriding procedure Finalize_Handle (Object: Term_Type_Without_Finalize; Handle: Term_Handle);
 

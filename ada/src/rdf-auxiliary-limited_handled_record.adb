@@ -31,7 +31,7 @@ package body RDF.Auxiliary.Limited_Handled_Record is
          Finalize_Handle(Base_Object'Class(Object), Object.Handle);
          Object.Handle := null;
       end if;
-   end Finalize;
+   end;
 
    function Is_Null (Object: Base_Object) return Boolean is
    begin

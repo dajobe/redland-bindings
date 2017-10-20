@@ -64,7 +64,7 @@ package body RDF.Rasqal.World is
    procedure rasqal_free_world (World: Rasqal_World_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Rasqal_World_Type; Handle: Rasqal_World_Handle) is
+   procedure Finalize_Handle (Object: Rasqal_World_Type_Without_Finalize; Handle: Rasqal_World_Handle) is
    begin
       rasqal_free_world(Handle);
    end;

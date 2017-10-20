@@ -260,7 +260,7 @@ package body RDF.Raptor.Parser is
    procedure raptor_free_parser (Handle: Parser_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Parser_Type; Handle: Parser_Handle) is
+   procedure Finalize_Handle (Object: Parser_Type_Without_Finalize; Handle: Parser_Handle) is
    begin
       raptor_free_parser(Handle);
    end;

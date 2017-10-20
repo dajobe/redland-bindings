@@ -14,6 +14,10 @@ package RDF.Raptor.URI is
    -- Only absolute URIs!
    type URI_Type_Without_Finalize is new URI_Handled_Record.Base_Object with null record;
 
+   overriding function Adjust_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle) return URI_Handle;
+
+   overriding procedure Finalize_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle);
+
    not overriding function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result;
 
    not overriding function Equals(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
@@ -67,13 +71,9 @@ package RDF.Raptor.URI is
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                           Base_URI: URI_Type_Without_Finalize'Class);
 
-   package Finalizer is new RDF.Auxiliary.Limited_Handled_Record.With_Finalization(URI_Type_Without_Finalize);
+   package Finalizer is new URI_Handled_Record.With_Finalization(URI_Type_Without_Finalize);
 
    type URI_Type is new Finalizer.Derived with null record;
-
-   overriding function Adjust_Handle(Object: URI_Type; Handle: URI_Handle) return URI_Handle;
-
-   overriding procedure Finalize_Handle(Object: URI_Type; Handle: URI_Handle);
 
    not overriding function From_String(World: Raptor_World_Type_Without_Finalize'Class;
                                        Arg: URI_String)

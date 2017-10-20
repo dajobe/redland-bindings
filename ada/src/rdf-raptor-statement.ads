@@ -44,7 +44,7 @@ package RDF.Raptor.Statement is
 
    type Statement_Type is new Finalizer.Derived with null record;
 
-   overriding function Adjust_Handle (Object: Statement_Type; Handle: Statement_Handle) return Statement_Handle;
+   overriding function Adjust_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle) return Statement_Handle;
 
    overriding procedure Finalize_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle);
 

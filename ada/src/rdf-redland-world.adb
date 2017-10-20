@@ -16,7 +16,7 @@ package body RDF.Redland.World is
    procedure librdf_free_world (Handle: Redland_World_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Redland_World_Type; Handle: Redland_World_Handle) is
+   procedure Finalize_Handle (Object: Redland_World_Type_Without_Finalize; Handle: Redland_World_Handle) is
    begin
       librdf_free_world(Handle);
    end;

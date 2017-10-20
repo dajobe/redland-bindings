@@ -40,9 +40,9 @@ package RDF.Redland.URI is
 
    type URI_Type is new Finalizer.Derived with null record;
 
-   overriding function Adjust_Handle(Object: URI_Type; Handle: URI_Handle) return URI_Handle;
+   overriding function Adjust_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle) return URI_Handle;
 
-   overriding procedure Finalize_Handle(Object: URI_Type; Handle: URI_Handle);
+   overriding procedure Finalize_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle);
 
    not overriding function From_String (World: Redland_World_Type_Without_Finalize'Class; URI: URI_String)
                                         return URI_Type;

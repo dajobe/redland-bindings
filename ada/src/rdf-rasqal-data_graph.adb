@@ -53,7 +53,7 @@ package body RDF.Rasqal.Data_Graph is
                                                    return Data_Graph_Handle
      with Import, Convention=>C;
 
-   function Adjust_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle)
+   function Adjust_Handle (Object: Data_Graph_Type_Without_Finalize; Handle: Data_Graph_Handle)
                             return Data_Graph_Handle is
    begin
       -- FIXME: rasqal_new_data_graph_from_data_graph() accepts NULL
@@ -69,7 +69,7 @@ package body RDF.Rasqal.Data_Graph is
    procedure rasqal_free_data_graph (Handle: Data_Graph_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle) is
+   procedure Finalize_Handle (Object: Data_Graph_Type_Without_Finalize; Handle: Data_Graph_Handle) is
    begin
       rasqal_free_data_graph(Handle);
    end;

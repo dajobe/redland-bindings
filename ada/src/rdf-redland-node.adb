@@ -18,7 +18,7 @@ package body RDF.Redland.Node is
    procedure librdf_free_node (Node: Node_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Node_Type; Handle: Node_Handle) is
+   procedure Finalize_Handle (Object: Node_Type_Without_Finalize; Handle: Node_Handle) is
    begin
       librdf_free_node(Handle);
    end;
@@ -91,7 +91,7 @@ package body RDF.Redland.Node is
    function librdf_new_node_from_node (Node: Node_Handle) return Node_Handle
      with Import, Convention=>C;
 
-   function Adjust_Handle (Object: Node_Type; Handle: Node_Handle) return Node_Handle is
+   function Adjust_Handle (Object: Node_Type_Without_Finalize; Handle: Node_Handle) return Node_Handle is
    begin
       return librdf_new_node_from_node(Handle);
    end;

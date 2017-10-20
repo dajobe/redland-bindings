@@ -55,7 +55,7 @@ package RDF.Rasqal.Data_Graph is
 
    type Data_Graph_Type is new Finalizer.Derived with null record;
 
-   overriding function Adjust_Handle (Object: Data_Graph_Type; Handle: Data_Graph_Handle) return Data_Graph_Handle;
+   overriding function Adjust_Handle (Object: Data_Graph_Type_Without_Finalize; Handle: Data_Graph_Handle) return Data_Graph_Handle;
 
    overriding procedure Finalize_Handle (Object: Data_Graph_Type_Without_Finalize; Handle: Data_Graph_Handle);
 

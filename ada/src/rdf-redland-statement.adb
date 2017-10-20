@@ -28,7 +28,7 @@ package body RDF.Redland.Statement is
    function librdf_new_statement_from_statement (Statement: Statement_Handle) return Statement_Handle
      with Import, Convention=>C;
 
-   function Adjust_Handle (Object: Statement_Type; Handle: Statement_Handle)
+   function Adjust_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle)
                            return Statement_Handle is
    begin
       return librdf_new_statement_from_statement(Handle);
@@ -61,7 +61,7 @@ package body RDF.Redland.Statement is
    procedure librdf_free_statement (Statement: Statement_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Statement_Type; Handle: Statement_Handle) is
+   procedure Finalize_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle) is
    begin
       librdf_free_statement(Handle);
    end;

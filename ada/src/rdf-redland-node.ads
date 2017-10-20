@@ -60,7 +60,7 @@ package RDF.Redland.Node is
 
    overriding procedure Finalize_Handle (Object: Node_Type_Without_Finalize; Handle: Node_Handle);
 
-   overriding function Adjust_Handle (Object: Node_Type; Handle: Node_Handle) return Node_Handle;
+   overriding function Adjust_Handle (Object: Node_Type_Without_Finalize; Handle: Node_Handle) return Node_Handle;
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Node_Type;
 

@@ -153,7 +153,7 @@ package body RDF.Raptor.Term is
    function raptor_term_copy (Term: Term_Handle) return Term_Handle
      with Import, Convention=>C;
 
-   function Adjust_Handle (Object: Term_Type; Handle: Term_Handle) return Term_Handle is
+   function Adjust_Handle (Object: Term_Type_Without_Finalize; Handle: Term_Handle) return Term_Handle is
    begin
       return raptor_term_copy(Handle);
    end;
@@ -177,7 +177,7 @@ package body RDF.Raptor.Term is
    procedure raptor_free_term (Term: Term_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Term_Type; Handle: Term_Handle) is
+   procedure Finalize_Handle (Object: Term_Type_Without_Finalize; Handle: Term_Handle) is
    begin
       raptor_free_term(Handle);
    end;

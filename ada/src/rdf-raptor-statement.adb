@@ -57,7 +57,7 @@ package body RDF.Raptor.Statement is
    procedure raptor_free_statement (Statement: Statement_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Statement_Type; Handle: Statement_Handle) is
+   procedure Finalize_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle) is
    begin
       raptor_free_statement(Handle);
    end;
@@ -65,7 +65,7 @@ package body RDF.Raptor.Statement is
    function raptor_statement_copy (Term: Statement_Handle) return Statement_Handle
      with Import, Convention=>C;
 
-   function Adjust_Handle (Object: Statement_Type; Handle: Statement_Handle) return Statement_Handle is
+   function Adjust_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle) return Statement_Handle is
    begin
       return raptor_statement_copy(Handle);
    end;

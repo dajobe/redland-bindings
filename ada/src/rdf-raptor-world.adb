@@ -59,7 +59,7 @@ package body RDF.Raptor.World is
    procedure raptor_free_world(Handle: Raptor_World_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle(Object: Raptor_World_Type; Handle: Raptor_World_Handle) is
+   procedure Finalize_Handle (Object: Raptor_World_Type_Without_Finalize; Handle: Raptor_World_Handle) is
    begin
       raptor_free_world(Handle);
    end;

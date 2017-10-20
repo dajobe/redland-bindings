@@ -66,12 +66,12 @@ package RDF.Redland.Statement is
 
    type Statement_Type is new Finalizer.Derived with null record;
 
-   overriding function Adjust_Handle (Object: Statement_Type; Handle: Statement_Handle) return Statement_Handle;
+   overriding function Adjust_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle) return Statement_Handle;
 
    -- librdf_new_statement_from_statement2() not bound.
    -- (It is unclear how this would interact with Ada copying.)
 
-   overriding procedure Finalize_Handle(Object: Statement_Type; Handle: Statement_Handle);
+   overriding procedure Finalize_Handle (Object: Statement_Type_Without_Finalize; Handle: Statement_Handle);
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Statement_Type;
 

@@ -30,7 +30,7 @@ package body RDF.Redland.Stream is
    procedure librdf_free_stream (Stream: Stream_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle (Object: Stream_Type; Handle: Stream_Handle) is
+   procedure Finalize_Handle (Object: Stream_Type_Without_Finalize; Handle: Stream_Handle) is
    begin
       librdf_free_stream(Handle);
    end;

@@ -300,7 +300,7 @@ package body RDF.Raptor.URI is
    procedure raptor_free_uri (Handle: URI_Handle)
      with Import, Convention=>C;
 
-   procedure Finalize_Handle(Object: URI_Type; Handle: URI_Handle) is
+   procedure Finalize_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle) is
    begin
       raptor_free_uri (Handle);
    end;
@@ -309,7 +309,7 @@ package body RDF.Raptor.URI is
                              return URI_Handle
      with Import, Convention=>C;
 
-   function Adjust_Handle(Object: URI_Type; Handle: URI_Handle) return URI_Handle is
+   function Adjust_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle) return URI_Handle is
    begin
       return raptor_uri_copy(Handle);
    end;
