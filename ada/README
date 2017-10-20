@@ -35,9 +35,8 @@ Ada):
 * Redland Files (internals)
 * Redland Hashes (internals)
 * Redland Heuristics (internals)
-* Redland Iterator (internals) # FIXME: Should be bound
 * Redland List (internals)
-* Rdland Parser factories (internals)
+* Redland Parser factories and query factories (internals)
 
 The following APIs are implemented partially:
 
