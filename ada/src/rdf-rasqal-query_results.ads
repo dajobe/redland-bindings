@@ -90,7 +90,9 @@ package RDF.Rasqal.Query_Results is
 
    not overriding procedure Rewind (Results: in out Query_Results_Type_Without_Finalize);
 
-   type Query_Results_Type is new Query_Results_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Query_Results_Type_Without_Finalize);
+
+   type Query_Results_Type is new Finalizer.Derived with null record;
 
    overriding procedure Finalize_Handle (Object: Query_Results_Type; Handle: Query_Results_Handle);
 

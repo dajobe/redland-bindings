@@ -122,7 +122,9 @@ package RDF.Redland.Parser is
 
    -- TODO: librdf_parser_get_uri_filter() and librdf_parser_set_uri_filter()
 
-   type Parser_Type is new Parser_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Parser_Type_Without_Finalize);
+
+   type Parser_Type is new Finalizer.Derived with null record;
 
    overriding procedure Finalize_Handle (Object: Parser_Type; Handle: Parser_Handle);
 

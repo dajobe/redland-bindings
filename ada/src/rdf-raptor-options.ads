@@ -131,7 +131,9 @@ package RDF.Raptor.Options is
 
    function Value_Type_Label (Value_Type: Value_Type_Type) return String;
 
-   type Option_Description_Type is new Option_Description_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Option_Description_Type_Without_Finalize);
+
+   type Option_Description_Type is new Finalizer.Derived with null record;
 
    overriding procedure Finalize_Handle (Object: Option_Description_Type; Handle: Option_Description_Handle);
 

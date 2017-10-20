@@ -40,7 +40,9 @@ package RDF.Raptor.Statement is
                                             Stream: Base_IOStream_Type'Class;
                                             Write_Graph_Term: Boolean);
 
-   type Statement_Type is new Statement_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Statement_Type_Without_Finalize);
+
+   type Statement_Type is new Finalizer.Derived with null record;
 
    overriding function Adjust_Handle (Object: Statement_Type; Handle: Statement_Handle) return Statement_Handle;
 

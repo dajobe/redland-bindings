@@ -46,7 +46,9 @@ package RDF.Raptor.Namespace_Stack is
                                              NS: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize'Class;
                                              New_Depth: Natural);
 
-   type Namespace_Stack_Type is new Namespace_Stack_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Namespace_Stack_Type_Without_Finalize);
+
+   type Namespace_Stack_Type is new Finalizer.Derived with null record;
 
    overriding procedure Finalize_Handle(Object: Namespace_Stack_Type; Handle: Namespace_Stack_Handle);
 

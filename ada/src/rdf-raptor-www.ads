@@ -63,7 +63,9 @@ package RDF.Raptor.WWW is
 
    not overriding procedure Abort_Operation (WWW: WWW_Type_Without_Finalize; Reason: String);
 
-   type WWW_Type is new WWW_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(WWW_Type_Without_Finalize);
+
+   type WWW_Type is new Finalizer.Derived with null record;
 
    not overriding function New_WWW (World: Raptor_World_Type'Class) return WWW_Type;
 

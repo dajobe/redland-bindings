@@ -20,7 +20,9 @@ package RDF.Raptor.Namespace is
 
    not overriding function Format_As_XML (NS: Namespace_Type_Without_Finalize) return String;
 
-   type Namespace_Type is new Namespace_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Namespace_Type_Without_Finalize);
+
+   type Namespace_Type is new Finalizer.Derived with null record;
 
    overriding procedure Finalize_Handle (Object: Namespace_Type; Handle: Namespace_Handle);
 

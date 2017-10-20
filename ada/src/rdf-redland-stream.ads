@@ -31,7 +31,9 @@ package RDF.Redland.Stream is
 
    not overriding procedure Write (Stream: Stream_Type_Without_Finalize; Raptor_Stream: Base_IOStream_Type'Class);
 
-   type Stream_Type is new Stream_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Stream_Type_Without_Finalize);
+
+   type Stream_Type is new Finalizer.Derived with null record;
 
    overriding procedure Finalize_Handle (Object: Stream_Type; Handle: Stream_Handle);
 

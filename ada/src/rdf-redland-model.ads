@@ -195,7 +195,9 @@ package RDF.Redland.Model is
 
    not overriding procedure Write (Model: Model_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
-   type Model_Type is new Model_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Model_Type_Without_Finalize);
+
+   type Model_Type is new Finalizer.Derived with null record;
 
    overriding procedure Finalize_Handle (Object: Model_Type; Handle: Model_Handle);
 

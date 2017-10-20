@@ -80,7 +80,9 @@ package RDF.Raptor.Term is
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                                           Base_URI: URI_Type'Class);
 
-   type Term_Type is new Term_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Term_Type_Without_Finalize);
+
+   type Term_Type is new Finalizer.Derived with null record;
 
    not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class)
                                        return Term_Type;

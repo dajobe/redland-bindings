@@ -54,7 +54,9 @@ package RDF.Redland.Node is
 
    not overriding procedure Write (Node: Node_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
-   type Node_Type is new Node_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Node_Type_Without_Finalize);
+
+   type Node_Type is new Finalizer.Derived with null record;
 
    overriding procedure Finalize_Handle (Object: Node_Type; Handle: Node_Handle);
 

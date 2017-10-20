@@ -62,7 +62,9 @@ package RDF.Redland.Statement is
 
    not overriding procedure Write (Statement: Statement_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
-   type Statement_Type is new Statement_Type_Without_Finalize with null record;
+   package Finalizer is new With_Finalization(Statement_Type_Without_Finalize);
+
+   type Statement_Type is new Finalizer.Derived with null record;
 
    overriding function Adjust_Handle (Object: Statement_Type; Handle: Statement_Handle) return Statement_Handle;
 
