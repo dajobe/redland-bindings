@@ -3,13 +3,15 @@ with RDF.Redland.Node; use RDF.Redland.Node;
 
 package RDF.Redland.Node_Iterator is
 
-   -- I do not defined Node_Iterator_Without_Finalize,
-   -- as we do not really need it
-
-   type Node_Iterator_Type is new Iterator_Type with null record;
+   type Node_Iterator_Type_Without_Finalize is new Iterator_Type_Without_Finalize with null record;
 
    subtype Node_Iterator_Handle is Iterator_Handle;
 
-   not overriding function Get_Node (Iterator: Node_Iterator_Type) return Node_Type_Without_Finalize;
+   not overriding function Get_Node (Iterator: Node_Iterator_Type_Without_Finalize)
+                                     return Node_Type_Without_Finalize;
+
+   package Finalizer is new Iterator_Handled_Record.With_Finalization(Node_Iterator_Type_Without_Finalize);
+
+   type Node_Iterator_Type is new Finalizer.Derived with null record;
 
 end RDF.Redland.Node_Iterator;
