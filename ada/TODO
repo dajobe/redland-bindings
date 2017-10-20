@@ -27,6 +27,3 @@
 * Should Base_Stream be an interface rather than a tagged type?
 
 * Check sources with AdaControl and gnatcheck.
-
-* In RDF.Redland.Query_Results and RDF.Rasqal.Query_Results use subtypes
-  as subprogram argument types?
