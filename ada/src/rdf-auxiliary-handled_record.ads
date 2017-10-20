@@ -30,6 +30,7 @@ package RDF.Auxiliary.Handled_Record is
 
    overriding procedure Adjust(Object: in out Base_Object);
 
+   -- FIXME: Works only after Adjust_Handle defined.
    not overriding function Copy(Object: Base_Object) return Base_Object;
 
    -- Don't call this procedure unless you really need it.
