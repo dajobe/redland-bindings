@@ -37,25 +37,21 @@ package body RDF.Raptor.Statement is
                                              return Statement_Handle
      with Import, Convention=>C;
 
+   function raptor_term_copy (Term: Term_Handle) return Term_Handle
+     with Import, Convention=>C;
+
    function New_Statement (World: Raptor_World_Type_Without_Finalize'Class;
                            Subject, Predicate, Object: Term_Type_Without_Finalize'Class;
                            Graph: Term_Type_Without_Finalize'Class := Term_Type_Without_Finalize'(From_Handle(null)))
                            return Statement_Type is
+      Handle: constant Statement_Handle :=
+        raptor_new_statement_from_nodes(Get_Handle(World),
+                                        raptor_term_copy(Get_Handle(Subject)),
+                                        raptor_term_copy(Get_Handle(Predicate)),
+                                        raptor_term_copy(Get_Handle(Object)),
+                                        raptor_term_copy(Get_Handle(Graph)));
    begin
-      return New_Statement_Without_Copies(World,
-                                          Copy(Term_Type_Without_Finalize(Subject)),
-                                          Copy(Term_Type_Without_Finalize(Predicate)),
-                                          Copy(Term_Type_Without_Finalize(Object)),
-                                          Copy(Term_Type_Without_Finalize(Graph)));
-   end;
-
-   function New_Statement_Without_Copies (World: Raptor_World_Type_Without_Finalize'Class;
-                                          Subject, Predicate, Object: Term_Type_Without_Finalize'Class;
-                                          Graph: Term_Type_Without_Finalize'Class := Term_Type_Without_Finalize'(From_Handle(null)))
-                                          return Statement_Type is
-   begin
-      return From_Non_Null_Handle( raptor_new_statement_from_nodes(Get_Handle(World),
-                                   Get_Handle(Subject), Get_Handle(Predicate), Get_Handle(Object), Get_Handle(Graph)) );
+      return From_Non_Null_Handle(Handle);
    end;
 
    procedure raptor_free_statement (Statement: Statement_Handle)

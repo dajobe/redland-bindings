@@ -50,9 +50,13 @@ package body RDF.Auxiliary.Handled_Record is
       return Object.Handle = null;
    end;
 
-   function Copy(Object: Base_Object) return Base_Object is
-   begin
-      return From_Handle(Adjust_Handle(Object, Get_Handle(Object)));
+   package body With_Finalization is
+
+      function Copy(Object: Base'Class) return Derived is
+      begin
+         return From_Handle(Adjust_Handle(Object, Get_Handle(Object)));
+      end;
+
    end;
 
 end RDF.Auxiliary.Handled_Record;

@@ -58,11 +58,6 @@ package RDF.Raptor.Statement is
                                           Graph: Term_Type_Without_Finalize'Class := Term_Type_Without_Finalize'(From_Handle(null)))
                                           return Statement_Type;
 
-   -- Does not make copies of the terms (as the C library)
-   not overriding function New_Statement_Without_Copies (World: Raptor_World_Type_Without_Finalize'Class;
-                                                         Subject, Predicate, Object: Term_Type_Without_Finalize'Class;
-                                                         Graph: Term_Type_Without_Finalize'Class := Term_Type_Without_Finalize'(From_Handle(null)))
-                                                         return Statement_Type;
    --     not overriding function New_Statement (World: Raptor_World_Type_Without_Finalize'Class;
    --                                            Subject, Predicate, Object, Graph: Term_Type_Without_Finalize'Class)
    --                                            return Statement_Type

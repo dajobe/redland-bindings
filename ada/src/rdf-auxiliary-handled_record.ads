@@ -35,9 +35,6 @@ package RDF.Auxiliary.Handled_Record is
 
    procedure Do_Adjust(Object: in out Base_Object);
 
-   -- FIXME: Works only after Adjust_Handle defined.
-   not overriding function Copy(Object: Base_Object) return Base_Object;
-
    -- Don't call this procedure unless you really need it.
    -- TODO: Do we need this procedure at all?
    not overriding procedure Set_Handle_Hack(Object: in out Base_Object; Handle: Access_Type);
@@ -56,6 +53,7 @@ package RDF.Auxiliary.Handled_Record is
 
    not overriding function Is_Null (Object: Base_Object) return Boolean;
 
+   -- FIXME: Properly use this
    generic
       type Base is new Base_Object with private;
    package With_Finalization is
@@ -64,6 +62,7 @@ package RDF.Auxiliary.Handled_Record is
                                     renames Do_Finalize;
       overriding procedure Adjust(Object: in out Derived)
                                   renames Do_Adjust;
+      not overriding function Copy(Object: Base'Class) return Derived;
    end;
 
 private
