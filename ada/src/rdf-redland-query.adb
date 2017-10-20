@@ -84,4 +84,15 @@ package body RDF.Redland.Query is
       librdf_free_query(Handle);
    end;
 
+   function librdf_query_execute (Query: Query_Handle; Model: Model_Handle) return Query_Results_Handle
+     with Import, Convention=>C;
+
+   function Execute (Query: Query_Type_Without_Finalize;
+                     Model: Model_Type_Without_Finalize'Class)
+                     return Query_Results_Type is
+      Handle: constant Query_Results_Handle := librdf_query_execute(Get_Handle(Query), Get_Handle(Model));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.Query;

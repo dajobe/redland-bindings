@@ -10,4 +10,8 @@ package RDF.Redland.Query_Results is
 
    -- TODO: Stopped here
 
+   package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
+
+   type Query_Results_Type is new Finalizer.Derived with null record;
+
 end RDF.Redland.Query_Results;

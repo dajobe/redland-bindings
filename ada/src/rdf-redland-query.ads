@@ -3,6 +3,8 @@ with RDF.Auxiliary.Handled_Record;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.URI; use RDF.Redland.URI;
+with RDF.Redland.Model; use RDF.Redland.Model;
+with RDF.Redland.Query_Results; use RDF.Redland.Query_Results;
 
 package RDF.Redland.Query is
 
@@ -39,6 +41,12 @@ package RDF.Redland.Query is
    function Create_Query_Language_Descriptions_Iterator (World: Redland_World_Type_Without_Finalize'Class)
                                                          return Query_Language_Description_Iterator;
 
+   not overriding function Execute (Query: Query_Type_Without_Finalize;
+                                    Model: Model_Type_Without_Finalize'Class)
+                                    return Query_Results_Type;
+
+   -- TODO: Stopped at librdf_query_execute()
+
    package Finalizer is new Query_Handled_Record.With_Finalization(Query_Type_Without_Finalize);
 
    type Query_Type is new Finalizer.Derived with null record;
@@ -50,8 +58,6 @@ package RDF.Redland.Query is
                     Query_String: String;
                     URI, Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
                     return Query_Type;
-
-   -- TODO: Stopped at librdf_query_execute()
 
 private
 
