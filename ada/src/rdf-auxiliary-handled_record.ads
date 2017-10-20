@@ -11,6 +11,11 @@ package RDF.Auxiliary.Handled_Record is
 
    subtype Access_Type is Record_Type_Access;
 
+--     type Finalization_Procedures is interface;
+--
+--     procedure Do_Finalize(Object: in out Finalization_Procedures) is null;
+--     procedure Do_Adjust(Object: in out Finalization_Procedures) is null;
+
    -- It is logically abstract, but not exactly abstract in Ada sense.
    -- It can't be abstract because the function From_Handle returns this type.
    --
@@ -26,9 +31,9 @@ package RDF.Auxiliary.Handled_Record is
 
    overriding procedure Initialize(Object: in out Base_Object);
 
-   overriding procedure Finalize(Object: in out Base_Object);
+   procedure Do_Finalize(Object: in out Base_Object);
 
-   overriding procedure Adjust(Object: in out Base_Object);
+   procedure Do_Adjust(Object: in out Base_Object);
 
    -- FIXME: Works only after Adjust_Handle defined.
    not overriding function Copy(Object: Base_Object) return Base_Object;
@@ -50,6 +55,16 @@ package RDF.Auxiliary.Handled_Record is
    not overriding function Adjust_Handle(Object: Base_Object; Handle: Access_Type) return Access_Type;
 
    not overriding function Is_Null (Object: Base_Object) return Boolean;
+
+   generic
+      type Base is new Base_Object with private;
+   package With_Finalization is
+      type Derived is new Base with null record;
+      overriding procedure Finalize(Object: in out Derived)
+                                    renames Do_Finalize;
+      overriding procedure Adjust(Object: in out Derived)
+                                  renames Do_Adjust;
+   end;
 
 private
 
