@@ -24,44 +24,6 @@ package RDF.Rasqal.Query_Results is
                                     Results_Syntax,
                                     Results_Unknown);
 
-   -- function Add_Row is deliberately not implemented
-
-   not overriding function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean;
-
-   not overriding function Not_Finished (Results: Query_Results_Type_Without_Finalize) return Boolean is
-     (not Finished(Results));
-
-   not overriding function Get_Binding_Name (Results: Query_Results_Type_Without_Finalize;
-                                             Offset: Natural)
-                                             return String;
-
-   not overriding function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize;
-                                              Offset: Natural)
-                                              return Literal_Type_Without_Finalize;
-
-   not overriding function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize;
-                                                      Name: String)
-                                                      return Literal_Type_Without_Finalize;
-
-   -- rasqal_query_results_get_bindings() deliberately not implemented.
-   -- Use iterators instead.
-
-   not overriding function Get_Bindings_Count (Results: Query_Results_Type_Without_Finalize)
-                                               return Natural; -- or Positive?
-
-   not overriding function Get_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean;
-
-   not overriding function Get_Current_Count (Results: Query_Results_Type_Without_Finalize) return Natural;
-
-   not overriding function Get_Query (Results: Query_Results_Type_Without_Finalize)
-                                      return RDF.Rasqal.Query.Query_Type_Without_Finalize;
-
-   not overriding function Get_Triple (Results: Query_Results_Type_Without_Finalize)
-                                       return Statement_Type_Without_Finalize;
-
-   -- Deliberately not implemented:
-   --     function Get_Row_By_Offset (Results: Query_Results_Type_Without_Finalize; Offset: Natural) return XXX;
-
    not overriding function Get_Type (Results: Query_Results_Type_Without_Finalize)
                                      return Query_Results_Type_Enum;
 
@@ -70,9 +32,56 @@ package RDF.Rasqal.Query_Results is
    not overriding function Is_Graph (Results: Query_Results_Type_Without_Finalize) return Boolean;
    not overriding function Is_Syntax (Results: Query_Results_Type_Without_Finalize) return Boolean;
 
-   not overriding procedure Next (Results: Query_Results_Type_Without_Finalize);
+   subtype Bindings_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Bindings(Bindings_Query_Results_Type_Without_Finalize);
+   subtype Boolean_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Boolean(Boolean_Query_Results_Type_Without_Finalize);
+   subtype Graph_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Graph(Graph_Query_Results_Type_Without_Finalize);
+   subtype Syntax_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type_Without_Finalize);
 
-   not overriding procedure Next_Triple (Results: Query_Results_Type_Without_Finalize);
+   -- function Add_Row is deliberately not implemented
+
+   not overriding function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean;
+
+   not overriding function Not_Finished (Results: Query_Results_Type_Without_Finalize) return Boolean is
+     (not Finished(Results));
+
+   function Get_Binding_Name (Results: Bindings_Query_Results_Type_Without_Finalize'Class;
+                              Offset: Natural)
+                              return String;
+
+   function Get_Binding_Value (Results: Bindings_Query_Results_Type_Without_Finalize'Class;
+                               Offset: Natural)
+                               return Literal_Type_Without_Finalize;
+
+   function Get_Binding_Value_By_Name (Results: Bindings_Query_Results_Type_Without_Finalize'Class;
+                                       Name: String)
+                                       return Literal_Type_Without_Finalize;
+
+   -- rasqal_query_results_get_bindings() deliberately not implemented.
+   -- Use iterators instead.
+
+   function Get_Bindings_Count (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
+                                return Natural; -- or Positive?
+
+   function Get_Boolean (Results: Boolean_Query_Results_Type_Without_Finalize'Class) return Boolean;
+
+   not overriding function Get_Current_Count (Results: Query_Results_Type_Without_Finalize) return Natural;
+
+   not overriding function Get_Query (Results: Query_Results_Type_Without_Finalize)
+                                      return RDF.Rasqal.Query.Query_Type_Without_Finalize;
+
+   function Get_Triple (Results: Graph_Query_Results_Type_Without_Finalize'Class)
+                        return Statement_Type_Without_Finalize;
+
+   -- Deliberately not implemented:
+   --     function Get_Row_By_Offset (Results: Query_Results_Type_Without_Finalize; Offset: Natural) return XXX;
+
+   procedure Next (Results: Bindings_Query_Results_Type_Without_Finalize'Class);
+
+   procedure Next_Triple (Results: Graph_Query_Results_Type_Without_Finalize'Class);
 
    not overriding procedure Read (Stream: Base_IOStream_Type'Class;
                                   Results: Query_Results_Type_Without_Finalize;
@@ -120,7 +129,7 @@ package RDF.Rasqal.Query_Results is
 
    type Bindings_Iterator is new Base_Iterators.Forward_Iterator with private;
 
-   not overriding function Create_Bindings_Iterator (Results: in out Query_Results_Type_Without_Finalize'Class)
+   not overriding function Create_Bindings_Iterator (Results: in out Bindings_Query_Results_Type_Without_Finalize'Class)
                                                      return Bindings_Iterator;
 
    overriding function First (Object: Bindings_Iterator) return Cursor;
@@ -137,7 +146,7 @@ package RDF.Rasqal.Query_Results is
 
    type Triples_Iterator is new Base_Iterators.Forward_Iterator with private;
 
-   not overriding function Create_Triples_Iterator (Results: in out Query_Results_Type_Without_Finalize'Class)
+   not overriding function Create_Triples_Iterator (Results: in out Graph_Query_Results_Type_Without_Finalize'Class)
                                                     return Bindings_Iterator;
 
    overriding function First (Object: Triples_Iterator) return Cursor;
@@ -155,7 +164,7 @@ package RDF.Rasqal.Query_Results is
    -- We can also make backward iterator, but I see no use cases for this
    type Variables_Iterator is new Variables_Iterators.Forward_Iterator with private;
 
-   not overriding function Create_Variables_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+   not overriding function Create_Variables_Iterator (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
                                                       return Variables_Iterator;
 
    overriding function First (Object: Variables_Iterator) return Variables_Cursor;
@@ -163,15 +172,6 @@ package RDF.Rasqal.Query_Results is
    overriding function Next (Object: Variables_Iterator; Position: Variables_Cursor) return Variables_Cursor;
 
    not overriding function Get_Name (Position: Variables_Cursor) return String;
-
-   subtype Bindings_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
-     with Dynamic_Predicate => Is_Bindings(Bindings_Query_Results_Type_Without_Finalize);
-   subtype Boolean_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
-     with Dynamic_Predicate => Is_Boolean(Boolean_Query_Results_Type_Without_Finalize);
-   subtype Graph_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
-     with Dynamic_Predicate => Is_Graph(Graph_Query_Results_Type_Without_Finalize);
-   subtype Syntax_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
-     with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type_Without_Finalize);
 
    subtype Bindings_Query_Results_Type is Query_Results_Type
      with Dynamic_Predicate => Is_Bindings(Bindings_Query_Results_Type);

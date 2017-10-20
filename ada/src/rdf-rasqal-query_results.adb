@@ -15,7 +15,7 @@ package body RDF.Rasqal.Query_Results is
                                                    return chars_ptr
      with Import, Convention=>C;
 
-   function Get_Binding_Name (Results: Query_Results_Type_Without_Finalize;
+   function Get_Binding_Name (Results: Bindings_Query_Results_Type_Without_Finalize'Class;
                               Offset: Natural)
                               return String is
       Ptr: constant chars_ptr := rasqal_query_results_get_binding_name(Get_Handle(Results), int(Offset));
@@ -31,7 +31,7 @@ package body RDF.Rasqal.Query_Results is
                                                     return Literal_Handle
      with Import, Convention=>C;
 
-   function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize;
+   function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize'Class;
                                Offset: Natural)
                                return Literal_Type_Without_Finalize is
    begin
@@ -43,7 +43,7 @@ package body RDF.Rasqal.Query_Results is
                                                             return Literal_Handle
      with Import, Convention=>C;
 
-   function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize;
+   function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize'Class;
                                        Name: String)
                                        return Literal_Type_Without_Finalize is
    begin
@@ -53,7 +53,7 @@ package body RDF.Rasqal.Query_Results is
    function rasqal_query_results_get_bindings_count (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
-   function Get_Bindings_Count (Results: Query_Results_Type_Without_Finalize) return Natural is
+   function Get_Bindings_Count (Results: Bindings_Query_Results_Type_Without_Finalize'Class) return Natural is
       Count: constant int := rasqal_query_results_get_bindings_count(Get_Handle(Results));
    begin
       if Count < 0 then
@@ -65,7 +65,7 @@ package body RDF.Rasqal.Query_Results is
    function rasqal_query_results_get_boolean (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
-   function Get_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean is
+   function Get_Boolean (Results: Boolean_Query_Results_Type_Without_Finalize'Class) return Boolean is
       Value: constant int := rasqal_query_results_get_boolean(Get_Handle(Results));
    begin
       if Value < 0 then
@@ -101,7 +101,7 @@ package body RDF.Rasqal.Query_Results is
                                              return Statement_Handle
      with Import, Convention=>C;
 
-   function Get_Triple (Results: Query_Results_Type_Without_Finalize)
+   function Get_Triple (Results: Graph_Query_Results_Type_Without_Finalize'Class)
                         return Statement_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle(rasqal_query_results_get_triple(Get_Handle(Results)));
@@ -114,8 +114,6 @@ package body RDF.Rasqal.Query_Results is
    begin
       return rasqal_query_results_get_type(Get_Handle(Results));
    end;
-
-   -------------------------------------
 
    function rasqal_query_results_is_bindings (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
@@ -146,7 +144,7 @@ package body RDF.Rasqal.Query_Results is
    function rasqal_query_results_next (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
-   procedure Next (Results: Query_Results_Type_Without_Finalize) is
+   procedure Next (Results: Bindings_Query_Results_Type_Without_Finalize'Class) is
    begin
       if rasqal_query_results_next(Get_Handle(Results)) /= 0 then
          -- Check is done by Finished procedure, not here
@@ -157,7 +155,7 @@ package body RDF.Rasqal.Query_Results is
    function rasqal_query_results_next_triple (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
-   procedure Next_Triple (Results: Query_Results_Type_Without_Finalize) is
+   procedure Next_Triple (Results: Graph_Query_Results_Type_Without_Finalize'Class) is
    begin
       if rasqal_query_results_next_triple(Get_Handle(Results)) /= 0 then
          -- Check is done by Finished procedure, not here
@@ -302,7 +300,7 @@ package body RDF.Rasqal.Query_Results is
    function Has_Element (Position: Cursor) return Boolean is
      (Not_Finished(Position.all));
 
-   function Create_Bindings_Iterator (Results: in out Query_Results_Type_Without_Finalize'Class)
+   function Create_Bindings_Iterator (Results: in out Bindings_Query_Results_Type_Without_Finalize'Class)
                                       return Bindings_Iterator is
      (Ref=>Results'Unchecked_Access);
 
@@ -325,7 +323,7 @@ package body RDF.Rasqal.Query_Results is
                                        return Literal_Type_Without_Finalize is
      (Get_Binding_Value_By_Name(Position.all, Name));
 
-   function Create_Triples_Iterator (Results: in out Query_Results_Type_Without_Finalize'Class)
+   function Create_Triples_Iterator (Results: in out Graph_Query_Results_Type_Without_Finalize'Class)
                                      return Bindings_Iterator is
      (Ref=>Results'Unchecked_Access);
 
@@ -341,12 +339,10 @@ package body RDF.Rasqal.Query_Results is
    function Get_Triple (Position: Cursor) return Statement_Type_Without_Finalize is
      (Get_Triple(Position.all));
 
-   -----------------
-
    function Has_Element (Position: Variables_Cursor) return Boolean is
      (Position.Count < Get_Bindings_Count(Position.Ref.all));
 
-   function Create_Variables_Iterator (Results: Query_Results_Type_Without_Finalize'Class)
+   function Create_Variables_Iterator (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
                                        return Variables_Iterator is
      (Ref=>Results'Unchecked_Access);
 
