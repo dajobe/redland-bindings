@@ -139,8 +139,6 @@ package body RDF.Rasqal.Query_Results is
    function Is_Syntax (Results: Query_Results_Type_Without_Finalize) return Boolean is
      (rasqal_query_results_is_syntax(Get_Handle(Results)) /= 0);
 
-   -------------------------------------
-
    function rasqal_query_results_next (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 

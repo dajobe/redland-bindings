@@ -1,4 +1,5 @@
 with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Redland.Stream; use RDF.Redland.Stream;
 
 package RDF.Redland.Query_Results is
 
@@ -8,7 +9,19 @@ package RDF.Redland.Query_Results is
 
    subtype Query_Results_Handle is Query_Results_Handled_Record.Access_Type;
 
-   -- TODO: Stopped here
+   -- TODO: Use subtypes in arguments
+
+   not overriding function As_Stream (Results: Query_Results_Type_Without_Finalize) return Stream_Type;
+
+   not overriding function Get_Current_Count (Results: Query_Results_Type_Without_Finalize) return Natural;
+
+   -- TODO: Subtype for this
+   procedure Next (Results: Query_Results_Type_Without_Finalize'Class);
+
+   -- TODO: Subtype for this
+   function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean;
+
+   -- TODO: Stopped at librdf_query_results_get_bindings()
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
