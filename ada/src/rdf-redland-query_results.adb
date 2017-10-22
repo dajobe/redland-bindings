@@ -174,4 +174,31 @@ package body RDF.Redland.Query_Results is
       end;
    end;
 
+   function librdf_query_results_to_file_handle2 (Results: Query_Results_Handle;
+                                                  File: RDF.Auxiliary.C_File_Access;
+                                                  Name, Mime_Type: chars_ptr;
+                                                  Format_URI, Base_URI: URI_Handle)
+                                                  return int
+     with Import, Convention=>C;
+
+   procedure To_File_Handle (Results: Query_Results_Type_Without_Finalize;
+                             File: RDF.Auxiliary.C_File_Access;
+                             Name: String := "";
+                             Mime_Type: String := "";
+                             Format_URI, Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
+      Name2: aliased char_array := To_C(Name);
+      Mime_Type2: aliased char_array := To_C(Mime_Type);
+      Result: constant int :=
+        librdf_query_results_to_file_handle2(Get_Handle(Results),
+                                             File,
+                                             (if Name = "" then Null_Ptr else To_Chars_Ptr(Name2'Unchecked_Access)),
+                                             (if Mime_Type = "" then Null_Ptr else To_Chars_Ptr(Mime_Type2'Unchecked_Access)),
+                                             Get_Handle(Format_URI),
+                                             Get_Handle(Base_URI));
+   begin
+      if Result /= 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Query_Results;

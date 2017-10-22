@@ -57,7 +57,16 @@ package RDF.Redland.Query_Results is
                        Format_URI, Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
                        return String;
 
-   -- TODO: Stopped at librdf_query_results_to_file_handle2()
+   not overriding
+   procedure To_File_Handle (Results: Query_Results_Type_Without_Finalize;
+                             File: RDF.Auxiliary.C_File_Access;
+                             Name: String := "";
+                             Mime_Type: String := "";
+                             Format_URI, Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+
+   -- librdf_query_results_to_file2() is wrong: http://bugs.librdf.org/mantis/view.php?id=639
+
+   -- TODO: Stopped at librdf_query_results_to_file2()
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
