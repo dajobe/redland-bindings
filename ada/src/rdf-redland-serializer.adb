@@ -179,4 +179,25 @@ package body RDF.Redland.Serializer is
       end;
    end;
 
+   function librdf_serializer_serialize_stream_to_file (Serializer: Serializer_Handle;
+                                                        File_Name: char_array;
+                                                        Base_URI: URI_Handle;
+                                                        Stream: Stream_Handle)
+                                                        return int
+     with Import, Convention=>C;
+
+   procedure Serialize_To_File (Serializer: Serializer_Type_Without_Finalize;
+                                File_Name: String;
+                                Stream: Stream_Type_Without_Finalize'Class;
+                                Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
+   begin
+      if librdf_serializer_serialize_stream_to_file(Get_Handle(Serializer),
+                                                    To_C(File_Name),
+                                                    Get_Handle(Base_URI),
+                                                    Get_Handle(Stream)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Serializer;
