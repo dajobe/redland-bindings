@@ -122,4 +122,17 @@ package body RDF.Redland.Query_Results is
       return Value(Ptr);
    end;
 
+   function librdf_query_results_get_binding_value_by_name (Results: Query_Results_Handle;
+                                                            Name: char_array)
+                                                            return Node_Handle
+     with Import, Convention=>C;
+
+   function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize'Class; Name: String)
+                                       return Node_Type is
+      Handle: constant Node_Handle :=
+        librdf_query_results_get_binding_value_by_name(Get_Handle(Results), To_C(Name));
+   begin
+      return From_Non_Null_Handle(Handle);
+   end;
+
 end RDF.Redland.Query_Results;
