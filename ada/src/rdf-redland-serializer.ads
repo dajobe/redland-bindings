@@ -1,7 +1,9 @@
 with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.URI; use RDF.Redland.URI;
+with RDF.Redland.Stream; use RDF.Redland.Stream;
 with RDF.Redland.Model; use RDF.Redland.Model;
 
 package RDF.Redland.Serializer is
@@ -39,7 +41,26 @@ package RDF.Redland.Serializer is
                                 Model: Model_Type_Without_Finalize'Class;
                                 Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
-   -- Stopped at librdf_serializer_serialize_model_to_counted_string()
+   -- Order of arguments not the same as in C
+   not overriding function Serialize_To_String (Serializer: Serializer_Type_Without_Finalize;
+                                                Model: Model_Type_Without_Finalize'Class;
+                                                Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                                                return String;
+
+   -- Order of arguments not the same as in C
+   not overriding procedure Serialize_Model_To_IOStream
+     (Serializer: Serializer_Type_Without_Finalize;
+      Model: Model_Type_Without_Finalize'Class;
+      IOStream: Base_IOStream_Type'Class;
+      Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+
+   -- Order of arguments not the same as in C
+   not overriding function Serialize_To_String (Serializer: Serializer_Type_Without_Finalize;
+                                                Stream: Stream_Type_Without_Finalize'Class;
+                                                Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                                                return String;
+
+   -- Stopped at librdf_serializer_serialize_stream_to_file()
 
    package Finalizer is new Serializer_Handled_Record.With_Finalization(Serializer_Type_Without_Finalize);
 

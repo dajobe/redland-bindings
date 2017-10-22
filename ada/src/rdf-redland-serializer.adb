@@ -1,5 +1,7 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
+with RDF.Redland.Memory;
 
 package body RDF.Redland.Serializer is
 
@@ -93,6 +95,88 @@ package body RDF.Redland.Serializer is
       then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
+   end;
+
+   type Size_T_P is access all size_t with Convention=>C;
+
+   function librdf_serializer_serialize_model_to_counted_string (Serialize: Serializer_Handle;
+                                                                 Base_URI: URI_Handle;
+                                                                 Model: Model_Handle;
+                                                                 Length: Size_T_P)
+                                                                 return chars_ptr
+        with Import, Convention=>C;
+
+   function Serialize_To_String (Serializer: Serializer_Type_Without_Finalize;
+                                 Model: Model_Type_Without_Finalize'Class;
+                                 Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                                 return String is
+      Length: aliased size_t;
+      Ptr: constant chars_ptr :=
+        librdf_serializer_serialize_model_to_counted_string(Get_Handle(Serializer),
+                                                            Get_Handle(Base_URI),
+                                                            Get_Handle(Model),
+                                                            Length'Unchecked_Access);
+   begin
+      if Ptr = Null_Ptr then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      declare
+         Str: constant String := Value_With_Possible_NULs(Convert(Ptr), Length);
+      begin
+         RDF.Redland.Memory.redland_free_memory(Ptr);
+         return Str;
+      end;
+   end;
+
+   function librdf_serializer_serialize_model_to_iostream (Serializer: Serializer_Handle;
+                                                           Base_URI: URI_Handle;
+                                                           Model: Model_Handle;
+                                                           IOStream: IOStream_Handle)
+                                                           return int
+     with Import, Convention=>C;
+
+   procedure Serialize_Model_To_IOStream
+     (Serializer: Serializer_Type_Without_Finalize;
+      Model: Model_Type_Without_Finalize'Class;
+      IOStream: Base_IOStream_Type'Class;
+      Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
+   begin
+      if librdf_serializer_serialize_model_to_iostream(Get_Handle(Serializer),
+                                                       Get_Handle(Base_URI),
+                                                       Get_Handle(Model),
+                                                       Get_Handle(IOStream)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function librdf_serializer_serialize_stream_to_counted_string (Serializer: Serializer_Handle;
+                                                                  Base_URI: URI_Handle;
+                                                                  Stream: IOStream_Handle;
+                                                                  Length: Size_T_P)
+                                                                  return chars_ptr
+     with Import, Convention=>C;
+
+   function Serialize_To_String (Serializer: Serializer_Type_Without_Finalize;
+                                 Stream: Stream_Type_Without_Finalize'Class;
+                                 Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                                 return String is
+      Length: aliased size_t;
+      Ptr: constant chars_ptr :=
+        librdf_serializer_serialize_stream_to_counted_string(Get_Handle(Serializer),
+                                                             Get_Handle(Base_URI),
+                                                             Get_Handle(Stream),
+                                                             Length'Unchecked_Access);
+   begin
+      if Ptr = Null_Ptr then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      declare
+         Str: constant String := Value_With_Possible_NULs(Convert(Ptr), Length);
+      begin
+         RDF.Redland.Memory.redland_free_memory(Ptr);
+         return Str;
+      end;
    end;
 
 end RDF.Redland.Serializer;
