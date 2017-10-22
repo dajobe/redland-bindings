@@ -82,10 +82,10 @@ package RDF.Raptor.Serializer is
 
    type Serializer_Type is new Finalizer.Derived with null record;
 
-   not overriding function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class)
-                                           return Serializer_Type;
-   not overriding function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class;
-                                           Syntax_Name: String)
-                                           return Serializer_Type;
+   not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class)
+                                   return Serializer_Type;
+   not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class;
+                                   Syntax_Name: String)
+                                   return Serializer_Type;
 
 end RDF.Raptor.Serializer;

@@ -13,7 +13,7 @@ package body Namespaces_Test is
 
       URI_1_Obj: constant URI_Type := From_String(World, "http://www.w3.org/1999/xhtml/");
 
-      NS1: Namespace_Type := New_Namespace (Stack, "xhtml", "http://www.w3.org/1999/xhtml/", 1);
+      NS1: Namespace_Type := Create (Stack, "xhtml", "http://www.w3.org/1999/xhtml/", 1);
       NS2: Namespace_Type := From_URI (Stack, "xhtml", URI_1_Obj, 1);
    begin
       Assert (To_String(Get_URI(NS1)) = "http://www.w3.org/1999/xhtml/", "Check namespace URI");

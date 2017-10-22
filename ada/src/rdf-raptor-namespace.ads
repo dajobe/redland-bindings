@@ -26,11 +26,11 @@ package RDF.Raptor.Namespace is
 
    type Namespace_Type is new Finalizer.Derived with null record;
 
-   not overriding function New_Namespace (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
-                                          Prefix: String;
-                                          NS: String;
-                                          Depth: Natural)
-                                          return Namespace_Type;
+   not overriding function Create (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
+                                   Prefix: String;
+                                   NS: String;
+                                   Depth: Natural)
+                                   return Namespace_Type;
 
    not overriding function From_URI (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                      Prefix: String;

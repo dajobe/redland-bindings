@@ -27,7 +27,7 @@ package body RDF.Raptor.Statement is
    function raptor_new_statement (World: Raptor_World_Handle) return Statement_Handle
      with Import, Convention=>C;
 
-   function New_Statement (World: Raptor_World_Type_Without_Finalize'Class) return Statement_Type is
+   function Create (World: Raptor_World_Type_Without_Finalize'Class) return Statement_Type is
    begin
       return From_Non_Null_Handle( raptor_new_statement(Get_Handle(World)) );
    end;
@@ -40,10 +40,10 @@ package body RDF.Raptor.Statement is
    function raptor_term_copy (Term: Term_Handle) return Term_Handle
      with Import, Convention=>C;
 
-   function New_Statement (World: Raptor_World_Type_Without_Finalize'Class;
-                           Subject, Predicate, Object: Term_Type_Without_Finalize'Class;
-                           Graph: Term_Type_Without_Finalize'Class := Term_Type_Without_Finalize'(From_Handle(null)))
-                           return Statement_Type is
+   function Create (World: Raptor_World_Type_Without_Finalize'Class;
+                    Subject, Predicate, Object: Term_Type_Without_Finalize'Class;
+                    Graph: Term_Type_Without_Finalize'Class := Term_Type_Without_Finalize'(From_Handle(null)))
+                    return Statement_Type is
       Handle: constant Statement_Handle :=
         raptor_new_statement_from_nodes(Get_Handle(World),
                                         raptor_term_copy(Get_Handle(Subject)),

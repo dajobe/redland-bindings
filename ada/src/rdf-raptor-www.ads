@@ -69,9 +69,9 @@ package RDF.Raptor.WWW is
 
    type WWW_Type is new Finalizer.Derived with null record;
 
-   not overriding function New_WWW (World: Raptor_World_Type'Class) return WWW_Type;
+   not overriding function Create (World: Raptor_World_Type'Class) return WWW_Type;
 
-   not overriding function New_WWW (World: Raptor_World_Type'Class; Connection: Connection_Type)
-                                    return WWW_Type;
+   not overriding function Create (World: Raptor_World_Type'Class; Connection: Connection_Type)
+                                   return WWW_Type;
 
 end RDF.Raptor.WWW;

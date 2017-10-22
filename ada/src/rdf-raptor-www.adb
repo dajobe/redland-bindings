@@ -164,7 +164,7 @@ package body RDF.Raptor.WWW is
    function raptor_new_www (World: Raptor_World_Handle) return WWW_Handle
      with Import, Convention=>C;
 
-   function New_WWW (World: Raptor_World_Type'Class) return WWW_Type is
+   function Create (World: Raptor_World_Type'Class) return WWW_Type is
    begin
       return From_Non_Null_Handle(raptor_new_www(Get_Handle(World)));
    end;
@@ -174,7 +174,7 @@ package body RDF.Raptor.WWW is
                                             return WWW_Handle
      with Import, Convention=>C;
 
-   function New_WWW (World: Raptor_World_Type'Class; Connection: Connection_Type) return WWW_Type is
+   function Create (World: Raptor_World_Type'Class; Connection: Connection_Type) return WWW_Type is
    begin
       return From_Non_Null_Handle(raptor_new_www_with_connection(Get_Handle(World), Connection));
    end;

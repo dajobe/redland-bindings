@@ -35,7 +35,7 @@ package body Count_Test is
                                               --                                                 Format_Name => Empty_Holder,
                                               --                                                 Format_URI => URI_Type'(From_Handle(null))
                                              );
-      Query: RDF.Rasqal.Query.Query_Type := New_Query(World, Empty_Holder, Empty_Holder);
+      Query: RDF.Rasqal.Query.Query_Type := Create(World, Empty_Holder, Empty_Holder);
    begin
       Prepare(Query, SPARQL);
       Add_Data_Graph(Query, Graph);

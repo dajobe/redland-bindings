@@ -207,13 +207,13 @@ package body RDF.Raptor.Serializer is
                                    return Serializer_Handle
      with Import, Convention=>C;
 
-   function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Type is
+   function Create (World: Raptor_World_Type_Without_Finalize'Class) return Serializer_Type is
    begin
       return From_Non_Null_Handle(raptor_new_serializer(Get_Handle(World), Null_Ptr));
    end;
 
-   function New_Serializer (World: Raptor_World_Type_Without_Finalize'Class; Syntax_Name: String)
-                            return Serializer_Type is
+   function Create (World: Raptor_World_Type_Without_Finalize'Class; Syntax_Name: String)
+                    return Serializer_Type is
       V: aliased char_array := To_C(Syntax_Name);
    begin
       return From_Non_Null_Handle(raptor_new_serializer(Get_Handle(World), To_Chars_Ptr(V'Unchecked_Access)));

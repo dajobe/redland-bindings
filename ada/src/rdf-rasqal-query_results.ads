@@ -106,10 +106,10 @@ package RDF.Rasqal.Query_Results is
 
    type Query_Results_Type is new Finalizer.Derived with null record;
 
-   not overriding function New_Query_Results (World: Rasqal_World_Type_Without_Finalize'Class;
-                                              Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
-                                              Kind: Query_Results_Type_Enum)
-                                              return Query_Results_Type;
+   not overriding function Create (World: Rasqal_World_Type_Without_Finalize'Class;
+                                   Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
+                                   Kind: Query_Results_Type_Enum)
+                                   return Query_Results_Type;
 
    -- TODO: Not supported as of Rasqal 0.9.32
    --     not overriding function From_String (World: Rasqal_World_Type_Without_Finalize;

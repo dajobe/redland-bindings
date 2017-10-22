@@ -4,8 +4,6 @@
   Copy shall have controlling result?
   Using controlling result we can define Copy in Handed_Record package?
 
-* Unify function names: New_* vs Create.
-
 * "TODO" in the sources.
 
 * Add "pragma Pure()" where appropriate.

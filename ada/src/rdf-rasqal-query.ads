@@ -74,8 +74,8 @@ package RDF.Rasqal.Query is
 
    type Query_Type is new Finalizer.Derived with null record;
 
-   not overriding function New_Query (World: Rasqal_World_Type'Class;
-                                      Name, URI: RDF.Auxiliary.String_Holders.Holder)
-                                      return Query_Type;
+   not overriding function Create (World: Rasqal_World_Type'Class;
+                                   Name, URI: RDF.Auxiliary.String_Holders.Holder)
+                                   return Query_Type;
 
 end RDF.Rasqal.Query;

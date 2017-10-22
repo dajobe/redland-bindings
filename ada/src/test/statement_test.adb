@@ -19,7 +19,7 @@ package body Statement_Test is
       Term_2: Term_Type := From_URI_String(World, URI_2);
       Term_3: Term_Type := From_URI_String(World, URI_3);
 
-      St: Statement_Type := New_Statement(World, Term_1, Term_2, Term_3);
+      St: Statement_Type := Create(World, Term_1, Term_2, Term_3);
    begin
       Assert(To_String(Get_Subject  (St)) = String("<" & URI_1 & ">"), "Subject matches");
       Assert(To_String(Get_Predicate(St)) = String("<" & URI_2 & ">"), "Predicate matches");

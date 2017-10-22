@@ -12,11 +12,11 @@ package body RDF.Raptor.Namespace is
                                   return Namespace_Handle
      with Import, Convention=>C;
 
-   function New_Namespace (Stack: Namespace_Stack_Type_Without_Finalize'Class;
-                           Prefix: String;
-                           NS: String;
-                           Depth: Natural)
-                           return Namespace_Type is
+   function Create (Stack: Namespace_Stack_Type_Without_Finalize'Class;
+                    Prefix: String;
+                    NS: String;
+                    Depth: Natural)
+                    return Namespace_Type is
       Handle: constant Namespace_Handle :=
         raptor_new_namespace(Get_Handle(Stack),
                              To_C(Prefix, Append_Nul=>True),
