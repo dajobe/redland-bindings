@@ -36,7 +36,7 @@ Ada):
 * Redland Hashes (internals)
 * Redland Heuristics (internals)
 * Redland List (internals)
-* Redland Parser factories and query factories (internals)
+* Redland Parser factories, Serializer factories, and query factories (internals)
 * Redland Query limit and offset (not clear what should be Ada API)
 
 The following APIs are implemented partially:
