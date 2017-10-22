@@ -1,6 +1,9 @@
 with Ada.Containers;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with RDF.Auxiliary.Convert; use RDF.Auxiliary.Convert;
+with RDF.Auxiliary.C_Pointers; use RDF.Auxiliary.C_Pointers;
+with RDF.Redland.Memory;
 
 package body RDF.Redland.Query_Results is
 
@@ -133,6 +136,42 @@ package body RDF.Redland.Query_Results is
         librdf_query_results_get_binding_value_by_name(Get_Handle(Results), To_C(Name));
    begin
       return From_Non_Null_Handle(Handle);
+   end;
+
+   type Size_T_P is access all size_t;
+
+   function librdf_query_results_to_counted_string2(Results: Query_Results_Handle;
+                                                    Name, Mime_Type: chars_ptr;
+                                                    Format_URI, Base_URI: URI_Handle;
+                                                    Length: Size_T_P)
+                                                    return RDF.Auxiliary.C_Pointers.Pointer
+        with Import, Convention=>C;
+
+   function To_String (Results: Query_Results_Type_Without_Finalize;
+                       Name: String := "";
+                       Mime_Type: String := "";
+                       Format_URI, Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                       return String is
+      Name2: aliased char_array := To_C(Name);
+      Mime_Type2: aliased char_array := To_C(Mime_Type);
+      Length: aliased size_t;
+      Ptr: constant RDF.Auxiliary.C_Pointers.Pointer :=
+        librdf_query_results_to_counted_string2(Get_Handle(Results),
+                                                (if Name = "" then Null_Ptr else To_Chars_Ptr(Name2'Unchecked_Access)),
+                                                (if Mime_Type = "" then Null_Ptr else To_Chars_Ptr(Mime_Type2'Unchecked_Access)),
+                                                Get_Handle(Format_URI),
+                                                Get_Handle(Base_URI),
+                                                Length'Unchecked_Access);
+   begin
+      if Ptr = null then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      declare
+         Str: constant String := Value_With_Possible_NULs(Ptr, Length);
+      begin
+         RDF.Redland.Memory.redland_free_memory(Convert(Ptr));
+         return Str;
+      end;
    end;
 
 end RDF.Redland.Query_Results;

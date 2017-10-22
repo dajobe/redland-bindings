@@ -1,5 +1,6 @@
 with Ada.Containers.Indefinite_Vectors;
 with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Redland.URI; use RDF.Redland.URI;
 with RDF.Redland.Node; use RDF.Redland.Node;
 with RDF.Redland.Stream; use RDF.Redland.Stream;
 
@@ -49,7 +50,14 @@ package RDF.Redland.Query_Results is
    function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize'Class; Name: String)
                                        return Node_Type;
 
-   -- TODO: Stopped at librdf_query_results_to_counted_string2()
+   not overriding
+   function To_String (Results: Query_Results_Type_Without_Finalize;
+                       Name: String := "";
+                       Mime_Type: String := "";
+                       Format_URI, Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
+                       return String;
+
+   -- TODO: Stopped at librdf_query_results_to_file_handle2()
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
