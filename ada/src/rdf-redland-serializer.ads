@@ -2,6 +2,7 @@ with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.URI; use RDF.Redland.URI;
+with RDF.Redland.Model; use RDF.Redland.Model;
 
 package RDF.Redland.Serializer is
 
@@ -20,6 +21,26 @@ package RDF.Redland.Serializer is
    function Get_Description (Serializer: Serializer_Type_Without_Finalize; Index: Natural)
                              return Raptor_Syntax_Description_Type;
 
+   function Serializer_Check_Name (World: Redland_World_Type_Without_Finalize'Class;
+                                   Name: String)
+                                   return Boolean;
+
+   -- Order of arguments not the same as in C
+   not overriding
+   procedure Serializer_To_File_Handle (Serializer: Serializer_Type_Without_Finalize;
+                                        File: RDF.Auxiliary.C_File_Access;
+                                        Model: Model_Type_Without_Finalize'Class;
+                                        Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+
+   -- Order of arguments not the same as in C
+   not overriding
+   procedure Serializer_To_File (Serializer: Serializer_Type_Without_Finalize;
+                                 File_Name: String;
+                                 Model: Model_Type_Without_Finalize'Class;
+                                 Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+
+   -- Stopped at librdf_serializer_serialize_model_to_counted_string()
+
    package Finalizer is new Serializer_Handled_Record.With_Finalization(Serializer_Type_Without_Finalize);
 
    type Serializer_Type is new Finalizer.Derived with null record;
@@ -28,7 +49,5 @@ package RDF.Redland.Serializer is
                                    Name, Mime_Type: String := "";
                                    Type_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
                                    return Serializer_Type;
-
-   -- Stopped at librdf_serializer_check_name()
 
 end RDF.Redland.Serializer;
