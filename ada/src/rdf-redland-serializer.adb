@@ -231,7 +231,7 @@ package body RDF.Redland.Serializer is
    procedure Serialize_To_IOStream (Serializer: Serializer_Type_Without_Finalize;
                                     File: Base_IOStream_Type'Class;
                                     Stream: Stream_Type_Without_Finalize'Class;
-                                    Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+                                    Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
       if librdf_serializer_serialize_stream_to_iostream(Get_Handle(Serializer),
                                                         Get_Handle(File),

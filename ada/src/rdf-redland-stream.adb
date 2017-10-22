@@ -9,7 +9,7 @@ package body RDF.Redland.Stream is
                                                   return Stream_Handle
      with Import, Convention=>C;
 
-   function From_Node_Iterator (Iterator: Node_Iterator_Type;
+   function From_Node_Iterator (Iterator: Node_Iterator_Type_Without_Finalize'Class;
                                 Statement: Statement_Type_Without_Finalize'Class;
                                 Field: Statement_Part_Flags)
                                 return Stream_Type is

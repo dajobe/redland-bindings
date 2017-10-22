@@ -39,8 +39,7 @@ package RDF.Redland.Stream is
 
    function Empty_Stream (World: Redland_World_Type_Without_Finalize'Class) return Stream_Type;
 
-   -- FIXME: Check _Without_Finalize for Iterator
-   not overriding function From_Node_Iterator (Iterator: Node_Iterator_Type;
+   not overriding function From_Node_Iterator (Iterator: Node_Iterator_Type_Without_Finalize'Class;
                                                Statement: Statement_Type_Without_Finalize'Class;
                                                Field: Statement_Part_Flags)
                                                return Stream_Type;
