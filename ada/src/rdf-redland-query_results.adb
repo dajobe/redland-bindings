@@ -98,4 +98,14 @@ package body RDF.Redland.Query_Results is
       end return;
    end;
 
+   function librdf_query_results_get_binding_value (Results: Query_Results_Handle; Index: int)
+                                                    return Node_Handle
+     with Import, Convention=>C;
+
+   function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize'Class; Index: Natural)
+                               return Node_Type is
+   begin
+      return From_Non_Null_Handle(librdf_query_results_get_binding_value(Get_Handle(Results), int(Index)));
+   end;
+
 end RDF.Redland.Query_Results;
