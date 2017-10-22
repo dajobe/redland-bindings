@@ -220,12 +220,24 @@ package body RDF.Redland.Query_Results is
      with Import, Convention=>C;
 
    function Is_Bindings (Results: Query_Results_Type_Without_Finalize) return Boolean is
-      (librdf_query_results_is_bindings(Get_Handle(Results)) /= 0);
+     (librdf_query_results_is_bindings(Get_Handle(Results)) /= 0);
    function Is_Boolean  (Results: Query_Results_Type_Without_Finalize) return Boolean is
-      (librdf_query_results_is_boolean(Get_Handle(Results)) /= 0);
+     (librdf_query_results_is_boolean(Get_Handle(Results)) /= 0);
    function Is_Graph    (Results: Query_Results_Type_Without_Finalize) return Boolean is
-      (librdf_query_results_is_graph(Get_Handle(Results)) /= 0);
+     (librdf_query_results_is_graph(Get_Handle(Results)) /= 0);
    function Is_Syntax   (Results: Query_Results_Type_Without_Finalize) return Boolean is
-      (librdf_query_results_is_syntax(Get_Handle(Results)) /= 0);
+     (librdf_query_results_is_syntax(Get_Handle(Results)) /= 0);
+
+   function librdf_query_results_get_boolean (Results: Query_Results_Handle) return int
+     with Import, Convention=>C;
+
+   function Get_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean is
+      Result: constant int := librdf_query_results_get_boolean(Get_Handle(Results));
+   begin
+      if Result < 0 then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Result /= 0;
+   end;
 
 end RDF.Redland.Query_Results;

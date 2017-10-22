@@ -69,12 +69,14 @@ package RDF.Redland.Query_Results is
 
    -- librdf_query_results_to_file2() is wrong: http://bugs.librdf.org/mantis/view.php?id=639
 
-   function Is_Bindings (Results: Query_Results_Type_Without_Finalize) return Boolean;
-   function Is_Boolean  (Results: Query_Results_Type_Without_Finalize) return Boolean;
-   function Is_Graph    (Results: Query_Results_Type_Without_Finalize) return Boolean;
-   function Is_Syntax   (Results: Query_Results_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Bindings (Results: Query_Results_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Boolean  (Results: Query_Results_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Graph    (Results: Query_Results_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Syntax   (Results: Query_Results_Type_Without_Finalize) return Boolean;
 
-   -- TODO: Stopped at librdf_query_results_get_boolean()
+   not overriding function Get_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean;
+
+   -- TODO: I was lazy to implement query_results_formatter and related function
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
