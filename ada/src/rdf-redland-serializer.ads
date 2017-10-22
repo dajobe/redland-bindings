@@ -67,7 +67,21 @@ package RDF.Redland.Serializer is
                                 Stream: Stream_Type_Without_Finalize'Class;
                                 Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
-   -- Stopped at librdf_serializer_serialize_stream_to_file()
+   -- Order of arguments not the same as in C
+   not overriding
+   procedure Serialize_To_File_Handle (Serializer: Serializer_Type_Without_Finalize;
+                                       File: RDF.Auxiliary.C_File_Access;
+                                       Stream: Stream_Type_Without_Finalize'Class;
+                                       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+
+   -- Order of arguments not the same as in C
+   not overriding
+   procedure Serialize_To_IOStream (Serializer: Serializer_Type_Without_Finalize;
+                                    File: Base_IOStream_Type'Class;
+                                    Stream: Stream_Type_Without_Finalize'Class;
+                                    Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+
+   -- Stopped at librdf_serializer_get_feature()
 
    package Finalizer is new Serializer_Handled_Record.With_Finalization(Serializer_Type_Without_Finalize);
 

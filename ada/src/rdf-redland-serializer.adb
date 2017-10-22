@@ -200,4 +200,46 @@ package body RDF.Redland.Serializer is
       end if;
    end;
 
+   function librdf_serializer_serialize_stream_to_file_handle (Serializer: Serializer_Handle;
+                                                               File: RDF.Auxiliary.C_File_Access;
+                                                               Base_URI: URI_Handle;
+                                                               Stream: Stream_Handle)
+                                                               return int
+     with Import, Convention=>C;
+
+   procedure Serialize_To_File_Handle (Serializer: Serializer_Type_Without_Finalize;
+                                       File: RDF.Auxiliary.C_File_Access;
+                                       Stream: Stream_Type_Without_Finalize'Class;
+                                       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
+   begin
+      if librdf_serializer_serialize_stream_to_file_handle(Get_Handle(Serializer),
+                                                           File,
+                                                           Get_Handle(Base_URI),
+                                                           Get_Handle(Stream)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
+   function librdf_serializer_serialize_stream_to_iostream (Serializer: Serializer_Handle;
+                                                            Base_URI: URI_Handle;
+                                                            Stream: Stream_Handle;
+                                                            File: IOStream_Handle)
+                                                            return int
+     with Import, Convention=>C;
+
+   procedure Serialize_To_IOStream (Serializer: Serializer_Type_Without_Finalize;
+                                    File: Base_IOStream_Type'Class;
+                                    Stream: Stream_Type_Without_Finalize'Class;
+                                    Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+   begin
+      if librdf_serializer_serialize_stream_to_iostream(Get_Handle(Serializer),
+                                                        Get_Handle(File),
+                                                        Get_Handle(Base_URI),
+                                                        Get_Handle(Stream)) /= 0
+      then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+   end;
+
 end RDF.Redland.Serializer;
