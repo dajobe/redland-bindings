@@ -38,6 +38,7 @@ Ada):
 * Redland List (internals)
 * Redland Parser factories, Serializer factories, and query factories (internals)
 * Redland Query limit and offset (not clear what should be Ada API)
+* Redland Concepts
 
 The following APIs are implemented partially:
 
