@@ -35,8 +35,11 @@ package RDF.Redland.Query_Results is
    procedure Next (Results: Query_Results_Type_Without_Finalize'Class)
      with Pre => Is_Bindings(Results) or Is_Graph(Results);
 
-   function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean
+   not overriding function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean
      with Pre'Class => Is_Bindings(Results) or Is_Graph(Results);
+
+   not overriding function Not_Finished (Results: Query_Results_Type_Without_Finalize) return Boolean is
+     (not Finished(Results));
 
    function Get_Bindings_Count (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
                                 return Natural; -- or shall we use Positive?

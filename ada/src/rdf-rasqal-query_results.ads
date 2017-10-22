@@ -43,10 +43,9 @@ package RDF.Rasqal.Query_Results is
 
    -- function Add_Row is deliberately not implemented
 
-   -- TODO: Subtype for this
-   not overriding function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean;
+   not overriding function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean
+     with Pre => Is_Bindings(Results) or Is_Graph(Results);
 
-   -- TODO: Subtype for this
    not overriding function Not_Finished (Results: Query_Results_Type_Without_Finalize) return Boolean is
      (not Finished(Results));
 
