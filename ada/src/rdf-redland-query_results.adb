@@ -43,7 +43,7 @@ package body RDF.Redland.Query_Results is
    function librdf_query_results_get_bindings_count (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
-   function Get_Bindings_Count (Results: Query_Results_Type_Without_Finalize'Class)
+   function Get_Bindings_Count (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
                                 return Natural is
       Result: constant int := librdf_query_results_get_bindings_count(Get_Handle(Results));
    begin
@@ -63,7 +63,7 @@ package body RDF.Redland.Query_Results is
                                                return int
      with Import, Convention=>C;
 
-   function Get_Binding_Names (Results: Query_Results_Type_Without_Finalize'Class)
+   function Get_Binding_Names (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
                                return String_List_Type is
       Count: constant Natural := Get_Bindings_Count(Results);
       type chars_ptr_ptr_array is array(1..Count) of aliased chars_ptr_ptr;
@@ -82,7 +82,7 @@ package body RDF.Redland.Query_Results is
       end return;
    end;
 
-   function Get_Binding_Values (Results: Query_Results_Type_Without_Finalize'Class)
+   function Get_Binding_Values (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
                                 return Node_List_Type is
       Count: constant Natural := Get_Bindings_Count(Results);
       type Node_Handle_array is array(1..Count) of aliased Node_Handle;
@@ -105,7 +105,7 @@ package body RDF.Redland.Query_Results is
                                                     return Node_Handle
      with Import, Convention=>C;
 
-   function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize'Class; Index: Natural)
+   function Get_Binding_Value (Results: Bindings_Query_Results_Type_Without_Finalize'Class; Index: Natural)
                                return Node_Type is
    begin
       return From_Non_Null_Handle(librdf_query_results_get_binding_value(Get_Handle(Results), int(Index)));
@@ -115,7 +115,7 @@ package body RDF.Redland.Query_Results is
                                                    return chars_ptr
      with Import, Convention=>C;
 
-   function Get_Binding_Name (Results: Query_Results_Type_Without_Finalize'Class; Index: Natural)
+   function Get_Binding_Name (Results: Bindings_Query_Results_Type_Without_Finalize'Class; Index: Natural)
                               return String is
       Ptr: constant chars_ptr := librdf_query_results_get_binding_name(Get_Handle(Results), int(Index));
    begin
@@ -130,7 +130,7 @@ package body RDF.Redland.Query_Results is
                                                             return Node_Handle
      with Import, Convention=>C;
 
-   function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize'Class; Name: String)
+   function Get_Binding_Value_By_Name (Results: Bindings_Query_Results_Type_Without_Finalize'Class; Name: String)
                                        return Node_Type is
       Handle: constant Node_Handle :=
         librdf_query_results_get_binding_value_by_name(Get_Handle(Results), To_C(Name));
@@ -231,7 +231,7 @@ package body RDF.Redland.Query_Results is
    function librdf_query_results_get_boolean (Results: Query_Results_Handle) return int
      with Import, Convention=>C;
 
-   function Get_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean is
+   function Get_Boolean (Results: Boolean_Query_Results_Type_Without_Finalize'Class) return Boolean is
       Result: constant int := librdf_query_results_get_boolean(Get_Handle(Results));
    begin
       if Result < 0 then

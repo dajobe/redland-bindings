@@ -12,6 +12,15 @@ package RDF.Redland.Query_Results is
 
    subtype Query_Results_Handle is Query_Results_Handled_Record.Access_Type;
 
+   subtype Bindings_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Bindings(Bindings_Query_Results_Type_Without_Finalize);
+   subtype Boolean_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Boolean(Boolean_Query_Results_Type_Without_Finalize);
+   subtype Graph_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Graph(Graph_Query_Results_Type_Without_Finalize);
+   subtype Syntax_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type_Without_Finalize);
+
    -- TODO: Use subtypes in arguments
 
    -- TODO: Iterators (I don't do binding names iterator, as you can use Get_Binding_Names instead?)
@@ -23,34 +32,34 @@ package RDF.Redland.Query_Results is
 
    not overriding function Get_Current_Count (Results: Query_Results_Type_Without_Finalize) return Natural;
 
-   -- TODO: Subtype for this
-   procedure Next (Results: Query_Results_Type_Without_Finalize'Class);
+   procedure Next (Results: Query_Results_Type_Without_Finalize'Class)
+     with Pre => Is_Bindings(Results) or Is_Graph(Results);
 
-   -- TODO: Subtype for this
-   function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean;
+   function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean
+     with Pre'Class => Is_Bindings(Results) or Is_Graph(Results);
 
-   function Get_Bindings_Count (Results: Query_Results_Type_Without_Finalize'Class)
+   function Get_Bindings_Count (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
                                 return Natural; -- or shall we use Positive?
 
    package String_Lists is new Ada.Containers.Indefinite_Vectors(Natural, String);
    type String_List_Type is new String_Lists.Vector with null record;
 
-   function Get_Binding_Names (Results: Query_Results_Type_Without_Finalize'Class)
+   function Get_Binding_Names (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
                                return String_List_Type;
 
    package Node_Lists is new Ada.Containers.Indefinite_Vectors(Natural, Node_Type);
    type Node_List_Type is new Node_Lists.Vector with null record;
 
-   function Get_Binding_Values (Results: Query_Results_Type_Without_Finalize'Class)
+   function Get_Binding_Values (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
                                 return Node_List_Type;
 
-   function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize'Class; Index: Natural)
+   function Get_Binding_Value (Results: Bindings_Query_Results_Type_Without_Finalize'Class; Index: Natural)
                                return Node_Type;
 
-   function Get_Binding_Name (Results: Query_Results_Type_Without_Finalize'Class; Index: Natural)
+   function Get_Binding_Name (Results: Bindings_Query_Results_Type_Without_Finalize'Class; Index: Natural)
                               return String;
 
-   function Get_Binding_Value_By_Name (Results: Query_Results_Type_Without_Finalize'Class; Name: String)
+   function Get_Binding_Value_By_Name (Results: Bindings_Query_Results_Type_Without_Finalize'Class; Name: String)
                                        return Node_Type;
 
    not overriding
@@ -74,12 +83,21 @@ package RDF.Redland.Query_Results is
    not overriding function Is_Graph    (Results: Query_Results_Type_Without_Finalize) return Boolean;
    not overriding function Is_Syntax   (Results: Query_Results_Type_Without_Finalize) return Boolean;
 
-   not overriding function Get_Boolean (Results: Query_Results_Type_Without_Finalize) return Boolean;
+   function Get_Boolean (Results: Boolean_Query_Results_Type_Without_Finalize'Class) return Boolean;
 
    -- TODO: I was lazy to implement query_results_formatter and related function
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
    type Query_Results_Type is new Finalizer.Derived with null record;
+
+   subtype Bindings_Query_Results_Type is Query_Results_Type
+     with Dynamic_Predicate => Is_Bindings(Bindings_Query_Results_Type);
+   subtype Boolean_Query_Results_Type is Query_Results_Type
+     with Dynamic_Predicate => Is_Boolean(Boolean_Query_Results_Type);
+   subtype Graph_Query_Results_Type is Query_Results_Type
+     with Dynamic_Predicate => Is_Graph(Graph_Query_Results_Type);
+   subtype Syntax_Query_Results_Type is Query_Results_Type
+     with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type);
 
 end RDF.Redland.Query_Results;
