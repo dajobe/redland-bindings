@@ -81,6 +81,14 @@ package RDF.Redland.Serializer is
                                     Stream: Stream_Type_Without_Finalize'Class;
                                     Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
+   -- TODO: http://bugs.librdf.org/mantis/view.php?id=641
+--     not overriding function Get_Feature (Serializer: Serializer_Type_Without_Finalize;
+--                                          Feature: URI_Type_Without_Finalize'Class);
+--                                          return Node_Type;
+--     not overriding function Set_Feature (Serializer: Serializer_Type_Without_Finalize;
+--                                          Feature: URI_Type_Without_Finalize'Class;
+--                                          Value: Node_Iterator_Type_Without_Finalize'Class);
+
    -- Stopped at librdf_serializer_get_feature()
 
    package Finalizer is new Serializer_Handled_Record.With_Finalization(Serializer_Type_Without_Finalize);
