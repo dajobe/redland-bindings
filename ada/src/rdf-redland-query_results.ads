@@ -16,6 +16,9 @@ package RDF.Redland.Query_Results is
 
    -- TODO: Iterators (I don't do binding names iterator, as you can use Get_Binding_Names instead?)
 
+   overriding procedure Finalize_Handle (Object: Query_Results_Type_Without_Finalize;
+                                         Handle: Query_Results_Handle);
+
    not overriding function As_Stream (Results: Query_Results_Type_Without_Finalize) return Stream_Type;
 
    not overriding function Get_Current_Count (Results: Query_Results_Type_Without_Finalize) return Natural;
@@ -66,7 +69,7 @@ package RDF.Redland.Query_Results is
 
    -- librdf_query_results_to_file2() is wrong: http://bugs.librdf.org/mantis/view.php?id=639
 
-   -- TODO: Stopped at librdf_query_results_to_file2()
+   -- TODO: Stopped at librdf_free_query_results()
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 

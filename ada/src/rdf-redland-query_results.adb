@@ -201,4 +201,13 @@ package body RDF.Redland.Query_Results is
       end if;
    end;
 
+   procedure librdf_free_query_results (Results: Query_Results_Handle)
+     with Import, Convention=>C;
+
+   procedure Finalize_Handle (Object: Query_Results_Type_Without_Finalize;
+                              Handle: Query_Results_Handle) is
+   begin
+      librdf_free_query_results(Handle);
+   end;
+
 end RDF.Redland.Query_Results;
