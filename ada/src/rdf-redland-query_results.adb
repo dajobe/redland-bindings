@@ -108,4 +108,18 @@ package body RDF.Redland.Query_Results is
       return From_Non_Null_Handle(librdf_query_results_get_binding_value(Get_Handle(Results), int(Index)));
    end;
 
+   function librdf_query_results_get_binding_name (Results: Query_Results_Handle; Index: int)
+                                                   return chars_ptr
+     with Import, Convention=>C;
+
+   function Get_Binding_Name (Results: Query_Results_Type_Without_Finalize'Class; Index: Natural)
+                              return String is
+      Ptr: constant chars_ptr := librdf_query_results_get_binding_name(Get_Handle(Results), int(Index));
+   begin
+      if Ptr = Null_Ptr then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      return Value(Ptr);
+   end;
+
 end RDF.Redland.Query_Results;

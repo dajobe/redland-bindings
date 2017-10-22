@@ -43,7 +43,10 @@ package RDF.Redland.Query_Results is
    function Get_Binding_Value (Results: Query_Results_Type_Without_Finalize'Class; Index: Natural)
                                return Node_Type;
 
-   -- TODO: Stopped at librdf_query_results_get_binding_name()
+   function Get_Binding_Name (Results: Query_Results_Type_Without_Finalize'Class; Index: Natural)
+                              return String;
+
+   -- TODO: Stopped at librdf_query_results_get_binding_value_by_name()
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
