@@ -210,4 +210,22 @@ package body RDF.Redland.Query_Results is
       librdf_free_query_results(Handle);
    end;
 
+   function librdf_query_results_is_bindings (Results: Query_Results_Handle) return int
+     with Import, Convention=>C;
+   function librdf_query_results_is_boolean (Results: Query_Results_Handle) return int
+     with Import, Convention=>C;
+   function librdf_query_results_is_graph (Results: Query_Results_Handle) return int
+     with Import, Convention=>C;
+   function librdf_query_results_is_syntax (Results: Query_Results_Handle) return int
+     with Import, Convention=>C;
+
+   function Is_Bindings (Results: Query_Results_Type_Without_Finalize) return Boolean is
+      (librdf_query_results_is_bindings(Get_Handle(Results)) /= 0);
+   function Is_Boolean  (Results: Query_Results_Type_Without_Finalize) return Boolean is
+      (librdf_query_results_is_boolean(Get_Handle(Results)) /= 0);
+   function Is_Graph    (Results: Query_Results_Type_Without_Finalize) return Boolean is
+      (librdf_query_results_is_graph(Get_Handle(Results)) /= 0);
+   function Is_Syntax   (Results: Query_Results_Type_Without_Finalize) return Boolean is
+      (librdf_query_results_is_syntax(Get_Handle(Results)) /= 0);
+
 end RDF.Redland.Query_Results;
