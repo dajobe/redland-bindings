@@ -300,7 +300,7 @@ package body RDF.Redland.Parser is
       declare
          Result: constant String := Value(Ptr);
       begin
-         RDF.Redland.Memory.redland_free_memory(Ptr);
+         RDF.Redland.Memory.librdf_free_memory(Ptr);
          return Result;
       end;
    end;

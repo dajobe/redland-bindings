@@ -79,4 +79,20 @@ package body RDF.Redland.Stream is
       end if;
    end;
 
+   function Has_Element (Position: Cursor) return Boolean is
+     (not Is_End(Position.all));
+
+   function Create_Stream_Iterator (Stream: in out Stream_Type_Without_Finalize'Class)
+                                    return Stream_Iterator is
+     (Ref=>Stream'Unchecked_Access);
+
+   function First (Object: Stream_Iterator) return Cursor is
+     (Object.Ref);
+
+   function Next (Object: Stream_Iterator; Position: Cursor) return Cursor is
+   begin
+      Next(Position.all);
+      return Position;
+   end;
+
 end RDF.Redland.Stream;

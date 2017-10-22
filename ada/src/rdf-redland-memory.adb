@@ -11,7 +11,7 @@ package body RDF.Redland.Memory is
 
    function Copy_C_String (Str: chars_ptr) return chars_ptr is
       Len: constant size_t := Strlen(Str) + 1;
-      New_Str: constant chars_ptr := redland_alloc_memory(Len);
+      New_Str: constant chars_ptr := librdf_alloc_memory(Len);
    begin
       C_Strncpy(New_Str, Str, Len);
       return New_Str;

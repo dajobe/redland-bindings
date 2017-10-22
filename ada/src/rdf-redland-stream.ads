@@ -4,6 +4,7 @@ with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.Node; use RDF.Redland.Node;
 with RDF.Redland.Statement; use RDF.Redland.Statement;
 with RDF.Redland.Node_Iterator; use RDF.Redland.Node_Iterator;
+with Ada.Iterator_Interfaces;
 
 package RDF.Redland.Stream is
 
@@ -43,5 +44,29 @@ package RDF.Redland.Stream is
                                                Statement: Statement_Type_Without_Finalize'Class;
                                                Field: Statement_Part_Flags)
                                                return Stream_Type;
+
+   type Cursor is private;
+
+   not overriding function Has_Element (Position: Cursor) return Boolean;
+
+   package Base_Iterators is new Ada.Iterator_Interfaces(Cursor, Has_Element);
+
+   type Stream_Iterator is new Base_Iterators.Forward_Iterator with private;
+
+   not overriding function Create_Stream_Iterator (Stream: in out Stream_Type_Without_Finalize'Class)
+                                                   return Stream_Iterator;
+
+   overriding function First (Object: Stream_Iterator) return Cursor;
+
+   overriding function Next (Object: Stream_Iterator; Position: Cursor) return Cursor;
+
+private
+
+   type Cursor is access constant Stream_Type_Without_Finalize'Class;
+
+   type Stream_Iterator is new Base_Iterators.Forward_Iterator with
+      record
+         Ref: Cursor;
+      end record;
 
 end RDF.Redland.Stream;

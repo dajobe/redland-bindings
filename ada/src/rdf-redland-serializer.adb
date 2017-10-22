@@ -123,7 +123,7 @@ package body RDF.Redland.Serializer is
       declare
          Str: constant String := Value_With_Possible_NULs(Convert(Ptr), Length);
       begin
-         RDF.Redland.Memory.redland_free_memory(Ptr);
+         RDF.Redland.Memory.librdf_free_memory(Ptr);
          return Str;
       end;
    end;
@@ -174,7 +174,7 @@ package body RDF.Redland.Serializer is
       declare
          Str: constant String := Value_With_Possible_NULs(Convert(Ptr), Length);
       begin
-         RDF.Redland.Memory.redland_free_memory(Ptr);
+         RDF.Redland.Memory.librdf_free_memory(Ptr);
          return Str;
       end;
    end;

@@ -169,7 +169,7 @@ package body RDF.Redland.Query_Results is
       declare
          Str: constant String := Value_With_Possible_NULs(Ptr, Length);
       begin
-         RDF.Redland.Memory.redland_free_memory(Convert(Ptr));
+         RDF.Redland.Memory.librdf_free_memory(Convert(Ptr));
          return Str;
       end;
    end;

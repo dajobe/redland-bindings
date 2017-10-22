@@ -105,7 +105,7 @@ package body RDF.Redland.URI is
       Pointer: constant chars_ptr := librdf_uri_to_filename(Get_Handle(URI));
       Result: constant String := Value(Pointer);
    begin
-      RDF.Redland.Memory.redland_free_memory(Pointer);
+      RDF.Redland.Memory.librdf_free_memory(Pointer);
       return Result;
    end;
 
@@ -163,13 +163,13 @@ package body RDF.Redland.URI is
       return From_Non_Null_Handle(librdf_get_concept_ms_namespace(Get_Handle(World)));
    end;
 
-   function librdf_get_schema_namespace (World: Redland_World_Handle) return URI_Handle
+   function librdf_get_concept_schema_namespace (World: Redland_World_Handle) return URI_Handle
      with Import, Convention=>C;
 
    function Concept_Schema_Namespace (World: Redland_World_Type_Without_Finalize'Class)
                                       return URI_Type_Without_Finalize is
    begin
-      return From_Non_Null_Handle(librdf_get_schema_namespace(Get_Handle(World)));
+      return From_Non_Null_Handle(librdf_get_concept_schema_namespace(Get_Handle(World)));
    end;
 
 end RDF.Redland.URI;
