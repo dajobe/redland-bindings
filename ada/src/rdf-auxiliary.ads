@@ -7,7 +7,6 @@ package RDF.Auxiliary is
    type Dummy_Record is null record
      with Convention=>C;
 
-   -- FIXME: Needs different derived types for Raptor, Rasqal, and Redland with different storage pools
    type Dummy_Record_Access is access Dummy_Record
      with Convention=>C;
 
