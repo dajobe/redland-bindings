@@ -27,17 +27,17 @@ package RDF.Redland.Serializer is
 
    -- Order of arguments not the same as in C
    not overriding
-   procedure Serializer_To_File_Handle (Serializer: Serializer_Type_Without_Finalize;
-                                        File: RDF.Auxiliary.C_File_Access;
-                                        Model: Model_Type_Without_Finalize'Class;
-                                        Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+   procedure Serialize_To_File_Handle (Serializer: Serializer_Type_Without_Finalize;
+                                       File: RDF.Auxiliary.C_File_Access;
+                                       Model: Model_Type_Without_Finalize'Class;
+                                       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    -- Order of arguments not the same as in C
    not overriding
-   procedure Serializer_To_File (Serializer: Serializer_Type_Without_Finalize;
-                                 File_Name: String;
-                                 Model: Model_Type_Without_Finalize'Class;
-                                 Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
+   procedure Serialize_To_File (Serializer: Serializer_Type_Without_Finalize;
+                                File_Name: String;
+                                Model: Model_Type_Without_Finalize'Class;
+                                Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    -- Stopped at librdf_serializer_serialize_model_to_counted_string()
 
