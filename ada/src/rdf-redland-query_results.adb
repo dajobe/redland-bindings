@@ -93,8 +93,7 @@ package body RDF.Redland.Query_Results is
       return Result: Node_List_Type do
          Reserve_Capacity(Result, Ada.Containers.Count_Type(Count));
          for Value of Values loop
-            Append(Result,
-                   Node_Type'(Node_Type_Without_Finalize'(From_Non_Null_Handle(Value)) with null record));
+            Append(Result, From_Non_Null_Handle(Value));
          end loop;
       end return;
    end;
