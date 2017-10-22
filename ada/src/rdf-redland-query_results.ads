@@ -21,8 +21,6 @@ package RDF.Redland.Query_Results is
    subtype Syntax_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
      with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type_Without_Finalize);
 
-   -- TODO: Use subtypes in arguments
-
    -- TODO: Iterators (I don't do binding names iterator, as you can use Get_Binding_Names instead?)
 
    overriding procedure Finalize_Handle (Object: Query_Results_Type_Without_Finalize;
