@@ -1,6 +1,5 @@
 with Ada.Strings.Unbounded;
 with Ada.Containers.Indefinite_Vectors;
-with AUnit.Test_Cases;
 with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Auxiliary;
 with RDF.Raptor.World;

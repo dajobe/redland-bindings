@@ -1,4 +1,3 @@
-with AUnit.Test_Cases;
 with AUnit.Assertions;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Rasqal.World; use RDF.Rasqal.World;

@@ -1,6 +1,5 @@
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with AUnit.Test_Cases;
 with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Iostream; use RDF.Raptor.Iostream;

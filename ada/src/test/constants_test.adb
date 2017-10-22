@@ -1,4 +1,3 @@
-with AUnit.Test_Cases;
 with AUnit.Assertions;
 with Ada.Strings.Fixed;
 with Interfaces.C;
