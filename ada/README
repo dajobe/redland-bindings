@@ -46,11 +46,6 @@ The following APIs are implemented partially:
 
 It may be downgraded to Ada2005 but this isn't a priority for me.
 
-Implementation note:
-It seems we can simplify away using Ada.Unchecked_Conversion for enumeration
-types. Instead just make record field and function arguments of Ada
-enumeration types. Right?
-
 See "TODO" and "FIXME" in the source about possible improvement of the Ada
 library.
 
