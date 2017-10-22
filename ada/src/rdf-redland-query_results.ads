@@ -1,5 +1,6 @@
 with Ada.Containers.Indefinite_Vectors;
 with RDF.Auxiliary.Limited_Handled_Record;
+with RDF.Redland.Node; use RDF.Redland.Node;
 with RDF.Redland.Stream; use RDF.Redland.Stream;
 
 package RDF.Redland.Query_Results is
@@ -22,16 +23,22 @@ package RDF.Redland.Query_Results is
    -- TODO: Subtype for this
    function Finished (Results: Query_Results_Type_Without_Finalize) return Boolean;
 
-   package String_Lists is new Ada.Containers.Indefinite_Vectors(Natural, String);
-   type String_List_Type is new String_Lists.Vector with null record;
-
    function Get_Bindings_Count (Results: Query_Results_Type_Without_Finalize'Class)
                                 return Natural; -- or shall we use Positive?
+
+   package String_Lists is new Ada.Containers.Indefinite_Vectors(Natural, String);
+   type String_List_Type is new String_Lists.Vector with null record;
 
    function Get_Binding_Names (Results: Query_Results_Type_Without_Finalize'Class)
                                return String_List_Type;
 
-   -- TODO: Stopped at librdf_query_results_get_bindings()
+   package Node_Lists is new Ada.Containers.Indefinite_Vectors(Natural, Node_Type);
+   type Node_List_Type is new Node_Lists.Vector with null record;
+
+   function Get_Binding_Values (Results: Query_Results_Type_Without_Finalize'Class)
+                                return Node_List_Type;
+
+   -- TODO: Stopped at librdf_query_results_get_binding_value()
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
