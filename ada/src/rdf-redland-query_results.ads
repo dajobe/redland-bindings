@@ -13,6 +13,8 @@ package RDF.Redland.Query_Results is
 
    -- TODO: Use subtypes in arguments
 
+   -- TODO: Iterators (I don't do binding names iterator, as you can use Get_Binding_Names instead)
+
    not overriding function As_Stream (Results: Query_Results_Type_Without_Finalize) return Stream_Type;
 
    not overriding function Get_Current_Count (Results: Query_Results_Type_Without_Finalize) return Natural;
