@@ -93,8 +93,7 @@ package body RDF.Rasqal.Query_Results is
    function Get_Query (Results: Query_Results_Type_Without_Finalize)
                        return RDF.Rasqal.Query.Query_Type_Without_Finalize is
    begin
-      -- TODO: From_Non_Null_Handle?
-      return From_Handle(rasqal_query_results_get_query(Get_Handle(Results)));
+      return From_Non_Null_Handle(rasqal_query_results_get_query(Get_Handle(Results)));
    end;
 
    function rasqal_query_results_get_triple (Results: Query_Results_Handle)
