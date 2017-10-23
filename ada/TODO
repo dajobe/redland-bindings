@@ -1,5 +1,7 @@
 * Consider replacing controlling argument types with class-wide types.
 
+* There are memory leaks in run_all_tests.
+
 * Add "pragma Pure()" where appropriate.
 
 * {Get,Set}_Feature for RDF.Redland.Serializer,
