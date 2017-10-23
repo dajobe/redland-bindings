@@ -242,4 +242,39 @@ package body RDF.Redland.Serializer is
       end if;
    end;
 
+
+   ---------------
+   function Has_Element (Position: Serializer_Description_Cursor) return Boolean is
+   begin
+      return librdf_serializer_get_description(Position.World, unsigned(Position.Position)) /= null;
+   end;
+
+   function First (Object: Serializer_Description_Iterator) return Serializer_Description_Cursor is
+   begin
+      return (Position=>0, World=>Object.World);
+   end;
+
+   function Next (Object: Serializer_Description_Iterator; Position: Serializer_Description_Cursor)
+                  return Serializer_Description_Cursor is
+   begin
+      return (Position=>Position.Position+1, World=>Position.World);
+   end;
+
+   function Get_Description (Cursor: Serializer_Description_Cursor)
+                             return Raptor_Syntax_Description_Type is
+   begin
+      return librdf_serializer_get_description(Cursor.World, unsigned(Cursor.Position));
+   end;
+
+   function Get_Position (Cursor: Serializer_Description_Cursor) return Natural is
+   begin
+      return Cursor.Position;
+   end;
+
+   function Create_Serializer_Descriptions_Iterator(World: Redland_World_Type_Without_Finalize'Class)
+                                                return Serializer_Description_Iterator is
+   begin
+      return (World=>Get_Handle(World));
+   end;
+
 end RDF.Redland.Serializer;
