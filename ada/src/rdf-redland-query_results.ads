@@ -1,3 +1,4 @@
+with Ada.Iterator_Interfaces;
 with Ada.Containers.Indefinite_Vectors;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Redland.URI; use RDF.Redland.URI;
@@ -21,7 +22,7 @@ package RDF.Redland.Query_Results is
    subtype Syntax_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
      with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type_Without_Finalize);
 
-   -- TODO: Iterators (I don't do binding names iterator, as you can use Get_Binding_Names instead?)
+   -- TODO: binding names iterator
 
    overriding procedure Finalize_Handle (Object: Query_Results_Type_Without_Finalize;
                                          Handle: Query_Results_Handle);
@@ -90,6 +91,41 @@ package RDF.Redland.Query_Results is
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
+   -- The same cursor is used for bindings iterator and for Graph iterator.
+   -- However, don't rely on using the same type.
+   -- Do not create more than one cursor for the same query results object.
+   type Cursor is private;
+
+   not overriding function Has_Element (Position: Cursor) return Boolean;
+
+   package Base_Iterators is new Ada.Iterator_Interfaces(Cursor, Has_Element);
+
+   type Bindings_Iterator is new Base_Iterators.Forward_Iterator with private;
+
+   not overriding function Create_Bindings_Iterator (Results: in out Bindings_Query_Results_Type_Without_Finalize'Class)
+                                                     return Bindings_Iterator;
+
+   overriding function First (Object: Bindings_Iterator) return Cursor;
+
+   overriding function Next (Object: Bindings_Iterator; Position: Cursor) return Cursor;
+
+   not overriding function Get_Binding_Value (Position: Cursor;
+                                              Offset: Natural)
+                                              return Node_Type;
+
+   not overriding function Get_Binding_Value_By_Name (Position: Cursor;
+                                                      Name: String)
+                                                      return Node_Type;
+
+   type Graph_Iterator is new Base_Iterators.Forward_Iterator with private;
+
+   not overriding function Create_Graph_Iterator (Results: in out Graph_Query_Results_Type_Without_Finalize'Class)
+                                                    return Bindings_Iterator;
+
+   overriding function First (Object: Graph_Iterator) return Cursor;
+
+   overriding function Next (Object: Graph_Iterator; Position: Cursor) return Cursor;
+
    type Query_Results_Type is new Finalizer.Derived with null record;
 
    subtype Bindings_Query_Results_Type is Query_Results_Type
@@ -100,5 +136,19 @@ package RDF.Redland.Query_Results is
      with Dynamic_Predicate => Is_Graph(Graph_Query_Results_Type);
    subtype Syntax_Query_Results_Type is Query_Results_Type
      with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type);
+
+private
+
+   type Cursor is access constant Query_Results_Type_Without_Finalize'Class;
+
+   type Bindings_Iterator is new Base_Iterators.Forward_Iterator with
+      record
+         Ref: Cursor;
+      end record;
+
+   type Graph_Iterator is new Base_Iterators.Forward_Iterator with
+      record
+         Ref: Cursor;
+      end record;
 
 end RDF.Redland.Query_Results;

@@ -240,4 +240,46 @@ package body RDF.Redland.Query_Results is
       return Result /= 0;
    end;
 
+   function Has_Element (Position: Cursor) return Boolean is
+     (Not_Finished(Position.all));
+
+   function Create_Bindings_Iterator (Results: in out Bindings_Query_Results_Type_Without_Finalize'Class)
+                                      return Bindings_Iterator is
+     (Ref=>Results'Unchecked_Access);
+
+   function First (Object: Bindings_Iterator) return Cursor is
+     (Object.Ref);
+
+   function Next (Object: Bindings_Iterator; Position: Cursor) return Cursor is
+   begin
+      Next(Position.all);
+      return Position;
+   end;
+
+   function Get_Binding_Value (Position: Cursor;
+                               Offset: Natural)
+                               return Node_Type is
+     (Get_Binding_Value(Position.all, Offset));
+
+   function Get_Binding_Value_By_Name (Position: Cursor;
+                                       Name: String)
+                                       return Node_Type is
+     (Get_Binding_Value_By_Name(Position.all, Name));
+
+   function Create_Graph_Iterator (Results: in out Graph_Query_Results_Type_Without_Finalize'Class)
+                                     return Bindings_Iterator is
+     (Ref=>Results'Unchecked_Access);
+
+   function First (Object: Graph_Iterator) return Cursor is
+     (Object.Ref);
+
+   function Next (Object: Graph_Iterator; Position: Cursor) return Cursor is
+   begin
+      Next(Position.all);
+      return Position;
+   end;
+
+--     function Has_Element (Position: Variables_Cursor) return Boolean is
+--       (Position.Count < Get_Bindings_Count(Position.Ref.all));
+
 end RDF.Redland.Query_Results;

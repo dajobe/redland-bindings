@@ -29,4 +29,8 @@
 * rasqal_new_query_results2() is not supported as of Rasqal 0.9.32
   installed on my system.
 
+* Rasqal and Redland iterators of query results should warn if more than one
+  iterator is created for single results object. (We should provide "debug
+  mode" for this.)
+
 * More testing.
