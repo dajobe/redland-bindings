@@ -22,8 +22,6 @@ package RDF.Redland.Query_Results is
    subtype Syntax_Query_Results_Type_Without_Finalize is Query_Results_Type_Without_Finalize
      with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type_Without_Finalize);
 
-   -- TODO: binding names iterator
-
    overriding procedure Finalize_Handle (Object: Query_Results_Type_Without_Finalize;
                                          Handle: Query_Results_Handle);
 
@@ -128,11 +126,40 @@ package RDF.Redland.Query_Results is
    subtype Syntax_Query_Results_Type is Query_Results_Type
      with Dynamic_Predicate => Is_Syntax(Syntax_Query_Results_Type);
 
+   type Variables_Cursor is private;
+
+   not overriding function Has_Element (Position: Variables_Cursor) return Boolean;
+
+   package Variables_Iterators is new Ada.Iterator_Interfaces(Variables_Cursor, Has_Element);
+
+   -- We can also make backward iterator, but I see no use cases for this
+   type Variables_Iterator is new Variables_Iterators.Forward_Iterator with private;
+
+   not overriding function Create_Variables_Iterator (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
+                                                      return Variables_Iterator;
+
+   overriding function First (Object: Variables_Iterator) return Variables_Cursor;
+
+   overriding function Next (Object: Variables_Iterator; Position: Variables_Cursor) return Variables_Cursor;
+
+   not overriding function Get_Name (Position: Variables_Cursor) return String;
+
 private
 
    type Cursor is access constant Query_Results_Type_Without_Finalize'Class;
 
    type Bindings_Iterator is new Base_Iterators.Forward_Iterator with
+      record
+         Ref: Cursor;
+      end record;
+
+   type Variables_Cursor is
+      record
+         Ref: Cursor; -- hack
+         Count: Natural;
+      end record;
+
+   type Variables_Iterator is new Variables_Iterators.Forward_Iterator with
       record
          Ref: Cursor;
       end record;

@@ -266,7 +266,20 @@ package body RDF.Redland.Query_Results is
                                        return Node_Type is
      (Get_Binding_Value_By_Name(Position.all, Name));
 
---     function Has_Element (Position: Variables_Cursor) return Boolean is
---       (Position.Count < Get_Bindings_Count(Position.Ref.all));
+   function Has_Element (Position: Variables_Cursor) return Boolean is
+     (Position.Count < Get_Bindings_Count(Position.Ref.all));
+
+   function Create_Variables_Iterator (Results: Bindings_Query_Results_Type_Without_Finalize'Class)
+                                       return Variables_Iterator is
+     (Ref=>Results'Unchecked_Access);
+
+   function First (Object: Variables_Iterator) return Variables_Cursor is
+     (Ref=>Object.Ref, Count=>0);
+
+   function Next (Object: Variables_Iterator; Position: Variables_Cursor) return Variables_Cursor is
+     (Position with delta Count=>Position.Count);
+
+   function Get_Name (Position: Variables_Cursor) return String is
+     (Get_Binding_Name(Position.Ref.all, Position.Count));
 
 end RDF.Redland.Query_Results;
