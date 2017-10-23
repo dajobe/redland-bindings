@@ -46,12 +46,8 @@ The following APIs are implemented partially:
 
 It may be downgraded to Ada2005 but this isn't a priority for me.
 
-See "TODO" and "FIXME" in the source about possible improvement of the Ada
-library.
-
-Documentation of the Ada bindings are not written yet. One reason for this
-is that adabrowse package does not work with my installation of Debian
-Linux.
+Documentation of the Ada bindings are not written yet.
+Should we use GNATdoc or AdaBrowse?
 
 There are some unit tests (using AUnit library), but they do not cover
 all code. I would not recommend to use this library for software which

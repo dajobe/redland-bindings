@@ -11,3 +11,10 @@
 * Some raptor_parser_*() and librdf_storage_() functions return <0 on missing
   required base URI. Should we raise a different exception in this case?
   Also librdf_parser_set_feature().
+
+* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82639
+  Because of this GNAT compliler bug, some records which should be private
+  are not.
+  See rdf-raptor-term.ads
+
+* More testing.
