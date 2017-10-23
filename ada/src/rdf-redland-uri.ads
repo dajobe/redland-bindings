@@ -57,7 +57,6 @@ package RDF.Redland.URI is
    not overriding function Relative_To_Base (Base_URI: URI_Type_Without_Finalize'Class; Str: URI_String)
                                              return URI_Type;
 
-   -- TODO: use a URI_Type subtype
    not overriding function From_Filename (World: Redland_World_Type_Without_Finalize'Class;
                                           Filename: String)
                                           return URI_Type;
