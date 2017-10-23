@@ -241,4 +241,8 @@ package body RDF.Raptor.Term is
       end if;
    end;
 
+   function Is_URI     (Term: Term_Type_Without_Finalize) return Boolean is (Get_Kind(Term) = URI);
+   function Is_Literal (Term: Term_Type_Without_Finalize) return Boolean is (Get_Kind(Term) = Literal);
+   function Is_Blank   (Term: Term_Type_Without_Finalize) return Boolean is (Get_Kind(Term) = Blank);
+
 end RDF.Raptor.Term;

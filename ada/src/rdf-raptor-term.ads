@@ -41,9 +41,13 @@ package RDF.Raptor.Term is
 
    not overriding function Get_Kind (Term: Term_Type_Without_Finalize) return Term_Kind;
 
+   not overriding function Is_URI     (Term: Term_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Literal (Term: Term_Type_Without_Finalize) return Boolean;
+   not overriding function Is_Blank   (Term: Term_Type_Without_Finalize) return Boolean;
+
    not overriding function Get_URI (Term: Term_Type_Without_Finalize)
                                     return URI_Type_Without_Finalize
-     with Pre => Get_Kind(Term) = URI;
+     with Pre => Is_URI(Term);
 
    -- Should be private - https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82639
    type Term_Literal_Value is
@@ -66,10 +70,10 @@ package RDF.Raptor.Term is
 
    not overriding function Get_Literal (Term: Term_Type_Without_Finalize)
                                         return Term_Literal_Value
-     with Pre => Get_Kind(Term) = Literal;
+     with Pre => Is_Literal(Term);
 
    not overriding function Get_Blank (Term: Term_Type_Without_Finalize) return Term_Blank_Value
-     with Pre => Get_Kind(Term) = Blank;
+     with Pre => Is_Blank(Term);
 
    not overriding function Value (Literal: Term_Literal_Value) return String;
 
