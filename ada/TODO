@@ -21,4 +21,7 @@
   and make the API the same as in RDF.Raptor.Bnode, possibly merging both
   tagged types.
 
+* rasqal_new_query_results2() is not supported as of Rasqal 0.9.32
+  isntalled on my system.
+
 * More testing.
