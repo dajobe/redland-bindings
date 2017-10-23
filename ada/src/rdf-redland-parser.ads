@@ -122,7 +122,7 @@ package RDF.Redland.Parser is
    -- librdf_parser_get_namespaces_seen_uri()
    -- not bound as internals
 
-   -- TODO: librdf_parser_get_uri_filter() and librdf_parser_set_uri_filter()
+   -- librdf_parser_get_uri_filter() and librdf_parser_set_uri_filter()
 
    package Finalizer is new Parser_Handled_Record.With_Finalization(Parser_Type_Without_Finalize);
 

@@ -15,9 +15,6 @@ package RDF.Redland.Iterator is
 
    overriding procedure Finalize_Handle (Object: Iterator_Type_Without_Finalize; Handle: Iterator_Handle);
 
-   -- TODO: librdf_iterator_map_handler, librdf_iterator_map_free_context_handler,
-   -- librdf_new_iterator() are unimplemented
-
    not overriding function Is_End (Iterator: Iterator_Type_Without_Finalize) return Boolean;
 
    not overriding procedure Next (Iterator: in out Iterator_Type_Without_Finalize);

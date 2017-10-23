@@ -2,8 +2,24 @@
 
 * Add "pragma Pure()" where appropriate.
 
-* {Get,Set}_Feature for RDF.Redland.Serializer are not implemented due
+* {Get,Set}_Feature for RDF.Redland.Serializer,
+  Get_Language, Get_Type of RDF.Rasqal.Literal
+  are not implemented due
   http://bugs.librdf.org/mantis/view.php?id=641
+
+* librdf_iterator_map_handler, librdf_iterator_map_free_context_handler,
+  librdf_new_iterator() are unimplemented.
+
+* librdf_new_storage_with_options() not implemented, because
+  we have not implemented librdf_hash
+
+* Implement From_File and From_String in RDF.Rasqal.Data_Graph.
+  Note that as of Rasqal 0.9.32 they are not implemented in Rasqal.
+  So we probably should implement it as an Ada object not a binding.
+  The same for From_String in RDF.Rasqal.Query_Results.
+
+* librdf_parser_get_uri_filter() and librdf_parser_set_uri_filter()
+  Should it be implemented as a primitive subprogram or as a separate object?
 
 * Add "limited" to records where appropriate.
 
@@ -32,5 +48,7 @@
 * Rasqal and Redland iterators of query results should warn if more than one
   iterator is created for single results object. (We should provide "debug
   mode" for this.)
+
+* query_results_formatter and related functions
 
 * More testing.

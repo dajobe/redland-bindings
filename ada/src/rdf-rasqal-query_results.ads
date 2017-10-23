@@ -111,7 +111,7 @@ package RDF.Rasqal.Query_Results is
                                    Kind: Query_Results_Type_Enum)
                                    return Query_Results_Type;
 
-   -- TODO: Not supported as of Rasqal 0.9.32
+   -- Not supported as of Rasqal 0.9.32
    --     not overriding function From_String (World: Rasqal_World_Type_Without_Finalize;
    --                                          Kind: Query_Results_Type_Enum;
    --                                          Base_URI: URI_Type_Without_Finalize;

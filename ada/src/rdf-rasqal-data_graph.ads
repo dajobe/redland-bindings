@@ -77,7 +77,6 @@ package RDF.Rasqal.Data_Graph is
 
    --     type Streamed_Data_Graph_Type is new Data_Graph_Type with private;
 
-   -- TODO: Implement
    --     -- Not binding, but a wrapper
    --     not overriding function From_File (World: Rasqal_World_Type_Without_Finalize'Class;
    --                                        Filename: String;
