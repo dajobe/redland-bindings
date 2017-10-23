@@ -1,5 +1,8 @@
 * Add "pragma Pure()" where appropriate.
 
+* {Get,Set}_Feature for RDF.Redland.Serializer are not implemented due
+  http://bugs.librdf.org/mantis/view.php?id=641
+
 * Add "limited" to records where appropriate.
 
 * Should Base_Stream be an interface rather than a tagged type?
@@ -22,6 +25,6 @@
   tagged types.
 
 * rasqal_new_query_results2() is not supported as of Rasqal 0.9.32
-  isntalled on my system.
+  installed on my system.
 
 * More testing.

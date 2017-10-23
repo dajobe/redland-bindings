@@ -80,7 +80,7 @@ package RDF.Redland.Serializer is
                                     Stream: Stream_Type_Without_Finalize'Class;
                                     Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
-   -- TODO: http://bugs.librdf.org/mantis/view.php?id=641
+   -- http://bugs.librdf.org/mantis/view.php?id=641
 --     not overriding function Get_Feature (Serializer: Serializer_Type_Without_Finalize;
 --                                          Feature: URI_Type_Without_Finalize'Class);
 --                                          return Node_Type;
