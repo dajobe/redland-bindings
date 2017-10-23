@@ -117,15 +117,6 @@ package RDF.Redland.Query_Results is
                                                       Name: String)
                                                       return Node_Type;
 
-   type Graph_Iterator is new Base_Iterators.Forward_Iterator with private;
-
-   not overriding function Create_Graph_Iterator (Results: in out Graph_Query_Results_Type_Without_Finalize'Class)
-                                                    return Bindings_Iterator;
-
-   overriding function First (Object: Graph_Iterator) return Cursor;
-
-   overriding function Next (Object: Graph_Iterator; Position: Cursor) return Cursor;
-
    type Query_Results_Type is new Finalizer.Derived with null record;
 
    subtype Bindings_Query_Results_Type is Query_Results_Type
@@ -142,11 +133,6 @@ private
    type Cursor is access constant Query_Results_Type_Without_Finalize'Class;
 
    type Bindings_Iterator is new Base_Iterators.Forward_Iterator with
-      record
-         Ref: Cursor;
-      end record;
-
-   type Graph_Iterator is new Base_Iterators.Forward_Iterator with
       record
          Ref: Cursor;
       end record;

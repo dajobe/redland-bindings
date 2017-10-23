@@ -266,19 +266,6 @@ package body RDF.Redland.Query_Results is
                                        return Node_Type is
      (Get_Binding_Value_By_Name(Position.all, Name));
 
-   function Create_Graph_Iterator (Results: in out Graph_Query_Results_Type_Without_Finalize'Class)
-                                     return Bindings_Iterator is
-     (Ref=>Results'Unchecked_Access);
-
-   function First (Object: Graph_Iterator) return Cursor is
-     (Object.Ref);
-
-   function Next (Object: Graph_Iterator; Position: Cursor) return Cursor is
-   begin
-      Next(Position.all);
-      return Position;
-   end;
-
 --     function Has_Element (Position: Variables_Cursor) return Boolean is
 --       (Position.Count < Get_Bindings_Count(Position.Ref.all));
 
