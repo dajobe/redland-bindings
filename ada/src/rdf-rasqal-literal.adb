@@ -233,7 +233,7 @@ package body RDF.Rasqal.Literal is
       return From_Handle(rasqal_literal_datatype(Get_Handle(Literal)));
    end;
 
-   -- TODO: Not supported as of Rasqal 0.9.32
+   -- Not supported as of Rasqal 0.9.32
    --     function rasqal_literal_get_language (Literal: Literal_Handle) return Chars_Ptr
    --       with Import, Convention=>C;
    --

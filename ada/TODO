@@ -17,7 +17,8 @@
 * Implement From_File and From_String in RDF.Rasqal.Data_Graph.
   Note that as of Rasqal 0.9.32 they are not implemented in Rasqal.
   So we probably should implement it as an Ada object not a binding.
-  The same for From_String in RDF.Rasqal.Query_Results.
+  The same for From_String in RDF.Rasqal.Query_Results,
+  Get_Language in RDF.Rasqal.Literal.
 
 * librdf_parser_get_uri_filter() and librdf_parser_set_uri_filter()
   Should it be implemented as a primitive subprogram or as a separate object?
