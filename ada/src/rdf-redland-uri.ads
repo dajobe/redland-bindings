@@ -29,7 +29,6 @@ package RDF.Redland.URI is
 
    not overriding function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result;
 
-   -- TODO: Create subtypes with dynamic predicate?
    not overriding function Is_File_URI (URI: URI_Type_Without_Finalize) return Boolean;
 
    not overriding function To_Filename (URI: URI_Type_Without_Finalize) return String;
