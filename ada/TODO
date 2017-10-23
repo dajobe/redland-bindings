@@ -1,19 +1,13 @@
-* Move Redland syntax description info into a separate package?
-
-* Add functions Copy to explicitly copy a _Without_Finalize object.
-  Copy shall have controlling result?
-  Using controlling result we can define Copy in Handed_Record package?
-
-* "TODO" in the sources.
+* Add "pragma Pure()" where appropriate.
 
 * Add "limited" to records where appropriate.
-
-* Some raptor_parser_*() and librdf_storage_() functions return <0 on missing
-  required base URI. Should we raise a different exception in this case?
-  Also librdf_parser_set_feature().
-
-* Add strings to exception raised.
 
 * Should Base_Stream be an interface rather than a tagged type?
 
 * Check sources with AdaControl and gnatcheck.
+
+* Add strings to exception raised.
+
+* Some raptor_parser_*() and librdf_storage_() functions return <0 on missing
+  required base URI. Should we raise a different exception in this case?
+  Also librdf_parser_set_feature().
