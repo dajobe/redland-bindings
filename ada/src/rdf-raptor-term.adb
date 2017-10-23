@@ -15,17 +15,17 @@ package body RDF.Raptor.Term is
       return Get_Handle(Term).Kind;
    end;
 
-   function Get_URI (Term: Term_Type_Without_Finalize) return URI_Type_Without_Finalize is
+   function Get_URI (Term: URI_Term_Type_Without_Finalize'Class) return URI_Type_Without_Finalize is
    begin
       return From_Handle( Get_Handle(Term).Value.URI );
    end;
 
-   function Get_Literal (Term: Term_Type_Without_Finalize) return Term_Literal_Value is
+   function Get_Literal (Term: Literal_Term_Type_Without_Finalize'Class) return Term_Literal_Value is
    begin
       return Get_Handle(Term).Value.Literal;
    end;
 
-   function Get_Blank (Term: Term_Type_Without_Finalize) return Term_Blank_Value is
+   function Get_Blank (Term: Blank_Term_Type_Without_Finalize'Class) return Term_Blank_Value is
    begin
       return Get_Handle(Term).Value.Blank;
    end;

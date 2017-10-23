@@ -15,9 +15,14 @@ package RDF.Raptor.Term is
 
    package Term_Handled_Record is new RDF.Auxiliary.Handled_Record(Term_Record, Term_Record_Access);
 
-   -- TODO: Add subtypes with dynamic predicates (first make Is_* functions)
-   -- and use them in argument types
    type Term_Type_Without_Finalize is new Term_Handled_Record.Base_Object with null record;
+
+   subtype URI_Term_Type_Without_Finalize is Term_Type_Without_Finalize
+     with Dynamic_Predicate => Is_URI(URI_Term_Type_Without_Finalize);
+   subtype Literal_Term_Type_Without_Finalize is Term_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Literal(Literal_Term_Type_Without_Finalize);
+   subtype Blank_Term_Type_Without_Finalize is Term_Type_Without_Finalize
+     with Dynamic_Predicate => Is_Blank(Blank_Term_Type_Without_Finalize);
 
    subtype Term_Handle is Term_Handled_Record.Access_Type;
 
@@ -45,9 +50,7 @@ package RDF.Raptor.Term is
    not overriding function Is_Literal (Term: Term_Type_Without_Finalize) return Boolean;
    not overriding function Is_Blank   (Term: Term_Type_Without_Finalize) return Boolean;
 
-   not overriding function Get_URI (Term: Term_Type_Without_Finalize)
-                                    return URI_Type_Without_Finalize
-     with Pre => Is_URI(Term);
+   function Get_URI (Term: URI_Term_Type_Without_Finalize'Class) return URI_Type_Without_Finalize;
 
    -- Should be private - https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82639
    type Term_Literal_Value is
@@ -68,12 +71,9 @@ package RDF.Raptor.Term is
       end record
      with Convention => C;
 
-   not overriding function Get_Literal (Term: Term_Type_Without_Finalize)
-                                        return Term_Literal_Value
-     with Pre => Is_Literal(Term);
+   function Get_Literal (Term: Literal_Term_Type_Without_Finalize'Class) return Term_Literal_Value;
 
-   not overriding function Get_Blank (Term: Term_Type_Without_Finalize) return Term_Blank_Value
-     with Pre => Is_Blank(Term);
+   function Get_Blank (Term: Blank_Term_Type_Without_Finalize'Class) return Term_Blank_Value;
 
    not overriding function Value (Literal: Term_Literal_Value) return String;
 
@@ -130,6 +130,13 @@ package RDF.Raptor.Term is
 
    not overriding function From_String (World: Raptor_World_Type_Without_Finalize'Class; Value: String)
                                         return Term_Type;
+
+   subtype URI_Term_Type is Term_Type
+     with Dynamic_Predicate => Is_URI(URI_Term_Type);
+   subtype Literal_Term_Type is Term_Type
+     with Dynamic_Predicate => Is_Literal(Literal_Term_Type);
+   subtype Blank_Term_Type is Term_Type
+     with Dynamic_Predicate => Is_Blank(Blank_Term_Type);
 
 private
 
