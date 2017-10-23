@@ -10,7 +10,8 @@
 * librdf_iterator_map_handler, librdf_iterator_map_free_context_handler,
   librdf_new_iterator() are unimplemented.
 
-* librdf_new_storage_with_options() not implemented, because
+* librdf_new_storage_with_options() and
+  librdf_model_find_statements_with_options() not implemented, because
   we have not implemented librdf_hash
 
 * Implement From_File and From_String in RDF.Rasqal.Data_Graph.
@@ -29,9 +30,9 @@
 
 * Add strings to exception raised.
 
-* Some raptor_parser_*() and librdf_storage_() functions return <0 on missing
+* Some raptor_parser_*() and librdf_storage_*() functions return <0 on missing
   required base URI. Should we raise a different exception in this case?
-  Also librdf_parser_set_feature().
+  Also librdf_parser_set_feature(), lib_rdf_model_set_feature().
 
 * https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82639
   Because of this GNAT compliler bug, some records which should be private
@@ -50,5 +51,7 @@
   mode" for this.)
 
 * query_results_formatter and related functions
+
+* transactions in RDF.Redland.Model.
 
 * More testing.

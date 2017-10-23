@@ -121,7 +121,6 @@ package RDF.Rasqal.Query_Results is
    -- The same cursor is used for bindings iterator and for triples iterator.
    -- However, don't rely on using the same type.
    -- Do not create more than one cursor for the same query results object.
-   -- TODO: If in debug mode, enforce this restriction.
    type Cursor is private;
 
    not overriding function Has_Element (Position: Cursor) return Boolean;

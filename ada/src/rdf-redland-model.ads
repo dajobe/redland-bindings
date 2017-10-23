@@ -101,7 +101,8 @@ package RDF.Redland.Model is
                                  return Stream_Type;
 
    -- LIBRDF_MODEL_FIND_OPTION_MATCH_SUBSTRING_LITERAL not implemented.
-   -- TODO: librdf_model_find_statements_with_options() not implemented as requires rdf_hash.
+
+   -- librdf_model_find_statements_with_options() not implemented as requires rdf_hash.
 
    not overriding function Get_Sources (Model: Model_Type_Without_Finalize;
                                         Arc, Target: Node_Type_Without_Finalize'Class)
@@ -176,7 +177,6 @@ package RDF.Redland.Model is
                                         Feature: URI_Type_Without_Finalize'Class)
                                         return Node_Type;
 
-   -- TODO: Differentiate negative and positive return values
    not overriding procedure Set_Feature (Model: in out Model_Type_Without_Finalize;
                                          Feature: URI_Type_Without_Finalize'Class;
                                          Value: Node_Type);
@@ -192,8 +192,6 @@ package RDF.Redland.Model is
                                                          Literal: String;
                                                          Language: String;
                                                          Datatype: URI_Type_Without_Finalize'Class);
-
-   -- TODO: Implement transactions
 
    not overriding procedure Write (Model: Model_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
