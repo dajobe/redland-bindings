@@ -1,3 +1,5 @@
+* Consider replacing controlling argument types with class-wide types.
+
 * Add "pragma Pure()" where appropriate.
 
 * {Get,Set}_Feature for RDF.Redland.Serializer are not implemented due
