@@ -1,4 +1,5 @@
 package RDF.Raptor is
+   pragma Pure;
 
    type Domain_Type is (None_Domain,
                         IOStream_Domain,
