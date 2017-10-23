@@ -22,11 +22,11 @@ package RDF.Auxiliary.Limited_Handled_Record is
    -- Don't call this procedure unless you really need it.
    not overriding procedure Set_Handle_Hack(Object: in out Base_Object; Handle: Access_Type);
 
-   not overriding function Get_Handle(Object: Base_Object) return Access_Type with Inline;
+   not overriding function Get_Handle(Object: Base_Object) return Access_Type;
 
-   not overriding function From_Handle(Handle: Access_Type) return Base_Object with Inline;
+   not overriding function From_Handle(Handle: Access_Type) return Base_Object;
 
-   not overriding function From_Non_Null_Handle(Handle: Access_Type) return Base_Object with Inline;
+   not overriding function From_Non_Null_Handle(Handle: Access_Type) return Base_Object;
 
    not overriding function Default_Handle(Object: Base_Object) return Access_Type;
 

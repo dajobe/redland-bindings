@@ -6,8 +6,6 @@
 
 * "TODO" in the sources.
 
-* Add "with Inline" whereever feasible.
-
 * Add "limited" to records where appropriate.
 
 * Some raptor_parser_*() and librdf_storage_() functions return <0 on missing
