@@ -4,10 +4,7 @@ package body RDF.Raptor.Statement is
 
    function Get_World (Statement: Statement_Type_Without_Finalize) return Raptor_World_Type_Without_Finalize is
    begin
-      --        return Get_Handle(Statement).World.all; -- does not work, so the below hack:
-      return S: Raptor_World_Type_Without_Finalize do
-         Set_Handle_Hack(S, Get_Handle(Statement).World);
-      end return;
+      return From_Non_Null_Handle(Get_Handle(Statement).World);
    end;
 
    function Get_Subject   (Statement: Statement_Type_Without_Finalize) return Term_Type_Without_Finalize is

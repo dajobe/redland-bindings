@@ -69,7 +69,7 @@ private
 
    type Statement_Record is
       record
-         world: Raptor_World_Handle;
+         World: Raptor_World_Handle;
          usage: Interfaces.C.int;
          Subject, Predicate, Object, Graph: Term_Handle;
       end record
