@@ -86,7 +86,7 @@ package RDF.Redland.Query_Results is
 
    function Get_Boolean (Results: Boolean_Query_Results_Type_Without_Finalize'Class) return Boolean;
 
-   -- TODO: I was lazy to implement query_results_formatter and related function
+   -- TODO: I was lazy to implement query_results_formatter and related functions
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
