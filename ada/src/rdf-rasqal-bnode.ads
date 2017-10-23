@@ -12,8 +12,6 @@ package RDF.Rasqal.Bnode is
    -- We pass to the underlying C library only a handle of a world,
    -- not the entire object. So it does not behave well in Ada types.
    -- So I recommend not to use World argument at all.
-   -- TODO: Remove World argument and make the API the same as in
-   -- RDF.Raptor.Bnode, possibly merging both tagged types.
    function Do_Handle (World: Rasqal_World_Type_Without_Finalize;
                        Handler: BNode_ID_Handler;
                        User_ID: RDF.Auxiliary.String_Holders.Holder)

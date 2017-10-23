@@ -17,4 +17,8 @@
   are not.
   See rdf-raptor-term.ads
 
+* Consider if we can remove World argument in RDF.Rasqal.Bnode.Do_handle
+  and make the API the same as in RDF.Raptor.Bnode, possibly merging both
+  tagged types.
+
 * More testing.
