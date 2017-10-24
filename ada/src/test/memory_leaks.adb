@@ -26,21 +26,21 @@ procedure Memory_Leaks is
 begin
    Prepare(Query, SPARQL);
    Add_Data_Graph(Query, Graph);
-   declare
-      Results: Bindings_Query_Results_Type := Execute(Query);
-      package Rows_Holder is new Ada.Containers.Indefinite_Vectors(Positive, String);
-      use Ada.Containers, Rows_Holder;
-      Rows: Vector;
-   begin
---        Assert(Is_Bindings(Results), "Result is bindings");
-      for I in Create_Bindings_Iterator(Results) loop
-         declare
-            L: Literal_Type_Without_Finalize := Get_Binding_Value_By_Name(I, "count");
-         begin
-            Append(Rows, As_String(L));
-         end;
-      end loop;
---        Assert(Length(Rows) = Count_Type(1), "count() returns one row");
---        Assert(Element(Rows, 1) = "3", "count() = 3");
-   end;
+--     declare
+--        Results: Bindings_Query_Results_Type := Execute(Query);
+--        package Rows_Holder is new Ada.Containers.Indefinite_Vectors(Positive, String);
+--        use Ada.Containers, Rows_Holder;
+--        Rows: Vector;
+--     begin
+--  --        Assert(Is_Bindings(Results), "Result is bindings");
+--        for I in Create_Bindings_Iterator(Results) loop
+--           declare
+--              L: Literal_Type_Without_Finalize := Get_Binding_Value_By_Name(I, "count");
+--           begin
+--              Append(Rows, As_String(L));
+--           end;
+--        end loop;
+--  --        Assert(Length(Rows) = Count_Type(1), "count() returns one row");
+--  --        Assert(Element(Rows, 1) = "3", "count() = 3");
+--     end;
 end;
