@@ -11,11 +11,8 @@ with RDF.Rasqal.Query_Results; use RDF.Rasqal.Query_Results;
 with RDF.Rasqal.Literal; use RDF.Rasqal.Literal;
 
 procedure Memory_Leaks is
---     T2: Test_Case renames Test_Case(T);
    Directory: constant String := ".";
    RDF_File: constant String := Directory & "/../data/dc.nt";
-   SPARQL: constant String := "SELECT (count(*) as ?count) WHERE { ?s ?p ?o . }";
-
    World: Rasqal_World_Type := Open;
    Graph_Stream: RDF.Raptor.IOStream.IOStream_Type := From_Filename(Get_Raptor(World), RDF_File);
    Graph: Data_Graph_Type := From_IOStream(World,
@@ -24,7 +21,7 @@ procedure Memory_Leaks is
    use RDF.Auxiliary.String_Holders;
    Query: RDF.Rasqal.Query.Query_Type := Create(World, Empty_Holder, Empty_Holder);
 begin
-   Prepare(Query, SPARQL);
+--     Prepare(Query, SPARQL);
    Add_Data_Graph(Query, Graph);
 --     declare
 --        Results: Bindings_Query_Results_Type := Execute(Query);
