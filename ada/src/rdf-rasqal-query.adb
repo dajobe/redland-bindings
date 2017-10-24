@@ -11,18 +11,37 @@ package body RDF.Rasqal.Query is
                                          return int
      with Import, Convention=>C;
 
+   function rasqal_new_data_graph_from_data_graph (Graph: Data_Graph_Handle)
+                                                   return Data_Graph_Handle
+     with Import, Convention=>C;
+
    procedure Add_Data_Graph (Query: in out Query_Type_Without_Finalize;
                              Graph: Data_Graph_Type_Without_Finalize'Class) is
    begin
-      if rasqal_query_add_data_graph (Get_Handle(Query), Get_Handle(Graph)) /= 0 then
+      if rasqal_query_add_data_graph (Get_Handle(Query),
+                                      rasqal_new_data_graph_from_data_graph(Get_Handle(Graph))) /= 0
+      then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
+   end;
+
+   procedure Add_Data_Graph_Detach (Query: in out Query_Type_Without_Finalize;
+                                    Graph: in out Data_Graph_Type) is
+   begin
+      Add_Data_Graph(Query, Detach(Graph));
    end;
 
    procedure Add_Data_Graphs (Query: in out Query_Type_Without_Finalize; Graphs: Data_Graphs_Array) is
    begin
       for Graph of Graphs loop
          Add_Data_Graph(Query, Graph);
+      end loop;
+   end;
+
+   procedure Add_Data_Graphs_Detach (Query: in out Query_Type_Without_Finalize; Graphs: in out Data_Graphs_Array) is
+   begin
+      for Graph of Graphs loop
+         Add_Data_Graph_Detach(Query, Graph);
       end loop;
    end;
 

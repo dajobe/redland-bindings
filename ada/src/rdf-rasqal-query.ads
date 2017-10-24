@@ -19,14 +19,19 @@ package RDF.Rasqal.Query is
 
    overriding procedure Finalize_Handle (Query: Query_Type_Without_Finalize; Handle: Query_Handle);
 
-   -- FIXME: Rasqal makes the graph owned by the query!
    not overriding procedure Add_Data_Graph (Query: in out Query_Type_Without_Finalize;
                                             Graph: Data_Graph_Type_Without_Finalize'Class);
 
-   type Data_Graphs_Array is array(Integer range <>) of Data_Graph_Type_Without_Finalize;
+   not overriding procedure Add_Data_Graph_Detach (Query: in out Query_Type_Without_Finalize;
+                                                   Graph: in out Data_Graph_Type);
+
+   type Data_Graphs_Array is array(Integer range <>) of Data_Graph_Type;
 
    not overriding procedure Add_Data_Graphs (Query: in out Query_Type_Without_Finalize;
                                              Graphs: Data_Graphs_Array);
+
+   not overriding procedure Add_Data_Graphs_Detach (Query: in out Query_Type_Without_Finalize;
+                                                    Graphs: in out Data_Graphs_Array);
 
    not overriding function Execute (Query: Query_Type_Without_Finalize) return Query_Results_Type;
 
