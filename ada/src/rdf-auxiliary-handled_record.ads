@@ -61,6 +61,8 @@ package RDF.Auxiliary.Handled_Record is
       overriding procedure Adjust(Object: in out Derived)
                                   renames Do_Adjust;
       not overriding function Copy(Object: Base'Class) return Derived;
+      not overriding procedure Detach(Object: in out Derived);
+      not overriding function Detach(Object: in out Derived) return Base;
    end;
 
 private

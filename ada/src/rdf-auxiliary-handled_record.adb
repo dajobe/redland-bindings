@@ -57,6 +57,18 @@ package body RDF.Auxiliary.Handled_Record is
          return From_Handle(Adjust_Handle(Object, Get_Handle(Object)));
       end;
 
+      procedure Detach(Object: in out Derived) is
+      begin
+         Set_Handle_Hack(Object, null);
+      end;
+
+      function Detach(Object: in out Derived) return Base is
+         Handle: constant Access_Type := Get_Handle(Object);
+      begin
+         Set_Handle_Hack(Object, null);
+         return From_Handle(Handle);
+      end;
+
    end;
 
 end RDF.Auxiliary.Handled_Record;
