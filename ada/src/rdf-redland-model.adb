@@ -56,7 +56,7 @@ package body RDF.Redland.Model is
 
    function Create (World: Redland_World_Type_Without_Finalize'Class;
                     Storage: Storage_Type_Without_Finalize'Class;
-                    Options: String)
+                    Options: String := "")
                     return Model_Type is
       Handle: constant Model_Handle :=
         librdf_new_model(Get_Handle(World), Get_Handle(Storage), To_C(Options));

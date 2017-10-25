@@ -54,7 +54,7 @@ package body RDF.Redland.Storage is
    function Create (World: Redland_World_Type_Without_Finalize'Class;
                     Factory_Name: String;
                     Name: String;
-                    Options: String)
+                    Options: String := "")
                     return Storage_Type is
       Handle: constant Storage_Handle :=
         librdf_new_storage(Get_Handle(World), To_C(Factory_Name), To_C(Name), To_C(Options));

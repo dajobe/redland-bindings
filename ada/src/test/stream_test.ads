@@ -1,8 +1,9 @@
-with AUnit, AUnit.Test_Cases; use AUnit, AUnit.Test_Cases;
+with AUnit; use AUnit;
+with Our_Test;
 
-package Empty_Stream_Test is
+package Stream_Test is
 
-   type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
+   type Test_Case is new Our_Test.Our_Test_Case with null record;
 
    procedure Register_Tests (T : in out Test_Case);
    --  Register routines to be run
@@ -11,4 +12,4 @@ package Empty_Stream_Test is
                   return Test_String;
    --  Returns name identifying the test case
 
-end Empty_Stream_Test;
+end Stream_Test;

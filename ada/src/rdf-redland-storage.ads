@@ -66,7 +66,7 @@ package RDF.Redland.Storage is
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Factory_Name: String;
                                    Name: String;
-                                   Options: String)
+                                   Options: String := "")
                                    return Storage_Type;
 
    not overriding function Copy (Storage: Storage_Type_Without_Finalize'Class) return Storage_Type;

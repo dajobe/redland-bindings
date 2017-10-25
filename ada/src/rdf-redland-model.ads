@@ -203,7 +203,7 @@ package RDF.Redland.Model is
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Storage: Storage_Type_Without_Finalize'Class;
-                                   Options: String)
+                                   Options: String := "")
                                    return Model_Type;
 
    -- librdf_new_model_with_options() not implemented, because librdf_hash is not implemented
