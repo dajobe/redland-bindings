@@ -101,6 +101,7 @@ package body RDF.Rasqal.World is
                                              Identifier: String_Holders.Holder)
                                              return String_Holders.Holder is
       Buffer2: constant C_String_Holder := To_C_String_Holder(Buffer);
+      -- TODO: Do this without dynamic allocation
       Mime_Type2 : constant chars_ptr := New_String(Mime_Type );
       Identifier2: constant chars_ptr := New_String(Identifier);
       Result: constant chars_ptr := rasqal_world_guess_query_results_format_name(Get_Handle(World),

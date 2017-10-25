@@ -45,6 +45,7 @@ package body RDF.Raptor.Bnode is
          Replace_Element(User_ID2, Value(User_ID));
       end if;
       declare
+         -- TODO: Do this without dynamic allocation
          Result: constant Chars_Ptr := New_String(Do_Handle(My_Conv.To_Access(Data).all, User_ID2));
       begin
          RDF.Raptor.Memory.raptor_free_memory(User_ID);

@@ -85,6 +85,7 @@ package body RDF.Rasqal.Data_Graph is
                            Format_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null)))
                            return Data_Graph_Type is
       use RDF.Auxiliary.C_String_Holders;
+      -- TODO: Do this without dynamic allocation
       Format_Type2: chars_ptr := New_String(Format_Type);
       Format_Name2: chars_ptr := New_String(Format_Name);
       Result: constant Data_Graph_Handle :=
@@ -117,6 +118,7 @@ package body RDF.Rasqal.Data_Graph is
                       Format_URI: URI_Type_Without_Finalize'Class)
                       return Data_Graph_Type is
       use RDF.Auxiliary.C_String_Holders;
+      -- TODO: Do this without dynamic allocation
       Format_Type2: chars_ptr := New_String(Format_Type);
       Format_Name2: chars_ptr := New_String(Format_Name);
       Result: constant Data_Graph_Handle :=

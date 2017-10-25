@@ -228,6 +228,7 @@ package body RDF.Rasqal.Query is
    function Create (World: Rasqal_World_Type'Class; Name, URI: RDF.Auxiliary.String_Holders.Holder)
                     return Query_Type is
       use RDF.Auxiliary.C_String_Holders;
+      -- TODO: Do this without dynamic allocation
       Name2: chars_ptr := New_String(Name);
       URI2 : chars_ptr := New_String(URI );
       Result: constant Query_Handle := rasqal_new_query(Get_Handle(World), Name2, URI2);

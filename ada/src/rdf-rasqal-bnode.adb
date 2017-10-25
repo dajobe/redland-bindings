@@ -61,6 +61,7 @@ package body RDF.Rasqal.Bnode is
                                                       Prefix: String_Holders.Holder;
                                                       Base: int) is
       use RDF.Auxiliary.C_String_Holders;
+      -- TODO: Do this without dynamic allocation
       C_Prefix: constant chars_ptr := New_String(Prefix);
       Result: constant int :=
         rasqal_world_set_default_generate_bnodeid_parameters(Get_Handle(World), C_Prefix, Base);
