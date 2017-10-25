@@ -90,7 +90,7 @@ package body RDF.Rasqal.Query is
                                 return Int
      with Import, Convention=>C;
 
-   procedure Write_Query (Stream: Base_IOStream_Type'Class;
+   procedure Write_Query (Stream: IOStream_Type_Without_Finalize'Class;
                           Query: Query_Type_Without_Finalize;
                           Format_URI, Base_URI: URI_Type_Without_Finalize'Class) is
    begin
@@ -111,7 +111,7 @@ package body RDF.Rasqal.Query is
      with Import, Convention=>C;
 
    procedure Write_Escaped_String (Query: Query_Type_Without_Finalize;
-                                   Stream: Base_IOStream_Type'Class;
+                                   Stream: IOStream_Type_Without_Finalize'Class;
                                    Str: String) is
    begin
       if rasqal_query_iostream_write_escaped_counted_string(Get_Handle(Query),

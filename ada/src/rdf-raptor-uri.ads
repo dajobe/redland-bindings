@@ -53,7 +53,7 @@ package RDF.Raptor.URI is
    not overriding function Get_World (URI: URI_Type_Without_Finalize)
                                       return Raptor_World_Type_Without_Finalize;
 
-   not overriding procedure Write (URI: URI_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
+   not overriding procedure Write (URI: URI_Type_Without_Finalize; Stream: IOStream_Type_Without_Finalize'Class);
 
    not overriding function URI_File_Exists (URI: URI_Type_Without_Finalize) return Boolean;
 
@@ -66,7 +66,7 @@ package RDF.Raptor.URI is
                                              return String;
 
    not overriding procedure Turtle_Write (World: Raptor_World_Type_Without_Finalize'Class;
-                                          Stream: Base_IOStream_Type'Class;
+                                          Stream: IOStream_Type_Without_Finalize'Class;
                                           URI: URI_Type_Without_Finalize;
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                           Base_URI: URI_Type_Without_Finalize'Class);

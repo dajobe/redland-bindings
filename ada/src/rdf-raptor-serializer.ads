@@ -21,7 +21,7 @@ package RDF.Raptor.Serializer is
 
    -- WARNING: Other order of arguments than in C
    not overriding procedure Start_To_IOStream (Serializer: Serializer_Type_Without_Finalize;
-                                               IOStream: Base_IOStream_Type'Class;
+                                               IOStream: IOStream_Type_Without_Finalize'Class;
                                                URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    not overriding procedure Start_To_Filename (Serializer: Serializer_Type_Without_Finalize; Filename: String);

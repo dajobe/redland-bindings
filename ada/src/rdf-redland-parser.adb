@@ -233,7 +233,7 @@ package body RDF.Redland.Parser is
      with Import, Convention=>C;
 
    function Parse_IOStream_As_Stream (Parser: Parser_Type_Without_Finalize;
-                                      IOStream: Base_IOStream_Type'Class;
+                                      IOStream: IOStream_Type_Without_Finalize'Class;
                                       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
                                       return Stream_Type is
       Handle: constant Stream_Handle :=
@@ -251,7 +251,7 @@ package body RDF.Redland.Parser is
 
    procedure Parse_IOStream_Into_Model (Parser: Parser_Type_Without_Finalize;
                                         Model: Model_Type_Without_Finalize'Class;
-                                        IOStream: Base_IOStream_Type'Class;
+                                        IOStream: IOStream_Type_Without_Finalize'Class;
                                         Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
       if librdf_parser_parse_iostream_into_model(Get_Handle(Parser),

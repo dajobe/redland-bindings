@@ -84,14 +84,14 @@ package RDF.Rasqal.Query_Results is
 
    procedure Next_Triple (Results: Graph_Query_Results_Type_Without_Finalize'Class);
 
-   not overriding procedure Read (Stream: Base_IOStream_Type'Class;
+   not overriding procedure Read (Stream: IOStream_Type_Without_Finalize'Class;
                                   Results: Query_Results_Type_Without_Finalize;
                                   Format_Name: String; -- "" for no format name
                                   Mime_Type: String; -- "" for no MIME type
                                   Format_URI: URI_Type_Without_Finalize'Class;
                                   Base_URI: URI_Type_Without_Finalize'Class);
 
-   not overriding procedure Write (Stream: Base_IOStream_Type'Class;
+   not overriding procedure Write (Stream: IOStream_Type_Without_Finalize'Class;
                                    Results: Query_Results_Type_Without_Finalize;
                                    Format_Name: String; -- "" for no format name
                                    Mime_Type: String; -- "" for no MIME type

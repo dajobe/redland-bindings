@@ -328,7 +328,7 @@ package body RDF.Redland.Node is
    function librdf_node_write (Node: Node_Handle; Stream: IOStream_Handle) return int
      with Import, Convention=>C;
 
-   procedure Write (Node: Node_Type_Without_Finalize; Stream: Base_IOStream_Type'Class) is
+   procedure Write (Node: Node_Type_Without_Finalize; Stream: IOStream_Type_Without_Finalize'Class) is
    begin
       if librdf_node_write(Get_Handle(Node), Get_Handle(Stream)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;

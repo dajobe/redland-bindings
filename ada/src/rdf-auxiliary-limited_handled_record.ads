@@ -37,7 +37,7 @@ package RDF.Auxiliary.Limited_Handled_Record is
    generic
       type Base is new Base_Object with private;
    package Common_Handlers is
-      type User_Type is new Base with null record;
+      type User_Type is new Base with null record; -- TODO: use
       overriding procedure Finalize(Object: in out User_Type)
                                     renames Do_Finalize;
       type Base_With_Finalization is new User_Type with null record;

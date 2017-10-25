@@ -194,7 +194,7 @@ package body RDF.Redland.Statement is
    function librdf_statement_write (Statement: Statement_Handle; Stream: IOStream_Handle) return int
      with Import, Convention=>C;
 
-   procedure Write (Statement: Statement_Type_Without_Finalize; Stream: Base_IOStream_Type'Class) is
+   procedure Write (Statement: Statement_Type_Without_Finalize; Stream: IOStream_Type_Without_Finalize'Class) is
    begin
       if librdf_statement_write(Get_Handle(Statement), Get_Handle(Stream)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;

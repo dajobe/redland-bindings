@@ -72,7 +72,7 @@ package body RDF.Redland.Stream is
    function librdf_stream_write (Stream: Stream_Handle; Raptor_Stream: IOStream_Handle) return int
      with Import, Convention=>C;
 
-   procedure Write (Stream: Stream_Type_Without_Finalize; Raptor_Stream: Base_IOStream_Type'Class) is
+   procedure Write (Stream: Stream_Type_Without_Finalize; Raptor_Stream: IOStream_Type_Without_Finalize'Class) is
    begin
       if librdf_stream_write(Get_Handle(Stream), Get_Handle(Raptor_Stream)) /= 0 then
          raise RDF.Raptor.IOStream.IOStream_Exception;

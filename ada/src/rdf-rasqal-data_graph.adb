@@ -77,7 +77,7 @@ package body RDF.Rasqal.Data_Graph is
      with Import, Convention=>C;
 
    function From_IOStream (World: Rasqal_World_Type_Without_Finalize'Class;
-                           IOStream: Base_IOStream_Type'Class;
+                           IOStream: IOStream_Type_Without_Finalize'Class;
                            Base_URI: URI_Type_Without_Finalize'Class;
                            Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
                            Flags: Flags_Type := Background;

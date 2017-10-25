@@ -41,7 +41,7 @@ package RDF.Raptor.Statement is
    -- raptor_statement_init(), raptor_statement_clear() are not boound, because they are probably internal
 
    not overriding procedure Ntriples_Write (Statement: Statement_Type_Without_Finalize;
-                                            Stream: Base_IOStream_Type'Class;
+                                            Stream: IOStream_Type_Without_Finalize'Class;
                                             Write_Graph_Term: Boolean);
 
    package Handlers is new Statement_Handled_Record.Common_Handlers(Statement_Type_Without_Finalize);

@@ -93,7 +93,7 @@ package RDF.Redland.Parser is
 
    not overriding
    function Parse_IOStream_As_Stream (Parser: Parser_Type_Without_Finalize;
-                                      IOStream: Base_IOStream_Type'Class;
+                                      IOStream: IOStream_Type_Without_Finalize'Class;
                                       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
                                       return Stream_Type;
 
@@ -101,7 +101,7 @@ package RDF.Redland.Parser is
    not overriding
    procedure Parse_IOStream_Into_Model (Parser: Parser_Type_Without_Finalize;
                                         Model: Model_Type_Without_Finalize'Class;
-                                        IOStream: Base_IOStream_Type'Class;
+                                        IOStream: IOStream_Type_Without_Finalize'Class;
                                         Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    FEATURE_ERROR_COUNT  : URI_String := "http://feature.librdf.org/parser-error-count";

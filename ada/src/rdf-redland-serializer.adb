@@ -138,7 +138,7 @@ package body RDF.Redland.Serializer is
    procedure Serialize_Model_To_IOStream
      (Serializer: Serializer_Type_Without_Finalize;
       Model: Model_Type_Without_Finalize'Class;
-      IOStream: Base_IOStream_Type'Class;
+      IOStream: IOStream_Type_Without_Finalize'Class;
       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin
       if librdf_serializer_serialize_model_to_iostream(Get_Handle(Serializer),
@@ -229,7 +229,7 @@ package body RDF.Redland.Serializer is
      with Import, Convention=>C;
 
    procedure Serialize_To_IOStream (Serializer: Serializer_Type_Without_Finalize;
-                                    File: Base_IOStream_Type'Class;
+                                    File: IOStream_Type_Without_Finalize'Class;
                                     Stream: Stream_Type_Without_Finalize'Class;
                                     Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null))) is
    begin

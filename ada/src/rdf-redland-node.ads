@@ -61,7 +61,7 @@ package RDF.Redland.Node is
 
    not overriding procedure Print (Node: Node_Type_Without_Finalize; File: RDF.Auxiliary.C_File_Access);
 
-   not overriding procedure Write (Node: Node_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
+   not overriding procedure Write (Node: Node_Type_Without_Finalize; Stream: IOStream_Type_Without_Finalize'Class);
 
    package Handlers is new RDF.Raptor.Term.Term_Handled_Record.Common_Handlers(Node_Type_Without_Finalize);
 

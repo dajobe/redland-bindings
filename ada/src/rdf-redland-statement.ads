@@ -64,7 +64,7 @@ package RDF.Redland.Statement is
 
    -- librdf_statement_decode2() not implemented (not so important and somehow hard to do)
 
-   not overriding procedure Write (Statement: Statement_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
+   not overriding procedure Write (Statement: Statement_Type_Without_Finalize; Stream: IOStream_Type_Without_Finalize'Class);
 
    package Handlers is new RDF.Raptor.Statement.Statement_Handled_Record.Common_Handlers(Statement_Type_Without_Finalize);
 

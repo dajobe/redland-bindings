@@ -50,7 +50,7 @@ package RDF.Redland.Serializer is
    not overriding procedure Serialize_Model_To_IOStream
      (Serializer: Serializer_Type_Without_Finalize;
       Model: Model_Type_Without_Finalize'Class;
-      IOStream: Base_IOStream_Type'Class;
+      IOStream: IOStream_Type_Without_Finalize'Class;
       Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 
    -- Order of arguments not the same as in C
@@ -76,7 +76,7 @@ package RDF.Redland.Serializer is
    -- Order of arguments not the same as in C
    not overriding
    procedure Serialize_To_IOStream (Serializer: Serializer_Type_Without_Finalize;
-                                    File: Base_IOStream_Type'Class;
+                                    File: IOStream_Type_Without_Finalize'Class;
                                     Stream: Stream_Type_Without_Finalize'Class;
                                     Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)));
 

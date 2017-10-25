@@ -549,7 +549,7 @@ package body RDF.Redland.Model is
    function librdf_model_write (Model: Model_Handle; Stream: IOStream_Handle) return int
      with Import, Convention=>C;
 
-   procedure Write (Model: Model_Type_Without_Finalize; Stream: Base_IOStream_Type'Class) is
+   procedure Write (Model: Model_Type_Without_Finalize; Stream: IOStream_Type_Without_Finalize'Class) is
    begin
       if librdf_model_write(Get_Handle(Model), Get_Handle(Stream)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;

@@ -60,7 +60,7 @@ package RDF.Rasqal.Data_Graph is
    type Data_Graph_Type is new Handlers.Base_With_Finalization with null record;
 
    not overriding function From_IOStream (World: Rasqal_World_Type_Without_Finalize'Class;
-                                          IOStream: Base_IOStream_Type'Class;
+                                          IOStream: IOStream_Type_Without_Finalize'Class;
                                           Base_URI: URI_Type_Without_Finalize'Class;
                                           Name_URI: URI_Type_Without_Finalize'Class := URI_Type'(From_Handle(null));
                                           Flags: Flags_Type := Background;

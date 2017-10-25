@@ -193,7 +193,7 @@ package RDF.Redland.Model is
                                                          Language: String;
                                                          Datatype: URI_Type_Without_Finalize'Class);
 
-   not overriding procedure Write (Model: Model_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
+   not overriding procedure Write (Model: Model_Type_Without_Finalize; Stream: IOStream_Type_Without_Finalize'Class);
 
    package Handlers is new Model_Handled_Record.Common_Handlers(Model_Type_Without_Finalize);
 

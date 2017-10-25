@@ -117,7 +117,7 @@ package body RDF.Raptor.Parser is
      with Import, Convention=>C;
 
    procedure Parse_IOStream (Parser: Parser_Type_Without_Finalize;
-                             Stream: Base_IOStream_Type'Class;
+                             Stream: IOStream_Type_Without_Finalize'Class;
                              Base_URI: URI_Type_Without_Finalize'Class) is
    begin
       if raptor_parser_parse_iostream(Get_Handle(Parser), Get_Handle(Stream), Get_Handle(Base_URI)) /= 0 then

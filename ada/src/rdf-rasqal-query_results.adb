@@ -167,7 +167,7 @@ package body RDF.Rasqal.Query_Results is
                                        return Int
      with Import, Convention=>C;
 
-   procedure Read (Stream: Base_IOStream_Type'Class;
+   procedure Read (Stream: IOStream_Type_Without_Finalize'Class;
                    Results: Query_Results_Type_Without_Finalize;
                    Format_Name: String; -- "" for no format name
                    Mime_Type: String; -- "" for no MIME type
@@ -194,7 +194,7 @@ package body RDF.Rasqal.Query_Results is
                                         return Int
      with Import, Convention=>C;
 
-   procedure Write (Stream: Base_IOStream_Type'Class;
+   procedure Write (Stream: IOStream_Type_Without_Finalize'Class;
                     Results: Query_Results_Type_Without_Finalize;
                     Format_Name: String; -- "" for no format name
                     Mime_Type: String; -- "" for no MIME type

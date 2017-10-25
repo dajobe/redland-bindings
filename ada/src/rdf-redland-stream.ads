@@ -30,7 +30,7 @@ package RDF.Redland.Stream is
 
    -- librdf_stream_add_map() not implemented
 
-   not overriding procedure Write (Stream: Stream_Type_Without_Finalize; Raptor_Stream: Base_IOStream_Type'Class);
+   not overriding procedure Write (Stream: Stream_Type_Without_Finalize; Raptor_Stream: IOStream_Type_Without_Finalize'Class);
 
    package Handlers is new Stream_Handled_Record.Common_Handlers(Stream_Type_Without_Finalize);
 
