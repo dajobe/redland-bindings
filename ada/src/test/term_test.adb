@@ -2,16 +2,12 @@ with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.Term; use RDF.Raptor.Term;
 with RDF.Raptor.World; use RDF.Raptor.World;
-with Ada.Text_IO;
 with RDF.Auxiliary;
 
 package body Term_Test is
 
    procedure Test_Terms(T : in out Test_Cases.Test_Case'Class) is
       World: Raptor_World_Type;
-
-      URI_1: constant String := "http://example.org/xyz";
-      URI_3: constant String := "http://example.org/123";
 
       Term_1: Term_Type := From_Literal (World,
                                          RDF.Auxiliary.String_Holders.To_Holder("QWE"),

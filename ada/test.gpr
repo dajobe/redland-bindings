@@ -22,7 +22,7 @@ project Test is
       Common_Ada_Flags := ("-gnat2012",
                            "-gnaty3", "-gnatya", "-gnatyA", "-gnatyb", "-gnatyd", "-gnatyf", "-gnatyh", "-gnatyi", "-gnatyl", "-gnatyp", "-gnatyx",
                            "-gnatwe", "-gnatwa", "-gnatwF",
-                           "-gnatwU", "-gnatwK");
+                           "-gnatwK");
 
       Debug_Flags := ();
       case Debug_Mode is

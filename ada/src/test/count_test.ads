@@ -1,4 +1,4 @@
-with AUnit, AUnit.Test_Cases, AUnit.Test_Results; use AUnit, AUnit.Test_Cases, AUnit.Test_Results;
+with AUnit; use AUnit;
 with Our_Test;
 
 package Count_Test is

@@ -1,4 +1,3 @@
-with AUnit.Assertions;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Rasqal.World; use RDF.Rasqal.World;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;

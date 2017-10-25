@@ -6,11 +6,11 @@ package body Basic_Test is
 
    -- This just creates and assigns some variables (and ignores their values)
    procedure Test_Open(T : in out Test_Cases.Test_Case'Class) is
-      Default_World: Raptor_World_Type := Open;
-      World_With_Some_Flags: Raptor_World_Type := Open((1=>(Flag=>URI_Interning, Value=>False)));
+      Default_World: Raptor_World_Type := Open with Unreferenced;
+      World_With_Some_Flags: Raptor_World_Type := Open((1=>(Flag=>URI_Interning, Value=>False))) with Unreferenced;
 
       World2: Rasqal_World_Type := Open;
-      World: Raptor_World_Type_Without_Finalize := Get_Raptor(World2);
+      World: Raptor_World_Type_Without_Finalize := Get_Raptor(World2) with Unreferenced;
    begin
       null;
    end;

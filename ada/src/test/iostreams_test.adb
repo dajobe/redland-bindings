@@ -3,7 +3,6 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Raptor.World; use RDF.Raptor.World;
 with RDF.Raptor.Iostream; use RDF.Raptor.Iostream;
-with Ada.Text_IO;
 
 package body Iostreams_Test is
 

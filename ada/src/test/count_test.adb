@@ -2,7 +2,6 @@ with Ada.Strings.Unbounded;
 with Ada.Containers.Indefinite_Vectors;
 with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Auxiliary;
-with RDF.Raptor.World;
 with RDF.Raptor.IOStream;
 with RDF.Raptor.URI;
 with RDF.Rasqal.World;
@@ -10,6 +9,7 @@ with RDF.Rasqal.Literal;
 with RDF.Rasqal.Data_Graph; use RDF.Rasqal.Data_Graph;
 with RDF.Rasqal.Query; use RDF.Rasqal.Query;
 with RDF.Rasqal.Query_Results; use RDF.Rasqal.Query_Results;
+with AUnit.Test_Cases; use AUnit.Test_Cases;
 
 package body Count_Test is
 

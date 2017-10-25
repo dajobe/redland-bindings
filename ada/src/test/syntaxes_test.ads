@@ -1,4 +1,4 @@
-with AUnit, AUnit.Test_Cases, AUnit.Test_Results; use AUnit, AUnit.Test_Cases, AUnit.Test_Results;
+with AUnit, AUnit.Test_Cases; use AUnit, AUnit.Test_Cases;
 
 package Syntaxes_Test is
 

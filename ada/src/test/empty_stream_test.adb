@@ -1,8 +1,6 @@
 with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.Stream; use RDF.Redland.Stream;
-with Ada.Text_IO;
-with RDF.Auxiliary;
 
 package body Empty_Stream_Test is
 

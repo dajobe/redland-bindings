@@ -1,7 +1,6 @@
 with AUnit.Assertions; use AUnit.Assertions;
 with RDF.Raptor.URI; use RDF.Raptor.URI;
 with RDF.Raptor.World; use RDF.Raptor.World;
-with Ada.Text_IO;
 
 package body URI_Test is
 
