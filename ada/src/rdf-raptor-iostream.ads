@@ -9,7 +9,6 @@ limited with RDF.Raptor.Term;
 
 package RDF.Raptor.IOStream is
 
-   -- FIXME: Make a tree of classes with separate "builtin" and "user defined" branches.
    -- FIXME: Override Initialize_Handle to do nothing?
 
    -- It is impossible to make this as a wrapper around Ada.Streams.Root_IOStream_Type,
