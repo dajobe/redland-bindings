@@ -78,9 +78,9 @@ package RDF.Raptor.Serializer is
    not overriding function Get_World (Serializer: Serializer_Type_Without_Finalize)
                                       return Raptor_World_Type_Without_Finalize;
 
-   package Finalizer is new Serializer_Handled_Record.Common_Handlers(Serializer_Type_Without_Finalize);
+   package Handlers is new Serializer_Handled_Record.Common_Handlers(Serializer_Type_Without_Finalize);
 
-   type Serializer_Type is new Finalizer.Base_With_Finalization with null record;
+   type Serializer_Type is new Handlers.Base_With_Finalization with null record;
 
    not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class)
                                    return Serializer_Type;

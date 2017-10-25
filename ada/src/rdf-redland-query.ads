@@ -45,9 +45,9 @@ package RDF.Redland.Query is
                                     Model: Model_Type_Without_Finalize'Class)
                                     return Query_Results_Type;
 
-   package Finalizer is new Query_Handled_Record.Common_Handlers(Query_Type_Without_Finalize);
+   package Handlers is new Query_Handled_Record.Common_Handlers(Query_Type_Without_Finalize);
 
-   type Query_Type is new Finalizer.Base_With_Finalization with null record;
+   type Query_Type is new Handlers.Base_With_Finalization with null record;
 
    -- Order of arguments not the same as in C
    not overriding

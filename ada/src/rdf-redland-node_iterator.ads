@@ -10,8 +10,8 @@ package RDF.Redland.Node_Iterator is
    not overriding function Get_Node (Iterator: Node_Iterator_Type_Without_Finalize)
                                      return Node_Type_Without_Finalize;
 
-   package Finalizer is new Iterator_Handled_Record.Common_Handlers(Node_Iterator_Type_Without_Finalize);
+   package Handlers is new Iterator_Handled_Record.Common_Handlers(Node_Iterator_Type_Without_Finalize);
 
-   type Node_Iterator_Type is new Finalizer.Base_With_Finalization with null record;
+   type Node_Iterator_Type is new Handlers.Base_With_Finalization with null record;
 
 end RDF.Redland.Node_Iterator;

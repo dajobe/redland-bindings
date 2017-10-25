@@ -76,9 +76,9 @@ package RDF.Rasqal.Query is
    --     function Get_Update_Operation;
    --     function Get_Update_Operations_Sequence;
 
-   package Finalizer is new Query_Handled_Record.Common_Handlers(Query_Type_Without_Finalize);
+   package Handlers is new Query_Handled_Record.Common_Handlers(Query_Type_Without_Finalize);
 
-   type Query_Type is new Finalizer.Base_With_Finalization with null record;
+   type Query_Type is new Handlers.Base_With_Finalization with null record;
 
    not overriding function Create (World: Rasqal_World_Type'Class;
                                    Name, URI: RDF.Auxiliary.String_Holders.Holder)

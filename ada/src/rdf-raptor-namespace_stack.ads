@@ -48,9 +48,9 @@ package RDF.Raptor.Namespace_Stack is
                                              NS: RDF.Raptor.Namespace.Namespace_Type_Without_Finalize'Class;
                                              New_Depth: Natural);
 
-   package Finalizer is new Namespace_Stack_Handled_Record.Common_Handlers(Namespace_Stack_Type_Without_Finalize);
+   package Handlers is new Namespace_Stack_Handled_Record.Common_Handlers(Namespace_Stack_Type_Without_Finalize);
 
-   type Namespace_Stack_Type is new Finalizer.Base_With_Finalization with null record;
+   type Namespace_Stack_Type is new Handlers.Base_With_Finalization with null record;
 
    type Defaults_Type is (None_Type, XML_Type, RDF_Type, Undefined_Type)
      with Convention => C;

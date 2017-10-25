@@ -66,9 +66,9 @@ package RDF.Redland.Statement is
 
    not overriding procedure Write (Statement: Statement_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
-   package Finalizer is new RDF.Raptor.Statement.Statement_Handled_Record.Common_Handlers(Statement_Type_Without_Finalize);
+   package Handlers is new RDF.Raptor.Statement.Statement_Handled_Record.Common_Handlers(Statement_Type_Without_Finalize);
 
-   type Statement_Type is new Finalizer.Base_With_Finalization with null record;
+   type Statement_Type is new Handlers.Base_With_Finalization with null record;
 
    -- librdf_new_statement_from_statement2() not bound.
    -- (It is unclear how this would interact with Ada copying.)

@@ -107,9 +107,9 @@ package RDF.Redland.Serializer is
    function Create_Serializer_Descriptions_Iterator (World: Redland_World_Type_Without_Finalize'Class)
                                                  return Serializer_Description_Iterator;
 
-   package Finalizer is new Serializer_Handled_Record.Common_Handlers(Serializer_Type_Without_Finalize);
+   package Handlers is new Serializer_Handled_Record.Common_Handlers(Serializer_Type_Without_Finalize);
 
-   type Serializer_Type is new Finalizer.Base_With_Finalization with null record;
+   type Serializer_Type is new Handlers.Base_With_Finalization with null record;
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Name, Mime_Type: String := "";

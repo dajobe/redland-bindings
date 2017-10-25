@@ -124,9 +124,9 @@ package RDF.Redland.Parser is
 
    -- librdf_parser_get_uri_filter() and librdf_parser_set_uri_filter()
 
-   package Finalizer is new Parser_Handled_Record.Common_Handlers(Parser_Type_Without_Finalize);
+   package Handlers is new Parser_Handled_Record.Common_Handlers(Parser_Type_Without_Finalize);
 
-   type Parser_Type is new Finalizer.Base_With_Finalization with null record;
+   type Parser_Type is new Handlers.Base_With_Finalization with null record;
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Name, Mime_Type: String := "";

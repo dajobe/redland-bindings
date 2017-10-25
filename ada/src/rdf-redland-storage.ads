@@ -57,9 +57,9 @@ package RDF.Redland.Storage is
    not overriding function Get_World (Storage: Storage_Type_Without_Finalize)
                                       return Redland_World_Type_Without_Finalize;
 
-   package Finalizer is new Storage_Handled_Record.Common_Handlers(Storage_Type_Without_Finalize);
+   package Handlers is new Storage_Handled_Record.Common_Handlers(Storage_Type_Without_Finalize);
 
-   type Storage_Type is new Finalizer.Base_With_Finalization with null record;
+   type Storage_Type is new Handlers.Base_With_Finalization with null record;
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Factory_Name: String;

@@ -32,9 +32,9 @@ package RDF.Redland.Stream is
 
    not overriding procedure Write (Stream: Stream_Type_Without_Finalize; Raptor_Stream: Base_IOStream_Type'Class);
 
-   package Finalizer is new Stream_Handled_Record.Common_Handlers(Stream_Type_Without_Finalize);
+   package Handlers is new Stream_Handled_Record.Common_Handlers(Stream_Type_Without_Finalize);
 
-   type Stream_Type is new Finalizer.Base_With_Finalization with null record;
+   type Stream_Type is new Handlers.Base_With_Finalization with null record;
 
    function Empty_Stream (World: Redland_World_Type_Without_Finalize'Class) return Stream_Type;
 

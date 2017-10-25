@@ -44,9 +44,9 @@ package RDF.Raptor.Statement is
                                             Stream: Base_IOStream_Type'Class;
                                             Write_Graph_Term: Boolean);
 
-   package Finalizer is new Statement_Handled_Record.Common_Handlers(Statement_Type_Without_Finalize);
+   package Handlers is new Statement_Handled_Record.Common_Handlers(Statement_Type_Without_Finalize);
 
-   type Statement_Type is new Finalizer.Base_With_Finalization with null record;
+   type Statement_Type is new Handlers.Base_With_Finalization with null record;
 
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
    --     function No_Auto_Finalization (Term: Term_Type_Without_Finalize'Class) return Boolean;

@@ -43,9 +43,9 @@ package RDF.Raptor.World is
    not overriding procedure Set_Flags(Object: in out Raptor_World_Type_Without_Finalize;
                                       Flags: Flags_Array);
 
-   package Finalizer is new Raptor_World_Handled_Record.Common_Handlers(Raptor_World_Type_Without_Finalize);
+   package Handlers is new Raptor_World_Handled_Record.Common_Handlers(Raptor_World_Type_Without_Finalize);
 
-   type Raptor_World_Type is new Finalizer.Base_With_Finalization with null record;
+   type Raptor_World_Type is new Handlers.Base_With_Finalization with null record;
 
    not overriding function Open return Raptor_World_Type;
 

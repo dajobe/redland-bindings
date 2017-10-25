@@ -130,9 +130,9 @@ package RDF.Raptor.IOStream is
    --     function To_String (World: Raptor_World_Type_Without_Finalize; Str: String)
    --                         return IOStream_Type_Without_Finalize;
 
-   package Finalizer is new IOStream_Handled_Record.Common_Handlers(IOStream_Type_Without_Finalize);
+   package Handlers is new IOStream_Handled_Record.Common_Handlers(IOStream_Type_Without_Finalize);
 
-   type IOStream_Type is new Finalizer.Base_With_Finalization with null record;
+   type IOStream_Type is new Handlers.Base_With_Finalization with null record;
 
    -- essentially abstract
    type User_Defined_IOStream_Type is new Base_IOStream_Type with private;
