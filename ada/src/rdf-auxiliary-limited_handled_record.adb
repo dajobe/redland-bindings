@@ -38,4 +38,20 @@ package body RDF.Auxiliary.Limited_Handled_Record is
       return Object.Handle = null;
    end;
 
+   package body Common_Handlers is
+
+      procedure Detach(Object: in out Base_With_Finalization) is
+      begin
+         Set_Handle_Hack(Object, null);
+      end;
+
+      function Detach(Object: in out Base_With_Finalization) return Base is
+         Handle: constant Access_Type := Get_Handle(Object);
+      begin
+         Set_Handle_Hack(Object, null);
+         return From_Handle(Handle);
+      end;
+
+   end;
+
 end RDF.Auxiliary.Limited_Handled_Record;

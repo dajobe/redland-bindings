@@ -62,7 +62,7 @@ package RDF.Auxiliary.Handled_Record is
                                   renames Do_Adjust;
       type Base_With_Finalization is new User_Type with null record;
       not overriding function Copy(Object: Base'Class) return Base_With_Finalization;
-      -- TODO: "Detach" API is experimental
+      -- "Detach" API is experimental
       procedure Detach(Object: in out Base_With_Finalization);
       function Detach(Object: in out Base_With_Finalization) return Base;
    end;

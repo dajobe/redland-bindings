@@ -41,6 +41,9 @@ package RDF.Auxiliary.Limited_Handled_Record is
       overriding procedure Finalize(Object: in out User_Type)
                                     renames Do_Finalize;
       type Base_With_Finalization is new User_Type with null record;
+      -- "Detach" API is experimental
+      procedure Detach(Object: in out Base_With_Finalization);
+      function Detach(Object: in out Base_With_Finalization) return Base;
    end;
 
 private
