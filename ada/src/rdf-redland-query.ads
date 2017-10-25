@@ -1,12 +1,12 @@
 with Ada.Iterator_Interfaces;
-with RDF.Auxiliary.Handled_Record;
+with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.URI; use RDF.Redland.URI;
 
 package RDF.Redland.Query is
 
-   package Query_Handled_Record is new RDF.Auxiliary.Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
+   package Query_Handled_Record is new RDF.Auxiliary.Limited_Handled_Record(RDF.Auxiliary.Dummy_Record, RDF.Auxiliary.Dummy_Record_Access);
 
    type Query_Type_Without_Finalize is new RDF.Redland.Query.Query_Handled_Record.Base_Object with null record;
 
@@ -14,7 +14,7 @@ package RDF.Redland.Query is
 
    overriding procedure Finalize_Handle (Object: Query_Type_Without_Finalize; Handle: Query_Handle);
 
-   overriding function Adjust_Handle (Object: Query_Type_Without_Finalize; Handle: Query_Handle) return Query_Handle;
+--     overriding function Adjust_Handle (Object: Query_Type_Without_Finalize; Handle: Query_Handle) return Query_Handle;
 
    function Get_Query_Language_Description (World: Redland_World_Type_Without_Finalize'Class;
                                             Counter: Natural)
@@ -57,6 +57,9 @@ package RDF.Redland.Query is
                     Query_String: String;
                     URI, Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
                     return Query_Type;
+
+   -- It seems that this is buggy
+   not overriding function Copy (Query: Query_Type_Without_Finalize'Class) return Query_Type;
 
 private
 

@@ -71,9 +71,14 @@ package body RDF.Redland.Query is
    function librdf_new_query_from_query (Query: Query_Handle) return Query_Handle
      with Import, Convention=>C;
 
-   function Adjust_Handle (Object: Query_Type_Without_Finalize; Handle: Query_Handle) return Query_Handle is
+--     function Adjust_Handle (Object: Query_Type_Without_Finalize; Handle: Query_Handle) return Query_Handle is
+--     begin
+--        return librdf_new_query_from_query(Handle);
+--     end;
+
+   function Copy (Query: Query_Type_Without_Finalize'Class) return Query_Type is
    begin
-      return librdf_new_query_from_query(Handle);
+      return From_Non_Null_Handle(librdf_new_query_from_query(Get_Handle(Query)));
    end;
 
    procedure librdf_free_query (Query: Query_Handle)

@@ -21,6 +21,7 @@ package body Count_Test2 is
       Directory: constant String := To_String(Get_Environment(T2).Directory);
       RDF_File: constant String := Directory & "/../data/dc.nt";
       SPARQL: constant String := "SELECT (count(*) as ?count) WHERE { ?s ?p ?o . }";
+--        Query: Query_Type := Copy(Create(World, "sparql", SPARQL)); -- FIXME: Copy causes an unhandled signal
       Query: Query_Type := Create(World, "sparql", SPARQL);
       Results: Bindings_Query_Results_Type_Without_Finalize := Query_Execute(Model, Query);
       package Rows_Holder is new Ada.Containers.Indefinite_Vectors(Positive, String);
