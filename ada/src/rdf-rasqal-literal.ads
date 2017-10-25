@@ -76,7 +76,7 @@ package RDF.Rasqal.Literal is
 
    not overriding function Type_Label (Kind: Literal_Type_Enum) return String;
 
-   package Finalizer is new Literal_Handled_Record.With_Finalization(Literal_Type_Without_Finalize);
+   package Finalizer is new Literal_Handled_Record.Common_Handlers(Literal_Type_Without_Finalize);
 
    type Literal_Type is new Finalizer.Base_With_Finalization with null record;
 

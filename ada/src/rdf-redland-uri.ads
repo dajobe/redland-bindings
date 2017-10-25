@@ -39,7 +39,7 @@ package RDF.Redland.URI is
    not overriding function Concept_Schema_Namespace (World: Redland_World_Type_Without_Finalize'Class)
                                                      return URI_Type_Without_Finalize;
 
-   package Finalizer is new RDF.Raptor.URI.URI_Handled_Record.With_Finalization(URI_Type_Without_Finalize);
+   package Finalizer is new RDF.Raptor.URI.URI_Handled_Record.Common_Handlers(URI_Type_Without_Finalize);
 
    type URI_Type is new Finalizer.Base_With_Finalization with null record;
 

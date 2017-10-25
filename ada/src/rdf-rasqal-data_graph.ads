@@ -55,7 +55,7 @@ package RDF.Rasqal.Data_Graph is
    not overriding procedure Print (Graph: Data_Graph_Type_Without_Finalize;
                                    File: RDF.Auxiliary.C_File_Access);
 
-   package Finalizer is new Data_Graph_Handled_Record.With_Finalization(Data_Graph_Type_Without_Finalize);
+   package Finalizer is new Data_Graph_Handled_Record.Common_Handlers(Data_Graph_Type_Without_Finalize);
 
    type Data_Graph_Type is new Finalizer.Base_With_Finalization with null record;
 

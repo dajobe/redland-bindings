@@ -63,7 +63,7 @@ package RDF.Redland.Node is
 
    not overriding procedure Write (Node: Node_Type_Without_Finalize; Stream: Base_IOStream_Type'Class);
 
-   package Finalizer is new RDF.Raptor.Term.Term_Handled_Record.With_Finalization(Node_Type_Without_Finalize);
+   package Finalizer is new RDF.Raptor.Term.Term_Handled_Record.Common_Handlers(Node_Type_Without_Finalize);
 
    type Node_Type is new Finalizer.Base_With_Finalization with null record;
 

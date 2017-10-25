@@ -71,7 +71,7 @@ package RDF.Raptor.URI is
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                           Base_URI: URI_Type_Without_Finalize'Class);
 
-   package Finalizer is new URI_Handled_Record.With_Finalization(URI_Type_Without_Finalize);
+   package Finalizer is new URI_Handled_Record.Common_Handlers(URI_Type_Without_Finalize);
 
    type URI_Type is new Finalizer.Base_With_Finalization with null record;
 

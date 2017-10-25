@@ -113,7 +113,7 @@ package RDF.Raptor.Parser is
    -- This type can provide a small performance benefit over Parser_Type defined below.
    -- However if your main concern is reliability, not performance,
    -- you may wish use Parser_Type defined below.
-   package Finalizer is new Parser_Handled_Record.With_Finalization(Parser_Type_Without_Finalize);
+   package Finalizer is new Parser_Handled_Record.Common_Handlers(Parser_Type_Without_Finalize);
 
    type Parser_Type is new Finalizer.Base_With_Finalization with null record;
 

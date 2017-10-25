@@ -39,7 +39,7 @@ package RDF.Rasqal.World is
                                                             Identifier: String_Holders.Holder)
                                                             return String_Holders.Holder;
 
-   package Finalizer is new Rasqal_World_Handled_Record.With_Finalization(Rasqal_World_Type_Without_Finalize);
+   package Finalizer is new Rasqal_World_Handled_Record.Common_Handlers(Rasqal_World_Type_Without_Finalize);
 
    type Rasqal_World_Type is new Finalizer.Base_With_Finalization with null record;
 

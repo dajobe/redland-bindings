@@ -104,7 +104,7 @@ package RDF.Raptor.Term is
                                           Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
                                           Base_URI: URI_Type'Class);
 
-   package Finalizer is new Term_Handled_Record.With_Finalization(Term_Type_Without_Finalize);
+   package Finalizer is new Term_Handled_Record.Common_Handlers(Term_Type_Without_Finalize);
 
    type Term_Type is new Finalizer.Base_With_Finalization with null record;
 

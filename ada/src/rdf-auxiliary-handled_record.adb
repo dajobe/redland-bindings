@@ -50,7 +50,7 @@ package body RDF.Auxiliary.Handled_Record is
       return Object.Handle = null;
    end;
 
-   package body With_Finalization is
+   package body Common_Handlers is
 
       function Copy(Object: Base'Class) return Base_With_Finalization is
       begin

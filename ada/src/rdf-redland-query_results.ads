@@ -87,7 +87,7 @@ package RDF.Redland.Query_Results is
 
    -- I was lazy to implement query_results_formatter and related functions
 
-   package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
+   package Finalizer is new Query_Results_Handled_Record.Common_Handlers(Query_Results_Type_Without_Finalize);
 
    -- The same cursor is used for bindings iterator and for Graph iterator.
    -- However, don't rely on using the same type.

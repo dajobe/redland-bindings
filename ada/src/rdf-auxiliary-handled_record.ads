@@ -54,7 +54,7 @@ package RDF.Auxiliary.Handled_Record is
 
    generic
       type Base is new Base_Object with private;
-   package With_Finalization is
+   package Common_Handlers is
       type User_Type is new Base with null record;
       overriding procedure Finalize(Object: in out User_Type)
                                     renames Do_Finalize;
