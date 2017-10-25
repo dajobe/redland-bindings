@@ -3,8 +3,6 @@ with RDF.Auxiliary.Handled_Record;
 with RDF.Raptor.Syntaxes; use RDF.Raptor.Syntaxes;
 with RDF.Redland.World; use RDF.Redland.World;
 with RDF.Redland.URI; use RDF.Redland.URI;
-with RDF.Redland.Model; use RDF.Redland.Model;
-with RDF.Redland.Query_Results; use RDF.Redland.Query_Results;
 
 package RDF.Redland.Query is
 
@@ -41,9 +39,10 @@ package RDF.Redland.Query is
    function Create_Query_Language_Descriptions_Iterator (World: Redland_World_Type_Without_Finalize'Class)
                                                          return Query_Language_Description_Iterator;
 
-   not overriding function Execute (Query: Query_Type_Without_Finalize;
-                                    Model: Model_Type_Without_Finalize'Class)
-                                    return Query_Results_Type;
+   -- TODO: How to do this without a circular dependency?
+--     not overriding function Execute (Query: Query_Type_Without_Finalize;
+--                                      Model: Model_Type_Without_Finalize'Class)
+--                                      return Query_Results_Type;
 
    package Handlers is new Query_Handled_Record.Common_Handlers(Query_Type_Without_Finalize);
 

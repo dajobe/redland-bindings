@@ -13,6 +13,7 @@ with Syntaxes_Test;
 with Count_Test;
 with Empty_Stream_Test;
 with Stream_Test;
+with Count_Test2;
 
 package body Raptor_Test_Suite is
 
@@ -36,6 +37,7 @@ package body Raptor_Test_Suite is
    Test_Case_9 : aliased Count_Test.Test_Case;
    Test_Case_10 : aliased Empty_Stream_Test.Test_Case;
    Test_Case_11 : aliased Stream_Test.Test_Case;
+   Test_Case_12 : aliased Count_Test2.Test_Case;
 
    function Suite return Access_Test_Suite is
    begin
@@ -51,6 +53,7 @@ package body Raptor_Test_Suite is
       Add_Test (Result'Access, Test_Case_9'Access);
       Add_Test (Result'Access, Test_Case_10'Access);
       Add_Test (Result'Access, Test_Case_11'Access);
+      Add_Test (Result'Access, Test_Case_12'Access);
       return Result'Access;
    end Suite;
 

@@ -10,9 +10,9 @@ with RDF.Redland.Statement; use RDF.Redland.Statement;
 with RDF.Redland.Stream; use RDF.Redland.Stream;
 with RDF.Redland.Storage; use RDF.Redland.Storage;
 with RDF.Redland.Node_Iterator; use RDF.Redland.Node_Iterator;
-limited with RDF.Redland.Query;
+with RDF.Redland.Query; use RDF.Redland.Query;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
-limited with RDF.Redland.Query_Results;
+with RDF.Redland.Query_Results; use RDF.Redland.Query_Results;
 
 package RDF.Redland.Model is
 
@@ -145,8 +145,8 @@ package RDF.Redland.Model is
    not overriding function Supports_Context (Model: Model_Type_Without_Finalize) return Boolean;
 
    not overriding function Query_Execute (Model: Model_Type_Without_Finalize;
-                                          Query: RDF.Redland.Query.Query_Type_Without_Finalize'Class)
-                                          return RDF.Redland.Query_Results.Query_Results_Type_Without_Finalize;
+                                          Query: Query_Type_Without_Finalize'Class)
+                                          return Query_Results_Type_Without_Finalize;
 
    not overriding procedure Sync (Model: Model_Type_Without_Finalize);
 
