@@ -41,7 +41,7 @@ package RDF.Rasqal.World is
 
    package Finalizer is new Rasqal_World_Handled_Record.With_Finalization(Rasqal_World_Type_Without_Finalize);
 
-   type Rasqal_World_Type is new Finalizer.Derived with null record;
+   type Rasqal_World_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Open return Rasqal_World_Type;
 

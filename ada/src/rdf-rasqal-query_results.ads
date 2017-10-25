@@ -104,7 +104,7 @@ package RDF.Rasqal.Query_Results is
 
    package Finalizer is new Query_Results_Handled_Record.With_Finalization(Query_Results_Type_Without_Finalize);
 
-   type Query_Results_Type is new Finalizer.Derived with null record;
+   type Query_Results_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Create (World: Rasqal_World_Type_Without_Finalize'Class;
                                    Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;

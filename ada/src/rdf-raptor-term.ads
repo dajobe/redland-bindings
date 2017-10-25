@@ -106,7 +106,7 @@ package RDF.Raptor.Term is
 
    package Finalizer is new Term_Handled_Record.With_Finalization(Term_Type_Without_Finalize);
 
-   type Term_Type is new Finalizer.Derived with null record;
+   type Term_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class)
                                        return Term_Type;

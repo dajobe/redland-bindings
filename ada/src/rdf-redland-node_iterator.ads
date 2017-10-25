@@ -12,6 +12,6 @@ package RDF.Redland.Node_Iterator is
 
    package Finalizer is new Iterator_Handled_Record.With_Finalization(Node_Iterator_Type_Without_Finalize);
 
-   type Node_Iterator_Type is new Finalizer.Derived with null record;
+   type Node_Iterator_Type is new Finalizer.Base_With_Finalization with null record;
 
 end RDF.Redland.Node_Iterator;

@@ -24,7 +24,7 @@ package RDF.Raptor.Namespace is
 
    package Finalizer is new Namespace_Handled_Record.With_Finalization(Namespace_Type_Without_Finalize);
 
-   type Namespace_Type is new Finalizer.Derived with null record;
+   type Namespace_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Create (Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type_Without_Finalize'Class;
                                    Prefix: String;

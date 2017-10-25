@@ -50,7 +50,7 @@ package RDF.Raptor.Namespace_Stack is
 
    package Finalizer is new Namespace_Stack_Handled_Record.With_Finalization(Namespace_Stack_Type_Without_Finalize);
 
-   type Namespace_Stack_Type is new Finalizer.Derived with null record;
+   type Namespace_Stack_Type is new Finalizer.Base_With_Finalization with null record;
 
    type Defaults_Type is (None_Type, XML_Type, RDF_Type, Undefined_Type)
      with Convention => C;

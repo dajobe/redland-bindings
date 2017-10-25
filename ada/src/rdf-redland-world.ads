@@ -46,7 +46,7 @@ package RDF.Redland.World is
 
    package Finalizer is new Redland_World_Handled_Record.With_Finalization(Redland_World_Type_Without_Finalize);
 
-   type Redland_World_Type is new Finalizer.Derived with null record;
+   type Redland_World_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Open return Redland_World_Type;
 

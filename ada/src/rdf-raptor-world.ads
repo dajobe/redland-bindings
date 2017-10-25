@@ -45,7 +45,7 @@ package RDF.Raptor.World is
 
    package Finalizer is new Raptor_World_Handled_Record.With_Finalization(Raptor_World_Type_Without_Finalize);
 
-   type Raptor_World_Type is new Finalizer.Derived with null record;
+   type Raptor_World_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Open return Raptor_World_Type;
 

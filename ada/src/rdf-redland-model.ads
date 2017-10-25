@@ -197,7 +197,7 @@ package RDF.Redland.Model is
 
    package Finalizer is new Model_Handled_Record.With_Finalization(Model_Type_Without_Finalize);
 
-   type Model_Type is new Finalizer.Derived with null record;
+   type Model_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Storage: Storage_Type_Without_Finalize'Class;

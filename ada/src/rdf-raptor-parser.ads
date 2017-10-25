@@ -115,7 +115,7 @@ package RDF.Raptor.Parser is
    -- you may wish use Parser_Type defined below.
    package Finalizer is new Parser_Handled_Record.With_Finalization(Parser_Type_Without_Finalize);
 
-   type Parser_Type is new Finalizer.Derived with null record;
+   type Parser_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class; Name: String)
                                    return Parser_Type;

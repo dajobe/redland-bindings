@@ -55,15 +55,16 @@ package RDF.Auxiliary.Handled_Record is
    generic
       type Base is new Base_Object with private;
    package With_Finalization is
-      type Derived is new Base with null record;
-      overriding procedure Finalize(Object: in out Derived)
+      type User_Type is new Base with null record;
+      overriding procedure Finalize(Object: in out User_Type)
                                     renames Do_Finalize;
-      overriding procedure Adjust(Object: in out Derived)
+      overriding procedure Adjust(Object: in out User_Type)
                                   renames Do_Adjust;
-      not overriding function Copy(Object: Base'Class) return Derived;
+      type Base_With_Finalization is new User_Type with null record;
+      not overriding function Copy(Object: Base'Class) return Base_With_Finalization;
       -- TODO: "Detach" API is experimental
-      procedure Detach(Object: in out Derived);
-      function Detach(Object: in out Derived) return Base;
+      procedure Detach(Object: in out Base_With_Finalization);
+      function Detach(Object: in out Base_With_Finalization) return Base;
    end;
 
 private

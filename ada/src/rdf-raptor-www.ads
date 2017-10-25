@@ -67,7 +67,7 @@ package RDF.Raptor.WWW is
 
    package Finalizer is new WWW_Handled_Record.With_Finalization(WWW_Type_Without_Finalize);
 
-   type WWW_Type is new Finalizer.Derived with null record;
+   type WWW_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Create (World: Raptor_World_Type'Class) return WWW_Type;
 

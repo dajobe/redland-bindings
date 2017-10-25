@@ -41,7 +41,7 @@ package RDF.Redland.URI is
 
    package Finalizer is new RDF.Raptor.URI.URI_Handled_Record.With_Finalization(URI_Type_Without_Finalize);
 
-   type URI_Type is new Finalizer.Derived with null record;
+   type URI_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function From_String (World: Redland_World_Type_Without_Finalize'Class; URI: URI_String)
                                         return URI_Type;

@@ -3,7 +3,7 @@ with RDF.Auxiliary.Limited_Handled_Record;
 
 package RDF.Redland.Iterator is
 
-   -- Usually you should use derived types, such as defined in RDF.Redland.Node_Iterator
+   -- Usually you should use Base_With_Finalization types, such as defined in RDF.Redland.Node_Iterator
 
    -- TODO: Necessarily test that it works as expected
 
@@ -29,7 +29,7 @@ package RDF.Redland.Iterator is
 
    package Finalizer is new Iterator_Handled_Record.With_Finalization(Iterator_Type_Without_Finalize);
 
-   type Iterator_Type is new Finalizer.Derived with null record;
+   type Iterator_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Empty_Iterator return Iterator_Type;
 

@@ -57,7 +57,7 @@ package RDF.Rasqal.Data_Graph is
 
    package Finalizer is new Data_Graph_Handled_Record.With_Finalization(Data_Graph_Type_Without_Finalize);
 
-   type Data_Graph_Type is new Finalizer.Derived with null record;
+   type Data_Graph_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function From_IOStream (World: Rasqal_World_Type_Without_Finalize'Class;
                                           IOStream: Base_IOStream_Type'Class;

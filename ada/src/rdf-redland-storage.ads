@@ -59,7 +59,7 @@ package RDF.Redland.Storage is
 
    package Finalizer is new Storage_Handled_Record.With_Finalization(Storage_Type_Without_Finalize);
 
-   type Storage_Type is new Finalizer.Derived with null record;
+   type Storage_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Factory_Name: String;

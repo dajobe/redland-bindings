@@ -34,7 +34,7 @@ package RDF.Redland.Stream is
 
    package Finalizer is new Stream_Handled_Record.With_Finalization(Stream_Type_Without_Finalize);
 
-   type Stream_Type is new Finalizer.Derived with null record;
+   type Stream_Type is new Finalizer.Base_With_Finalization with null record;
 
    function Empty_Stream (World: Redland_World_Type_Without_Finalize'Class) return Stream_Type;
 

@@ -132,7 +132,7 @@ package RDF.Raptor.IOStream is
 
    package Finalizer is new IOStream_Handled_Record.With_Finalization(IOStream_Type_Without_Finalize);
 
-   type IOStream_Type is new Finalizer.Derived with null record;
+   type IOStream_Type is new Finalizer.Base_With_Finalization with null record;
 
    -- essentially abstract
    type User_Defined_IOStream_Type is new Base_IOStream_Type with private;

@@ -46,7 +46,7 @@ package RDF.Raptor.Statement is
 
    package Finalizer is new Statement_Handled_Record.With_Finalization(Statement_Type_Without_Finalize);
 
-   type Statement_Type is new Finalizer.Derived with null record;
+   type Statement_Type is new Finalizer.Base_With_Finalization with null record;
 
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
    --     function No_Auto_Finalization (Term: Term_Type_Without_Finalize'Class) return Boolean;

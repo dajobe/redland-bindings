@@ -73,7 +73,7 @@ package RDF.Raptor.URI is
 
    package Finalizer is new URI_Handled_Record.With_Finalization(URI_Type_Without_Finalize);
 
-   type URI_Type is new Finalizer.Derived with null record;
+   type URI_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function From_String(World: Raptor_World_Type_Without_Finalize'Class;
                                        Arg: URI_String)

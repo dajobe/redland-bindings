@@ -68,7 +68,7 @@ package RDF.Redland.Statement is
 
    package Finalizer is new RDF.Raptor.Statement.Statement_Handled_Record.With_Finalization(Statement_Type_Without_Finalize);
 
-   type Statement_Type is new Finalizer.Derived with null record;
+   type Statement_Type is new Finalizer.Base_With_Finalization with null record;
 
    -- librdf_new_statement_from_statement2() not bound.
    -- (It is unclear how this would interact with Ada copying.)

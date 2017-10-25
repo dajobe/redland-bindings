@@ -78,7 +78,7 @@ package RDF.Rasqal.Literal is
 
    package Finalizer is new Literal_Handled_Record.With_Finalization(Literal_Type_Without_Finalize);
 
-   type Literal_Type is new Finalizer.Derived with null record;
+   type Literal_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function New_Typed_Literal (World: Rasqal_World_Type_Without_Finalize'Class;
                                               Type_Of_Literal: Literal_Type_Enum;

@@ -80,7 +80,7 @@ package RDF.Raptor.Serializer is
 
    package Finalizer is new Serializer_Handled_Record.With_Finalization(Serializer_Type_Without_Finalize);
 
-   type Serializer_Type is new Finalizer.Derived with null record;
+   type Serializer_Type is new Finalizer.Base_With_Finalization with null record;
 
    not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class)
                                    return Serializer_Type;

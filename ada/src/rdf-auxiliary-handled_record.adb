@@ -52,17 +52,17 @@ package body RDF.Auxiliary.Handled_Record is
 
    package body With_Finalization is
 
-      function Copy(Object: Base'Class) return Derived is
+      function Copy(Object: Base'Class) return Base_With_Finalization is
       begin
          return From_Handle(Adjust_Handle(Object, Get_Handle(Object)));
       end;
 
-      procedure Detach(Object: in out Derived) is
+      procedure Detach(Object: in out Base_With_Finalization) is
       begin
          Set_Handle_Hack(Object, null);
       end;
 
-      function Detach(Object: in out Derived) return Base is
+      function Detach(Object: in out Base_With_Finalization) return Base is
          Handle: constant Access_Type := Get_Handle(Object);
       begin
          Set_Handle_Hack(Object, null);
