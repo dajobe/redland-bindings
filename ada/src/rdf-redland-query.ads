@@ -58,7 +58,7 @@ package RDF.Redland.Query is
                     URI, Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
                     return Query_Type;
 
-   -- It seems that this is buggy
+   -- It seems that this is buggy (see count_test2.adb)
    not overriding function Copy (Query: Query_Type_Without_Finalize'Class) return Query_Type;
 
 private
