@@ -117,6 +117,8 @@ package RDF.Redland.Query_Results is
 
    type Query_Results_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Query_Results_Type_User is new Handlers.User_Type with null record;
+
    subtype Bindings_Query_Results_Type is Query_Results_Type
      with Dynamic_Predicate => Is_Bindings(Bindings_Query_Results_Type);
    subtype Boolean_Query_Results_Type is Query_Results_Type

@@ -106,6 +106,8 @@ package RDF.Rasqal.Query_Results is
 
    type Query_Results_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Query_Results_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Create (World: Rasqal_World_Type_Without_Finalize'Class;
                                    Query: RDF.Rasqal.Query.Query_Type_Without_Finalize;
                                    Kind: Query_Results_Type_Enum)

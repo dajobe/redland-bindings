@@ -48,6 +48,8 @@ package RDF.Raptor.Statement is
 
    type Statement_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Statement_Type_User is new Handlers.User_Type with null record;
+
    -- Returns False for certain types which automatically finalize handles and so are not appropriate for objects owned by a statement
    --     function No_Auto_Finalization (Term: Term_Type_Without_Finalize'Class) return Boolean;
 

@@ -52,6 +52,8 @@ package RDF.Raptor.Namespace_Stack is
 
    type Namespace_Stack_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Namespace_Stack_Type_User is new Handlers.User_Type with null record;
+
    type Defaults_Type is (None_Type, XML_Type, RDF_Type, Undefined_Type)
      with Convention => C;
    for Defaults_Type use (None_Type=>0, XML_Type=>1, RDF_Type=>2, Undefined_Type=>3);

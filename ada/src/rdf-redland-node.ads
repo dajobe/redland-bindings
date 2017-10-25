@@ -67,6 +67,8 @@ package RDF.Redland.Node is
 
    type Node_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Node_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class) return Node_Type;
 
    -- "No identifier" is signified by empty string

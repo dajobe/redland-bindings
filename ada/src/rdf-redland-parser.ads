@@ -128,6 +128,8 @@ package RDF.Redland.Parser is
 
    type Parser_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Parser_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Name, Mime_Type: String := "";
                                    Type_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))

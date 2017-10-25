@@ -49,6 +49,8 @@ package RDF.Redland.Query is
 
    type Query_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Query_Type_User is new Handlers.User_Type with null record;
+
    -- Order of arguments not the same as in C
    not overriding
    function Create (World: Redland_World_Type_Without_Finalize'Class;

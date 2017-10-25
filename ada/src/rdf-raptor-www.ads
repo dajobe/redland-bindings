@@ -69,6 +69,8 @@ package RDF.Raptor.WWW is
 
    type WWW_Type is new Handlers.Base_With_Finalization with null record;
 
+   type WWW_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Create (World: Raptor_World_Type'Class) return WWW_Type;
 
    not overriding function Create (World: Raptor_World_Type'Class; Connection: Connection_Type)

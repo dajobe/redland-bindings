@@ -31,6 +31,8 @@ package RDF.Redland.Iterator is
 
    type Iterator_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Iterator_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Empty_Iterator return Iterator_Type;
 
    -- Implementing Ada2012 iterators does not seem possible, because we start

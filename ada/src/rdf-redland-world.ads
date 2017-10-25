@@ -48,6 +48,8 @@ package RDF.Redland.World is
 
    type Redland_World_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Redland_World_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Open return Redland_World_Type;
 
    -- librdf_world_set_error() and librdf_world_set_warning() deliberately not implemented.

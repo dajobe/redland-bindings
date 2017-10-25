@@ -43,6 +43,8 @@ package RDF.Redland.URI is
 
    type URI_Type is new Handlers.Base_With_Finalization with null record;
 
+   type URI_Type_User is new Handlers.User_Type with null record;
+
    not overriding function From_String (World: Redland_World_Type_Without_Finalize'Class; URI: URI_String)
                                         return URI_Type;
 

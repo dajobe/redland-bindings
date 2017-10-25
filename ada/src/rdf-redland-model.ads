@@ -199,6 +199,8 @@ package RDF.Redland.Model is
 
    type Model_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Model_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Storage: Storage_Type_Without_Finalize'Class;
                                    Options: String)

@@ -47,6 +47,8 @@ package RDF.Raptor.World is
 
    type Raptor_World_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Raptor_World_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Open return Raptor_World_Type;
 
    not overriding function Open(Flags: Flags_Array) return Raptor_World_Type;

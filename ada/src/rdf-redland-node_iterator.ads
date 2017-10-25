@@ -14,4 +14,6 @@ package RDF.Redland.Node_Iterator is
 
    type Node_Iterator_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Node_Iterator_Type_User is new Handlers.User_Type with null record;
+
 end RDF.Redland.Node_Iterator;

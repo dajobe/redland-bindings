@@ -82,6 +82,8 @@ package RDF.Raptor.Serializer is
 
    type Serializer_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Serializer_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class)
                                    return Serializer_Type;
    not overriding function Create (World: Raptor_World_Type_Without_Finalize'Class;

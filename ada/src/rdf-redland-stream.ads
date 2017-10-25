@@ -36,6 +36,8 @@ package RDF.Redland.Stream is
 
    type Stream_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Stream_Type_User is new Handlers.User_Type with null record;
+
    function Empty_Stream (World: Redland_World_Type_Without_Finalize'Class) return Stream_Type;
 
    not overriding function From_Node_Iterator (Iterator: Node_Iterator_Type_Without_Finalize'Class;

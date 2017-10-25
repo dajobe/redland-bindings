@@ -108,6 +108,8 @@ package RDF.Raptor.Term is
 
    type Term_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Term_Type_User is new Handlers.User_Type with null record;
+
    not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class)
                                        return Term_Type;
    not overriding function From_Blank (World: Raptor_World_Type_Without_Finalize'Class; ID: String)

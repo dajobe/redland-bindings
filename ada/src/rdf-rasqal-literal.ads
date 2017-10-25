@@ -80,6 +80,8 @@ package RDF.Rasqal.Literal is
 
    type Literal_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Literal_Type_User is new Handlers.User_Type with null record;
+
    not overriding function New_Typed_Literal (World: Rasqal_World_Type_Without_Finalize'Class;
                                               Type_Of_Literal: Literal_Type_Enum;
                                               Value: String)

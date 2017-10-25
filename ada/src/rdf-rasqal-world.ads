@@ -43,6 +43,8 @@ package RDF.Rasqal.World is
 
    type Rasqal_World_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Rasqal_World_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Open return Rasqal_World_Type;
 
 end RDF.Rasqal.World;

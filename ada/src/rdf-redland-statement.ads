@@ -70,6 +70,8 @@ package RDF.Redland.Statement is
 
    type Statement_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Statement_Type_User is new Handlers.User_Type with null record;
+
    -- librdf_new_statement_from_statement2() not bound.
    -- (It is unclear how this would interact with Ada copying.)
 

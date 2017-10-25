@@ -61,6 +61,8 @@ package RDF.Redland.Storage is
 
    type Storage_Type is new Handlers.Base_With_Finalization with null record;
 
+   type Storage_Type_User is new Handlers.User_Type with null record;
+
    not overriding function Create (World: Redland_World_Type_Without_Finalize'Class;
                                    Factory_Name: String;
                                    Name: String;
