@@ -9,8 +9,6 @@ limited with RDF.Raptor.Term;
 
 package RDF.Raptor.IOStream is
 
-   -- FIXME: Override Initialize_Handle to do nothing?
-
    -- It is impossible to make this as a wrapper around Ada.Streams.Root_IOStream_Type,
    -- because Root_IOStream_Type does not provide End_Of_File function.
 
