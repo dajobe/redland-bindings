@@ -242,8 +242,6 @@ package body RDF.Redland.Serializer is
       end if;
    end;
 
-
-   ---------------
    function Has_Element (Position: Serializer_Description_Cursor) return Boolean is
    begin
       return librdf_serializer_get_description(Position.World, unsigned(Position.Position)) /= null;
