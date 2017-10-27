@@ -301,9 +301,12 @@ package body RDF.Raptor.IOStream is
 
    function raptor_iostream_write_bytes_impl (context: chars_ptr; ptr: chars_ptr; size, nmemb: size_t)
                                               return int is
-      Result: constant int := Do_Write_Bytes (My_Conv.To_Access (context).all, ptr, size, nmemb);
    begin
-      return Result;
+      declare
+         Result: constant int := Do_Write_Bytes (My_Conv.To_Access (context).all, ptr, size, nmemb);
+      begin
+         return Result;
+      end;
    exception
       when others =>
          return -1;
@@ -320,9 +323,12 @@ package body RDF.Raptor.IOStream is
 
    function raptor_iostream_read_bytes_impl (context: chars_ptr; ptr: chars_ptr; size, nmemb: size_t)
                                              return int is
-      Ret: constant size_t := Do_Read_Bytes (My_Conv.To_Access (context).all, ptr, size, nmemb);
    begin
-      return int(Ret);
+      declare
+         Ret: constant size_t := Do_Read_Bytes (My_Conv.To_Access (context).all, ptr, size, nmemb);
+      begin
+         return int(Ret);
+      end;
    exception
       when others =>
          return -1;
