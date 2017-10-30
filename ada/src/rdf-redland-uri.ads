@@ -27,6 +27,14 @@ package RDF.Redland.URI is
    overriding function "=" (Left, Right: URI_Type_Without_Finalize) return Boolean
                             renames Equals;
 
+   not overriding function "<"(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
+
+   not overriding function ">"(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
+
+   not overriding function "<="(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
+
+   not overriding function ">="(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
+
    not overriding function Compare(URI1, URI2: URI_Type_Without_Finalize) return RDF.Auxiliary.Comparison_Result;
 
    not overriding function Is_File_URI (URI: URI_Type_Without_Finalize) return Boolean;

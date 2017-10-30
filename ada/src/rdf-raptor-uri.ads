@@ -24,6 +24,14 @@ package RDF.Raptor.URI is
 
    overriding function "="(URI1, URI2: URI_Type_Without_Finalize) return Boolean renames Equals;
 
+   not overriding function "<"(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
+
+   not overriding function ">"(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
+
+   not overriding function "<="(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
+
+   not overriding function ">="(URI1, URI2: URI_Type_Without_Finalize) return Boolean;
+
    not overriding function To_String(URI: URI_Type_Without_Finalize) return URI_String;
 
    not overriding function To_Relative_URI_String(Base_URI, Reference_URI: URI_Type_Without_Finalize)

@@ -172,4 +172,14 @@ package body RDF.Redland.URI is
       return From_Non_Null_Handle(librdf_get_concept_schema_namespace(Get_Handle(World)));
    end;
 
+   use type RDF.Auxiliary.Comparison_Result;
+
+   function "<"(URI1, URI2: URI_Type_Without_Finalize) return Boolean is (Compare(URI1, URI2) < 0);
+
+   function ">"(URI1, URI2: URI_Type_Without_Finalize) return Boolean is (Compare(URI1, URI2) > 0);
+
+   function "<="(URI1, URI2: URI_Type_Without_Finalize) return Boolean is (Compare(URI1, URI2) <= 0);
+
+   function ">="(URI1, URI2: URI_Type_Without_Finalize) return Boolean is (Compare(URI1, URI2) >= 0);
+
 end RDF.Redland.URI;

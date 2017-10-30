@@ -369,4 +369,14 @@ package body RDF.Raptor.URI is
       end if;
    end;
 
+   use type RDF.Auxiliary.Comparison_Result;
+
+   function "<"(URI1, URI2: URI_Type_Without_Finalize) return Boolean is (Compare(URI1, URI2) < 0);
+
+   function ">"(URI1, URI2: URI_Type_Without_Finalize) return Boolean is (Compare(URI1, URI2) > 0);
+
+   function "<="(URI1, URI2: URI_Type_Without_Finalize) return Boolean is (Compare(URI1, URI2) <= 0);
+
+   function ">="(URI1, URI2: URI_Type_Without_Finalize) return Boolean is (Compare(URI1, URI2) >= 0);
+
 end RDF.Raptor.URI;
