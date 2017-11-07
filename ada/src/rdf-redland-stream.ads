@@ -1,3 +1,4 @@
+with Ada.Containers;
 with RDF.Auxiliary.Limited_Handled_Record;
 with RDF.Raptor.IOStream; use RDF.Raptor.IOStream;
 with RDF.Redland.World; use RDF.Redland.World;
@@ -31,6 +32,12 @@ package RDF.Redland.Stream is
    -- librdf_stream_add_map() not implemented
 
    not overriding procedure Write (Stream: Stream_Type_Without_Finalize; Raptor_Stream: IOStream_Type_Without_Finalize'Class);
+
+   type Statement_Array is array (Ada.Containers.Count_Type range <>) of Statement_Type;
+
+   -- Note that after this operation Stream is not usable
+   not overriding function To_Array (Stream: in out Stream_Type_Without_Finalize)
+                                     return Statement_Array;
 
    package Handlers is new Stream_Handled_Record.Common_Handlers(Stream_Type_Without_Finalize);
 

@@ -1,3 +1,4 @@
+with Ada.Containers.Vectors;
 with Interfaces.C; use Interfaces.C;
 with RDF.Redland.Iterator; use RDF.Redland.Iterator;
 
@@ -93,6 +94,24 @@ package body RDF.Redland.Stream is
    begin
       Next(Position.all);
       return Position;
+   end;
+
+   function To_Array (Stream: in out Stream_Type_Without_Finalize) return Statement_Array is
+      package V is new Ada.Containers.Vectors(Ada.Containers.Count_Type, Statement_Type);
+      Result: V.Vector;
+   begin
+      while not Is_End(Stream) loop
+         V.Append(Result, Copy(Get_Object(Stream)));
+         Next(Stream);
+      end loop;
+      declare
+         Result2: Statement_Array(1..V.Length(Result));
+      begin
+         for I in Result2'Range loop
+            Result2(I) := Result.Element(I);
+         end loop;
+         return Result2;
+      end;
    end;
 
 end RDF.Redland.Stream;
