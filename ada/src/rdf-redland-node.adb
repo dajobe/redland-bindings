@@ -335,4 +335,11 @@ package body RDF.Redland.Node is
       end if;
    end;
 
+   function Format_As_String (Node: Node_Type_Without_Finalize) return String is
+      Stream: RDF.Raptor.IOStream.Stream_To_String;
+   begin
+      Write(Node, Stream);
+      return Value(Stream);
+   end;
+
 end RDF.Redland.Node;
