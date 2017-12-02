@@ -1,0 +1,62 @@
+* Replace To_C with My_To_C_Without_Nul when needed (done?)
+
+* Consider replacing controlling argument types with class-wide types.
+
+* There are memory leaks in run_all_tests.
+
+* Add "pragma Pure()" where appropriate.
+
+* {Get,Set}_Feature for RDF.Redland.Serializer,
+  Get_Language, Get_Type of RDF.Rasqal.Literal
+  are not implemented due
+  http://bugs.librdf.org/mantis/view.php?id=641
+
+* librdf_iterator_map_handler, librdf_iterator_map_free_context_handler,
+  librdf_new_iterator() are unimplemented.
+
+* librdf_new_storage_with_options() and
+  librdf_model_find_statements_with_options() not implemented, because
+  we have not implemented librdf_hash
+
+* Implement From_File and From_String in RDF.Rasqal.Data_Graph.
+  Note that as of Rasqal 0.9.32 they are not implemented in Rasqal.
+  So we probably should implement it as an Ada object not a binding.
+  The same for From_String in RDF.Rasqal.Query_Results,
+  Get_Language in RDF.Rasqal.Literal.
+
+* librdf_parser_get_uri_filter() and librdf_parser_set_uri_filter()
+  Should it be implemented as a primitive subprogram or as a separate object?
+
+* Add "limited" to records where appropriate.
+
+* Should Base_Stream be an interface rather than a tagged type?
+
+* Check sources with AdaControl and gnatcheck.
+
+* Add strings to exception raised.
+
+* Some raptor_parser_*() and librdf_storage_*() functions return <0 on missing
+  required base URI. Should we raise a different exception in this case?
+  Also librdf_parser_set_feature(), lib_rdf_model_set_feature().
+
+* https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82639
+  Because of this GNAT compliler bug, some records which should be private
+  are not.
+  See rdf-raptor-term.ads
+
+* Consider if we can remove World argument in RDF.Rasqal.Bnode.Do_handle
+  and make the API the same as in RDF.Raptor.Bnode, possibly merging both
+  tagged types.
+
+* rasqal_new_query_results2() is not supported as of Rasqal 0.9.32
+  installed on my system.
+
+* Rasqal and Redland iterators of query results should warn if more than one
+  iterator is created for single results object. (We should provide "debug
+  mode" for this.)
+
+* query_results_formatter and related functions
+
+* transactions in RDF.Redland.Model.
+
+* More testing.

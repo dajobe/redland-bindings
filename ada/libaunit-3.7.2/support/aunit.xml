@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<index>
+   <doc_path>share/doc/libaunit-doc</doc_path>
+
+   <submenu before="About" action = "">
+      <title>/Help/AUnit</title>
+   </submenu>
+
+   <documentation_file>
+      <name>aunit.html</name>
+      <descr>AUnit User's Guide</descr>
+      <category>AUnit</category>
+      <menu>/Help/AUnit/AUnit User's Guide</menu>
+   </documentation_file>
+</index>

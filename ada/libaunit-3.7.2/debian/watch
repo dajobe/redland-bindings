@@ -1,0 +1,7 @@
+version=3
+opts=filenamemangle=s/^.*download=//,dversionmangle=s/^.*\.// \
+https://qa.debian.org/cgi-bin/fakeupstream.cgi?upstream=adacore/aws \
+.*aws-gpl-(\d{4})-src\.(?:zip|tgz|tbz|txz|(?:tar\.(?:gz|bz2|xz)))
+
+# Major and minor versions must be set manually (see README.source),
+# but at least trigger an alarm for new releases.
