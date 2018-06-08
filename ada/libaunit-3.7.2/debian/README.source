@@ -1,0 +1,39 @@
+The versions given here should be taken as examples.
+
+Major and minor versions are set manually from the version_information
+file. When the file contains 3.8.0w, 3.7 has been released and 3.8 is
+in preparation. Debian then uses something like 3.7.x.
+
+Use of the version control system
+---------------------------------
+
+You may either create an empty Monotone database
+# mtn -d $db db init
+or use an existing one.
+
+All work on this package is tracked in the
+www.ada-france.org monotone repository.
+# debian_branch=org.debian.libaws tracks the Debian packaging
+
+Download the branches from the server to your database.  The first
+time you contact this server, monotone will show its key. You should
+check that it matches f8a11727e8983cf9083c08c6a2acaa27e439dd39.
+# server=www.ada-france.org
+# mtn -d $db pull mtn://$server?$debian_branch
+
+Inspect the unpatched source tree.
+# tar xf libaunit_3.7.1.orig.tar.xz
+# cd aunit-3.7.0w-src
+# mtn -d $db checkout -r h:$debian_branch .
+
+Build the package
+# debuild
+
+Beware that:
+- mtn status does not list all changes. Try "mtn list missing", "mtn
+  list unknown", "mtn list ignored" and "mtn status" to get the
+  equivalent of "git status".
+- Monotone will detect changes outside debian/ caused by patches.
+  Always "quilt pop -a" when preparing a commit.
+
+ -- Nicolas Boulenguez <nicolas@debian.org>, Sun, 24 Apr 2016 03:09:16 +0200
