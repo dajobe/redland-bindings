@@ -521,6 +521,7 @@ if test "X$with_dlang" != Xno; then
   AC_ARG_VAR(DC, [D compiler])
   AC_CHECK_PROGS(DC, ldc2 ldc gdc dmd)
   AC_ARG_VAR(DFLAGS, [D flags])
+  AC_ARG_VAR(D_LDFLAGS, [Linker flags for D])
 fi
 AC_MSG_RESULT($with_dlang)
 
