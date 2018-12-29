@@ -3,10 +3,10 @@ SUFFIXES: .d
 	$(DC) -od=$(srcdir)/src -c $(DFLAGS) -Isrc $<
 
 #lib_LIBRARIES = librdf-dlang.a
-
+AM_DEFAULT_SOURCE_EXT = .d
 librdf_dlang_la_LIBADD = @LIBOBJS@
 librdf_dlang_la_SOURCES = \
-    src/rdf.d
+    src/rdf/auxiliary/handled_record.d
 
 lib_LTLIBRARIES = librdf-dlang.la
 
@@ -14,7 +14,7 @@ lib_LTLIBRARIES = librdf-dlang.la
 rdf_test_LINK = $(DC)
 rdf_test_LDADD = $(D_LDFLAGS) -L=-L.libs -L=-lrdf-dlang
 #rdf_test_LDADD = -lphobos
-rdf_test_SOURCES  = src/rdf_test.d
+rdf_test_SOURCES = src/rdf_test.d
 
 TESTS = rdf_test
 check_PROGRAMS  = rdf_test
