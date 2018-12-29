@@ -1,5 +1,20 @@
-class RDFException: Exception { }
-class NonNullRDFException: RDFException { }
+class RDFException: Exception {
+    this(string msg, string file = __FILE__, size_t line = __LINE__) {
+        super(msg, file, line);
+    }
+    this(string file = __FILE__, size_t line = __LINE__) {
+        this("RDF error", file, line);
+    }
+}
+
+class NonNullRDFException: RDFException {
+    this(string msg, string file = __FILE__, size_t line = __LINE__) {
+        super(msg, file, line);
+    }
+    this(string file = __FILE__, size_t line = __LINE__) {
+        this("librdf null pointer exception", file, line);
+    }
+}
 
 extern(C)
 struct Dummy {
@@ -13,8 +28,8 @@ template CObject(Destructor destructor, Constructor constructor = null) {
     struct WithoutFinalization {
         private Dummy* ptr;
         static if (constructor) {
-            this() {
-                ptr = constructor();
+            WithoutFinalization create() {
+                return WithoutFinalization(constructor());
             }
         }
         this(Dummy* ptr) {
@@ -35,10 +50,11 @@ template CObject(Destructor destructor, Constructor constructor = null) {
     struct WithFinalization {
         private Dummy* ptr;
         static if (constructor) {
-            this() {
-                ptr = constructor();
+            WithoutFinalization create() {
+                return WithFinalization(constructor());
             }
         }
+        @disabled this(this);
         this(Dummy* ptr) {
             this.ptr = ptr;
         }
