@@ -41,9 +41,18 @@ template CObject(Destructor destructor, Constructor constructor = null) {
         @property Dummy* handle() {
             return ptr;
         }
+        static from_handle(Dummy* ptr) {
+            return WithoutFinalization(ptr);
+        }
         static from_nonnull_handle(Dummy* ptr) {
             if(!ptr) throw NonNullRDFException;
             return WithoutFinalization(ptr);
+        }
+        @propery bool is_null() {
+            return ptr;
+        }
+        WithFinalization dup() {
+            return WithFinalization(ptr);
         }
     }
 
@@ -65,5 +74,12 @@ template CObject(Destructor destructor, Constructor constructor = null) {
             return WithoutFinalization(ptr);
         }
         alias base this;
+        static from_handle(Dummy* ptr) {
+            return WithoutFinalization(ptr);
+        }
+        static from_nonnull_handle(Dummy* ptr) {
+            if(!ptr) throw NonNullRDFException;
+            return WithoutFinalization(ptr);
+        }
     }
 }
