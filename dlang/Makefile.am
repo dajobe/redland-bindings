@@ -1,6 +1,7 @@
 SUFFIXES: .d
 .d.o:
-	$(DC) -od=$(srcdir)/src/$(dir $<) -c $(DFLAGS) -Isrc $<
+#	$(DC) -od=$(srcdir)/src/$(dir $<) -c $(DFLAGS) -Isrc $<
+	$(DC) -of=$< -c $(DFLAGS) -Isrc $<
 
 #lib_LIBRARIES = librdf-dlang.a
 AM_DEFAULT_SOURCE_EXT = .d
