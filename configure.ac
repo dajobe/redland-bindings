@@ -518,8 +518,8 @@ AC_MSG_CHECKING(Enable D API)
 
 if test "X$with_dlang" != Xno; then
   languages="$languages dlang"
-  AC_ARG_VAR(D, [D compiler])
-  AC_CHECK_PROGS(D, ldc gdc dmd)
+  AC_ARG_VAR(DC, [D compiler])
+  AC_CHECK_PROGS(DC, ldc2 ldc gdc dmd)
   AC_ARG_VAR(DFLAGS, [D flags])
 fi
 AC_MSG_RESULT($with_dlang)
