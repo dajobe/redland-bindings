@@ -11,7 +11,7 @@ librdf_dlang_la_SOURCES = \
 lib_LTLIBRARIES = librdf-dlang.la
 
 #librdf_dlang_la_LDFLAGS =
-rdf_test_LINK = ldc2
+rdf_test_LINK = $(DC)
 #rdf_test_LDADD = $(D_LDFLAGS) -lrdf-dlang
 #rdf_test_LDADD = -lphobos
 rdf_test_SOURCES  = src/rdf_test.d
