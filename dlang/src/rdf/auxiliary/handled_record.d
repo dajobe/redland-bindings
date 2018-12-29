@@ -23,8 +23,11 @@ struct Dummy {
 
 alias extern(C) void function (Dummy* ptr) Destructor;
 alias extern(C) Dummy* function () Constructor;
+alias extern(C) Dummy* function (Dummy* ptr) Copier;
 
-template CObject(Destructor destructor, Constructor constructor = null) {
+template CObject(Destructor destructor,
+                 Constructor constructor = null,
+                 Copier copier = null) {
     struct WithoutFinalization {
         private Dummy* ptr;
         static if (constructor) {
@@ -51,8 +54,10 @@ template CObject(Destructor destructor, Constructor constructor = null) {
         @propery bool is_null() {
             return ptr;
         }
-        WithFinalization dup() {
-            return WithFinalization(ptr);
+        static if(copier) {
+            WithFinalization dup() {
+                return WithFinalization(ptr);
+            }
         }
     }
 
