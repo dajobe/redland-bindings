@@ -80,11 +80,11 @@ template CObject(Destructor destructor,
         }
         alias base this;
         static from_handle(Dummy* ptr) {
-            return WithoutFinalization(ptr);
+            return WithFinalization(ptr);
         }
         static from_nonnull_handle(Dummy* ptr) {
             if(!ptr) throw NonNullRDFException;
-            return WithoutFinalization(ptr);
+            return WithFinalization(ptr);
         }
     }
 }
