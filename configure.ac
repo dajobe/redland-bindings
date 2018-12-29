@@ -513,6 +513,17 @@ AC_SUBST(GPRBUILD)
 AC_SUBST(GPRCLEAN)
 AC_SUBST(GPRINSTALL)
 
+AC_ARG_WITH(dlang, [  --with-dlang            Enable the D interface], with_dlang="$withval", with_dlang="no")
+AC_MSG_CHECKING(Enable D API)
+
+if test "X$with_dlang" != Xno; then
+  languages="$languages dlang"
+  AC_ARG_VAR(D, [D compiler])
+  AC_CHECK_PROGS(D, ldc gdc dmd)
+  AC_ARG_VAR(DFLAGS, [D flags])
+fi
+AC_MSG_RESULT($with_dlang)
+
 
 AM_MISSING_PROG(ACLOCAL, aclocal, $missing_dir)
 AM_MISSING_PROG(AUTOCONF, autoconf, $missing_dir)
@@ -657,6 +668,7 @@ ruby/lib/rdf/Makefile
 ruby/lib/rdf/redland/Makefile
 ruby/lib/rdf/redland/schemas/Makefile
 ada/Makefile
+dlang/Makefile
 data/Makefile
 docs/ada/Makefile
 ])
