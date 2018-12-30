@@ -7,7 +7,7 @@ class RDFException: Exception {
     }
 }
 
-class NonNullRDFException: RDFException {
+class NullRDFException: RDFException {
     this(string msg, string file = __FILE__, size_t line = __LINE__) {
         super(msg, file, line);
     }
@@ -49,7 +49,7 @@ template CObject(Destructor destructor,
             return WithoutFinalization(ptr);
         }
         static from_nonnull_handle(Dummy* ptr) {
-            if(!ptr) throw NonNullRDFException;
+            if(!ptr) throw NullRDFException;
             return WithoutFinalization(ptr);
         }
         @propery bool is_null() {
@@ -84,7 +84,7 @@ template CObject(Destructor destructor,
             return WithFinalization(ptr);
         }
         static from_nonnull_handle(Dummy* ptr) {
-            if(!ptr) throw NonNullRDFException;
+            if(!ptr) throw NullRDFException;
             return WithFinalization(ptr);
         }
     }
