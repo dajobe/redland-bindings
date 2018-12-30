@@ -1,5 +1,5 @@
 import std.stdio;
-import rdf.auxiliary.handled_record;
+//import rdf.auxiliary.handled_record;
 
 void main() {
     writeln("Test!");
