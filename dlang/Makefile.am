@@ -8,3 +8,6 @@ lib_LIB = librdf_dlang.a
 
 librdf_dlang.a:
 	$(DUB) build --compiler=$(DC) --config=library
+
+dist-hook:
+	cp -a source $(distdir)/
