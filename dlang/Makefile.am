@@ -1,8 +1,10 @@
 # TODO: Take --enable-shared --enable-static into account
 all-local: librdf_dlang.a librdf_dlang.so
 
-check: rdf_dlang
+my-check: rdf_dlang
 	./rdf_dlang
+
+check: my-check
 
 clean-local:
 	$(DUB) clean
