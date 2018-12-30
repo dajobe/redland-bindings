@@ -10,13 +10,13 @@ clean-local:
 lib_LIB = librdf_dlang.a
 
 if DEBUG
-build = --build=debug
+buildflags = --build=debug
 else
-build = --build=release
+buildflags = --build=release
 endif
 
 librdf_dlang.a:
-	$(DUB) build --compiler=$(DC) --config=library $(build)
+	$(DUB) build --compiler=$(DC) --config=library $(buildflags)
 
 rdf_dlang:
 	$(DUB) build --compiler=$(DC) --config=application --build=unittest
