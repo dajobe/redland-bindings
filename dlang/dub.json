@@ -1,0 +1,9 @@
+{
+	"name": "librdf_bindings",
+	"authors": [
+		"Victor Porton"
+	],
+	"description": "D bindings for librdf",
+	"copyright": "Copyright © 2018, Victor Porton",
+	"license": "see parent directory"
+}
