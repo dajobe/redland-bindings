@@ -1,3 +1,5 @@
+module rdf.auxiliary.handled_record;
+
 class RDFException: Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__) {
         super(msg, file, line);
