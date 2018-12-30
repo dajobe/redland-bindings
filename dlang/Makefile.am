@@ -29,3 +29,6 @@ rdf_dlang:
 
 dist-hook:
 	cp -a source $(distdir)/
+
+install-data-local:
+	install librdf_dlang.a librdf_dlang.so $(libdir)
