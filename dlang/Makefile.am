@@ -18,6 +18,8 @@ else
 buildflags = --build=release
 endif
 
+.PHONY: librdf_dlang.a librdf_dlang.so rdf_dlang
+
 librdf_dlang.a:
 	$(DUB) build --compiler=$(DC) --config=static-library $(buildflags)
 
