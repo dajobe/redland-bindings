@@ -7,4 +7,4 @@ clean-local:
 lib_LIB = librdf_dlang.a
 
 librdf_dlang.a:
-	$(DUB) build --config=library
+	$(DUB) build --compiler=$(DC) --config=library
