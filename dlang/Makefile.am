@@ -1,7 +1,10 @@
-all-local:
-	$(DUB) build
+all-local: librdf_dlang.a
 
 clean-local:
 	$(DUB) clean
+	rm -f librdf_dlang.a rdf_dlang
 
-lib_DATA = librdf_dlang.a
+lib_LIB = librdf_dlang.a
+
+librdf_dlang.a:
+	$(DUB) build --config=library
