@@ -1,9 +1,25 @@
 {
-	"name": "rdf_dlang",
-	"authors": [
-		"Victor Porton"
-	],
-	"description": "D bindings for librdf",
-	"copyright": "Copyright © 2018, Victor Porton",
-	"license": "see parent directory"
+    "name": "rdf_dlang",
+    "authors": [
+        "Victor Porton"
+    ],
+    "description": "D bindings for librdf",
+    "copyright": "Copyright © 2018, Victor Porton",
+    "license": "see parent directory",
+    "configurations": [
+        {
+            "name": "application",
+            "targetType": "executable",
+        },
+        {
+            "name": "shared-library",
+            "targetType": "dynamicLibrary",
+            "excludedSourceFiles": ["sources/main.d"]
+        },
+        {
+            "name": "static-library",
+            "targetType": "staticLibrary",
+            "excludedSourceFiles": ["sources/main.d"]
+        }
+    ]
 }
