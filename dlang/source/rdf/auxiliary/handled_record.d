@@ -25,7 +25,6 @@ alias extern(C) void function (Dummy* ptr) Destructor;
 alias extern(C) Dummy* function () Constructor;
 alias extern(C) Dummy* function (Dummy* ptr) Copier;
 
-// TODO: Disable constructors?
 template CObject(Destructor destructor,
                  Constructor constructor = null,
                  Copier copier = null) {
@@ -36,7 +35,8 @@ template CObject(Destructor destructor,
                 return WithoutFinalization(constructor());
             }
         }
-        this(Dummy* ptr) {
+        // Use from_handle() instead
+        private this(Dummy* ptr) {
             this.ptr = ptr;
         }
         ~this() {
@@ -70,7 +70,8 @@ template CObject(Destructor destructor,
             }
         }
         @disabled this(this);
-        this(Dummy* ptr) {
+        // Use from_handle() instead
+        private this(Dummy* ptr) {
             this.ptr = ptr;
         }
         ~this() {
