@@ -23,7 +23,7 @@ struct BNode {
         if(!str) throw new NullRDFException;
         scope(exit) raptor_free_memory(str);
         return fromStringz(str).idup;
-}
+    }
     static void setGenerateBnodeidParameters(RaptorWorldWithoutFinalize world,
                                              Nullable!string prefix,
                                              int base = 1)
