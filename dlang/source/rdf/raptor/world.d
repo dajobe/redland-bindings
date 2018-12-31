@@ -12,10 +12,20 @@ struct FlagAndValue {
     bool value;
 }
 
-private extern extern(C) Dummy* raptor_new_world();
-private extern extern(C) void raptor_free_world(Dummy* world);
-private extern extern(C) void raptor_world_open(Dummy* world);
-private extern extern(C) int raptor_world_set_flag(Dummy *world, int flag, int value);
+private extern extern(C) {
+    Dummy* raptor_new_world_internal(uint _version);
+    void raptor_free_world(Dummy* world);
+    void raptor_world_open(Dummy* world);
+    int raptor_world_set_flag(Dummy* raptor_world, int flag, int value);
+}
+
+private Dummy* raptor_new_world() {
+    import rdf.raptor.constants : version_decimal;
+    // FIXME
+    import std.stdio;
+    writeln("XX");
+    return raptor_new_world_internal(version_decimal);
+}
 
 struct RaptorWorldWithoutFinalize {
     mixin WithoutFinalize!(RaptorWorldWithoutFinalize,
@@ -43,12 +53,12 @@ struct RaptorWorld {
                         RaptorWorld,
                         raptor_free_world,
                         raptor_new_world);
-    static RaptorWorld open() {
+    static RaptorWorld create_and_open() {
         RaptorWorld world = create();
         world.open();
         return world;
     }
-    static RaptorWorld open(FlagAndValue[] flags) {
+    static RaptorWorld create_and_open(FlagAndValue[] flags) {
         RaptorWorld world = create();
         world.open(flags);
         return world;
@@ -57,8 +67,11 @@ struct RaptorWorld {
 
 // Not implemented: set_libxslt_security_preferences()
 
-// TODO
-
 unittest {
-    assert(1);
+//     RaptorWorld defaultWorld = RaptorWorld.create_and_open();
+//     RaptorWorld worldWithSomeFlags =
+//         RaptorWorld.create_and_open([FlagAndValue(RaptorFlagType.URIInterning, false)]);
+    // TODO:
+//     World2: Rasqal_World_Type := Open;
+//     World: Raptor_World_Type_Without_Finalize := Get_Raptor(World2) with Unreferenced;
 }
