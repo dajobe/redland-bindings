@@ -1,7 +1,5 @@
 module rdf.auxiliary.handled_record;
 
-import std.traits;
-
 class RDFException: Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__) {
         super(msg, file, line);
@@ -31,6 +29,8 @@ mixin template WithoutFinalization(alias _WithoutFinalization,
                                    alias constructor = null,
                                    alias copier = null)
 {
+    import std.traits;
+
     private Dummy* ptr;
     // Use from_handle() instead
     private this(Dummy* ptr) {
@@ -63,11 +63,14 @@ mixin template WithFinalization(alias _WithoutFinalization,
                                 alias _WithFinalization,
                                 alias destructor,
                                 alias constructor = null,
-                                alias copier = null) {
+                                alias copier = null)
+{
+    import std.traits;
+
     private Dummy* ptr;
     static if (isCallable!constructor) {
-        WithoutFinalization create() {
-            return WithFinalization(constructor());
+        _WithoutFinalization create() {
+            return _WithFinalization(constructor());
         }
     }
     @disable this(this);
