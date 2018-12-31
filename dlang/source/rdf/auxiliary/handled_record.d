@@ -25,7 +25,6 @@ struct Dummy {
 
 mixin template WithoutFinalize(alias _WithoutFinalize,
                                alias _WithFinalize,
-                               alias constructor = null,
                                alias copier = null)
 {
     //import std.traits;
@@ -58,8 +57,7 @@ mixin template WithoutFinalize(alias _WithoutFinalize,
 mixin template WithFinalize(alias _WithoutFinalize,
                             alias _WithFinalize,
                             alias destructor,
-                            alias constructor = null,
-                            alias copier = null)
+                            alias constructor = null)
 {
     import std.traits;
 
