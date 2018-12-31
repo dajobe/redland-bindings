@@ -10,7 +10,7 @@ import rdf.raptor.world;
 
 private extern extern(C) {
     char* raptor_world_generate_bnodeid(Dummy* world);
-    alias raptor_generate_bnodeid_handler = extern(C) char* function(char *data, char* userID);
+    alias raptor_generate_bnodeid_handler = extern(C) const(char)* function(char *data, char* userID);
     void raptor_world_set_generate_bnodeid_handler(Dummy* world,
                                                    void *user_data,
                                                    raptor_generate_bnodeid_handler handler);
@@ -21,13 +21,8 @@ struct BNode {
     static string generateId(RaptorWorldWithoutFinalize world) {
         char* str = raptor_world_generate_bnodeid(world.handle);
         if(!str) throw new NullRDFException;
-        string dup;
-        try {
-            dup = fromStringz(str).idup;
-        }
-        finally {
-            raptor_free_memory(str);
-        }
+        scope(exit) raptor_free_memory(str);
+        string dup = fromStringz(str).idup;
         return dup;
     }
     static void setGenerateBnodeidParameters(RaptorWorldWithoutFinalize world,
@@ -38,7 +33,17 @@ struct BNode {
     }
 }
 
-class UserBNode : UserObject!BNode {
+class BNodeIDHandler : UserObject!BNode {
+    abstract string do_handle(Nullable!string userID);
+    private static extern(C) const(char)* handleImpl(char* data, char* userID) {
+        scope(exit) {
+            if(userID) raptor_free_memory(userID);
+        }
+        Nullable!string userID2;
+        if(userID) userID2 = cast(string)fromStringz(userID);
+        return toStringz((cast(BNodeIDHandler*)data).do_handle(userID2));
+    }
+    void set(RaptorWorldWithoutFinalize world) {
+        raptor_world_set_generate_bnodeid_handler(world.handle, context, &handleImpl);
+    }
 }
-
-// TODO
