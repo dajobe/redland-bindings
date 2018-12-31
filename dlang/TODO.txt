@@ -1,7 +1,5 @@
 The following Ada sources were not yet translated into D:
 
-rdf-raptor-bnode.adb
-rdf-raptor-bnode.ads
 rdf-raptor-iostream.adb
 rdf-raptor-iostream.ads
 rdf-raptor-log.adb
