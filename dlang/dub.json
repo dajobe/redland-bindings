@@ -10,16 +10,19 @@
         {
             "name": "application",
             "targetType": "executable",
+            "libs": ["raptor2"]
         },
         {
             "name": "shared-library",
             "targetType": "dynamicLibrary",
-            "excludedSourceFiles": ["sources/main.d"]
+            "excludedSourceFiles": ["sources/main.d"],
+            "libs": ["raptor2"]
         },
         {
             "name": "static-library",
             "targetType": "staticLibrary",
-            "excludedSourceFiles": ["sources/main.d"]
+            "excludedSourceFiles": ["sources/main.d"],
+            "libs": ["raptor2"]
         }
     ]
 }
