@@ -1,3 +1,5 @@
+const qualifier of member function where appropriate.
+
 The following Ada sources were not yet translated into D:
 
 rdf-raptor-iostream.adb

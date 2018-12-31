@@ -34,8 +34,8 @@ mixin template WithoutFinalize(alias _WithoutFinalize,
     private this(Dummy* ptr) {
         this.ptr = ptr;
     }
-    @property Dummy* handle() {
-        return ptr;
+    @property Dummy* handle() const {
+        return cast(Dummy*)ptr;
     }
     static from_handle(Dummy* ptr) {
         return _WithoutFinalize(ptr);
@@ -79,11 +79,29 @@ mixin template WithFinalize(alias _WithoutFinalize,
         return _WithoutFinalize(ptr);
     }
     alias base this;
+    @property Dummy* handle() const {
+        return cast(Dummy*)ptr;
+    }
     static from_handle(Dummy* ptr) {
         return _WithFinalize(ptr);
     }
     static from_nonnull_handle(Dummy* ptr) {
         if(!ptr) throw new NullRDFException();
         return _WithFinalize(ptr);
+    }
+}
+
+mixin template CompareHandles(alias equal, alias compare) {
+    import std.traits;
+
+    bool opEquals(const typeof(this) s) const {
+        if(isCallable!equal) {
+          return equal(handle, s.handle) != 0;
+        } else {
+          return compare(handle, s.handle) == 0;
+        }
+    }
+    int opCmp(const typeof(this) s) const {
+      return compare(handle, s.handle);
     }
 }
