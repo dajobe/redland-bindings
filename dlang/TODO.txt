@@ -85,7 +85,6 @@ The following Ada sources were not yet translated into D:
 ./rdf-redland-uri.ads
 ./rdf-redland-statement.adb
 ./rdf-raptor-parser.adb
-./rdf-raptor.ads
 ./rdf-raptor-uri.ads
 ./rdf-redland-world.ads
 ./rdf-rasqal-constants.ads

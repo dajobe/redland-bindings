@@ -38,3 +38,17 @@ alias xmlschema_datatypes_namespace_uri = raptor_xmlschema_datatypes_namespace_u
 
 extern extern(C) uint rdf_namespace_uri_len;
 extern extern(C) uint xml_literal_datatype_uri_string_len;
+
+enum DomainType : ubyte {None_Domain = 0,
+                         IOStream_Domain = 1,
+                         Namespace_Domain = 2,
+                         Parser_Domain = 3,
+                         Qname_Domain = 4,
+                         Sax2_Domain = 5,
+                         Serializer_Domain = 6,
+                         Term_Domain = 7,
+                         Turtle_Writer_Domain = 8,
+                         URI_Domain = 9,
+                         World_Domain = 10,
+                         WWW_Domain = 11,
+                         XML_Writer_Domain = 12 }
