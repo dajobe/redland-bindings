@@ -56,7 +56,7 @@ struct OptionDescription {
     char* Name;
     size_t len;
     char* label;
-    URIHandle URI;
+    Dummy* uri;
 }
 +/
 

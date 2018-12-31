@@ -27,7 +27,7 @@ mixin template WithoutFinalize(alias _WithoutFinalize,
                                alias _WithFinalize,
                                alias copier = null)
 {
-    //import std.traits;
+    import std.traits;
 
     private Dummy* ptr;
     // Use from_handle() instead
@@ -47,7 +47,7 @@ mixin template WithoutFinalize(alias _WithoutFinalize,
     @property bool is_null() {
         return ptr == null;
     }
-    static if(copier) {
+    static if(isCallable!copier) {
         _WithFinalize dup() {
             return _WithFinalize(copier(ptr));
         }
