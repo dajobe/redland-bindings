@@ -7,6 +7,7 @@ private extern extern(C) {
     Dummy* raptor_uri_copy(Dummy* uri);
 }
 
+/// Only absolute URIs!
 struct URIWithoutFinalize {
     mixin WithoutFinalize!(URIWithoutFinalize,
                            URI,
