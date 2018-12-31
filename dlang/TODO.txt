@@ -8,8 +8,6 @@ rdf-raptor-namespace.adb
 rdf-raptor-namespace.ads
 rdf-raptor-namespace_stack.adb
 rdf-raptor-namespace_stack.ads
-rdf-raptor-options.adb
-rdf-raptor-options.ads
 rdf-raptor-parser.adb
 rdf-raptor-parser.ads
 rdf-raptor-serializer.adb
