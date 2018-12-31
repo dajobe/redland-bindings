@@ -69,7 +69,7 @@ mixin template WithFinalize(alias _WithoutFinalize,
 
     private Dummy* ptr;
     static if (isCallable!constructor) {
-        _WithoutFinalize create() {
+        static _WithFinalize create() {
             return _WithFinalize(constructor());
         }
     }
