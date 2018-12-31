@@ -49,7 +49,6 @@ The following Ada sources were not yet translated into D:
 ./rdf-raptor-uri.adb
 ./rdf-raptor-syntaxes.ads
 ./rdf-raptor-namespace.adb
-./rdf-auxiliary-c_string_holders.adb
 ./rdf-redland-storage.ads
 ./test/count_test2.ads
 ./test/run_all_tests.adb
@@ -101,8 +100,6 @@ The following Ada sources were not yet translated into D:
 ./rdf-raptor-bnode.ads
 ./rdf-rasqal-features.adb
 ./rdf-redland-serializer.adb
-./rdf-auxiliary-c_string_holders.ads
-./rdf-auxiliary-c_pointers.ads
 ./rdf-raptor-serializer.adb
 ./rdf-rasqal-query_results.adb
 ./rdf-auxiliary.ads
