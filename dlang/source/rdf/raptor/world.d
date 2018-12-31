@@ -27,7 +27,6 @@ private Dummy* raptor_new_world() {
 struct RaptorWorldWithoutFinalize {
     mixin WithoutFinalize!(RaptorWorldWithoutFinalize,
                            RaptorWorld,
-                           raptor_free_world,
                            raptor_new_world);
     void open() {
         raptor_world_open(handle);
