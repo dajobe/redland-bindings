@@ -21,9 +21,6 @@ private extern extern(C) {
 
 private Dummy* raptor_new_world() {
     import rdf.raptor.constants : version_decimal;
-    // FIXME
-    import std.stdio;
-    writeln("XX");
     return raptor_new_world_internal(version_decimal);
 }
 
@@ -68,9 +65,9 @@ struct RaptorWorld {
 // Not implemented: set_libxslt_security_preferences()
 
 unittest {
-//     RaptorWorld defaultWorld = RaptorWorld.create_and_open();
-//     RaptorWorld worldWithSomeFlags =
-//         RaptorWorld.create_and_open([FlagAndValue(RaptorFlagType.URIInterning, false)]);
+    RaptorWorld defaultWorld = RaptorWorld.create_and_open();
+    RaptorWorld worldWithSomeFlags =
+        RaptorWorld.create_and_open([FlagAndValue(RaptorFlagType.URIInterning, false)]);
     // TODO:
 //     World2: Rasqal_World_Type := Open;
 //     World: Raptor_World_Type_Without_Finalize := Get_Raptor(World2) with Unreferenced;

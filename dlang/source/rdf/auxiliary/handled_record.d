@@ -36,9 +36,6 @@ mixin template WithoutFinalize(alias _WithoutFinalize,
     private this(Dummy* ptr) {
         this.ptr = ptr;
     }
-    ~this() {
-        destructor(ptr);
-    }
     @property Dummy* handle() {
         return ptr;
     }
