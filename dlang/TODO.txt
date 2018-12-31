@@ -6,7 +6,6 @@ The following Ada sources were not yet translated into D:
 ./rdf.ads
 ./rdf-redland-node.adb
 ./rdf-raptor-www.ads
-./rdf-auxiliary-convert.ads
 ./rdf-redland-log.ads
 ./rdf-redland-node.ads
 ./rdf-auxiliary.adb
@@ -21,11 +20,9 @@ The following Ada sources were not yet translated into D:
 ./rdf-rasqal-memory.ads
 ./rdf-rasqal-constants.adb
 ./rdf-rasqal-literal.adb
-./rdf-auxiliary-convert.adb
 ./rdf-raptor-log.ads
 ./rdf-raptor-namespace_stack.ads
 ./rdf-redland-iterator.ads
-./rdf-auxiliary-convert_void.ads
 ./rdf-raptor-iostream.ads
 ./rdf-redland-query_results.ads
 ./rdf-raptor-term.ads
@@ -114,7 +111,6 @@ The following Ada sources were not yet translated into D:
 ./rdf-auxiliary-c_pointers.ads
 ./rdf-raptor-memory.ads
 ./rdf-raptor-serializer.adb
-./rdf-auxiliary-convert_void.adb
 ./rdf-rasqal-query_results.adb
 ./rdf-auxiliary.ads
 ./rdf-rasqal.ads
