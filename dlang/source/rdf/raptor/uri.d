@@ -11,6 +11,10 @@ private extern extern(C) {
     int raptor_uri_equals(Dummy* uri1, Dummy* uri2);
     char* raptor_uri_as_string(Dummy* uri);
     char* raptor_uri_to_relative_uri_string(Dummy* base_uri, Dummy* reference_uri);
+    size_t raptor_uri_resolve_uri_reference(const char *base_uri,
+                                            const char *reference_uri,
+                                            char *buffer,
+                                            size_t length);
 }
 
 /// Only absolute URIs!
@@ -28,6 +32,17 @@ struct URIWithoutFinalize {
       if(!str) throw new NullRDFException();
       scope(exit) raptor_free_memory(str);
       return fromStringz(str).idup;
+    }
+    static string resolveURIReference(string baseURI, string referenceURI) {
+        immutable size_t bufferLength = baseURI.length + referenceURI.length + 1;
+        char[] buffer = new char[bufferLength];
+        immutable res = raptor_uri_resolve_uri_reference(toStringz(baseURI),
+                                                         toStringz(referenceURI),
+                                                         buffer.ptr,
+                                                         bufferLength);
+        if(!res) throw new RDFException();
+        buffer.length = bufferLength;
+        return cast(string)buffer;
     }
 }
 
