@@ -22,9 +22,8 @@ struct BNode {
         char* str = raptor_world_generate_bnodeid(world.handle);
         if(!str) throw new NullRDFException;
         scope(exit) raptor_free_memory(str);
-        string dup = fromStringz(str).idup;
-        return dup;
-    }
+        return fromStringz(str).idup;
+}
     static void setGenerateBnodeidParameters(RaptorWorldWithoutFinalize world,
                                              Nullable!string prefix,
                                              int base = 1)
