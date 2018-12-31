@@ -10,7 +10,7 @@ package body RDF.Raptor.Bnode is
      with Import, Convention=>C;
 
    function Generate_Bnodeid (World: Raptor_World_Type_Without_Finalize'Class) return String is
-      C_Str: constant chars_ptr := raptor_world_generate_bnodeid(Get_Handle(World));
+      C_Str: constant chars_ptr := raptor_world_generate_bnodeid(Get_Handle(World)); -- FIXME: May return null
       Result: constant String := Value(C_Str);
    begin
       RDF.Raptor.Memory.raptor_free_memory(C_Str);
