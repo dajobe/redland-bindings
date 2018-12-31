@@ -25,68 +25,68 @@ struct Dummy {
     private char dummy = 0; // C99 requires at least one member in struct
 }
 
-template CObjects(alias destructor,
-                  alias constructor = null,
-                  alias copier = null) {
-    struct WithoutFinalization {
-        private Dummy* ptr;
-        static if (isCallable!constructor) {
-            WithoutFinalization create() {
-                return WithoutFinalization(constructor());
-            }
-        }
-        // Use from_handle() instead
-        private this(Dummy* ptr) {
-            this.ptr = ptr;
-        }
-        ~this() {
-            destructor(ptr);
-        }
-        @property Dummy* handle() {
-            return ptr;
-        }
-        static from_handle(Dummy* ptr) {
-            return WithoutFinalization(ptr);
-        }
-        static from_nonnull_handle(Dummy* ptr) {
-            if(!ptr) throw new NullRDFException();
-            return WithoutFinalization(ptr);
-        }
-        @property bool is_null() {
-            return ptr == null;
-        }
-        static if(copier) {
-            WithFinalization dup() {
-                return WithFinalization(ptr);
-            }
+mixin template WithoutFinalization(alias _WithoutFinalization,
+                                   alias _WithFinalization,
+                                   alias destructor,
+                                   alias constructor = null,
+                                   alias copier = null)
+{
+    private Dummy* ptr;
+    // Use from_handle() instead
+    private this(Dummy* ptr) {
+        this.ptr = ptr;
+    }
+    ~this() {
+        destructor(ptr);
+    }
+    @property Dummy* handle() {
+        return ptr;
+    }
+    static from_handle(Dummy* ptr) {
+        return _WithoutFinalization(ptr);
+    }
+    static from_nonnull_handle(Dummy* ptr) {
+        if(!ptr) throw new NullRDFException();
+        return _WithoutFinalization(ptr);
+    }
+    @property bool is_null() {
+        return ptr == null;
+    }
+    static if(copier) {
+        _WithFinalization dup() {
+            return _WithFinalization(copier(ptr));
         }
     }
+}
 
-    struct WithFinalization {
-        private Dummy* ptr;
-        static if (isCallable!constructor) {
-            WithoutFinalization create() {
-                return WithFinalization(constructor());
-            }
+mixin template WithFinalization(alias _WithoutFinalization,
+                                alias _WithFinalization,
+                                alias destructor,
+                                alias constructor = null,
+                                alias copier = null) {
+    private Dummy* ptr;
+    static if (isCallable!constructor) {
+        WithoutFinalization create() {
+            return WithFinalization(constructor());
         }
-        @disable this(this);
-        // Use from_handle() instead
-        private this(Dummy* ptr) {
-            this.ptr = ptr;
-        }
-        ~this() {
-            destructor(ptr);
-        }
-        private @property WithoutFinalization base() {
-            return WithoutFinalization(ptr);
-        }
-        alias base this;
-        static from_handle(Dummy* ptr) {
-            return WithFinalization(ptr);
-        }
-        static from_nonnull_handle(Dummy* ptr) {
-            if(!ptr) throw new NullRDFException();
-            return WithFinalization(ptr);
-        }
+    }
+    @disable this(this);
+    // Use from_handle() instead
+    private this(Dummy* ptr) {
+        this.ptr = ptr;
+    }
+    ~this() {
+        destructor(ptr);
+    }
+    private @property _WithoutFinalization base() {
+        return _WithoutFinalization(ptr);
+    }
+    alias base this;
+    static from_handle(Dummy* ptr) {
+        return _WithFinalization(ptr);
+    }
+    static from_nonnull_handle(Dummy* ptr) {
+        if(!ptr) throw new NullRDFException();
+        return _WithFinalization(ptr);
     }
 }
