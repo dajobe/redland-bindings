@@ -6,7 +6,6 @@ The following Ada sources were not yet translated into D:
 ./rdf-raptor-www.ads
 ./rdf-redland-log.ads
 ./rdf-redland-node.ads
-./rdf-auxiliary.adb
 ./rdf-redland-node_iterator.adb
 ./rdf-rasqal-syntaxes.ads
 ./rdf-raptor-log.adb
@@ -102,5 +101,4 @@ The following Ada sources were not yet translated into D:
 ./rdf-redland-serializer.adb
 ./rdf-raptor-serializer.adb
 ./rdf-rasqal-query_results.adb
-./rdf-auxiliary.ads
 ./rdf-rasqal.ads
