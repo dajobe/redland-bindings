@@ -10,19 +10,19 @@
         {
             "name": "application",
             "targetType": "executable",
-            "libs": ["raptor2"]
+            "libs": ["rasqal", "rdf"]
         },
         {
             "name": "shared-library",
             "targetType": "dynamicLibrary",
             "excludedSourceFiles": ["sources/main.d"],
-            "libs": ["raptor2"]
+            "libs": ["rasqal", "rdf"]
         },
         {
             "name": "static-library",
             "targetType": "staticLibrary",
             "excludedSourceFiles": ["sources/main.d"],
-            "libs": ["raptor2"]
+            "libs": ["rasqal", "rdf"]
         }
     ]
 }
