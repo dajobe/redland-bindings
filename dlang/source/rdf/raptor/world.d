@@ -50,12 +50,12 @@ struct RaptorWorld {
                         RaptorWorld,
                         raptor_free_world,
                         raptor_new_world);
-    static RaptorWorld create_and_open() {
+    static RaptorWorld createAndOpen() {
         RaptorWorld world = create();
         world.open();
         return world;
     }
-    static RaptorWorld create_and_open(FlagAndValue[] flags) {
+    static RaptorWorld createAndOpen(FlagAndValue[] flags) {
         RaptorWorld world = create();
         world.open(flags);
         return world;
@@ -65,9 +65,9 @@ struct RaptorWorld {
 // Not implemented: set_libxslt_security_preferences()
 
 unittest {
-    RaptorWorld defaultWorld = RaptorWorld.create_and_open();
+    RaptorWorld defaultWorld = RaptorWorld.createAndOpen();
     RaptorWorld worldWithSomeFlags =
-        RaptorWorld.create_and_open([FlagAndValue(RaptorFlagType.URIInterning, false)]);
+        RaptorWorld.createAndOpen([FlagAndValue(RaptorFlagType.URIInterning, false)]);
     // TODO:
 //     World2: Rasqal_World_Type := Open;
 //     World: Raptor_World_Type_Without_Finalize := Get_Raptor(World2) with Unreferenced;
