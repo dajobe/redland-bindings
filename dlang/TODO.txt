@@ -1,7 +1,6 @@
 The following Ada sources were not yet translated into D:
 
 ./rdf-redland-serializer.ads
-./rdf-rasqal-memory.adb
 ./rdf-raptor-www.adb
 ./rdf-redland-node.adb
 ./rdf-raptor-www.ads
@@ -16,7 +15,6 @@ The following Ada sources were not yet translated into D:
 ./rdf-redland-iterator.adb
 ./rdf-rasqal-data_graph.adb
 ./rdf-raptor-serializer.ads
-./rdf-rasqal-memory.ads
 ./rdf-rasqal-constants.adb
 ./rdf-rasqal-literal.adb
 ./rdf-raptor-log.ads
@@ -32,7 +30,6 @@ The following Ada sources were not yet translated into D:
 ./rdf-raptor-options.ads
 ./rdf-redland-parser.adb
 ./rdf-raptor-syntaxes.adb
-./rdf-redland-memory.ads
 ./rdf-raptor-iostream.adb
 ./rdf-raptor-bnode.adb
 ./rdf-redland-storage.adb
@@ -41,7 +38,6 @@ The following Ada sources were not yet translated into D:
 ./rdf-redland-stream.adb
 ./rdf-redland-query.adb
 ./rdf-redland-uri.adb
-./rdf-raptor-memory.adb
 ./rdf-rasqal-query.ads
 ./rdf-raptor-statement.ads
 ./rdf-redland-parser.ads
@@ -106,9 +102,7 @@ The following Ada sources were not yet translated into D:
 ./rdf-rasqal-features.adb
 ./rdf-redland-serializer.adb
 ./rdf-auxiliary-c_string_holders.ads
-./rdf-redland-memory.adb
 ./rdf-auxiliary-c_pointers.ads
-./rdf-raptor-memory.ads
 ./rdf-raptor-serializer.adb
 ./rdf-rasqal-query_results.adb
 ./rdf-auxiliary.ads
