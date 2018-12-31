@@ -29,7 +29,7 @@ mixin template WithoutFinalization(alias _WithoutFinalization,
                                    alias constructor = null,
                                    alias copier = null)
 {
-    import std.traits;
+    //import std.traits;
 
     private Dummy* ptr;
     // Use from_handle() instead
