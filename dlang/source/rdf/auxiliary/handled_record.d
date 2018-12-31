@@ -1,5 +1,7 @@
 module rdf.auxiliary.handled_record;
 
+import std.traits;
+
 class RDFException: Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__) {
         super(msg, file, line);
@@ -27,12 +29,15 @@ alias extern(C) void function (Dummy* ptr) Destructor;
 alias extern(C) Dummy* function () Constructor;
 alias extern(C) Dummy* function (Dummy* ptr) Copier;
 
-template CObject(Destructor destructor,
-                 Constructor constructor = null,
-                 Copier copier = null) {
+//template CObjects(Destructor destructor,
+//                  Constructor constructor = null,
+//                  Copier copier = null) {
+template CObjects(alias destructor,
+                  alias constructor = null,
+                  alias copier = null) {
     struct WithoutFinalization {
         private Dummy* ptr;
-        static if (constructor) {
+        static if (isCallable!constructor) {
             WithoutFinalization create() {
                 return WithoutFinalization(constructor());
             }
@@ -51,11 +56,11 @@ template CObject(Destructor destructor,
             return WithoutFinalization(ptr);
         }
         static from_nonnull_handle(Dummy* ptr) {
-            if(!ptr) throw NullRDFException;
+            if(!ptr) throw new NullRDFException();
             return WithoutFinalization(ptr);
         }
-        @propery bool is_null() {
-            return ptr;
+        @property bool is_null() {
+            return ptr == null;
         }
         static if(copier) {
             WithFinalization dup() {
@@ -66,12 +71,12 @@ template CObject(Destructor destructor,
 
     struct WithFinalization {
         private Dummy* ptr;
-        static if (constructor) {
+        static if (isCallable!constructor) {
             WithoutFinalization create() {
                 return WithFinalization(constructor());
             }
         }
-        @disabled this(this);
+        @disable this(this);
         // Use from_handle() instead
         private this(Dummy* ptr) {
             this.ptr = ptr;
@@ -79,7 +84,7 @@ template CObject(Destructor destructor,
         ~this() {
             destructor(ptr);
         }
-        private @property void base() {
+        private @property WithoutFinalization base() {
             return WithoutFinalization(ptr);
         }
         alias base this;
@@ -87,7 +92,7 @@ template CObject(Destructor destructor,
             return WithFinalization(ptr);
         }
         static from_nonnull_handle(Dummy* ptr) {
-            if(!ptr) throw NullRDFException;
+            if(!ptr) throw new NullRDFException();
             return WithFinalization(ptr);
         }
     }
