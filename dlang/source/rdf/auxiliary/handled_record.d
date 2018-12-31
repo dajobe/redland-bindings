@@ -23,11 +23,11 @@ struct Dummy {
     private char dummy = 0; // C99 requires at least one member in struct
 }
 
-mixin template WithoutFinalization(alias _WithoutFinalization,
-                                   alias _WithFinalization,
-                                   alias destructor,
-                                   alias constructor = null,
-                                   alias copier = null)
+mixin template WithoutFinalize(alias _WithoutFinalize,
+                               alias _WithFinalize,
+                               alias destructor,
+                               alias constructor = null,
+                               alias copier = null)
 {
     //import std.traits;
 
@@ -43,34 +43,34 @@ mixin template WithoutFinalization(alias _WithoutFinalization,
         return ptr;
     }
     static from_handle(Dummy* ptr) {
-        return _WithoutFinalization(ptr);
+        return _WithoutFinalize(ptr);
     }
     static from_nonnull_handle(Dummy* ptr) {
         if(!ptr) throw new NullRDFException();
-        return _WithoutFinalization(ptr);
+        return _WithoutFinalize(ptr);
     }
     @property bool is_null() {
         return ptr == null;
     }
     static if(copier) {
-        _WithFinalization dup() {
-            return _WithFinalization(copier(ptr));
+        _WithFinalize dup() {
+            return _WithFinalize(copier(ptr));
         }
     }
 }
 
-mixin template WithFinalization(alias _WithoutFinalization,
-                                alias _WithFinalization,
-                                alias destructor,
-                                alias constructor = null,
-                                alias copier = null)
+mixin template WithFinalize(alias _WithoutFinalize,
+                            alias _WithFinalize,
+                            alias destructor,
+                            alias constructor = null,
+                            alias copier = null)
 {
     import std.traits;
 
     private Dummy* ptr;
     static if (isCallable!constructor) {
-        _WithoutFinalization create() {
-            return _WithFinalization(constructor());
+        _WithoutFinalize create() {
+            return _WithFinalize(constructor());
         }
     }
     @disable this(this);
@@ -81,15 +81,15 @@ mixin template WithFinalization(alias _WithoutFinalization,
     ~this() {
         destructor(ptr);
     }
-    private @property _WithoutFinalization base() {
-        return _WithoutFinalization(ptr);
+    private @property _WithoutFinalize base() {
+        return _WithoutFinalize(ptr);
     }
     alias base this;
     static from_handle(Dummy* ptr) {
-        return _WithFinalization(ptr);
+        return _WithFinalize(ptr);
     }
     static from_nonnull_handle(Dummy* ptr) {
         if(!ptr) throw new NullRDFException();
-        return _WithFinalization(ptr);
+        return _WithFinalize(ptr);
     }
 }
