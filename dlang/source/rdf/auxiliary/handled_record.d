@@ -25,13 +25,6 @@ struct Dummy {
     private char dummy = 0; // C99 requires at least one member in struct
 }
 
-alias extern(C) void function (Dummy* ptr) Destructor;
-alias extern(C) Dummy* function () Constructor;
-alias extern(C) Dummy* function (Dummy* ptr) Copier;
-
-//template CObjects(Destructor destructor,
-//                  Constructor constructor = null,
-//                  Copier copier = null) {
 template CObjects(alias destructor,
                   alias constructor = null,
                   alias copier = null) {
