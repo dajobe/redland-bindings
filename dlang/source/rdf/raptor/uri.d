@@ -15,6 +15,7 @@ private extern extern(C) {
                                             const char *reference_uri,
                                             char *buffer,
                                             size_t length);
+    char* raptor_uri_counted_filename_to_uri_string(const char *filename, size_t filename_len);
 }
 
 /// Only absolute URIs!
@@ -55,4 +56,12 @@ string resolveURIReference(string baseURI, string referenceURI) {
     return cast(string)buffer;
 }
 
-// TODO: Stopped at function Filename_To_URI_String
+string filenameToURIString(string filename) {
+    char* result1 =
+        raptor_uri_counted_filename_to_uri_string(filename.ptr, filename.length);
+    if(!result1) throw new RDFException();
+    scope(exit) raptor_free_memory(result1);
+    return fromStringz(result1).idup;
+}
+
+// TODO: Stopped at function URI_String_Is_Absolute
