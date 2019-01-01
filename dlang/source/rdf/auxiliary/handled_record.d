@@ -18,9 +18,10 @@ class NullRDFException: RDFException {
     }
 }
 
-extern(C) struct Dummy;
+// extern(C) struct Dummy;
 
-mixin template WithoutFinalize(alias _WithoutFinalize,
+mixin template WithoutFinalize(alias Dummy,
+                               alias _WithoutFinalize,
                                alias _WithFinalize,
                                alias copier = null)
 {
@@ -51,7 +52,8 @@ mixin template WithoutFinalize(alias _WithoutFinalize,
     }
 }
 
-mixin template WithFinalize(alias _WithoutFinalize,
+mixin template WithFinalize(alias Dummy,
+                            alias _WithoutFinalize,
                             alias _WithFinalize,
                             alias destructor,
                             alias constructor = null)

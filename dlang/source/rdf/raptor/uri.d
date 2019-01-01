@@ -7,13 +7,15 @@ import rdf.raptor.memory;
 import rdf.raptor.world;
 import rdf.raptor.iostream;
 
+struct URIHandle;
+
 private extern extern(C) {
-    void raptor_free_uri(Dummy* uri);
-    Dummy* raptor_uri_copy(Dummy* uri);
-    int raptor_uri_compare(Dummy* uri1, Dummy* uri2);
-    int raptor_uri_equals(Dummy* uri1, Dummy* uri2);
-    char* raptor_uri_as_string(Dummy* uri);
-    char* raptor_uri_to_relative_uri_string(Dummy* base_uri, Dummy* reference_uri);
+    void raptor_free_uri(URIHandle* uri);
+    URIHandle* raptor_uri_copy(URIHandle* uri);
+    int raptor_uri_compare(URIHandle* uri1, URIHandle* uri2);
+    int raptor_uri_equals(URIHandle* uri1, URIHandle* uri2);
+    char* raptor_uri_as_string(URIHandle* uri);
+    char* raptor_uri_to_relative_uri_string(URIHandle* base_uri, URIHandle* reference_uri);
     size_t raptor_uri_resolve_uri_reference(const char *base_uri,
                                             const char *reference_uri,
                                             char *buffer,
@@ -23,27 +25,28 @@ private extern extern(C) {
     int raptor_uri_uri_string_is_file_uri(const char *uri_string);
     char* raptor_uri_uri_string_to_filename(const char *uri_string);
     char* raptor_uri_uri_string_to_filename_fragment(const char *uri_string, char **fragment_p);
-    int raptor_uri_print(const Dummy* uri, FILE* stream);
-    Dummy* raptor_uri_get_world(Dummy* uri);
-    int raptor_uri_write(Dummy* uri, Dummy* iostr);
-    int raptor_uri_file_exists(Dummy* uri);
+    int raptor_uri_print(const URIHandle* uri, FILE* stream);
+    RaptorWorldHandle* raptor_uri_get_world(URIHandle* uri);
+    int raptor_uri_write(URIHandle* uri, IOStreamHandle* iostr);
+    int raptor_uri_file_exists(URIHandle* uri);
     int raptor_uri_filename_exists(const char *path);
-    Dummy* raptor_new_uri_from_counted_string(Dummy* world, const char *uriString, size_t length);
-    Dummy* raptor_new_uri_from_uri_local_name(Dummy* world, Dummy* uri, const char *local_name);
-    Dummy* raptor_new_uri_from_uri_or_file_string(Dummy* world, Dummy* base_uri, const char *uri_or_file_string);
-    Dummy* raptor_new_uri_relative_to_base_counted(Dummy* world,
-                                                   Dummy* base_uri,
-                                                   const char *uri_string,
-                                                   size_t uri_len);
-    Dummy* raptor_new_uri_from_id(Dummy* world, Dummy* base_uri, const char *id);
-    Dummy* raptor_new_uri_for_rdf_concept(Dummy* world, const char *name);
-    Dummy* raptor_new_uri_for_xmlbase(Dummy* old_uri);
-    Dummy* raptor_new_uri_for_retrieval(Dummy* old_uri);
+    URIHandle* raptor_new_uri_from_counted_string(RaptorWorldHandle* world, const char *uriString, size_t length);
+    URIHandle* raptor_new_uri_from_uri_local_name(RaptorWorldHandle* world, URIHandle* uri, const char *local_name);
+    URIHandle* raptor_new_uri_from_uri_or_file_string(RaptorWorldHandle* world, URIHandle* base_uri, const char *uri_or_file_string);
+    URIHandle* raptor_new_uri_relative_to_base_counted(RaptorWorldHandle* world,
+                                                       URIHandle* base_uri,
+                                                       const char *uri_string,
+                                                       size_t uri_len);
+    URIHandle* raptor_new_uri_from_id(RaptorWorldHandle* world, URIHandle* base_uri, const char *id);
+    URIHandle* raptor_new_uri_for_rdf_concept(RaptorWorldHandle* world, const char *name);
+    URIHandle* raptor_new_uri_for_xmlbase(URIHandle* old_uri);
+    URIHandle* raptor_new_uri_for_retrieval(URIHandle* old_uri);
 }
 
 /// Only absolute URIs!
 struct URIWithoutFinalize {
-    mixin WithoutFinalize!(URIWithoutFinalize,
+    mixin WithoutFinalize!(URIHandle,
+                           URIWithoutFinalize,
                            URI,
                            raptor_uri_copy);
     mixin CompareHandles!(raptor_uri_equals, raptor_uri_compare);
@@ -70,12 +73,13 @@ struct URIWithoutFinalize {
 }
 
 struct URI {
-    mixin WithFinalize!(URIWithoutFinalize,
+    mixin WithFinalize!(URIHandle,
+                        URIWithoutFinalize,
                         URI,
                         raptor_free_uri);
     mixin CompareHandles!(raptor_uri_equals, raptor_uri_compare);
     static URI fromString(RaptorWorldWithoutFinalize world, string uriString) {
-        Dummy* handle =
+        URIHandle* handle =
             raptor_new_uri_from_counted_string(world.handle, uriString.ptr, uriString.length);
         return fromNonnullHandle(handle);
     }
@@ -83,7 +87,7 @@ struct URI {
                                     URIWithoutFinalize uri,
                                     string localName)
     {
-        Dummy* handle =
+        URIHandle* handle =
             raptor_new_uri_from_uri_local_name(world.handle, uri.handle, toStringz(localName));
         return fromNonnullHandle(handle);
     }
@@ -91,7 +95,7 @@ struct URI {
                                    URIWithoutFinalize baseURI,
                                    string uriOrFile)
     {
-        Dummy* handle =
+        URIHandle* handle =
             raptor_new_uri_from_uri_or_file_string(world.handle, baseURI.handle, toStringz(uriOrFile));
         return fromNonnullHandle(handle);
     }
@@ -99,12 +103,12 @@ struct URI {
                                      URIWithoutFinalize baseURI,
                                      string uri)
     {
-        Dummy* handle =
+        URIHandle* handle =
             raptor_new_uri_relative_to_base_counted(world.handle, baseURI.handle, uri.ptr, uri.length);
         return fromNonnullHandle(handle);
     }
     static URI fromID(RaptorWorldWithoutFinalize world, URIWithoutFinalize baseURI, string id) {
-        Dummy* handle =
+        URIHandle* handle =
             raptor_new_uri_from_id(world.handle, baseURI.handle, toStringz(id));
         return fromNonnullHandle(handle);
     }

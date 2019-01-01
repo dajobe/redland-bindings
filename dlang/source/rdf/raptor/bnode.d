@@ -9,12 +9,12 @@ import rdf.raptor.memory;
 import rdf.raptor.world;
 
 private extern extern(C) {
-    char* raptor_world_generate_bnodeid(Dummy* world);
+    char* raptor_world_generate_bnodeid(RaptorWorldHandle* world);
     alias raptor_generate_bnodeid_handler = extern(C) const(char)* function(char *data, char* userID);
-    void raptor_world_set_generate_bnodeid_handler(Dummy* world,
+    void raptor_world_set_generate_bnodeid_handler(RaptorWorldHandle* world,
                                                    void *user_data,
                                                    raptor_generate_bnodeid_handler handler);
-    void raptor_world_set_generate_bnodeid_parameters(Dummy* world, const char *prefix, int base);
+    void raptor_world_set_generate_bnodeid_parameters(RaptorWorldHandle* world, const char *prefix, int base);
 }
 
 struct BNode {

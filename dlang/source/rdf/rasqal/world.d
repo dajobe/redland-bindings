@@ -3,16 +3,19 @@ module rdf.rasqal.world;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.world;
 
+struct RasqalWorldHandle;
+
 private extern extern(C) {
-    Dummy* rasqal_new_world();
-    void rasqal_free_world(Dummy* world);
-    int rasqal_world_open(Dummy* world);
-    Dummy* rasqal_world_get_raptor(Dummy* world);
-    void rasqal_world_set_raptor(Dummy* world, Dummy* raptor_world_ptr);
+    RasqalWorldHandle* rasqal_new_world();
+    void rasqal_free_world(RasqalWorldHandle* world);
+    int rasqal_world_open(RasqalWorldHandle* world);
+    RaptorWorldHandle* rasqal_world_get_raptor(RasqalWorldHandle* world);
+    void rasqal_world_set_raptor(RasqalWorldHandle* world, RaptorWorldHandle* raptor_world);
 }
 
 struct RasqalWorldWithoutFinalize {
-    mixin WithoutFinalize!(RasqalWorldWithoutFinalize,
+    mixin WithoutFinalize!(RasqalWorldHandle,
+                           RasqalWorldWithoutFinalize,
                            RasqalWorld);
     void open() {
         rasqal_world_open(handle);
@@ -27,7 +30,8 @@ struct RasqalWorldWithoutFinalize {
 }
 
 struct RasqalWorld {
-    mixin WithFinalize!(RasqalWorldWithoutFinalize,
+    mixin WithFinalize!(RasqalWorldHandle,
+                        RasqalWorldWithoutFinalize,
                         RasqalWorld,
                         rasqal_free_world,
                         rasqal_new_world);

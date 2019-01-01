@@ -2,8 +2,10 @@ module rdf.raptor.iostream;
 
 import rdf.auxiliary.handled_record;
 
+struct IOStreamHandle;
+
 private extern extern(C) {
-    void raptor_free_iostream(Dummy* iostr);
+    void raptor_free_iostream(IOStreamHandle* iostr);
 }
 
 // TODO: Make this instead wrapper over D streams
@@ -18,12 +20,14 @@ class IOStreamException: Exception {
 }
 
 struct IOStreamWithoutFinalize {
-    mixin WithoutFinalize!(IOStreamWithoutFinalize,
+    mixin WithoutFinalize!(IOStreamHandle,
+                           IOStreamWithoutFinalize,
                            IOStream);
 }
 
 struct IOStream {
-    mixin WithFinalize!(IOStreamWithoutFinalize,
+    mixin WithFinalize!(IOStreamHandle,
+                        IOStreamWithoutFinalize,
                         IOStream,
                         raptor_free_iostream);
 }

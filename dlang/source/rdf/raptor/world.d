@@ -2,6 +2,8 @@ module rdf.raptor.world;
 
 import rdf.auxiliary.handled_record;
 
+struct RaptorWorldHandle;
+
 enum RaptorFlagType : char { LibxmlErrorSave = 1,
                              LibxmlStructuredErrorSave = 2,
                              URIInterning = 3,
@@ -13,19 +15,20 @@ struct FlagAndValue {
 }
 
 private extern extern(C) {
-    Dummy* raptor_new_world_internal(uint _version);
-    void raptor_free_world(Dummy* world);
-    void raptor_world_open(Dummy* world);
-    int raptor_world_set_flag(Dummy* raptor_world, int flag, int value);
+    RaptorWorldHandle* raptor_new_world_internal(uint _version);
+    void raptor_free_world(RaptorWorldHandle* world);
+    void raptor_world_open(RaptorWorldHandle* world);
+    int raptor_world_set_flag(RaptorWorldHandle* raptor_world, int flag, int value);
 }
 
-private Dummy* raptor_new_world() {
+private RaptorWorldHandle* raptor_new_world() {
     import rdf.raptor.constants : version_decimal;
     return raptor_new_world_internal(version_decimal);
 }
 
 struct RaptorWorldWithoutFinalize {
-    mixin WithoutFinalize!(RaptorWorldWithoutFinalize,
+    mixin WithoutFinalize!(RaptorWorldHandle,
+                           RaptorWorldWithoutFinalize,
                            RaptorWorld);
     void open() {
         raptor_world_open(handle);
@@ -44,7 +47,8 @@ struct RaptorWorldWithoutFinalize {
 }
 
 struct RaptorWorld {
-    mixin WithFinalize!(RaptorWorldWithoutFinalize,
+    mixin WithFinalize!(RaptorWorldHandle,
+                        RaptorWorldWithoutFinalize,
                         RaptorWorld,
                         raptor_free_world,
                         raptor_new_world);
