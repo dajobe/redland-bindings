@@ -1,8 +1,10 @@
 module rdf.raptor.uri;
 
 import std.string;
+import std.stdio : File;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.memory;
+import rdf.raptor.world;
 
 private extern extern(C) {
     void raptor_free_uri(Dummy* uri);
@@ -20,6 +22,8 @@ private extern extern(C) {
     int raptor_uri_uri_string_is_file_uri(const char *uri_string);
     char* raptor_uri_uri_string_to_filename(const char *uri_string);
     char* raptor_uri_uri_string_to_filename_fragment(const char *uri_string, char **fragment_p);
+    int raptor_uri_print(const Dummy* uri, File *stream);
+    Dummy* raptor_uri_get_world(Dummy* uri);
 }
 
 /// Only absolute URIs!
@@ -30,6 +34,15 @@ struct URIWithoutFinalize {
     mixin CompareHandles!(raptor_uri_equals, raptor_uri_compare);
     string toString() {
         return fromStringz(raptor_uri_as_string(handle)).idup;
+    }
+    /// Not supposed to be used, but included for completeness
+    void print(File *file) {
+        if(raptor_uri_print(handle, file) != 0) {
+            //throw new IOStreamException(); // FIXME: Add this
+        }
+    }
+    @property RaptorWorldWithoutFinalize world() {
+        return RaptorWorldWithoutFinalize.from_handle(raptor_uri_get_world(handle));
     }
 }
 
@@ -101,4 +114,4 @@ FilenameAndFragment uriStringToFilenameAndFragment(string uriString) {
     return FilenameAndFragment(fromStringz(filename).idup, fromStringz(fragment).idup);
 }
 
-// TODO: Stopped at function Print
+// TODO: Stopped at function Write
