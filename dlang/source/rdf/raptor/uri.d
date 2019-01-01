@@ -26,6 +26,8 @@ private extern extern(C) {
     int raptor_uri_print(const Dummy* uri, FILE* stream);
     Dummy* raptor_uri_get_world(Dummy* uri);
     int raptor_uri_write(Dummy* uri, Dummy* iostr);
+    int raptor_uri_file_exists(Dummy* uri);
+    int raptor_uri_filename_exists(const char *path);
 }
 
 /// Only absolute URIs!
@@ -48,6 +50,11 @@ struct URIWithoutFinalize {
     void write(IOStreamWithoutFinalize stream) {
         if(raptor_uri_write(handle, stream.handle) != 0)
             throw new IOStreamException();
+    }
+    bool uriFileExists() {
+        immutable int result = raptor_uri_file_exists(handle);
+        if(result < 0) throw new RDFException();
+        return result != 0;
     }
 }
 
@@ -119,4 +126,10 @@ FilenameAndFragment uriStringToFilenameAndFragment(string uriString) {
     return FilenameAndFragment(fromStringz(filename).idup, fromStringz(fragment).idup);
 }
 
-// TODO: Stopped at function Write
+bool filenameExists(string filename) {
+    immutable int result = raptor_uri_filename_exists(toStringz(filename));
+    if(result < 0) throw new RDFException();
+    return result != 0;
+}
+
+// TODO: Stopped at function To_Turtle_String
