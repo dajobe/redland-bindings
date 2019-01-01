@@ -5,7 +5,7 @@ import std.stdio : FILE, File;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.memory;
 import rdf.raptor.world;
-import rdf.raptor.iostream : IOStreamException;
+import rdf.raptor.iostream;
 
 private extern extern(C) {
     void raptor_free_uri(Dummy* uri);
@@ -25,6 +25,7 @@ private extern extern(C) {
     char* raptor_uri_uri_string_to_filename_fragment(const char *uri_string, char **fragment_p);
     int raptor_uri_print(const Dummy* uri, FILE* stream);
     Dummy* raptor_uri_get_world(Dummy* uri);
+    int raptor_uri_write(Dummy* uri, Dummy* iostr);
 }
 
 /// Only absolute URIs!
@@ -43,6 +44,10 @@ struct URIWithoutFinalize {
     }
     @property RaptorWorldWithoutFinalize world() {
         return RaptorWorldWithoutFinalize.from_handle(raptor_uri_get_world(handle));
+    }
+    void write(IOStreamWithoutFinalize stream) {
+        if(raptor_uri_write(handle, stream.handle) != 0)
+            throw new IOStreamException();
     }
 }
 
