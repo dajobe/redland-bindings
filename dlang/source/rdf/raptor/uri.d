@@ -19,6 +19,7 @@ private extern extern(C) {
     int raptor_uri_uri_string_is_absolute(const char *uri_string);
     int raptor_uri_uri_string_is_file_uri(const char *uri_string);
     char* raptor_uri_uri_string_to_filename(const char *uri_string);
+    char* raptor_uri_uri_string_to_filename_fragment(const char *uri_string, char **fragment_p);
 }
 
 /// Only absolute URIs!
@@ -84,4 +85,20 @@ string uriStringToFilename(string uriString) {
     return fromStringz(result1).idup;
 }
 
-// TODO: Stopped at function Filename_And_Fragment
+struct FilenameAndFragment {
+    string filename, fragment;
+}
+
+FilenameAndFragment uriStringToFilenameAndFragment(string uriString) {
+    char* fragment;
+    char* filename =
+        raptor_uri_uri_string_to_filename_fragment(toStringz(uriString), &fragment);
+    if(!filename) throw new RDFException();
+    scope(exit) {
+        raptor_free_memory(filename);
+        if(fragment) raptor_free_memory (fragment);
+    }
+    return FilenameAndFragment(fromStringz(filename).idup, fromStringz(fragment).idup);
+}
+
+// TODO: Stopped at function Print
