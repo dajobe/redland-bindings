@@ -51,7 +51,7 @@ struct URIWithoutFinalize {
                            raptor_uri_copy);
     mixin CompareHandles!(raptor_uri_equals, raptor_uri_compare);
     string toString() {
-        return fromStringz(raptor_uri_as_string(handle)).idup;
+        return raptor_uri_as_string(handle).fromStringz.idup;
     }
     /// Not supposed to be used, but included for completeness
     void print(File file) {
@@ -88,7 +88,7 @@ struct URI {
                                     string localName)
     {
         URIHandle* handle =
-            raptor_new_uri_from_uri_local_name(world.handle, uri.handle, toStringz(localName));
+            raptor_new_uri_from_uri_local_name(world.handle, uri.handle, localName.toStringz);
         return fromNonnullHandle(handle);
     }
     static URI fromURIOrFileString(RaptorWorldWithoutFinalize world, 
@@ -96,7 +96,7 @@ struct URI {
                                    string uriOrFile)
     {
         URIHandle* handle =
-            raptor_new_uri_from_uri_or_file_string(world.handle, baseURI.handle, toStringz(uriOrFile));
+            raptor_new_uri_from_uri_or_file_string(world.handle, baseURI.handle, uriOrFile.toStringz);
         return fromNonnullHandle(handle);
     }
     static URI fromURIRelativeToBase(RaptorWorldWithoutFinalize world, 
@@ -109,11 +109,11 @@ struct URI {
     }
     static URI fromID(RaptorWorldWithoutFinalize world, URIWithoutFinalize baseURI, string id) {
         URIHandle* handle =
-            raptor_new_uri_from_id(world.handle, baseURI.handle, toStringz(id));
+            raptor_new_uri_from_id(world.handle, baseURI.handle, id.toStringz);
         return fromNonnullHandle(handle);
     }
     static URI fromRDFConcept(RaptorWorldWithoutFinalize world, string name) {
-        return fromNonnullHandle(raptor_new_uri_for_rdf_concept(world.handle, toStringz(name)));
+        return fromNonnullHandle(raptor_new_uri_for_rdf_concept(world.handle, name.toStringz));
     }
     static URI fromXMLBase(URIWithoutFinalize oldURI) {
         return fromNonnullHandle(raptor_new_uri_for_xmlbase(oldURI.handle));
@@ -128,16 +128,16 @@ string toRelativeURIString(URIWithoutFinalize baseURI, URIWithoutFinalize refere
         raptor_uri_to_relative_uri_string(baseURI.handle, referenceURI.handle);
   if(!str) throw new NullRDFException();
   scope(exit) raptor_free_memory(str);
-  return fromStringz(str).idup;
+  return str.fromStringz.idup;
 }
 
 string resolveURIReference(string baseURI, string referenceURI) {
     immutable size_t bufferLength = baseURI.length + referenceURI.length + 1;
     char[] buffer = new char[bufferLength];
-    immutable res = raptor_uri_resolve_uri_reference(toStringz(baseURI),
-                                                      toStringz(referenceURI),
-                                                      buffer.ptr,
-                                                      bufferLength);
+    immutable res = raptor_uri_resolve_uri_reference(baseURI.toStringz,
+                                                     referenceURI.toStringz,
+                                                     buffer.ptr,
+                                                     bufferLength);
     if(!res) throw new RDFException();
     buffer.length = bufferLength;
     return cast(string)buffer;
@@ -148,24 +148,24 @@ string filenameToURIString(string filename) {
         raptor_uri_counted_filename_to_uri_string(filename.ptr, filename.length);
     if(!result1) throw new RDFException();
     scope(exit) raptor_free_memory(result1);
-    return fromStringz(result1).idup;
+    return result1.fromStringz.idup;
 }
 
 bool uriStringIsAbsolute(string uriString) {
-    immutable int res = raptor_uri_uri_string_is_absolute(toStringz(uriString));
+    immutable int res = raptor_uri_uri_string_is_absolute(uriString.toStringz);
     if(res < 0) throw new RDFException();
     return res > 0;
 }
 
 bool uriStringIsFileURI(string uriString) {
-    return raptor_uri_uri_string_is_file_uri(toStringz(uriString)) != 0;
+    return raptor_uri_uri_string_is_file_uri(uriString.toStringz) != 0;
 }
 
 string uriStringToFilename(string uriString) {
-    char* result1 = raptor_uri_uri_string_to_filename(toStringz(uriString));
+    char* result1 = raptor_uri_uri_string_to_filename(uriString.toStringz);
     if(!result1) throw new RDFException();
     scope(exit) raptor_free_memory(result1);
-    return fromStringz(result1).idup;
+    return result1.fromStringz.idup;
 }
 
 struct FilenameAndFragment {
@@ -175,17 +175,17 @@ struct FilenameAndFragment {
 FilenameAndFragment uriStringToFilenameAndFragment(string uriString) {
     char* fragment;
     char* filename =
-        raptor_uri_uri_string_to_filename_fragment(toStringz(uriString), &fragment);
+        raptor_uri_uri_string_to_filename_fragment(uriString.toStringz, &fragment);
     if(!filename) throw new RDFException();
     scope(exit) {
         raptor_free_memory(filename);
         if(fragment) raptor_free_memory (fragment);
     }
-    return FilenameAndFragment(fromStringz(filename).idup, fromStringz(fragment).idup);
+    return FilenameAndFragment(filename.fromStringz.idup, fragment.fromStringz.idup);
 }
 
 bool filenameExists(string filename) {
-    immutable int result = raptor_uri_filename_exists(toStringz(filename));
+    immutable int result = raptor_uri_filename_exists(filename.toStringz);
     if(result < 0) throw new RDFException();
     return result != 0;
 }

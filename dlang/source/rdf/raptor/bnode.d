@@ -22,7 +22,7 @@ struct BNode {
         char* str = raptor_world_generate_bnodeid(world.handle);
         if(!str) throw new NullRDFException;
         scope(exit) raptor_free_memory(str);
-        return fromStringz(str).idup;
+        return str.fromStringz.idup;
     }
     static void setGenerateBnodeidParameters(RaptorWorldWithoutFinalize world,
                                              Nullable!string prefix,
@@ -40,7 +40,7 @@ class BNodeIDHandler : UserObject!BNode {
         }
         Nullable!string userID2;
         if(userID) userID2 = cast(string)fromStringz(userID);
-        return toStringz((cast(BNodeIDHandler*)data).do_handle(userID2));
+        return (cast(BNodeIDHandler*)data).do_handle(userID2).toStringz;
     }
     void set(RaptorWorldWithoutFinalize world) {
         raptor_world_set_generate_bnodeid_handler(world.handle, context, &handleImpl);
