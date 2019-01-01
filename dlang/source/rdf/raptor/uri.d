@@ -5,6 +5,7 @@ import std.stdio : FILE, File;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.memory;
 import rdf.raptor.world;
+import rdf.raptor.iostream : IOStreamException;
 
 private extern extern(C) {
     void raptor_free_uri(Dummy* uri);
@@ -37,9 +38,8 @@ struct URIWithoutFinalize {
     }
     /// Not supposed to be used, but included for completeness
     void print(File file) {
-        if(raptor_uri_print(handle, file.getFP()) != 0) {
-            //throw new IOStreamException(); // FIXME: Add this
-        }
+        if(raptor_uri_print(handle, file.getFP()) != 0)
+            throw new IOStreamException();
     }
     @property RaptorWorldWithoutFinalize world() {
         return RaptorWorldWithoutFinalize.from_handle(raptor_uri_get_world(handle));
