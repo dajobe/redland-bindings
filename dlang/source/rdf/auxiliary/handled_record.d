@@ -30,17 +30,17 @@ mixin template WithoutFinalize(alias _WithoutFinalize,
     import std.traits;
 
     private Dummy* ptr;
-    // Use from_handle() instead
+    // Use fromHandle() instead
     private this(Dummy* ptr) {
         this.ptr = ptr;
     }
     @property Dummy* handle() const {
         return cast(Dummy*)ptr;
     }
-    static from_handle(Dummy* ptr) {
+    static fromHandle(Dummy* ptr) {
         return _WithoutFinalize(ptr);
     }
-    static from_nonnull_handle(Dummy* ptr) {
+    static fromNonnullHandle(Dummy* ptr) {
         if(!ptr) throw new NullRDFException();
         return _WithoutFinalize(ptr);
     }
@@ -68,7 +68,7 @@ mixin template WithFinalize(alias _WithoutFinalize,
         }
     }
     @disable this(this);
-    // Use from_handle() instead
+    // Use fromHandle() instead
     private this(Dummy* ptr) {
         this.ptr = ptr;
     }
@@ -82,10 +82,10 @@ mixin template WithFinalize(alias _WithoutFinalize,
     @property Dummy* handle() const {
         return cast(Dummy*)ptr;
     }
-    static from_handle(Dummy* ptr) {
+    static fromHandle(Dummy* ptr) {
         return _WithFinalize(ptr);
     }
-    static from_nonnull_handle(Dummy* ptr) {
+    static fromNonnullHandle(Dummy* ptr) {
         if(!ptr) throw new NullRDFException();
         return _WithFinalize(ptr);
     }

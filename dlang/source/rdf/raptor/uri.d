@@ -46,7 +46,7 @@ struct URIWithoutFinalize {
             throw new IOStreamException();
     }
     @property RaptorWorldWithoutFinalize world() {
-        return RaptorWorldWithoutFinalize.from_handle(raptor_uri_get_world(handle));
+        return RaptorWorldWithoutFinalize.fromHandle(raptor_uri_get_world(handle));
     }
     void write(IOStreamWithoutFinalize stream) {
         if(raptor_uri_write(handle, stream.handle) != 0)
@@ -67,7 +67,7 @@ struct URI {
     static URI fromString(RaptorWorldWithoutFinalize world, string uriString) {
         Dummy* handle =
             raptor_new_uri_from_counted_string(world.handle, uriString.ptr, uriString.length);
-        return from_nonnull_handle(handle);
+        return fromNonnullHandle(handle);
     }
 }
 

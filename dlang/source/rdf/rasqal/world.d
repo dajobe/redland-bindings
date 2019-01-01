@@ -18,7 +18,7 @@ struct RasqalWorldWithoutFinalize {
         rasqal_world_open(handle);
     }
     @property RaptorWorldWithoutFinalize raptor() {
-        return RaptorWorldWithoutFinalize.from_nonnull_handle(rasqal_world_get_raptor(this.handle));
+        return RaptorWorldWithoutFinalize.fromNonnullHandle(rasqal_world_get_raptor(this.handle));
     }
     @property void raptor(RaptorWorldWithoutFinalize world) {
         rasqal_world_set_raptor(handle, world.handle);
