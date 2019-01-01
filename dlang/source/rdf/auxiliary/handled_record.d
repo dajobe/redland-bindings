@@ -18,10 +18,7 @@ class NullRDFException: RDFException {
     }
 }
 
-extern(C)
-struct Dummy {
-    private char dummy = 0; // C99 requires at least one member in struct
-}
+extern(C) struct Dummy;
 
 mixin template WithoutFinalize(alias _WithoutFinalize,
                                alias _WithFinalize,
