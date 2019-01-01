@@ -16,6 +16,8 @@ private extern extern(C) {
                                             char *buffer,
                                             size_t length);
     char* raptor_uri_counted_filename_to_uri_string(const char *filename, size_t filename_len);
+    int raptor_uri_uri_string_is_absolute(const char *uri_string);
+    int raptor_uri_uri_string_is_file_uri(const char *uri_string);
 }
 
 /// Only absolute URIs!
@@ -64,4 +66,14 @@ string filenameToURIString(string filename) {
     return fromStringz(result1).idup;
 }
 
-// TODO: Stopped at function URI_String_Is_Absolute
+bool uriStringIsAbsolute(string uriString) {
+    immutable int res = raptor_uri_uri_string_is_absolute(toStringz(uriString));
+    if(res < 0) throw new RDFException();
+    return res > 0;
+}
+
+bool uriStringIsFileURI(string uriString) {
+    return raptor_uri_uri_string_is_file_uri(toStringz(uriString)) != 0;
+}
+
+// TODO: Stopped at function URI_String_To_Filename
