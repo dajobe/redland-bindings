@@ -26,25 +26,6 @@ struct URIWithoutFinalize {
     string toString() {
         return fromStringz(raptor_uri_as_string(handle)).idup;
     }
-    static string toRelativeURIString(URIWithoutFinalize baseURI, URIWithoutFinalize referenceURI) {
-      char* str =
-            raptor_uri_to_relative_uri_string(baseURI.handle, referenceURI.handle);
-      if(!str) throw new NullRDFException();
-      scope(exit) raptor_free_memory(str);
-      return fromStringz(str).idup;
-    }
-    static string resolveURIReference(string baseURI, string referenceURI) {
-        immutable size_t bufferLength = baseURI.length + referenceURI.length + 1;
-        char[] buffer = new char[bufferLength];
-        immutable res = raptor_uri_resolve_uri_reference(toStringz(baseURI),
-                                                         toStringz(referenceURI),
-                                                         buffer.ptr,
-                                                         bufferLength);
-        if(!res) throw new RDFException();
-        buffer.length = bufferLength;
-        return cast(string)buffer;
-    }
-    // TODO: Stopped at function Filename_To_URI_String
 }
 
 struct URI {
@@ -54,4 +35,24 @@ struct URI {
     mixin CompareHandles!(raptor_uri_equals, raptor_uri_compare);
 }
 
-// TODO
+string toRelativeURIString(URIWithoutFinalize baseURI, URIWithoutFinalize referenceURI) {
+  char* str =
+        raptor_uri_to_relative_uri_string(baseURI.handle, referenceURI.handle);
+  if(!str) throw new NullRDFException();
+  scope(exit) raptor_free_memory(str);
+  return fromStringz(str).idup;
+}
+
+string resolveURIReference(string baseURI, string referenceURI) {
+    immutable size_t bufferLength = baseURI.length + referenceURI.length + 1;
+    char[] buffer = new char[bufferLength];
+    immutable res = raptor_uri_resolve_uri_reference(toStringz(baseURI),
+                                                      toStringz(referenceURI),
+                                                      buffer.ptr,
+                                                      bufferLength);
+    if(!res) throw new RDFException();
+    buffer.length = bufferLength;
+    return cast(string)buffer;
+}
+
+// TODO: Stopped at function Filename_To_URI_String
