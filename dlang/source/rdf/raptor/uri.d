@@ -29,6 +29,7 @@ private extern extern(C) {
     int raptor_uri_file_exists(Dummy* uri);
     int raptor_uri_filename_exists(const char *path);
     Dummy* raptor_new_uri_from_counted_string(Dummy* world, const char *uriString, size_t length);
+    Dummy* raptor_new_uri_from_uri_local_name(Dummy* world, Dummy* uri, const char *local_name);
 }
 
 /// Only absolute URIs!
@@ -67,6 +68,14 @@ struct URI {
     static URI fromString(RaptorWorldWithoutFinalize world, string uriString) {
         Dummy* handle =
             raptor_new_uri_from_counted_string(world.handle, uriString.ptr, uriString.length);
+        return fromNonnullHandle(handle);
+    }
+    static URI From_URI_With_Local_Name(RaptorWorldWithoutFinalize world, 
+                                        URIWithoutFinalize uri,
+                                        string localName)
+    {
+        Dummy* handle =
+            raptor_new_uri_from_uri_local_name(world.handle, uri.handle, toStringz(localName));
         return fromNonnullHandle(handle);
     }
 }
@@ -140,4 +149,4 @@ bool filenameExists(string filename) {
 
 // TODO: To_Turtle_String Turtle_Write
 
-// TODO: Stopped at function From_String
+// TODO: Stopped at function From_URI_Or_File_String
