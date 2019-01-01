@@ -36,7 +36,7 @@ struct URIWithoutFinalize {
         return fromStringz(raptor_uri_as_string(handle)).idup;
     }
     /// Not supposed to be used, but included for completeness
-    void print(File *file) {
+    void print(File file) {
         if(raptor_uri_print(handle, file.getFP()) != 0) {
             //throw new IOStreamException(); // FIXME: Add this
         }
