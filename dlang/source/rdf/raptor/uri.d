@@ -44,6 +44,7 @@ struct URIWithoutFinalize {
         buffer.length = bufferLength;
         return cast(string)buffer;
     }
+    // TODO: Stopped at function Filename_To_URI_String
 }
 
 struct URI {
