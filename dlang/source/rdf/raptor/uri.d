@@ -30,6 +30,15 @@ private extern extern(C) {
     int raptor_uri_filename_exists(const char *path);
     Dummy* raptor_new_uri_from_counted_string(Dummy* world, const char *uriString, size_t length);
     Dummy* raptor_new_uri_from_uri_local_name(Dummy* world, Dummy* uri, const char *local_name);
+    Dummy* raptor_new_uri_from_uri_or_file_string(Dummy* world, Dummy* base_uri, const char *uri_or_file_string);
+    Dummy* raptor_new_uri_relative_to_base_counted(Dummy* world,
+                                                   Dummy* base_uri,
+                                                   const char *uri_string,
+                                                   size_t uri_len);
+    Dummy* raptor_new_uri_from_id(Dummy* world, Dummy* base_uri, const char *id);
+    Dummy* raptor_new_uri_for_rdf_concept(Dummy* world, const char *name);
+    Dummy* raptor_new_uri_for_xmlbase(Dummy* old_uri);
+    Dummy* raptor_new_uri_for_retrieval(Dummy* old_uri);
 }
 
 /// Only absolute URIs!
@@ -70,13 +79,43 @@ struct URI {
             raptor_new_uri_from_counted_string(world.handle, uriString.ptr, uriString.length);
         return fromNonnullHandle(handle);
     }
-    static URI From_URI_With_Local_Name(RaptorWorldWithoutFinalize world, 
-                                        URIWithoutFinalize uri,
-                                        string localName)
+    static URI fromURIWithLocalName(RaptorWorldWithoutFinalize world, 
+                                    URIWithoutFinalize uri,
+                                    string localName)
     {
         Dummy* handle =
             raptor_new_uri_from_uri_local_name(world.handle, uri.handle, toStringz(localName));
         return fromNonnullHandle(handle);
+    }
+    static URI fromURIOrFileString(RaptorWorldWithoutFinalize world, 
+                                   URIWithoutFinalize baseURI,
+                                   string uriOrFile)
+    {
+        Dummy* handle =
+            raptor_new_uri_from_uri_or_file_string(world.handle, baseURI.handle, toStringz(uriOrFile));
+        return fromNonnullHandle(handle);
+    }
+    static URI fromURIRelativeToBase(RaptorWorldWithoutFinalize world, 
+                                     URIWithoutFinalize baseURI,
+                                     string uri)
+    {
+        Dummy* handle =
+            raptor_new_uri_relative_to_base_counted(world.handle, baseURI.handle, uri.ptr, uri.length);
+        return fromNonnullHandle(handle);
+    }
+    static URI fromID(RaptorWorldWithoutFinalize world, URIWithoutFinalize baseURI, string id) {
+        Dummy* handle =
+            raptor_new_uri_from_id(world.handle, baseURI.handle, toStringz(id));
+        return fromNonnullHandle(handle);
+    }
+    static URI fromRDFConcept(RaptorWorldWithoutFinalize world, string name) {
+        return fromNonnullHandle(raptor_new_uri_for_rdf_concept(world.handle, toStringz(name)));
+    }
+    static URI fromXMLBase(URIWithoutFinalize oldURI) {
+        return fromNonnullHandle(raptor_new_uri_for_xmlbase(oldURI.handle));
+    }
+    static URI forRetrieval(URIWithoutFinalize oldURI) {
+        return fromNonnullHandle(raptor_new_uri_for_retrieval(oldURI.handle));
     }
 }
 
@@ -148,5 +187,3 @@ bool filenameExists(string filename) {
 }
 
 // TODO: To_Turtle_String Turtle_Write
-
-// TODO: Stopped at function From_URI_Or_File_String

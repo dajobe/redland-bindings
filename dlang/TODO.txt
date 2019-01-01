@@ -20,8 +20,6 @@ rdf-raptor-syntaxes.adb
 rdf-raptor-syntaxes.ads
 rdf-raptor-term.adb
 rdf-raptor-term.ads
-rdf-raptor-uri.adb # partially implemented
-rdf-raptor-uri.ads # partially implemented
 rdf-raptor-www.adb
 rdf-raptor-www.ads
 rdf-rasqal.ads
