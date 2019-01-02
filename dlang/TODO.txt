@@ -18,8 +18,6 @@ rdf-raptor-statement.adb
 rdf-raptor-statement.ads
 rdf-raptor-syntaxes.adb
 rdf-raptor-syntaxes.ads
-rdf-raptor-term.adb
-rdf-raptor-term.ads
 rdf-raptor-www.adb
 rdf-raptor-www.ads
 rdf-rasqal.ads

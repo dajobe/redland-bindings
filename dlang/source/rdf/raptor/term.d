@@ -26,6 +26,10 @@ private extern extern(C) {
     TermHandle* raptor_new_term_from_counted_uri_string(RaptorWorldHandle* world,
                                                         const char *uri_string,
                                                         size_t length);
+    TermHandle* raptor_new_term_from_uri(RaptorWorldHandle* world, URIHandle* uri);
+    TermHandle* raptor_new_term_from_counted_string(RaptorWorldHandle* world,
+                                                    const char *string,
+                                                    size_t length);
 }
 
 extern(C)
@@ -151,6 +155,10 @@ struct Term {
             raptor_new_term_from_counted_uri_string(world.handle, uri.ptr, uri.length);
         return fromNonnullHandle(handle);
     }
+    static Term fromURI(RaptorWorldWithoutFinalize world, URIWithoutFinalize uri) {
+        return fromNonnullHandle(raptor_new_term_from_uri(world.handle, uri.handle));
+    }
+    static Term fromString(RaptorWorldWithoutFinalize world, string uriString) {
+        return fromNonnullHandle(raptor_new_term_from_counted_string(world.handle, uriString.ptr, uriString.length));
+    }
 }
-
-// TODO: Stopped at From_URI_String
