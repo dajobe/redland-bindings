@@ -20,6 +20,7 @@ private extern extern(C) {
                                                const char *prefix,
                                                const char *ns_uri_string,
                                                int depth);
+    void raptor_namespaces_end_for_depth(NamespaceStackHandle* nstack, int depth);
 }
 
 struct NamespaceStackWithoutFinalize {
@@ -48,6 +49,9 @@ struct NamespaceStackWithoutFinalize {
         if(res != 0)
             throw new RDFException();
     }
+    void endForDepth(uint depth) {
+        raptor_namespaces_end_for_depth(handle, depth);
+    }
 }
 
 struct NamespaceStack {
@@ -57,4 +61,4 @@ struct NamespaceStack {
                         raptor_free_namespaces);
 }
 
-// TODO: Stopped on End_For_Depth
+// TODO: Stopped on Get_Default_Namespace
