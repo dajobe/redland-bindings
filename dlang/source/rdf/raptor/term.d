@@ -17,6 +17,12 @@ private extern extern(C) {
     TermHandle* raptor_new_term_from_counted_blank(RaptorWorldHandle *world,
                                                    const char *blank,
                                                    size_t length);
+    TermHandle* raptor_new_term_from_counted_literal(RaptorWorldHandle* world,
+                                                     const char *literal,
+                                                     size_t literal_len,
+                                                     URIHandle* datatype,
+                                                     const char *language,
+                                                     char language_len);
 }
 
 extern(C)
@@ -123,6 +129,20 @@ struct Term {
         const char* str = id.myToStringz;
         return fromNonnullHandle(raptor_new_term_from_counted_blank(world.handle, str, str ? id.get.length : 0));
     }
+    Term From_Literal(RaptorWorldWithoutFinalize world,
+                      Nullable!string literal,
+                      URIWithoutFinalize datatype,
+                      Nullable!string language)
+    {
+        TermHandle* handle =
+            raptor_new_term_from_counted_literal(world.handle,
+                                                 literal.myToStringz,
+                                                 literal.length,
+                                                 datatype.handle,
+                                                 language.myToStringz,
+                                                 cast(char)language.length);
+        return fromNonnullHandle(handle);
+    }
 }
 
-// TODO: Stopped at From_Literal
+// TODO: Stopped at From_URI_String
