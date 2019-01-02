@@ -5,6 +5,7 @@ import std.typecons;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.memory;
 import rdf.raptor.world;
+import rdf.raptor.uri;
 import rdf.raptor.namespace;
 
 struct NamespaceStackHandle;
@@ -21,6 +22,12 @@ private extern extern(C) {
                                                const char *ns_uri_string,
                                                int depth);
     void raptor_namespaces_end_for_depth(NamespaceStackHandle* nstack, int depth);
+    NamespaceHandle* raptor_namespaces_get_default_namespace(NamespaceStackHandle* nstack);
+    NamespaceHandle* raptor_namespaces_find_namespace(NamespaceStackHandle* nstack,
+                                                      const char *prefix,
+                                                      int prefix_length);
+    NamespaceHandle* raptor_namespaces_find_namespace_by_uri(NamespaceStackHandle* nstack,
+                                                             URIHandle* ns_uri);
 }
 
 struct NamespaceStackWithoutFinalize {
@@ -52,6 +59,21 @@ struct NamespaceStackWithoutFinalize {
     void endForDepth(uint depth) {
         raptor_namespaces_end_for_depth(handle, depth);
     }
+    @property NamespaceWithoutFinalize defaultNamespace() {
+        return NamespaceWithoutFinalize.fromNonnullHandle(raptor_namespaces_get_default_namespace(handle));
+    }
+    NamespaceWithoutFinalize findNamespace(string prefix) {
+        NamespaceHandle* handle =
+            raptor_namespaces_find_namespace(handle, prefix.ptr, cast(int)prefix.length);
+        return NamespaceWithoutFinalize.fromNonnullHandle(handle);
+    }
+    NamespaceWithoutFinalize findDefaultNamespace(string prefix) {
+        return NamespaceWithoutFinalize.fromNonnullHandle(raptor_namespaces_find_namespace(handle, null, 0));
+    }
+    NamespaceWithoutFinalize findNamespaceByURI(URIWithoutFinalize uri) {
+        NamespaceHandle* res = raptor_namespaces_find_namespace_by_uri(handle, uri.handle);
+        return NamespaceWithoutFinalize.fromNonnullHandle(res) ;
+    }
 }
 
 struct NamespaceStack {
@@ -61,4 +83,4 @@ struct NamespaceStack {
                         raptor_free_namespaces);
 }
 
-// TODO: Stopped on Get_Default_Namespace
+// TODO: Stopped on Find_Default_Namespace
