@@ -97,6 +97,7 @@ struct TermWithoutFinalize {
         scope(exit) raptor_free_memory(str);
         return (cast(immutable char*)str).fromStringz;
     }
+    // TODO: To_Turtle_String Turtle_Write
 }
 
 struct Term {
@@ -107,4 +108,4 @@ struct Term {
     mixin CompareHandles!(raptor_term_equals, raptor_term_compare);
 }
 
-// TODO: Stopped at Compare (Left, Right: Term_Type_Without_Finalize)
+// TODO: Stopped at From_Blank
