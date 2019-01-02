@@ -23,6 +23,9 @@ private extern extern(C) {
                                                      URIHandle* datatype,
                                                      const char *language,
                                                      char language_len);
+    TermHandle* raptor_new_term_from_counted_uri_string(RaptorWorldHandle* world,
+                                                        const char *uri_string,
+                                                        size_t length);
 }
 
 extern(C)
@@ -129,10 +132,10 @@ struct Term {
         const char* str = id.myToStringz;
         return fromNonnullHandle(raptor_new_term_from_counted_blank(world.handle, str, str ? id.get.length : 0));
     }
-    Term From_Literal(RaptorWorldWithoutFinalize world,
-                      Nullable!string literal,
-                      URIWithoutFinalize datatype,
-                      Nullable!string language)
+    static Term fromLiteral(RaptorWorldWithoutFinalize world,
+                     Nullable!string literal,
+                     URIWithoutFinalize datatype,
+                     Nullable!string language)
     {
         TermHandle* handle =
             raptor_new_term_from_counted_literal(world.handle,
@@ -141,6 +144,11 @@ struct Term {
                                                  datatype.handle,
                                                  language.myToStringz,
                                                  cast(char)language.length);
+        return fromNonnullHandle(handle);
+    }
+    static Term fromURIString(RaptorWorldWithoutFinalize world, string uri) {
+        TermHandle* handle =
+            raptor_new_term_from_counted_uri_string(world.handle, uri.ptr, uri.length);
         return fromNonnullHandle(handle);
     }
 }
