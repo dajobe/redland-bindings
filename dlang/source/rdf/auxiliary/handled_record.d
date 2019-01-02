@@ -93,14 +93,14 @@ mixin template WithFinalize(alias Dummy,
 mixin template CompareHandles(alias equal, alias compare) {
     import std.traits;
 
-    bool opEquals(const typeof(this) s) const {
+    bool opEquals(const ref typeof(this) s) const {
         if(isCallable!equal) {
           return equal(handle, s.handle) != 0;
         } else {
           return compare(handle, s.handle) == 0;
         }
     }
-    int opCmp(const typeof(this) s) const {
+    int opCmp(const ref typeof(this) s) const {
       return compare(handle, s.handle);
     }
 }

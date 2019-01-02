@@ -201,10 +201,22 @@ bool filenameExists(string filename) {
 // TODO: To_Turtle_String Turtle_Write
 
 unittest {
-    // Conversions to/from string
     RaptorWorld world = RaptorWorld.createAndOpen();
+
+    // Conversions to/from string
     URI u = URI(world, "http://example.com");
     assert(u.toString == "http://example.com");
     // assert(u == "http://example.com"); does not work with DMD v2.080.1
-    // TODO
+
+    string URI_1 = "http://example.org/xyz";
+    string URI_3 = "http://example.org/123";
+    URI URI_1_Obj = URI.fromString(world, URI_1);
+    URI URI_2_Obj = URI.fromString(world, URI_1);
+    URI URI_3_Obj = URI.fromString(world, URI_3);
+    URI URI_4_Obj = URI.fromString(world, "http://example.org");
+    assert(URI_1_Obj.toString == URI_1, "Converting URI to string");
+    assert(URI_1_Obj == URI_2_Obj, "Comparing identical URIs");
+    assert(URI_1_Obj != URI_3_Obj, "Comparing different URIs");
+    assert(URI.fromURIRelativeToBase(world, URI_1_Obj, "zxc").toString == "http://example.org/zxc", "Relative URI to base");
+    assert(URI.forRetrieval(URI_4_Obj).toString == "http://example.org/", "URI for retrieval");
 }
