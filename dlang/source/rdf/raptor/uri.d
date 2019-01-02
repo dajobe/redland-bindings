@@ -53,6 +53,7 @@ struct URIWithoutFinalize {
     string toString() {
         return raptor_uri_as_string(handle).fromStringz.idup;
     }
+    alias toString this;
     /// Not supposed to be used, but included for completeness
     void print(File file) {
         if(raptor_uri_print(handle, file.getFP()) != 0)
@@ -82,6 +83,13 @@ struct URI {
         URIHandle* handle =
             raptor_new_uri_from_counted_string(world.handle, uriString.ptr, uriString.length);
         return fromNonnullHandle(handle);
+    }
+    this(URIHandle* ptr) {
+        this.ptr = ptr;
+    }
+    this(RaptorWorldWithoutFinalize world, string s) {
+        ptr = raptor_new_uri_from_counted_string(world.handle, s.ptr, s.length);
+        if(!ptr) throw new NullRDFException();
     }
     static URI fromURIWithLocalName(RaptorWorldWithoutFinalize world, 
                                     URIWithoutFinalize uri,
