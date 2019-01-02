@@ -56,7 +56,7 @@ package body RDF.Raptor.Namespace_Stack is
    function raptor_namespaces_get_default_namespace (Stack: Namespace_Stack_Handle) return Namespace_Handle
      with Import, Convention=>C;
 
-   function Get_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return Namespace_Type is
+   function Get_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return Namespace_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( raptor_namespaces_get_default_namespace(Get_Handle(Stack)) );
    end;
@@ -86,7 +86,7 @@ package body RDF.Raptor.Namespace_Stack is
                                               return Namespace_Handle
      with Import, Convention=>C;
 
-   function Find_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Prefix: String) return Namespace_Type is
+   function Find_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Prefix: String) return Namespace_Type_Without_Finalize is
       C_Prefix: aliased char_array := My_To_C_Without_Nul(Prefix);
       Handle: constant Namespace_Handle :=
         raptor_namespaces_find_namespace(Get_Handle(Stack),
@@ -96,7 +96,7 @@ package body RDF.Raptor.Namespace_Stack is
       return From_Non_Null_Handle(Handle);
    end;
 
-   function Find_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return Namespace_Type is
+   function Find_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize) return Namespace_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( raptor_namespaces_find_namespace(Get_Handle(Stack), Null_Ptr, 0) );
    end;
@@ -108,7 +108,7 @@ package body RDF.Raptor.Namespace_Stack is
 
    function Find_Namespace_By_URI (Stack: Namespace_Stack_Type_Without_Finalize;
                                    URI: URI_Type_Without_Finalize'Class)
-                                   return Namespace_Type is
+                                   return Namespace_Type_Without_Finalize is
    begin
       return From_Non_Null_Handle( raptor_namespaces_find_namespace_by_uri(Get_Handle(Stack), Get_Handle(URI)) ) ;
    end;

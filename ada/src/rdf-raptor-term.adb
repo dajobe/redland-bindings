@@ -38,7 +38,7 @@ package body RDF.Raptor.Term is
    function Datatype (Literal: Term_Literal_Value) return URI_Type_Without_Finalize is
       use type URI_Handle;
    begin
-     -- TODO: Simplify
+      -- TODO: Simplify
       if Literal.Datatype = null then
          return From_Handle(null);
       end if;

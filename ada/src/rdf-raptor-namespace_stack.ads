@@ -28,22 +28,18 @@ package RDF.Raptor.Namespace_Stack is
 
    not overriding procedure End_For_Depth (Stack: in out Namespace_Stack_Type_Without_Finalize; Depth: Natural);
 
-   -- FIXME: Should be Namespace_Type_Without_Finalize?
    not overriding function Get_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize)
-                                                  return RDF.Raptor.Namespace.Namespace_Type;
+                                                  return RDF.Raptor.Namespace.Namespace_Type_Without_Finalize;
 
-   -- FIXME: Should be Namespace_Type_Without_Finalize?
    not overriding function Find_Namespace (Stack: Namespace_Stack_Type_Without_Finalize; Prefix: String)
-                                           return RDF.Raptor.Namespace.Namespace_Type;
+                                           return RDF.Raptor.Namespace.Namespace_Type_Without_Finalize;
 
-   -- FIXME: Should be Namespace_Type_Without_Finalize?
    not overriding function Find_Default_Namespace (Stack: Namespace_Stack_Type_Without_Finalize)
-                                                   return RDF.Raptor.Namespace.Namespace_Type;
+                                                   return RDF.Raptor.Namespace.Namespace_Type_Without_Finalize;
 
-   -- FIXME: Should be Namespace_Type_Without_Finalize?
    not overriding function Find_Namespace_By_URI (Stack: Namespace_Stack_Type_Without_Finalize;
                                                   URI: URI_Type_Without_Finalize'Class)
-                                                  return RDF.Raptor.Namespace.Namespace_Type;
+                                                  return RDF.Raptor.Namespace.Namespace_Type_Without_Finalize;
 
    not overriding function In_Scope (Stack: Namespace_Stack_Type_Without_Finalize;
                                      NS: RDF.Raptor.Namespace.Namespace_Type'Class)
