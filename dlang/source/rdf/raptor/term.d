@@ -11,6 +11,7 @@ private extern extern(C) {
     TermHandle* raptor_term_copy(TermHandle* term);
     int raptor_term_compare(const TermHandle* t1, const TermHandle* t2);
     int raptor_term_equals(const TermHandle* t1, const TermHandle* t2);
+    char* raptor_term_to_string(TermHandle *term);
 }
 
 extern(C)
@@ -46,6 +47,9 @@ struct TermBlankValue {
 private:
     char* str;
     uint len;
+    @property string value() {
+        return str[0..len].idup;
+    }
 }
 
 extern(C)
@@ -87,6 +91,12 @@ struct TermWithoutFinalize {
     @property const ref TermBlankValue blank() {
         return handle.value.blank;
     }
+    string toString() {
+        char* str = raptor_term_to_string(handle);
+        if(!str) throw new RDFException();
+        scope(exit) raptor_free_memory(str);
+        return (cast(immutable char*)str).fromStringz;
+    }
 }
 
 struct Term {
@@ -97,4 +107,4 @@ struct Term {
     mixin CompareHandles!(raptor_term_equals, raptor_term_compare);
 }
 
-// TODO: Stopped at Value (Blank: Term_Blank_Value)
+// TODO: Stopped at Compare (Left, Right: Term_Type_Without_Finalize)
