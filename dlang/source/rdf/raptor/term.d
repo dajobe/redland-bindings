@@ -28,6 +28,10 @@ private:
     URIHandle* datatype;
     char* language;
     uint languageLen;
+public:
+    @property string value() {
+        return str[0..len].idup; // with idup it is more reliable
+    }
 }
 
 extern(C)
@@ -39,6 +43,7 @@ private:
 
 extern(C)
 union TermValue {
+private:
     URIHandle* uri;
     TermLiteralValue literal;
     TermBlankValue blank;
@@ -66,6 +71,15 @@ struct TermWithoutFinalize {
     @property bool isURI() { return kind == TermKind.URI; }
     @property bool isLiteral() { return kind == TermKind.literal; }
     @property bool isBlank() { return kind == TermKind.blank; }
+    @property URIWithoutFinalize uri() {
+        return URIWithoutFinalize.fromHandle(handle.value.uri);
+    }
+    @property const ref TermLiteralValue literal() {
+        return handle.value.literal;
+    }
+    @property const ref TermBlankValue blank() {
+        return handle.value.blank;
+    }
 }
 
 struct Term {
@@ -76,4 +90,4 @@ struct Term {
     mixin CompareHandles!(raptor_term_equals, raptor_term_compare);
 }
 
-// TODO: Stopped at Get_URI
+// TODO: Stopped at Datatype
