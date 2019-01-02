@@ -71,8 +71,8 @@ struct TermWithoutFinalize {
                            Term,
                            raptor_term_copy);
     mixin CompareHandles!(raptor_term_equals, raptor_term_compare);
-    @property RaptorWorld world() {
-        return RaptorWorld.fromHandle(handle.world);
+    @property RaptorWorldWithoutFinalize world() {
+        return RaptorWorldWithoutFinalize.fromHandle(handle.world);
     }
     @property kind() { return handle.kind; }
     @property bool isURI() { return kind == TermKind.URI; }
