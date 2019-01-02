@@ -23,14 +23,17 @@ enum TermKind { unknown = 0,
 extern(C)
 struct TermLiteralValue {
 private:
-    char* str;
-    uint len;
-    URIHandle* datatype;
-    char* language;
-    uint languageLen;
+    char* _str;
+    uint _len;
+    URIHandle* _datatype;
+    char* _language;
+    uint _languageLen;
 public:
     @property string value() {
-        return str[0..len].idup; // with idup it is more reliable
+        return _str[0.._len].idup; // with idup it is more reliable
+    }
+    @property URIWithoutFinalize datatype() {
+        return URIWithoutFinalize.fromHandle(_datatype);
     }
 }
 
@@ -90,4 +93,4 @@ struct Term {
     mixin CompareHandles!(raptor_term_equals, raptor_term_compare);
 }
 
-// TODO: Stopped at Datatype
+// TODO: Stopped at Language
