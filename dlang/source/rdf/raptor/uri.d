@@ -199,3 +199,12 @@ bool filenameExists(string filename) {
 }
 
 // TODO: To_Turtle_String Turtle_Write
+
+unittest {
+    // Conversions to/from string
+    RaptorWorld world = RaptorWorld.createAndOpen();
+    URI u = URI(world, "http://example.com");
+    assert(u.toString == "http://example.com");
+    // assert(u == "http://example.com"); does not work with DMD v2.080.1
+    // TODO
+}
