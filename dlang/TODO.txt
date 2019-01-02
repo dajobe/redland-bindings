@@ -6,8 +6,6 @@ rdf-raptor-iostream.adb # implementation started
 rdf-raptor-iostream.ads # implementation started
 rdf-raptor-log.adb
 rdf-raptor-log.ads
-rdf-raptor-namespace.adb
-rdf-raptor-namespace.ads
 rdf-raptor-namespace_stack.adb
 rdf-raptor-namespace_stack.ads
 rdf-raptor-parser.adb
