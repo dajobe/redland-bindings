@@ -35,6 +35,10 @@ public:
     @property URIWithoutFinalize datatype() {
         return URIWithoutFinalize.fromHandle(_datatype);
     }
+    /// Return the language tag or empty string if there are none
+    @property string language() {
+        return _language ? _language[0.._languageLen].idup : "";
+    }
 }
 
 extern(C)
@@ -93,4 +97,4 @@ struct Term {
     mixin CompareHandles!(raptor_term_equals, raptor_term_compare);
 }
 
-// TODO: Stopped at Language
+// TODO: Stopped at Value (Blank: Term_Blank_Value)
