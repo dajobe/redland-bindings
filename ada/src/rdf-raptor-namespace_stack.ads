@@ -17,6 +17,7 @@ package RDF.Raptor.Namespace_Stack is
    not overriding procedure Clear (Stack: in out Namespace_Stack_Type_Without_Finalize);
 
    -- See also below
+   -- FIXME: Shouldn't it be Namespace_Type_Without_Finalize'Class?
    not overriding procedure Start_Namespace (Stack: in out Namespace_Stack_Type_Without_Finalize;
                                              Namespace: RDF.Raptor.Namespace.Namespace_Type'Class);
 
