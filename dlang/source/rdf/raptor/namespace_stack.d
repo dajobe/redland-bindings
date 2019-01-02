@@ -28,7 +28,12 @@ private extern extern(C) {
                                                       int prefix_length);
     NamespaceHandle* raptor_namespaces_find_namespace_by_uri(NamespaceStackHandle* nstack,
                                                              URIHandle* ns_uri);
+    int raptor_namespaces_namespace_in_scope(NamespaceStackHandle* nstack,
+                                             const NamespaceHandle* nspace);
+    NamespaceStackHandle* raptor_new_namespaces(RaptorWorldHandle *world, int defaults);
 }
+
+enum NamespaceOptions { NoneType = 0, XMLType = 1, RDFType = 2, UndefinedType = 3 };
 
 struct NamespaceStackWithoutFinalize {
     mixin WithoutFinalize!(NamespaceStackHandle,
@@ -74,6 +79,9 @@ struct NamespaceStackWithoutFinalize {
         NamespaceHandle* res = raptor_namespaces_find_namespace_by_uri(handle, uri.handle);
         return NamespaceWithoutFinalize.fromNonnullHandle(res) ;
     }
+    bool inScope(NamespaceWithoutFinalize ns) {
+        return raptor_namespaces_namespace_in_scope(handle, ns.handle) != 0;
+    }
 }
 
 struct NamespaceStack {
@@ -81,6 +89,9 @@ struct NamespaceStack {
                         NamespaceStackWithoutFinalize,
                         NamespaceStack,
                         raptor_free_namespaces);
+    NamespaceStack createStack(RaptorWorldWithoutFinalize world, NamespaceOptions defaults) {
+        return fromNonnullHandle(raptor_new_namespaces(world.handle, defaults) );
+    }
 }
 
-// TODO: Stopped on Find_Default_Namespace
+// raptor_namespaces_init() not bound (it seems that function is internal for Raptor implementation).
