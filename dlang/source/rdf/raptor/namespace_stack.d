@@ -1,6 +1,7 @@
 module rdf.raptor.namespace_stack;
 
 import std.string;
+import std.typecons;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.memory;
 import rdf.raptor.world;
@@ -15,6 +16,10 @@ private extern extern(C) {
     int raptor_namespace_stack_start_namespace(NamespaceStackHandle* nstack,
                                                NamespaceHandle* ns,
                                                int new_depth);
+    int raptor_namespaces_start_namespace_full(NamespaceStackHandle* nstack,
+                                               const char *prefix,
+                                               const char *ns_uri_string,
+                                               int depth);
 }
 
 struct NamespaceStackWithoutFinalize {
@@ -29,6 +34,18 @@ struct NamespaceStackWithoutFinalize {
     }
     void startNamespace (NamespaceWithoutFinalize ns, uint newDepth) {
         if(raptor_namespace_stack_start_namespace(handle, ns.handle, newDepth) != 0)
+            throw new RDFException();
+    }
+    void startNamespace(NamespaceWithoutFinalize ns,
+                        Nullable!string prefix,
+                        Nullable!string nsUri,
+                        uint newDepth)
+    {
+        immutable int res = raptor_namespaces_start_namespace_full(handle,
+                                                                   prefix.toStringz,
+                                                                   nsUri.toStringz,
+                                                                   newDepth);
+        if(res != 0)
             throw new RDFException();
     }
 }
