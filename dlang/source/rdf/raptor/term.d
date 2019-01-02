@@ -62,6 +62,10 @@ struct TermWithoutFinalize {
     @property RaptorWorld world() {
         return RaptorWorld.fromHandle(handle.world);
     }
+    @property kind() { return handle.kind; }
+    @property bool isURI() { return kind == TermKind.URI; }
+    @property bool isLiteral() { return kind == TermKind.literal; }
+    @property bool isBlank() { return kind == TermKind.blank; }
 }
 
 struct Term {
@@ -72,4 +76,4 @@ struct Term {
     mixin CompareHandles!(raptor_term_equals, raptor_term_compare);
 }
 
-// TODO: Stopped at Get_Kind
+// TODO: Stopped at Get_URI
