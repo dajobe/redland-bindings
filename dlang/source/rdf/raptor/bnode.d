@@ -32,7 +32,7 @@ struct BNode {
     }
 }
 
-class BNodeIDHandler : UserObject!BNode {
+class BNodeIDHandler : UnmovableObject {
     abstract string do_handle(Nullable!string userID);
     private static extern(C) const(char)* handleImpl(char* data, char* userID) {
         scope(exit) {
@@ -43,6 +43,6 @@ class BNodeIDHandler : UserObject!BNode {
         return (cast(BNodeIDHandler*)data).do_handle(userID2).toStringz;
     }
     void set(RaptorWorldWithoutFinalize world) {
-        raptor_world_set_generate_bnodeid_handler(world.handle, context, &handleImpl);
+        raptor_world_set_generate_bnodeid_handler(world.handle, cast(void*)this, &handleImpl);
     }
 }
