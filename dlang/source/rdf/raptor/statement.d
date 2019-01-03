@@ -17,6 +17,8 @@ private:
 private extern extern(C) {
     StatementHandle* raptor_statement_copy(StatementHandle* statement);
     void raptor_free_statement(StatementHandle* statement);
+    int raptor_statement_equals(const StatementHandle* s1, const StatementHandle* s2);
+    int raptor_statement_compare(const StatementHandle* s1, const StatementHandle* s2);
 }
 
 struct StatementWithoutFinalize {
@@ -24,6 +26,7 @@ struct StatementWithoutFinalize {
                            StatementWithoutFinalize,
                            Statement,
                            raptor_statement_copy);
+    mixin CompareHandles!(raptor_statement_equals, raptor_statement_compare);
     @property RaptorWorldWithoutFinalize world() {
         return RaptorWorldWithoutFinalize.fromNonnullHandle(handle._world);
     }
@@ -38,6 +41,7 @@ struct Statement {
                         StatementWithoutFinalize,
                         Statement,
                         raptor_free_statement);
+    mixin CompareHandles!(raptor_statement_equals, raptor_statement_compare);
 }
 
-// TODO: Stopped at Compare
+// TODO: Stopped at Print
