@@ -179,6 +179,3 @@ class LogHandler : UnmovableObject {
             throw new RDFException();
     }
 }
-
-
-// TODO: Stopped at function Get_Label
