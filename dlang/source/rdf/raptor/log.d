@@ -3,7 +3,9 @@ module rdf.raptor.log;
 import std.string;
 import std.stdio : FILE, File;
 import rdf.auxiliary.handled_record;
+import rdf.auxiliary.user;
 import rdf.raptor.constants;
+import rdf.raptor.world;
 import rdf.raptor.memory;
 import rdf.raptor.uri;
 
@@ -68,6 +70,8 @@ private extern extern(C) {
     URIHandle* raptor_uri_copy(URIHandle* uri);
     int raptor_locator_print(LocatorHandle* locator, FILE *stream);
     int raptor_locator_format(char *buffer, size_t length, LocatorHandle* locator);
+    alias raptor_log_handler = extern(C) void function(void *user_data, LogMessageHandle* message);
+    int raptor_world_set_log_handler(RaptorWorldHandle* world, void *user_data, raptor_log_handler handler);
 }
 
 struct LocatorWithoutFinalize {
@@ -139,4 +143,32 @@ struct LogMessage {
                         free_log_message);
 }
 
-// TODO: Stopped at function Log_Message
+// TODO: Can the below be reorganized?
+struct LogHandle; // FIXME: LogHandle and LogHandler are too similar
+
+// struct LogWithoutFinalize {
+//     mixin WithoutFinalize!(LogHandle,
+//                            LogWithoutFinalize,
+//                            Log);
+// }
+// 
+// struct Log {
+//     mixin WithFinalize!(LogHandle,
+//                         LogWithoutFinalize,
+//                         Log,
+//                         free_log_message);
+// }
+
+class LogHandler : UnmovableObject {
+    abstract void logMessage(LogMessageWithoutFinalize info);
+    private static extern(C) void handleImpl(void* data, LogMessageHandle* msg) {
+        return (cast(LogHandler*)data).logMessage(LogMessageWithoutFinalize.fromHandle(msg));
+    }
+    void set(RaptorWorldWithoutFinalize world) {
+      if(raptor_world_set_log_handler(world.handle, cast(void*)this, &handleImpl) != 0)
+          throw new RDFException();
+    }
+}
+
+
+// TODO: Stopped at function Get_Label
