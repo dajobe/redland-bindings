@@ -1,10 +1,12 @@
 module rdf.raptor.statement;
 
 import std.string;
+import std.stdio;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.memory;
 import rdf.raptor.world;
 import rdf.raptor.term;
+import rdf.raptor.iostream;
 
 extern(C)
 struct StatementHandle {
@@ -19,6 +21,7 @@ private extern extern(C) {
     void raptor_free_statement(StatementHandle* statement);
     int raptor_statement_equals(const StatementHandle* s1, const StatementHandle* s2);
     int raptor_statement_compare(const StatementHandle* s1, const StatementHandle* s2);
+    int raptor_statement_print(const StatementHandle* statement, FILE *stream);
 }
 
 struct StatementWithoutFinalize {
@@ -34,6 +37,10 @@ struct StatementWithoutFinalize {
     @property TermWithoutFinalize predicate() { return TermWithoutFinalize.fromHandle(handle._predicate); }
     @property TermWithoutFinalize object() { return TermWithoutFinalize.fromHandle(handle._object); }
     @property TermWithoutFinalize graph() { return TermWithoutFinalize.fromHandle(handle._graph); }
+    void print(File file) {
+        if(raptor_statement_print(handle, file.getFP) != 0)
+            throw new IOStreamException();
+    }
 }
 
 struct Statement {
@@ -44,4 +51,4 @@ struct Statement {
     mixin CompareHandles!(raptor_statement_equals, raptor_statement_compare);
 }
 
-// TODO: Stopped at Print
+// TODO: Stopped at Print_As_Ntriples
