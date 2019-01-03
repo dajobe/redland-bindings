@@ -153,22 +153,6 @@ struct LogMessage {
                         free_log_message);
 }
 
-// TODO: Can the below be reorganized?
-struct LogHandle; // FIXME: LogHandle and LogHandler are too similar
-
-// struct LogWithoutFinalize {
-//     mixin WithoutFinalize!(LogHandle,
-//                            LogWithoutFinalize,
-//                            Log);
-// }
-// 
-// struct Log {
-//     mixin WithFinalize!(LogHandle,
-//                         LogWithoutFinalize,
-//                         Log,
-//                         free_log_message);
-// }
-
 class LogHandler : UnmovableObject {
     abstract void logMessage(LogMessageWithoutFinalize info);
     private static extern(C) void handleImpl(void* data, LogMessageHandle* msg) {
