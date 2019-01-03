@@ -35,6 +35,7 @@ package RDF.Raptor.Log is
    subtype Log_Message_Handle is Log_Message_Handled_Record.Access_Type;
    type Log_Message_Type is new Log_Message_Handled_Record.Base_Object with null record;
 
+   -- FIXME: Log_Message_Type should NOT be finalized!
    overriding procedure Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle);
    overriding function Adjust_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle)
                                       return Log_Message_Handle;

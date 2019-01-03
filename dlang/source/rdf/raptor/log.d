@@ -1,5 +1,7 @@
 module rdf.raptor.log;
 
+import std.string;
+import std.stdio : FILE, File;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.constants;
 import rdf.raptor.memory;
@@ -22,12 +24,12 @@ private:
 }
 
 extern(C)
-struct LogMessage {
+struct LogMessageHandle {
 private:
     int _code;
     DomainType _domain;
     LogLevel _logLevel;
-    LocatorHandle _locator;
+    LocatorHandle* _locator;
     char* _text;
 }
 
@@ -37,18 +39,35 @@ private void free_locator(LocatorHandle* handle) {
     raptor_free_memory(cast(char*)handle);
 }
 
+// FIXME: check for allocation errors (in Ada, too)
 private LocatorHandle* locator_copy(LocatorHandle* handle) {
-    void* Result2 = raptor_alloc_memory(LocatorHandle.sizeof);
-    LocatorHandle* result = cast(LocatorHandle*)Result2;
+    LocatorHandle* result = cast(LocatorHandle*)raptor_alloc_memory(LocatorHandle.sizeof);
     *result = *handle;
     result._uri = raptor_uri_copy(handle._uri);
     result._file = copy_c_string(handle._file);
     return result;
 }
 
+private void free_log_message(LogMessageHandle* handle) {
+    raptor_free_memory(handle._text);
+    free_locator(handle._locator);
+    raptor_free_memory(cast(char*)handle);
+}
+
+// FIXME: check for allocation errors (in Ada, too)
+private LogMessageHandle* log_message_copy(LogMessageHandle* handle) {
+    LogMessageHandle* result = cast(LogMessageHandle*)raptor_alloc_memory(LogMessageHandle.sizeof);
+    *result = *handle;
+    result._text = copy_c_string(handle._text);
+    result._locator = locator_copy(handle._locator);
+    return result;
+}
+
 private extern extern(C) {
     void raptor_free_uri(URIHandle* uri);
     URIHandle* raptor_uri_copy(URIHandle* uri);
+    int raptor_locator_print(LocatorHandle* locator, FILE *stream);
+    int raptor_locator_format(char *buffer, size_t length, LocatorHandle* locator);
 }
 
 struct LocatorWithoutFinalize {
@@ -56,6 +75,32 @@ struct LocatorWithoutFinalize {
                            LocatorWithoutFinalize,
                            Locator,
                            locator_copy);
+    @property URIWithoutFinalize uri() {
+        return URIWithoutFinalize.fromHandle(handle._uri);
+    }
+    @property string file() {
+        return handle._file.fromStringz.idup;
+    }
+    @property uint line() {
+        return handle._line;
+    }
+    @property uint column() {
+        return handle._column;
+    }
+    @property uint byte_() {
+        return handle._byte;
+    }
+    void print(File file) {
+        if(raptor_locator_print(handle, file.getFP) != 0)
+            throw new RDFException();
+    }
+    string format() {
+        immutable int res = raptor_locator_format(null, 0, handle);
+        if(res < 0) throw new RDFException();
+        char[] buffer = new char[res];
+        if(raptor_locator_format(buffer.ptr, 0, handle) < 0) throw new RDFException();
+        return buffer.idup;
+    }
 }
 
 struct Locator {
@@ -65,4 +110,18 @@ struct Locator {
                         free_locator);
 }
 
-// TODO: Stopped at Finalize_Handle (Object: Log_Message_Type; Handle: Log_Message_Handle);
+struct LogMessageWithoutFinalize {
+    mixin WithoutFinalize!(LogMessageHandle,
+                           LogMessageWithoutFinalize,
+                           LogMessage,
+                           log_message_copy);
+}
+
+struct LogMessage {
+    mixin WithFinalize!(LogMessageHandle,
+                        LogMessageWithoutFinalize,
+                        LogMessage,
+                        free_log_message);
+}
+
+// TODO: Stopped at function Get_Error_Code

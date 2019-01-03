@@ -56,7 +56,7 @@ struct URIWithoutFinalize {
     alias toString this;
     /// Not supposed to be used, but included for completeness
     void print(File file) {
-        if(raptor_uri_print(handle, file.getFP()) != 0)
+        if(raptor_uri_print(handle, file.getFP) != 0)
             throw new IOStreamException();
     }
     @property RaptorWorldWithoutFinalize world() {
