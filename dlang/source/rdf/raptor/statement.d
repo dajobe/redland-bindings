@@ -11,7 +11,7 @@ struct StatementHandle {
 private:
     RaptorWorldHandle* _world;
     int _usage;
-    TermHandle _subject, _predicate, _object, _graph;
+    TermHandle* _subject, _predicate, _object, _graph;
 }
 
 private extern extern(C) {
@@ -27,6 +27,10 @@ struct StatementWithoutFinalize {
     @property RaptorWorldWithoutFinalize world() {
         return RaptorWorldWithoutFinalize.fromNonnullHandle(handle._world);
     }
+    @property TermWithoutFinalize subject() { return TermWithoutFinalize.fromHandle(handle._subject); }
+    @property TermWithoutFinalize predicate() { return TermWithoutFinalize.fromHandle(handle._predicate); }
+    @property TermWithoutFinalize object() { return TermWithoutFinalize.fromHandle(handle._object); }
+    @property TermWithoutFinalize graph() { return TermWithoutFinalize.fromHandle(handle._graph); }
 }
 
 struct Statement {
@@ -36,4 +40,4 @@ struct Statement {
                         raptor_free_statement);
 }
 
-// TODO: Stopped at Get_Subject
+// TODO: Stopped at Compare
