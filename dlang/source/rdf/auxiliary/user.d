@@ -2,7 +2,6 @@ module rdf.auxiliary.user;
 
 import core.memory : GC;
 
-/// Internal
 class UnmovableObject {
     this() {
         GC.setAttr(cast(void*)this, GC.BlkAttr.NO_MOVE);
