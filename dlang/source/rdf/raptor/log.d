@@ -115,6 +115,21 @@ struct LogMessageWithoutFinalize {
                            LogMessageWithoutFinalize,
                            LogMessage,
                            log_message_copy);
+    @property int errorCode() {
+        return handle._code;
+    }
+    @property DomainType domain() {
+        return handle._domain;
+    }
+    @property LogLevel logLevel() {
+        return handle._logLevel;
+    }
+    @property string text() {
+        return handle._text.fromStringz.idup;
+    }
+    @property LocatorWithoutFinalize locator() {
+        return LocatorWithoutFinalize.fromNonnullHandle(handle._locator);
+    }
 }
 
 struct LogMessage {
@@ -124,4 +139,4 @@ struct LogMessage {
                         free_log_message);
 }
 
-// TODO: Stopped at function Get_Error_Code
+// TODO: Stopped at function Log_Message

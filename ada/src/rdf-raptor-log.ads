@@ -56,7 +56,7 @@ package RDF.Raptor.Log is
    not overriding function Get_Domain (Message: Log_Message_Type) return Domain_Type;
    not overriding function Get_Log_Level (Message: Log_Message_Type) return Log_Level_Type;
    not overriding function Get_Text (Message: Log_Message_Type) return String;
-   not overriding function Get_Locator (Message: Log_Message_Type'Class) return Locator_Type;
+   not overriding function Get_Locator (Message: Log_Message_Type'Class) return Locator_Type; -- FIXME: Locator_Without_Finalie
 
    type Log_Handler is abstract tagged null record;
 
