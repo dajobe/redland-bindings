@@ -10,8 +10,6 @@ rdf-raptor-parser.adb
 rdf-raptor-parser.ads
 rdf-raptor-serializer.adb
 rdf-raptor-serializer.ads
-rdf-raptor-statement.adb
-rdf-raptor-statement.ads
 rdf-raptor-syntaxes.adb
 rdf-raptor-syntaxes.ads
 rdf-raptor-www.adb
