@@ -17,6 +17,14 @@ enum LogLevel { none = 0,
                 error = 5,
                 fatal = 6 }
 
+string getLabel(LogLevel level) {
+    return raptor_log_level_get_label(level).fromStringz.idup;
+}
+
+string getLabel(DomainType level) {
+    return raptor_domain_get_label(level).fromStringz.idup;
+}
+
 extern(C)
 struct LocatorHandle {
 private:
@@ -72,6 +80,8 @@ private extern extern(C) {
     int raptor_locator_format(char *buffer, size_t length, LocatorHandle* locator);
     alias raptor_log_handler = extern(C) void function(void *user_data, LogMessageHandle* message);
     int raptor_world_set_log_handler(RaptorWorldHandle* world, void *user_data, raptor_log_handler handler);
+    const(char*) raptor_log_level_get_label(LogLevel level);
+    const(char*) raptor_domain_get_label(DomainType domain);
 }
 
 struct LocatorWithoutFinalize {
