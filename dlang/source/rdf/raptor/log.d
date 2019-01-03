@@ -175,8 +175,8 @@ class LogHandler : UnmovableObject {
         return (cast(LogHandler*)data).logMessage(LogMessageWithoutFinalize.fromHandle(msg));
     }
     void set(RaptorWorldWithoutFinalize world) {
-      if(raptor_world_set_log_handler(world.handle, cast(void*)this, &handleImpl) != 0)
-          throw new RDFException();
+        if(raptor_world_set_log_handler(world.handle, cast(void*)this, &handleImpl) != 0)
+            throw new RDFException();
     }
 }
 
