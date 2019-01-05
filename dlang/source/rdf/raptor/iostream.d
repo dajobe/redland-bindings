@@ -202,36 +202,36 @@ private extern(C) {
     }
 
     int raptor_iostream_write_bytes_impl(void* context, const void* ptr, size_t size, size_t nmemb) {
-      try {
-          int Result = (cast(UserIOStream*)context).doWriteBytes(cast(char*)ptr, size, nmemb);
-          return Result;
-      }   
-      catch(Exception) {
-          return -1;
-      }
+        try {
+            int Result = (cast(UserIOStream*)context).doWriteBytes(cast(char*)ptr, size, nmemb);
+            return Result;
+        }   
+        catch(Exception) {
+            return -1;
+        }
     }
 
     int raptor_iostream_write_end_impl(void* context) {
-      try {
-          (cast(UserIOStream*)context).doWrite_End();
-          return 0;
-      }
-      catch(Exception) {
-          return 1;
-      }
+        try {
+            (cast(UserIOStream*)context).doWrite_End();
+            return 0;
+        }
+        catch(Exception) {
+            return 1;
+        }
     }
 
     int raptor_iostream_read_bytes_impl(void* context, void* ptr, size_t size, size_t nmemb) {
-      try {
-          return cast(int)(cast(UserIOStream*)context).doReadBytes(cast(char*)ptr, size, nmemb);
-      }
-      catch(Exception) {
-          return -1;
-      }
+        try {
+            return cast(int)(cast(UserIOStream*)context).doReadBytes(cast(char*)ptr, size, nmemb);
+        }
+        catch(Exception) {
+            return -1;
+        }
     }
 
     int raptor_iostream_read_eof_impl(void* context) {
-      return (cast(UserIOStream*)context).doReadEof;
+        return (cast(UserIOStream*)context).doReadEof;
     }
 }
 
