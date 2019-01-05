@@ -1,6 +1,9 @@
 module rdf.raptor.iostream;
 
+import std.string;
+import std.stdio;
 import rdf.auxiliary.handled_record;
+import rdf.raptor.world;
 import rdf.raptor.uri;
 import rdf.raptor.term;
 
@@ -31,6 +34,12 @@ private extern extern(C) {
                                      size_t len,
                                      char delim,
                                      IOStreamHandle* iostr);
+    IOStreamHandle* raptor_new_iostream_from_sink(RaptorWorldHandle* world);
+    IOStreamHandle* raptor_new_iostream_from_filename(RaptorWorldHandle* world, const char *filename);
+    IOStreamHandle* raptor_new_iostream_from_file_handle(RaptorWorldHandle* world, FILE *handle);
+    IOStreamHandle* raptor_new_iostream_to_sink(RaptorWorldHandle* world);
+    IOStreamHandle* raptor_new_iostream_to_filename(RaptorWorldHandle* world, const char *filename);
+    IOStreamHandle* raptor_new_iostream_to_file_handle(RaptorWorldHandle* world, FILE *handle);
 }
 
 // TODO: Make this instead wrapper over D streams: https://stackoverflow.com/a/54029257/856090
@@ -143,6 +152,24 @@ struct IOStream {
                         IOStreamWithoutFinalize,
                         IOStream,
                         raptor_free_iostream);
+    static IOStream fromSink(RaptorWorldWithoutFinalize world) {
+        return fromNonnullHandle(raptor_new_iostream_from_sink(world.handle));
+    }
+    static IOStream fromFilename(RaptorWorldWithoutFinalize world, string filename) {
+        return fromNonnullHandle(raptor_new_iostream_from_filename(world.handle, filename.toStringz));
+    }
+    static IOStream fromFileHandle(RaptorWorldWithoutFinalize world, File file) {
+        return fromNonnullHandle(raptor_new_iostream_from_file_handle(world.handle, file.getFP));
+    }
+    static IOStream toSink(RaptorWorldWithoutFinalize world) {
+        return fromNonnullHandle(raptor_new_iostream_to_sink(world.handle));
+    }
+    static IOStream toFilename(RaptorWorldWithoutFinalize world, string filename) {
+        return fromNonnullHandle(raptor_new_iostream_to_filename(world.handle, filename.toStringz));
+    }
+    static IOStream toFileHandle(RaptorWorldWithoutFinalize world, File file) {
+        return fromNonnullHandle(raptor_new_iostream_to_file_handle(world.handle, file.getFP));
+    }
 }
 
-// TODO: Stopped at function From_Sink
+// TODO: Stopped at function Handled_IOStream_Type_User
