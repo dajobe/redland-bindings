@@ -1,6 +1,8 @@
 module rdf.raptor.iostream;
 
 import rdf.auxiliary.handled_record;
+import rdf.raptor.uri;
+import rdf.raptor.term;
 
 struct IOStreamHandle;
 
@@ -16,6 +18,15 @@ private extern extern(C) {
     int raptor_iostream_write_bytes(const void *ptr, size_t size, size_t nmemb, IOStreamHandle* iostr);
     int raptor_iostream_write_end(IOStreamHandle* iostr);
     int raptor_bnodeid_ntriples_write(const char *bnodeid, size_t len, IOStreamHandle* iostr);
+    int raptor_string_escaped_write(const char *string,
+                                    size_t len,  const char delim,
+                                    uint flags,
+                                    IOStreamHandle* iostr);
+    int raptor_uri_escaped_write(URIHandle* uri,
+                                 URIHandle* base_uri,
+                                 uint flags,
+                                 IOStreamHandle* iostr);
+    int raptor_term_escaped_write(const TermHandle* term, uint flags, IOStreamHandle* iostr);
 }
 
 // TODO: Make this instead wrapper over D streams: https://stackoverflow.com/a/54029257/856090
@@ -102,6 +113,21 @@ struct IOStreamWithoutFinalize {
         if(raptor_bnodeid_ntriples_write(bnode.ptr, bnode.length, handle) != 0)
             throw new IOStreamException();
     }
+    void escapedWrite(string value, char delim, EscapedWriteBitflags flags) {
+        if(raptor_string_escaped_write(value.ptr, value.length, delim, flags, handle) != 0)
+            throw new IOStreamException();
+    }
+    void uriEscapedWrite(URIWithoutFinalize uri,
+                         URIWithoutFinalize baseURI,
+                         EscapedWriteBitflags flags)
+    {
+        if(raptor_uri_escaped_write(uri.handle, baseURI.handle, flags, handle) != 0)
+            throw new IOStreamException();
+    }
+    void termEscapedWrite(TermWithoutFinalize term, EscapedWriteBitflags flags) {
+        if(raptor_term_escaped_write(term.handle, flags, handle) != 0)
+            throw new IOStreamException();
+    }
 }
 
 struct IOStream {
@@ -111,4 +137,4 @@ struct IOStream {
                         raptor_free_iostream);
 }
 
-// TODO: Stopped at function Escaped_Write
+// TODO: Stopped at procedure Ntriples_Write
