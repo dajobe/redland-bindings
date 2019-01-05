@@ -43,7 +43,7 @@ private extern extern(C) {
     IOStreamHandle* raptor_new_iostream_to_file_handle(RaptorWorldHandle* world, FILE *handle);
     IOStreamHandle* raptor_new_iostream_from_handler(RaptorWorldHandle* world,
                                                      void *user_data,
-                                                     DispatcherType* handler);
+                                                     const DispatcherType* handler);
 }
 
 // TODO: Make this instead wrapper over D streams: https://stackoverflow.com/a/54029257/856090
@@ -249,7 +249,7 @@ extern(C) struct DispatcherType {
 }
 
 // TODO: Make it shared between threads
-private DispatcherType Dispatch =
+private immutable DispatcherType Dispatch =
     { version_: 2,
       init: null,
       finish: null,
