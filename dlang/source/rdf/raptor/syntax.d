@@ -7,6 +7,15 @@ enum SyntaxBitflags { Need_Base_URI = 1 }
 
 // FIXME: D style IDs
 
+private extern extern(C) {
+    const(Syntax_Description_Record)* raptor_world_get_parser_description(RaptorWorldHandle *world,
+                                                                          uint counter);
+    const(Syntax_Description_Record)* raptor_world_get_serializer_description(RaptorWorldHandle *world,
+                                                                              uint counter);
+    int raptor_world_get_parsers_count(RaptorWorldHandle *world);
+    int raptor_world_get_serializers_count(RaptorWorldHandle *world);
+}
+
 extern(C) struct Mime_Type_Q {
 private:
     char* _mimeType;
@@ -55,13 +64,38 @@ struct ParserDescriptionIterator {
 private:
     RaptorWorldWithoutFinalize _world;
     uint _pos;
+public:
+    @property uint position() { return _pos; }
+    @property const ref front() {
+        return *raptor_world_get_parser_description(_world.handle, _pos);
+    }
+    @property bool empty() {
+        return !raptor_world_get_parser_description(_world.handle, _pos);
+    }
+    void popFront()
+        in { assert(_pos < raptor_world_get_parsers_count(_world.handle)); }
+        do {
+            ++_pos;
+        }
 }
 
 struct SerializerDescriptionIterator {
 private:
     RaptorWorldWithoutFinalize _world;
     uint _pos;
+public:
+    @property uint position() { return _pos; }
+    @property const ref front() {
+        return *raptor_world_get_serializer_description(_world.handle, _pos);
+    }
+    @property bool empty() {
+        return !raptor_world_get_serializer_description(_world.handle, _pos);
+    }
+    void popFront()
+        in { assert(_pos < raptor_world_get_serializers_count(_world.handle)); }
+        do {
+            ++_pos;
+        }
 }
 
-
-// TODOL Stopped at Parser_Description_Cursor
+// TODO: Stopped at Create_Parser_Descriptions_Iterator
