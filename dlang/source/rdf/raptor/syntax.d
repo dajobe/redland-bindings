@@ -63,8 +63,11 @@ public:
 struct ParserDescriptionIterator {
 private:
     RaptorWorldWithoutFinalize _world;
-    uint _pos;
+    uint _pos = 0;
 public:
+    this(RaptorWorldWithoutFinalize world) {
+        this._world = world;
+    }
     @property uint position() { return _pos; }
     @property const ref front() {
         return *raptor_world_get_parser_description(_world.handle, _pos);
@@ -82,8 +85,11 @@ public:
 struct SerializerDescriptionIterator {
 private:
     RaptorWorldWithoutFinalize _world;
-    uint _pos;
+    uint _pos = 0;
 public:
+    this(RaptorWorldWithoutFinalize world) {
+        this._world = world;
+    }
     @property uint position() { return _pos; }
     @property const ref front() {
         return *raptor_world_get_serializer_description(_world.handle, _pos);
