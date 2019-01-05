@@ -29,6 +29,34 @@ class IOStreamException: Exception {
     }
 }
 
+enum EscapedWriteBitflags {
+    BITFLAG_BS_ESCAPES_BF      = 1,
+    BITFLAG_BS_ESCAPES_TNRU    = 2,
+    BITFLAG_UTF8               = 4,
+    BITFLAG_SPARQL_URI_ESCAPES = 8,
+
+    // N-Triples - favour writing \u, \U over UTF8
+    NTRIPLES_LITERAL = BITFLAG_BS_ESCAPES_TNRU | BITFLAG_BS_ESCAPES_BF,
+    NTRIPLES_URI     = BITFLAG_SPARQL_URI_ESCAPES,
+
+    // SPARQL literal allows raw UTF8 for printable literals
+    SPARQL_LITERAL = BITFLAG_UTF8,
+
+    // SPARQL long literal no BS-escapes allowe
+    SPARQL_LONG_LITERAL = BITFLAG_UTF8,
+
+    // SPARQL uri have to escape certain characters
+    SPARQL_URI = BITFLAG_UTF8 | BITFLAG_SPARQL_URI_ESCAPES,
+
+    // Turtle (2013) escapes are like SPARQL
+    TURTLE_URI          = SPARQL_URI,
+    TURTLE_LITERAL      = SPARQL_LITERAL,
+    TURTLE_LONG_LITERAL = SPARQL_LONG_LITERAL,
+
+    //- JSON literals \b \f \t \r \n and \u \U
+    JSON_LITERAL = BITFLAG_BS_ESCAPES_TNRU | BITFLAG_BS_ESCAPES_BF,
+}
+
 struct IOStreamWithoutFinalize {
     mixin WithoutFinalize!(IOStreamHandle,
                            IOStreamWithoutFinalize,
@@ -83,4 +111,4 @@ struct IOStream {
                         raptor_free_iostream);
 }
 
-// TODO: Stopped at function Escaped_Write_Bitflags
+// TODO: Stopped at function Escaped_Write
