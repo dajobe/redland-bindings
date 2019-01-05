@@ -32,20 +32,20 @@ public:
     string name(uint index)
         in { assert(index < namesCount); }
         do {
-            return (*(Names + index)).fromStringz.idup;
+            return Names[index].fromStringz.idup;
         }
     @property uint namesCount() { return Names_Count; }
     @property string label() { return Label.fromStringz.idup; }
     ref const mimeTypeInfo(uint index)
         in { assert(index < Mime_Types_Count); }
         do {
-            return *(Mime_Types + index); 
+            return Mime_Types[index]; 
         }
     @property uint mimeTypesCount() { return Mime_Types_Count; }
     string uri(uint index)
         in { assert(index < URI_Strings_Count); }
         do {
-            return (*(URI_Strings + index)).fromStringz.idup;
+            return URI_Strings[index].fromStringz.idup;
         }
     @property uint urisCount() { return URI_Strings_Count; }
     @property SyntaxBitflags flags() { return Flags; }
