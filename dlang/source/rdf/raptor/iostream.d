@@ -3,6 +3,7 @@ module rdf.raptor.iostream;
 import std.string;
 import std.stdio;
 import rdf.auxiliary.handled_record;
+import rdf.auxiliary.user;
 import rdf.raptor.world;
 import rdf.raptor.uri;
 import rdf.raptor.term;
@@ -40,6 +41,9 @@ private extern extern(C) {
     IOStreamHandle* raptor_new_iostream_to_sink(RaptorWorldHandle* world);
     IOStreamHandle* raptor_new_iostream_to_filename(RaptorWorldHandle* world, const char *filename);
     IOStreamHandle* raptor_new_iostream_to_file_handle(RaptorWorldHandle* world, FILE *handle);
+    IOStreamHandle* raptor_new_iostream_from_handler(RaptorWorldHandle* world,
+                                                     void *user_data,
+                                                     DispatcherType* handler);
 }
 
 // TODO: Make this instead wrapper over D streams: https://stackoverflow.com/a/54029257/856090
@@ -172,4 +176,102 @@ struct IOStream {
     }
 }
 
-// TODO: Stopped at function Handled_IOStream_Type_User
+private extern(C) {
+    alias raptor_iostream_init_func = int function(void *context);
+    alias raptor_iostream_finish_func = void function(void *context);
+    alias raptor_iostream_write_byte_func = int function(void *context, int byte_);
+    alias raptor_iostream_write_bytes_func = int function(void *context,
+                                                          const void *ptr,
+                                                          size_t size,
+                                                          size_t nmemb);
+    alias raptor_iostream_write_end_func = int function(void *context);
+    alias raptor_iostream_read_bytes_func = int function(void *context,
+                                                         void *ptr,
+                                                         size_t size,
+                                                         size_t nmemb);
+    alias raptor_iostream_read_eof_func = int function(void *context);
+
+    int raptor_iostream_write_byte_impl(void* context, int byte_) {
+    try {
+        (cast(UserIOStream*)context).doWriteByte(cast(char)byte_);
+        return 0;
+    }
+    catch(Exception) {
+        return 1;
+    }
+  }
+
+  int raptor_iostream_write_bytes_impl(void* context, const void* ptr, size_t size, size_t nmemb) {
+    try {
+        int Result = (cast(UserIOStream*)context).doWriteBytes(cast(char*)ptr, size, nmemb);
+        return Result;
+    }   
+    catch(Exception) {
+        return -1;
+    }
+  }
+
+  int raptor_iostream_write_end_impl(void* context) {
+    try {
+        (cast(UserIOStream*)context).doWrite_End();
+        return 0;
+    }
+    catch(Exception) {
+        return 1;
+    }
+  }
+
+  int raptor_iostream_read_bytes_impl(void* context, void* ptr, size_t size, size_t nmemb) {
+    try {
+        return cast(int)(cast(UserIOStream*)context).doReadBytes(cast(char*)ptr, size, nmemb);
+    }
+    catch(Exception) {
+        return -1;
+    }
+  }
+
+  int raptor_iostream_read_eof_impl(void* context) {
+    return (cast(UserIOStream*)context).doReadEof;
+  }
+
+}
+
+extern(C) struct DispatcherType {
+    int version_ = 2;
+    // V1 functions
+    raptor_iostream_init_func init = null;
+    raptor_iostream_finish_func finish = null;
+    raptor_iostream_write_byte_func write_byte;
+    raptor_iostream_write_bytes_func write_bytes;
+    raptor_iostream_write_end_func write_end;
+    // V2 functions
+    raptor_iostream_read_bytes_func read_bytes;
+    raptor_iostream_read_eof_func read_eof;
+}
+
+// TODO: Make it shared between threads
+private DispatcherType Dispatch =
+    { version_: 2,
+      init: null,
+      finish: null,
+      write_byte : &raptor_iostream_write_byte_impl,
+      write_bytes: &raptor_iostream_write_bytes_impl,
+      write_end  : &raptor_iostream_write_end_impl,
+      read_bytes : &raptor_iostream_read_bytes_impl,
+      read_eof   : &raptor_iostream_read_eof_impl };
+
+class UserIOStream : UserObject!IOStream {
+    this(RaptorWorld world) {
+        IOStreamHandle* handle = raptor_new_iostream_from_handler(world.handle,
+                                                                  cast(void*)this,
+                                                                  &Dispatch);
+        record = IOStream.fromNonnullHandle(handle);
+    }
+    abstract void doWriteByte(char byte_);
+    abstract int doWriteBytes(char* data, size_t size, size_t count);
+    abstract void doWrite_End();
+    abstract size_t doReadBytes(char* data, size_t size, size_t count);
+    abstract bool doReadEof();
+}
+
+// TODO: Stopped at function Stream_From_String
