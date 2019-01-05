@@ -34,6 +34,7 @@ package body RDF.Raptor.Syntaxes is
       return Value(Object.Label);
    end;
 
+   -- TODO: precondition
    function Get_MIME_Type (Object: Raptor_Syntax_Description_Type; Index: Natural) return Mime_Type_Q is
       Ptr: constant access Mime_Type_Q := Mime_Type_Q_Ptrs.Pointer(Object.Mime_Types) + ptrdiff_t(Index);
    begin
