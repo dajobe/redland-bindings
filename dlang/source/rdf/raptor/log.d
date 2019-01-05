@@ -78,7 +78,7 @@ private extern extern(C) {
     URIHandle* raptor_uri_copy(URIHandle* uri);
     int raptor_locator_print(LocatorHandle* locator, FILE *stream);
     int raptor_locator_format(char *buffer, size_t length, LocatorHandle* locator);
-    alias raptor_log_handler = extern(C) void function(void *user_data, LogMessageHandle* message);
+    alias raptor_log_handler = void function(void *user_data, LogMessageHandle* message);
     int raptor_world_set_log_handler(RaptorWorldHandle* world, void *user_data, raptor_log_handler handler);
     const(char*) raptor_log_level_get_label(LogLevel level);
     const(char*) raptor_domain_get_label(DomainType domain);
