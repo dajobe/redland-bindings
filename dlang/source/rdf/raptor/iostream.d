@@ -9,6 +9,8 @@ private extern extern(C) {
     int raptor_iostream_hexadecimal_write(uint integer, int width, IOStreamHandle* iostr);
     int raptor_iostream_read_bytes(void *ptr, size_t size, size_t nmemb, IOStreamHandle* iostr);
     int raptor_iostream_read_eof(IOStreamHandle* iostr);
+    ulong raptor_iostream_tell(IOStreamHandle* iostr);
+    int raptor_iostream_counted_string_write(const void* string, size_t len, IOStreamHandle* iostr);
 }
 
 // TODO: Make this instead wrapper over D streams: https://stackoverflow.com/a/54029257/856090
@@ -37,6 +39,13 @@ struct IOStreamWithoutFinalize {
     }
     @property bool eof() {
         return raptor_iostream_read_eof(handle) != 0;
+    }
+    ulong tell() {
+        return raptor_iostream_tell(handle);
+    }
+    void write(string value) {
+        if(raptor_iostream_counted_string_write (value.ptr, value.length, handle) != 0)
+            throw new IOStreamException();
     }
 }
 
