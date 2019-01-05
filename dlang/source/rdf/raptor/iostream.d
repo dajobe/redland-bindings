@@ -44,6 +44,7 @@ private extern extern(C) {
     IOStreamHandle* raptor_new_iostream_from_handler(RaptorWorldHandle* world,
                                                      void *user_data,
                                                      const DispatcherType* handler);
+    IOStreamHandle* raptor_new_iostream_from_string(RaptorWorldHandle* world, void *string, size_t length);
 }
 
 // TODO: Make this instead wrapper over D streams: https://stackoverflow.com/a/54029257/856090
@@ -271,6 +272,17 @@ class UserIOStream : UserObject!IOStream {
     abstract void doWrite_End();
     abstract size_t doReadBytes(char* data, size_t size, size_t count);
     abstract bool doReadEof();
+}
+
+class StreamFromString : UserObject!IOStream {
+    private string _str;
+    this(RaptorWorld world, string str) {
+        _str = str;
+        IOStreamHandle* handle = raptor_new_iostream_from_string(world.handle, cast(void*)str.ptr, str.length);
+        record = IOStream.fromNonnullHandle(handle);
+    }
+    string value() { return _str; }
+    alias value this;
 }
 
 // TODO: Stopped at function Stream_From_String
