@@ -6,8 +6,6 @@ import rdf.raptor.uri;
 
 enum SyntaxBitflags { Need_Base_URI = 1 }
 
-// FIXME: D style IDs
-
 private extern extern(C) {
     const(Syntax_Description_Record)* raptor_world_get_parser_description(RaptorWorldHandle* world,
                                                                           uint counter);
@@ -37,36 +35,36 @@ public:
 
 extern(C) struct Syntax_Description_Record {
 private:
-    char** Names;
-    uint Names_Count;
-    char* Label;
-    Mime_Type_Q* Mime_Types;
-    uint Mime_Types_Count;
-    char** URI_Strings;
-    uint URI_Strings_Count;
-    SyntaxBitflags Flags;
+    char** _names;
+    uint _namesCount;
+    char* _label;
+    Mime_Type_Q* _mimeTypes;
+    uint _mimeTypesCount;
+    char** uriStrings;
+    uint uriStringsCount;
+    SyntaxBitflags _flags;
 public:
     @disable this(this);
     string name(uint index)
         in { assert(index < namesCount); }
         do {
-            return Names[index].fromStringz.idup;
+            return _names[index].fromStringz.idup;
         }
-    @property uint namesCount() { return Names_Count; }
-    @property string label() { return Label.fromStringz.idup; }
+    @property uint namesCount() { return _namesCount; }
+    @property string label() { return _label.fromStringz.idup; }
     ref const mimeTypeInfo(uint index)
-        in { assert(index < Mime_Types_Count); }
+        in { assert(index < _mimeTypesCount); }
         do {
-            return Mime_Types[index]; 
+            return _mimeTypes[index]; 
         }
-    @property uint mimeTypesCount() { return Mime_Types_Count; }
+    @property uint mimeTypesCount() { return _mimeTypesCount; }
     string uri(uint index)
-        in { assert(index < URI_Strings_Count); }
+        in { assert(index < uriStringsCount); }
         do {
-            return URI_Strings[index].fromStringz.idup;
+            return uriStrings[index].fromStringz.idup;
         }
-    @property uint urisCount() { return URI_Strings_Count; }
-    @property SyntaxBitflags flags() { return Flags; }
+    @property uint urisCount() { return uriStringsCount; }
+    @property SyntaxBitflags flags() { return _flags; }
 }
 
 struct ParserDescriptionIterator {
