@@ -2,8 +2,6 @@ const qualifier of member function where appropriate.
 
 The following Ada sources were not yet translated into D:
 
-rdf-raptor-iostream.adb # implementation started
-rdf-raptor-iostream.ads # implementation started
 rdf-raptor-parser.adb
 rdf-raptor-parser.ads
 rdf-raptor-serializer.adb

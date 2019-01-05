@@ -261,13 +261,16 @@ private immutable DispatcherType Dispatch =
       read_eof   : &raptor_iostream_read_eof_impl };
 
 class UserIOStream : UserObject!IOStream {
-    this(RaptorWorld world) {
+    this(RaptorWorldWithoutFinalize world) {
         IOStreamHandle* handle = raptor_new_iostream_from_handler(world.handle,
                                                                   cast(void*)this,
                                                                   &Dispatch);
         record = IOStream.fromNonnullHandle(handle);
     }
-    abstract void doWriteByte(char byte_);
+    void doWriteByte(char byte_) {
+        if(doWriteBytes(&byte_, 1, 1) != 1)
+            throw new IOStreamException();
+    }
     abstract int doWriteBytes(char* data, size_t size, size_t count);
     abstract void doWrite_End();
     abstract size_t doReadBytes(char* data, size_t size, size_t count);
@@ -285,4 +288,16 @@ class StreamFromString : UserObject!IOStream {
     alias value this;
 }
 
-// TODO: Stopped at function Stream_From_String
+// I decided to implement it in D instead of using corresponding C functions
+class StreamToString : UserIOStream {
+    private string _str;
+    this(RaptorWorldWithoutFinalize world) {
+        super(world);
+    }
+    string value() { return _str; }
+    alias value this;
+    override int doWriteBytes(char* data, size_t size, size_t count) {
+        _str ~= data[0..size*count];
+        return cast(int)(size*count);
+    }
+}
