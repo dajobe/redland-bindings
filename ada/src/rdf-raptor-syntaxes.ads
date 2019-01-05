@@ -78,7 +78,7 @@ package RDF.Raptor.Syntaxes is
    function Is_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class; Name: String) return Boolean;
 
    function Guess_Parser_Name (World: Raptor_World_Type_Without_Finalize'Class;
-                               URI: URI_Type;
+                               URI: URI_Type; -- FIXME: WithoutFinalize
                                MIME_Type: String;
                                Buffer: String;
                                Identifier: String)

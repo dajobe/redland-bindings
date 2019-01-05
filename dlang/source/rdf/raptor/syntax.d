@@ -2,18 +2,27 @@ module rdf.raptor.syntax;
 
 import std.string;
 import rdf.raptor.world;
+import rdf.raptor.uri;
 
 enum SyntaxBitflags { Need_Base_URI = 1 }
 
 // FIXME: D style IDs
 
 private extern extern(C) {
-    const(Syntax_Description_Record)* raptor_world_get_parser_description(RaptorWorldHandle *world,
+    const(Syntax_Description_Record)* raptor_world_get_parser_description(RaptorWorldHandle* world,
                                                                           uint counter);
-    const(Syntax_Description_Record)* raptor_world_get_serializer_description(RaptorWorldHandle *world,
+    const(Syntax_Description_Record)* raptor_world_get_serializer_description(RaptorWorldHandle* world,
                                                                               uint counter);
-    int raptor_world_get_parsers_count(RaptorWorldHandle *world);
-    int raptor_world_get_serializers_count(RaptorWorldHandle *world);
+    int raptor_world_get_parsers_count(RaptorWorldHandle* world);
+    int raptor_world_get_serializers_count(RaptorWorldHandle* world);
+    int raptor_world_is_parser_name(RaptorWorldHandle* world, const char *name);
+    int raptor_world_is_serializer_name(RaptorWorldHandle* world, const char *name);
+    immutable(char*) raptor_world_guess_parser_name(RaptorWorldHandle* world,
+                                                    URIHandle* uri,
+                                                    const char *mime_type,
+                                                    const char *buffer,
+                                                    size_t len,
+                                                    const char *identifier);
 }
 
 extern(C) struct Mime_Type_Q {
@@ -102,6 +111,30 @@ public:
         do {
             ++_pos;
         }
+}
+
+bool isParserName(RaptorWorldWithoutFinalize world, string name) {
+    return raptor_world_is_parser_name(world.handle, name.toStringz) != 0;
+}
+
+bool isSerializerName(RaptorWorldWithoutFinalize world, string name) {
+    return raptor_world_is_serializer_name(world.handle, name.toStringz) != 0;
+}
+
+string guessParserName(RaptorWorldWithoutFinalize world,
+                       URIWithoutFinalize uri,
+                       string mimeType,
+                       string buffer,
+                       string identifier)
+{
+    immutable char* str = raptor_world_guess_parser_name(world.handle,
+                                                         uri.handle,
+                                                         mimeType.toStringz,
+                                                         buffer.ptr,
+                                                         buffer.length,
+                                                         identifier.toStringz);
+    // I don't use .idup because it is valid as long as the world exists
+    return str.fromStringz;
 }
 
 // TODO: Stopped at Create_Parser_Descriptions_Iterator
