@@ -27,6 +27,10 @@ private extern extern(C) {
                                  uint flags,
                                  IOStreamHandle* iostr);
     int raptor_term_escaped_write(const TermHandle* term, uint flags, IOStreamHandle* iostr);
+    int raptor_string_ntriples_write(const char *string,
+                                     size_t len,
+                                     char delim,
+                                     IOStreamHandle* iostr);
 }
 
 // TODO: Make this instead wrapper over D streams: https://stackoverflow.com/a/54029257/856090
@@ -128,6 +132,10 @@ struct IOStreamWithoutFinalize {
         if(raptor_term_escaped_write(term.handle, flags, handle) != 0)
             throw new IOStreamException();
     }
+    void ntriplesWrite(string value, char delim) {
+        if(raptor_string_ntriples_write(value.ptr, value.length, delim, handle) != 0)
+            throw new IOStreamException();
+    }
 }
 
 struct IOStream {
@@ -137,4 +145,4 @@ struct IOStream {
                         raptor_free_iostream);
 }
 
-// TODO: Stopped at procedure Ntriples_Write
+// TODO: Stopped at function From_Sink

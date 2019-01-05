@@ -210,6 +210,7 @@ package body RDF.Raptor.IOStream is
       end if;
    end;
 
+   -- TODO: This function is deprecated
    function raptor_string_python_write (ptr: char_array;
                                         len: size_t;
                                         delim: char;
