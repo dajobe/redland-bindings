@@ -47,54 +47,54 @@ struct Parser {
 }
 
 class UserParser : UserObject!Parser {
-    void Initialize_All_Callbacks() {
-        Initialize_Graph_Mark_Handler();
-        Initialize_Statement_Handler();
-        Initialize_Namespace_Handler();
-        Initialize_URI_Filter();
+    void initializeAllCallbacks() {
+        initializeGraphMarkHandler();
+        initializeStatementHandler();
+        initializeNamespaceHandler();
+        initializeURIFilter();
     }
-    void Initialize_Graph_Mark_Handler() {
+    void initializeGraphMarkHandler() {
         raptor_parser_set_graph_mark_handler(record.handle,
                                              context,
                                              &raptor_graph_mark_handler_impl);
     }
 
-    void Initialize_Statement_Handler() {
+    void initializeStatementHandler() {
         raptor_parser_set_statement_handler(record.handle,
                                             context,
                                             &raptor_statement_handler_impl);
     }
 
-    void Initialize_Namespace_Handler() {
+    void initializeNamespaceHandler() {
         raptor_parser_set_namespace_handler(record.handle,
                                             context,
                                             &raptor_namespace_handler_impl);
     }
 
-    void Initialize_URI_Filter() {
+    void initializeURIFilter() {
         raptor_parser_set_uri_filter(record.handle, &raptor_uri_filter_impl, context);
     }
 
-    void Graph_Mark_Handler(URIWithoutFinalize uri, GraphMarkFlags flags) { }
-    void Statement_Handler(StatementWithoutFinalize statement) { }
-    void Namespace_Handler(NamespaceWithoutFinalize namespace) { }
-    bool URI_Filter(URIWithoutFinalize uri) {
+    void statementHandler(StatementWithoutFinalize statement) { }
+    void graphMarkHandler(URIWithoutFinalize uri, GraphMarkFlags flags) { }
+    void namespaceHandler(NamespaceWithoutFinalize namespace) { }
+    bool uriFilter(URIWithoutFinalize uri) {
         return true;
     }
     private static extern(C) {
         void raptor_statement_handler_impl(void* data, StatementHandle* statement) {
-            (cast(UserParser*)data).Statement_Handler(StatementWithoutFinalize.fromNonnullHandle(statement));
+            (cast(UserParser*)data).statementHandler(StatementWithoutFinalize.fromNonnullHandle(statement));
         }
         void raptor_graph_mark_handler_impl(void* data, URIHandle* uri, int Flags) {
-            (cast(UserParser*)data).Graph_Mark_Handler(URIWithoutFinalize.fromNonnullHandle(uri), cast(GraphMarkFlags)Flags);
+            (cast(UserParser*)data).graphMarkHandler(URIWithoutFinalize.fromNonnullHandle(uri), cast(GraphMarkFlags)Flags);
         }
         void raptor_namespace_handler_impl(void* data, NamespaceHandle* NS) {
-            (cast(UserParser*)data).Namespace_Handler(NamespaceWithoutFinalize.fromNonnullHandle(NS));
+            (cast(UserParser*)data).namespaceHandler(NamespaceWithoutFinalize.fromNonnullHandle(NS));
         }
         int raptor_uri_filter_impl(void* data, URIHandle* uri) {
-            return (cast(UserParser*)data).URI_Filter(URIWithoutFinalize.fromNonnullHandle(uri));
+            return (cast(UserParser*)data).uriFilter(URIWithoutFinalize.fromNonnullHandle(uri));
         }
     }
 }
 
-// TODO: Stopped at Graph_Mark_Flags
+// TODO: Stopped at Get_Locator
