@@ -21,3 +21,5 @@ struct Parser {
                         Parser,
                         raptor_free_parser);
 }
+
+// TODO: Stopped at Graph_Mark_Flags
