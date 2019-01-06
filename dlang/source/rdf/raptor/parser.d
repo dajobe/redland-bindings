@@ -6,6 +6,7 @@ import rdf.auxiliary.user;
 import rdf.raptor.uri;
 import rdf.raptor.statement;
 import rdf.raptor.namespace;
+import rdf.raptor.log;
 
 struct ParserHandle;
 
@@ -29,6 +30,7 @@ private extern extern(C) {
     void raptor_parser_set_uri_filter(ParserHandle* parser,
                                       raptor_uri_filter_func filter,
                                       void* user_data);
+    LocatorHandle* raptor_parser_get_locator(ParserHandle* rdf_parser);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -37,6 +39,9 @@ struct ParserWithoutFinalize {
     mixin WithoutFinalize!(ParserHandle,
                            ParserWithoutFinalize,
                            Parser);
+    @property LocatorWithoutFinalize locator() {
+        return LocatorWithoutFinalize.fromHandle(raptor_parser_get_locator(handle));
+    }
 }
 
 struct Parser {
@@ -97,4 +102,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Get_Locator
+// TODO: Stopped at Parse_Abort
