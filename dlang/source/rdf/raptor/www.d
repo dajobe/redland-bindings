@@ -37,6 +37,13 @@ private extern extern(C) {
     int raptor_www_set_http_cache_control(WWWHandle *www, const char *cache_control);
     void raptor_www_set_connection_timeout(WWWHandle *www, int timeout);
     URIHandle* raptor_www_get_final_uri(WWWHandle* www);
+    int raptor_www_fetch(WWWHandle* www, URIHandle* uri);
+    alias raptor_data_malloc_handler = void* function(size_t size);
+    int raptor_www_fetch_to_string(WWWHandle* www,
+                                   URIHandle* uri,
+                                   void **string_p,
+                                   size_t *length_p,
+                                   raptor_data_malloc_handler malloc_handler);
 }
 
 /// I deliberately expose that it is a pointer type,
@@ -79,6 +86,10 @@ struct WWWWithoutFinalize {
     URI getFinalURI() {
       // may return object with NULL handle
       return URI.fromHandle(raptor_www_get_final_uri(handle));
+    }
+    void fetch(URIWithoutFinalize uri) {
+        if(raptor_www_fetch(handle, uri.handle) != 0)
+            throw new RDFException();
     }
 }
 
@@ -148,4 +159,4 @@ class UserWWW : UserObject!WWW {
     }
 }
 
-// TODO: Stopped at Fetch
+// TODO: Stopped at Fetch_To_String
