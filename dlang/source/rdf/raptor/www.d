@@ -29,9 +29,11 @@ private extern extern(C) {
     void raptor_www_set_final_uri_handler(WWWHandle *www,
                                           raptor_www_final_uri_handler handler,
                                           void *userData);
-    // FIXME: raptor_www_set_user_agent() & raptor_www_set_proxy() don't return an error on out-of-memory (Raptor bug?)
+    // FIXME: raptor_www_set_user_agent() & raptor_www_set_proxy() & raptor_www_set_http_accept()
+    // don't return an error on out-of-memory (Raptor bug?)
     void raptor_www_set_user_agent(WWWHandle *www, const char *user_agent);
     void raptor_www_set_proxy(WWWHandle *www, const char *proxy);
+    void raptor_www_set_http_accept(WWWHandle *www, const char *value);
 }
 
 /// I deliberately expose that it is a pointer type,
@@ -55,6 +57,9 @@ struct WWWWithoutFinalize {
    }
    void setProxy(string userAgent) {
       raptor_www_set_proxy(handle, userAgent.toStringz);
+   }
+   void setHTTPAccept(string value) {
+      raptor_www_set_http_accept(handle, value.emptyToNull);
    }
 }
 
@@ -124,4 +129,4 @@ class UserWWW : UserObject!WWW {
     }
 }
 
-// TODO: Stopped at Set_HTTP_Accept
+// TODO: Stopped at Set_Cache_Control

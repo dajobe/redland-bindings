@@ -51,6 +51,7 @@ package body RDF.Raptor.WWW is
    procedure raptor_set_cache_control (WWW: WWW_Handle; Cache_Control: chars_ptr)
      with Import, Convention=>C;
 
+   -- FIXME: return value of raptor_set_cache_control()
    procedure Set_Cache_Control (WWW: in out WWW_Type_Without_Finalize; Cache_Control: String) is
       Str: aliased char_array := To_C(Cache_Control);
    begin
