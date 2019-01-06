@@ -17,6 +17,7 @@ package RDF.Raptor.WWW is
    overriding procedure Finalize_Handle (Object: WWW_Type_Without_Finalize; Handle: WWW_Handle);
 
    -- You can call this function or initialize only callbacks you need (below).
+   -- TODO: Does it make sense for _Without_Finalize?
    not overriding procedure Initialize_All_Callbacks (WWW: in out WWW_Type_Without_Finalize);
 
    not overriding procedure Initialize_Write_Bytes_Handler (WWW: in out WWW_Type_Without_Finalize);
