@@ -36,6 +36,7 @@ private extern extern(C) {
                                   const char *buffer,
                                   size_t len,
                                   int is_end);
+    int raptor_parser_parse_file(ParserHandle* rdf_parser, URIHandle* uri, URIHandle* base_uri);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -52,6 +53,10 @@ struct ParserWithoutFinalize {
     }
     void parseChunk(string buffer, bool isEnd) {
         if(raptor_parser_parse_chunk(handle, buffer.ptr, buffer.length, isEnd) != 0)
+            throw new RDFException();
+    }
+    void parseFile(URIWithoutFinalize uri, URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null)) {
+        if(raptor_parser_parse_file(handle, uri.handle, baseURI.handle) != 0)
             throw new RDFException();
     }
 }
@@ -114,4 +119,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Parse_File
+// TODO: Stopped at Parse_Stdin
