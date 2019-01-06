@@ -15,20 +15,20 @@ private extern extern(C) {
     alias raptor_www_content_type_handler = void function(WWWHandle* www,
                                                           void* userdata,
                                                           const char *content_type);
-    alias raptor_uri_filter_func = int function(void *user_data, URIHandle* uri);
+    alias raptor_uri_filter_func = int function(void *userData, URIHandle* uri);
     alias raptor_www_final_uri_handler = void function(WWWHandle* www,
                                                        void* userdata,
                                                        URIHandle* final_uri);
     void raptor_www_set_write_bytes_handler(WWWHandle *www,
                                             raptor_www_write_bytes_handler handler,
-                                            void *user_data);
+                                            void *userData);
     void raptor_www_set_content_type_handler(WWWHandle *www,
                                              raptor_www_content_type_handler handler,
-                                             void *user_data);
-    void raptor_www_set_uri_filter(WWWHandle *www, raptor_uri_filter_func filter, void *user_data);
+                                             void *userData);
+    void raptor_www_set_uri_filter(WWWHandle *www, raptor_uri_filter_func filter, void *userData);
     void raptor_www_set_final_uri_handler(WWWHandle *www,
                                           raptor_www_final_uri_handler handler,
-                                          void *user_data);
+                                          void *userData);
 }
 
 /// I deliberately expose that it is a pointer type,
@@ -59,54 +59,52 @@ class UserWWW : UserObject!WWW {
     }
     void initializeWriteBytesHandler() {
         raptor_www_set_write_bytes_handler(record.handle,
-                                           &Write_Bytes_Handler_Impl,
+                                           &writeBytesHandlerImpl,
                                            context);
 
     }
     void initializeContentTypeHandler() {
         raptor_www_set_content_type_handler(record.handle,
-                                            &Content_Type_Handler_Impl,
+                                            &contentTypeHandlerImpl,
                                             context);
     }
     void initializeURIFilter() {
-        raptor_www_set_uri_filter(record.handle, &URI_Filter_Impl, context);
+        raptor_www_set_uri_filter(record.handle, &uriFilterImpl, context);
     }
     void initializeFinalURIHandler() {
-        raptor_www_set_final_uri_handler(record.handle, &Final_URI_Handler_Impl, context);
+        raptor_www_set_final_uri_handler(record.handle, &finalURIHandlerImpl, context);
     }
 
-    void Write_Bytes_Handler (string value) { }
-    void Content_Type_Handler (string Content_Type) { }
-    void Final_URI_Handler (URIWithoutFinalize URI) { }
+    void writeBytesHandler (string value) { }
+    void contentTypeHandler (string Content_Type) { }
+    void finalURIHandler (URIWithoutFinalize URI) { }
 
     /// Return False to disallow loading an URI
-    bool URI_Filter (URIWithoutFinalize URI) {
+    bool uriFilter (URIWithoutFinalize URI) {
         return true;
     }
 
     private static extern(C) {
-        void Write_Bytes_Handler_Impl (WWWHandle *www,
-                                            void* user_data,
-                                            const void* ptr,
-                                            size_t Size,
-                                            size_t Nmemb)
+        void writeBytesHandlerImpl(WWWHandle *www,
+                                   void* userData,
+                                   const void* ptr,
+                                   size_t Size,
+                                   size_t Nmemb)
         {
-            (cast(UserWWW*)user_data).Write_Bytes_Handler(// fromHandle(www)), // ignored
-                                                          (cast(immutable char*)ptr)[0..Size*Nmemb]);
+            (cast(UserWWW*)userData).writeBytesHandler(// fromHandle(www)), // ignored
+                                                       (cast(immutable char*)ptr)[0..Size*Nmemb]);
         }
-        void Content_Type_Handler_Impl (WWWHandle *www, void* user_data, const char* Content_Type)
-        {
-            (cast(UserWWW*)user_data).Content_Type_Handler(// fromHandle(www)), // ignored
-                                (cast(immutable char*)Content_Type).fromStringz); // FIXME: is immutable right here
+        void contentTypeHandlerImpl(WWWHandle *www, void* userData, const char* Content_Type) {
+            (cast(UserWWW*)userData).contentTypeHandler(// fromHandle(www)), // ignored
+                                                        (cast(immutable char*)Content_Type).fromStringz); // FIXME: is immutable right here?
         }
-        int URI_Filter_Impl (void* user_data, URIHandle* URI)
-        {
-            immutable bool Result = (cast(UserWWW*)user_data).URI_Filter(URIWithoutFinalize.fromNonnullHandle(URI));
-            return Result ? 0 : 1;
+        int uriFilterImpl (void* userData, URIHandle* URI) {
+            // FIXME: Why negation? (also in Ada)
+            return !(cast(UserWWW*)userData).uriFilter(URIWithoutFinalize.fromNonnullHandle(URI));
         }
-        void Final_URI_Handler_Impl (WWWHandle *www, void* user_data, URIHandle* URI) {
-            (cast(UserWWW*)user_data).Final_URI_Handler(// fromHandle(www)), // ignored
-                              URIWithoutFinalize.fromNonnullHandle(URI));
+        void finalURIHandlerImpl (WWWHandle *www, void* userData, URIHandle* URI) {
+            (cast(UserWWW*)userData).finalURIHandler(// fromHandle(www)), // ignored
+                                                     URIWithoutFinalize.fromNonnullHandle(URI));
         }
     }
 }
