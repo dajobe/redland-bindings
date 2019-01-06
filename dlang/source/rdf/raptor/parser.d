@@ -1,6 +1,7 @@
 module rdf.raptor.parser;
 
-// import std.string;
+import std.string;
+import std.stdio : FILE, File;
 import rdf.auxiliary.handled_record;
 import rdf.auxiliary.user;
 import rdf.raptor.uri;
@@ -37,6 +38,10 @@ private extern extern(C) {
                                   size_t len,
                                   int is_end);
     int raptor_parser_parse_file(ParserHandle* rdf_parser, URIHandle* uri, URIHandle* base_uri);
+    int raptor_parser_parse_file_stream(ParserHandle* rdf_parser,
+                                        FILE *stream,
+                                        const char *filename,
+                                        URIHandle* base_uri);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -58,6 +63,16 @@ struct ParserWithoutFinalize {
     void parseFile(URIWithoutFinalize uri, URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null)) {
         if(raptor_parser_parse_file(handle, uri.handle, baseURI.handle) != 0)
             throw new RDFException();
+    }
+    void parseStdin(URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null)) {
+        parseFile(URIWithoutFinalize.fromHandle(null), baseURI);
+    }
+    void parseFileStream(File stream, string filename, URIWithoutFinalize baseURI) {
+        immutable int res = raptor_parser_parse_file_stream(handle,
+                                                            stream.getFP,
+                                                            filename.toStringz,
+                                                            baseURI.handle);
+        if(res != 0) throw new RDFException();
     }
 }
 
@@ -119,4 +134,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Parse_Stdin
+// TODO: Stopped at Parse_IOStream
