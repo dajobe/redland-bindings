@@ -35,6 +35,8 @@ private extern extern(C) {
     void raptor_www_set_proxy(WWWHandle *www, const char *proxy);
     void raptor_www_set_http_accept(WWWHandle *www, const char *value);
     int raptor_www_set_http_cache_control(WWWHandle *www, const char *cache_control);
+    void raptor_www_set_connection_timeout(WWWHandle *www, int timeout);
+    URIHandle* raptor_www_get_final_uri(WWWHandle* www);
 }
 
 /// I deliberately expose that it is a pointer type,
@@ -52,20 +54,32 @@ struct WWWWithoutFinalize {
     mixin WithoutFinalize!(WWWHandle,
                            WWWWithoutFinalize,
                            WWW);
-   /// Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
-   void setUserAgent(string userAgent) {
-      raptor_www_set_user_agent(handle, userAgent.emptyToNull);
-   }
-   void setProxy(string userAgent) {
-      raptor_www_set_proxy(handle, userAgent.toStringz);
-   }
-   void setHTTPAccept(string value) {
-      raptor_www_set_http_accept(handle, value.emptyToNull);
-   }
-   void setCacheControl(string value) {
-      if(raptor_www_set_http_cache_control(handle, value.toStringz))
-          throw new RDFException();
-   }
+    /// Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
+    void setUserAgent(string userAgent) {
+        raptor_www_set_user_agent(handle, userAgent.emptyToNull);
+    }
+    void setProxy(string userAgent) {
+        raptor_www_set_proxy(handle, userAgent.toStringz);
+    }
+    void setHTTPAccept(string value) {
+        raptor_www_set_http_accept(handle, value.emptyToNull);
+    }
+    void setCacheControl(string value) {
+        if(raptor_www_set_http_cache_control(handle, value.toStringz))
+            throw new RDFException();
+    }
+    /// Remove Cache-Control: header altogether
+    void unsetCacheControl() {
+        if(raptor_www_set_http_cache_control(handle, null))
+            throw new RDFException();
+    }
+    void setConnectionTimeout(uint seconds) {
+        raptor_www_set_connection_timeout(handle, seconds);
+    }
+    URI getFinalURI() {
+      // may return object with NULL handle
+      return URI.fromHandle(raptor_www_get_final_uri(handle));
+    }
 }
 
 struct WWW {
@@ -134,4 +148,4 @@ class UserWWW : UserObject!WWW {
     }
 }
 
-// TODO: Stopped at Unset_Cache_Control
+// TODO: Stopped at Fetch

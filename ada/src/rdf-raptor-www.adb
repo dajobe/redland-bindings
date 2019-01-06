@@ -48,6 +48,7 @@ package body RDF.Raptor.WWW is
       Set_Or_Null(raptor_www_set_http_accept'Access, WWW, Value);
    end;
 
+  -- FIXME: raptor_www_set_http_cache_control (with _www_ and _http_)?
    procedure raptor_set_cache_control (WWW: WWW_Handle; Cache_Control: chars_ptr)
      with Import, Convention=>C;
 
