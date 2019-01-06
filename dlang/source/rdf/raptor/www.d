@@ -34,6 +34,7 @@ private extern extern(C) {
     void raptor_www_set_user_agent(WWWHandle *www, const char *user_agent);
     void raptor_www_set_proxy(WWWHandle *www, const char *proxy);
     void raptor_www_set_http_accept(WWWHandle *www, const char *value);
+    int raptor_www_set_http_cache_control(WWWHandle *www, const char *cache_control);
 }
 
 /// I deliberately expose that it is a pointer type,
@@ -60,6 +61,10 @@ struct WWWWithoutFinalize {
    }
    void setHTTPAccept(string value) {
       raptor_www_set_http_accept(handle, value.emptyToNull);
+   }
+   void setCacheControl(string value) {
+      if(raptor_www_set_http_cache_control(handle, value.toStringz))
+          throw new RDFException();
    }
 }
 
@@ -129,4 +134,4 @@ class UserWWW : UserObject!WWW {
     }
 }
 
-// TODO: Stopped at Set_Cache_Control
+// TODO: Stopped at Unset_Cache_Control
