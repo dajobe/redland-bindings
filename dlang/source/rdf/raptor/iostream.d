@@ -263,7 +263,7 @@ private immutable DispatcherType Dispatch =
 class UserIOStream : UserObject!IOStream {
     this(RaptorWorldWithoutFinalize world) {
         IOStreamHandle* handle = raptor_new_iostream_from_handler(world.handle,
-                                                                  cast(void*)this,
+                                                                  context,
                                                                   &Dispatch);
         record = IOStream.fromNonnullHandle(handle);
     }
