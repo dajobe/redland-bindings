@@ -47,6 +47,7 @@ package RDF.Raptor.Parser is
    not overriding function URI_Filter (Object: Parser_Type_Without_Finalize;
                                        URI: URI_Type_Without_Finalize'Class) return Boolean is (True);
 
+   -- FIXME: Should be Locator_Type_Without_Finalize
    not overriding function Get_Locator (Parser: Parser_Type_Without_Finalize) return Locator_Type;
 
    not overriding procedure Parse_Abort (Parser: Parser_Type_Without_Finalize);

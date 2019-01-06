@@ -31,6 +31,11 @@ private extern extern(C) {
                                       raptor_uri_filter_func filter,
                                       void* user_data);
     LocatorHandle* raptor_parser_get_locator(ParserHandle* rdf_parser);
+    void raptor_parser_parse_abort(ParserHandle* rdf_parser);
+    int raptor_parser_parse_chunk(ParserHandle* rdf_parser,
+                                  const char *buffer,
+                                  size_t len,
+                                  int is_end);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -41,6 +46,13 @@ struct ParserWithoutFinalize {
                            Parser);
     @property LocatorWithoutFinalize locator() {
         return LocatorWithoutFinalize.fromHandle(raptor_parser_get_locator(handle));
+    }
+    void parseAbort() {
+        raptor_parser_parse_abort(handle);
+    }
+    void parseChunk(string buffer, bool isEnd) {
+        if(raptor_parser_parse_chunk(handle, buffer.ptr, buffer.length, isEnd) != 0)
+            throw new RDFException();
     }
 }
 
@@ -102,4 +114,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Parse_Abort
+// TODO: Stopped at Parse_File
