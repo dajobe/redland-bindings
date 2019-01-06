@@ -7,8 +7,6 @@ rdf-raptor-parser.adb
 rdf-raptor-parser.ads
 rdf-raptor-serializer.adb
 rdf-raptor-serializer.ads
-rdf-raptor-www.adb
-rdf-raptor-www.ads
 rdf-rasqal.ads
 rdf-rasqal-bnode.adb
 rdf-rasqal-bnode.ads

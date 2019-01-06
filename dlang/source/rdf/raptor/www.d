@@ -4,6 +4,7 @@ import std.string;
 import rdf.auxiliary.handled_record;
 import rdf.auxiliary.user;
 import rdf.raptor.memory;
+import rdf.raptor.world;
 import rdf.raptor.uri;
 
 private extern extern(C) {
@@ -45,11 +46,16 @@ private extern extern(C) {
                                    void **string_p,
                                    size_t *length_p,
                                    raptor_data_malloc_handler malloc_handler);
+    void* raptor_www_get_connection(WWWHandle* www);
+    int raptor_www_set_ssl_cert_options(WWWHandle* www,
+                                        const char *cert_filename,
+                                        const char *cert_type,
+                                        const char *cert_passphrase);
+    int raptor_www_set_ssl_verify_options(WWWHandle* www, int verify_peer, int verify_host);
+    void raptor_www_abort(WWWHandle* www, const char *reason);
+    WWWHandle* raptor_new_www(RaptorWorldHandle* world);
+    WWWHandle* raptor_new_www_with_connection(RaptorWorldHandle* world, void *connection);
 }
-
-/// I deliberately expose that it is a pointer type,
-/// to simplify libcurl and libxml interaction
-struct Connection;
 
 struct WWWHandle;
 
@@ -100,6 +106,23 @@ struct WWWWithoutFinalize {
         scope(exit) raptor_free_memory(str);
         return str[0..len].idup;
     }
+    void* getConnection() {
+        return raptor_www_get_connection(handle);
+    }
+    void setSSLCertOptions(string certFilename, string certType, string certPassphrase) {
+        immutable int res = raptor_www_set_ssl_cert_options(handle,
+                                                            certFilename.toStringz,
+                                                            certType.toStringz,
+                                                            certPassphrase.toStringz);
+        if(res != 0) throw new RDFException();
+    }
+    void setSSLVerifyOptions(bool Verify_Peer, bool Verify_Host) {
+        if(raptor_www_set_ssl_verify_options(handle, Verify_Peer ? 1 : 0, Verify_Peer ? 1 : 0) != 0)
+            throw new RDFException();
+    }
+    void abortOperation(string reason) {
+        raptor_www_abort(handle, reason.toStringz);
+    }
 }
 
 struct WWW {
@@ -107,6 +130,12 @@ struct WWW {
                         WWWWithoutFinalize,
                         WWW,
                         raptor_free_www);
+    static WWW create(RaptorWorldWithoutFinalize world) {
+        return fromNonnullHandle(raptor_new_www(world.handle));
+    }
+    static WWW create(RaptorWorldWithoutFinalize world, void* connection) {
+        return fromNonnullHandle(raptor_new_www_with_connection(world.handle, connection));
+    }
 }
 
 class UserWWW : UserObject!WWW {
@@ -168,4 +197,4 @@ class UserWWW : UserObject!WWW {
     }
 }
 
-// TODO: Stopped at Get_Connection
+// TODO: Stopped at Set_SSL_certOptions
