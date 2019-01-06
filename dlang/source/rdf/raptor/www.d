@@ -29,6 +29,9 @@ private extern extern(C) {
     void raptor_www_set_final_uri_handler(WWWHandle *www,
                                           raptor_www_final_uri_handler handler,
                                           void *userData);
+    // FIXME: raptor_www_set_user_agent() & raptor_www_set_proxy() don't return an error on out-of-memory (Raptor bug?)
+    void raptor_www_set_user_agent(WWWHandle *www, const char *user_agent);
+    void raptor_www_set_proxy(WWWHandle *www, const char *proxy);
 }
 
 /// I deliberately expose that it is a pointer type,
@@ -37,13 +40,21 @@ struct Connection;
 
 struct WWWHandle;
 
+private immutable(char*) emptyToNull(string s) {
+    if(s == "") return null;
+    return s.toStringz;
+}
+
 struct WWWWithoutFinalize {
     mixin WithoutFinalize!(WWWHandle,
                            WWWWithoutFinalize,
                            WWW);
-   // Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
-   void Set_User_Agent (string userAgent) {
-      // TODO
+   /// Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
+   void setUserAgent(string userAgent) {
+      raptor_www_set_user_agent(handle, userAgent.emptyToNull);
+   }
+   void setProxy(string userAgent) {
+      raptor_www_set_proxy(handle, userAgent.toStringz);
    }
 }
 
@@ -113,4 +124,4 @@ class UserWWW : UserObject!WWW {
     }
 }
 
-// TODO: Stopped at Set_User_Agent
+// TODO: Stopped at Set_HTTP_Accept
