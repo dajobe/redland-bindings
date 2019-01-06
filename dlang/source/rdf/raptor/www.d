@@ -3,6 +3,7 @@ module rdf.raptor.www;
 import std.string;
 import rdf.auxiliary.handled_record;
 import rdf.auxiliary.user;
+import rdf.raptor.memory;
 import rdf.raptor.uri;
 
 private extern extern(C) {
@@ -91,6 +92,14 @@ struct WWWWithoutFinalize {
         if(raptor_www_fetch(handle, uri.handle) != 0)
             throw new RDFException();
     }
+    string fetchToString(URIWithoutFinalize uri) {
+        char* str;
+        size_t len;
+        if(raptor_www_fetch_to_string(handle, uri.handle, cast(void**)&str, &len, null) != 0)
+            throw new RDFException();
+        scope(exit) raptor_free_memory(str);
+        return str[0..len].idup;
+    }
 }
 
 struct WWW {
@@ -159,4 +168,4 @@ class UserWWW : UserObject!WWW {
     }
 }
 
-// TODO: Stopped at Fetch_To_String
+// TODO: Stopped at Get_Connection
