@@ -41,6 +41,10 @@ struct WWWWithoutFinalize {
     mixin WithoutFinalize!(WWWHandle,
                            WWWWithoutFinalize,
                            WWW);
+   // Empty string means no User-Agent header (I make the behavior the same as --user-agent="" in Wget.
+   void Set_User_Agent (string userAgent) {
+      // TODO
+   }
 }
 
 struct WWW {
