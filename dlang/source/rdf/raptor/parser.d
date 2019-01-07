@@ -4,6 +4,7 @@ import std.string;
 import std.stdio : FILE, File;
 import rdf.auxiliary.handled_record;
 import rdf.auxiliary.user;
+import rdf.raptor.memory;
 import rdf.raptor.uri;
 import rdf.raptor.statement;
 import rdf.raptor.namespace;
@@ -64,6 +65,7 @@ private extern extern(C) {
                                  RaptorOption option,
                                  char **string_p,
                                  int *integer_p);
+    const(char*) raptor_parser_get_accept_header(ParserHandle* parser);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -145,6 +147,12 @@ struct ParserWithoutFinalize {
             throw new RDFException();
         return V.fromStringz.idup; // do NOT free V
     }
+    string acceptHeader() {
+      char* V = cast(char*)raptor_parser_get_accept_header(handle);
+      if(!V) throw new RDFException(); // FIXME: This check is missing in Ada code
+      scope(exit) raptor_free_memory(V);
+      return V.fromStringz.idup;
+    }
 }
 
 struct Parser {
@@ -205,4 +213,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Get_Accept_Header
+// TODO: Stopped at Get_World
