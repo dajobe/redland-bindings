@@ -1,6 +1,6 @@
 module rdf.raptor.options;
 
-enum Raptor_Option : short {
+enum RaptorOption : short {
     SCANNING = 0,
     ALLOW_NON_NS_ATTRIBUTES = 1,
     ALLOW_OTHER_PARSETYPES = 2,

@@ -10,6 +10,7 @@ import rdf.raptor.namespace;
 import rdf.raptor.log;
 import rdf.raptor.iostream;
 import rdf.raptor.syntax;
+import rdf.raptor.options;
 
 struct ParserHandle;
 
@@ -56,6 +57,9 @@ private extern extern(C) {
     URIHandle* raptor_parser_get_graph(ParserHandle* rdf_parser);
     const(SyntaxDescription*) raptor_parser_get_description(ParserHandle* rdf_parser);
     const(char*) raptor_parser_get_name(ParserHandle* rdf_parser);
+    int raptor_parser_set_option(ParserHandle* parser,
+                                 RaptorOption option,
+                                 const char *string, int integer);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -117,9 +121,14 @@ struct ParserWithoutFinalize {
     @property string name() {
         return raptor_parser_get_name(handle).fromStringz.idup;
     }
-    // TODO:
-    //void setOption(Raptor_Option option, string value);
-    //void setOption(Raptor_Option option, int value);
+    void setOption(RaptorOption option, string value) {
+        if(raptor_parser_set_option(handle, option, value.toStringz, 0) != 0)
+            throw new RDFException();
+    }
+    void setOption(RaptorOption option, int value) {
+        if(raptor_parser_set_option(handle, option, null, value) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Parser {
@@ -180,4 +189,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Set_Option
+// TODO: Stopped at Get_Numeric_Option
