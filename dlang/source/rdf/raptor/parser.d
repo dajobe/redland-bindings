@@ -1,8 +1,10 @@
 module rdf.raptor.parser;
 
 import std.string;
+import std.typecons;
 import std.stdio : FILE, File;
 import rdf.auxiliary.handled_record;
+import rdf.auxiliary.nullable_string;
 import rdf.auxiliary.user;
 import rdf.raptor.memory;
 import rdf.raptor.world;
@@ -17,6 +19,13 @@ import rdf.raptor.options;
 struct ParserHandle;
 
 private extern extern(C) {
+    ParserHandle* raptor_new_parser(RaptorWorldHandle* world, const char *name);
+    ParserHandle* raptor_new_parser_for_content(RaptorWorldHandle* world,
+                                                URIHandle* uri,
+                                                const char *mime_type,
+                                                const char *buffer,
+                                                size_t len,
+                                                const char *identifier);
     void raptor_free_parser(ParserHandle* parser);
     alias raptor_graph_mark_handler = void function(void* user_data,
                                                     URIHandle* graph,
@@ -165,6 +174,22 @@ struct Parser {
                         ParserWithoutFinalize,
                         Parser,
                         raptor_free_parser);
+    static Parser create(RaptorWorldWithoutFinalize world, string name) {
+        return Parser.fromNonnullHandle(raptor_new_parser(world.handle, name.toStringz));
+    }
+    static Parser Create_From_Content(RaptorWorldWithoutFinalize world,
+                                      URIWithoutFinalize uri,
+                                      Nullable!string mimeType,
+                                      Nullable!string buffer,
+                                      Nullable!string identifier)
+    {
+        return Parser.fromNonnullHandle(raptor_new_parser_for_content(world.handle,
+                                                                      uri.handle,
+                                                                      mimeType.myToStringz,
+                                                                      buffer.myToStringz,
+                                                                      buffer.length,
+                                                                      identifier.myToStringz));
+   }
 }
 
 class UserParser : UserObject!Parser {

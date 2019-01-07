@@ -3,8 +3,6 @@ Also scope and final.
 
 The following Ada sources were not yet translated into D:
 
-rdf-raptor-parser.adb
-rdf-raptor-parser.ads
 rdf-raptor-serializer.adb
 rdf-raptor-serializer.ads
 rdf-rasqal.ads
