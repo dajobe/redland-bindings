@@ -55,6 +55,7 @@ private extern extern(C) {
                                                 void *connection);
     URIHandle* raptor_parser_get_graph(ParserHandle* rdf_parser);
     const(SyntaxDescription*) raptor_parser_get_description(ParserHandle* rdf_parser);
+    const(char*) raptor_parser_get_name(ParserHandle* rdf_parser);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -112,6 +113,9 @@ struct ParserWithoutFinalize {
     }
     @property ref const(SyntaxDescription) description() {
         return *raptor_parser_get_description(handle);
+    }
+    @property string name() {
+        return raptor_parser_get_name(handle).fromStringz.idup;
     }
 }
 
@@ -173,4 +177,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Get_Name
+// TODO: Stopped at Set_Option
