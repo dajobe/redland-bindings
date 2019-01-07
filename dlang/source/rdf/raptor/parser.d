@@ -9,6 +9,7 @@ import rdf.raptor.statement;
 import rdf.raptor.namespace;
 import rdf.raptor.log;
 import rdf.raptor.iostream;
+import rdf.raptor.syntax;
 
 struct ParserHandle;
 
@@ -52,6 +53,8 @@ private extern extern(C) {
                                                 URIHandle* uri,
                                                 URIHandle* base_uri,
                                                 void *connection);
+    URIHandle* raptor_parser_get_graph(ParserHandle* rdf_parser);
+    const(SyntaxDescription*) raptor_parser_get_description(ParserHandle* rdf_parser);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -103,6 +106,12 @@ struct ParserWithoutFinalize {
     {
         if(raptor_parser_parse_uri_with_connection(handle, uri.handle, baseURI.handle, connection) != 0)
             throw new RDFException();
+    }
+    @property URI graph() {
+        return URI.fromHandle(raptor_parser_get_graph(handle));
+    }
+    @property ref const(SyntaxDescription) description() {
+        return *raptor_parser_get_description(handle);
     }
 }
 
@@ -164,4 +173,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Get_Graph
+// TODO: Stopped at Get_Name

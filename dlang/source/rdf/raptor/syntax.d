@@ -7,9 +7,9 @@ import rdf.raptor.uri;
 enum SyntaxBitflags { Need_Base_URI = 1 }
 
 private extern extern(C) {
-    const(Syntax_Description_Record)* raptor_world_get_parser_description(RaptorWorldHandle* world,
+    const(SyntaxDescription)* raptor_world_get_parser_description(RaptorWorldHandle* world,
                                                                           uint counter);
-    const(Syntax_Description_Record)* raptor_world_get_serializer_description(RaptorWorldHandle* world,
+    const(SyntaxDescription)* raptor_world_get_serializer_description(RaptorWorldHandle* world,
                                                                               uint counter);
     int raptor_world_get_parsers_count(RaptorWorldHandle* world);
     int raptor_world_get_serializers_count(RaptorWorldHandle* world);
@@ -33,7 +33,7 @@ public:
     @property byte Q() { return _Q; }
 }
 
-extern(C) struct Syntax_Description_Record {
+extern(C) struct SyntaxDescription {
 private:
     char** _names;
     uint _namesCount;
