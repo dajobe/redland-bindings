@@ -46,6 +46,12 @@ private extern extern(C) {
     int raptor_parser_parse_iostream(ParserHandle* rdf_parser,
                                      IOStreamHandle* iostr,
                                      URIHandle* base_uri);
+    int raptor_parser_parse_start(ParserHandle* rdf_parser, URIHandle* uri);
+    int raptor_parser_parse_uri(ParserHandle* rdf_parser, URIHandle* uri, URIHandle* base_uri);
+    int raptor_parser_parse_uri_with_connection(ParserHandle* rdf_parser,
+                                                URIHandle* uri,
+                                                URIHandle* base_uri,
+                                                void *connection);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -80,6 +86,22 @@ struct ParserWithoutFinalize {
     }
     void parseIOStream(IOStreamWithoutFinalize stream, URIWithoutFinalize baseURI) {
         if(raptor_parser_parse_iostream(handle, stream.handle, baseURI.handle) != 0)
+            throw new RDFException();
+    }
+    /// TODO: More detailed exit status handling (also in Ada)
+    void parseStart(URIWithoutFinalize uri) {
+        if(raptor_parser_parse_start(handle, uri.handle) != 0)
+            throw new RDFException();
+    }
+    void parseURI(URIWithoutFinalize uri, URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null)) {
+        if(raptor_parser_parse_uri(handle, uri.handle, baseURI.handle) != 0)
+            throw new RDFException();
+    }
+    void parseURI(URIWithoutFinalize uri,
+                  URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null),
+                  void* connection = null)
+    {
+        if(raptor_parser_parse_uri_with_connection(handle, uri.handle, baseURI.handle, connection) != 0)
             throw new RDFException();
     }
 }
@@ -142,4 +164,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Parse_Start
+// TODO: Stopped at Get_Graph
