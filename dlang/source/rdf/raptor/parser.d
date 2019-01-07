@@ -117,6 +117,9 @@ struct ParserWithoutFinalize {
     @property string name() {
         return raptor_parser_get_name(handle).fromStringz.idup;
     }
+    // TODO:
+    //void setOption(Raptor_Option option, string value);
+    //void setOption(Raptor_Option option, int value);
 }
 
 struct Parser {
