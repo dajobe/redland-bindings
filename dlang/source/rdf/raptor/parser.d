@@ -8,6 +8,7 @@ import rdf.raptor.uri;
 import rdf.raptor.statement;
 import rdf.raptor.namespace;
 import rdf.raptor.log;
+import rdf.raptor.iostream;
 
 struct ParserHandle;
 
@@ -42,6 +43,9 @@ private extern extern(C) {
                                         FILE *stream,
                                         const char *filename,
                                         URIHandle* base_uri);
+    int raptor_parser_parse_iostream(ParserHandle* rdf_parser,
+                                     IOStreamHandle* iostr,
+                                     URIHandle* base_uri);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -73,6 +77,10 @@ struct ParserWithoutFinalize {
                                                             filename.toStringz,
                                                             baseURI.handle);
         if(res != 0) throw new RDFException();
+    }
+    void parseIOStream(IOStreamWithoutFinalize stream, URIWithoutFinalize baseURI) {
+        if(raptor_parser_parse_iostream(handle, stream.handle, baseURI.handle) != 0)
+            throw new RDFException();
     }
 }
 
@@ -134,4 +142,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Parse_IOStream
+// TODO: Stopped at Parse_Start
