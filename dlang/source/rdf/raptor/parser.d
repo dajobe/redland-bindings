@@ -60,6 +60,10 @@ private extern extern(C) {
     int raptor_parser_set_option(ParserHandle* parser,
                                  RaptorOption option,
                                  const char *string, int integer);
+    int raptor_parser_get_option(ParserHandle* parser,
+                                 RaptorOption option,
+                                 char **string_p,
+                                 int *integer_p);
 }
 
 enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
@@ -129,6 +133,18 @@ struct ParserWithoutFinalize {
         if(raptor_parser_set_option(handle, option, null, value) != 0)
             throw new RDFException();
     }
+    uint getNumericOption(RaptorOption option) {
+        int V;
+        if(raptor_parser_get_option(handle, option, null, &V) < 0)
+            throw new RDFException();
+        return V;
+    }
+    string getStringOption(RaptorOption option) {
+        char* V;
+        if(raptor_parser_get_option(handle, option, &V, null) < 0)
+            throw new RDFException();
+        return V.fromStringz.idup; // do NOT free V
+    }
 }
 
 struct Parser {
@@ -189,4 +205,4 @@ class UserParser : UserObject!Parser {
     }
 }
 
-// TODO: Stopped at Get_Numeric_Option
+// TODO: Stopped at Get_Accept_Header
