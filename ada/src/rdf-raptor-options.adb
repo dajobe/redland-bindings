@@ -78,6 +78,7 @@ package body RDF.Raptor.Options is
    procedure raptor_world_get_option_description (Descrition: Option_Description_Handle)
      with Import, Convention=>C;
 
+   -- FIXME: Seems a nonsense
    procedure Finalize_Handle (Object: Option_Description_Type_Without_Finalize; Handle: Option_Description_Handle) is
    begin
       raptor_world_get_option_description(Handle);
@@ -88,6 +89,7 @@ package body RDF.Raptor.Options is
      with Import, Convention=>C;
 
    -- Crude hack
+   -- FIXME: URI_Type_Without_Finalize?
    function Option_From_URI (World: Raptor_World_Type_Without_Finalize'Class; URI: URI_Type'Class) return Raptor_Option is
       Result: constant Raptor_Option := raptor_world_get_option_from_uri(Get_Handle(World), Get_Handle(URI));
    begin

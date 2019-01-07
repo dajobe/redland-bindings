@@ -1,5 +1,10 @@
 module rdf.raptor.options;
 
+import std.string;
+import rdf.auxiliary.handled_record;
+import rdf.raptor.world;
+import rdf.raptor.uri;
+
 enum RaptorOption : short {
     SCANNING = 0,
     ALLOW_NON_NS_ATTRIBUTES = 1,
@@ -47,17 +52,81 @@ enum RaptorOption : short {
 
 enum ValueType { BOOL, INT, STRING, URI }
 
-/+
-extern(C)
-struct OptionDescription {
-    Domain domain;
-    RaptorOption option;
-    Value_Type valueType;
-    char* Name;
-    size_t len;
-    char* label;
-    Dummy* uri;
+enum Domain {
+  RAPTOR_DOMAIN_NONE,
+  RAPTOR_DOMAIN_IOSTREAM,
+  RAPTOR_DOMAIN_NAMESPACE,
+  RAPTOR_DOMAIN_PARSER,
+  RAPTOR_DOMAIN_QNAME,
+  RAPTOR_DOMAIN_SAX2,
+  RAPTOR_DOMAIN_SERIALIZER,
+  RAPTOR_DOMAIN_TERM,
+  RAPTOR_DOMAIN_TURTLE_WRITER,
+  RAPTOR_DOMAIN_URI,
+  RAPTOR_DOMAIN_WORLD,
+  RAPTOR_DOMAIN_WWW,
+  RAPTOR_DOMAIN_XML_WRITER,
 }
-+/
 
-// TODO
+extern(C)
+struct OptionDescriptionHandle {
+private:
+    Domain _domain;
+    RaptorOption _option;
+    ValueType _valueType;
+    char* _name;
+    size_t _len;
+    char* _label;
+    URIHandle* _uri;
+}
+
+private extern extern(C) {
+    uint raptor_option_get_count();
+    const(char*) raptor_option_get_value_type_label(ValueType type);
+    void raptor_free_option_description(OptionDescriptionHandle* option_description);
+    OptionDescriptionHandle* raptor_world_get_option_description(RaptorWorldHandle* world,
+                                                                 Domain domain,
+                                                                 RaptorOption option);
+    RaptorOption raptor_world_get_option_from_uri(RaptorWorldHandle* world, URIHandle* uri);
+}
+
+struct OptionDescriptionWithoutFinalize {
+    mixin WithoutFinalize!(OptionDescriptionHandle,
+                           OptionDescriptionWithoutFinalize,
+                           OptionDescription);
+    @property Domain domain() { return handle._domain; }
+    @property RaptorOption option() { return handle._option; }
+    @property ValueType option() { return handle._valueType; }
+    @property string name() { return handle._name[0..handle._len].idup; }
+    @property string label() { return handle._label.fromStringz.idup; }
+    @property URIWithoutFinalize uri() { return URIWithoutFinalize.fromHandle(handle._uri); }
+}
+
+struct OptionDescription {
+    mixin WithFinalize!(OptionDescriptionHandle,
+                        OptionDescriptionWithoutFinalize,
+                        OptionDescription,
+                        raptor_free_option_description);
+}
+
+ushort optionsCount() {
+    return cast(ushort)raptor_option_get_count();
+}
+
+string valueTypeLabel(ValueType type) {
+    const char* ptr = raptor_option_get_value_type_label(type);
+    if(!ptr) throw new RDFException();
+    return ptr.fromStringz.idup;
+}
+
+OptionDescription getOptionDescription(RaptorWorldWithoutFinalize world,
+                                Domain domain,
+                                RaptorOption option)
+{
+    return OptionDescription.fromNonnullHandle(
+        raptor_world_get_option_description(world.handle, domain, option));
+}
+
+RaptorOption optionFromURI (RaptorWorldWithoutFinalize world, URIWithoutFinalize uri) {
+    return raptor_world_get_option_from_uri(world.handle, uri.handle);
+}
