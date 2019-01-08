@@ -1,5 +1,7 @@
 module rdf.rasqal.features;
 
+import std.string;
+import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
 import rdf.rasqal.world;
 
@@ -10,6 +12,11 @@ enum FeatureValueType { Other = -1, Integer_Type = 0, String_Type = 1 }
 private extern extern(C) {
     FeatureType rasqal_feature_from_uri(RasqalWorldHandle* world, URIHandle* uri);
     int rasqal_feature_value_type(const FeatureType feature);
+    int rasqal_features_enumerate(RasqalWorldHandle* world,
+                                                         const FeatureType feature,
+                                                         const char**name,
+                                                         URIHandle** uri,
+                                                         const char** label);
 }
 
 FeatureType Feature_From_URI(RasqalWorldWithoutFinalize world, URIWithoutFinalize uri) {
@@ -20,4 +27,20 @@ FeatureValueType getType(FeatureType feature) {
     return cast(FeatureValueType)rasqal_feature_value_type(feature);
 }
 
-// TODO: Stopped at Feature_Description
+// TODO: Make data fields private?
+struct FeatureDescription {
+    string name, label;
+    URI uri; // with finalize
+}
+
+// For API simplicity, I don't support the C library feature to retrieve only a part of the data.
+// For API simplicity, we do not differentiate between failure and unknown feature. (TODO: Differentiate)
+FeatureDescription getFeatureDescription (RasqalWorldWithoutFinalize world, FeatureType feature) {
+    char* name, label;
+    URIHandle* uri;
+    if(rasqal_features_enumerate(world.handle, feature, &name, &uri, &label) != 0)
+      throw new RDFException();
+      return FeatureDescription(name.fromStringz.idup, label.fromStringz.idup, URI.fromNonnullHandle(uri));
+}
+
+// TODO: Stopped at Get_Feature_Count
