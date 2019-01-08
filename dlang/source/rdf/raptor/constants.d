@@ -1,5 +1,7 @@
 module rdf.raptor.constants;
 
+import std.string;
+
 private extern extern(C) immutable __gshared uint raptor_version_major;
 private extern extern(C) immutable __gshared uint raptor_version_minor;
 private extern extern(C) immutable __gshared uint raptor_version_release;
@@ -11,30 +13,30 @@ alias version_release = raptor_version_release;
 alias version_decimal = raptor_version_decimal;
 
 private extern extern(C) {
-    string raptor_copyright_string;
-    string raptor_home_url_string;
-    string raptor_license_string;
-    string raptor_short_copyright_string;
-    string raptor_version_string;
-    string raptor_owl_namespace_uri;
-    string raptor_rdf_namespace_uri;
-    string raptor_rdf_schema_namespace_uri;
-    string raptor_xml_literal_datatype_uri_string;
-    string raptor_xml_namespace_uri;
-    string raptor_xmlschema_datatypes_namespace_uri;
+    immutable char* raptor_copyright_string;
+    immutable char* raptor_home_url_string;
+    immutable char* raptor_license_string;
+    immutable char* raptor_short_copyright_string;
+    immutable char* raptor_version_string;
+    immutable char* raptor_owl_namespace_uri;
+    immutable char* raptor_rdf_namespace_uri;
+    immutable char* raptor_rdf_schema_namespace_uri;
+    immutable char* raptor_xml_literal_datatype_uri_string;
+    immutable char* raptor_xml_namespace_uri;
+    immutable char* raptor_xmlschema_datatypes_namespace_uri;
 }
 
-alias copyright_string = raptor_copyright_string;
-alias home_url_string = raptor_home_url_string;
-alias license_string = raptor_license_string;
-alias short_copyright_string = raptor_short_copyright_string;
-alias version_string = raptor_version_string;
-alias owl_namespace_uri = raptor_owl_namespace_uri;
-alias rdf_namespace_uri = raptor_rdf_namespace_uri;
-alias rdf_schema_namespace_uri = raptor_rdf_schema_namespace_uri;
-alias xml_literal_datatype_uri_string = raptor_xml_literal_datatype_uri_string;
-alias xml_namespace_uri = raptor_xml_namespace_uri;
-alias xmlschema_datatypes_namespace_uri = raptor_xmlschema_datatypes_namespace_uri;
+string copyright_string() { return raptor_copyright_string.fromStringz; }
+string home_url_string() { return raptor_home_url_string.fromStringz; }
+string license_string() { return raptor_license_string.fromStringz; }
+string short_copyright_string() { return raptor_short_copyright_string.fromStringz; }
+string version_string() { return raptor_version_string.fromStringz; }
+string owl_namespace_uri() { return raptor_owl_namespace_uri.fromStringz; }
+string rdf_namespace_uri() { return raptor_rdf_namespace_uri.fromStringz; }
+string rdf_schema_namespace_uri() { return raptor_rdf_schema_namespace_uri.fromStringz; }
+string xml_literal_datatype_uri_string() { return raptor_xml_literal_datatype_uri_string.fromStringz; }
+string xml_namespace_uri() { return raptor_xml_namespace_uri.fromStringz; }
+string xmlschema_datatypes_namespace_uri() { return raptor_xmlschema_datatypes_namespace_uri.fromStringz; }
 
 extern extern(C) uint rdf_namespace_uri_len;
 extern extern(C) uint xml_literal_datatype_uri_string_len;
