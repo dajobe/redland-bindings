@@ -9,6 +9,7 @@ import rdf.raptor.namespace;
 import rdf.raptor.iostream;
 import rdf.raptor.syntax;
 import rdf.raptor.log;
+import rdf.raptor.options;
 
 struct SerializerHandle;
 
@@ -34,6 +35,10 @@ private extern extern(C) {
     const(SyntaxDescription*) raptor_serializer_get_description(SerializerHandle* rdf_serializer);
     IOStreamHandle* raptor_serializer_get_iostream(SerializerHandle* serializer);
     LocatorHandle* raptor_serializer_get_locator(SerializerHandle* serializer);
+    int raptor_serializer_set_option(SerializerHandle* serializer,
+                                     RaptorOption option,
+                                     const char *string,
+                                     int integer);
 }
 
 struct SerializerWithoutFinalize {
@@ -93,6 +98,14 @@ struct SerializerWithoutFinalize {
     @property LocatorWithoutFinalize locator() {
         return LocatorWithoutFinalize.fromHandle(raptor_serializer_get_locator(handle));
     }
+    void setOption(RaptorOption option, string value) {
+        if(raptor_serializer_set_option(handle, option, value.toStringz, 0) != 0)
+            throw new RDFException();
+    }
+    void setOption(RaptorOption option, int value) {
+        if(raptor_serializer_set_option(handle, option, null, value) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Serializer {
@@ -102,4 +115,4 @@ struct Serializer {
                         raptor_free_serializer);
 }
 
-// TODO: Stopped at Set_Option
+// TODO: Stopped at Get_Numeric_Option
