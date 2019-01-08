@@ -4,6 +4,7 @@ import std.string;
 import std.stdio : FILE, File;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
+import rdf.raptor.namespace;
 import rdf.raptor.iostream;
 
 struct SerializerHandle;
@@ -18,12 +19,18 @@ private extern extern(C) {
     int raptor_serializer_start_to_file_handle(SerializerHandle* rdf_serializer,
                                                URIHandle* uri,
                                                FILE *fh);
+    int raptor_serializer_set_namespace(SerializerHandle* rdf_serializer,
+                                        URIHandle* uri,
+                                        const char *prefix);
+    int raptor_serializer_set_namespace_from_namespace(SerializerHandle* rdf_serializer,
+                                                       NamespaceHandle* nspace);
 }
 
 struct SerializerWithoutFinalize {
     mixin WithoutFinalize!(SerializerHandle,
                            SerializerWithoutFinalize,
                            Serializer);
+    // WARNING: Other order of arguments than in C
     void startToIOStream(IOStreamWithoutFinalize stream,
                          URIWithoutFinalize uri = URIWithoutFinalize.fromHandle(null))
     {
@@ -40,6 +47,21 @@ struct SerializerWithoutFinalize {
         if(raptor_serializer_start_to_file_handle(handle, uri.handle, file.getFP) != 0)
             throw new RDFException();
     }
+    // WARNING: Other order of arguments than in C
+    void setNamespace(string prefix,
+                      URIWithoutFinalize uri = URIWithoutFinalize.fromHandle(null))
+    {
+        if(raptor_serializer_set_namespace(handle, uri.handle, prefix.toStringz) != 0)
+            throw new RDFException();
+    }
+    void setNamespaceWithoutPrefix(URIWithoutFinalize uri = URIWithoutFinalize.fromHandle(null)) {
+        if(raptor_serializer_set_namespace(handle, uri.handle, null) != 0)
+            throw new RDFException();
+    }
+    void setNamespace(NamespaceWithoutFinalize namespace) {
+        if(raptor_serializer_set_namespace_from_namespace(handle, namespace.handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Serializer {
@@ -49,4 +71,4 @@ struct Serializer {
                         raptor_free_serializer);
 }
 
-// TODO: Stopped at Set_Namespace
+// TODO: Stopped at Serialize_Statement
