@@ -39,8 +39,8 @@ FeatureDescription getFeatureDescription(RasqalWorldWithoutFinalize world, Featu
     char* name, label;
     URIHandle* uri;
     if(rasqal_features_enumerate(world.handle, feature, &name, &uri, &label) != 0)
-      throw new RDFException();
-      return FeatureDescription(name.fromStringz.idup, label.fromStringz.idup, URI.fromNonnullHandle(uri));
+        throw new RDFException();
+    return FeatureDescription(name.fromStringz.idup, label.fromStringz.idup, URI.fromNonnullHandle(uri));
 }
 
 // TODO: Stopped at Get_Feature_Count
