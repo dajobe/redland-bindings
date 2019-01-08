@@ -152,6 +152,7 @@ package body RDF.Raptor.Serializer is
                          Value: String) is
       Value2: aliased char_array := To_C(Value);
    begin
+      -- FIXME: raptor_parser_set_option -> raptor_serializer_set_option
       if raptor_parser_set_option(Get_Handle(Serializer), Option, To_Chars_Ptr(Value2'Unchecked_Access), 0) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
@@ -161,6 +162,7 @@ package body RDF.Raptor.Serializer is
                          Option: Raptor_Option;
                          Value: int) is
    begin
+      -- FIXME: raptor_parser_set_option -> raptor_serializer_set_option
       if raptor_parser_set_option(Get_Handle(Serializer), Option, Null_Ptr, Value) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
@@ -179,6 +181,7 @@ package body RDF.Raptor.Serializer is
                                 return Natural is
       V: aliased int;
    begin
+      -- FIXME: raptor_parser_get_option -> raptor_serializer_get_option
       if raptor_parser_get_option(Get_Handle(Serializer), Option, null, V'Unchecked_Access) < 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
@@ -189,6 +192,7 @@ package body RDF.Raptor.Serializer is
                                return String is
       V: aliased chars_ptr;
    begin
+      -- FIXME: raptor_parser_get_option -> raptor_serializer_get_option
       if raptor_parser_get_option(Get_Handle(Serializer), Option, V'Unchecked_Access, null) < 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;

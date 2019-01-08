@@ -3,6 +3,7 @@ module rdf.raptor.serializer;
 import std.string;
 import std.stdio : FILE, File;
 import rdf.auxiliary.handled_record;
+import rdf.raptor.world;
 import rdf.raptor.uri;
 import rdf.raptor.statement;
 import rdf.raptor.namespace;
@@ -39,6 +40,12 @@ private extern extern(C) {
                                      RaptorOption option,
                                      const char *string,
                                      int integer);
+    int raptor_serializer_get_option(SerializerHandle* serializer,
+                                     RaptorOption option,
+                                     char **string_p,
+                                     int *integer_p);
+    RaptorWorldHandle* raptor_serializer_get_world(SerializerHandle* serializer);
+    SerializerHandle* raptor_new_serializer(RaptorWorldHandle* world, const char *name);
 }
 
 struct SerializerWithoutFinalize {
@@ -106,6 +113,21 @@ struct SerializerWithoutFinalize {
         if(raptor_serializer_set_option(handle, option, null, value) != 0)
             throw new RDFException();
     }
+    uint getNumericOption(RaptorOption option) {
+        int V;
+        if(raptor_serializer_get_option(handle, option, null, &V) < 0)
+            throw new RDFException();
+        return V;
+    }
+    string getStringOption (RaptorOption option) {
+        char *V;
+        if(raptor_serializer_get_option(handle, option, &V, null) < 0)
+            throw new RDFException();
+        return V.fromStringz.idup; // do NOT free V
+    }
+    @property RaptorWorldWithoutFinalize world() {
+        return RaptorWorldWithoutFinalize.fromHandle(raptor_serializer_get_world(handle));
+    }
 }
 
 struct Serializer {
@@ -113,6 +135,10 @@ struct Serializer {
                         SerializerWithoutFinalize,
                         Serializer,
                         raptor_free_serializer);
+    Serializer create (RaptorWorldWithoutFinalize world) {
+        return Serializer.fromNonnullHandle(raptor_new_serializer(world.handle, null));
+    }
+    Serializer create (RaptorWorldWithoutFinalize world, string syntaxName) {
+        return Serializer.fromNonnullHandle(raptor_new_serializer(world.handle, syntaxName.toStringz));
+    }
 }
-
-// TODO: Stopped at Get_Numeric_Option
