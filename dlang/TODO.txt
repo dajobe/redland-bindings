@@ -3,7 +3,6 @@ Also scope and final.
 
 The following Ada sources were not yet translated into D:
 
-rdf-rasqal.ads
 rdf-rasqal-bnode.adb
 rdf-rasqal-bnode.ads
 rdf-rasqal-constants.adb
