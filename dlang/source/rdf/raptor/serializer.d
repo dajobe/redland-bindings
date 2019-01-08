@@ -27,6 +27,8 @@ private extern extern(C) {
                                                        NamespaceHandle* nspace);
     int raptor_serializer_serialize_statement(SerializerHandle* rdf_serializer,
                                               StatementHandle* statement);
+    int raptor_serializer_serialize_end(SerializerHandle* rdf_serializer);
+    int raptor_serializer_flush(SerializerHandle* rdf_serializer);
 }
 
 struct SerializerWithoutFinalize {
@@ -69,6 +71,14 @@ struct SerializerWithoutFinalize {
         if(raptor_serializer_serialize_statement(handle, statement.handle) != 0)
             throw new RDFException();
     }
+    void serializeEnd() {
+        if(raptor_serializer_serialize_end(handle) != 0)
+            throw new RDFException();
+    }
+    void serializeFlush() {
+        if(raptor_serializer_flush(handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Serializer {
@@ -78,4 +88,4 @@ struct Serializer {
                         raptor_free_serializer);
 }
 
-// TODO: Stopped at Serialize_End
+// TODO: Stopped at Get_Description

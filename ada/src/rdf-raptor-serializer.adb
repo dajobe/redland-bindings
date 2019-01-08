@@ -102,6 +102,7 @@ package body RDF.Raptor.Serializer is
       end if;
    end;
 
+   -- FIXME: raptor_serializer_flush
    function raptor_serializer_serialize_flush (Serializer: Serializer_Handle) return int
      with Import, Convention=>C;
 
