@@ -4,6 +4,7 @@ import std.string;
 import std.stdio : FILE, File;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
+import rdf.raptor.statement;
 import rdf.raptor.namespace;
 import rdf.raptor.iostream;
 
@@ -24,6 +25,8 @@ private extern extern(C) {
                                         const char *prefix);
     int raptor_serializer_set_namespace_from_namespace(SerializerHandle* rdf_serializer,
                                                        NamespaceHandle* nspace);
+    int raptor_serializer_serialize_statement(SerializerHandle* rdf_serializer,
+                                              StatementHandle* statement);
 }
 
 struct SerializerWithoutFinalize {
@@ -62,6 +65,10 @@ struct SerializerWithoutFinalize {
         if(raptor_serializer_set_namespace_from_namespace(handle, namespace.handle) != 0)
             throw new RDFException();
     }
+    void serializeStatement(StatementWithoutFinalize statement) {
+        if(raptor_serializer_serialize_statement(handle, statement.handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Serializer {
@@ -71,4 +78,4 @@ struct Serializer {
                         raptor_free_serializer);
 }
 
-// TODO: Stopped at Serialize_Statement
+// TODO: Stopped at Serialize_End
