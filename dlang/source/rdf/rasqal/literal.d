@@ -49,6 +49,8 @@ private extern extern(C) {
     LiteralHandle* rasqal_new_typed_literal(RasqalWorldHandle* world,
                                             LiteralType type,
                                             const char *string);
+    LiteralHandle* rasqal_new_boolean_literal(RasqalWorldHandle* world, int value);
+    LiteralHandle* rasqal_new_decimal_literal(RasqalWorldHandle* world, const char *string);
 }
 
 struct LiteralWithoutFinalize {
@@ -112,7 +114,22 @@ struct Literal {
             rasqal_new_typed_literal(world.handle, typeOfLiteral, value.toStringz);
         return Literal.fromNonnullHandle(handle);
     }
-    // TODO: Stopped at From_Boolean
+    Literal fromBoolean(RasqalWorldWithoutFinalize world, bool value) {
+        LiteralHandle* handle =
+            rasqal_new_boolean_literal(world.handle, cast(int)value);
+        return Literal.fromNonnullHandle(handle);
+    }
+    // Not implemented
+    // Literal fromDatetime(RasqalWorldWithoutFinalize world,  XSD_Datetime value)
+    Literal fromDecimal(RasqalWorldWithoutFinalize world, string value) {
+        LiteralHandle* handle =
+            rasqal_new_decimal_literal(world.handle, value.toStringz);
+        return Literal.fromNonnullHandle(handle);
+    }
+    // Not implemented
+    // Literal fromDecimal(RasqalWorldWithoutFinalize world, XSD_Decimal value) {
+    // From_Float API is experimental
+    // TODO: Stopped at From_Float
 }
 
 string typeLabel(LiteralType kind) {
