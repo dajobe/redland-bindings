@@ -31,6 +31,10 @@ enum CompareFlags { Compare_None     = 0,
 private extern extern(C) {
     void rasqal_free_literal(LiteralHandle* l);
     int rasqal_literal_same_term(LiteralHandle* l1, LiteralHandle* l2);
+    const(char*) rasqal_literal_as_counted_string(LiteralHandle* l,
+                                                  size_t *len_p,
+                                                  int flags,
+                                                  int *error_p);
 }
 
 struct LiteralWithoutFinalize {
@@ -39,6 +43,16 @@ struct LiteralWithoutFinalize {
                            Literal);
     bool opEquals(LiteralWithoutFinalize other) {
         return rasqal_literal_same_term(handle, other.handle) != 0;
+    }
+    string toString(CompareFlags flags) {
+        int error = 0;
+        size_t length;
+        const char* item = rasqal_literal_as_counted_string(handle,
+                                                            &length,
+                                                            cast(int)flags,
+                                                            &error);
+        if(error != 0) throw new RDFException();
+        return item[0..length].idup;
     }
 }
 
@@ -52,4 +66,4 @@ struct Literal {
     }
 }
 
-// TODO: Stopped at As_String
+// TODO: Stopped at Compare
