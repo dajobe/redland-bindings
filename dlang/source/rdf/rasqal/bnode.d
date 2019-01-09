@@ -2,6 +2,7 @@ module rdf.rasqal.bnode;
 
 import std.typecons;
 import std.string;
+import rdf.auxiliary.handled_record;
 import rdf.auxiliary.nullable_string;
 import rdf.auxiliary.user;
 import rdf.rasqal.memory;
@@ -14,6 +15,9 @@ private extern extern(C) {
     int rasqal_world_set_generate_bnodeid_handler(RasqalWorldHandle* world,
                                                   void *user_data,
                                                   rasqal_generate_bnodeid_handler handler);
+    int rasqal_world_set_default_generate_bnodeid_parameters(RasqalWorldHandle* world,
+                                                             const char *prefix,
+                                                             int base);
 }
 
 class BNodeIDHandler : UnmovableObject {
@@ -31,16 +35,12 @@ class BNodeIDHandler : UnmovableObject {
    }
 }
 
-// TODO:
-// void setDefaultGenerateBnodeidParameters(RasqalWorldWithoutFinalize world,
-//                                          Nullable!string prefix,
-//                                          int base)
-// {
-//       C_Prefix: constant chars_ptr := New_String(Prefix);
-//       Result: constant int :=
-//         rasqal_world_set_default_generate_bnodeid_parameters(Get_Handle(World), C_Prefix, Base);
-//    begin
-//       RDF.Rasqal.Memory.Rasqal_Free_Memory(C_Prefix);
-//       if Result /= 0 then
-//          raise RDF.Auxiliary.RDF_Exception;
-// }
+void setDefaultGenerateBnodeidParameters(RasqalWorldWithoutFinalize world,
+                                         Nullable!string prefix,
+                                         int base)
+{
+    immutable int result =
+        rasqal_world_set_default_generate_bnodeid_parameters(world.handle, prefix.myToStringz, base);
+    if(result != 0)
+        throw new RDFException();
+}

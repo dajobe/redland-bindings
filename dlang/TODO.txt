@@ -5,8 +5,6 @@ Also scope and final.
 
 The following Ada sources were not yet translated into D:
 
-rdf-rasqal-bnode.adb
-rdf-rasqal-bnode.ads
 rdf-rasqal-data_graph.adb
 rdf-rasqal-data_graph.ads
 rdf-rasqal-literal.adb
