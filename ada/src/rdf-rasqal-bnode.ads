@@ -4,7 +4,7 @@ with RDF.Rasqal.World; use RDF.Rasqal.World;
 
 package RDF.Rasqal.Bnode is
 
-   -- Unfortunate code duplication with RDF.Rasqal.Bnode
+   -- Unfortunate code duplication with RDF.Raptor.Bnode
 
    -- Should we derive it from Limited_Controlled?
    type BNode_ID_Handler is abstract tagged limited private;
