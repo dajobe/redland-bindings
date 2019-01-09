@@ -1,5 +1,6 @@
 module rdf.rasqal.literal;
 
+import std.string;
 import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
@@ -43,6 +44,7 @@ private extern extern(C) {
     int rasqal_literal_is_rdf_literal(LiteralHandle* l);
     int rasqal_literal_print(LiteralHandle* l, FILE *fh);
     void rasqal_literal_print_type(LiteralHandle* l, FILE *fh);
+    const(char*) rasqal_literal_type_label(LiteralType type);
 }
 
 struct LiteralWithoutFinalize {
@@ -98,6 +100,10 @@ struct Literal {
     bool opEquals(LiteralWithoutFinalize other) {
         return rasqal_literal_same_term(handle, other.handle) != 0;
     }
+    // TODO: Stopped at New_Typed_Literal
 }
 
-// TODO: Stopped at Type_Label
+string typeLabel(LiteralType kind) {
+    return rasqal_literal_type_label(kind).fromStringz.idup;
+}
+
