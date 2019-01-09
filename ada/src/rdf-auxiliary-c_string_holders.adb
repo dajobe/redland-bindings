@@ -11,6 +11,7 @@ package body RDF.Auxiliary.C_String_Holders is
       end if;
    end;
 
+   -- FIXME: Erroneously used when allocating Raptor/Rasqal/... strings
    function New_String (Value: String_Holders.Holder) return chars_ptr is
    begin
       return (if Is_Empty(Value) then Null_Ptr else New_String(Element(Value)));
