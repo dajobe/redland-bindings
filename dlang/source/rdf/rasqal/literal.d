@@ -51,6 +51,14 @@ private extern extern(C) {
                                             const char *string);
     LiteralHandle* rasqal_new_boolean_literal(RasqalWorldHandle* world, int value);
     LiteralHandle* rasqal_new_decimal_literal(RasqalWorldHandle* world, const char *string);
+    LiteralHandle* rasqal_new_double_literal(RasqalWorldHandle* world, double d);
+    LiteralHandle* rasqal_new_float_literal(RasqalWorldHandle* world, float f);
+    LiteralHandle* rasqal_new_floating_literal(RasqalWorldHandle* world,
+                                               LiteralType type,
+                                               double d);
+    LiteralHandle* rasqal_new_numeric_literal_from_long(RasqalWorldHandle* world,
+                                                        LiteralType type,
+                                                        long value);
 }
 
 struct LiteralWithoutFinalize {
@@ -112,24 +120,40 @@ struct Literal {
     {
         LiteralHandle* handle =
             rasqal_new_typed_literal(world.handle, typeOfLiteral, value.toStringz);
-        return Literal.fromNonnullHandle(handle);
+        return fromNonnullHandle(handle);
     }
     Literal fromBoolean(RasqalWorldWithoutFinalize world, bool value) {
         LiteralHandle* handle =
             rasqal_new_boolean_literal(world.handle, cast(int)value);
-        return Literal.fromNonnullHandle(handle);
+        return fromNonnullHandle(handle);
     }
     // Not implemented
     // Literal fromDatetime(RasqalWorldWithoutFinalize world,  XSD_Datetime value)
     Literal fromDecimal(RasqalWorldWithoutFinalize world, string value) {
         LiteralHandle* handle =
             rasqal_new_decimal_literal(world.handle, value.toStringz);
-        return Literal.fromNonnullHandle(handle);
+        return fromNonnullHandle(handle);
     }
     // Not implemented
     // Literal fromDecimal(RasqalWorldWithoutFinalize world, XSD_Decimal value) {
-    // From_Float API is experimental
-    // TODO: Stopped at From_Float
+    Literal fromDouble(RasqalWorldWithoutFinalize world, double value) {
+        return fromNonnullHandle(rasqal_new_double_literal(world.handle, value));
+    }
+    Literal fromFloat(RasqalWorldWithoutFinalize world, float value) {
+        return fromNonnullHandle(rasqal_new_float_literal(world.handle, value));
+    }
+    Literal fromFloating(RasqalWorldWithoutFinalize world, LiteralType type, double value)
+        in(type == LiteralType.Literal_Float || type == LiteralType.Literal_Double)
+    {
+        return fromNonnullHandle(rasqal_new_floating_literal(world.handle, type, value));
+    }
+    /// Deliberately accept only long integers, don't implement "int value".
+    Literal fromInteger (RasqalWorldWithoutFinalize world, long value) {
+        LiteralHandle* handle =
+            rasqal_new_numeric_literal_from_long(world.handle, LiteralType.Literal_Integer, value);
+        return fromNonnullHandle(handle);
+    }
+    // TODO: Stopped at New_Simple_Literal
 }
 
 string typeLabel(LiteralType kind) {
