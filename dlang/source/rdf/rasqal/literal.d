@@ -1,6 +1,7 @@
 module rdf.rasqal.literal;
 
 import rdf.auxiliary.handled_record;
+import rdf.raptor.uri;
 
 struct LiteralHandle;
 
@@ -36,6 +37,7 @@ private extern extern(C) {
                                                   int flags,
                                                   int *error_p);
     int rasqal_literal_compare(LiteralHandle* l1, LiteralHandle* l2, int flags, int *error_p);
+    URIHandle* rasqal_literal_datatype(LiteralHandle* l);
 }
 
 struct LiteralWithoutFinalize {
@@ -59,6 +61,11 @@ struct LiteralWithoutFinalize {
         int error = 0;
         return rasqal_literal_compare(handle, other.handle, int(flags), &error);
     }
+    @property URIWithoutFinalize datatype() {
+        return URIWithoutFinalize.fromHandle(rasqal_literal_datatype(handle));
+    }
+    // Not supported as of Rasqal 0.9.32
+    // @property Nullable!string language()
 }
 
 struct Literal {
@@ -71,4 +78,4 @@ struct Literal {
     }
 }
 
-// TODO: Stopped at Get_Datatype
+// TODO: Stopped at Get_Rdf_Term_Type
