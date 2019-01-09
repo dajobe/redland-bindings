@@ -4,10 +4,6 @@ import rdf.auxiliary.handled_record;
 
 struct LiteralHandle;
 
-private extern extern(C) {
-    void rasqal_free_literal(LiteralHandle* l);
-}
-
 enum LiteralType { Literal_Unknown, // internal
                    Literal_Blank,
                    Literal_URI,
@@ -25,10 +21,25 @@ enum LiteralType { Literal_Unknown, // internal
                    Literal_Variable,
                    Literal_Date }
 
+enum CompareFlags { Compare_None     = 0,
+                    Compare_Nocase   = 1,
+                    Compare_XQuery   = 2,
+                    Compare_RDF      = 4,
+                    Compare_URI      = 8,
+                    Compare_Sameterm = 16 }
+
+private extern extern(C) {
+    void rasqal_free_literal(LiteralHandle* l);
+    int rasqal_literal_same_term(LiteralHandle* l1, LiteralHandle* l2);
+}
+
 struct LiteralWithoutFinalize {
     mixin WithoutFinalize!(LiteralHandle,
                            LiteralWithoutFinalize,
                            Literal);
+    bool opEquals(LiteralWithoutFinalize other) {
+        return rasqal_literal_same_term(handle, other.handle) != 0;
+    }
 }
 
 struct Literal {
@@ -36,6 +47,9 @@ struct Literal {
                         LiteralWithoutFinalize,
                         Literal,
                         rasqal_free_literal);
+    bool opEquals(LiteralWithoutFinalize other) {
+        return rasqal_literal_same_term(handle, other.handle) != 0;
+    }
 }
 
-// TODO: Stopped at function "=" (Left, Right: Literal_Type_Without_Finalize)
+// TODO: Stopped at As_String
