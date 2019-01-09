@@ -38,6 +38,7 @@ private extern extern(C) {
                                                   int *error_p);
     int rasqal_literal_compare(LiteralHandle* l1, LiteralHandle* l2, int flags, int *error_p);
     URIHandle* rasqal_literal_datatype(LiteralHandle* l);
+    LiteralType rasqal_literal_get_rdf_term_type(LiteralHandle* l);
 }
 
 struct LiteralWithoutFinalize {
@@ -64,8 +65,16 @@ struct LiteralWithoutFinalize {
     @property URIWithoutFinalize datatype() {
         return URIWithoutFinalize.fromHandle(rasqal_literal_datatype(handle));
     }
+    // TODO:
     // Not supported as of Rasqal 0.9.32
     // @property Nullable!string language()
+    @property LiteralType rdfTermType() {
+        return rasqal_literal_get_rdf_term_type(handle);
+    }
+    // TODO:
+    // Not supported as of Rasqal 0.9.32
+    // @property literalType type()
+
 }
 
 struct Literal {
@@ -78,4 +87,4 @@ struct Literal {
     }
 }
 
-// TODO: Stopped at Get_Rdf_Term_Type
+// TODO: Stopped at Is_Rdf_Literal
