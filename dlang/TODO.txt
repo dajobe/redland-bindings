@@ -9,8 +9,6 @@ rdf-rasqal-bnode.adb
 rdf-rasqal-bnode.ads
 rdf-rasqal-data_graph.adb
 rdf-rasqal-data_graph.ads
-rdf-rasqal-features.adb
-rdf-rasqal-features.ads
 rdf-rasqal-literal.adb
 rdf-rasqal-literal.ads
 rdf-rasqal-query.adb

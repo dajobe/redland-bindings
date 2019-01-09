@@ -17,6 +17,7 @@ private extern extern(C) {
                                                          const char**name,
                                                          URIHandle** uri,
                                                          const char** label);
+    uint rasqal_get_feature_count();
 }
 
 FeatureType Feature_From_URI(RasqalWorldWithoutFinalize world, URIWithoutFinalize uri) {
@@ -35,7 +36,7 @@ struct FeatureDescription {
 
 // For API simplicity, I don't support the C library feature to retrieve only a part of the data.
 // For API simplicity, we do not differentiate between failure and unknown feature. (TODO: Differentiate)
-FeatureDescription getFeatureDescription(RasqalWorldWithoutFinalize world, FeatureType feature) {
+const(FeatureDescription) getFeatureDescription(RasqalWorldWithoutFinalize world, FeatureType feature) {
     char* name, label;
     URIHandle* uri;
     if(rasqal_features_enumerate(world.handle, feature, &name, &uri, &label) != 0)
@@ -43,4 +44,27 @@ FeatureDescription getFeatureDescription(RasqalWorldWithoutFinalize world, Featu
     return FeatureDescription(name.fromStringz.idup, label.fromStringz.idup, URI.fromNonnullHandle(uri));
 }
 
-// TODO: Stopped at Get_Feature_Count
+uint getFeatureCount() {
+    return rasqal_get_feature_count();
+}
+
+struct FeatureIterator {
+private:
+    RasqalWorldWithoutFinalize _world;
+    uint _num = 0;
+public:
+    this(RasqalWorldWithoutFinalize world) {
+        _world = world;
+    }
+    bool empty() {
+        return _num == getFeatureCount();
+    }
+    const(FeatureDescription) front() {
+        return getFeatureDescription(_world, cast(FeatureType)_num);
+    }
+    void popFront() {
+        ++_num;
+    }
+}
+
+// TODO: Stopped at Features_Cursor
