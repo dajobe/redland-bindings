@@ -4,6 +4,7 @@ import std.string;
 import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
+import rdf.rasqal.world;
 
 struct LiteralHandle;
 
@@ -45,6 +46,9 @@ private extern extern(C) {
     int rasqal_literal_print(LiteralHandle* l, FILE *fh);
     void rasqal_literal_print_type(LiteralHandle* l, FILE *fh);
     const(char*) rasqal_literal_type_label(LiteralType type);
+    LiteralHandle* rasqal_new_typed_literal(RasqalWorldHandle* world,
+                                            LiteralType type,
+                                            const char *string);
 }
 
 struct LiteralWithoutFinalize {
@@ -100,7 +104,15 @@ struct Literal {
     bool opEquals(LiteralWithoutFinalize other) {
         return rasqal_literal_same_term(handle, other.handle) != 0;
     }
-    // TODO: Stopped at New_Typed_Literal
+    Literal newTypedLiteral(RasqalWorldWithoutFinalize world,
+                            LiteralType typeOfLiteral,
+                            string value)
+    {
+        LiteralHandle* handle =
+            rasqal_new_typed_literal(world.handle, typeOfLiteral, value.toStringz);
+        return Literal.fromNonnullHandle(handle);
+    }
+    // TODO: Stopped at From_Boolean
 }
 
 string typeLabel(LiteralType kind) {
