@@ -15,8 +15,6 @@ rdf-rasqal-query.adb
 rdf-rasqal-query.ads
 rdf-rasqal-query_results.adb
 rdf-rasqal-query_results.ads
-rdf-rasqal-syntaxes.adb
-rdf-rasqal-syntaxes.ads
 rdf-redland.ads
 rdf-redland-iterator.adb
 rdf-redland-iterator.ads
