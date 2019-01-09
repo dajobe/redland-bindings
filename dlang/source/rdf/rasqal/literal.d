@@ -35,6 +35,7 @@ private extern extern(C) {
                                                   size_t *len_p,
                                                   int flags,
                                                   int *error_p);
+    int rasqal_literal_compare(LiteralHandle* l1, LiteralHandle* l2, int flags, int *error_p);
 }
 
 struct LiteralWithoutFinalize {
@@ -54,6 +55,10 @@ struct LiteralWithoutFinalize {
         if(error != 0) throw new RDFException();
         return item[0..length].idup;
     }
+    int compare(LiteralWithoutFinalize other, CompareFlags flags) {
+        int error = 0;
+        return rasqal_literal_compare(handle, other.handle, int(flags), &error);
+    }
 }
 
 struct Literal {
@@ -66,4 +71,4 @@ struct Literal {
     }
 }
 
-// TODO: Stopped at Compare
+// TODO: Stopped at Get_Datatype
