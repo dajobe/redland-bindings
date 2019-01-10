@@ -170,9 +170,9 @@ struct Literal {
         return fromNonnullHandle(rasqal_new_simple_literal(world.handle, type, value2));
     }
     static Literal newStringLiteral(RasqalWorldWithoutFinalize world,
-                               string Value,
-                               Nullable!string Language,
-                               URIWithoutFinalize Datatype)
+                                    string Value,
+                                    Nullable!string Language,
+                                    URIWithoutFinalize Datatype)
     {
         return Literal.fromNonnullHandle(
             rasqal_new_string_literal(world.handle,
@@ -183,30 +183,29 @@ struct Literal {
     }
 
     static Literal newStringLiteral(RasqalWorldWithoutFinalize world,
-                               string Value,
-                               Nullable!string Language,
-                               string Datatype_Qname)
+                                    string Value,
+                                    Nullable!string Language,
+                                    string Datatype_Qname)
     {
-      return Literal.fromNonnullHandle(
-        rasqal_new_string_literal(world.handle,
-                                  rasqal_new_string(Value),
-                                  rasqal_new_string(Language),
-                                  null,
-                                  rasqal_new_string(Datatype_Qname)));
+        return Literal.fromNonnullHandle(
+            rasqal_new_string_literal(world.handle,
+                                      rasqal_new_string(Value),
+                                      rasqal_new_string(Language),
+                                      null,
+                                      rasqal_new_string(Datatype_Qname)));
     }
 
     static Literal newStringLiteral(RasqalWorldWithoutFinalize world,
-                               string Value,
-                               Nullable!string Language = Nullable!string())
+                                    string Value,
+                                    Nullable!string Language = Nullable!string())
     {
-      return Literal.fromNonnullHandle(
-        rasqal_new_string_literal(world.handle,
-                                              rasqal_new_string(Value),
-                                              rasqal_new_string(Language),
-                                  null,
-                                  null));
+        return Literal.fromNonnullHandle(
+            rasqal_new_string_literal(world.handle,
+                                      rasqal_new_string(Value),
+                                      rasqal_new_string(Language),
+                                      null,
+                                      null));
     }
-
     // TODO: Stopped at From_String
 }
 
