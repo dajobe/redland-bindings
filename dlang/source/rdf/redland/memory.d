@@ -13,3 +13,11 @@ char *librdf_copy_c_string(char* str) {
     char* newStr = librdf_alloc_memory(len);
     return strncpy(newStr, str, len);
 }
+
+// Missing in C code, so I implement it in D
+char *librdf_new_string(string str) {
+    import core.stdc.string;
+    char* newStr = librdf_alloc_memory(str.length+1);
+    newStr[str.length] = '\0';
+    return strncpy(newStr, str.ptr, str.length);
+}

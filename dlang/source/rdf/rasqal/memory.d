@@ -13,3 +13,12 @@ char *rasqal_copy_c_string(const char* str) {
     char* newStr = rasqal_alloc_memory(len);
     return strncpy(newStr, str, len);
 }
+
+// Missing in C code, so I implement it in D
+char *rasqal_new_string(string str) {
+    import core.stdc.string;
+    char* newStr = rasqal_alloc_memory(str.length+1);
+    newStr[str.length] = '\0';
+    return strncpy(newStr, str.ptr, str.length);
+}
+
