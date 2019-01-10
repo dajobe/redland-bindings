@@ -1,6 +1,8 @@
 module rdf.rasqal.query_results;
 
+import std.string;
 import rdf.auxiliary.handled_record;
+import rdf.rasqal.literal;
 
 struct QueryResultsHandle;
 
@@ -18,6 +20,12 @@ private extern extern(C) {
     int rasqal_query_results_is_graph(QueryResultsHandle* query_results);
     int rasqal_query_results_is_syntax(QueryResultsHandle* query_results);
     int rasqal_query_results_finished(QueryResultsHandle* query_results);
+    const(char*) rasqal_query_results_get_binding_name(QueryResultsHandle* query_results,
+                                                       int offset);
+    LiteralHandle* rasqal_query_results_get_binding_value(QueryResultsHandle* query_results,
+                                                          int offset);
+    LiteralHandle* rasqal_query_results_get_binding_value_by_name(QueryResultsHandle* query_results,
+                                                                  const char *name);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -45,6 +53,21 @@ struct QueryResultsWithoutFinalize {
     {
         return rasqal_query_results_finished(handle) != 0;
     }
+    string getBindingName(uint offset) {
+        const char* ptr = rasqal_query_results_get_binding_name(handle, int(offset));
+        if(!ptr) throw new RDFException();
+        return ptr.fromStringz.idup;
+    }
+    LiteralWithoutFinalize getBindingValue(uint offset) {
+        return LiteralWithoutFinalize.fromNonnullHandle(
+            rasqal_query_results_get_binding_value(handle, int(offset)));
+    }
+    LiteralWithoutFinalize getBindingValueByName(string name) {
+        return LiteralWithoutFinalize.fromNonnullHandle(
+            rasqal_query_results_get_binding_value_by_name(handle, name.toStringz));
+    }
+    // rasqal_query_results_get_bindings() deliberately not implemented.
+    // Use iterators instead.
 }
 
 struct QueryResults {
@@ -54,5 +77,5 @@ struct QueryResults {
                         rasqal_free_query_results);
 }
 
-// TODO: Stopped at Get_Binding_Name
+// TODO: Stopped at Get_Bindings_Count
 
