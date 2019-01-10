@@ -31,6 +31,8 @@ private extern extern(C) {
     int rasqal_query_results_get_boolean(QueryResultsHandle* query_results);
     int rasqal_query_results_get_count(QueryResultsHandle* query_results);
     StatementHandle* rasqal_query_results_get_triple(QueryResultsHandle* query_results);
+    int rasqal_query_results_next(QueryResultsHandle* query_results);
+    int rasqal_query_results_next_triple(QueryResultsHandle* query_results);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -106,6 +108,14 @@ struct QueryResultsWithoutFinalize {
     }
     // Deliberately not implemented:
     // getRowByOffset(uint offset)
+    void next() {
+        int res = rasqal_query_results_next(handle);
+        //if(res != 0) throw new RDFException(); // Check is done by Finished procedure, not here
+    }
+    void nextTriple() {
+        int res = rasqal_query_results_next_triple(handle);
+        //if(res != 0) throw new RDFException(); // Check is done by Finished procedure, not here
+    }
 }
 
 struct QueryResults {
@@ -115,5 +125,5 @@ struct QueryResults {
                         rasqal_free_query_results);
 }
 
-// TODO: Stopped at Next
+// TODO: Stopped at Read
 
