@@ -17,6 +17,7 @@ private extern extern(C) {
     int rasqal_query_results_is_boolean(QueryResultsHandle* query_results);
     int rasqal_query_results_is_graph(QueryResultsHandle* query_results);
     int rasqal_query_results_is_syntax(QueryResultsHandle* query_results);
+    int rasqal_query_results_finished(QueryResultsHandle* query_results);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -39,6 +40,11 @@ struct QueryResultsWithoutFinalize {
         return rasqal_query_results_is_syntax(handle) != 0;
     }
     // function addRow is deliberately not implemented
+    bool finished()
+        in(isBindings() || isGraph())
+    {
+        return rasqal_query_results_finished(handle) != 0;
+    }
 }
 
 struct QueryResults {
@@ -48,5 +54,5 @@ struct QueryResults {
                         rasqal_free_query_results);
 }
 
-// TODO: Stopped at Finished
+// TODO: Stopped at Get_Binding_Name
 
