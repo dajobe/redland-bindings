@@ -7,7 +7,7 @@ extern extern(C) {
 }
 
 // Missing in C code, so I implement it in D
-char *copy_c_string(const char* str) {
+char *rasqal_copy_c_string(const char* str) {
     import core.stdc.string;
     immutable size_t len = strlen(str) + 1;
     char* newStr = rasqal_alloc_memory(len);

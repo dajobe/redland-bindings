@@ -160,7 +160,7 @@ struct Literal {
     Literal newSimpleLiteral(RasqalWorldWithoutFinalize world, LiteralType type, string value)
         in(type == LiteralType.Literal_Blank || type == LiteralType.Literal_Qname)
     {
-        char* value2 = copy_c_string(value.toStringz); // freed by rasqal_new_simple_literal // TODO
+        char* value2 = rasqal_copy_c_string(value.toStringz); // freed by rasqal_new_simple_literal // TODO
         return fromNonnullHandle(rasqal_new_simple_literal(world.handle, type, value2));
     }
     // TODO: Stopped at New_String_Literal

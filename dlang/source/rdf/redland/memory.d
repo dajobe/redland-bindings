@@ -7,7 +7,7 @@ extern extern(C) {
 }
 
 // Missing in C code, so I implement it in D
-char *copy_c_string(char* str) {
+char *librdf_copy_c_string(char* str) {
     import core.stdc.string;
     immutable size_t len = strlen(str) + 1;
     char* newStr = librdf_alloc_memory(len);

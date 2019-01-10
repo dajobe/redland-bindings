@@ -54,7 +54,7 @@ private LocatorHandle* locator_copy(LocatorHandle* handle) {
     LocatorHandle* result = cast(LocatorHandle*)raptor_alloc_memory(LocatorHandle.sizeof);
     *result = *handle;
     result._uri = raptor_uri_copy(handle._uri);
-    result._file = copy_c_string(handle._file);
+    result._file = raptor_copy_c_string(handle._file);
     return result;
 }
 
@@ -68,7 +68,7 @@ private void free_log_message(LogMessageHandle* handle) {
 private LogMessageHandle* log_message_copy(LogMessageHandle* handle) {
     LogMessageHandle* result = cast(LogMessageHandle*)raptor_alloc_memory(LogMessageHandle.sizeof);
     *result = *handle;
-    result._text = copy_c_string(handle._text);
+    result._text = raptor_copy_c_string(handle._text);
     result._locator = locator_copy(handle._locator);
     return result;
 }
