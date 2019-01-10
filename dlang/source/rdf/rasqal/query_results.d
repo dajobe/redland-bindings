@@ -171,6 +171,18 @@ struct QueryResults {
                         QueryResultsWithoutFinalize,
                         QueryResults,
                         rasqal_free_query_results);
+    // TODO:
+//    QueryResults create(RasqalWorldWithoutFinalize world,
+//                        QueryWithoutFinalize query,
+//                        QueryResultType type)
+//    {
+//        return fromNonnullHandle(rasqal_new_query_results(world.handle, handle, type, null));
+//    }
+   // Not supported as of Rasqal 0.9.32
+   // QueryResults(RasqalWorldWithoutFinalize world,
+   //              QueryResultsType type,
+   //              URITypeWithoutFinalize baseURI,
+   //              string value)
 }
 
 string typeLabel(QueryResultsType type) {
@@ -179,5 +191,5 @@ string typeLabel(QueryResultsType type) {
     return ptr.fromStringz.idup;
 }
 
-// TODO: Stopped at Create
+// TODO: Stopped at Cursor
 
