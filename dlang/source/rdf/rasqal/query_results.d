@@ -47,6 +47,8 @@ private extern extern(C) {
                                    const char *mime_type,
                                    URIHandle* format_uri,
                                    URIHandle* base_uri);
+    const(char*) rasqal_query_results_type_label(QueryResultsType type);
+    int rasqal_query_results_rewind(QueryResultsHandle* results);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -158,6 +160,10 @@ struct QueryResultsWithoutFinalize {
                                              baseURI.handle);
         if(res != 0) throw new RDFException();
     }
+    void rewind() {
+        if(rasqal_query_results_rewind(handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct QueryResults {
@@ -167,5 +173,11 @@ struct QueryResults {
                         rasqal_free_query_results);
 }
 
-// TODO: Stopped at Type_Label
+string typeLabel(QueryResultsType type) {
+    const char* ptr = rasqal_query_results_type_label(type);
+    if(!ptr) throw new RDFException();
+    return ptr.fromStringz.idup;
+}
+
+// TODO: Stopped at Create
 
