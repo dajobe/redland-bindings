@@ -124,7 +124,7 @@ struct Literal {
     bool opEquals(LiteralWithoutFinalize other) {
         return rasqal_literal_same_term(handle, other.handle) != 0;
     }
-    Literal newTypedLiteral(RasqalWorldWithoutFinalize world,
+    static Literal newTypedLiteral(RasqalWorldWithoutFinalize world,
                             LiteralType typeOfLiteral,
                             string value)
     {
@@ -132,44 +132,44 @@ struct Literal {
             rasqal_new_typed_literal(world.handle, typeOfLiteral, value.toStringz);
         return fromNonnullHandle(handle);
     }
-    Literal fromBoolean(RasqalWorldWithoutFinalize world, bool value) {
+    static Literal fromBoolean(RasqalWorldWithoutFinalize world, bool value) {
         LiteralHandle* handle =
             rasqal_new_boolean_literal(world.handle, cast(int)value);
         return fromNonnullHandle(handle);
     }
     // Not implemented
     // Literal fromDatetime(RasqalWorldWithoutFinalize world,  XSD_Datetime value)
-    Literal fromDecimal(RasqalWorldWithoutFinalize world, string value) {
+    static Literal fromDecimal(RasqalWorldWithoutFinalize world, string value) {
         LiteralHandle* handle =
             rasqal_new_decimal_literal(world.handle, value.toStringz);
         return fromNonnullHandle(handle);
     }
     // Not implemented
     // Literal fromDecimal(RasqalWorldWithoutFinalize world, XSD_Decimal value) {
-    Literal fromDouble(RasqalWorldWithoutFinalize world, double value) {
+    static Literal fromDouble(RasqalWorldWithoutFinalize world, double value) {
         return fromNonnullHandle(rasqal_new_double_literal(world.handle, value));
     }
-    Literal fromFloat(RasqalWorldWithoutFinalize world, float value) {
+    static Literal fromFloat(RasqalWorldWithoutFinalize world, float value) {
         return fromNonnullHandle(rasqal_new_float_literal(world.handle, value));
     }
-    Literal fromFloating(RasqalWorldWithoutFinalize world, LiteralType type, double value)
+    static Literal fromFloating(RasqalWorldWithoutFinalize world, LiteralType type, double value)
         in(type == LiteralType.Literal_Float || type == LiteralType.Literal_Double)
     {
         return fromNonnullHandle(rasqal_new_floating_literal(world.handle, type, value));
     }
     /// Deliberately accept only long integers, don't implement "int value".
-    Literal fromInteger (RasqalWorldWithoutFinalize world, long value) {
+    static Literal fromInteger (RasqalWorldWithoutFinalize world, long value) {
         LiteralHandle* handle =
             rasqal_new_numeric_literal_from_long(world.handle, LiteralType.Literal_Integer, value);
         return fromNonnullHandle(handle);
     }
-    Literal newSimpleLiteral(RasqalWorldWithoutFinalize world, LiteralType type, string value)
+    static Literal newSimpleLiteral(RasqalWorldWithoutFinalize world, LiteralType type, string value)
         in(type == LiteralType.Literal_Blank || type == LiteralType.Literal_Qname)
     {
         char* value2 = rasqal_new_string(value); // freed by rasqal_new_simple_literal()
         return fromNonnullHandle(rasqal_new_simple_literal(world.handle, type, value2));
     }
-    Literal newStringLiteral(RasqalWorldWithoutFinalize world,
+    static Literal newStringLiteral(RasqalWorldWithoutFinalize world,
                                string Value,
                                Nullable!string Language,
                                URIWithoutFinalize Datatype)
@@ -182,7 +182,7 @@ struct Literal {
                                       null));
     }
 
-    Literal newStringLiteral(RasqalWorldWithoutFinalize world,
+    static Literal newStringLiteral(RasqalWorldWithoutFinalize world,
                                string Value,
                                Nullable!string Language,
                                string Datatype_Qname)
@@ -195,7 +195,7 @@ struct Literal {
                                   rasqal_new_string(Datatype_Qname)));
     }
 
-    Literal newStringLiteral(RasqalWorldWithoutFinalize world,
+    static Literal newStringLiteral(RasqalWorldWithoutFinalize world,
                                string Value,
                                Nullable!string Language = Nullable!string())
     {
@@ -206,6 +206,7 @@ struct Literal {
                                   null,
                                   null));
     }
+
     // TODO: Stopped at From_String
 }
 
