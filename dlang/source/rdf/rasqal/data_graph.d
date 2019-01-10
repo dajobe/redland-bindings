@@ -1,7 +1,10 @@
 module rdf.rasqal.data_graph;
 
+import std.typecons;
 import std.string;
+import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
+import rdf.auxiliary.nullable_string;
 import rdf.raptor.uri;
 import rdf.raptor.iostream;
 import rdf.rasqal.world;
@@ -25,6 +28,22 @@ private:
 private extern extern(C) {
     void rasqal_free_data_graph(DataGraphHandle* dg);
     DataGraphHandle* rasqal_new_data_graph_from_data_graph(DataGraphHandle* dg);
+    int rasqal_data_graph_print(DataGraphHandle* dg, FILE *fh);
+    DataGraphHandle* rasqal_new_data_graph_from_iostream(RasqalWorldHandle* world,
+                                                         IOStreamHandle* iostr,
+                                                         URIHandle* base_uri,
+                                                         URIHandle* name_uri,
+                                                         uint flags,
+                                                         const char *formatType,
+                                                         const char *formatName,
+                                                         URIHandle* formatURI);
+    DataGraphHandle* rasqal_new_data_graph_from_uri(RasqalWorldHandle* world,
+                                                    URIHandle* uri,
+                                                    URIHandle* name_uri,
+                                                    uint flags,
+                                                    const char *formatType,
+                                                    const char *formatName,
+                                                    URIHandle* formatURI);
 }
 
 struct DataGraphWithoutFinalize {
@@ -62,7 +81,10 @@ struct DataGraphWithoutFinalize {
     @property uint usageCount() {
         return handle._usage;
     }
-    // TODO: Stopped at Print
+    void print(File file) {
+        if(rasqal_data_graph_print(handle, file.getFP) != 0)
+            throw new RDFException();
+    }
 }
 
 struct DataGraph {
@@ -70,4 +92,43 @@ struct DataGraph {
                         DataGraphWithoutFinalize,
                         DataGraph,
                         rasqal_free_data_graph);
+    static DataGraph fromIOStream (RasqalWorldWithoutFinalize world,
+                                   IOStreamWithoutFinalize iostream,
+                                   URIWithoutFinalize baseURI,
+                                   URIWithoutFinalize nameURI = URIWithoutFinalize.fromHandle(null),
+                                   DataGraphFlags flags = DataGraphFlags.Background,
+                                   Nullable!string formatType = Nullable!string(),
+                                   Nullable!string formatName = Nullable!string(),
+                                   URIWithoutFinalize formatURI = URIWithoutFinalize.fromHandle(null))
+    {
+      DataGraphHandle* handle =
+        rasqal_new_data_graph_from_iostream(world.handle,
+                                            iostream.handle,
+                                            baseURI.handle,
+                                            nameURI.handle,
+                                            flags,
+                                            formatType.myToStringz,
+                                            formatName.myToStringz,
+                                            formatURI.handle);
+        return DataGraph.fromHandle(handle);
+    }
+    static DataGraph fromURI (RasqalWorldWithoutFinalize world,
+                              URIWithoutFinalize uri,
+                              URIWithoutFinalize nameURI,
+                              DataGraphFlags flags,
+                              Nullable!string formatType,
+                              Nullable!string formatName,
+                              URIWithoutFinalize formatURI)
+    {
+        DataGraphHandle* handle =
+                rasqal_new_data_graph_from_uri(world.handle,
+                                               uri.handle,
+                                               nameURI.handle,
+                                               flags,
+                                               formatType.myToStringz,
+                                               formatName.myToStringz,
+                                               formatURI.handle);
+        return DataGraph.fromHandle(handle);
+    }
 }
+
