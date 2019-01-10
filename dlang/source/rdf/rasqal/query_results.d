@@ -26,6 +26,9 @@ private extern extern(C) {
                                                           int offset);
     LiteralHandle* rasqal_query_results_get_binding_value_by_name(QueryResultsHandle* query_results,
                                                                   const char *name);
+    int rasqal_query_results_get_bindings_count(QueryResultsHandle* query_results);
+    int rasqal_query_results_get_boolean(QueryResultsHandle* query_results);
+    int rasqal_query_results_get_count(QueryResultsHandle* query_results);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -68,6 +71,21 @@ struct QueryResultsWithoutFinalize {
     }
     // rasqal_query_results_get_bindings() deliberately not implemented.
     // Use iterators instead.
+    uint getBindingsCount() {
+        int count = rasqal_query_results_get_bindings_count(handle);
+        if(count < 0) throw new RDFException();
+        return count;
+    }
+    bool getBoolean() {
+        int value = rasqal_query_results_get_boolean(handle);
+        if(value < 0) throw new RDFException();
+        return value != 0;
+    }
+    uint getCurrentCount() {
+        int value = rasqal_query_results_get_count(handle);
+        if(value < 0) throw new RDFException();
+        return value;
+    }
 }
 
 struct QueryResults {
@@ -77,5 +95,5 @@ struct QueryResults {
                         rasqal_free_query_results);
 }
 
-// TODO: Stopped at Get_Bindings_Count
+// TODO: Stopped at Get_Query
 
