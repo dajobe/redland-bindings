@@ -2,6 +2,7 @@ module rdf.rasqal.query_results;
 
 import std.string;
 import rdf.auxiliary.handled_record;
+import rdf.raptor.statement;
 import rdf.rasqal.literal;
 
 struct QueryResultsHandle;
@@ -29,6 +30,7 @@ private extern extern(C) {
     int rasqal_query_results_get_bindings_count(QueryResultsHandle* query_results);
     int rasqal_query_results_get_boolean(QueryResultsHandle* query_results);
     int rasqal_query_results_get_count(QueryResultsHandle* query_results);
+    StatementHandle* rasqal_query_results_get_triple(QueryResultsHandle* query_results);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -71,21 +73,28 @@ struct QueryResultsWithoutFinalize {
     }
     // rasqal_query_results_get_bindings() deliberately not implemented.
     // Use iterators instead.
-    uint getBindingsCount() {
+    @property uint bindingsCount() {
         int count = rasqal_query_results_get_bindings_count(handle);
         if(count < 0) throw new RDFException();
         return count;
     }
-    bool getBoolean() {
+    @property bool boolean() {
         int value = rasqal_query_results_get_boolean(handle);
         if(value < 0) throw new RDFException();
         return value != 0;
     }
-    uint getCurrentCount() {
+    @property uint currentCount() {
         int value = rasqal_query_results_get_count(handle);
         if(value < 0) throw new RDFException();
         return value;
     }
+    // TODO
+    //@property QueryWithoutFinalize query()
+    @property StatementWithoutFinalize triple() {
+        return StatementWithoutFinalize.fromNonnullHandle(rasqal_query_results_get_triple(handle));
+    }
+    // Deliberately not implemented:
+    // getRowByOffset(uint offset)
 }
 
 struct QueryResults {
@@ -95,5 +104,5 @@ struct QueryResults {
                         rasqal_free_query_results);
 }
 
-// TODO: Stopped at Get_Query
+// TODO: Stopped at Next
 
