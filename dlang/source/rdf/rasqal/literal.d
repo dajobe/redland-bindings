@@ -69,6 +69,9 @@ private extern extern(C) {
                                              const char* language,
                                              URIHandle* datatype,
                                              const char* datatype_qname);
+    LiteralHandle* rasqal_new_uri_literal(RasqalWorldHandle* world, URIHandle* uri);
+    LiteralHandle* rasqal_literal_value(LiteralHandle* l);
+    LiteralHandle* rasqal_literal_as_node(LiteralHandle* l);
 }
 
 struct LiteralWithoutFinalize {
@@ -113,6 +116,12 @@ struct LiteralWithoutFinalize {
     }
     void printType(File file) {
         rasqal_literal_print_type(handle, file.getFP);
+    }
+    Literal value() {
+        return Literal.fromHandle(rasqal_literal_value(handle));
+    }
+    Literal asNode() {
+        return Literal.fromHandle(rasqal_literal_as_node(handle));
     }
 }
 
@@ -209,7 +218,9 @@ struct Literal {
     static Literal fromString(RasqalWorldWithoutFinalize world, string value) {
         return newStringLiteral(world, value);
     }
-    // TODO: Stopped at From_URI
+    static Literal fromURI(RasqalWorldWithoutFinalize world, URIWithoutFinalize value) {
+        return Literal.fromNonnullHandle(rasqal_new_uri_literal(world.handle, value.handle));
+    }
 }
 
 string typeLabel(LiteralType kind) {

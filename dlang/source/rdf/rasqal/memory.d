@@ -27,3 +27,4 @@ char* rasqal_new_string(string str) {
 char* rasqal_new_string(Nullable!string str) {
     return str.isNull ? null : rasqal_new_string(str.get);
 }
+

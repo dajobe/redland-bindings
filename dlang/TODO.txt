@@ -7,8 +7,6 @@ The following Ada sources were not yet translated into D:
 
 rdf-rasqal-data_graph.adb
 rdf-rasqal-data_graph.ads
-rdf-rasqal-literal.adb
-rdf-rasqal-literal.ads
 rdf-rasqal-query.adb
 rdf-rasqal-query.ads
 rdf-rasqal-query_results.adb
