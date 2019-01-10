@@ -21,3 +21,5 @@ struct QueryResults {
                         rasqal_free_query_results);
 }
 
+// TODO: Stopped at Query_Results_Type_Enum
+
