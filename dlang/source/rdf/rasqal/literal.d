@@ -1,5 +1,6 @@
 module rdf.rasqal.literal;
 
+import std.typecons;
 import std.string;
 import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
@@ -62,7 +63,12 @@ private extern extern(C) {
                                                         long value);
     LiteralHandle* rasqal_new_simple_literal(RasqalWorldHandle* world,
                                              LiteralType type,
-                                             const char *string);
+                                             const char *string_);
+    LiteralHandle* rasqal_new_string_literal(RasqalWorldHandle* world,
+                                             const char* string_,
+                                             const char* language,
+                                             URIHandle* datatype,
+                                             const char* datatype_qname);
 }
 
 struct LiteralWithoutFinalize {
@@ -163,7 +169,44 @@ struct Literal {
         char* value2 = rasqal_new_string(value); // freed by rasqal_new_simple_literal()
         return fromNonnullHandle(rasqal_new_simple_literal(world.handle, type, value2));
     }
-    // TODO: Stopped at New_String_Literal
+    Literal newStringLiteral(RasqalWorldWithoutFinalize world,
+                               string Value,
+                               Nullable!string Language,
+                               URIWithoutFinalize Datatype)
+    {
+        return Literal.fromNonnullHandle(
+            rasqal_new_string_literal(world.handle,
+                                      rasqal_new_string(Value),
+                                      rasqal_new_string(Language),
+                                      Datatype.handle,
+                                      null));
+    }
+
+    Literal newStringLiteral(RasqalWorldWithoutFinalize world,
+                               string Value,
+                               Nullable!string Language,
+                               string Datatype_Qname)
+    {
+      return Literal.fromNonnullHandle(
+        rasqal_new_string_literal(world.handle,
+                                  rasqal_new_string(Value),
+                                  rasqal_new_string(Language),
+                                  null,
+                                  rasqal_new_string(Datatype_Qname)));
+    }
+
+    Literal newStringLiteral(RasqalWorldWithoutFinalize world,
+                               string Value,
+                               Nullable!string Language = Nullable!string())
+    {
+      return Literal.fromNonnullHandle(
+        rasqal_new_string_literal(world.handle,
+                                              rasqal_new_string(Value),
+                                              rasqal_new_string(Language),
+                                  null,
+                                  null));
+    }
+    // TODO: Stopped at From_String
 }
 
 string typeLabel(LiteralType kind) {
