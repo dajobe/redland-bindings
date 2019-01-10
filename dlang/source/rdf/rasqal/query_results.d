@@ -58,28 +58,37 @@ struct QueryResultsWithoutFinalize {
     {
         return rasqal_query_results_finished(handle) != 0;
     }
-    string getBindingName(uint offset) {
+    string getBindingName(uint offset)
+        in(isBindings)
+    {
         const char* ptr = rasqal_query_results_get_binding_name(handle, int(offset));
         if(!ptr) throw new RDFException();
         return ptr.fromStringz.idup;
     }
-    LiteralWithoutFinalize getBindingValue(uint offset) {
+    LiteralWithoutFinalize getBindingValue(uint offset)
+        in(isBindings)
+    {
         return LiteralWithoutFinalize.fromNonnullHandle(
             rasqal_query_results_get_binding_value(handle, int(offset)));
     }
-    LiteralWithoutFinalize getBindingValueByName(string name) {
+    LiteralWithoutFinalize getBindingValueByName(string name)
+        in(isBindings)
+    {
         return LiteralWithoutFinalize.fromNonnullHandle(
             rasqal_query_results_get_binding_value_by_name(handle, name.toStringz));
     }
     // rasqal_query_results_get_bindings() deliberately not implemented.
     // Use iterators instead.
-    @property uint bindingsCount() {
+    @property uint bindingsCount()
+        in(isBindings)
+    {
         int count = rasqal_query_results_get_bindings_count(handle);
         if(count < 0) throw new RDFException();
         return count;
     }
-    @property bool boolean() {
-        int value = rasqal_query_results_get_boolean(handle);
+    @property bool boolean()
+        in(isBoolean)
+    {        int value = rasqal_query_results_get_boolean(handle);
         if(value < 0) throw new RDFException();
         return value != 0;
     }
@@ -90,7 +99,9 @@ struct QueryResultsWithoutFinalize {
     }
     // TODO
     //@property QueryWithoutFinalize query()
-    @property StatementWithoutFinalize triple() {
+    @property StatementWithoutFinalize triple()
+        in(isGraph)
+    {
         return StatementWithoutFinalize.fromNonnullHandle(rasqal_query_results_get_triple(handle));
     }
     // Deliberately not implemented:
