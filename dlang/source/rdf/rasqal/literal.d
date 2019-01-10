@@ -206,7 +206,10 @@ struct Literal {
                                       null,
                                       null));
     }
-    // TODO: Stopped at From_String
+    static Literal fromString(RasqalWorldWithoutFinalize world, string value) {
+        return newStringLiteral(world, value);
+    }
+    // TODO: Stopped at From_URI
 }
 
 string typeLabel(LiteralType kind) {
