@@ -2,7 +2,9 @@ module rdf.rasqal.query_results;
 
 import std.string;
 import rdf.auxiliary.handled_record;
+import rdf.raptor.uri;
 import rdf.raptor.statement;
+import rdf.raptor.iostream;
 import rdf.rasqal.literal;
 
 struct QueryResultsHandle;
@@ -33,6 +35,18 @@ private extern extern(C) {
     StatementHandle* rasqal_query_results_get_triple(QueryResultsHandle* query_results);
     int rasqal_query_results_next(QueryResultsHandle* query_results);
     int rasqal_query_results_next_triple(QueryResultsHandle* query_results);
+    int rasqal_query_results_read(IOStreamHandle* iostr,
+                                  QueryResultsHandle* results,
+                                  const char *name,
+                                  const char *mime_type,
+                                  URIHandle* format_uri,
+                                  URIHandle* base_uri);
+    int rasqal_query_results_write(IOStreamHandle* iostr,
+                                   QueryResultsHandle* results,
+                                   const char *name,
+                                   const char *mime_type,
+                                   URIHandle* format_uri,
+                                   URIHandle* base_uri);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -116,6 +130,34 @@ struct QueryResultsWithoutFinalize {
         int res = rasqal_query_results_next_triple(handle);
         //if(res != 0) throw new RDFException(); // Check is done by Finished procedure, not here
     }
+    void read(IOStreamWithoutFinalize stream,
+              string formatName,
+              string mimeType,
+              URIWithoutFinalize formatURI,
+              URIWithoutFinalize baseURI)
+    {
+        int res = rasqal_query_results_read(stream.handle,
+                                            handle,
+                                            formatName == "" ? null : formatName.toStringz,
+                                            mimeType == "" ? null : mimeType.toStringz,
+                                            formatURI.handle,
+                                            baseURI.handle);
+        if(res != 0) throw new RDFException();
+    }
+    void write(IOStreamWithoutFinalize stream,
+               string formatName,
+               string mimeType,
+               URIWithoutFinalize formatURI,
+               URIWithoutFinalize baseURI)
+    {
+        int res = rasqal_query_results_write(stream.handle,
+                                             handle,
+                                             formatName == "" ? null : formatName.toStringz,
+                                             mimeType == "" ? null : mimeType.toStringz,
+                                             formatURI.handle,
+                                             baseURI.handle);
+        if(res != 0) throw new RDFException();
+    }
 }
 
 struct QueryResults {
@@ -125,5 +167,5 @@ struct QueryResults {
                         rasqal_free_query_results);
 }
 
-// TODO: Stopped at Read
+// TODO: Stopped at Type_Label
 
