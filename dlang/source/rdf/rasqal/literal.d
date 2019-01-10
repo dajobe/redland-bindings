@@ -158,7 +158,7 @@ struct Literal {
         return fromNonnullHandle(rasqal_new_floating_literal(world.handle, type, value));
     }
     /// Deliberately accept only long integers, don't implement "int value".
-    static Literal fromInteger (RasqalWorldWithoutFinalize world, long value) {
+    static Literal fromInteger(RasqalWorldWithoutFinalize world, long value) {
         LiteralHandle* handle =
             rasqal_new_numeric_literal_from_long(world.handle, LiteralType.Literal_Integer, value);
         return fromNonnullHandle(handle);
@@ -170,39 +170,39 @@ struct Literal {
         return fromNonnullHandle(rasqal_new_simple_literal(world.handle, type, value2));
     }
     static Literal newStringLiteral(RasqalWorldWithoutFinalize world,
-                                    string Value,
-                                    Nullable!string Language,
-                                    URIWithoutFinalize Datatype)
+                                    string value,
+                                    Nullable!string language,
+                                    URIWithoutFinalize datatype)
     {
         return Literal.fromNonnullHandle(
             rasqal_new_string_literal(world.handle,
-                                      rasqal_new_string(Value),
-                                      rasqal_new_string(Language),
-                                      Datatype.handle,
+                                      rasqal_new_string(value),
+                                      rasqal_new_string(language),
+                                      datatype.handle,
                                       null));
     }
 
     static Literal newStringLiteral(RasqalWorldWithoutFinalize world,
-                                    string Value,
-                                    Nullable!string Language,
+                                    string value,
+                                    Nullable!string language,
                                     string Datatype_Qname)
     {
         return Literal.fromNonnullHandle(
             rasqal_new_string_literal(world.handle,
-                                      rasqal_new_string(Value),
-                                      rasqal_new_string(Language),
+                                      rasqal_new_string(value),
+                                      rasqal_new_string(language),
                                       null,
                                       rasqal_new_string(Datatype_Qname)));
     }
 
     static Literal newStringLiteral(RasqalWorldWithoutFinalize world,
-                                    string Value,
-                                    Nullable!string Language = Nullable!string())
+                                    string value,
+                                    Nullable!string language = Nullable!string())
     {
         return Literal.fromNonnullHandle(
             rasqal_new_string_literal(world.handle,
-                                      rasqal_new_string(Value),
-                                      rasqal_new_string(Language),
+                                      rasqal_new_string(value),
+                                      rasqal_new_string(language),
                                       null,
                                       null));
     }
