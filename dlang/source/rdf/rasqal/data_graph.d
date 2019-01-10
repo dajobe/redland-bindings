@@ -24,12 +24,14 @@ private:
 
 private extern extern(C) {
     void rasqal_free_data_graph(DataGraphHandle* dg);
+    DataGraphHandle* rasqal_new_data_graph_from_data_graph(DataGraphHandle* dg);
 }
 
 struct DataGraphWithoutFinalize {
     mixin WithoutFinalize!(DataGraphHandle,
                            DataGraphWithoutFinalize,
-                           DataGraph);
+                           DataGraph,
+                           rasqal_new_data_graph_from_data_graph);
     @property RasqalWorldWithoutFinalize world() {
         return RasqalWorldWithoutFinalize.fromHandle(handle._world);
     }
@@ -60,7 +62,7 @@ struct DataGraphWithoutFinalize {
     @property uint usageCount() {
         return handle._usage;
     }
-    // TODO: Stopped at Adjust_Handle
+    // TODO: Stopped at Print
 }
 
 struct DataGraph {
