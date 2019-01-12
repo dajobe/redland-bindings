@@ -82,6 +82,7 @@ package RDF.Rasqal.Query is
 
    type Query_Type_User is new Handlers.User_Type with null record;
 
+   -- FIXME: Rasqal_World_Type_Without_Finalize
    not overriding function Create (World: Rasqal_World_Type'Class;
                                    Name, URI: RDF.Auxiliary.String_Holders.Holder)
                                    return Query_Type;

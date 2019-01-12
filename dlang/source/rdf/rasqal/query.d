@@ -1,10 +1,13 @@
 module rdf.rasqal.query;
 
+import std.typecons;
 import std.string;
 import rdf.auxiliary.handled_record;
+import rdf.auxiliary.nullable_string;
 import rdf.raptor.uri;
 import rdf.raptor.iostream;
 import rdf.rasqal.memory;
+import rdf.rasqal.world;
 import rdf.rasqal.features;
 import rdf.rasqal.data_graph;
 import rdf.rasqal.query_results;
@@ -38,6 +41,8 @@ private extern extern(C) {
     int rasqal_query_set_feature_string(QueryHandle* query, FeatureType feature, const char *value);
     int rasqal_query_get_feature(QueryHandle* query, FeatureType feature);
     const(char*) rasqal_query_get_feature_string(QueryHandle* query, FeatureType feature);
+    QueryResultsType rasqal_query_get_result_type(QueryHandle* query);
+    QueryHandle* rasqal_new_query(RasqalWorldHandle* world, const char *name, const char *uri);
 }
 
 struct QueryWithoutFinalize {
@@ -116,6 +121,14 @@ struct QueryWithoutFinalize {
         scope(exit) rasqal_free_memory(cast(char*)result);
         return result.fromStringz.idup;
     }
+    QueryResultsType getResultType() {
+        QueryResultsType result = rasqal_query_get_result_type(handle);
+        if(result == QueryResultsType.Unknown) throw new RDFException();
+        return result;
+    }
+    // Deliberately not implemented
+    // function getUpdateOperation
+    // function getUpdateOperationsSequence
 }
 
 struct Query {
@@ -123,6 +136,9 @@ struct Query {
                         QueryWithoutFinalize,
                         Query,
                         rasqal_free_query);
+    Query create(RasqalWorldWithoutFinalize world, Nullable!string name, Nullable!string uri) {
+        return fromNonnullHandle(rasqal_new_query(world.handle, name.myToStringz, uri.myToStringz));
+    }
 }
 
 // TODO: Stopped at Get_Result_Type
