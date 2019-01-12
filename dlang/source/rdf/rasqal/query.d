@@ -4,6 +4,7 @@ import std.string;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
 import rdf.raptor.iostream;
+import rdf.rasqal.memory;
 import rdf.rasqal.data_graph;
 import rdf.rasqal.query_results;
 
@@ -24,6 +25,14 @@ private extern extern(C) {
                            QueryHandle* query,
                            URIHandle* format_uri,
                            URIHandle* base_uri);
+    int rasqal_query_iostream_write_escaped_counted_string(QueryHandle* query,
+                                                           IOStreamHandle* iostr,
+                                                           const char *string,
+                                                           size_t len);
+    char* rasqal_query_escape_counted_string(QueryHandle* query,
+                                             const char *string,
+                                             size_t len,
+                                             size_t *output_len_p);
 }
 
 struct QueryWithoutFinalize {
@@ -54,7 +63,7 @@ struct QueryWithoutFinalize {
         if(rasqal_query_prepare(handle, queryString.toStringz, baseURI.handle) != 0)
             throw new RDFException();
     }
-    void setStoreResults(bool store) {
+    void setStoreresults(bool store) {
         if(rasqal_query_set_store_results(handle, store) != 0)
             throw new RDFException();
     }
@@ -68,6 +77,21 @@ struct QueryWithoutFinalize {
         if(rasqal_query_write(stream.handle, handle, formatURI.handle, baseURI.handle) != 0)
             throw new RDFException();
     }
+    // Is it really useful? Maybe remove from public API?
+    void writeEscapedString(IOStreamWithoutFinalize stream, string str) {
+        int res = rasqal_query_iostream_write_escaped_counted_string(handle,
+                                                                     stream.handle,
+                                                                     str.ptr,
+                                                                     str.length);
+        if(res != 0) throw new RDFException();
+    }
+    string escapeString(string str) {
+        size_t outLen;
+        char* result = rasqal_query_escape_counted_string(handle, str.ptr, str.length, &outLen);
+        if(!result) throw new RDFException();
+        scope(exit) rasqal_free_memory(result);
+        return result[0..outLen].idup;
+    }
 }
 
 struct Query {
@@ -77,5 +101,5 @@ struct Query {
                         rasqal_free_query);
 }
 
-// TODO: Stopped at Write_Escaped_String
+// TODO: Stopped at Set_Feature
 
