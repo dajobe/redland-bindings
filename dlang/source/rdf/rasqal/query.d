@@ -23,5 +23,5 @@ struct Query {
                         rasqal_free_query);
 }
 
-// TODO
+// TODO: Stopped at Add_Data_Graph
 
