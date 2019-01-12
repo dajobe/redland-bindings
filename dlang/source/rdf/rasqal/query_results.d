@@ -193,7 +193,7 @@ string typeLabel(QueryResultsType type) {
 
 struct QueryResultsRange {
 private:
-    QueryResultsWithoutFinalize obj;
+    QueryResultsWithoutFinalize obj; // TODO: const
 public:
     this(QueryResultsWithoutFinalize obj) {
         this.obj = obj;
