@@ -1,8 +1,10 @@
 module rdf.rasqal.uri;
 
+import std.string;
 import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 static import rdf.raptor.uri;
+import rdf.redland.memory;
 
 struct URIHandle;
 
@@ -14,6 +16,7 @@ private extern extern(C) {
     int librdf_uri_equals(URIHandle* first_uri, URIHandle* second_uri);
     int librdf_uri_compare(URIHandle* first_uri, URIHandle* second_uri);
     int librdf_uri_is_file_uri(URIHandle* uri);
+    const(char*) librdf_uri_to_filename(URIHandle* uri);
 }
 
 struct URIWithoutFinalize {
@@ -36,6 +39,11 @@ struct URIWithoutFinalize {
     bool isFileURI() {
         return librdf_uri_is_file_uri(handle) != 0;
     }
+    string toFilename() {
+        const char* ptr = librdf_uri_to_filename(handle);
+        scope(exit) librdf_free_memory(cast(char*)ptr);
+        return ptr.fromStringz.idup;
+    }
 }
 
 struct URI {
@@ -49,5 +57,5 @@ struct URI {
     }
 }
 
-// TODO: Stopped at To_Filename
+// TODO: Stopped at Concept_Ms_Namespace
 
