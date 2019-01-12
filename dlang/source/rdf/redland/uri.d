@@ -13,6 +13,7 @@ private extern extern(C) {
     void librdf_uri_print(URIHandle* uri, FILE *fh);
     int librdf_uri_equals(URIHandle* first_uri, URIHandle* second_uri);
     int librdf_uri_compare(URIHandle* first_uri, URIHandle* second_uri);
+    int librdf_uri_is_file_uri(URIHandle* uri);
 }
 
 struct URIWithoutFinalize {
@@ -32,6 +33,9 @@ struct URIWithoutFinalize {
     void print(File file) {
         librdf_uri_print(handle, file.getFP);
     }
+    bool isFileURI() {
+        return librdf_uri_is_file_uri(handle) != 0;
+    }
 }
 
 struct URI {
@@ -41,9 +45,9 @@ struct URI {
                         librdf_free_uri);
     mixin CompareHandles!(librdf_uri_equals, librdf_uri_compare);
     URIWithoutFinalize fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) { // FIXME: WithoutFinalize?
-      return URI.fromHandle(cast(URIHandle*)handle);
+        return URI.fromHandle(cast(URIHandle*)handle);
     }
 }
 
-// TODO: Stopped at Is_File_URI
+// TODO: Stopped at To_Filename
 
