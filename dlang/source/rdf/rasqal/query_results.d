@@ -209,7 +209,9 @@ public:
     }
     LiteralWithoutFinalize getBindingValueByName(string name) {
         return obj.getBindingValueByName(name);
-    }}
+    }
+    void rewind() { obj.rewind(); }
+}
 
 struct QueryResultsTriplesRange {
 private:
@@ -220,7 +222,13 @@ public:
     }
     Statement front() { return triple(); }
     void popFront() { obj.nextTriple(); }
-    Statement triple() { return obj.triple(); }}
+    Statement triple() { return obj.triple(); }
+    void rewind() { obj.rewind(); }
+}
+
+struct VariablesRange {
+
+}
 
 // TODO: Stopped at Variables_Cursor
 
