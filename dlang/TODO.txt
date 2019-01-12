@@ -30,8 +30,6 @@ rdf-redland-storage.adb
 rdf-redland-storage.ads
 rdf-redland-stream.adb
 rdf-redland-stream.ads
-rdf-redland-uri.adb
-rdf-redland-uri.ads
 test/constants_test.adb
 test/constants_test.ads
 test/count_test2.adb

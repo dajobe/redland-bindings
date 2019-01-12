@@ -21,6 +21,12 @@ private extern extern(C) {
     URIHandle* librdf_get_concept_ms_namespace     (RedlandWorldHandle* world);
     URIHandle* librdf_get_concept_schema_namespace (RedlandWorldHandle* world);
     URIHandle* librdf_new_uri2(RedlandWorldHandle* world, const char *uri_string, size_t length);
+    URIHandle* librdf_new_uri_from_uri_local_name(URIHandle* old_uri, const char *local_name);
+    URIHandle* librdf_new_uri_normalised_to_base(const char *uri_string,
+                                                 URIHandle* source_uri,
+                                                 URIHandle* base_uri);
+    URIHandle* librdf_new_uri_relative_to_base(URIHandle* base_uri, const char *uri_string);
+    URIHandle* librdf_new_uri_from_filename(RedlandWorldHandle* world, const char *filename);
 }
 
 struct URIWithoutFinalize {
@@ -62,6 +68,24 @@ struct URI {
     static URI fromString(RedlandWorldWithoutFinalize world, string uri) {
         return fromNonnullHandle(librdf_new_uri2(world.handle, uri.ptr, uri.length));
     }
+    static URI fromURILocalName(URIWithoutFinalize oldURI, string localName) {
+        return fromNonnullHandle(
+            librdf_new_uri_from_uri_local_name(oldURI.handle, localName.toStringz));
+    }
+    static URI normalisedToBase(string uriStr,
+                                URIWithoutFinalize sourceURI,
+                                URIWithoutFinalize baseURI)
+    {
+        return fromNonnullHandle(
+            librdf_new_uri_normalised_to_base(uriStr.toStringz, sourceURI.handle, baseURI.handle));
+    }
+    static URI relativeToBase(URIWithoutFinalize baseURI, string uri) {
+        return fromNonnullHandle(
+            librdf_new_uri_relative_to_base(baseURI.handle, uri.toStringz));
+    }
+    static fromFilename (RedlandWorldWithoutFinalize world, string filename) {
+        return fromNonnullHandle(librdf_new_uri_from_filename(world.handle, filename.toStringz));
+    }
 }
 
 // From http://librdf.org/docs/api/redland-concepts.html:
@@ -72,6 +96,4 @@ URIWithoutFinalize conceptMsNamespace(RedlandWorldWithoutFinalize world) {
 URIWithoutFinalize conceptSchemaNamespace(RedlandWorldWithoutFinalize world) {
     return URIWithoutFinalize.fromNonnullHandle(librdf_get_concept_schema_namespace(world.handle));
 }
-
-// TODO: Stopped at From_URI_Local_Name
 
