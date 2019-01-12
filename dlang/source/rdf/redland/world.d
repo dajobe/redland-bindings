@@ -6,6 +6,7 @@ struct RedlandWorldHandle;
 
 private extern extern(C) {
     void librdf_free_world(RedlandWorldHandle* world);
+    RedlandWorldHandle* librdf_new_world();
 }
 
 enum {
@@ -23,8 +24,9 @@ struct RedlandWorld {
     mixin WithFinalize!(RedlandWorldHandle,
                         RedlandWorldWithoutFinalize,
                         RedlandWorld,
-                        librdf_free_world);
+                        librdf_free_world,
+                        librdf_new_world);
 }
 
-// TODO: Stopped at Finalize_Handle
+// TODO: Stopped at Open
 
