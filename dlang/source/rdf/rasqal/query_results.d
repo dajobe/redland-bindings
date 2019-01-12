@@ -117,10 +117,10 @@ struct QueryResultsWithoutFinalize {
     }
     // TODO
     //@property QueryWithoutFinalize query()
-    @property StatementWithoutFinalize triple()
+    @property Statement triple() // TODO: In Ada it is Without_Finalize
         in(isGraph)
     {
-        return StatementWithoutFinalize.fromNonnullHandle(rasqal_query_results_get_triple(handle));
+        return Statement.fromNonnullHandle(rasqal_query_results_get_triple(handle));
     }
     // Deliberately not implemented:
     // getRowByOffset(uint offset)
@@ -191,5 +191,36 @@ string typeLabel(QueryResultsType type) {
     return ptr.fromStringz.idup;
 }
 
-// TODO: Stopped at Cursor
+struct QueryResultsRange {
+private:
+    QueryResultsWithoutFinalize obj;
+public:
+    this(QueryResultsWithoutFinalize obj) {
+        this.obj = obj;
+    }
+    QueryResultsRange front() { return this; } // return itself
+    void popFront() { obj.next(); }
+
+    string getBindingName(uint offset) {
+        return obj.getBindingName(offset);
+    }
+    LiteralWithoutFinalize getBindingValue(uint offset) {
+        return obj.getBindingValue(offset);
+    }
+    LiteralWithoutFinalize getBindingValueByName(string name) {
+        return obj.getBindingValueByName(name);
+    }}
+
+struct QueryResultsTriplesRange {
+private:
+    QueryResultsWithoutFinalize obj;
+public:
+    this(QueryResultsWithoutFinalize obj) {
+        this.obj = obj;
+    }
+    Statement front() { return triple(); }
+    void popFront() { obj.nextTriple(); }
+    Statement triple() { return obj.triple(); }}
+
+// TODO: Stopped at Variables_Cursor
 
