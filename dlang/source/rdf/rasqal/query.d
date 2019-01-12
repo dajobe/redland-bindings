@@ -2,6 +2,7 @@ module rdf.rasqal.query;
 
 import rdf.auxiliary.handled_record;
 import rdf.rasqal.data_graph;
+import rdf.rasqal.query_results;
 
 // This API is partial, as I consider many C functions as internals.
 
@@ -12,6 +13,7 @@ private extern extern(C) {
 
     void rasqal_free_query(QueryHandle* query);
     int rasqal_query_add_data_graph(QueryHandle* query, DataGraphHandle* data_graph);
+    QueryResultsHandle* rasqal_query_execute(QueryHandle* query);
 }
 
 struct QueryWithoutFinalize {
@@ -32,8 +34,12 @@ struct QueryWithoutFinalize {
     }
     // TODO:
 //    void addDataGraphsDetach(DataGraphWithoutFinalize[] graphs) {
-//        foreach(auto dg; graphs) addDataGraphDetach(dg);
+//        foreach(DataGraphWithoutFinalize dg; graphs) addDataGraphDetach(dg);
 //    }
+    // FIXME: Check return type ("without finalize") and the struct after `return` of execute() (here and in Ada):
+    QueryResultsWithoutFinalize execute() {
+        return QueryResultsWithoutFinalize.fromNonnullHandle(rasqal_query_execute(handle));
+    }
 }
 
 struct Query {
@@ -43,5 +49,5 @@ struct Query {
                         rasqal_free_query);
 }
 
-// TODO: Stopped at Execute
+// TODO: Stopped at Prepare
 
