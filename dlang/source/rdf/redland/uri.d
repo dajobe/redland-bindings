@@ -57,5 +57,10 @@ struct URI {
     }
 }
 
+// From http://librdf.org/docs/api/redland-concepts.html:
+// TODO:
+//URIWithoutFinalize conceptMsNamespace(RedlandWorldWithoutFinalize world)
+//URIWithoutFinalize conceptSchemaNamespace(RedlandWorldWithoutFinalize world)
+
 // TODO: Stopped at Concept_Ms_Namespace
 
