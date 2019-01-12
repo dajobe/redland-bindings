@@ -36,6 +36,8 @@ private extern extern(C) {
                                              size_t *output_len_p);
     int rasqal_query_set_feature(QueryHandle* query, FeatureType feature, int value);
     int rasqal_query_set_feature_string(QueryHandle* query, FeatureType feature, const char *value);
+    int rasqal_query_get_feature(QueryHandle* query, FeatureType feature);
+    const(char*) rasqal_query_get_feature_string(QueryHandle* query, FeatureType feature);
 }
 
 struct QueryWithoutFinalize {
@@ -103,6 +105,17 @@ struct QueryWithoutFinalize {
         if(rasqal_query_set_feature_string(handle, feature, value.toStringz) != 0)
             throw new RDFException();
     }
+    uint getFeatureInt(FeatureType feature) {
+        int result = rasqal_query_get_feature(handle, feature);
+        if(result < 0) throw new RDFException();
+        return result;
+    }
+    string getFeatureString(FeatureType feature) {
+        const char* result = rasqal_query_get_feature_string(handle, feature);
+        if(!result) throw new RDFException();
+        scope(exit) rasqal_free_memory(cast(char*)result);
+        return result.fromStringz.idup;
+    }
 }
 
 struct Query {
@@ -112,5 +125,5 @@ struct Query {
                         rasqal_free_query);
 }
 
-// TODO: Stopped at Get_Feature
+// TODO: Stopped at Get_Result_Type
 
