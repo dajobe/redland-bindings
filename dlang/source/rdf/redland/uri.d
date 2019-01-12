@@ -52,8 +52,8 @@ struct URI {
                         URI,
                         librdf_free_uri);
     mixin CompareHandles!(librdf_uri_equals, librdf_uri_compare);
-    URIWithoutFinalize fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) { // FIXME: WithoutFinalize?
-        return URI.fromHandle(cast(URIHandle*)handle);
+    static URIWithoutFinalize fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) { // FIXME: WithoutFinalize?
+        return URI.fromHandle(cast(URIHandle*)uri.handle);
     }
 }
 
