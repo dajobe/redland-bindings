@@ -1,5 +1,6 @@
 module rdf.redland.world;
 
+import std.string;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.world;
 import rdf.rasqal.world;
@@ -14,6 +15,7 @@ private extern extern(C) {
     RasqalWorldHandle* librdf_world_get_rasqal(RedlandWorldHandle* world);
     void librdf_world_set_raptor(RedlandWorldHandle* world, RaptorWorldHandle* raptor_world_ptr);
     void librdf_world_set_rasqal(RedlandWorldHandle* world, RasqalWorldHandle* rasqal_world_ptr);
+    void librdf_world_set_digest(RedlandWorldHandle* world, const char *name);
 }
 
 enum {
@@ -40,6 +42,9 @@ struct RedlandWorldWithoutFinalize {
     @property RaptorWorldWithoutFinalize raptor() {
          return RaptorWorldWithoutFinalize.fromNonnullHandle(librdf_world_get_raptor(handle));
     }
+    @property void digest(string name) {
+        librdf_world_set_digest(handle, name.toStringz);
+    }
 }
 
 struct RedlandWorld {
@@ -50,5 +55,5 @@ struct RedlandWorld {
                         librdf_new_world);
 }
 
-// TODO: Stopped at Set_Digest
+// TODO: Stopped at Get_Feature
 
