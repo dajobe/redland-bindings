@@ -8,6 +8,7 @@ struct URIHandle;
 private extern extern(C) {
     void librdf_free_uri(URIHandle* uri);
     URIHandle* librdf_new_uri_from_uri(URIHandle* old_uri);
+    char* librdf_uri_as_counted_string(URIHandle* uri, size_t *len_p);
 }
 
 struct URIWithoutFinalize {
@@ -17,6 +18,11 @@ struct URIWithoutFinalize {
                            librdf_new_uri_from_uri);
     @property rdf.raptor.uri.URI toRaptor() {
       return rdf.raptor.uri.URI.fromHandle(cast(rdf.raptor.uri.URIHandle*)handle);
+    }
+    string toString() {
+      size_t length;
+      char* str = librdf_uri_as_counted_string(handle, &length);
+      return str[0..length].idup;
     }
 }
 
@@ -30,5 +36,5 @@ struct URI {
     }
 }
 
-// TODO: Stopped at As_String
+// TODO: Stopped at Print
 
