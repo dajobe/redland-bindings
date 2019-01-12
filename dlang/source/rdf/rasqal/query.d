@@ -1,6 +1,8 @@
 module rdf.rasqal.query;
 
+import std.string;
 import rdf.auxiliary.handled_record;
+import rdf.raptor.uri;
 import rdf.rasqal.data_graph;
 import rdf.rasqal.query_results;
 
@@ -14,6 +16,8 @@ private extern extern(C) {
     void rasqal_free_query(QueryHandle* query);
     int rasqal_query_add_data_graph(QueryHandle* query, DataGraphHandle* data_graph);
     QueryResultsHandle* rasqal_query_execute(QueryHandle* query);
+    int rasqal_query_prepare(QueryHandle* query, const char *query_string, URIHandle* base_uri);
+    int rasqal_query_set_store_results(QueryHandle* query, int store_results);
 }
 
 struct QueryWithoutFinalize {
@@ -40,6 +44,14 @@ struct QueryWithoutFinalize {
     QueryResultsWithoutFinalize execute() {
         return QueryResultsWithoutFinalize.fromNonnullHandle(rasqal_query_execute(handle));
     }
+    void prepare(string queryString, URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null)) {
+        if(rasqal_query_prepare(handle, queryString.toStringz, baseURI.handle) != 0)
+            throw new RDFException();
+    }
+    void setStoreResults(bool store) {
+        if(rasqal_query_set_store_results(handle, store) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Query {
@@ -49,5 +61,5 @@ struct Query {
                         rasqal_free_query);
 }
 
-// TODO: Stopped at Prepare
+// TODO: Stopped at Set_Wildcard
 
