@@ -1,5 +1,6 @@
 module rdf.rasqal.uri;
 
+import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 static import rdf.raptor.uri;
 
@@ -9,6 +10,7 @@ private extern extern(C) {
     void librdf_free_uri(URIHandle* uri);
     URIHandle* librdf_new_uri_from_uri(URIHandle* old_uri);
     char* librdf_uri_as_counted_string(URIHandle* uri, size_t *len_p);
+    void librdf_uri_print(URIHandle* uri, FILE *fh);
 }
 
 struct URIWithoutFinalize {
@@ -24,6 +26,9 @@ struct URIWithoutFinalize {
       char* str = librdf_uri_as_counted_string(handle, &length);
       return str[0..length].idup;
     }
+    void print(File file) {
+        librdf_uri_print(handle, file.getFP);
+    }
 }
 
 struct URI {
@@ -31,10 +36,10 @@ struct URI {
                         URIWithoutFinalize,
                         URI,
                         librdf_free_uri);
-    URIWithoutFinalize fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) {
+    URIWithoutFinalize fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) { // FIXME: WithoutFinalize?
       return URI.fromHandle(cast(URIHandle*)handle);
     }
 }
 
-// TODO: Stopped at Print
+// TODO: Stopped at Equals
 
