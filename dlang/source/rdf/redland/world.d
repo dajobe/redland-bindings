@@ -7,6 +7,7 @@ struct RedlandWorldHandle;
 private extern extern(C) {
     void librdf_free_world(RedlandWorldHandle* world);
     RedlandWorldHandle* librdf_new_world();
+    void librdf_world_open(RedlandWorldHandle* world);
 }
 
 enum {
@@ -18,6 +19,9 @@ struct RedlandWorldWithoutFinalize {
     mixin WithoutFinalize!(RedlandWorldHandle,
                            RedlandWorldWithoutFinalize,
                            RedlandWorld);
+    void open() {
+        librdf_world_open(handle);
+    }
 }
 
 struct RedlandWorld {
@@ -28,5 +32,5 @@ struct RedlandWorld {
                         librdf_new_world);
 }
 
-// TODO: Stopped at Open
+// TODO: Stopped at Set_Rasqal
 
