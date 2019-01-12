@@ -15,6 +15,9 @@ struct URIWithoutFinalize {
                            URIWithoutFinalize,
                            URI,
                            librdf_new_uri_from_uri);
+    @property rdf.raptor.uri.URI toRaptor() {
+      return rdf.raptor.uri.URI.fromHandle(cast(rdf.raptor.uri.URIHandle*)handle);
+    }
 }
 
 struct URI {
@@ -22,7 +25,10 @@ struct URI {
                         URIWithoutFinalize,
                         URI,
                         librdf_free_uri);
+    URI fromRaptor(rdf.raptor.uri.URI uri) {
+      return URI.fromHandle(cast(URIHandle*)handle);
+    }
 }
 
-// TODO: Stopped at To_Raptor
+// TODO: Stopped at As_String
 
