@@ -175,7 +175,7 @@ package body RDF.Rasqal.Query is
                           Feature: Feature_Type;
                           Value: String) is
    begin
-      if rasqal_query_set_feature_string(Get_Handle(Query), Feature, To_C(Value)) /= 0  then
+      if rasqal_query_set_feature_string(Get_Handle(Query), Feature, To_C(Value)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;
       end if;
    end;

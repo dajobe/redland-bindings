@@ -5,6 +5,7 @@ import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
 import rdf.raptor.iostream;
 import rdf.rasqal.memory;
+import rdf.rasqal.features;
 import rdf.rasqal.data_graph;
 import rdf.rasqal.query_results;
 
@@ -33,6 +34,8 @@ private extern extern(C) {
                                              const char *string,
                                              size_t len,
                                              size_t *output_len_p);
+    int rasqal_query_set_feature(QueryHandle* query, FeatureType feature, int value);
+    int rasqal_query_set_feature_string(QueryHandle* query, FeatureType feature, const char *value);
 }
 
 struct QueryWithoutFinalize {
@@ -92,6 +95,14 @@ struct QueryWithoutFinalize {
         scope(exit) rasqal_free_memory(result);
         return result[0..outLen].idup;
     }
+    void setFeature(FeatureType feature, uint value) {
+        if(rasqal_query_set_feature(handle, feature, value) != 0)
+            throw new RDFException();
+    }
+    void setFeature(FeatureType feature, string value) {
+        if(rasqal_query_set_feature_string(handle, feature, value.toStringz) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Query {
@@ -101,5 +112,5 @@ struct Query {
                         rasqal_free_query);
 }
 
-// TODO: Stopped at Set_Feature
+// TODO: Stopped at Get_Feature
 
