@@ -198,9 +198,10 @@ public:
     this(QueryResultsWithoutFinalize obj) {
         this.obj = obj;
     }
+    bool empty() { return obj.finished(); }
     QueryResultsRange front() { return this; } // return itself
     void popFront() { obj.next(); }
-
+    // TODO: empty()
     string getBindingName(uint offset) {
         return obj.getBindingName(offset);
     }
@@ -220,6 +221,7 @@ public:
     this(QueryResultsWithoutFinalize obj) {
         this.obj = obj;
     }
+    bool empty() { return obj.finished(); }
     Statement front() { return triple(); }
     void popFront() { obj.nextTriple(); }
     Statement triple() { return obj.triple(); }
@@ -227,8 +229,16 @@ public:
 }
 
 struct VariablesRange {
-
+private:
+    QueryResultsWithoutFinalize obj;
+    uint count = 0;
+public:
+    this(QueryResultsWithoutFinalize obj) {
+        this.obj = obj;
+    }
+    bool empty() { return count == obj.bindingsCount; }
+    string front() { return name; }
+    void popFront() { ++count; }
+    @property string name() { return obj.getBindingName(count); }
 }
-
-// TODO: Stopped at Variables_Cursor
 
