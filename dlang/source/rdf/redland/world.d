@@ -45,6 +45,19 @@ struct RedlandWorldWithoutFinalize {
     @property void digest(string name) {
         librdf_world_set_digest(handle, name.toStringz);
     }
+    // TODO:
+    // Get_Feature (World: Redland_World_Type_Without_Finalize;
+    //              Feature: RDF.Redland.URI.URI_Type_Without_Finalize'Class)
+    //              return RDF.Redland.Node.Node_Type is
+    //procedure Set_Feature (World: Redland_World_Type_Without_Finalize;
+    //                       Feature: RDF.Redland.URI.URI_Type_Without_Finalize'Class;
+    //                       Value: RDF.Redland.Node.Node_Type_Without_Finalize'Class) is
+
+   // librdf_world_set_error() and librdf_world_set_warning() deliberately not implemented.
+
+   // I deliberately not implement librdf_world_set_raptor_init_handler() and
+   // librdf_world_set_rasqal_init_handler().
+   // I recommend to use properties `raptor` and `rasqal` instead.
 }
 
 struct RedlandWorld {
@@ -53,7 +66,10 @@ struct RedlandWorld {
                         RedlandWorld,
                         librdf_free_world,
                         librdf_new_world);
+    RedlandWorld open() {
+        RedlandWorld world;
+        world.open();
+        return world;
+    }
 }
-
-// TODO: Stopped at Get_Feature
 
