@@ -79,9 +79,9 @@ package body RDF.Rasqal.Query is
    procedure rasqal_query_set_wildcard (Query: Query_Handle; Store: int)
      with Import, Convention=>C;
 
-   procedure Set_Wildcard (Query: in out Query_Type_Without_Finalize; Store: Boolean) is
+   procedure Set_Wildcard (Query: in out Query_Type_Without_Finalize; Wilcard: Boolean) is
    begin
-      rasqal_query_set_wildcard(Get_Handle(Query), (if Store then 1 else 0));
+      rasqal_query_set_wildcard(Get_Handle(Query), (if Wilcard then 1 else 0));
    end;
 
    function rasqal_query_write (Stream: IOStream_Handle;

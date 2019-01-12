@@ -3,6 +3,7 @@ module rdf.rasqal.query;
 import std.string;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
+import rdf.raptor.iostream;
 import rdf.rasqal.data_graph;
 import rdf.rasqal.query_results;
 
@@ -18,6 +19,11 @@ private extern extern(C) {
     QueryResultsHandle* rasqal_query_execute(QueryHandle* query);
     int rasqal_query_prepare(QueryHandle* query, const char *query_string, URIHandle* base_uri);
     int rasqal_query_set_store_results(QueryHandle* query, int store_results);
+    void rasqal_query_set_wildcard(QueryHandle* query, int wildcard);
+    int rasqal_query_write(IOStreamHandle* iostr,
+                           QueryHandle* query,
+                           URIHandle* format_uri,
+                           URIHandle* base_uri);
 }
 
 struct QueryWithoutFinalize {
@@ -52,6 +58,16 @@ struct QueryWithoutFinalize {
         if(rasqal_query_set_store_results(handle, store) != 0)
             throw new RDFException();
     }
+    void setWilcard(bool wilcard) {
+        rasqal_query_set_store_results(handle, wilcard);
+    }
+    void writeQuery(IOStreamWithoutFinalize stream,
+                    URIWithoutFinalize formatURI,
+                    URIWithoutFinalize baseURI)
+    {
+        if(rasqal_query_write(stream.handle, handle, formatURI.handle, baseURI.handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Query {
@@ -61,5 +77,5 @@ struct Query {
                         rasqal_free_query);
 }
 
-// TODO: Stopped at Set_Wildcard
+// TODO: Stopped at Write_Escaped_String
 
