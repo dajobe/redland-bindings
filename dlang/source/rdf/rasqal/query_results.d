@@ -198,8 +198,8 @@ public:
     this(QueryResultsWithoutFinalize obj) {
         this.obj = obj;
     }
-    bool empty() { return obj.finished(); }
-    QueryResultsRange front() { return this; } // return itself
+    @property bool empty() { return obj.finished(); }
+    @property QueryResultsRange front() { return this; } // return itself
     void popFront() { obj.next(); }
     // TODO: empty()
     string getBindingName(uint offset) {
@@ -221,8 +221,8 @@ public:
     this(QueryResultsWithoutFinalize obj) {
         this.obj = obj;
     }
-    bool empty() { return obj.finished(); }
-    Statement front() { return triple(); }
+    @property bool empty() { return obj.finished(); }
+    @property Statement front() { return triple(); }
     void popFront() { obj.nextTriple(); }
     Statement triple() { return obj.triple(); }
     void rewind() { obj.rewind(); }
@@ -236,8 +236,8 @@ public:
     this(QueryResultsWithoutFinalize obj) {
         this.obj = obj;
     }
-    bool empty() { return count == obj.bindingsCount; }
-    string front() { return name; }
+    @property bool empty() { return count == obj.bindingsCount; }
+    @property string front() { return name; }
     void popFront() { ++count; }
     @property string name() { return obj.getBindingName(count); }
 }
