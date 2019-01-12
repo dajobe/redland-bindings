@@ -59,11 +59,11 @@ struct QueryWithoutFinalize {
 //        addDataGraph(detach(Graph));
 //    }
     void addDataGraphs(DataGraphWithoutFinalize[] graphs) {
-        foreach(DataGraphWithoutFinalize dg; graphs) addDataGraph(dg);
+        foreach(dg; graphs) addDataGraph(dg);
     }
     // TODO:
 //    void addDataGraphsDetach(DataGraphWithoutFinalize[] graphs) {
-//        foreach(DataGraphWithoutFinalize dg; graphs) addDataGraphDetach(dg);
+//        foreach(dg; graphs) addDataGraphDetach(dg);
 //    }
     // FIXME: Check return type ("without finalize") and the struct after `return` of execute() (here and in Ada):
     QueryResultsWithoutFinalize execute() {
