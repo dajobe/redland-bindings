@@ -1,10 +1,11 @@
-module rdf.rasqal.uri;
+module rdf.redland.uri;
 
 import std.string;
 import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 static import rdf.raptor.uri;
 import rdf.redland.memory;
+import rdf.redland.world;
 
 struct URIHandle;
 
@@ -17,6 +18,9 @@ private extern extern(C) {
     int librdf_uri_compare(URIHandle* first_uri, URIHandle* second_uri);
     int librdf_uri_is_file_uri(URIHandle* uri);
     const(char*) librdf_uri_to_filename(URIHandle* uri);
+    URIHandle* librdf_get_concept_ms_namespace     (RedlandWorldHandle* world);
+    URIHandle* librdf_get_concept_schema_namespace (RedlandWorldHandle* world);
+    URIHandle* librdf_new_uri2(RedlandWorldHandle* world, const char *uri_string, size_t length);
 }
 
 struct URIWithoutFinalize {
@@ -52,15 +56,22 @@ struct URI {
                         URI,
                         librdf_free_uri);
     mixin CompareHandles!(librdf_uri_equals, librdf_uri_compare);
-    static URIWithoutFinalize fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) { // FIXME: WithoutFinalize?
+    static URIWithoutFinalize fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) { // FIXME: WithoutFinalize? // FIXME: Move to other struct?
         return URI.fromHandle(cast(URIHandle*)uri.handle);
+    }
+    static URI fromString(RedlandWorldWithoutFinalize world, string uri) {
+        return fromNonnullHandle(librdf_new_uri2(world.handle, uri.ptr, uri.length));
     }
 }
 
 // From http://librdf.org/docs/api/redland-concepts.html:
-// TODO:
-//URIWithoutFinalize conceptMsNamespace(RedlandWorldWithoutFinalize world)
-//URIWithoutFinalize conceptSchemaNamespace(RedlandWorldWithoutFinalize world)
+URIWithoutFinalize conceptMsNamespace(RedlandWorldWithoutFinalize world) {
+    return URIWithoutFinalize.fromNonnullHandle(librdf_get_concept_ms_namespace(world.handle));
+}
 
-// TODO: Stopped at Concept_Ms_Namespace
+URIWithoutFinalize conceptSchemaNamespace(RedlandWorldWithoutFinalize world) {
+    return URIWithoutFinalize.fromNonnullHandle(librdf_get_concept_schema_namespace(world.handle));
+}
+
+// TODO: Stopped at From_URI_Local_Name
 
