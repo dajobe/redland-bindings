@@ -14,10 +14,10 @@ package RDF.Redland.URI is
 
    overriding procedure Finalize_Handle (Object: URI_Type_Without_Finalize; Handle: URI_Handle);
 
-   -- FIXME: URI_Type_Without_Finalize -> URI_Type
+   -- FIXME: URI_Type_Without_Finalize -> URI_Type? (also in D)
    function To_Raptor (URI: URI_Type_Without_Finalize'Class) return RDF.Raptor.URI.URI_Type_Without_Finalize;
 
-   -- FIXME: URI_Type_Without_Finalize -> URI_Type
+   -- FIXME: URI_Type_Without_Finalize -> URI_Type? (also in D)
    not overriding function From_Raptor (URI: RDF.Raptor.URI.URI_Type_Without_Finalize'Class) return URI_Type_Without_Finalize;
 
    not overriding function As_String (URI: URI_Type_Without_Finalize) return String;
