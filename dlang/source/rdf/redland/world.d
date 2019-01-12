@@ -8,6 +8,11 @@ private extern extern(C) {
     void librdf_free_world(RedlandWorldHandle* world);
 }
 
+enum {
+    featureGenidBase = "http://feature.librdf.org/genid-base",
+    featureGenidCounter = "http://feature.librdf.org/genid-counter",
+}
+
 struct RedlandWorldWithoutFinalize {
     mixin WithoutFinalize!(RedlandWorldHandle,
                            RedlandWorldWithoutFinalize,
@@ -20,4 +25,6 @@ struct RedlandWorld {
                         RedlandWorld,
                         librdf_free_world);
 }
+
+// TODO: Stopped at Finalize_Handle
 
