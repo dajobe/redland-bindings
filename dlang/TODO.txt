@@ -22,8 +22,6 @@ rdf-redland-query_results.adb
 rdf-redland-query_results.ads
 rdf-redland-serializer.adb
 rdf-redland-serializer.ads
-rdf-redland-statement.adb
-rdf-redland-statement.ads
 rdf-redland-storage.adb
 rdf-redland-storage.ads
 rdf-redland-stream.adb

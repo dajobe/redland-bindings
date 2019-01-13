@@ -3,6 +3,7 @@ module rdf.redland.statement;
 import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 static import rdf.raptor.statement;
+import rdf.raptor.iostream;
 import rdf.redland.world;
 import rdf.redland.node;
 
@@ -33,6 +34,18 @@ private extern extern(C) {
                                     StatementHandle* statement,
                                     char *buffer,
                                     size_t length);
+    size_t librdf_statement_encode_parts2(RedlandWorldHandle* world,
+                                          StatementHandle* statement,
+                                          NodeHandle* context_node,
+                                          char *buffer,
+                                          size_t length,
+                                          StatementPartFlags fields);
+    int librdf_statement_write(StatementHandle* statement, IOStreamHandle* iostr);
+    StatementHandle* librdf_new_statement(RedlandWorldHandle* world);
+    StatementHandle* librdf_new_statement_from_nodes(RedlandWorldHandle* world,
+                                                     NodeHandle* subject,
+                                                     NodeHandle* predicate,
+                                                     NodeHandle* object);
 }
 
 struct StatementWithoutFinalize {
@@ -86,6 +99,33 @@ struct StatementWithoutFinalize {
         cast(void)librdf_statement_encode2(world.handle, handle, buffer.ptr, length);
         return buffer.idup; // TODO: Is duplication really needed?
     }
+    string encodeParts(RedlandWorldWithoutFinalize world,
+                       StatementWithoutFinalize statement,
+                       NodeWithoutFinalize contextNode,
+                       StatementPartFlags fields)
+    {
+        size_t length = librdf_statement_encode_parts2(world.handle,
+                                                       handle,
+                                                       contextNode.handle,
+                                                       null,
+                                                       0,
+                                                       fields);
+        char[] buffer = new char[length];
+        cast(void)librdf_statement_encode_parts2(world.handle,
+                                                 handle,
+                                                 contextNode.handle,
+                                                 buffer.ptr,
+                                                 length,
+                                                 fields);
+        return buffer.idup; // TODO: Is duplication really needed?
+    }
+    // librdf_statement_decode2() not implemented (not so important and somehow hard to do)
+    void Write(IOStreamWithoutFinalize stream) {
+        if(librdf_statement_write(handle, stream.handle) != 0)
+            throw new RDFException();
+    }
+    // librdf_new_statement_from_statement2() not bound.
+    // (It is unclear how this would interact with D copying.)
 }
 
 struct Statement {
@@ -99,7 +139,21 @@ struct Statement {
     static Statement fromRaptor(rdf.raptor.statement.StatementWithoutFinalize uri) { // FIXME: also dup() in Ada
         return StatementWithoutFinalize.fromHandle(cast(StatementHandle*)uri.handle).dup;
     }
+    static Statement create(RedlandWorldWithoutFinalize world) {
+      return fromNonnullHandle(librdf_new_statement(world.handle));
+    }
+    static Statement fromNodes(RedlandWorldWithoutFinalize world,
+                               NodeWithoutFinalize subject,
+                               NodeWithoutFinalize predicate,
+                               NodeWithoutFinalize object)
+    {
+        StatementHandle* handle =
+            librdf_new_statement_from_nodes(world.handle,
+                                            subject.handle,
+                                            predicate.handle,
+                                            object.handle);
+        return fromNonnullHandle(handle);
+    }
+    // librdf_statement_init() not bound because we don't support statistially declared objects. // TODO: Check
 }
-
-// Stopped at Encode_Parts
 
