@@ -15,10 +15,6 @@ alias NodeKind = rdf.raptor.term.TermKind;
 private extern extern(C) {
     void librdf_free_node(NodeHandle* node);
     NodeHandle* librdf_new_node_from_node(NodeHandle* node);
-    NodeHandle* librdf_node_decode(RedlandWorldHandle* world,
-                                   size_t *size_p,
-                                   char *buffer,
-                                   size_t length);
     size_t librdf_node_encode(NodeHandle* node, char *buffer, size_t length);
     int librdf_node_equals(NodeHandle* first_node, NodeHandle* second_node);
     char* librdf_node_get_counted_blank_identifier(NodeHandle* node, size_t *len_p);
@@ -46,6 +42,24 @@ private extern extern(C) {
                                              const char *string,
                                              const char *xml_language,
                                              int is_wf_xml);
+    NodeHandle* librdf_new_node_from_normalised_uri_string(RedlandWorldHandle* world,
+                                                           const char *uri_string,
+                                                           URIHandle* source_uri,
+                                                           URIHandle* base_uri);
+    NodeHandle* librdf_new_node_from_typed_counted_literal(RedlandWorldHandle* world,
+                                                           const char *value,
+                                                           size_t value_len,
+                                                           const char *xml_language,
+                                                           size_t xml_language_len,
+                                                           URIHandle* datatype_uri);
+    NodeHandle* librdf_new_node_from_uri(RedlandWorldHandle* world, URIHandle* uri);
+    NodeHandle* librdf_new_node_from_uri_local_name(RedlandWorldHandle* world,
+                                                    URIHandle* uri,
+                                                    const char *local_name);
+    NodeHandle* librdf_node_decode(RedlandWorldHandle* world,
+                                   size_t *size_p,
+                                   const char *buffer,
+                                   size_t length);
 }
 
 struct NodeWithoutFinalize {
@@ -154,18 +168,57 @@ struct Node {
         return Node.fromNonnullHandle(handle);
     }
     static Node fromLiteral(RedlandWorldWithoutFinalize world,
-                            string Text,
-                            string Language,
+                            string text,
+                            string language,
                             bool isXML = false)
     {
         NodeHandle* handle =
             librdf_new_node_from_literal(world.handle,
-                                         Text.toStringz,
-                                         Language.toStringz,
+                                         text.toStringz,
+                                         language.toStringz,
                                          isXML ? 1 : 0);
         return Node.fromNonnullHandle(handle);
     }
+    static fromNormalisedURIString(RedlandWorldWithoutFinalize world,
+                                   string uri,
+                                   URIWithoutFinalize sourceURI,
+                                   URIWithoutFinalize baseURI)
+    {
+        NodeHandle* handle =
+            librdf_new_node_from_normalised_uri_string(world.handle,
+                                                       uri.toStringz,
+                                                       sourceURI.handle,
+                                                       baseURI.handle);
+        return Node.fromNonnullHandle(handle);
+    }
+    static fromTypedLiteral(RedlandWorldWithoutFinalize world,
+                            string text,
+                            string language,
+                            URIWithoutFinalize datatype)
+    {
+        NodeHandle* handle =
+            librdf_new_node_from_typed_counted_literal(world.handle,
+                                                       text.ptr,
+                                                       text.length,
+                                                       language.ptr,
+                                                       language.length,
+                                                       datatype.handle);
+        return Node.fromNonnullHandle(handle);
+    }
+    static Node fromURI(RedlandWorldWithoutFinalize world, URIWithoutFinalize uri) {
+        return Node.fromNonnullHandle(librdf_new_node_from_uri(world.handle, uri.handle));
+    }
+    static Node fromURILocalName(RedlandWorldWithoutFinalize world,
+                                 URIWithoutFinalize uri,
+                                 string localName)
+    {
+        NodeHandle* handle =
+            librdf_new_node_from_uri_local_name(world.handle, uri.handle, localName.toStringz);
+        return Node.fromNonnullHandle(handle);
+    }
+    static Node decode(RedlandWorldWithoutFinalize world, string buffer) {
+        NodeHandle* handle = librdf_node_decode(world.handle, null, buffer.ptr, buffer.length);
+        return Node.fromNonnullHandle(handle);
+    }
 }
-
-// TODO: Stopped at From_Normalised_URI_String
 

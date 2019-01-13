@@ -94,6 +94,7 @@ package RDF.Redland.Node is
                                                        Source_URI, Base_URI: URI_Type_Without_Finalize'Class)
                                                        return Node_Type;
 
+   -- FIXME: It does not correspond to .adb file
    not overriding function From_Typed_Literal (World: Redland_World_Type_Without_Finalize'Class;                                               Text: String;
                                                Language: String;
                                                Datatype: URI_Type_Without_Finalize'Class)

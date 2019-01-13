@@ -12,8 +12,6 @@ rdf-redland-log.adb
 rdf-redland-log.ads
 rdf-redland-model.adb
 rdf-redland-model.ads
-rdf-redland-node.adb
-rdf-redland-node.ads
 rdf-redland-node_iterator.adb
 rdf-redland-node_iterator.ads
 rdf-redland-parser.adb
