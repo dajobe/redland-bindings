@@ -19,6 +19,7 @@ private extern extern(C) {
     int librdf_node_equals(NodeHandle* first_node, NodeHandle* second_node);
     char* librdf_node_get_counted_blank_identifier(NodeHandle* node, size_t *len_p);
     int librdf_node_get_li_ordinal(NodeHandle* node);
+    char* librdf_node_get_literal_value_as_counted_string(NodeHandle* node, size_t *len_p);
 }
 
 struct NodeWithoutFinalize {
@@ -48,6 +49,12 @@ struct NodeWithoutFinalize {
         if(result <= 0) throw new RDFException();
         return result;
     }
+    string toString() {
+        size_t length;
+        char* buffer = librdf_node_get_literal_value_as_counted_string(handle, &length);
+        if(!buffer) throw new RDFException();
+        return buffer[0..length].idup;
+    }
 }
 
 struct Node {
@@ -63,5 +70,5 @@ struct Node {
     }
 }
 
-// TODO: Stopped at As_String
+// TODO: Stopped at As_Latin1
 
