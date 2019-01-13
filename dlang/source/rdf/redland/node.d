@@ -16,6 +16,7 @@ private extern extern(C) {
                                    char *buffer,
                                    size_t length);
     size_t librdf_node_encode(NodeHandle* node, char *buffer, size_t length);
+    int librdf_node_equals(NodeHandle* first_node, NodeHandle* second_node);
 }
 
 struct NodeWithoutFinalize {
@@ -32,6 +33,9 @@ struct NodeWithoutFinalize {
         cast(void)librdf_node_encode(handle, buffer.ptr, length);
         return cast(string)buffer;
     }
+    bool opEquals(NodeWithoutFinalize other) {
+        return librdf_node_equals(handle, other.handle) != 0;
+    }
 }
 
 struct Node {
@@ -42,7 +46,10 @@ struct Node {
     static Node fromRaptor(rdf.raptor.term.TermWithoutFinalize uri) { // FIXME: also dup() in Ada
         return NodeWithoutFinalize.fromHandle(cast(NodeHandle*)uri.handle).dup;
     }
+    bool opEquals(NodeWithoutFinalize other) {
+        return librdf_node_equals(handle, other.handle) != 0;
+    }
 }
 
-// TODO: Stopped at Equals
+// TODO: Stopped at Get_Blank_Identifier
 
