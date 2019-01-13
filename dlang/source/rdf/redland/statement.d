@@ -6,6 +6,12 @@ import rdf.redland.world;
 
 struct StatementHandle;
 
+enum StatementPartFlags {
+   SubjectPart   = 1,
+   PredicatePart = 2,
+   ObjectPart    = 4,
+   AllParts      = SubjectPart | PredicatePart | ObjectPart }
+
 private extern extern(C) {
     void librdf_free_statement(StatementHandle* statement);
     StatementHandle* librdf_new_statement_from_statement(StatementHandle* statement);
@@ -32,5 +38,5 @@ struct Statement {
     }
 }
 
-// Stopped at Statement_Part_Flags
+// Stopped at Clear
 
