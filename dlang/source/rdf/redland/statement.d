@@ -29,6 +29,10 @@ private extern extern(C) {
     void librdf_statement_print(StatementHandle* statement, FILE *fh);
     int librdf_statement_equals(StatementHandle* statement1, StatementHandle* statement2);
     int librdf_statement_match(StatementHandle* statement, StatementHandle* partial_statement);
+    size_t librdf_statement_encode2(RedlandWorldHandle* world,
+                                    StatementHandle* statement,
+                                    char *buffer,
+                                    size_t length);
 }
 
 struct StatementWithoutFinalize {
@@ -76,6 +80,12 @@ struct StatementWithoutFinalize {
     bool matches(StatementWithoutFinalize full) {
         return full.matchedBy(this);
     }
+    string encode(RedlandWorldWithoutFinalize world) {
+        size_t length = librdf_statement_encode2(world.handle, handle, null, 0);
+        char[] buffer = new char[length];
+        cast(void)librdf_statement_encode2(world.handle, handle, buffer.ptr, length);
+        return buffer.idup; // TODO: Is duplication really needed?
+    }
 }
 
 struct Statement {
@@ -86,11 +96,10 @@ struct Statement {
     bool opEquals(Statement other) {
         return librdf_statement_equals(handle, other.handle) != 0;
     }
-
     static Statement fromRaptor(rdf.raptor.statement.StatementWithoutFinalize uri) { // FIXME: also dup() in Ada
         return StatementWithoutFinalize.fromHandle(cast(StatementHandle*)uri.handle).dup;
     }
 }
 
-// Stopped at Encode
+// Stopped at Encode_Parts
 
