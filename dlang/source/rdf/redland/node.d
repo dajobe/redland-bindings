@@ -42,6 +42,10 @@ private extern extern(C) {
     NodeHandle* librdf_new_node_from_counted_uri_string(RedlandWorldHandle* world,
                                                         const char *uri_string,
                                                         size_t len);
+    NodeHandle* librdf_new_node_from_literal(RedlandWorldHandle* world,
+                                             const char *string,
+                                             const char *xml_language,
+                                             int is_wf_xml);
 }
 
 struct NodeWithoutFinalize {
@@ -149,7 +153,19 @@ struct Node {
             librdf_new_node_from_counted_uri_string(world.handle, uriString.ptr, uriString.length);
         return Node.fromNonnullHandle(handle);
     }
+    static Node fromLiteral(RedlandWorldWithoutFinalize world,
+                            string Text,
+                            string Language,
+                            bool isXML = false)
+    {
+        NodeHandle* handle =
+            librdf_new_node_from_literal(world.handle,
+                                         Text.toStringz,
+                                         Language.toStringz,
+                                         isXML ? 1 : 0);
+        return Node.fromNonnullHandle(handle);
+    }
 }
 
-// TODO: Stopped at From_Literal
+// TODO: Stopped at From_Normalised_URI_String
 
