@@ -17,6 +17,8 @@ private extern extern(C) {
                                    size_t length);
     size_t librdf_node_encode(NodeHandle* node, char *buffer, size_t length);
     int librdf_node_equals(NodeHandle* first_node, NodeHandle* second_node);
+    char* librdf_node_get_counted_blank_identifier(NodeHandle* node, size_t *len_p);
+    int librdf_node_get_li_ordinal(NodeHandle* node);
 }
 
 struct NodeWithoutFinalize {
@@ -36,6 +38,16 @@ struct NodeWithoutFinalize {
     bool opEquals(NodeWithoutFinalize other) {
         return librdf_node_equals(handle, other.handle) != 0;
     }
+    @property string blankIdentifier() {
+        size_t length;
+        char* buffer = librdf_node_get_counted_blank_identifier(handle, &length);
+        return buffer[0..length].idup;
+    }
+    @property uint liOrdinal() {
+        int result = librdf_node_get_li_ordinal(handle);
+        if(result <= 0) throw new RDFException();
+        return result;
+    }
 }
 
 struct Node {
@@ -51,5 +63,5 @@ struct Node {
     }
 }
 
-// TODO: Stopped at Get_Blank_Identifier
+// TODO: Stopped at As_String
 
