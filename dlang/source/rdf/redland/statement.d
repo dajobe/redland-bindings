@@ -1,5 +1,6 @@
 module rdf.redland.statement;
 
+import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 static import rdf.raptor.statement;
 import rdf.redland.world;
@@ -25,6 +26,7 @@ private extern extern(C) {
     void librdf_statement_set_object(StatementHandle* statement, NodeHandle* node);
     NodeHandle* librdf_new_node_from_node(NodeHandle* node);
     int librdf_statement_is_complete(StatementHandle* statement);
+    void librdf_statement_print(StatementHandle* statement, FILE *fh);
 }
 
 struct StatementWithoutFinalize {
@@ -60,6 +62,9 @@ struct StatementWithoutFinalize {
     @property bool isComplete() {
         return librdf_statement_is_complete(handle) != 0;
     }
+    void print(File file) {
+        librdf_statement_print(handle, file.getFP);
+    }
 }
 
 struct Statement {
@@ -72,5 +77,5 @@ struct Statement {
     }
 }
 
-// Stopped at Print
+// Stopped at Equals
 
