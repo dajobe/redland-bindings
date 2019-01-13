@@ -317,6 +317,7 @@ package body RDF.Redland.Node is
    function Is_Resource (Node: Node_Type_Without_Finalize) return Boolean is
       (librdf_node_is_resource(Get_Handle(Node)) /= 0);
 
+   -- FIXME: File argument forgotten
    procedure librdf_node_print (Node: Node_Handle)
      with Import, Convention=>C;
 

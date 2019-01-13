@@ -1,7 +1,9 @@
 module rdf.redland.node;
 
 import std.string;
+import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
+import rdf.raptor.iostream;
 static import rdf.raptor.term;
 import rdf.redland.world;
 import rdf.redland.uri;
@@ -31,6 +33,8 @@ private extern extern(C) {
     int librdf_node_is_blank(NodeHandle* node);
     int librdf_node_is_literal(NodeHandle* node);
     int librdf_node_is_resource(NodeHandle* node);
+    void librdf_node_print(NodeHandle* node, FILE *fh);
+    int librdf_node_write(NodeHandle* node, IOStreamHandle* iostr);
 }
 
 struct NodeWithoutFinalize {
@@ -98,6 +102,13 @@ struct NodeWithoutFinalize {
         return librdf_node_is_resource(handle) != 0;
     }
     // librdf_node_write() deliberately not bound
+    void print(File file) {
+        librdf_node_print(handle, file.getFP);
+    }
+    void write(IOStreamWithoutFinalize stream) {
+        if(librdf_node_write(handle, stream.handle) != 0)
+             throw new RDFException();
+    }
 }
 
 struct Node {
@@ -113,5 +124,5 @@ struct Node {
     }
 }
 
-// TODO: Stopped at Print
+// TODO: Stopped at Format_As_String
 
