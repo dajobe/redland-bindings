@@ -26,6 +26,8 @@ private extern extern(C) {
     URIHandle* librdf_node_get_literal_value_datatype_uri(NodeHandle* node);
     int librdf_node_get_literal_value_is_wf_xml(NodeHandle* node);
     char* librdf_node_get_literal_value_language(NodeHandle* node);
+    NodeKind librdf_node_get_type(NodeHandle* node);
+    URIHandle* librdf_node_get_uri(NodeHandle* node);
 }
 
 struct NodeWithoutFinalize {
@@ -77,6 +79,12 @@ struct NodeWithoutFinalize {
         char* ptr = librdf_node_get_literal_value_language(handle);
         return ptr ? ptr.fromStringz.idup : "";
     }
+    @property NodeKind type() {
+        return librdf_node_get_type(handle);
+    }
+    @property URIWithoutFinalize uri() {
+        return URIWithoutFinalize.fromNonnullHandle(librdf_node_get_uri(handle));
+    }
 }
 
 struct Node {
@@ -92,5 +100,5 @@ struct Node {
     }
 }
 
-// TODO: Stopped at Get_Type
+// TODO: Stopped at Is_Blank
 
