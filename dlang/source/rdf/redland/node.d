@@ -149,7 +149,7 @@ struct Node {
     static Node fromRaptor(rdf.raptor.term.TermWithoutFinalize uri) { // FIXME: also dup() in Ada
         return NodeWithoutFinalize.fromHandle(cast(NodeHandle*)uri.handle).dup;
     }
-    bool opEquals(NodeWithoutFinalize other) {
+    bool opEquals(Node other) {
         return librdf_node_equals(handle, other.handle) != 0;
     }
     static Node create(RedlandWorldWithoutFinalize world) {

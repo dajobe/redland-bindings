@@ -27,6 +27,7 @@ private extern extern(C) {
     NodeHandle* librdf_new_node_from_node(NodeHandle* node);
     int librdf_statement_is_complete(StatementHandle* statement);
     void librdf_statement_print(StatementHandle* statement, FILE *fh);
+    int librdf_statement_equals(StatementHandle* statement1, StatementHandle* statement2);
 }
 
 struct StatementWithoutFinalize {
@@ -34,6 +35,9 @@ struct StatementWithoutFinalize {
                            StatementWithoutFinalize,
                            Statement,
                            librdf_new_statement_from_statement);
+    bool opEquals(StatementWithoutFinalize other) {
+        return librdf_statement_equals(handle, other.handle) != 0;
+    }
     @property rdf.raptor.statement.Statement toRaptor() { // FIXME: also dup() in Ada
       return rdf.raptor.statement.StatementWithoutFinalize.fromHandle(
         cast(rdf.raptor.statement.StatementHandle*)handle).dup;
@@ -72,10 +76,14 @@ struct Statement {
                         StatementWithoutFinalize,
                         Statement,
                         librdf_free_statement);
+    bool opEquals(Statement other) {
+        return librdf_statement_equals(handle, other.handle) != 0;
+    }
+
     static Statement fromRaptor(rdf.raptor.statement.StatementWithoutFinalize uri) { // FIXME: also dup() in Ada
         return StatementWithoutFinalize.fromHandle(cast(StatementHandle*)uri.handle).dup;
     }
 }
 
-// Stopped at Equals
+// Stopped at Match
 
