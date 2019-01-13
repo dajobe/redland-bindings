@@ -24,6 +24,7 @@ private extern extern(C) {
     NodeHandle* librdf_statement_get_object(StatementHandle* statement);
     void librdf_statement_set_object(StatementHandle* statement, NodeHandle* node);
     NodeHandle* librdf_new_node_from_node(NodeHandle* node);
+    int librdf_statement_is_complete(StatementHandle* statement);
 }
 
 struct StatementWithoutFinalize {
@@ -56,6 +57,9 @@ struct StatementWithoutFinalize {
     @property void object(NodeWithoutFinalize node) {
         librdf_statement_set_object(handle, librdf_new_node_from_node(node.handle));
     }
+    @property bool isComplete() {
+        return librdf_statement_is_complete(handle) != 0;
+    }
 }
 
 struct Statement {
@@ -68,5 +72,5 @@ struct Statement {
     }
 }
 
-// Stopped at Is_Complete
+// Stopped at Print
 
