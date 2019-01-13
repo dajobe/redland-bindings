@@ -28,6 +28,7 @@ private extern extern(C) {
     int librdf_statement_is_complete(StatementHandle* statement);
     void librdf_statement_print(StatementHandle* statement, FILE *fh);
     int librdf_statement_equals(StatementHandle* statement1, StatementHandle* statement2);
+    int librdf_statement_match(StatementHandle* statement, StatementHandle* partial_statement);
 }
 
 struct StatementWithoutFinalize {
@@ -69,6 +70,12 @@ struct StatementWithoutFinalize {
     void print(File file) {
         librdf_statement_print(handle, file.getFP);
     }
+    bool matchedBy(StatementWithoutFinalize partial) {
+        return librdf_statement_match(handle, partial.handle) != 0;
+    }
+    bool matches(StatementWithoutFinalize full) {
+        return full.matchedBy(this);
+    }
 }
 
 struct Statement {
@@ -85,5 +92,5 @@ struct Statement {
     }
 }
 
-// Stopped at Match
+// Stopped at Encode
 
