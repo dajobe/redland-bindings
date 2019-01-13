@@ -25,6 +25,7 @@ private extern extern(C) {
     char* librdf_node_get_literal_value_as_latin1(NodeHandle* node);
     URIHandle* librdf_node_get_literal_value_datatype_uri(NodeHandle* node);
     int librdf_node_get_literal_value_is_wf_xml(NodeHandle* node);
+    char* librdf_node_get_literal_value_language(NodeHandle* node);
 }
 
 struct NodeWithoutFinalize {
@@ -71,6 +72,11 @@ struct NodeWithoutFinalize {
     @property isWFXML() {
         return librdf_node_get_literal_value_is_wf_xml(handle) != 0;
     }
+    /// Return "" if no language
+    @property string language() {
+        char* ptr = librdf_node_get_literal_value_language(handle);
+        return ptr ? ptr.fromStringz.idup : "";
+    }
 }
 
 struct Node {
@@ -86,5 +92,5 @@ struct Node {
     }
 }
 
-// TODO: Stopped at Get_Language
+// TODO: Stopped at Get_Type
 
