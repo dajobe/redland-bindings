@@ -28,6 +28,9 @@ private extern extern(C) {
     char* librdf_node_get_literal_value_language(NodeHandle* node);
     NodeKind librdf_node_get_type(NodeHandle* node);
     URIHandle* librdf_node_get_uri(NodeHandle* node);
+    int librdf_node_is_blank(NodeHandle* node);
+    int librdf_node_is_literal(NodeHandle* node);
+    int librdf_node_is_resource(NodeHandle* node);
 }
 
 struct NodeWithoutFinalize {
@@ -85,6 +88,16 @@ struct NodeWithoutFinalize {
     @property URIWithoutFinalize uri() {
         return URIWithoutFinalize.fromNonnullHandle(librdf_node_get_uri(handle));
     }
+    @property bool isBlank() {
+        return librdf_node_is_blank(handle) != 0;
+    }
+    @property bool isLiteral() {
+        return librdf_node_is_literal(handle) != 0;
+    }
+    @property bool isResource() {
+        return librdf_node_is_resource(handle) != 0;
+    }
+    // librdf_node_write() deliberately not bound
 }
 
 struct Node {
@@ -100,5 +113,5 @@ struct Node {
     }
 }
 
-// TODO: Stopped at Is_Blank
+// TODO: Stopped at Print
 
