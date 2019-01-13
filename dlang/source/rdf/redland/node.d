@@ -35,6 +35,10 @@ private extern extern(C) {
     int librdf_node_is_resource(NodeHandle* node);
     void librdf_node_print(NodeHandle* node, FILE *fh);
     int librdf_node_write(NodeHandle* node, IOStreamHandle* iostr);
+    NodeHandle* librdf_new_node(RedlandWorldHandle* world);
+    NodeHandle* librdf_new_node_from_counted_blank_identifier(RedlandWorldHandle* world,
+                                                              const char *identifier,
+                                                              size_t identifier_len);
 }
 
 struct NodeWithoutFinalize {
@@ -127,7 +131,17 @@ struct Node {
     bool opEquals(NodeWithoutFinalize other) {
         return librdf_node_equals(handle, other.handle) != 0;
     }
+    static Node create(RedlandWorldWithoutFinalize world) {
+        return Node.fromNonnullHandle(librdf_new_node(world.handle));
+    }
+    /// "No identifier" is signified by empty string
+    static Node fromBlankIdentifier(RedlandWorldWithoutFinalize world, string id) {
+        const char* ptr = id == "" ? null : id.ptr;
+        NodeHandle* handle =
+            librdf_new_node_from_counted_blank_identifier(world.handle, ptr, id.length);
+        return Node.fromNonnullHandle(handle);
+    }
 }
 
-// TODO: Stopped at Create
+// TODO: Stopped at From_URI_String
 
