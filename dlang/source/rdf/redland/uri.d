@@ -35,8 +35,8 @@ struct URIWithoutFinalize {
                            URI,
                            librdf_new_uri_from_uri);
     mixin CompareHandles!(librdf_uri_equals, librdf_uri_compare);
-    @property rdf.raptor.uri.URIWithoutFinalize toRaptor() {
-      return rdf.raptor.uri.URI.fromHandle(cast(rdf.raptor.uri.URIHandle*)handle);
+    @property rdf.raptor.uri.URI toRaptor() { // FIXME: also dup() in Ada
+      return rdf.raptor.uri.URIWithoutFinalize.fromHandle(cast(rdf.raptor.uri.URIHandle*)handle).dup;
     }
     string toString() {
       size_t length;
@@ -62,8 +62,8 @@ struct URI {
                         URI,
                         librdf_free_uri);
     mixin CompareHandles!(librdf_uri_equals, librdf_uri_compare);
-    static URIWithoutFinalize fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) { // FIXME: WithoutFinalize? // FIXME: Move to other struct?
-        return URI.fromHandle(cast(URIHandle*)uri.handle);
+    static URI fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) { // FIXME: also dup() in Ada // FIXME: Move to other struct?
+        return URIWithoutFinalize.fromHandle(cast(URIHandle*)uri.handle).dup;
     }
     static URI fromString(RedlandWorldWithoutFinalize world, string uri) {
         return fromNonnullHandle(librdf_new_uri2(world.handle, uri.ptr, uri.length));
