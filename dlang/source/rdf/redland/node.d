@@ -1,8 +1,10 @@
 module rdf.redland.node;
 
+import std.string;
 import rdf.auxiliary.handled_record;
 static import rdf.raptor.term;
 import rdf.redland.world;
+import rdf.redland.uri;
 
 struct NodeHandle;
 
@@ -20,6 +22,9 @@ private extern extern(C) {
     char* librdf_node_get_counted_blank_identifier(NodeHandle* node, size_t *len_p);
     int librdf_node_get_li_ordinal(NodeHandle* node);
     char* librdf_node_get_literal_value_as_counted_string(NodeHandle* node, size_t *len_p);
+    char* librdf_node_get_literal_value_as_latin1(NodeHandle* node);
+    URIHandle* librdf_node_get_literal_value_datatype_uri(NodeHandle* node);
+    int librdf_node_get_literal_value_is_wf_xml(NodeHandle* node);
 }
 
 struct NodeWithoutFinalize {
@@ -55,6 +60,17 @@ struct NodeWithoutFinalize {
         if(!buffer) throw new RDFException();
         return buffer[0..length].idup;
     }
+    string asLatin1() {
+        char* result = librdf_node_get_literal_value_as_latin1(handle);
+        if(!result) throw new RDFException();
+        return result.fromStringz.idup;
+    }
+    @property URIWithoutFinalize datatypeURI() {
+        return URIWithoutFinalize.fromHandle(librdf_node_get_literal_value_datatype_uri(handle));
+    }
+    @property isWFXML() {
+        return librdf_node_get_literal_value_is_wf_xml(handle) != 0;
+    }
 }
 
 struct Node {
@@ -70,5 +86,5 @@ struct Node {
     }
 }
 
-// TODO: Stopped at As_Latin1
+// TODO: Stopped at Get_Language
 
