@@ -109,6 +109,11 @@ struct NodeWithoutFinalize {
         if(librdf_node_write(handle, stream.handle) != 0)
              throw new RDFException();
     }
+    string formatAsString() {
+        StreamToString stream;
+        write(stream.record);
+        return stream.value();
+    }
 }
 
 struct Node {
@@ -124,5 +129,5 @@ struct Node {
     }
 }
 
-// TODO: Stopped at Format_As_String
+// TODO: Stopped at Create
 
