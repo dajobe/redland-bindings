@@ -21,3 +21,5 @@ struct Query {
                         librdf_free_query);
 }
 
+// TODO: Stopped at Get_Query_Language_Description
+
