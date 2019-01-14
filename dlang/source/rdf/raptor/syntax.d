@@ -76,7 +76,7 @@ public:
         this._world = world;
     }
     @property uint position() { return _pos; }
-    @property const ref front() {
+    @property ref const(SyntaxDescription) front() {
         return *raptor_world_get_parser_description(_world.handle, _pos);
     }
     @property bool empty() {

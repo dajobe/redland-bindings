@@ -9,8 +9,6 @@ rdf-redland-model.adb
 rdf-redland-model.ads
 rdf-redland-parser.adb
 rdf-redland-parser.ads
-rdf-redland-query.adb
-rdf-redland-query.ads
 rdf-redland-query_results.adb
 rdf-redland-query_results.ads
 rdf-redland-serializer.adb
