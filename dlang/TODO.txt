@@ -8,8 +8,6 @@ The following Ada sources were not yet translated into D:
 rdf-redland.ads
 rdf-redland-iterator.adb
 rdf-redland-iterator.ads
-rdf-redland-log.adb
-rdf-redland-log.ads
 rdf-redland-model.adb
 rdf-redland-model.ads
 rdf-redland-node_iterator.adb

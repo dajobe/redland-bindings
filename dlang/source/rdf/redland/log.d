@@ -1,7 +1,9 @@
 module rdf.redland.log;
 
 import std.string;
+import rdf.auxiliary.user;
 import rdf.raptor.log;
+import rdf.redland.world;
 
 struct LogMessageHandle;
 
@@ -39,9 +41,13 @@ private extern extern(C) {
     LogFacility librdf_log_message_facility(LogMessageHandle* message);
     const(char*) librdf_log_message_message(LogMessageHandle* message);
     LocatorHandle* librdf_log_message_locator(LogMessageHandle* message);
+    alias librdf_log_func = int function(void *user_data, LogMessageHandle* message);
+
+    void librdf_world_set_logger(RedlandWorldHandle* world, void *user_data,
+                                                         librdf_log_func log_handler);
 }
 
-struct LogMessageType {
+struct LogMessage {
 private:
     LogMessageHandle* handle;
 public:
@@ -53,6 +59,17 @@ public:
     }
     @property Locator locator() {
         return Locator.fromHandle(librdf_log_message_locator(handle));
+    }
+}
+
+class LogHandler : UnmovableObject {
+    this(RedlandWorldWithoutFinalize world) {
+        librdf_world_set_logger(world.handle, cast(void*)this, &our_handler);
+    }
+    abstract void handle(LogMessage message);
+    private static extern(C) int our_handler(void *user_data, LogMessageHandle* message) {
+        (cast(LogHandler*)user_data).handle(LogMessage(message));
+        return 1;
     }
 }
 
