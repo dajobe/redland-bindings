@@ -40,6 +40,8 @@ private extern extern(C) {
     int librdf_query_results_is_boolean(QueryResultsHandle* query_results);
     int librdf_query_results_is_graph(QueryResultsHandle* query_results);
     int librdf_query_results_is_syntax(QueryResultsHandle* query_results);
+    int librdf_query_results_get_boolean(QueryResultsHandle* query_results);
+    // I was lazy to implement query_results_formatter and related functions
 }
 
 struct QueryResultsWithoutFinalize {
@@ -119,6 +121,11 @@ struct QueryResultsWithoutFinalize {
     @property bool isBoolean() { return librdf_query_results_is_boolean(handle) != 0; }
     @property bool isGraph() { return librdf_query_results_is_graph(handle) != 0; }
     @property bool isSyntax() { return librdf_query_results_is_syntax(handle) != 0; }
+    @property bool boolean() {
+        int result = librdf_query_results_get_boolean(handle);
+        if(result < 0) throw new RDFException();
+        return result != 0;
+    }
 }
 
 struct QueryResults {
@@ -128,5 +135,5 @@ struct QueryResults {
                         librdf_free_query_results);
 }
 
-// TODO: Stopped at Get_Boolean
+// TODO: Stopped at Cursor
 
