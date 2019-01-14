@@ -56,5 +56,3 @@ struct Iterator {
     }
 }
 
-// TODO: Stopped at Get_Object_Internal
-
