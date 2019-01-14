@@ -51,8 +51,10 @@ public:
     @property string message() {
         return librdf_log_message_message(handle).fromStringz.idup;
     }
-
+    @property Locator locator() {
+        return Locator.fromHandle(librdf_log_message_locator(handle));
+    }
 }
 
-// TODO: Stopped at Get_Locator
+// TODO: Stopped at Log_Handler
 
