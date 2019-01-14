@@ -5,8 +5,6 @@ Also scope and final.
 
 The following Ada sources were not yet translated into D:
 
-rdf-redland-iterator.adb
-rdf-redland-iterator.ads
 rdf-redland-model.adb
 rdf-redland-model.ads
 rdf-redland-node_iterator.adb
