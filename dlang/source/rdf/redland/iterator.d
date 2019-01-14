@@ -10,12 +10,21 @@ struct IteratorHandle;
 
 private extern extern(C) {
     void librdf_free_iterator(IteratorHandle* iterator);
+    int librdf_iterator_end(IteratorHandle* iterator);
+    int librdf_iterator_next(IteratorHandle* iterator);
 }
 
 struct IteratorWithoutFinalize {
     mixin WithoutFinalize!(IteratorHandle,
                            IteratorWithoutFinalize,
                            Iterator);
+    @property bool empty() {
+        return librdf_iterator_end(handle) != 0;
+    }
+    @property IteratorWithoutFinalize front() { return this; }
+    void popFront() {
+        cast(void)librdf_iterator_next(handle);
+    }
 }
 
 struct Iterator {
@@ -24,4 +33,6 @@ struct Iterator {
                         Iterator,
                         librdf_free_iterator);
 }
+
+// TODO: Stopped at Get_Object_Internal
 
