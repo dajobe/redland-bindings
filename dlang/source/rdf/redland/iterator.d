@@ -31,16 +31,16 @@ struct IteratorWithoutFinalize {
     void popFront() {
         cast(void)librdf_iterator_next(handle);
     }
-    @property void* objectInternal() {
+    @property void* _object() {
         return librdf_iterator_get_object(handle);
     }
-    @property void* contextInternal() {
+    @property void* _context() {
         return librdf_iterator_get_context(handle);
     }
-    @property void* keyInternal() {
+    @property void* _key() {
         return librdf_iterator_get_key(handle);
     }
-    @property void* valueInternal() {
+    @property void* _value() {
         return librdf_iterator_get_value(handle);
     }
     // librdf_iterator_add_map() not implemented
