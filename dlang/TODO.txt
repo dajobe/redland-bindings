@@ -17,8 +17,6 @@ rdf-redland-serializer.adb
 rdf-redland-serializer.ads
 rdf-redland-storage.adb
 rdf-redland-storage.ads
-rdf-redland-stream.adb
-rdf-redland-stream.ads
 test/constants_test.adb
 test/constants_test.ads
 test/count_test2.adb

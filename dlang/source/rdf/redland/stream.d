@@ -5,6 +5,7 @@ import rdf.raptor.iostream;
 import rdf.redland.world;
 import rdf.redland.node;
 import rdf.redland.statement;
+import rdf.redland.node_iterator;
 
 // TODO: Necessarily test that it works as expected
 
@@ -18,6 +19,9 @@ private extern extern(C) {
     NodeHandle* librdf_stream_get_context2(StreamHandle* stream);
     int librdf_stream_write(StreamHandle* stream, IOStreamHandle* iostr);
     StreamHandle* librdf_new_empty_stream(RedlandWorldHandle* world);
+    StreamHandle* librdf_new_stream_from_node_iterator(NodeIteratorHandle* iterator,
+                                                       StatementHandle *statement,
+                                                       StatementPartFlags field);
 }
 
 struct StreamWithoutFinalize {
@@ -52,7 +56,13 @@ struct Stream {
     static Stream emptyStream(RedlandWorldWithoutFinalize world) {
         return fromNonnullHandle(librdf_new_empty_stream(world.handle));
     }
+    static Stream fromNodeIterator(NodeIterator iterator,
+                                   StatementWithoutFinalize statement,
+                                   StatementPartFlags field)
+    {
+        StreamHandle* handle =
+            librdf_new_stream_from_node_iterator(iterator.handle, statement.handle, field);
+        return fromNonnullHandle(handle);
+    }
 }
-
-// TODO: Stopped at From_Node_Iterator
 
