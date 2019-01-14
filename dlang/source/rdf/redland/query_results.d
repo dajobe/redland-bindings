@@ -158,5 +158,20 @@ public:
     }
 }
 
-// TODO: Stopped at Variables_Cursor
+struct VariablesIterator {
+private:
+    QueryResultsWithoutFinalize _results;
+    uint index = 0;
+public:
+    this(QueryResultsWithoutFinalize results) {
+        _results = results;
+    }
+    @property string front() { return _results.getBindingName(index); }
+    @property bool empty() {
+        return index < _results.bindingsCount;
+    }
+    void popFront()
+        in { assert(!empty); }
+        do { ++index; }
+}
 
