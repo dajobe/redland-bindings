@@ -72,6 +72,5 @@ public:
         do {
             ++_pos;
         }
-
 }
 

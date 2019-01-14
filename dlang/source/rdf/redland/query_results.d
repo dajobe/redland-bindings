@@ -135,5 +135,28 @@ struct QueryResults {
                         librdf_free_query_results);
 }
 
-// TODO: Stopped at Cursor
+/// Do not create more than one iterator for the same query results object.
+struct BindingsIterator {
+private:
+    QueryResultsWithoutFinalize _results;
+public:
+    this(QueryResultsWithoutFinalize results) {
+        _results = results;
+    }
+    @property ref BindingsIterator front() { return this; }
+    @property bool empty() {
+        return !_results.finished;
+    }
+    void popFront()
+        in { assert(!empty); }
+        do { _results.next(); }
+    string getBindingName(uint index) {
+        return _results.getBindingName(index);
+    }
+    Node getBindingValueByName(string name) {
+        return _results.getBindingValueByName(name);
+    }
+}
+
+// TODO: Stopped at Variables_Cursor
 
