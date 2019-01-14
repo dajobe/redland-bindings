@@ -52,7 +52,7 @@ public:
         }
     @property uint namesCount() { return _namesCount; }
     @property string label() { return _label.fromStringz.idup; }
-    ref const mimeTypeInfo(uint index)
+    ref const(Mime_Type_Q) mimeTypeInfo(uint index)
         in { assert(index < _mimeTypesCount); }
         do {
             return _mimeTypes[index]; 
@@ -98,7 +98,7 @@ public:
         this._world = world;
     }
     @property uint position() { return _pos; }
-    @property const ref front() {
+    @property ref const(SyntaxDescription) front() {
         return *raptor_world_get_serializer_description(_world.handle, _pos);
     }
     @property bool empty() {

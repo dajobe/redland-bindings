@@ -103,10 +103,10 @@ struct TermWithoutFinalize {
     @property URIWithoutFinalize uri() {
         return URIWithoutFinalize.fromHandle(handle.value.uri);
     }
-    @property const ref TermLiteralValue literal() {
+    @property ref const(TermLiteralValue) literal() {
         return handle.value.literal;
     }
-    @property const ref TermBlankValue blank() {
+    @property ref const(TermBlankValue) blank() {
         return handle.value.blank;
     }
     string toString() {
