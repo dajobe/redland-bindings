@@ -66,20 +66,28 @@ struct QueryResultsWithoutFinalize {
     {
         return librdf_query_results_finished(handle) != 0;
     }
-    @property uint bindingsCount() {
+    @property uint bindingsCount()
+        in(isBindings)
+    {
         int result = librdf_query_results_get_bindings_count(handle);
         if(result < 0) throw new RDFException();
         return result;
     }
-    Node getBindingValue(uint index) {
+    Node getBindingValue(uint index)
+        in(isBindings)
+    {
         return Node.fromNonnullHandle(librdf_query_results_get_binding_value(handle, index));
     }
-    string getBindingName(uint index) {
+    string getBindingName(uint index)
+        in(isBindings)
+    {
         const char* ptr = librdf_query_results_get_binding_name(handle, index);
         if(!ptr) throw new RDFException();
         return ptr.fromStringz.idup;
     }
-    Node getBindingValueByName(string name) {
+    Node getBindingValueByName(string name)
+        in(isBindings)
+    {
         NodeHandle* handle =
             librdf_query_results_get_binding_value_by_name(handle, name.toStringz);
         return Node.fromNonnullHandle(handle);
@@ -163,7 +171,9 @@ private:
     QueryResultsWithoutFinalize _results;
     uint index = 0;
 public:
-    this(QueryResultsWithoutFinalize results) {
+    this(QueryResultsWithoutFinalize results)
+        in(results.isBindings)
+    {
         _results = results;
     }
     @property string front() { return _results.getBindingName(index); }
