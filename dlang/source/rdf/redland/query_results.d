@@ -8,6 +8,7 @@ struct QueryResultsHandle;
 private extern extern(C) {
     void librdf_free_query_results(QueryResultsHandle* query_results);
     StreamHandle* librdf_query_results_as_stream(QueryResultsHandle* query_results);
+    int librdf_query_results_get_count(QueryResultsHandle* query_results);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -16,6 +17,9 @@ struct QueryResultsWithoutFinalize {
                            QueryResults);
     Stream asStream() {
         return Stream.fromNonnullHandle(librdf_query_results_as_stream(handle));
+    }
+    @property uint currentCount() {
+        return librdf_query_results_get_count(handle);
     }
 }
 
@@ -26,4 +30,4 @@ struct QueryResults {
                         librdf_free_query_results);
 }
 
-// TODO: Stopped at Get_Current_Count
+// TODO: Stopped at Next
