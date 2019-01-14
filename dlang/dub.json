@@ -6,23 +6,21 @@
     "description": "D bindings for librdf",
     "copyright": "Copyright © 2018, Victor Porton",
     "license": "see parent directory",
+    "libs": ["rasqal", "rdf"],
     "configurations": [
         {
             "name": "application",
-            "targetType": "executable",
-            "libs": ["rasqal", "rdf"]
+            "targetType": "executable"
         },
         {
             "name": "shared-library",
             "targetType": "dynamicLibrary",
-            "excludedSourceFiles": ["sources/main.d"],
-            "libs": ["rasqal", "rdf"]
+            "excludedSourceFiles": ["sources/main.d"]
         },
         {
             "name": "static-library",
             "targetType": "staticLibrary",
-            "excludedSourceFiles": ["sources/main.d"],
-            "libs": ["rasqal", "rdf"]
+            "excludedSourceFiles": ["sources/main.d"]
         }
     ]
 }
