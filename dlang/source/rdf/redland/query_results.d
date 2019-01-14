@@ -4,8 +4,6 @@ import rdf.auxiliary.handled_record;
 
 struct QueryResultsHandle;
 
-enum QueryResultsType { Bindings, Boolean, Graph, Syntax, Unknown }
-
 private extern extern(C) {
     void librdf_free_query_results(QueryResultsHandle* query_results);
 }
@@ -23,4 +21,4 @@ struct QueryResults {
                         librdf_free_query_results);
 }
 
-// TODO: Stopped at Get_Type
+// TODO: Stopped at As_Stream
