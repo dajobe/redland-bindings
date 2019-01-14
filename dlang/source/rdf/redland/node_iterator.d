@@ -38,6 +38,7 @@ struct NodeIteratorWithoutFinalize {
         return librdf_iterator_get_object(handle);
     }
     // librdf_iterator_add_map() not implemented
+    // TODO: toArray()
 }
 
 struct NodeIterator {
