@@ -57,6 +57,8 @@ private extern extern(C) {
     int librdf_model_add_submodel(ModelHandle* model, ModelHandle* sub_model);
     int librdf_model_remove_submodel(ModelHandle* model, ModelHandle* sub_model);
     StreamHandle* librdf_model_context_as_stream(ModelHandle* model, NodeHandle* context);
+    int librdf_model_contains_context(ModelHandle* model, NodeHandle* context);
+    int librdf_model_supports_contexts(ModelHandle* model);
 }
 
 struct ModelInfo {
@@ -176,6 +178,12 @@ struct ModelWithoutFinalize {
     Stream contextAsStream(NodeWithoutFinalize context) {
         return Stream.fromNonnullHandle(librdf_model_context_as_stream(handle, context.handle));
     }
+    bool containsContext(NodeWithoutFinalize context) {
+        return librdf_model_contains_context(handle, context.handle) != 0;
+    }
+    @property bool supportsContext() {
+        return librdf_model_supports_contexts(handle) != 0;
+    }
 }
 
 struct Model {
@@ -211,5 +219,5 @@ public:
     }
 }
 
-// TODO: Stopped at Contains_Context
+// TODO: Stopped at Query_Execute
 
