@@ -81,6 +81,18 @@ private extern extern(C) {
     NodeIteratorHandle* librdf_model_get_contexts(ModelHandle* model);
     NodeHandle* librdf_model_get_feature(ModelHandle* model, URIHandle* feature);
     int librdf_model_set_feature(ModelHandle* model, URIHandle* feature, NodeHandle* value);
+    int librdf_model_add_string_literal_statement(ModelHandle* model,
+                                                  NodeHandle* subject,
+                                                  NodeHandle* predicate,
+                                                  const char *literal,
+                                                  const char *xml_language,
+                                                  int is_wf_xml);
+    int librdf_model_add_typed_literal_statement(ModelHandle* model,
+                                                 NodeHandle* subject,
+                                                 NodeHandle* predicate,
+                                                 const char* literal,
+                                                 const char* xml_language,
+                                                 URIHandle* datatype_uri);
 }
 
 string featureContexts = "http://feature.librdf.org/model-contexts";
@@ -258,6 +270,34 @@ struct ModelWithoutFinalize {
         if(librdf_model_set_feature(handle, feature.handle, value.handle) != 0)
             throw new RDFException();
     }
+    void addStringLiteralStatement(NodeWithoutFinalize subject,
+                                   NodeWithoutFinalize predicate,
+                                   string literal,
+                                   string language,
+                                   bool isXML = false)
+    {
+        int res = librdf_model_add_string_literal_statement(handle,
+                                                            subject.handle,
+                                                            predicate.handle,
+                                                            literal.toStringz,
+                                                            language.toStringz,
+                                                            isXML);
+        if(res != 0) throw new RDFException();
+    }
+    void addTypedLiteralStatement(NodeWithoutFinalize subject,
+                                  NodeWithoutFinalize predicate,
+                                  string literal,
+                                  string language,
+                                  URIWithoutFinalize datatype)
+    {
+        int res = librdf_model_add_typed_literal_statement(handle,
+                                                           subject.handle,
+                                                           predicate.handle,
+                                                           literal.toStringz,
+                                                           language.toStringz,
+                                                           datatype.handle);
+        if(res != 0) throw new RDFException();
+    }
 }
 
 struct Model {
@@ -293,5 +333,5 @@ public:
     }
 }
 
-// TODO: Stopped at Add_String_Literal_Statement
+// TODO: Stopped at Write
 
