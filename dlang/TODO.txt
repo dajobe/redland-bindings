@@ -5,8 +5,6 @@ Also scope and final.
 
 The following Ada sources were not yet translated into D:
 
-rdf-redland-model.adb
-rdf-redland-model.ads
 rdf-redland-parser.adb
 rdf-redland-parser.ads
 rdf-redland-serializer.adb

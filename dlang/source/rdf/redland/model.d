@@ -95,6 +95,7 @@ private extern extern(C) {
                                                  const char* xml_language,
                                                  URIHandle* datatype_uri);
     int librdf_model_write(ModelHandle* model, IOStreamHandle* iostr);
+    ModelHandle* librdf_new_model_from_model(ModelHandle* model);
 }
 
 string featureContexts = "http://feature.librdf.org/model-contexts";
@@ -106,7 +107,8 @@ struct ModelInfo {
 struct ModelWithoutFinalize {
     mixin WithoutFinalize!(ModelHandle,
                            ModelWithoutFinalize,
-                           Model);
+                           Model,
+                           librdf_new_model_from_model);
     size_t sizeWithoutException() {
         return librdf_model_size(handle);
     }
@@ -311,6 +313,10 @@ struct Model {
                         ModelWithoutFinalize,
                         Model,
                         librdf_free_model);
+    // TODO:
+    //static Model create(StorageWithoutFinalize storage,
+    //                    string options = "");
+    // librdf_new_model_with_options() not implemented, because librdf_hash is not implemented
 }
 
 Nullable!ModelInfo enumerateModels(RedlandWorldWithoutFinalize world, uint counter) {
