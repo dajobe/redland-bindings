@@ -4,6 +4,7 @@ import std.typecons;
 import std.string;
 import rdf.auxiliary.handled_record;
 import rdf.redland.world;
+import rdf.redland.uri;
 import rdf.redland.node;
 import rdf.redland.statement;
 import rdf.redland.node_iterator;
@@ -63,6 +64,11 @@ private extern extern(C) {
     int librdf_model_supports_contexts(ModelHandle* model);
     QueryResultsHandle* librdf_model_query_execute(ModelHandle* model, QueryHandle* query);
     int librdf_model_sync(ModelHandle* model);
+    int librdf_model_load(ModelHandle* model,
+                          URIHandle* uri,
+                          const char* name,
+                          const char* mime_type,
+                          URIHandle* type_uri);
 }
 
 struct ModelInfo {
