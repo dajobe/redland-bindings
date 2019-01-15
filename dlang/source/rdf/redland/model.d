@@ -4,6 +4,9 @@ import std.typecons;
 import std.string;
 import rdf.auxiliary.handled_record;
 import rdf.redland.world;
+import rdf.redland.node;
+import rdf.redland.statement;
+import rdf.redland.stream;
 
 struct ModelHandle;
 
@@ -14,6 +17,18 @@ private extern extern(C) {
                                const char **name,
                                const char **label);
     int librdf_model_size(ModelHandle* model);
+    int librdf_model_add(ModelHandle* model,
+                         NodeHandle* subject,
+                         NodeHandle* predicate,
+                         NodeHandle* object);
+    int librdf_model_add_statement(ModelHandle* model, StatementHandle* statement);
+    int librdf_model_add_statements(ModelHandle* model, StreamHandle* statement_stream);
+    int librdf_model_context_add_statement(ModelHandle* model,
+                                           NodeHandle* context,
+                                           StatementHandle* statement);
+int librdf_model_context_add_statements(ModelHandle* model,
+                                        NodeHandle* context,
+                                        StreamHandle* stream);
 }
 
 struct ModelInfo {
@@ -31,6 +46,26 @@ struct ModelWithoutFinalize {
         size_t res = sizeWithoutException();
         if(res < 0) throw new RDFException();
         return res;
+    }
+    void add(NodeWithoutFinalize subject,
+             NodeWithoutFinalize predicate,
+             NodeWithoutFinalize object)
+    {
+        if(librdf_model_add(handle, subject.handle, predicate.handle, object.handle) != 0)
+            throw new RDFException();
+    }
+    void add(StatementWithoutFinalize statement,
+             NodeWithoutFinalize context = NodeWithoutFinalize.fromHandle(null))
+        in(statement.isComplete)
+    {
+        if(librdf_model_context_add_statement(handle, context.handle, statement.handle) != 0)
+            throw new RDFException();
+    }
+    void add(StreamWithoutFinalize statements,
+             NodeWithoutFinalize context = NodeWithoutFinalize.fromHandle(null))
+    {
+        if(librdf_model_context_add_statements(handle, context.handle, statements.handle) != 0)
+            throw new RDFException();
     }
 }
 
@@ -67,5 +102,5 @@ public:
     }
 }
 
-// TODO: Stopped at Add
+// TODO: Stopped at Remove
 
