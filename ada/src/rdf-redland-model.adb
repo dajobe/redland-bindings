@@ -537,7 +537,7 @@ package body RDF.Redland.Model is
 
    procedure Set_Feature (Model: in out Model_Type_Without_Finalize;
                           Feature: URI_Type_Without_Finalize'Class;
-                          Value: Node_Type) is
+                          Value: Node_Type_Without_Finalize) is
    begin
       if librdf_model_set_feature(Get_Handle(Model), Get_Handle(Feature), Get_Handle(Value)) /= 0 then
          raise RDF.Auxiliary.RDF_Exception;

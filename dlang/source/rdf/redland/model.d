@@ -79,6 +79,8 @@ private extern extern(C) {
                                                           StatementHandle* statement,
                                                           NodeHandle* context_node);
     NodeIteratorHandle* librdf_model_get_contexts(ModelHandle* model);
+    NodeHandle* librdf_model_get_feature(ModelHandle* model, URIHandle* feature);
+    int librdf_model_set_feature(ModelHandle* model, URIHandle* feature, NodeHandle* value);
 }
 
 string featureContexts = "http://feature.librdf.org/model-contexts";
@@ -249,6 +251,13 @@ struct ModelWithoutFinalize {
     NodeIterator getContexts() {
         return NodeIterator.fromNonnullHandle(librdf_model_get_contexts(handle));
     }
+    Node getFeature(URIWithoutFinalize feature) {
+        return Node.fromHandle(librdf_model_get_feature(handle, feature.handle));
+    }
+    void setFeature(URIWithoutFinalize feature, NodeWithoutFinalize value) {
+        if(librdf_model_set_feature(handle, feature.handle, value.handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Model {
@@ -284,5 +293,5 @@ public:
     }
 }
 
-// TODO: Stopped at Get_Feature
+// TODO: Stopped at Add_String_Literal_Statement
 

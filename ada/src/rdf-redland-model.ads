@@ -183,7 +183,7 @@ package RDF.Redland.Model is
 
    not overriding procedure Set_Feature (Model: in out Model_Type_Without_Finalize;
                                          Feature: URI_Type_Without_Finalize'Class;
-                                         Value: Node_Type);
+                                         Value: Node_Type_Without_Finalize);
 
    not overriding procedure Add_String_Literal_Statement (Model: Model_Type_Without_Finalize;
                                                           Subject, Predicate: Node_Type_Without_Finalize'Class;
