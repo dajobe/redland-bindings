@@ -35,6 +35,8 @@ private extern extern(C) {
                                               StatementHandle* statement);
     int librdf_model_context_remove_statements(ModelHandle* model, NodeHandle* context);
     int librdf_model_contains_statement(ModelHandle* model, StatementHandle *statement);
+    int librdf_model_has_arc_in(ModelHandle* model, NodeHandle *node, NodeHandle* property);
+    int librdf_model_has_arc_out(ModelHandle* model, NodeHandle *node, NodeHandle* property);
 }
 
 struct ModelInfo {
@@ -97,6 +99,12 @@ struct ModelWithoutFinalize {
         if(result > 0) throw new RDFException();
         return result != 0;
     }
+    bool hasArcIn(NodeWithoutFinalize node, NodeWithoutFinalize property) {
+      return librdf_model_has_arc_in(handle, node.handle, property.handle) != 0;
+    }
+    bool hasArcOut(NodeWithoutFinalize node, NodeWithoutFinalize property) {
+      return librdf_model_has_arc_out(handle, node.handle, property.handle) != 0;
+    }
 }
 
 struct Model {
@@ -132,5 +140,5 @@ public:
     }
 }
 
-// TODO: Stopped at Has_Arc_In
+// TODO: Stopped at As_Stream
 
