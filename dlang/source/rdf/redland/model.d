@@ -8,6 +8,8 @@ import rdf.redland.node;
 import rdf.redland.statement;
 import rdf.redland.node_iterator;
 import rdf.redland.stream;
+import rdf.redland.query;
+import rdf.redland.query_results;
 
 struct ModelHandle;
 
@@ -59,6 +61,8 @@ private extern extern(C) {
     StreamHandle* librdf_model_context_as_stream(ModelHandle* model, NodeHandle* context);
     int librdf_model_contains_context(ModelHandle* model, NodeHandle* context);
     int librdf_model_supports_contexts(ModelHandle* model);
+    QueryResultsHandle* librdf_model_query_execute(ModelHandle* model, QueryHandle* query);
+    int librdf_model_sync(ModelHandle* model);
 }
 
 struct ModelInfo {
@@ -184,6 +188,15 @@ struct ModelWithoutFinalize {
     @property bool supportsContext() {
         return librdf_model_supports_contexts(handle) != 0;
     }
+    QueryResultsWithoutFinalize queryExecute(QueryWithoutFinalize query) {
+        return QueryResultsWithoutFinalize.fromNonnullHandle(
+            librdf_model_query_execute(handle, query.handle));
+    }
+    void sync() {
+        if(librdf_model_sync(handle) != 0)
+            throw new RDFException();
+    }
+    //@property StorageWithoutFinalize storage() // TODO
 }
 
 struct Model {
@@ -219,5 +232,5 @@ public:
     }
 }
 
-// TODO: Stopped at Query_Execute
+// TODO: Stopped at Load
 
