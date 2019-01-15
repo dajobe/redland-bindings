@@ -26,9 +26,14 @@ private extern extern(C) {
     int librdf_model_context_add_statement(ModelHandle* model,
                                            NodeHandle* context,
                                            StatementHandle* statement);
-int librdf_model_context_add_statements(ModelHandle* model,
-                                        NodeHandle* context,
-                                        StreamHandle* stream);
+    int librdf_model_context_add_statements(ModelHandle* model,
+                                            NodeHandle* context,
+                                            StreamHandle* stream);
+    int librdf_model_remove_statement(ModelHandle* model, StatementHandle* statement);
+    int librdf_model_context_remove_statement(ModelHandle* model,
+                                              NodeHandle* context,
+                                              StatementHandle* statement);
+    int librdf_model_context_remove_statements(ModelHandle* model, NodeHandle* context);
 }
 
 struct ModelInfo {
@@ -67,6 +72,25 @@ struct ModelWithoutFinalize {
         if(librdf_model_context_add_statements(handle, context.handle, statements.handle) != 0)
             throw new RDFException();
     }
+    void remove(StatementWithoutFinalize statement,
+                NodeWithoutFinalize context = NodeWithoutFinalize.fromHandle(null))
+        in(statement.isComplete)
+    {
+        if(librdf_model_context_remove_statement(handle, context.handle, statement.handle) != 0)
+            throw new RDFException();
+    }
+    void remove(StreamWithoutFinalize statements,
+                NodeWithoutFinalize context = NodeWithoutFinalize.fromHandle(null))
+    {
+        if(librdf_model_context_remove_statements(handle, context.handle) != 0)
+            throw new RDFException();
+    }
+    void remove(StatementWithoutFinalize statement)
+        in(statement.isComplete)
+    {
+        if(librdf_model_remove_statement(handle, statement.handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Model {
@@ -102,5 +126,5 @@ public:
     }
 }
 
-// TODO: Stopped at Remove
+// TODO: Stopped at Contains
 
