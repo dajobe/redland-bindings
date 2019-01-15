@@ -78,7 +78,10 @@ private extern extern(C) {
     StreamHandle* librdf_model_find_statements_in_context(ModelHandle* model,
                                                           StatementHandle* statement,
                                                           NodeHandle* context_node);
+    NodeIteratorHandle* librdf_model_get_contexts(ModelHandle* model);
 }
+
+string featureContexts = "http://feature.librdf.org/model-contexts";
 
 struct ModelInfo {
     string name, label;
@@ -243,6 +246,9 @@ struct ModelWithoutFinalize {
             librdf_model_find_statements_in_context(handle, statement.handle, context.handle);
         return Stream.fromNonnullHandle(h);
     }
+    NodeIterator getContexts() {
+        return NodeIterator.fromNonnullHandle(librdf_model_get_contexts(handle));
+    }
 }
 
 struct Model {
@@ -278,5 +284,5 @@ public:
     }
 }
 
-// TODO: Stopped at Get_Contexts
+// TODO: Stopped at Get_Feature
 
