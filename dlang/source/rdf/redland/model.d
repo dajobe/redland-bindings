@@ -54,6 +54,8 @@ private extern extern(C) {
     NodeHandle* librdf_model_get_target(ModelHandle* model, NodeHandle* source, NodeHandle* arc);
     NodeIteratorHandle* librdf_model_get_arcs_in(ModelHandle* model, NodeHandle* node);
     NodeIteratorHandle* librdf_model_get_arcs_out(ModelHandle* model, NodeHandle* node);
+    int librdf_model_add_submodel(ModelHandle* model, ModelHandle* sub_model);
+    int librdf_model_remove_submodel(ModelHandle* model, ModelHandle* sub_model);
 }
 
 struct ModelInfo {
@@ -162,6 +164,14 @@ struct ModelWithoutFinalize {
         NodeIteratorHandle* h = librdf_model_get_arcs_out(handle, node.handle);
         return NodeIterator.fromNonnullHandle(h);
     }
+    void addSubmodel(ModelWithoutFinalize submodel) {
+        if(librdf_model_add_submodel(handle, submodel.handle) != 0)
+            throw new RDFException();
+    }
+    void removeSubmodel(ModelWithoutFinalize submodel) {
+        if(librdf_model_remove_submodel(handle, submodel.handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Model {
@@ -197,5 +207,5 @@ public:
     }
 }
 
-// TODO: Stopped at Add_Submodel
+// TODO: Stopped at Context_As_Stream
 
