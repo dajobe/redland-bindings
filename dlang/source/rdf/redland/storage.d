@@ -22,3 +22,6 @@ struct Storage {
                         Storage,
                         librdf_free_storage);
 }
+
+// TODO: Stopped at Storage_Info
+
