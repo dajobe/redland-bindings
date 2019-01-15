@@ -43,7 +43,7 @@ struct StorageWithoutFinalize {
 //                                           Feature: URI_Type_Without_Finalize'Class;
 //                                           Value: Node_Type_Without_Finalize'Class);
     @property RedlandWorldWithoutFinalize world() {
-        // Or just From_Handle?
+        // Or just fromHandle?
         return RedlandWorldWithoutFinalize.fromNonnullHandle(librdf_storage_get_world(handle));
     }
 }
