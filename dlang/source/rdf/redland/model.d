@@ -6,6 +6,7 @@ import rdf.auxiliary.handled_record;
 import rdf.redland.world;
 import rdf.redland.node;
 import rdf.redland.statement;
+import rdf.redland.node_iterator;
 import rdf.redland.stream;
 
 struct ModelHandle;
@@ -39,6 +40,9 @@ private extern extern(C) {
     int librdf_model_has_arc_out(ModelHandle* model, NodeHandle *node, NodeHandle* property);
     StreamHandle* librdf_model_as_stream(ModelHandle* model);
     StreamHandle* librdf_model_find_statements(ModelHandle* model, StatementHandle* statement);
+    NodeIteratorHandle* librdf_model_get_sources(ModelHandle* model,
+                                                 NodeHandle* arc,
+                                                 NodeHandle* target);
 }
 
 struct ModelInfo {
@@ -115,6 +119,10 @@ struct ModelWithoutFinalize {
     }
     // LIBRDF_MODEL_FIND_OPTION_MATCH_SUBSTRING_LITERAL not implemented.
     // librdf_model_find_statements_with_options() not implemented as requires rdf_hash.
+    NodeIterator getSources(NodeWithoutFinalize arc, NodeWithoutFinalize target) {
+        NodeIteratorHandle* h = librdf_model_get_sources(handle, arc.handle, target.handle);
+        return NodeIterator.fromNonnullHandle(h);
+    }
 }
 
 struct Model {
@@ -150,5 +158,5 @@ public:
     }
 }
 
-// TODO: Stopped at Get_Sources
+// TODO: Stopped at Get_Arcs
 
