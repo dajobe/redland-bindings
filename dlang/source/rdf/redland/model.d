@@ -13,6 +13,7 @@ private extern extern(C) {
                                const int counter,
                                const char **name,
                                const char **label);
+    int librdf_model_size(ModelHandle* model);
 }
 
 struct ModelInfo {
@@ -23,6 +24,14 @@ struct ModelWithoutFinalize {
     mixin WithoutFinalize!(ModelHandle,
                            ModelWithoutFinalize,
                            Model);
+    size_t sizeWithoutException() {
+        return librdf_model_size(handle);
+    }
+    size_t size() {
+        size_t res = sizeWithoutException();
+        if(res < 0) throw new RDFException();
+        return res;
+    }
 }
 
 struct Model {
@@ -58,5 +67,5 @@ public:
     }
 }
 
-// TODO: Stopped at Size_Without_Exception
+// TODO: Stopped at Add
 
