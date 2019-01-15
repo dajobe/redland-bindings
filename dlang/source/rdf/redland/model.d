@@ -49,6 +49,11 @@ private extern extern(C) {
     NodeIteratorHandle* librdf_model_get_targets(ModelHandle* model,
                                                  NodeHandle* source,
                                                  NodeHandle* arc);
+    NodeHandle* librdf_model_get_source(ModelHandle* model, NodeHandle* arc, NodeHandle* target);
+    NodeHandle* librdf_model_get_arc(ModelHandle* model, NodeHandle* source, NodeHandle* target);
+    NodeHandle* librdf_model_get_target(ModelHandle* model, NodeHandle* source, NodeHandle* arc);
+    NodeIteratorHandle* librdf_model_get_arcs_in(ModelHandle* model, NodeHandle* node);
+    NodeIteratorHandle* librdf_model_get_arcs_out(ModelHandle* model, NodeHandle* node);
 }
 
 struct ModelInfo {
@@ -137,6 +142,26 @@ struct ModelWithoutFinalize {
         NodeIteratorHandle* h = librdf_model_get_targets(handle, source.handle, arc.handle);
         return NodeIterator.fromNonnullHandle(h);
     }
+    Node getSource(NodeWithoutFinalize arc, NodeWithoutFinalize target) {
+        NodeHandle* h = librdf_model_get_source(handle, arc.handle, target.handle);
+        return Node.fromNonnullHandle(h);
+    }
+    Node getArc(NodeWithoutFinalize source, NodeWithoutFinalize target) {
+        NodeHandle* h = librdf_model_get_arc(handle, source.handle, target.handle);
+        return Node.fromNonnullHandle(h);
+    }
+    Node getTarget(NodeWithoutFinalize source, NodeWithoutFinalize arc) {
+        NodeHandle* h = librdf_model_get_target(handle, source.handle, arc.handle);
+        return Node.fromNonnullHandle(h);
+    }
+    NodeIterator getArcsIn(NodeWithoutFinalize node) {
+        NodeIteratorHandle* h = librdf_model_get_arcs_in(handle, node.handle);
+        return NodeIterator.fromNonnullHandle(h);
+    }
+    NodeIterator getArcOut(NodeWithoutFinalize node) {
+        NodeIteratorHandle* h = librdf_model_get_arcs_out(handle, node.handle);
+        return NodeIterator.fromNonnullHandle(h);
+    }
 }
 
 struct Model {
@@ -172,5 +197,5 @@ public:
     }
 }
 
-// TODO: Stopped at Get_Source
+// TODO: Stopped at Add_Submodel
 

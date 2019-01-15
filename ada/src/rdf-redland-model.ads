@@ -130,6 +130,8 @@ package RDF.Redland.Model is
                                        Source, Arc: Node_Type_Without_Finalize'Class)
                                        return Node_Type;
 
+   -- TODO: Forgotten to implement librdf_model_get_arcs_in() & librdf_model_get_arcs_out()
+
    not overriding procedure Add_Submodel (Model: Model_Type_Without_Finalize;
                                           Submodel: Model_Type_Without_Finalize'Class);
 
