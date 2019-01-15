@@ -38,6 +38,7 @@ private extern extern(C) {
     int librdf_model_has_arc_in(ModelHandle* model, NodeHandle *node, NodeHandle* property);
     int librdf_model_has_arc_out(ModelHandle* model, NodeHandle *node, NodeHandle* property);
     StreamHandle* librdf_model_as_stream(ModelHandle* model);
+    StreamHandle* librdf_model_find_statements(ModelHandle* model, StatementHandle* statement);
 }
 
 struct ModelInfo {
@@ -109,6 +110,11 @@ struct ModelWithoutFinalize {
     Stream asStream() {
         return Stream.fromNonnullHandle(librdf_model_as_stream(handle));
     }
+    Stream find(StatementWithoutFinalize statement) {
+        return Stream.fromNonnullHandle(librdf_model_find_statements(handle, statement.handle));
+    }
+    // LIBRDF_MODEL_FIND_OPTION_MATCH_SUBSTRING_LITERAL not implemented.
+    // librdf_model_find_statements_with_options() not implemented as requires rdf_hash.
 }
 
 struct Model {
@@ -144,5 +150,5 @@ public:
     }
 }
 
-// TODO: Stopped at Find
+// TODO: Stopped at Get_Sources
 
