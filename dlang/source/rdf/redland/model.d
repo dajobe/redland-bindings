@@ -3,6 +3,7 @@ module rdf.redland.model;
 import std.typecons;
 import std.string;
 import rdf.auxiliary.handled_record;
+import rdf.raptor.iostream;
 import rdf.redland.world;
 import rdf.redland.uri;
 import rdf.redland.node;
@@ -93,6 +94,7 @@ private extern extern(C) {
                                                  const char* literal,
                                                  const char* xml_language,
                                                  URIHandle* datatype_uri);
+    int librdf_model_write(ModelHandle* model, IOStreamHandle* iostr);
 }
 
 string featureContexts = "http://feature.librdf.org/model-contexts";
@@ -298,6 +300,10 @@ struct ModelWithoutFinalize {
                                                            datatype.handle);
         if(res != 0) throw new RDFException();
     }
+    void write(IOStreamWithoutFinalize stream) {
+        if(librdf_model_write(handle, stream.handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Model {
@@ -333,5 +339,5 @@ public:
     }
 }
 
-// TODO: Stopped at Write
+// TODO: Stopped at Create
 
