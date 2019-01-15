@@ -75,6 +75,9 @@ private extern extern(C) {
                                          const char *mime_type,
                                          URIHandle* type_uri,
                                          size_t *string_length_p);
+    StreamHandle* librdf_model_find_statements_in_context(ModelHandle* model,
+                                                          StatementHandle* statement,
+                                                          NodeHandle* context_node);
 }
 
 struct ModelInfo {
@@ -235,6 +238,11 @@ struct ModelWithoutFinalize {
                                                       &length);
         return result[0..length].idup;
     }
+    Stream findInContext(StatementWithoutFinalize statement, NodeWithoutFinalize context) {
+        StreamHandle* h =
+            librdf_model_find_statements_in_context(handle, statement.handle, context.handle);
+        return Stream.fromNonnullHandle(h);
+    }
 }
 
 struct Model {
@@ -270,5 +278,5 @@ public:
     }
 }
 
-// TODO: Stopped at Find_In_Context
+// TODO: Stopped at Get_Contexts
 
