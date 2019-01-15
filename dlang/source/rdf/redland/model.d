@@ -34,6 +34,7 @@ private extern extern(C) {
                                               NodeHandle* context,
                                               StatementHandle* statement);
     int librdf_model_context_remove_statements(ModelHandle* model, NodeHandle* context);
+    int librdf_model_contains_statement(ModelHandle* model, StatementHandle *statement);
 }
 
 struct ModelInfo {
@@ -91,6 +92,11 @@ struct ModelWithoutFinalize {
         if(librdf_model_remove_statement(handle, statement.handle) != 0)
             throw new RDFException();
     }
+    bool contains(StatementWithoutFinalize statement) {
+        int result = librdf_model_contains_statement(handle, statement.handle);
+        if(result > 0) throw new RDFException();
+        return result != 0;
+    }
 }
 
 struct Model {
@@ -126,5 +132,5 @@ public:
     }
 }
 
-// TODO: Stopped at Contains
+// TODO: Stopped at Has_Arc_In
 
