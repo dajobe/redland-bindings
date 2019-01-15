@@ -69,6 +69,12 @@ private extern extern(C) {
                           const char* name,
                           const char* mime_type,
                           URIHandle* type_uri);
+    char* librdf_model_to_counted_string(ModelHandle* model,
+                                         URIHandle* uri,
+                                         const char *name,
+                                         const char *mime_type,
+                                         URIHandle* type_uri,
+                                         size_t *string_length_p);
 }
 
 struct ModelInfo {
@@ -215,6 +221,20 @@ struct ModelWithoutFinalize {
                                     typeURI.handle);
         if(res != 0) throw new RDFException();
     }
+    string toString(URIWithoutFinalize uri,
+                    string name = "",
+                    string mimeType = "",
+                    URIWithoutFinalize typeURI = URIWithoutFinalize.fromHandle(null))
+    {
+        size_t length;
+        char* result = librdf_model_to_counted_string(handle,
+                                                      uri.handle,
+                                                      name.empty ? null : name.ptr,
+                                                      mimeType.empty ? null : mimeType.ptr,
+                                                      typeURI.handle,
+                                                      &length);
+        return result[0..length].idup;
+    }
 }
 
 struct Model {
@@ -250,5 +270,5 @@ public:
     }
 }
 
-// TODO: Stopped at To_String
+// TODO: Stopped at Find_In_Context
 
