@@ -14,6 +14,12 @@ private extern extern(C) {
                                  const int counter,
                                  const char **name,
                                  const char **label);
+    int librdf_storage_sync(StorageHandle* storage);
+    RedlandWorldHandle* librdf_storage_get_world(StorageHandle* storage);
+    StorageHandle* librdf_new_storage(RedlandWorldHandle* world,
+                                      const char *storage_name,
+                                      const char *name,
+                                      const char *options_string);
 }
 
 struct StorageInfo {
@@ -25,6 +31,21 @@ struct StorageWithoutFinalize {
                            StorageWithoutFinalize,
                            Storage,
                            librdf_new_storage_from_storage);
+    void sync() {
+        if(librdf_storage_sync(handle) != 0)
+            throw new RDFException();
+    }
+    // Will implement after http://bugs.librdf.org/mantis/view.php?id=636 bug fix
+//     not overriding function Get_Feature (Storage: Storage_Type_Without_Finalize;
+//                                         Feature: URI_Type_Without_Finalize'Class)
+//                                          return Node_Type_Without_Finalize;
+//     not overriding procedure Set_Feature (Storage: Storage_Type_Without_Finalize;
+//                                           Feature: URI_Type_Without_Finalize'Class;
+//                                           Value: Node_Type_Without_Finalize'Class);
+    @property RedlandWorldWithoutFinalize world() {
+        // Or just From_Handle?
+        return RedlandWorldWithoutFinalize.fromNonnullHandle(librdf_storage_get_world(handle));
+    }
 }
 
 struct Storage {
@@ -32,6 +53,17 @@ struct Storage {
                         StorageWithoutFinalize,
                         Storage,
                         librdf_free_storage);
+    static Storage create(RedlandWorldWithoutFinalize world,
+                          string factoryName,
+                          string name,
+                          string options = "")
+    {
+        StorageHandle* h = librdf_new_storage(world.handle,
+                                              factoryName.toStringz,
+                                              name.toStringz,
+                                              options.toStringz);
+        return Storage.fromNonnullHandle(h);
+    }
 }
 
 Nullable!StorageInfo enumerateStorages(RedlandWorldWithoutFinalize world, uint counter) {
@@ -60,6 +92,4 @@ public:
         ++counter;
     }
 }
-
-// TODO: Stopped at Sync
 

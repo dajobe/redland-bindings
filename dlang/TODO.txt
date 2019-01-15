@@ -9,8 +9,6 @@ rdf-redland-parser.adb
 rdf-redland-parser.ads
 rdf-redland-serializer.adb
 rdf-redland-serializer.ads
-rdf-redland-storage.adb
-rdf-redland-storage.ads
 test/constants_test.adb
 test/constants_test.ads
 test/count_test2.adb
