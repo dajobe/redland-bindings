@@ -36,7 +36,8 @@ struct Storage {
 
 Nullable!StorageInfo enumerateStorages(RedlandWorldWithoutFinalize world, uint counter) {
     char* name, label;
-    int Result = librdf_storage_enumerate(world.handle, counter, &name, &label);
+    int result = librdf_storage_enumerate(world.handle, counter, &name, &label);
+    if(result != 0) return Nullable!StorageInfo();
     return Nullable!StorageInfo(StorageInfo(name.fromStringz.idup, label.fromStringz.idup));
 }
 

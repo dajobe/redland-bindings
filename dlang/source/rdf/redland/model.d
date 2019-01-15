@@ -321,7 +321,8 @@ struct Model {
 
 Nullable!ModelInfo enumerateModels(RedlandWorldWithoutFinalize world, uint counter) {
     char* name, label;
-    int Result = librdf_model_enumerate(world.handle, counter, &name, &label);
+    int result = librdf_model_enumerate(world.handle, counter, &name, &label);
+    if(result != 0) return Nullable!ModelInfo();
     return Nullable!ModelInfo(ModelInfo(name.fromStringz.idup, label.fromStringz.idup));
 }
 
