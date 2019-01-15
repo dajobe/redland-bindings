@@ -23,11 +23,6 @@ struct ModelWithoutFinalize {
     mixin WithoutFinalize!(ModelHandle,
                            ModelWithoutFinalize,
                            Model);
-    Nullable!ModelInfo enumerateModels(RedlandWorldWithoutFinalize world, uint counter) {
-        char* name, label;
-        int Result = librdf_model_enumerate(world.handle, counter, &name, &label);
-        return Nullable!ModelInfo(ModelInfo(name.fromStringz.idup, label.fromStringz.idup));
-    }
 }
 
 struct Model {
@@ -37,5 +32,31 @@ struct Model {
                         librdf_free_model);
 }
 
-// TODO: Stopped at Enumerate_Models_Cursor
+Nullable!ModelInfo enumerateModels(RedlandWorldWithoutFinalize world, uint counter) {
+    char* name, label;
+    int Result = librdf_model_enumerate(world.handle, counter, &name, &label);
+    return Nullable!ModelInfo(ModelInfo(name.fromStringz.idup, label.fromStringz.idup));
+}
+
+struct ModelsEnumerate {
+private:
+    RedlandWorldWithoutFinalize _world;
+    uint counter = 0;
+public:
+    @property bool empty() {
+        return librdf_model_enumerate(_world.handle, counter, null, null) != 0;
+    }
+    @property ModelInfo front()
+        in(!empty)
+    {
+        return enumerateModels(_world, counter);
+    }
+    void popFront()
+        in(!empty)
+    {
+        ++counter;
+    }
+}
+
+// TODO: Stopped at Size_Without_Exception
 

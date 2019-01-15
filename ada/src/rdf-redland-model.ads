@@ -53,6 +53,8 @@ package RDF.Redland.Model is
    overriding function Next (Object: Enumerate_Models_Iterator; Position: Enumerate_Models_Cursor)
                              return Enumerate_Models_Cursor;
 
+   -- FIXME: Forgotten to retrieve data from Enumerate_Models_Cursor (now this works only in D)
+
    not overriding function Size_Without_Exception (Model: Model_Type_Without_Finalize)
                                                    return Integer;
 
