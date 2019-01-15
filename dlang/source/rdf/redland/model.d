@@ -43,6 +43,12 @@ private extern extern(C) {
     NodeIteratorHandle* librdf_model_get_sources(ModelHandle* model,
                                                  NodeHandle* arc,
                                                  NodeHandle* target);
+    NodeIteratorHandle* librdf_model_get_arcs(ModelHandle* model,
+                                              NodeHandle* source,
+                                              NodeHandle* target);
+    NodeIteratorHandle* librdf_model_get_targets(ModelHandle* model,
+                                                 NodeHandle* source,
+                                                 NodeHandle* arc);
 }
 
 struct ModelInfo {
@@ -123,6 +129,14 @@ struct ModelWithoutFinalize {
         NodeIteratorHandle* h = librdf_model_get_sources(handle, arc.handle, target.handle);
         return NodeIterator.fromNonnullHandle(h);
     }
+    NodeIterator getArcs(NodeWithoutFinalize source, NodeWithoutFinalize target) {
+        NodeIteratorHandle* h = librdf_model_get_arcs(handle, source.handle, target.handle);
+        return NodeIterator.fromNonnullHandle(h);
+    }
+    NodeIterator getTargets(NodeWithoutFinalize source, NodeWithoutFinalize arc) {
+        NodeIteratorHandle* h = librdf_model_get_targets(handle, source.handle, arc.handle);
+        return NodeIterator.fromNonnullHandle(h);
+    }
 }
 
 struct Model {
@@ -158,5 +172,5 @@ public:
     }
 }
 
-// TODO: Stopped at Get_Arcs
+// TODO: Stopped at Get_Source
 
