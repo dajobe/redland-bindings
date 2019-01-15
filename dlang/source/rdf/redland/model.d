@@ -203,6 +203,18 @@ struct ModelWithoutFinalize {
             throw new RDFException();
     }
     //@property StorageWithoutFinalize storage() // TODO
+    void load(URIWithoutFinalize uri,
+              string name,
+              string mimeType,
+              URIWithoutFinalize typeURI = URIWithoutFinalize.fromHandle(null))
+    {
+        int res = librdf_model_load(handle,
+                                    uri.handle,
+                                    name == "" ? null : name.ptr,
+                                    mimeType == "" ? null : mimeType.ptr,
+                                    typeURI.handle);
+        if(res != 0) throw new RDFException();
+    }
 }
 
 struct Model {
@@ -238,5 +250,5 @@ public:
     }
 }
 
-// TODO: Stopped at Load
+// TODO: Stopped at To_String
 
