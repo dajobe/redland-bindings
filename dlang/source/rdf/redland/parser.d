@@ -5,6 +5,7 @@ import std.string;
 import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 import rdf.auxiliary.nullable_string;
+import rdf.raptor.iostream;
 import rdf.raptor.syntax;
 import rdf.redland.world;
 import rdf.redland.uri;
@@ -12,6 +13,9 @@ import rdf.redland.stream;
 import rdf.redland.model;
 
 struct ParserHandle;
+
+enum { FEATURE_ERROR_COUNT   = "http://feature.librdf.org/parser-error-count",
+       FEATURE_WARNING_COUNT = "http://feature.librdf.org/parser-warning-count" }
 
 private extern extern(C) {
     void librdf_free_parser(ParserHandle* parser);
@@ -47,6 +51,13 @@ private extern extern(C) {
                                                       size_t length,
                                                       URIHandle* base_uri,
                                                       ModelHandle* model);
+    StreamHandle* librdf_parser_parse_iostream_as_stream(ParserHandle* parser,
+                                                         IOStreamHandle* iostream,
+                                                         URIHandle* base_uri);
+    int librdf_parser_parse_iostream_into_model(ParserHandle* parser,
+                                                IOStreamHandle* iostream,
+                                                URIHandle* base_uri,
+                                                ModelHandle* model);
 }
 
 struct ParserWithoutFinalize {
@@ -109,6 +120,24 @@ struct ParserWithoutFinalize {
                                                                 model.handle);
         if(res != 0) throw new RDFException();
     }
+    Stream parseIOStreamAsStream(IOStream iostream,
+                                 URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+    {
+        StreamHandle* h =
+            librdf_parser_parse_iostream_as_stream(handle, iostream.handle, baseURI.handle);
+      return Stream.fromNonnullHandle(h);
+    }
+    /// order of arguments differs of C function
+    void parseIOStreamIntoModel(ModelWithoutFinalize model,
+                                IOStreamWithoutFinalize iostream,
+                                URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+    {
+        int res = librdf_parser_parse_iostream_into_model(handle,
+                                                          iostream.handle,
+                                                          baseURI.handle,
+                                                          model.handle);
+        if(res != 0) throw new RDFException();
+    }
 }
 
 struct Parser {
@@ -164,5 +193,5 @@ public:
     }
 }
 
-// TODO: Stopped at Parse_IOStream_As_Stream
+// TODO: Stopped at Get_Feature
 
