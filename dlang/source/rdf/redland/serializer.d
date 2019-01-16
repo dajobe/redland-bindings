@@ -1,5 +1,6 @@
 module rdf.redland.serializer;
 
+import std.string;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.syntax;
 import rdf.redland.world;
@@ -10,6 +11,7 @@ private extern extern(C) {
     void librdf_free_serializer(SerializerHandle* serializer);
     const(SyntaxDescription*) librdf_serializer_get_description(RedlandWorldHandle* world,
                                                                 uint counter);
+    int librdf_serializer_check_name(RedlandWorldHandle* world, const char *name);
 }
 
 struct SerializerWithoutFinalize {
@@ -29,6 +31,10 @@ ref const(SyntaxDescription) getSerializerDescription(RedlandWorldWithoutFinaliz
                                                       uint index)
 {
     return *librdf_serializer_get_description(world.handle, index);
+}
+
+bool serializerCheckName(RedlandWorldWithoutFinalize world, string name) {
+    return librdf_serializer_check_name(world.handle, name.toStringz) != 0;
 }
 
 struct SerializersEnumerate {
@@ -55,5 +61,5 @@ public:
     }
 }
 
-// TODO: Stopped at Serializer_Check_Name
+// TODO: Stopped at Serialize_To_File_Handle
 
