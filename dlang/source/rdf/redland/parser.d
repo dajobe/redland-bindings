@@ -55,5 +55,30 @@ ref const(SyntaxDescription) getParserDescription (RedlandWorldWithoutFinalize w
     return *librdf_parser_get_description(world.handle, counter);
 }
 
-// TODO: Stopped at Get_Parser_Description
+struct ParsersEnumerate {
+private:
+    RedlandWorldWithoutFinalize _world;
+    uint counter = 0;
+public:
+    this(RedlandWorldWithoutFinalize world) {
+        _world = world;
+    }
+    @property uint position() { return counter; }
+    @property bool empty() {
+        return !librdf_parser_get_description(_world.handle, counter);
+    }
+    @property ref const(SyntaxDescription) front()
+        in(!empty)
+    {
+        return getParserDescription(_world, counter);
+    }
+    void popFront()
+        in(!empty)
+    {
+        ++counter;
+    }
+}
+
+
+// TODO: Stopped at As_Stream
 

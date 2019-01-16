@@ -78,6 +78,9 @@ private:
     RedlandWorldWithoutFinalize _world;
     uint counter = 0;
 public:
+    this(RedlandWorldWithoutFinalize world) {
+        _world = world;
+    }
     @property bool empty() {
         return librdf_storage_enumerate(_world.handle, counter, null, null) != 0;
     }
