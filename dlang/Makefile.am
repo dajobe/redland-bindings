@@ -2,7 +2,7 @@
 all-local: librdf_dlang.a librdf_dlang.so
 
 my-check: rdf_dlang
-	./rdf_dlang
+	./rdf_dlang $(srcdir)
 
 check: my-check
 

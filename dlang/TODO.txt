@@ -9,8 +9,6 @@ The following Ada sources were not yet translated into D:
 
 test/count_test2.adb
 test/count_test2.ads
-test/count_test.adb
-test/count_test.ads
 test/empty_stream_test.adb
 test/empty_stream_test.ads
 test/iostreams_test.adb

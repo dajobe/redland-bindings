@@ -81,7 +81,7 @@ struct LiteralWithoutFinalize {
     bool opEquals(LiteralWithoutFinalize other) {
         return rasqal_literal_same_term(handle, other.handle) != 0;
     }
-    string toString(CompareFlags flags) {
+    string toString(CompareFlags flags = CompareFlags.Compare_None) {
         int error = 0;
         size_t length;
         const char* item = rasqal_literal_as_counted_string(handle,

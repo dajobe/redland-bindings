@@ -65,9 +65,9 @@ struct QueryWithoutFinalize {
 //    void addDataGraphsDetach(DataGraphWithoutFinalize[] graphs) {
 //        foreach(dg; graphs) addDataGraphDetach(dg);
 //    }
-    // FIXME: Check return type ("without finalize") and the struct after `return` of execute() (here and in Ada):
-    QueryResultsWithoutFinalize execute() {
-        return QueryResultsWithoutFinalize.fromNonnullHandle(rasqal_query_execute(handle));
+    // FIXME: Check return type ("without finalize") (in Ada):
+    QueryResults execute() {
+        return QueryResults.fromNonnullHandle(rasqal_query_execute(handle));
     }
     void prepare(string queryString, URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null)) {
         if(rasqal_query_prepare(handle, queryString.toStringz, baseURI.handle) != 0)
@@ -136,7 +136,7 @@ struct Query {
                         QueryWithoutFinalize,
                         Query,
                         rasqal_free_query);
-    Query create(RasqalWorldWithoutFinalize world, Nullable!string name, Nullable!string uri) {
+    static Query create(RasqalWorldWithoutFinalize world, Nullable!string name, Nullable!string uri) {
         return fromNonnullHandle(rasqal_new_query(world.handle, name.myToStringz, uri.myToStringz));
     }
 }
