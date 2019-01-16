@@ -1,9 +1,12 @@
 module rdf.redland.serializer;
 
 import std.string;
+import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.syntax;
 import rdf.redland.world;
+import rdf.redland.uri;
+import rdf.redland.model;
 
 struct SerializerHandle;
 
@@ -12,12 +15,42 @@ private extern extern(C) {
     const(SyntaxDescription*) librdf_serializer_get_description(RedlandWorldHandle* world,
                                                                 uint counter);
     int librdf_serializer_check_name(RedlandWorldHandle* world, const char *name);
+    int librdf_serializer_serialize_model_to_file_handle(SerializerHandle* serializer,
+                                                         FILE* handle,
+                                                         URIHandle* base_uri,
+                                                         ModelHandle* model);
+    int librdf_serializer_serialize_model_to_file(SerializerHandle* serializer,
+                                                  const char *name,
+                                                  URIHandle* base_uri,
+                                                  ModelHandle* model);
 }
 
 struct SerializerWithoutFinalize {
     mixin WithoutFinalize!(SerializerHandle,
                            SerializerWithoutFinalize,
                            Serializer);
+    /// Order of arguments not the same as in C
+    void serializeToFileHandle(File file,
+                               ModelWithoutFinalize model,
+                               URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+    {
+        int res = librdf_serializer_serialize_model_to_file_handle(handle,
+                                                                   file.getFP,
+                                                                   baseURI.handle,
+                                                                   model.handle);
+        if(res != 0) throw new RDFException();
+    }
+    /// Order of arguments not the same as in C
+    void serializeToFile(string filename,
+                         ModelWithoutFinalize model,
+                         URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+    {
+        int res = librdf_serializer_serialize_model_to_file(handle,
+                                                            filename.toStringz,
+                                                            baseURI.handle,
+                                                            model.handle);
+        if(res != 0) throw new RDFException();
+    }
 }
 
 struct Serializer {
@@ -61,5 +94,5 @@ public:
     }
 }
 
-// TODO: Stopped at Serialize_To_File_Handle
+// TODO: Stopped at Serialize_To_String
 

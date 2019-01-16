@@ -47,6 +47,7 @@ package RDF.Redland.Serializer is
                                                 Base_URI: URI_Type_Without_Finalize'Class := URI_Type_Without_Finalize'(From_Handle(null)))
                                                 return String;
 
+   -- FIXME: Serialize_Model_To_IOStream -> Serialize_To_IOStream
    -- Order of arguments not the same as in C
    not overriding procedure Serialize_Model_To_IOStream
      (Serializer: Serializer_Type_Without_Finalize;
