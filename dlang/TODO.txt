@@ -3,10 +3,13 @@ Enums and structs should be without extern(C).
 const qualifier of member function where appropriate.
 Also scope and final.
 
-Correct identifiers case.
+Correct identifiers case.kilnjr8
+
 
 The following Ada sources were not yet translated into D:
 
+rdf-redland-serializer.adb
+rdf-redland-serializer.ads
 test/constants_test.adb
 test/constants_test.ads
 test/count_test2.adb
