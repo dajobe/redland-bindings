@@ -4,6 +4,7 @@ import std.typecons;
 import std.string;
 import rdf.auxiliary.handled_record;
 import rdf.auxiliary.nullable_string;
+import rdf.raptor.syntax;
 import rdf.redland.world;
 
 struct ParserHandle;
@@ -15,6 +16,8 @@ private extern extern(C) {
                                            const char *mime_type,
                                            const char *buffer,
                                            const char *identifier);
+    const(SyntaxDescription*) librdf_parser_get_description(RedlandWorldHandle* world,
+                                                            uint counter);
 }
 
 struct ParserWithoutFinalize {
@@ -35,7 +38,7 @@ bool parserCheckName(RedlandWorldWithoutFinalize world, string name) {
 }
 
 // Order of arguments not the same as in C
-string parserGuessName(RedlandWorld world,
+string parserGuessName(RedlandWorldWithoutFinalize world,
                        string mimeType,
                        string identifier,
                        Nullable!string buffer = Nullable!string())
@@ -45,6 +48,11 @@ string parserGuessName(RedlandWorld world,
                                                    buffer.myToStringz,
                                                    identifier.empty ? null : identifier.ptr);
     return result ? result.fromStringz.idup : "";
+}
+
+ref const(SyntaxDescription) getParserDescription (RedlandWorldWithoutFinalize world, uint counter)
+{
+    return *librdf_parser_get_description(world.handle, counter);
 }
 
 // TODO: Stopped at Get_Parser_Description
