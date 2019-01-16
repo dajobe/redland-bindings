@@ -6,6 +6,8 @@ import rdf.auxiliary.handled_record;
 import rdf.auxiliary.nullable_string;
 import rdf.raptor.syntax;
 import rdf.redland.world;
+import rdf.redland.uri;
+import rdf.redland.stream;
 
 struct ParserHandle;
 
@@ -18,12 +20,19 @@ private extern extern(C) {
                                            const char *identifier);
     const(SyntaxDescription*) librdf_parser_get_description(RedlandWorldHandle* world,
                                                             uint counter);
+    StreamHandle* librdf_parser_parse_as_stream(ParserHandle* parser,
+                                                URIHandle* uri,
+                                                URIHandle* base_uri);
 }
 
 struct ParserWithoutFinalize {
     mixin WithoutFinalize!(ParserHandle,
                            ParserWithoutFinalize,
                            Parser);
+    Stream asStream(URIWithoutFinalize uri, URIWithoutFinalize baseURI) {
+        StreamHandle* h = librdf_parser_parse_as_stream(handle, uri.handle, baseURI.handle);
+        return Stream.fromNonnullHandle(h);
+    }
 }
 
 struct Parser {
@@ -80,5 +89,5 @@ public:
 }
 
 
-// TODO: Stopped at As_Stream
+// TODO: Stopped at Parse_Into_Model
 
