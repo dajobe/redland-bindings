@@ -54,3 +54,15 @@ enum DomainType : ubyte {None_Domain = 0,
                          World_Domain = 10,
                          WWW_Domain = 11,
                          XML_Writer_Domain = 12 }
+
+unittest {
+    import std.conv;
+
+    string combinedString =
+        to!string(version_major) ~ '.' ~ to!string(version_minor) ~ '.' ~ to!string(version_release);
+    uint combinedDecimal =
+        version_major * 10000 + version_minor * 100 + version_release;
+    assert(combinedString == version_string, "Combined version string");
+    assert(combinedDecimal == version_decimal, "Combined decimal version");
+}
+

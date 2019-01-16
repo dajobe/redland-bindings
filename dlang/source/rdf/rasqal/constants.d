@@ -39,3 +39,14 @@ string short_copyright_string() {
 string version_string() {
     return rasqal_version_string.fromStringz;
 }
+
+unittest {
+    import std.conv;
+
+    string combinedString =
+        to!string(version_major) ~ '.' ~ to!string(version_minor) ~ '.' ~ to!string(version_release);
+    uint combinedDecimal =
+        version_major * 10000 + version_minor * 100 + version_release;
+    assert(combinedString == version_string, "Combined version string");
+    assert(combinedDecimal == version_decimal, "Combined decimal version");
+}

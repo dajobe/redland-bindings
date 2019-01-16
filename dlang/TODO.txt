@@ -7,8 +7,6 @@ Correct identifiers case.
 
 The following Ada sources were not yet translated into D:
 
-test/constants_test.adb
-test/constants_test.ads
 test/count_test2.adb
 test/count_test2.ads
 test/count_test.adb
