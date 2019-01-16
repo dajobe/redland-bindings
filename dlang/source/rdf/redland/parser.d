@@ -2,6 +2,7 @@ module rdf.redland.parser;
 
 import std.typecons;
 import std.string;
+import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 import rdf.auxiliary.nullable_string;
 import rdf.raptor.syntax;
@@ -28,6 +29,15 @@ private extern extern(C) {
                                        URIHandle* uri,
                                        URIHandle* base_uri,
                                        ModelHandle* model);
+    StreamHandle* librdf_parser_parse_file_handle_as_stream(ParserHandle* parser,
+                                                            FILE *fh,
+                                                            int close_fh,
+                                                            URIHandle* base_uri);
+    int librdf_parser_parse_file_handle_into_model(ParserHandle* parser,
+                                                   FILE *fh,
+                                                   int close_fh,
+                                                   URIHandle *base_uri,
+                                                   ModelHandle *model);
 }
 
 struct ParserWithoutFinalize {
@@ -44,6 +54,29 @@ struct ParserWithoutFinalize {
     {
         if(librdf_parser_parse_into_model(handle, uri.handle, baseURI.handle, model.handle) != 0)
             throw new RDFException();
+    }
+    Stream parseFileHandleAsStream(File file,
+                                   bool close,
+                                   URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+    {
+        StreamHandle* h = librdf_parser_parse_file_handle_as_stream(handle,
+                                                                    file.getFP,
+                                                                    close,
+                                                                    baseURI.handle);
+        return Stream.fromNonnullHandle(h);
+    }
+    /// order of arguments differs of C function
+    void parseFileHandleIntoModel(File file,
+                                  bool close,
+                                  ModelWithoutFinalize model,
+                                  URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+    {
+        int res = librdf_parser_parse_file_handle_into_model(handle,
+                                                             file.getFP,
+                                                             close,
+                                                             baseURI.handle,
+                                                             model.handle);
+        if(res != 0) throw new RDFException();
     }
 }
 
@@ -101,5 +134,5 @@ public:
 }
 
 
-// TODO: Stopped at Parse_File_Handle_As_Stream
+// TODO: Stopped at Parse_String_As_Stream
 
