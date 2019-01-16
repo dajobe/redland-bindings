@@ -7,6 +7,7 @@ import rdf.auxiliary.handled_record;
 import rdf.auxiliary.nullable_string;
 import rdf.raptor.iostream;
 import rdf.raptor.syntax;
+import rdf.redland.memory;
 import rdf.redland.world;
 import rdf.redland.uri;
 import rdf.redland.node;
@@ -61,6 +62,11 @@ private extern extern(C) {
                                                 ModelHandle* model);
     NodeHandle* librdf_parser_get_feature(ParserHandle* parser, URIHandle* feature);
     int librdf_parser_set_feature(ParserHandle* parser, URIHandle* feature, NodeHandle* value);
+    char* librdf_parser_get_accept_header(ParserHandle* parser);
+    ParserHandle* librdf_new_parser(RedlandWorldHandle* world,
+                                    const char *name,
+                                    const char *mime_type,
+                                    URIHandle *type_uri);
 }
 
 struct ParserWithoutFinalize {
@@ -149,6 +155,18 @@ struct ParserWithoutFinalize {
         if(librdf_parser_set_feature(handle, feature.handle, value.handle) != 0)
             throw new RDFException();
     }
+    string getAcceptHeader() {
+        char* ptr = librdf_parser_get_accept_header(handle);
+        if(!ptr) throw new RDFException();
+        scope(exit) librdf_free_memory(ptr);
+        return ptr.fromStringz.idup;
+    }
+    // librdf_parser_get_namespaces_seen_count(),
+    // librdf_parser_get_namespaces_seen_prefix(),
+    // librdf_parser_get_namespaces_seen_uri()
+    // not bound as internals
+
+    // librdf_parser_get_uri_filter() and librdf_parser_set_uri_filter()
 }
 
 struct Parser {
@@ -156,6 +174,16 @@ struct Parser {
                         ParserWithoutFinalize,
                         Parser,
                         librdf_free_parser);
+    static Parser create(RedlandWorldWithoutFinalize world,
+                         string name = "",
+                         string mimeType = "",
+                         URIWithoutFinalize typeURI = URIWithoutFinalize.fromHandle(null))
+    {
+        ParserHandle* h = librdf_new_parser(world.handle, name.toStringz,
+                                            mimeType.empty ? null : mimeType.ptr,
+                                            typeURI.handle);
+        return Parser.fromHandle(h);
+    }
 }
 
 bool parserCheckName(RedlandWorldWithoutFinalize world, string name) {
@@ -203,6 +231,4 @@ public:
         ++counter;
     }
 }
-
-// TODO: Stopped at Get_Accept_Header
 
