@@ -113,7 +113,7 @@ package RDF.Redland.Parser is
 
    not overriding procedure Set_Feature (Parser: Parser_Type_Without_Finalize;
                                          Feature: URI_Type_Without_Finalize'Class;
-                                         Value: Node_Type'Class);
+                                         Value: Node_Type'Class); -- FIXME: Without_Finalize
 
    not overriding function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String;
 

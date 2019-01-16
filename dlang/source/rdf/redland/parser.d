@@ -9,6 +9,7 @@ import rdf.raptor.iostream;
 import rdf.raptor.syntax;
 import rdf.redland.world;
 import rdf.redland.uri;
+import rdf.redland.node;
 import rdf.redland.stream;
 import rdf.redland.model;
 
@@ -58,6 +59,8 @@ private extern extern(C) {
                                                 IOStreamHandle* iostream,
                                                 URIHandle* base_uri,
                                                 ModelHandle* model);
+    NodeHandle* librdf_parser_get_feature(ParserHandle* parser, URIHandle* feature);
+    int librdf_parser_set_feature(ParserHandle* parser, URIHandle* feature, NodeHandle* value);
 }
 
 struct ParserWithoutFinalize {
@@ -138,6 +141,14 @@ struct ParserWithoutFinalize {
                                                           model.handle);
         if(res != 0) throw new RDFException();
     }
+    Node getFeature(URIWithoutFinalize feature) {
+        return Node.fromHandle(librdf_parser_get_feature(handle, feature.handle));
+    }
+    void setFeature(URIWithoutFinalize feature, NodeWithoutFinalize value)
+    {
+        if(librdf_parser_set_feature(handle, feature.handle, value.handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Parser {
@@ -193,5 +204,5 @@ public:
     }
 }
 
-// TODO: Stopped at Get_Feature
+// TODO: Stopped at Get_Accept_Header
 
