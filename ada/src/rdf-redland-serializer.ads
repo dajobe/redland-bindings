@@ -18,6 +18,7 @@ package RDF.Redland.Serializer is
    overriding procedure Finalize_Handle (Object: Serializer_Type_Without_Finalize;
                                          Handle: Serializer_Handle);
 
+   -- FIXME: 1. rename to Get_Serializer_Description; 2. use World not Serializer
    not overriding
    function Get_Description (Serializer: Serializer_Type_Without_Finalize; Index: Natural)
                              return Raptor_Syntax_Description_Type;
