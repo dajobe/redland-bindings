@@ -3,6 +3,7 @@ module rdf.redland.serializer;
 import std.string;
 import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
+import rdf.raptor.iostream;
 import rdf.raptor.syntax;
 import rdf.redland.memory;
 import rdf.redland.world;
@@ -28,6 +29,10 @@ private extern extern(C) {
                                                               URIHandle* base_uri,
                                                               ModelHandle* model,
                                                               size_t *length_p);
+    int librdf_serializer_serialize_model_to_iostream(SerializerHandle* serializer,
+                                                      URIHandle* base_uri,
+                                                      ModelHandle* model,
+                                                      IOStreamHandle* iostr);
 }
 
 struct SerializerWithoutFinalize {
@@ -69,6 +74,18 @@ struct SerializerWithoutFinalize {
         scope(exit) librdf_free_memory(ptr);
         return ptr[0..length].idup;
     }
+    /// Order of arguments not the same as in C
+    void SerializeToIOStream(ModelWithoutFinalize model,
+                             IOStreamWithoutFinalize iostream,
+                             URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+    {
+        int res = librdf_serializer_serialize_model_to_iostream(handle,
+                                                                baseURI.handle,
+                                                                model.handle,
+                                                                iostream.handle);
+        if(res != 0) throw new RDFException();
+    }
+    // TODO: Serializing models done, now do serializing streams
 }
 
 struct Serializer {
