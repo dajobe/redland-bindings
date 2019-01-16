@@ -38,6 +38,10 @@ private extern extern(C) {
                                                    int close_fh,
                                                    URIHandle *base_uri,
                                                    ModelHandle *model);
+    StreamHandle* librdf_parser_parse_counted_string_as_stream(ParserHandle* parser,
+                                                               const char *string,
+                                                               size_t length,
+                                                               URIHandle* base_uri);
 }
 
 struct ParserWithoutFinalize {
@@ -77,6 +81,16 @@ struct ParserWithoutFinalize {
                                                              baseURI.handle,
                                                              model.handle);
         if(res != 0) throw new RDFException();
+    }
+    Stream parseStringAsStream(string text,
+                               URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+        in(!text.empty)
+    {
+        StreamHandle* h = librdf_parser_parse_counted_string_as_stream(handle,
+                                                                       text.ptr,
+                                                                       text.length,
+                                                                       baseURI.handle);
+        return Stream.fromNonnullHandle(h);
     }
 }
 
@@ -133,6 +147,5 @@ public:
     }
 }
 
-
-// TODO: Stopped at Parse_String_As_Stream
+// TODO: Stopped at Parse_String_Into_Model
 
