@@ -8,6 +8,7 @@ import rdf.raptor.syntax;
 import rdf.redland.world;
 import rdf.redland.uri;
 import rdf.redland.stream;
+import rdf.redland.model;
 
 struct ParserHandle;
 
@@ -23,6 +24,10 @@ private extern extern(C) {
     StreamHandle* librdf_parser_parse_as_stream(ParserHandle* parser,
                                                 URIHandle* uri,
                                                 URIHandle* base_uri);
+    int librdf_parser_parse_into_model(ParserHandle* parser,
+                                       URIHandle* uri,
+                                       URIHandle* base_uri,
+                                       ModelHandle* model);
 }
 
 struct ParserWithoutFinalize {
@@ -32,6 +37,13 @@ struct ParserWithoutFinalize {
     Stream asStream(URIWithoutFinalize uri, URIWithoutFinalize baseURI) {
         StreamHandle* h = librdf_parser_parse_as_stream(handle, uri.handle, baseURI.handle);
         return Stream.fromNonnullHandle(h);
+    }
+    void parseIntoModel(ModelWithoutFinalize model,
+                        URIWithoutFinalize uri,
+                        URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+    {
+        if(librdf_parser_parse_into_model(handle, uri.handle, baseURI.handle, model.handle) != 0)
+            throw new RDFException();
     }
 }
 
@@ -89,5 +101,5 @@ public:
 }
 
 
-// TODO: Stopped at Parse_Into_Model
+// TODO: Stopped at Parse_File_Handle_As_Stream
 
