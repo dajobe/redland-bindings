@@ -4,6 +4,7 @@ import std.string;
 import std.stdio : File, FILE;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.syntax;
+import rdf.redland.memory;
 import rdf.redland.world;
 import rdf.redland.uri;
 import rdf.redland.model;
@@ -23,6 +24,10 @@ private extern extern(C) {
                                                   const char *name,
                                                   URIHandle* base_uri,
                                                   ModelHandle* model);
+    char* librdf_serializer_serialize_model_to_counted_string(SerializerHandle* serializer,
+                                                              URIHandle* base_uri,
+                                                              ModelHandle* model,
+                                                              size_t *length_p);
 }
 
 struct SerializerWithoutFinalize {
@@ -50,6 +55,19 @@ struct SerializerWithoutFinalize {
                                                             baseURI.handle,
                                                             model.handle);
         if(res != 0) throw new RDFException();
+    }
+    /// Order of arguments not the same as in C
+    string serializeToString(ModelWithoutFinalize model,
+                             URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+    {
+        size_t length;
+        char* ptr = librdf_serializer_serialize_model_to_counted_string(handle,
+                                                                        baseURI.handle,
+                                                                        model.handle,
+                                                                        &length);
+        if(!ptr) throw new RDFException();
+        scope(exit) librdf_free_memory(ptr);
+        return ptr[0..length].idup;
     }
 }
 
@@ -94,5 +112,5 @@ public:
     }
 }
 
-// TODO: Stopped at Serialize_To_String
+// TODO: Stopped at Serialize_Model_To_IOStream
 
