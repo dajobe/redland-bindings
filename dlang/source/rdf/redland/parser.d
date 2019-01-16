@@ -20,3 +20,6 @@ struct Parser {
                         Parser,
                         librdf_free_parser);
 }
+
+// TODO: Stopped at Parser_Check_Name
+
