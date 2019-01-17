@@ -323,12 +323,11 @@ unittest {
     { // Strings
         string str = "xqqq";
         char[] buf = 'w'.repeat(99).array ~ '\0';
-        //char[] buf = replicate!char('w', 99) ~ '\0';
         StreamFromString inString = new StreamFromString(world, str);
         StreamToString outString = new StreamToString(world);
         StreamToString outString2 = new StreamToString(world);
-        size_t Bytes_Read = inString.record.readBytes(buf.ptr, 1, 100);
-        assert(Bytes_Read == 4, "Read 4 bytes from string");
+        size_t bytesRead = inString.record.readBytes(buf.ptr, 1, 100);
+        assert(bytesRead == 4, "Read 4 bytes from string");
         assert(buf[0..4] == str, "Compare read string");
         outString.write(str);
         outString.write("QQ");
