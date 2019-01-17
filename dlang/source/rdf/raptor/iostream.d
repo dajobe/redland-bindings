@@ -106,7 +106,7 @@ struct IOStreamWithoutFinalize {
         return raptor_iostream_tell(handle);
     }
     void write(string value) {
-        if(raptor_iostream_counted_string_write (value.ptr, value.length, handle) != 0)
+        if(raptor_iostream_counted_string_write(value.ptr, value.length, handle) != 0)
             throw new IOStreamException();
     }
     void write(char c) {
@@ -281,7 +281,7 @@ class UserIOStream : UserObject!IOStream {
 class StreamFromString : UserObject!IOStream {
     private string _str;
     IOStream record;
-    this(RaptorWorld world, string str) {
+    this(RaptorWorldWithoutFinalize world, string str) {
         _str = str;
         IOStreamHandle* handle = raptor_new_iostream_from_string(world.handle, cast(void*)str.ptr, str.length);
         record = IOStream.fromNonnullHandle(handle);
@@ -301,5 +301,42 @@ class StreamToString : UserIOStream {
     override int doWriteBytes(char* data, size_t size, size_t count) {
         _str ~= data[0..size*count];
         return cast(int)(size*count);
+    }
+    override void doWrite_End() { }
+    override size_t doReadBytes(char* data, size_t size, size_t count) { assert(0); }
+    override bool doReadEof() { assert(0); }
+}
+
+unittest {
+    import std.array;
+    import std.range;
+
+    RaptorWorld world = RaptorWorld.createAndOpen();
+
+    { // Sinks
+        char[] str = "qqq".dup;
+        auto inSink = IOStream.fromSink(world);
+        auto outSink = IOStream.toSink(world);
+        assert(inSink.readBytes (str.ptr, 10, 10) == 0, "Read zero bytes from a sink");
+        outSink.write("XYZ"); // does nothing
+    }
+    { // Strings
+        string str = "xqqq";
+        char[] buf = 'w'.repeat(99).array ~ '\0';
+        //char[] buf = replicate!char('w', 99) ~ '\0';
+        StreamFromString inString = new StreamFromString(world, str);
+        StreamToString outString = new StreamToString(world);
+        StreamToString outString2 = new StreamToString(world);
+        size_t Bytes_Read = inString.record.readBytes(buf.ptr, 1, 100);
+        assert(Bytes_Read == 4, "Read 4 bytes from string");
+        assert(buf[0..4] == str, "Compare read string");
+        outString.write(str);
+        outString.write("QQ");
+        import std.stdio; writeln("\noutString.value", outString.value);
+// FIXME: uncomment
+    //    assert (outString.value == str ~ "QQ", "Compare written string");
+    //    assert (outString.record.tell == 4+2, "'Tell' position");
+    //    outString2.record.decimalWrite(1234);
+    //    assert(outString2.value == "1234", "Decimal write");
     }
 }
