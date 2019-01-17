@@ -12,6 +12,8 @@ import rdf.redland.node_iterator;
 import rdf.redland.stream;
 import rdf.redland.query;
 import rdf.redland.query_results;
+import rdf.redland.model;
+import rdf.redland.storage;
 
 struct ModelHandle;
 
@@ -96,6 +98,9 @@ private extern extern(C) {
                                                  URIHandle* datatype_uri);
     int librdf_model_write(ModelHandle* model, IOStreamHandle* iostr);
     ModelHandle* librdf_new_model_from_model(ModelHandle* model);
+    ModelHandle* librdf_new_model(RedlandWorldHandle* world,
+                                  StorageHandle* storage,
+                                  const char *options_string);
 }
 
 string featureContexts = "http://feature.librdf.org/model-contexts";
@@ -224,9 +229,8 @@ struct ModelWithoutFinalize {
     @property bool supportsContext() {
         return librdf_model_supports_contexts(handle) != 0;
     }
-    QueryResultsWithoutFinalize queryExecute(QueryWithoutFinalize query) {
-        return QueryResultsWithoutFinalize.fromNonnullHandle(
-            librdf_model_query_execute(handle, query.handle));
+    QueryResults queryExecute(QueryWithoutFinalize query) { // TODO: Remove Without_Finalize in Ada
+        return QueryResults.fromNonnullHandle(librdf_model_query_execute(handle, query.handle));
     }
     void sync() {
         if(librdf_model_sync(handle) != 0)
@@ -234,8 +238,8 @@ struct ModelWithoutFinalize {
     }
     //@property StorageWithoutFinalize storage() // TODO
     void load(URIWithoutFinalize uri,
-              string name,
-              string mimeType,
+              string name = "",
+              string mimeType = "",
               URIWithoutFinalize typeURI = URIWithoutFinalize.fromHandle(null))
     {
         int res = librdf_model_load(handle,
@@ -313,9 +317,13 @@ struct Model {
                         ModelWithoutFinalize,
                         Model,
                         librdf_free_model);
-    // TODO:
-    //static Model create(StorageWithoutFinalize storage,
-    //                    string options = "");
+    static Model create(RedlandWorldWithoutFinalize world,
+                        StorageWithoutFinalize storage,
+                        string options = "")
+    {
+        ModelHandle* h = librdf_new_model(world.handle, storage.handle, options.toStringz);
+        return Model.fromNonnullHandle(h);
+    }
     // librdf_new_model_with_options() not implemented, because librdf_hash is not implemented
 }
 

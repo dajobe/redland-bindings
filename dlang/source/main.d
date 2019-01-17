@@ -38,7 +38,30 @@ void countTest(string dir) {
 }
 
 void countTest2(string dir) {
+    import rdf.redland.world;
+    import rdf.redland.uri;
+    import rdf.redland.node;
+    import rdf.redland.model;
+    import rdf.redland.storage;
+    import rdf.redland.query;
+    import rdf.redland.query_results;
 
+    RedlandWorld world = RedlandWorld.createAndOpen();
+    Storage storage = Storage.create(world, "memory", "test");
+    Model model = Model.create(world, storage);
+    string rdfFile = dir ~ "../data/dc.nt";
+    string sparql = "SELECT (count(*) as ?count) WHERE { ?s ?p ?o . }";
+//        Query: Query_Type := Copy(Create(World, "sparql", SPARQL)); -- FIXME: Copy causes an unhandled signal?
+    Query query = Query.create(world, "sparql", sparql);
+    QueryResults results = model.queryExecute(query);
+    model.load(URI.fromFilename(world, rdfFile));
+    string[] rows;
+    foreach(i; QueryResultsRange(results)) {
+        Node L = i.getBindingValueByName("count");
+        rows ~= L.toString;
+    }
+    assert(rows.length == 1, "count() returns one row");
+    assert(rows[0] == "3", "count() == 3");
 }
 
 void main(string[] args) {

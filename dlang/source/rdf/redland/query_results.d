@@ -144,14 +144,14 @@ struct QueryResults {
 }
 
 /// Do not create more than one iterator for the same query results object.
-struct BindingsIterator {
+struct QueryResultsRange {
 private:
     QueryResultsWithoutFinalize _results;
 public:
     this(QueryResultsWithoutFinalize results) {
         _results = results;
     }
-    @property ref BindingsIterator front() { return this; }
+    @property ref QueryResultsRange front() { return this; }
     @property bool empty() {
         return !_results.finished;
     }

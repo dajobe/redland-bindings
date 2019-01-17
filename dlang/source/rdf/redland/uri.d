@@ -83,7 +83,7 @@ struct URI {
         return fromNonnullHandle(
             librdf_new_uri_relative_to_base(baseURI.handle, uri.toStringz));
     }
-    static fromFilename (RedlandWorldWithoutFinalize world, string filename) {
+    static URI fromFilename (RedlandWorldWithoutFinalize world, string filename) {
         return fromNonnullHandle(librdf_new_uri_from_filename(world.handle, filename.toStringz));
     }
 }
