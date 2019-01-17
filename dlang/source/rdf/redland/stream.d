@@ -66,3 +66,10 @@ struct Stream {
     }
 }
 
+unittest {
+    RedlandWorld world = RedlandWorld.createAndOpen();
+    import std.range.primitives;
+    auto s = Stream.emptyStream(world);
+    assert(s.empty);
+}
+

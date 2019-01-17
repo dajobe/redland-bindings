@@ -7,8 +7,6 @@ Correct identifiers case.
 
 The following Ada sources were not yet translated into D:
 
-test/empty_stream_test.adb
-test/empty_stream_test.ads
 test/iostreams_test.adb
 test/iostreams_test.ads
 test/namespaces_test.adb
