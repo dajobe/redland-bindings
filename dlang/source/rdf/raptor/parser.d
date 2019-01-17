@@ -177,11 +177,11 @@ struct Parser {
     static Parser create(RaptorWorldWithoutFinalize world, string name) {
         return Parser.fromNonnullHandle(raptor_new_parser(world.handle, name.toStringz));
     }
-    static Parser Create_From_Content(RaptorWorldWithoutFinalize world,
-                                      URIWithoutFinalize uri,
-                                      Nullable!string mimeType,
-                                      Nullable!string buffer,
-                                      Nullable!string identifier)
+    static Parser createFromContent(RaptorWorldWithoutFinalize world,
+                                    URIWithoutFinalize uri,
+                                    Nullable!string mimeType,
+                                    Nullable!string buffer,
+                                    Nullable!string identifier)
     {
         return Parser.fromNonnullHandle(raptor_new_parser_for_content(world.handle,
                                                                       uri.handle,
@@ -193,6 +193,10 @@ struct Parser {
 }
 
 class UserParser : UserObject!Parser {
+    Parser record;
+    this(RaptorWorldWithoutFinalize world, string name) {
+        record = Parser.create(world, name);
+    }
     void initializeAllCallbacks() {
         initializeGraphMarkHandler();
         initializeStatementHandler();

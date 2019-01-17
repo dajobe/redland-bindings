@@ -67,7 +67,7 @@ struct RedlandWorld {
                         librdf_free_world,
                         librdf_new_world);
     static RedlandWorld createAndOpen() {
-        RedlandWorld world;
+        RedlandWorld world = create();
         world.open();
         return world;
     }

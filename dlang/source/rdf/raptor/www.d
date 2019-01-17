@@ -139,6 +139,13 @@ struct WWW {
 }
 
 class UserWWW : UserObject!WWW {
+    WWW record;
+    this(RaptorWorldWithoutFinalize world) {
+        record = WWW.create(world);
+    }
+    this(RaptorWorldWithoutFinalize world, void* connection) {
+        record = WWW.create(world, connection);
+    }
     void initializeAllCallbacks() {
         initializeWriteBytesHandler();
         initializeContentTypeHandler();

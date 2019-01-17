@@ -61,6 +61,7 @@ mixin template WithFinalize(alias Dummy,
     import std.traits;
 
     private Dummy* ptr;
+    @disable this();
     static if (isCallable!constructor) {
         static _WithFinalize create() {
             return _WithFinalize(constructor());
