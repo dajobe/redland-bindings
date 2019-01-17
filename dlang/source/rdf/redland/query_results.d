@@ -153,7 +153,7 @@ public:
     }
     @property ref QueryResultsRange front() { return this; }
     @property bool empty() {
-        return !_results.finished;
+        return _results.finished;
     }
     void popFront()
         in { assert(!empty); }
