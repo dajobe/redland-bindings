@@ -6,9 +6,10 @@ class UnmovableObject {
     this() {
         GC.setAttr(cast(void*)this, GC.BlkAttr.NO_MOVE);
     }
-    ~this() {
-        GC.clrAttr(cast(void*)this, GC.BlkAttr.NO_MOVE);
-    }
+    // Called AFTER object finalization:
+//    ~this() {
+//        GC.clrAttr(cast(void*)this, GC.BlkAttr.NO_MOVE);
+//    }
 }
 
 /// Integration of callbacks with OOP
