@@ -330,7 +330,6 @@ unittest {
         assert(buf[0..4] == str, "Compare read string");
         outString.record.write(str);
         outString.record.write("QQ");
-        import std.stdio; writeln("\noutString.value", outString.value); // FIXME: remove this line
         assert (outString.value == str ~ "QQ", "Compare written string");
         assert (outString.record.tell == 4+2, "'Tell' position");
         outString2.record.decimalWrite(1234);
