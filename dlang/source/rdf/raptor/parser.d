@@ -233,16 +233,16 @@ class UserParser : UserObject!Parser {
     }
     private static extern(C) {
         void raptor_statement_handler_impl(void* data, StatementHandle* statement) {
-            (cast(UserParser*)data).statementHandler(StatementWithoutFinalize.fromNonnullHandle(statement));
+            (cast(UserParser)data).statementHandler(StatementWithoutFinalize.fromNonnullHandle(statement));
         }
         void raptor_graph_mark_handler_impl(void* data, URIHandle* uri, int Flags) {
-            (cast(UserParser*)data).graphMarkHandler(URIWithoutFinalize.fromNonnullHandle(uri), cast(GraphMarkFlags)Flags);
+            (cast(UserParser)data).graphMarkHandler(URIWithoutFinalize.fromNonnullHandle(uri), cast(GraphMarkFlags)Flags);
         }
         void raptor_namespace_handler_impl(void* data, NamespaceHandle* NS) {
-            (cast(UserParser*)data).namespaceHandler(NamespaceWithoutFinalize.fromNonnullHandle(NS));
+            (cast(UserParser)data).namespaceHandler(NamespaceWithoutFinalize.fromNonnullHandle(NS));
         }
         int raptor_uri_filter_impl(void* data, URIHandle* uri) {
-            return (cast(UserParser*)data).uriFilter(URIWithoutFinalize.fromNonnullHandle(uri));
+            return (cast(UserParser)data).uriFilter(URIWithoutFinalize.fromNonnullHandle(uri));
         }
     }
 }

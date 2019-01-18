@@ -68,7 +68,7 @@ class LogHandler : UnmovableObject {
     }
     abstract void handle(LogMessage message);
     private static extern(C) int our_handler(void *user_data, LogMessageHandle* message) {
-        (cast(LogHandler*)user_data).handle(LogMessage(message));
+        (cast(LogHandler)user_data).handle(LogMessage(message));
         return 1;
     }
 }

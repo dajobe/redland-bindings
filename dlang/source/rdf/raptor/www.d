@@ -186,19 +186,19 @@ class UserWWW : UserObject!WWW {
                                    size_t Size,
                                    size_t Nmemb)
         {
-            (cast(UserWWW*)userData).writeBytesHandler(// fromHandle(www)), // ignored
+            (cast(UserWWW)userData).writeBytesHandler(// fromHandle(www)), // ignored
                                                        (cast(immutable char*)ptr)[0..Size*Nmemb]);
         }
         void contentTypeHandlerImpl(WWWHandle *www, void* userData, const char* Content_Type) {
-            (cast(UserWWW*)userData).contentTypeHandler(// fromHandle(www)), // ignored
+            (cast(UserWWW)userData).contentTypeHandler(// fromHandle(www)), // ignored
                                                         (cast(immutable char*)Content_Type).fromStringz); // FIXME: is immutable right here?
         }
         int uriFilterImpl (void* userData, URIHandle* URI) {
             // FIXME: Why negation? (also in Ada)
-            return !(cast(UserWWW*)userData).uriFilter(URIWithoutFinalize.fromNonnullHandle(URI));
+            return !(cast(UserWWW)userData).uriFilter(URIWithoutFinalize.fromNonnullHandle(URI));
         }
         void finalURIHandlerImpl (WWWHandle *www, void* userData, URIHandle* URI) {
-            (cast(UserWWW*)userData).finalURIHandler(// fromHandle(www)), // ignored
+            (cast(UserWWW)userData).finalURIHandler(// fromHandle(www)), // ignored
                                                      URIWithoutFinalize.fromNonnullHandle(URI));
         }
     }
