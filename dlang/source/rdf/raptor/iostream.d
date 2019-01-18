@@ -319,7 +319,7 @@ unittest {
         assert(inSink.readBytes (str.ptr, 10, 10) == 0, "Read zero bytes from a sink");
         outSink.write("XYZ"); // does nothing
     }
-    { // Strings
+    { // String streams
         string str = "xqqq";
         char[] buf = 'w'.repeat(99).array ~ '\0';
         StreamFromString inString = new StreamFromString(world, str);
