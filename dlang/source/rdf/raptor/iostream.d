@@ -329,8 +329,6 @@ unittest {
         size_t bytesRead = inString.record.readBytes(buf.ptr, 1, 100);
         assert(bytesRead == 4, "Read 4 bytes from string");
         assert(buf[0..4] == str, "Compare read string");
-        outString.write(str);
-        outString.write("QQ");
         import std.stdio; writeln("\noutString.value", outString.value); // FIXME: remove this line
 // FIXME: uncomment
     //    assert (outString.value == str ~ "QQ", "Compare written string");
