@@ -329,11 +329,12 @@ unittest {
         size_t bytesRead = inString.record.readBytes(buf.ptr, 1, 100);
         assert(bytesRead == 4, "Read 4 bytes from string");
         assert(buf[0..4] == str, "Compare read string");
+        outString.record.write(str);
+        outString.record.write("QQ");
         import std.stdio; writeln("\noutString.value", outString.value); // FIXME: remove this line
-// FIXME: uncomment
-    //    assert (outString.value == str ~ "QQ", "Compare written string");
-    //    assert (outString.record.tell == 4+2, "'Tell' position");
-    //    outString2.record.decimalWrite(1234);
-    //    assert(outString2.value == "1234", "Decimal write");
+        assert (outString.value == str ~ "QQ", "Compare written string");
+        assert (outString.record.tell == 4+2, "'Tell' position");
+        outString2.record.decimalWrite(1234);
+        assert(outString2.value == "1234", "Decimal write");
     }
 }
