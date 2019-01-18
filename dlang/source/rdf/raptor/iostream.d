@@ -204,9 +204,8 @@ private extern(C) {
 
     int raptor_iostream_write_bytes_impl(void* context, const void* ptr, size_t size, size_t nmemb) {
         try {
-            int Result = (cast(UserIOStream)context).doWriteBytes(cast(char*)ptr, size, nmemb);
-            return Result;
-        }   
+            return (cast(UserIOStream)context).doWriteBytes(cast(char*)ptr, size, nmemb);
+        }
         catch(Exception) {
             return -1;
         }
