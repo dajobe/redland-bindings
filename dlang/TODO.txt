@@ -7,12 +7,6 @@ Correct identifiers case.
 
 The following Ada sources were not yet translated into D:
 
-test/our_test.adb
-test/our_test.ads
-test/raptor_environments.ads
-test/raptor_test_suite.adb
-test/raptor_test_suite.ads
-test/run_all_tests.adb
 test/special_test.adb
 test/statement_test.adb
 test/statement_test.ads
