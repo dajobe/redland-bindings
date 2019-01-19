@@ -113,7 +113,7 @@ struct TermWithoutFinalize {
         char* str = raptor_term_to_string(handle);
         if(!str) throw new RDFException();
         scope(exit) raptor_free_memory(str);
-        return (cast(immutable char*)str).fromStringz; // TODO: Something is probably wrong here.
+        return str.fromStringz.idup;
     }
     // TODO: To_Turtle_String Turtle_Write
 }
