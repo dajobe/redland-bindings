@@ -38,8 +38,8 @@ string xml_literal_datatype_uri_string() { return raptor_xml_literal_datatype_ur
 string xml_namespace_uri() { return raptor_xml_namespace_uri.fromStringz; }
 string xmlschema_datatypes_namespace_uri() { return raptor_xmlschema_datatypes_namespace_uri.fromStringz; }
 
-extern extern(C) uint rdf_namespace_uri_len;
-extern extern(C) uint xml_literal_datatype_uri_string_len;
+//extern extern(C) uint rdf_namespace_uri_len;
+//extern extern(C) uint xml_literal_datatype_uri_string_len;
 
 enum DomainType : ubyte { None = 0,
                           IOStream = 1,
