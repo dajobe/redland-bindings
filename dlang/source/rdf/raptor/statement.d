@@ -89,3 +89,21 @@ struct Statement {
     }
 }
 
+unittest {
+      RaptorWorld world = RaptorWorld.createAndOpen();
+
+      string uri1 = "http://example.org/xyz";
+      string uri2 = "http://example.org/qqq";
+      string uri3 = "http://example.org/123";
+
+      Term term1 = Term.fromURIString(world, uri1);
+      Term term2 = Term.fromURIString(world, uri2);
+      Term term3 = Term.fromURIString(world, uri3);
+
+      Statement st = Statement.create(world, term1, term2, term3);
+      import std.stdio; writeln("st.subject.toString: ", st.subject.toString);
+      assert(st.subject.toString   == '<' ~ uri1 ~ '>', "Subject matches");
+      assert(st.predicate.toString == '<' ~ uri2 ~ '>', "Predicate matches");
+      assert(st.object.toString    == '<' ~ uri3 ~ '>', "Object matches");
+}
+
