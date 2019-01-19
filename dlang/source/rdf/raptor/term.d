@@ -169,10 +169,11 @@ unittest {
                                   Nullable!string("QWE"),
                                   URI.fromString(world, "http://example.org"), // datatype
                                   Nullable!string()); // langage
-    // TODO:
     Term term2 = Term.fromURIString(world, "http://example.org/abc");
     Term term3 = Term.fromURI(world, URI.fromString(world, "http://example.org/cvb"));
-    Term term4 = Term.fromString(world, "\"ZZZ\""); // Turtle string
+    // TODO: .dup below is necessary due to http://bugs.librdf.org/mantis/view.php?id=648
+    Term term4 = Term.fromString(world, "\"ZZZ\"".dup); // Turtle string
+    // TODO:
    //begin
    //   Assert(Value(Get_Literal(Term_1)) = "QWE", "Term_1 value");
    //   Assert(To_String(Get_URI(Term_2)) = "http://example.org/abc", "Term_2 URI");
