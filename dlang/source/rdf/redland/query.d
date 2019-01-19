@@ -74,3 +74,7 @@ public:
         }
 }
 
+unittest {
+    // see main.d instead
+}
+

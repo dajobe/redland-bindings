@@ -141,3 +141,7 @@ struct Query {
     }
 }
 
+unittest {
+    // see main.d instead
+}
+
