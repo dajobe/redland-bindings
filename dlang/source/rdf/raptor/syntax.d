@@ -23,7 +23,7 @@ private extern extern(C) {
                                                     const char *identifier);
 }
 
-extern(C) struct Mime_Type_Q {
+struct Mime_Type_Q {
 private:
     char* _mimeType;
     size_t _mimeTypeLen;
@@ -33,7 +33,7 @@ public:
     @property byte Q() { return _Q; }
 }
 
-extern(C) struct SyntaxDescription {
+struct SyntaxDescription {
 private:
     char** _names;
     uint _namesCount;

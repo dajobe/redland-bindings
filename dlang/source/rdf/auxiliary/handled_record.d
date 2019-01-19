@@ -18,7 +18,7 @@ class NullRDFException: RDFException {
     }
 }
 
-// extern(C) struct Dummy;
+// struct Dummy;
 
 mixin template WithoutFinalize(alias Dummy,
                                alias _WithoutFinalize,

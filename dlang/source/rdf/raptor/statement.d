@@ -8,7 +8,6 @@ import rdf.raptor.world;
 import rdf.raptor.term;
 import rdf.raptor.iostream;
 
-extern(C)
 struct StatementHandle {
 private:
     RaptorWorldHandle* _world;

@@ -32,14 +32,12 @@ private extern extern(C) {
                                                     size_t length);
 }
 
-extern(C)
 enum TermKind { unknown = 0,
                 uri     = 1,
                 literal = 2,
                 // unused type 3
                 blank   = 4 }
 
-extern(C)
 struct TermLiteralValue {
 private:
     char* _str;
@@ -60,7 +58,6 @@ public:
     }
 }
 
-extern(C)
 struct TermBlankValue {
 private:
     char* str;
@@ -70,7 +67,6 @@ private:
     }
 }
 
-extern(C)
 union TermValue {
 private:
     URIHandle* uri;
@@ -78,7 +74,6 @@ private:
     TermBlankValue blank;
 }
 
-extern(C)
 struct TermHandle {
 private:
     RaptorWorldHandle* world;

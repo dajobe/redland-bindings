@@ -235,7 +235,7 @@ private extern(C) {
     }
 }
 
-extern(C) struct DispatcherType {
+struct DispatcherType {
     int version_ = 2;
     // V1 functions
     raptor_iostream_init_func init = null;

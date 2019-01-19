@@ -25,7 +25,6 @@ string getLabel(DomainType level) {
     return raptor_domain_get_label(level).fromStringz.idup;
 }
 
-extern(C)
 struct LocatorHandle {
 private:
     URIHandle* _uri;
@@ -33,7 +32,6 @@ private:
     int _line, _column, _byte;
 }
 
-extern(C)
 struct LogMessageHandle {
 private:
     int _code;

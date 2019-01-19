@@ -68,7 +68,6 @@ enum Domain {
   RAPTOR_DOMAIN_XML_WRITER,
 }
 
-extern(C)
 struct OptionDescriptionHandle {
 private:
     Domain _domain;
