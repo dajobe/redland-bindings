@@ -51,12 +51,12 @@ struct NamespaceStackWithoutFinalize {
     }
     void startNamespace(NamespaceWithoutFinalize ns,
                         Nullable!string prefix,
-                        Nullable!string nsUri,
+                        Nullable!string nsURI,
                         uint newDepth)
     {
         immutable int res = raptor_namespaces_start_namespace_full(handle,
                                                                    prefix.toStringz,
-                                                                   nsUri.toStringz,
+                                                                   nsURI.toStringz,
                                                                    newDepth);
         if(res != 0)
             throw new RDFException();

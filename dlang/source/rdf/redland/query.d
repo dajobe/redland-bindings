@@ -36,13 +36,13 @@ struct Query {
                         string name,
                         string queryString,
                         URIWithoutFinalize uri     = URIWithoutFinalize.fromHandle(null),
-                        URIWithoutFinalize baseUri = URIWithoutFinalize.fromHandle(null))
+                        URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
     {
         QueryHandle* handle = librdf_new_query(world.handle,
                                                name.toStringz,
                                                uri.handle,
                                                queryString.toStringz,
-                                               baseUri.handle);
+                                               baseURI.handle);
         return fromNonnullHandle(handle);
     }
 }
