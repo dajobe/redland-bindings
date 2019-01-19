@@ -170,9 +170,9 @@ unittest {
                                   URI.fromString(world, "http://example.org"), // datatype
                                   Nullable!string()); // langage
     // TODO:
-   //   Term_2: Term_Type := From_URI_String(World, "http://example.org/abc");
-   //   Term_3: Term_Type := From_URI(World, From_String(World, "http://example.org/cvb"));
-   //   Term_4: Term_Type := From_String(World, """ZZZ"""); -- Turtle string
+    Term term2 = Term.fromURIString(world, "http://example.org/abc");
+    Term term3 = Term.fromURI(world, URI.fromString(world, "http://example.org/cvb"));
+    Term term4 = Term.fromString(world, "\"ZZZ\""); // Turtle string
    //begin
    //   Assert(Value(Get_Literal(Term_1)) = "QWE", "Term_1 value");
    //   Assert(To_String(Get_URI(Term_2)) = "http://example.org/abc", "Term_2 URI");
