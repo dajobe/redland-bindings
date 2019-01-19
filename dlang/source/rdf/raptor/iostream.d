@@ -316,7 +316,7 @@ unittest {
         char[] str = "qqq".dup;
         auto inSink = IOStream.fromSink(world);
         auto outSink = IOStream.toSink(world);
-        assert(inSink.readBytes (str.ptr, 10, 10) == 0, "Read zero bytes from a sink");
+        assert(inSink.readBytes(str.ptr, 10, 10) == 0, "Read zero bytes from a sink");
         outSink.write("XYZ"); // does nothing
     }
     { // String streams
