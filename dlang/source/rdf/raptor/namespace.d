@@ -8,6 +8,7 @@ import rdf.raptor.memory;
 import rdf.raptor.world;
 import rdf.raptor.uri;
 import rdf.raptor.iostream;
+import rdf.raptor.namespace_stack;
 
 struct NamespaceHandle;
 
@@ -18,6 +19,15 @@ private extern extern(C) {
     int raptor_namespace_write(NamespaceHandle* ns, IOStreamHandle* iostr);
     char* raptor_namespace_format_as_xml(const NamespaceHandle* ns, size_t* length_p);
     int raptor_xml_namespace_string_parse(const char *string, char **prefix, char **uri_string);
+
+    NamespaceHandle* raptor_new_namespace(NamespaceStackHandle* nstack,
+                                          const char* prefix,
+                                          const char* ns_uri_string,
+                                          int depth);
+    NamespaceHandle* raptor_new_namespace_from_uri(NamespaceStackHandle* nstack,
+                                                   const char* prefix,
+                                                   URIHandle* ns_uri,
+                                                   int depth);
 }
 
 struct PrefixAndURI {
@@ -53,11 +63,20 @@ struct Namespace {
                         NamespaceWithoutFinalize,
                         Namespace,
                         raptor_free_namespace);
-    // TODO:
-//     Namespace Create(NamespaceStackWithoutFinalize stack, string prefix, string ns, uint depth) {
-//     }
-//     Namespace fromURI(NamespaceStackWithoutFinalize stack, string prefix, URIWithoutFinalize uri, int depth) {
-//     }
+    static Namespace create(NamespaceStackWithoutFinalize stack, string prefix, string ns, uint depth) {
+        NamespaceHandle* h =
+            raptor_new_namespace(stack.handle, prefix.toStringz, ns.toStringz, depth);
+        return fromNonnullHandle(h);
+    }
+    static Namespace fromURI(NamespaceStackWithoutFinalize stack,
+                             string prefix,
+                             URIWithoutFinalize uri,
+                             int depth)
+    {
+        NamespaceHandle* h =
+            raptor_new_namespace_from_uri(stack.handle, prefix.toStringz, uri.handle, depth);
+        return fromNonnullHandle(h);
+    }
 }
 
 // See also extractPrefix and extractURI

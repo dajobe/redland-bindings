@@ -32,6 +32,7 @@ package body RDF.Raptor.Namespace is
                                            return Namespace_Handle
      with Import, Convention=>C;
 
+   -- FIXME: Forgotten to pass `depth` argument
    function From_URI (Stack: Namespace_Stack_Type_Without_Finalize'Class;
                       Prefix: String;
                       URI: URI_Type_Without_Finalize'Class;

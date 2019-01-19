@@ -89,9 +89,22 @@ struct NamespaceStack {
                         NamespaceStackWithoutFinalize,
                         NamespaceStack,
                         raptor_free_namespaces);
-    NamespaceStack createStack(RaptorWorldWithoutFinalize world, NamespaceOptions defaults) {
+    static NamespaceStack createStack(RaptorWorldWithoutFinalize world, NamespaceOptions defaults) {
         return fromNonnullHandle(raptor_new_namespaces(world.handle, defaults) );
     }
 }
 
 // raptor_namespaces_init() not bound (it seems that function is internal for Raptor implementation).
+
+unittest {
+    RaptorWorld world = RaptorWorld.createAndOpen();
+    NamespaceStack stack = NamespaceStack.createStack(world, NamespaceOptions.XMLType);
+    URI uri1obj = URI.fromString(world, "http://www.w3.org/1999/xhtml/");
+    Namespace ns1 = Namespace.create(stack, "xhtml", "http://www.w3.org/1999/xhtml/", 1);
+    Namespace ns2 = Namespace.fromURI(stack, "xhtml", uri1obj, 1);
+    assert(ns1.uri.toString == "http://www.w3.org/1999/xhtml/", "Check namespace URI");
+    assert(ns2.uri.toString == "http://www.w3.org/1999/xhtml/", "Check namespace URI");
+    assert(ns1.prefix == "xhtml", "Check namespace prefix");
+    assert(ns2.prefix == "xhtml", "Check namespace prefix");
+}
+
