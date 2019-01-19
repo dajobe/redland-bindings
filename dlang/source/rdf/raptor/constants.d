@@ -41,19 +41,19 @@ string xmlschema_datatypes_namespace_uri() { return raptor_xmlschema_datatypes_n
 extern extern(C) uint rdf_namespace_uri_len;
 extern extern(C) uint xml_literal_datatype_uri_string_len;
 
-enum DomainType : ubyte {None_Domain = 0,
-                         IOStream_Domain = 1,
-                         Namespace_Domain = 2,
-                         Parser_Domain = 3,
-                         Qname_Domain = 4,
-                         Sax2_Domain = 5,
-                         Serializer_Domain = 6,
-                         Term_Domain = 7,
-                         Turtle_Writer_Domain = 8,
-                         URI_Domain = 9,
-                         World_Domain = 10,
-                         WWW_Domain = 11,
-                         XML_Writer_Domain = 12 }
+enum DomainType : ubyte { None = 0,
+                          IOStream = 1,
+                          Namespace = 2,
+                          Parser = 3,
+                          Qname = 4,
+                          Sax2 = 5,
+                          Serializer = 6,
+                          Term = 7,
+                          Turtle_Writer = 8,
+                          URI = 9,
+                          World = 10,
+                          WWW = 11,
+                          XML_Writer = 12 }
 
 unittest {
     import std.conv;
