@@ -7,7 +7,6 @@ Correct identifiers case.
 
 The following Ada sources were not yet translated into D:
 
-test/special_test.adb
 test/statement_test.adb
 test/statement_test.ads
 test/stream_test.adb
