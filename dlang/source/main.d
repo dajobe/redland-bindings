@@ -2,6 +2,28 @@ import std.typecons;
 import std.stdio;
 import rdf.raptor.iostream;
 
+void streamTest(string dir) {
+    import std.range.primitives : walkLength;
+    import rdf.redland.world;
+    import rdf.redland.uri;
+    import rdf.redland.stream;
+    import rdf.redland.model;
+    import rdf.redland.storage;
+
+    RedlandWorld world = RedlandWorld.createAndOpen();
+    Storage storage = Storage.create(world, "memory", "test");
+    Model model = Model.create(world, storage);
+    string rdfFile = dir ~ "../data/dc.nt";
+    model.load(URI.fromFilename(world, rdfFile));
+    Stream stream = model.asStream;
+//    auto counter = stream.walkLength; // TODO: https://issues.dlang.org/show_bug.cgi?id=19596
+    size_t counter = 0;
+    foreach(i; stream) {
+        ++counter;
+    }
+    assert(counter == 3, "counter == 3");
+}
+
 void countTest(string dir) {
     static import rdf.raptor.uri;
     import rdf.rasqal.data_graph;
@@ -66,6 +88,7 @@ void countTest2(string dir) {
 
 void main(string[] args) {
     string dir = args.length > 1 ? args[1] ~ '/' : "";
+    streamTest(dir);
     countTest(dir);
     countTest2(dir);
     writeln("Tests passed.");

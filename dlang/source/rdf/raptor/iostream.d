@@ -335,4 +335,6 @@ unittest {
         outString2.record.decimalWrite(1234);
         assert(outString2.value == "1234", "Decimal write");
     }
+
+    // See also main.d
 }
