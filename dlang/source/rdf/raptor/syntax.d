@@ -83,7 +83,7 @@ public:
         return !raptor_world_get_parser_description(_world.handle, _pos);
     }
     void popFront()
-        in { assert(_pos < raptor_world_get_parsers_count(_world.handle)); }
+        in(!empty)
         do {
             ++_pos;
         }
@@ -105,7 +105,7 @@ public:
         return !raptor_world_get_serializer_description(_world.handle, _pos);
     }
     void popFront()
-        in { assert(_pos < raptor_world_get_serializers_count(_world.handle)); }
+        in(!empty)
         do {
             ++_pos;
         }
@@ -135,4 +135,8 @@ string guessParserName(RaptorWorldWithoutFinalize world,
     return str.fromStringz;
 }
 
-// TODO: Stopped at Create_Parser_Descriptions_Iterator
+unittest {
+    RaptorWorld world = RaptorWorld.createAndOpen();
+    for(auto i = ParserDescriptionIterator(world); !i.empty; i.popFront()) { }
+    for(auto i = SerializerDescriptionIterator(world); !i.empty; i.popFront()) { }
+}

@@ -67,3 +67,10 @@ public:
 bool languageNameCheck(RasqalWorldWithoutFinalize world, string name) {
     return rasqal_language_name_check(world.handle, name.toStringz) != 0;
 }
+
+unittest {
+    RasqalWorld world = RasqalWorld.createAndOpen();
+    for(auto i = QueryLanguageIterator(world); !i.empty; i.popFront()) { }
+    for(auto i = QueryResultsFormatIterator(world); !i.empty; i.popFront()) { }
+}
+
