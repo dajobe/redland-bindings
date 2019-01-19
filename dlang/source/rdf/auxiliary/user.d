@@ -13,8 +13,7 @@ class UnmovableObject {
 }
 
 /// Integration of callbacks with OOP
-// FIXME: Remove template argument
-abstract class UserObject(Record) : UnmovableObject {
+abstract class UserObject : UnmovableObject {
     //alias record this; // prevents compilation as of v2.083.1
     @property void* context() { return cast(void*)this; }
 }

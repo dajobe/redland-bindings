@@ -192,7 +192,7 @@ struct Parser {
    }
 }
 
-class UserParser : UserObject!Parser {
+class UserParser : UserObject {
     Parser record;
     this(RaptorWorldWithoutFinalize world, string name) {
         record = Parser.create(world, name);

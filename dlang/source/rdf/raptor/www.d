@@ -138,7 +138,7 @@ struct WWW {
     }
 }
 
-class UserWWW : UserObject!WWW {
+class UserWWW : UserObject {
     WWW record;
     this(RaptorWorldWithoutFinalize world) {
         record = WWW.create(world);

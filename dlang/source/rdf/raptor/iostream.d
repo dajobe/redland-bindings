@@ -259,7 +259,7 @@ private immutable DispatcherType Dispatch =
       read_bytes : &raptor_iostream_read_bytes_impl,
       read_eof   : &raptor_iostream_read_eof_impl };
 
-class UserIOStream : UserObject!IOStream {
+class UserIOStream : UserObject {
     IOStream record;
     this(RaptorWorldWithoutFinalize world) {
         IOStreamHandle* handle = raptor_new_iostream_from_handler(world.handle,
@@ -277,7 +277,7 @@ class UserIOStream : UserObject!IOStream {
     abstract bool doReadEof();
 }
 
-class StreamFromString : UserObject!IOStream {
+class StreamFromString : UserObject {
     private string _str;
     IOStream record;
     this(RaptorWorldWithoutFinalize world, string str) {
