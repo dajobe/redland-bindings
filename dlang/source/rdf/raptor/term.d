@@ -34,7 +34,7 @@ private extern extern(C) {
 
 extern(C)
 enum TermKind { unknown = 0,
-                URI     = 1,
+                uri     = 1,
                 literal = 2,
                 // unused type 3
                 blank   = 4 }
@@ -97,7 +97,7 @@ struct TermWithoutFinalize {
         return RaptorWorldWithoutFinalize.fromHandle(handle.world);
     }
     @property kind() { return handle.kind; }
-    @property bool isURI() { return kind == TermKind.URI; }
+    @property bool isURI() { return kind == TermKind.uri; }
     @property bool isLiteral() { return kind == TermKind.literal; }
     @property bool isBlank() { return kind == TermKind.blank; }
     @property URIWithoutFinalize uri() {
@@ -174,17 +174,17 @@ unittest {
     // TODO: .dup below is necessary due to http://bugs.librdf.org/mantis/view.php?id=648
     Term term4 = Term.fromString(world, "\"ZZZ\"".dup); // Turtle string
     // TODO:
-   //begin
-   //   Assert(Value(Get_Literal(Term_1)) = "QWE", "Term_1 value");
-   //   Assert(To_String(Get_URI(Term_2)) = "http://example.org/abc", "Term_2 URI");
-   //   Assert(To_String(Get_URI(Term_3)) = "http://example.org/cvb", "Term_3 URI");
-   //   Assert(Value(Get_Literal(Term_4)) = "ZZZ", "Term_4 value");
-   //   Assert(To_String(Datatype(Get_Literal(Term_1))) = "http://example.org", "Term_1 datatype"); -- infinite loop! why?
-   //   Assert(Term_1 /= Term_2, "Non-equal terms");
-   //   Assert(Get_Kind(Term_1) = Literal, "Term_1 is literal");
-   //   Assert(Get_Kind(Term_2) = URI, "Term_2 is URI");
-   //   Assert(Get_Kind(Term_3) = URI, "Term_3 is URI");
-   //   Assert(Get_Kind(Term_4) = Literal, "Term_4 is literal");
-   //
+//    assert(term1.literal.value == "QWE", "Term_1 value");
+//    assert(term2.uri.toString == "http://example.org/abc", "Term_2 URI");
+//    assert(term3.uri.toString == "http://example.org/cvb", "Term_3 URI");
+//    assert(term3.literal.value == "ZZZ", "Term_4 value");
+//    assert(term1.literal.datatype.toString == "http://example.org", "Term_1 datatype"); // infinite loop! why?
+//    assert(term1 != term2, "Non-equal terms");
+//    with(TermKind) {
+//        assert(term1.kind == literal, "Term_1 is literal");
+//        assert(term2.kind == uri, "Term_2 is URI");
+//        assert(term3.kind == uri, "Term_3 is URI");
+//        assert(term4.kind == literal, "Term_4 is literal");
+//    }
 }
 
