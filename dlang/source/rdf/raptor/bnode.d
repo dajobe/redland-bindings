@@ -20,7 +20,7 @@ private extern extern(C) {
 struct BNode {
     static string generateId(RaptorWorldWithoutFinalize world) {
         char* str = raptor_world_generate_bnodeid(world.handle);
-        if(!str) throw new NullRDFException;
+        if(!str) throw new NullRDFException();
         scope(exit) raptor_free_memory(str);
         return str.fromStringz.idup;
     }
