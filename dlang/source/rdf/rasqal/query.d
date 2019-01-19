@@ -141,5 +141,3 @@ struct Query {
     }
 }
 
-// TODO: Stopped at Get_Result_Type
-
