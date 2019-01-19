@@ -109,3 +109,8 @@ string extractURI(string ns) {
     scope(exit) raptor_free_memory(uri);
     return uri.fromStringz.idup;
 }
+
+unittest {
+    // see namespace_stack.d
+}
+
