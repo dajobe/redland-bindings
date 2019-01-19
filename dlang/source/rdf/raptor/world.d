@@ -22,8 +22,8 @@ private extern extern(C) {
 }
 
 private RaptorWorldHandle* raptor_new_world() {
-    import rdf.raptor.constants : version_decimal;
-    return raptor_new_world_internal(version_decimal);
+    import rdf.raptor.constants : versionDecimal;
+    return raptor_new_world_internal(versionDecimal);
 }
 
 struct RaptorWorldWithoutFinalize {
