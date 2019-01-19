@@ -144,10 +144,10 @@ struct Term {
         TermHandle* handle =
             raptor_new_term_from_counted_literal(world.handle,
                                                  literal.myToStringz,
-                                                 literal.length,
+                                                 literal.myLength,
                                                  datatype.handle,
                                                  language.myToStringz,
-                                                 cast(char)language.length);
+                                                 cast(char)language.myLength);
         return fromNonnullHandle(handle);
     }
     static Term fromURIString(RaptorWorldWithoutFinalize world, string uri) {
@@ -162,3 +162,28 @@ struct Term {
         return fromNonnullHandle(raptor_new_term_from_counted_string(world.handle, uriString.ptr, uriString.length));
     }
 }
+
+unittest {
+    RaptorWorld world = RaptorWorld.createAndOpen();
+    Term term1 = Term.fromLiteral(world,
+                                  Nullable!string("QWE"),
+                                  URI.fromString(world, "http://example.org"), // datatype
+                                  Nullable!string()); // langage
+    // TODO:
+   //   Term_2: Term_Type := From_URI_String(World, "http://example.org/abc");
+   //   Term_3: Term_Type := From_URI(World, From_String(World, "http://example.org/cvb"));
+   //   Term_4: Term_Type := From_String(World, """ZZZ"""); -- Turtle string
+   //begin
+   //   Assert(Value(Get_Literal(Term_1)) = "QWE", "Term_1 value");
+   //   Assert(To_String(Get_URI(Term_2)) = "http://example.org/abc", "Term_2 URI");
+   //   Assert(To_String(Get_URI(Term_3)) = "http://example.org/cvb", "Term_3 URI");
+   //   Assert(Value(Get_Literal(Term_4)) = "ZZZ", "Term_4 value");
+   //   Assert(To_String(Datatype(Get_Literal(Term_1))) = "http://example.org", "Term_1 datatype"); -- infinite loop! why?
+   //   Assert(Term_1 /= Term_2, "Non-equal terms");
+   //   Assert(Get_Kind(Term_1) = Literal, "Term_1 is literal");
+   //   Assert(Get_Kind(Term_2) = URI, "Term_2 is URI");
+   //   Assert(Get_Kind(Term_3) = URI, "Term_3 is URI");
+   //   Assert(Get_Kind(Term_4) = Literal, "Term_4 is literal");
+   //
+}
+

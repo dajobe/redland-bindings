@@ -187,7 +187,7 @@ struct Parser {
                                                                       uri.handle,
                                                                       mimeType.myToStringz,
                                                                       buffer.myToStringz,
-                                                                      buffer.length,
+                                                                      buffer.myLength,
                                                                       identifier.myToStringz));
    }
 }

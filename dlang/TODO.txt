@@ -9,5 +9,4 @@ The following Ada sources were not yet translated into D:
 
 test/syntaxes_test.adb
 test/syntaxes_test.ads
-test/term_test.adb
-test/term_test.ads
+
