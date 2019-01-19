@@ -197,31 +197,28 @@ class UserParser : UserObject {
     this(RaptorWorldWithoutFinalize world, string name) {
         record = Parser.create(world, name);
     }
-    void initializeAllCallbacks() {
+    final void initializeAllCallbacks() {
         initializeGraphMarkHandler();
         initializeStatementHandler();
         initializeNamespaceHandler();
         initializeURIFilter();
     }
-    void initializeGraphMarkHandler() {
+    final void initializeGraphMarkHandler() {
         raptor_parser_set_graph_mark_handler(record.handle,
                                              context,
                                              &raptor_graph_mark_handler_impl);
     }
-
-    void initializeStatementHandler() {
+    final void initializeStatementHandler() {
         raptor_parser_set_statement_handler(record.handle,
                                             context,
                                             &raptor_statement_handler_impl);
     }
-
-    void initializeNamespaceHandler() {
+    final void initializeNamespaceHandler() {
         raptor_parser_set_namespace_handler(record.handle,
                                             context,
                                             &raptor_namespace_handler_impl);
     }
-
-    void initializeURIFilter() {
+    final void initializeURIFilter() {
         raptor_parser_set_uri_filter(record.handle, &raptor_uri_filter_impl, context);
     }
 

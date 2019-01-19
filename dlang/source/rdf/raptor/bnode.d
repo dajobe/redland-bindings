@@ -42,7 +42,7 @@ class BNodeIDHandler : UnmovableObject {
         if(userID) userID2 = cast(string)fromStringz(userID);
         return (cast(BNodeIDHandler)data).do_handle(userID2).toStringz;
     }
-    void set(RaptorWorldWithoutFinalize world) {
+    final void set(RaptorWorldWithoutFinalize world) {
         raptor_world_set_generate_bnodeid_handler(world.handle, cast(void*)this, &handleImpl);
     }
 }

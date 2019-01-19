@@ -1,5 +1,5 @@
 const qualifier of member function where appropriate.
-Also scope and final.
+Also scope?
 
 Correct identifiers case.
 

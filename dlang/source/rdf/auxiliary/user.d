@@ -15,5 +15,5 @@ class UnmovableObject {
 /// Integration of callbacks with OOP
 abstract class UserObject : UnmovableObject {
     //alias record this; // prevents compilation as of v2.083.1
-    @property void* context() { return cast(void*)this; }
+    final @property void* context() { return cast(void*)this; }
 }

@@ -146,27 +146,27 @@ class UserWWW : UserObject {
     this(RaptorWorldWithoutFinalize world, void* connection) {
         record = WWW.create(world, connection);
     }
-    void initializeAllCallbacks() {
+    final void initializeAllCallbacks() {
         initializeWriteBytesHandler();
         initializeContentTypeHandler();
         initializeURIFilter();
         initializeFinalURIHandler();
     }
-    void initializeWriteBytesHandler() {
+    final void initializeWriteBytesHandler() {
         raptor_www_set_write_bytes_handler(record.handle,
                                            &writeBytesHandlerImpl,
                                            context);
 
     }
-    void initializeContentTypeHandler() {
+    final void initializeContentTypeHandler() {
         raptor_www_set_content_type_handler(record.handle,
                                             &contentTypeHandlerImpl,
                                             context);
     }
-    void initializeURIFilter() {
+    final void initializeURIFilter() {
         raptor_www_set_uri_filter(record.handle, &uriFilterImpl, context);
     }
-    void initializeFinalURIHandler() {
+    final void initializeFinalURIHandler() {
         raptor_www_set_final_uri_handler(record.handle, &finalURIHandlerImpl, context);
     }
 

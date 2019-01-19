@@ -285,7 +285,7 @@ class StreamFromString : UserObject {
         IOStreamHandle* handle = raptor_new_iostream_from_string(world.handle, cast(void*)str.ptr, str.length);
         record = IOStream.fromNonnullHandle(handle);
     }
-    string value() { return _str; }
+    final string value() { return _str; }
     alias value this;
 }
 
@@ -295,7 +295,7 @@ class StreamToString : UserIOStream {
     this(RaptorWorldWithoutFinalize world) {
         super(world);
     }
-    string value() { return _str; }
+    final string value() { return _str; }
     alias value this;
     override int doWriteBytes(char* data, size_t size, size_t count) {
         _str ~= data[0..size*count];
