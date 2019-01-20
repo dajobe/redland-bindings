@@ -11,6 +11,7 @@ private extern extern(C) {
     int rasqal_world_open(RasqalWorldHandle* world);
     RaptorWorldHandle* rasqal_world_get_raptor(RasqalWorldHandle* world);
     void rasqal_world_set_raptor(RasqalWorldHandle* world, RaptorWorldHandle* raptor_world);
+    int rasqal_world_set_warning_level(RasqalWorldHandle* world, uint warning_level);
 }
 
 struct RasqalWorldWithoutFinalize {
@@ -26,7 +27,11 @@ struct RasqalWorldWithoutFinalize {
     @property void raptor(RaptorWorldWithoutFinalize world) {
         rasqal_world_set_raptor(handle, world.handle);
     }
-    // TODO: Set_Warning_Level Guess_Query_Results_Format_Name
+    // TODO: Guess_Query_Results_Format_Name
+    @property void warningLevel(uint level) {
+        if(rasqal_world_set_warning_level(handle, level) != 0)
+            throw new RDFException();
+    }
 }
 
 struct RasqalWorld {
