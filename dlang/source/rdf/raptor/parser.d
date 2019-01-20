@@ -244,4 +244,3 @@ class UserParser : UserObject {
     }
 }
 
-// TODO: Stopped at Get_World
