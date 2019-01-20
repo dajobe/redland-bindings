@@ -15,11 +15,11 @@ struct QueryResultsHandle;
 
 private struct MyDummy;
 
-enum QueryResultsType { Bindings,
-                        Boolean,
-                        Graph,
-                        Syntax,
-                        Unknown }
+enum QueryResultsType { bindings,
+                        boolean,
+                        graph,
+                        syntax,
+                        unknown }
 
 private extern extern(C) {
     void rasqal_free_query_results(QueryResultsHandle* query_results);

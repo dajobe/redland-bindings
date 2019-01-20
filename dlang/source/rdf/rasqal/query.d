@@ -123,7 +123,7 @@ struct QueryWithoutFinalize {
     }
     QueryResultsType getResultType() {
         QueryResultsType result = rasqal_query_get_result_type(handle);
-        if(result == QueryResultsType.Unknown) throw new RDFException();
+        if(result == QueryResultsType.unknown) throw new RDFException();
         return result;
     }
     // Deliberately not implemented

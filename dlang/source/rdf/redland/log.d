@@ -7,33 +7,33 @@ import rdf.redland.world;
 
 struct LogMessageHandle;
 
-enum LogLevel { None  = 0,
-                Debug = 1,
-                Info  = 2,
-                Warn  = 3,
-                Error = 4,
-                Fatal = 5 }
+enum loglevel { none   = 0,
+                debug_ = 1,
+                info   = 2,
+                warn   = 3,
+                error  = 4,
+                fatal  = 5 }
 
-enum LogFacility { None,
-                   Concepts,
-                   Digest,
-                   Files,
-                   Hash,
-                   Init,
-                   Iterator,
-                   List,
-                   Model,
-                   Node,
-                   Parser,
-                   Query,
-                   Serializer,
-                   Statement,
-                   Storage,
-                   Stream,
-                   URI,
-                   UTF8,
-                   Memory,
-                   Raptor }
+enum LogFacility { none,
+                   concepts,
+                   digest,
+                   files,
+                   hash,
+                   init,
+                   iterator,
+                   list,
+                   model,
+                   node,
+                   parser,
+                   query,
+                   serializer,
+                   statement,
+                   storage,
+                   stream,
+                   uri,
+                   utf8,
+                   memory,
+                   raptor }
 
 private extern extern(C) {
     int librdf_log_message_code(LogMessageHandle* message);
