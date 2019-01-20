@@ -53,19 +53,19 @@ enum RaptorOption : short {
 enum ValueType { bool_, int_, string_, uri_ }
 
 enum Domain {
-  RAPTOR_DOMAIN_NONE,
-  RAPTOR_DOMAIN_IOSTREAM,
-  RAPTOR_DOMAIN_NAMESPACE,
-  RAPTOR_DOMAIN_PARSER,
-  RAPTOR_DOMAIN_QNAME,
-  RAPTOR_DOMAIN_SAX2,
-  RAPTOR_DOMAIN_SERIALIZER,
-  RAPTOR_DOMAIN_TERM,
-  RAPTOR_DOMAIN_TURTLE_WRITER,
-  RAPTOR_DOMAIN_URI,
-  RAPTOR_DOMAIN_WORLD,
-  RAPTOR_DOMAIN_WWW,
-  RAPTOR_DOMAIN_XML_WRITER,
+  none,
+  ioStream,
+  namespace,
+  parser,
+  qname,
+  sax2,
+  serializer,
+  term,
+  turtleWriter,
+  uri,
+  world,
+  www,
+  xmlWriter,
 }
 
 struct OptionDescriptionHandle {
