@@ -1,6 +1,8 @@
 module rdf.rasqal.query_results;
 
 import std.string;
+import rdf.config;
+import rdf.auxiliary.versions;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
 import rdf.raptor.statement;
@@ -178,11 +180,25 @@ struct QueryResults {
 //    {
 //        return fromNonnullHandle(rasqal_new_query_results(world.handle, handle, type, null));
 //    }
-   // Not supported as of Rasqal 0.9.32
-   // QueryResults(RasqalWorldWithoutFinalize world,
-   //              QueryResultsType type,
-   //              URITypeWithoutFinalize baseURI,
-   //              string value)
+    static if(Version(rasqalVersionFeatures) >= Version("0.9.33")) {
+        private extern extern(C)
+        QueryResultsHandle* rasqal_new_query_results_from_string(RasqalWorldHandle* world,
+                                                                 QueryResultsType type,
+                                                                 URIHandle* base_uri,
+                                                                 const char* string,
+                                                                 size_t string_len);
+        this(RasqalWorldWithoutFinalize world,
+             QueryResultsType type,
+             URITypeWithoutFinalize baseURI,
+             string value)
+        {
+            return QueryResults.fromNonnullHandle(
+                rasqal_new_query_results_from_string(world.handle,
+                                                     type,
+                                                     baseURI.handle,
+                                                     value.ptr, value.length));
+        }
+    }
 }
 
 string typeLabel(QueryResultsType type) {

@@ -10,7 +10,7 @@ struct Version {
     this(string str) {
         this.str = str;
     }
-    int opCmp(ref const Version other) const {
+    int opCmp(Version other) const {
         auto i = str.splitter(".").map!(x => to!int(x));
         auto j = other.str.splitter(".").map!(x => to!int(x));
         return cmp(i, j);

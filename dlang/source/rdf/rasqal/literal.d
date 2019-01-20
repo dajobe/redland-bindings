@@ -3,6 +3,8 @@ module rdf.rasqal.literal;
 import std.typecons;
 import std.string;
 import std.stdio : File, FILE;
+import rdf.config;
+import rdf.auxiliary.versions;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
 import rdf.rasqal.memory;
@@ -98,15 +100,19 @@ struct LiteralWithoutFinalize {
     @property URIWithoutFinalize datatype() {
         return URIWithoutFinalize.fromHandle(rasqal_literal_datatype(handle));
     }
-    // TODO:
-    // Not supported as of Rasqal 0.9.32
-    // @property Nullable!string language()
     @property LiteralType rdfTermType() {
         return rasqal_literal_get_rdf_term_type(handle);
     }
-    // TODO:
-    // Not supported as of Rasqal 0.9.32
-    // @property literalType type()
+    static if(Version(rasqalVersionFeatures) >= Version("0.9.33")) {
+        private extern extern(C) LiteralType rasqal_literal_get_type(LiteralHandle* l);
+        private extern extern(C) char* rasqal_literal_get_language(LiteralHandle* l);
+        @property Nullable!string language() {
+            rasqal_literal_get_language(handle).myFromStringz;
+        }
+        @property literalType type() {
+            return rasqal_literal_get_type(handle);
+        }
+    }
     bool isRdfLiteral () {
         return rasqal_literal_is_rdf_literal(handle) != 0;
     }
