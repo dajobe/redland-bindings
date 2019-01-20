@@ -79,7 +79,7 @@ private extern extern(C) {
     RaptorWorldHandle* raptor_parser_get_world(ParserHandle* parser);
 }
 
-enum GraphMarkFlags { Graph_Mark_Start = 1, Graph_Mark_Declared = 2 }
+enum GraphMarkFlags { graphMarkStart = 1, graphMarkDeclared = 2 }
 
 struct ParserWithoutFinalize {
     mixin WithoutFinalize!(ParserHandle,
