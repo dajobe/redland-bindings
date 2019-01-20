@@ -6,6 +6,7 @@ import rdf.auxiliary.handled_record;
 import rdf.raptor.memory;
 import rdf.raptor.world;
 import rdf.raptor.iostream;
+import rdf.raptor.namespace_stack;
 
 struct URIHandle;
 
@@ -41,6 +42,15 @@ private extern extern(C) {
     URIHandle* raptor_new_uri_for_rdf_concept(RaptorWorldHandle* world, const char *name);
     URIHandle* raptor_new_uri_for_xmlbase(URIHandle* old_uri);
     URIHandle* raptor_new_uri_for_retrieval(URIHandle* old_uri);
+    char* raptor_uri_to_turtle_string(RaptorWorldHandle* world,
+                                      URIHandle* uri,
+                                      NamespaceStackHandle* nstack,
+                                      URIHandle* base_uri);
+    int raptor_uri_turtle_write(RaptorWorldHandle* world,
+                                IOStreamHandle* iostr,
+                                URIHandle* uri,
+                                NamespaceStackHandle* nstack,
+                                URIHandle* base_uri);
 }
 
 /// Only absolute URIs!
@@ -70,6 +80,28 @@ struct URIWithoutFinalize {
         immutable int result = raptor_uri_file_exists(handle);
         if(result < 0) throw new RDFException();
         return result != 0;
+    }
+    string toTurtleString(RaptorWorldWithoutFinalize world,
+                          NamespaceStackWithoutFinalize stack,
+                          URIWithoutFinalize baseURI)
+    {
+        // TODO: Use raptor_uri_to_turtle_counted_string() instead
+        char* str = raptor_uri_to_turtle_string(world.handle, handle, stack.handle, baseURI.handle);
+        if(!str) throw new RDFException();
+        scope(exit) raptor_free_memory(str);
+        return str.fromStringz.idup;
+    }
+    void turtleWrite(RaptorWorldWithoutFinalize world,
+                     IOStreamWithoutFinalize stream,
+                     NamespaceStackWithoutFinalize stack,
+                     URIWithoutFinalize baseURI)
+    {
+        int res = raptor_uri_turtle_write(world.handle,
+                                          stream.handle,
+                                          handle,
+                                          stack.handle,
+                                          baseURI.handle);
+        if(res != 0) throw new RDFException();
     }
 }
 
@@ -197,8 +229,6 @@ bool filenameExists(string filename) {
     if(result < 0) throw new RDFException();
     return result != 0;
 }
-
-// TODO: To_Turtle_String Turtle_Write
 
 unittest {
     RaptorWorld world = RaptorWorld.createAndOpen();
