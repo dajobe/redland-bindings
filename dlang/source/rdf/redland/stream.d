@@ -7,7 +7,7 @@ import rdf.redland.node;
 import rdf.redland.statement;
 import rdf.redland.node_iterator;
 
-// TODO: Necessarily test that it works as expected
+// Necessarily test that it works as expected
 
 struct StreamHandle;
 
