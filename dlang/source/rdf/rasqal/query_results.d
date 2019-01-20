@@ -7,9 +7,13 @@ import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
 import rdf.raptor.statement;
 import rdf.raptor.iostream;
+import rdf.rasqal.world;
 import rdf.rasqal.literal;
+import rdf.rasqal.query;
 
 struct QueryResultsHandle;
+
+private struct MyDummy;
 
 enum QueryResultsType { Bindings,
                         Boolean,
@@ -51,6 +55,10 @@ private extern extern(C) {
                                    URIHandle* base_uri);
     const(char*) rasqal_query_results_type_label(QueryResultsType type);
     int rasqal_query_results_rewind(QueryResultsHandle* results);
+    QueryResultsHandle* rasqal_new_query_results(RasqalWorldHandle* world,
+                                                 QueryHandle* query,
+                                                 QueryResultsType type,
+                                                 MyDummy* vars_table);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -173,13 +181,12 @@ struct QueryResults {
                         QueryResultsWithoutFinalize,
                         QueryResults,
                         rasqal_free_query_results);
-    // TODO:
-//    QueryResults create(RasqalWorldWithoutFinalize world,
-//                        QueryWithoutFinalize query,
-//                        QueryResultType type)
-//    {
-//        return fromNonnullHandle(rasqal_new_query_results(world.handle, handle, type, null));
-//    }
+    static QueryResults create(RasqalWorldWithoutFinalize world,
+                               QueryWithoutFinalize query,
+                               QueryResultsType type)
+    {
+        return fromNonnullHandle(rasqal_new_query_results(world.handle, query.handle, type, null));
+    }
     static if(Version(rasqalVersionFeatures) >= Version("0.9.33")) {
         private extern extern(C)
         QueryResultsHandle* rasqal_new_query_results_from_string(RasqalWorldHandle* world,
@@ -187,10 +194,10 @@ struct QueryResults {
                                                                  URIHandle* base_uri,
                                                                  const char* string,
                                                                  size_t string_len);
-        this(RasqalWorldWithoutFinalize world,
-             QueryResultsType type,
-             URITypeWithoutFinalize baseURI,
-             string value)
+        static create(RasqalWorldWithoutFinalize world,
+                      QueryResultsType type,
+                      URITypeWithoutFinalize baseURI,
+                      string value)
         {
             return QueryResults.fromNonnullHandle(
                 rasqal_new_query_results_from_string(world.handle,
