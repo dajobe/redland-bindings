@@ -194,7 +194,6 @@ class UserWWW : UserObject {
                                                         (cast(immutable char*)contentType).fromStringz);
         }
         int uriFilterImpl(void* userData, URIHandle* URI) {
-            // FIXME: Why negation? (also in Ada)
             return !(cast(UserWWW)userData).uriFilter(URIWithoutFinalize.fromNonnullHandle(URI));
         }
         void finalURIHandlerImpl(WWWHandle *www, void* userData, URIHandle* URI) {
