@@ -28,7 +28,7 @@ struct BNode {
                                              Nullable!string prefix,
                                              int base = 1)
     {
-        raptor_world_set_generate_bnodeid_parameters(world.handle, myToStringz(prefix), base);
+        raptor_world_set_generate_bnodeid_parameters(world.handle, prefix.myToStringz, base);
     }
 }
 
