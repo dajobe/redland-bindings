@@ -1,7 +1,10 @@
 module rdf.rasqal.world;
 
+import std.typecons;
 import rdf.auxiliary.handled_record;
+import rdf.auxiliary.nullable_string;
 import rdf.raptor.world;
+import rdf.raptor.uri;
 
 struct RasqalWorldHandle;
 
@@ -12,6 +15,12 @@ private extern extern(C) {
     RaptorWorldHandle* rasqal_world_get_raptor(RasqalWorldHandle* world);
     void rasqal_world_set_raptor(RasqalWorldHandle* world, RaptorWorldHandle* raptor_world);
     int rasqal_world_set_warning_level(RasqalWorldHandle* world, uint warning_level);
+    const(char*) rasqal_world_guess_query_results_format_name(RasqalWorldHandle* world,
+                                                              URIHandle* uri,
+                                                              const char *mime_type,
+                                                              const char *buffer,
+                                                              size_t len,
+                                                              const char *identifier);
 }
 
 struct RasqalWorldWithoutFinalize {
@@ -27,10 +36,22 @@ struct RasqalWorldWithoutFinalize {
     @property void raptor(RaptorWorldWithoutFinalize world) {
         rasqal_world_set_raptor(handle, world.handle);
     }
-    // TODO: Guess_Query_Results_Format_Name
     @property void warningLevel(uint level) {
         if(rasqal_world_set_warning_level(handle, level) != 0)
             throw new RDFException();
+    }
+    Nullable!string guessQueryResultsFormatName(URIWithoutFinalize uri,
+                                                Nullable!string mimeType,
+                                                Nullable!string buffer,
+                                                Nullable!string identifier)
+    {
+        const char* result = rasqal_world_guess_query_results_format_name(handle,
+                                                                          uri.handle,
+                                                                          mimeType.myToStringz,
+                                                                          buffer.myToStringz,
+                                                                          buffer.myLength,
+                                                                          identifier.myToStringz);
+        return result.myFromStringz;
     }
 }
 
