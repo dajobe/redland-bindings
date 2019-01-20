@@ -616,7 +616,7 @@ dnl needed for some bindings such as python to link raptor locator functions
 RAPTOR_LDFLAGS=`$PKG_CONFIG raptor2 --libs`
 RASQAL_LDFLAGS=`$PKG_CONFIG rasqal --libs`
 
-
+RASQAL_VERSION=`$PKG_CONFIG rasqal --modversion`
 
 dnl Checks for building sub-packages in sub directories
 SD="$languages"
@@ -636,6 +636,8 @@ fi
 LIBS=
 CPPFLAGS=
 LDFLAGS=
+
+AC_SUBST(RASQAL_VERSION)
 
 AC_SUBST(LIBRDF_CPPFLAGS)
 AC_SUBST(LIBRDF_LDFLAGS)
@@ -675,6 +677,7 @@ ruby/lib/rdf/redland/Makefile
 ruby/lib/rdf/redland/schemas/Makefile
 ada/Makefile
 dlang/Makefile
+dlang/source/rdf/config.d
 data/Makefile
 docs/ada/Makefile
 ])
