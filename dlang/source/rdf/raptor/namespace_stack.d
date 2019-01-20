@@ -33,7 +33,7 @@ private extern extern(C) {
     NamespaceStackHandle* raptor_new_namespaces(RaptorWorldHandle *world, int defaults);
 }
 
-enum NamespaceOptions { NoneType = 0, XMLType = 1, RDFType = 2, UndefinedType = 3 };
+enum NamespaceOptions { noneType = 0, xmlType = 1, rdfFType = 2, undefinedType = 3 };
 
 struct NamespaceStackWithoutFinalize {
     mixin WithoutFinalize!(NamespaceStackHandle,
@@ -98,7 +98,7 @@ struct NamespaceStack {
 
 unittest {
     RaptorWorld world = RaptorWorld.createAndOpen();
-    NamespaceStack stack = NamespaceStack.createStack(world, NamespaceOptions.XMLType);
+    NamespaceStack stack = NamespaceStack.createStack(world, NamespaceOptions.xmlType);
     URI uri1obj = URI.fromString(world, "http://www.w3.org/1999/xhtml/");
     Namespace ns1 = Namespace.create(stack, "xhtml", "http://www.w3.org/1999/xhtml/", 1);
     Namespace ns2 = Namespace.fromURI(stack, "xhtml", uri1obj, 1);
