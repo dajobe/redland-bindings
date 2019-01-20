@@ -16,8 +16,8 @@ import rdf.redland.model;
 
 struct ParserHandle;
 
-enum { FEATURE_ERROR_COUNT   = "http://feature.librdf.org/parser-error-count",
-       FEATURE_WARNING_COUNT = "http://feature.librdf.org/parser-warning-count" }
+enum { featureErrorCount   = "http://feature.librdf.org/parser-error-count",
+       featureWarningCount = "http://feature.librdf.org/parser-warning-count" }
 
 private extern extern(C) {
     void librdf_free_parser(ParserHandle* parser);

@@ -10,10 +10,10 @@ import rdf.redland.node;
 struct StatementHandle;
 
 enum StatementPartFlags {
-   SubjectPart   = 1,
-   PredicatePart = 2,
-   ObjectPart    = 4,
-   AllParts      = SubjectPart | PredicatePart | ObjectPart }
+   subjectPart   = 1,
+   predicatePart = 2,
+   objectPart    = 4,
+   allParts      = subjectPart | predicatePart | objectPart }
 
 private extern extern(C) {
     void librdf_free_statement(StatementHandle* statement);
