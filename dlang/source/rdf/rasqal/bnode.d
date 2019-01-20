@@ -27,11 +27,10 @@ class BNodeIDHandler : UnmovableObject {
     abstract string doHandle(RasqalWorldWithoutFinalize world, Nullable!string userID);
     static extern(C) const(char*)
     C_BNode_ID_Handle_Impl(RasqalWorldHandle* world, void* data, char* userID) {
-        // TODO: Check this code
         scope(exit) rasqal_free_memory(userID);
         return (cast(BNodeIDHandler)data).doHandle(
             RasqalWorldWithoutFinalize.fromNonnullHandle(world),
-            (cast(char*)userID).myFromStringz).toStringz;
+            userID.myFromStringz).toStringz;
    }
 }
 
