@@ -65,6 +65,6 @@ public:
     void popFront() {
         ++_num;
     }
+    @property size_t position() { return _num; }
 }
 
-// TODO: Stopped at Features_Cursor
