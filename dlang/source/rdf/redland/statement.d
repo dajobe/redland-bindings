@@ -97,7 +97,7 @@ struct StatementWithoutFinalize {
         size_t length = librdf_statement_encode2(world.handle, handle, null, 0);
         char[] buffer = new char[length];
         cast(void)librdf_statement_encode2(world.handle, handle, buffer.ptr, length);
-        return buffer.idup; // TODO: Is duplication really needed?
+        return cast(string)buffer;
     }
     string encodeParts(RedlandWorldWithoutFinalize world,
                        StatementWithoutFinalize statement,
@@ -117,7 +117,7 @@ struct StatementWithoutFinalize {
                                                  buffer.ptr,
                                                  length,
                                                  fields);
-        return buffer.idup; // TODO: Is duplication really needed?
+        return cast(string)buffer;
     }
     // librdf_statement_decode2() not implemented (not so important and somehow hard to do)
     void Write(IOStreamWithoutFinalize stream) {
