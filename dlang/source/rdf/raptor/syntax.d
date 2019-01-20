@@ -4,7 +4,7 @@ import std.string;
 import rdf.raptor.world;
 import rdf.raptor.uri;
 
-enum SyntaxBitflags { Need_Base_URI = 1 }
+enum SyntaxBitflags { needBaseURI = 1 }
 
 private extern extern(C) {
     const(SyntaxDescription)* raptor_world_get_parser_description(RaptorWorldHandle* world,
