@@ -227,7 +227,6 @@ public:
     @property bool empty() { return obj.finished(); }
     @property QueryResultsRange front() { return this; } // return itself
     void popFront() { obj.next(); }
-    // TODO: empty()
     string getBindingName(uint offset) {
         return obj.getBindingName(offset);
     }
