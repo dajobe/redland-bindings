@@ -61,7 +61,7 @@ class IOStreamException: Exception {
 enum EscapedWriteBitflags {
     bitflagBSEscapesBF      = 1,
     bitflagBSEscapesTNRU    = 2,
-    bitflagUTF8               = 4,
+    bitflagUTF8             = 4,
     bitflagSparqlURIEscapes = 8,
 
     // N-Triples - favour writing \u, \U over UTF8
