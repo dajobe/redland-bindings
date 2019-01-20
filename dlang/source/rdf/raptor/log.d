@@ -8,6 +8,7 @@ import rdf.raptor.constants;
 import rdf.raptor.world;
 import rdf.raptor.memory;
 import rdf.raptor.uri;
+import rdf.rasqal.world; // this dependency should probably be eliminated
 
 enum LogLevel { none = 0,
                 trace = 1,
@@ -80,6 +81,10 @@ private extern extern(C) {
     int raptor_world_set_log_handler(RaptorWorldHandle* world, void *user_data, raptor_log_handler handler);
     const(char*) raptor_log_level_get_label(LogLevel level);
     const(char*) raptor_domain_get_label(DomainType domain);
+    // Experimental code:
+    void rasqal_world_set_log_handler(RasqalWorldHandle* world,
+                                      void *user_data,
+                                      raptor_log_handler handler);
 }
 
 struct LocatorWithoutFinalize {
@@ -159,5 +164,9 @@ class LogHandler : UnmovableObject {
     final void set(RaptorWorldWithoutFinalize world) {
         if(raptor_world_set_log_handler(world.handle, cast(void*)this, &handleImpl) != 0)
             throw new RDFException();
+    }
+    /// Experimental API
+    final void set(RasqalWorldWithoutFinalize world) {
+        rasqal_world_set_log_handler(world.handle, cast(void*)this, &handleImpl);
     }
 }

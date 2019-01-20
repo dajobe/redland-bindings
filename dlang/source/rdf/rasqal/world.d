@@ -26,7 +26,7 @@ struct RasqalWorldWithoutFinalize {
     @property void raptor(RaptorWorldWithoutFinalize world) {
         rasqal_world_set_raptor(handle, world.handle);
     }
-    // TODO: Set_Log_Handler Set_Warning_Level Guess_Query_Results_Format_Name
+    // TODO: Set_Warning_Level Guess_Query_Results_Format_Name
 }
 
 struct RasqalWorld {
