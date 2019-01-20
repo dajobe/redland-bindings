@@ -47,8 +47,6 @@ private extern extern(C) {
     IOStreamHandle* raptor_new_iostream_from_string(RaptorWorldHandle* world, void *string, size_t length);
 }
 
-// TODO: Make this instead wrapper over D streams: https://stackoverflow.com/a/54029257/856090
-
 class IOStreamException: Exception {
     this(string msg, string file = __FILE__, size_t line = __LINE__) {
         super(msg, file, line);
@@ -152,6 +150,8 @@ struct IOStreamWithoutFinalize {
     }
 }
 
+/// It would be nice to make this a wrapper over D streams.
+/// But D streams are not yet settled: https://stackoverflow.com/a/54029257/856090
 struct IOStream {
     mixin WithFinalize!(IOStreamHandle,
                         IOStreamWithoutFinalize,
