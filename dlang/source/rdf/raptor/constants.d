@@ -42,7 +42,7 @@ string xmlschemaDatatypesNamespaceURI() { return raptor_xmlschema_datatypes_name
 //extern extern(C) uint rdf_namespace_uri_len;
 //extern extern(C) uint xml_literal_datatype_uri_string_len;
 
-enum DomainType : ubyte { тone = 0,
+enum DomainType : ubyte { none = 0,
                           ioStream = 1,
                           namespace = 2,
                           parser = 3,
