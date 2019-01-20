@@ -73,5 +73,3 @@ class LogHandler : UnmovableObject {
     }
 }
 
-// TODO: Stopped at Log_Handler
-
