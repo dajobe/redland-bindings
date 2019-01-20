@@ -59,31 +59,31 @@ class IOStreamException: Exception {
 }
 
 enum EscapedWriteBitflags {
-    BITFLAG_BS_ESCAPES_BF      = 1,
-    BITFLAG_BS_ESCAPES_TNRU    = 2,
-    BITFLAG_UTF8               = 4,
-    BITFLAG_SPARQL_URI_ESCAPES = 8,
+    bitflagBSEscapesBF      = 1,
+    bitflagBSEscapesTNRU    = 2,
+    bitflagUTF8               = 4,
+    bitflagSparqlURIEscapes = 8,
 
     // N-Triples - favour writing \u, \U over UTF8
-    NTRIPLES_LITERAL = BITFLAG_BS_ESCAPES_TNRU | BITFLAG_BS_ESCAPES_BF,
-    NTRIPLES_URI     = BITFLAG_SPARQL_URI_ESCAPES,
+    nTriplesLiteral = bitflagBSEscapesTNRU | bitflagBSEscapesBF,
+    nTriplesURI     = bitflagSparqlURIEscapes,
 
-    // SPARQL literal allows raw UTF8 for printable literals
-    SPARQL_LITERAL = BITFLAG_UTF8,
+    // Sparql literal allows raw UTF8 for printable literals
+    sparqlLiteral = bitflagUTF8,
 
-    // SPARQL long literal no BS-escapes allowe
-    SPARQL_LONG_LITERAL = BITFLAG_UTF8,
+    // Sparql long literal no BS-escapes allowe
+    sparqlLongLiteral = bitflagUTF8,
 
-    // SPARQL uri have to escape certain characters
-    SPARQL_URI = BITFLAG_UTF8 | BITFLAG_SPARQL_URI_ESCAPES,
+    // Sparql uri have to escape certain characters
+    sparqlURI = bitflagUTF8 | bitflagSparqlURIEscapes,
 
-    // Turtle (2013) escapes are like SPARQL
-    TURTLE_URI          = SPARQL_URI,
-    TURTLE_LITERAL      = SPARQL_LITERAL,
-    TURTLE_LONG_LITERAL = SPARQL_LONG_LITERAL,
+    // Turtle (2013) escapes are like Sparql
+    TurtleURI         = sparqlURI,
+    TurtleLiteral     = sparqlLiteral,
+    TurtleLongLiteral = sparqlLongLiteral,
 
     //- JSON literals \b \f \t \r \n and \u \U
-    JSON_LITERAL = BITFLAG_BS_ESCAPES_TNRU | BITFLAG_BS_ESCAPES_BF,
+    jsonLiteral = bitflagBSEscapesTNRU | bitflagBSEscapesBF,
 }
 
 struct IOStreamWithoutFinalize {
