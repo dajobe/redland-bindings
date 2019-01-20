@@ -55,10 +55,13 @@ private extern extern(C) {
                                    URIHandle* base_uri);
     const(char*) rasqal_query_results_type_label(QueryResultsType type);
     int rasqal_query_results_rewind(QueryResultsHandle* results);
-    QueryResultsHandle* rasqal_new_query_results(RasqalWorldHandle* world,
-                                                 QueryHandle* query,
-                                                 QueryResultsType type,
-                                                 MyDummy* vars_table);
+    //QueryResultsHandle* rasqal_new_query_results(RasqalWorldHandle* world,
+    //                                             QueryHandle* query,
+    //                                             QueryResultsType type,
+    //                                             MyDummy* vars_table);
+    QueryResultsHandle* rasqal_new_query_results2(RasqalWorldHandle* world,
+                                                  QueryHandle* query,
+                                                  QueryResultsType type);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -185,7 +188,7 @@ struct QueryResults {
                                QueryWithoutFinalize query,
                                QueryResultsType type)
     {
-        return fromNonnullHandle(rasqal_new_query_results(world.handle, query.handle, type, null));
+        return fromNonnullHandle(rasqal_new_query_results2(world.handle, query.handle, type));
     }
     static if(Version(rasqalVersionFeatures) >= Version("0.9.33")) {
         private extern extern(C)
