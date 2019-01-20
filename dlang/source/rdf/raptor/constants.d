@@ -42,19 +42,19 @@ string xmlschemaDatatypesNamespaceURI() { return raptor_xmlschema_datatypes_name
 //extern extern(C) uint rdf_namespace_uri_len;
 //extern extern(C) uint xml_literal_datatype_uri_string_len;
 
-enum DomainType : ubyte { None = 0,
-                          IOStream = 1,
-                          Namespace = 2,
-                          Parser = 3,
+enum DomainType : ubyte { тone = 0,
+                          ioStream = 1,
+                          namespace = 2,
+                          parser = 3,
                           Qname = 4,
-                          Sax2 = 5,
-                          Serializer = 6,
-                          Term = 7,
-                          Turtle_Writer = 8,
-                          URI = 9,
-                          World = 10,
-                          WWW = 11,
-                          XML_Writer = 12 }
+                          sax2 = 5,
+                          serializer = 6,
+                          term = 7,
+                          turtle_Writer = 8,
+                          uri = 9,
+                          world = 10,
+                          www = 11,
+                          xmlWriter = 12 }
 
 unittest {
     import std.conv;
