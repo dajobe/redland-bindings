@@ -4,10 +4,10 @@ import rdf.auxiliary.handled_record;
 
 struct RaptorWorldHandle;
 
-enum RaptorFlagType : char { LibxmlErrorSave = 1,
-                             LibxmlStructuredErrorSave = 2,
-                             URIInterning = 3,
-                             WWWSkipInitFinish = 4 }
+enum RaptorFlagType : char { libxmlErrorSave = 1,
+                             libxmlStructuredErrorSave = 2,
+                             uriInterning = 3,
+                             wwwSkipInitFinish = 4 }
 
 struct FlagAndValue {
     RaptorFlagType flag;
@@ -69,7 +69,7 @@ struct RaptorWorld {
 unittest {
     RaptorWorld defaultWorld = RaptorWorld.createAndOpen();
     RaptorWorld worldWithSomeFlags =
-        RaptorWorld.createAndOpen([FlagAndValue(RaptorFlagType.URIInterning, false)]);
+        RaptorWorld.createAndOpen([FlagAndValue(RaptorFlagType.uriInterning, false)]);
     // TODO:
 //     World2: Rasqal_World_Type := Open;
 //     World: Raptor_World_Type_Without_Finalize := Get_Raptor(World2) with Unreferenced;

@@ -5,9 +5,9 @@ import rdf.auxiliary.handled_record;
 import rdf.raptor.uri;
 import rdf.rasqal.world;
 
-enum FeatureType { Unknown = -1, No_Net = 0, Rand_Seed = 1 }
+enum FeatureType { unknown = -1, noNet = 0, randSeed = 1 }
 
-enum FeatureValueType { Other = -1, Integer_Type = 0, String_Type = 1 }
+enum FeatureValueType { other = -1, integerType = 0, stringType = 1 }
 
 private extern extern(C) {
     FeatureType rasqal_feature_from_uri(RasqalWorldHandle* world, URIHandle* uri);

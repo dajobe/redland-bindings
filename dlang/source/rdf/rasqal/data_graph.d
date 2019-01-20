@@ -9,9 +9,9 @@ import rdf.raptor.uri;
 import rdf.raptor.iostream;
 import rdf.rasqal.world;
 
-enum DataGraphFlags { None, // unused
-                      Named,
-                      Background }
+enum DataGraphFlags { none, // unused
+                      named,
+                      background }
 
 struct DataGraphHandle {
 private:
@@ -96,7 +96,7 @@ struct DataGraph {
                                    IOStreamWithoutFinalize iostream,
                                    URIWithoutFinalize baseURI,
                                    URIWithoutFinalize nameURI = URIWithoutFinalize.fromHandle(null),
-                                   DataGraphFlags flags = DataGraphFlags.Background,
+                                   DataGraphFlags flags = DataGraphFlags.background,
                                    Nullable!string formatType = Nullable!string(),
                                    Nullable!string formatName = Nullable!string(),
                                    URIWithoutFinalize formatURI = URIWithoutFinalize.fromHandle(null))
