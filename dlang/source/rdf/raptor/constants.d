@@ -32,15 +32,16 @@ string licenseString() { return raptor_license_string.fromStringz; }
 string shortCopyrightString() { return raptor_short_copyright_string.fromStringz; }
 string versionString() { return raptor_version_string.fromStringz; }
 string owlNamespaceURI() { return raptor_owl_namespace_uri.fromStringz; }
-string rdfNamespaceURI() { return raptor_rdf_namespace_uri.fromStringz; }
+string rdfNamespaceURI() { return raptor_rdf_namespace_uri[0..rdf_namespace_uri_len]; }
 string rdfSchemaNamespaceURI() { return raptor_rdf_schema_namespace_uri.fromStringz; }
-string xmlLiteralDatatypeURIString() { return raptor_xml_literal_datatype_uri_string.fromStringz; }
+string xmlLiteralDatatypeURIString() {
+    return raptor_xml_literal_datatype_uri_string[0..xml_literal_datatype_uri_string_len];
+}
 string xmlNamespaceURI() { return raptor_xml_namespace_uri.fromStringz; }
 string xmlschemaDatatypesNamespaceURI() { return raptor_xmlschema_datatypes_namespace_uri.fromStringz; }
 
-// TODO: Use it
-//extern extern(C) uint rdf_namespace_uri_len;
-//extern extern(C) uint xml_literal_datatype_uri_string_len;
+private extern extern(C) uint rdf_namespace_uri_len;
+private extern extern(C) uint xml_literal_datatype_uri_string_len;
 
 enum DomainType : ubyte { none = 0,
                           ioStream = 1,
