@@ -170,12 +170,12 @@ class UserWWW : UserObject {
         raptor_www_set_final_uri_handler(record.handle, &finalURIHandlerImpl, context);
     }
 
-    void writeBytesHandler (string value) { }
-    void contentTypeHandler (string Content_Type) { }
-    void finalURIHandler (URIWithoutFinalize URI) { }
+    void writeBytesHandler(string value) { }
+    void contentTypeHandler(string Content_Type) { }
+    void finalURIHandler(URIWithoutFinalize URI) { }
 
     /// Return False to disallow loading an URI
-    bool uriFilter (URIWithoutFinalize URI) {
+    bool uriFilter(URIWithoutFinalize URI) {
         return true;
     }
 
