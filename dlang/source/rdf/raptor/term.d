@@ -188,7 +188,7 @@ unittest {
                                   Nullable!string()); // langage
     Term term2 = Term.fromURIString(world, "http://example.org/abc");
     Term term3 = Term.fromURI(world, URI.fromString(world, "http://example.org/cvb"));
-    // TODO: .dup below is necessary due to http://bugs.librdf.org/mantis/view.php?id=648
+    // .dup below is necessary due to http://bugs.librdf.org/mantis/view.php?id=648
     Term term4 = Term.fromString(world, "\"ZZZ\"".dup); // Turtle string
     // TODO:
 //    assert(term1.literal.value == "QWE", "Term_1 value");
