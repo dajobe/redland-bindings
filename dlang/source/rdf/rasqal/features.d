@@ -28,7 +28,7 @@ FeatureValueType getType(FeatureType feature) {
     return cast(FeatureValueType)rasqal_feature_value_type(feature);
 }
 
-// TODO: Make data fields private?
+/// In a future version the field may be made readonly
 struct FeatureDescription {
     string name, label;
     URI uri; // with finalize
