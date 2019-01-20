@@ -95,14 +95,14 @@ package RDF.Raptor.Term is
    overriding function "=" (Left, Right: Term_Type_Without_Finalize) return Boolean renames Equals;
 
    not overriding function To_Turtle_String(Term: Term_Type_Without_Finalize;
-                                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
-                                            Base_URI: URI_Type'Class)
+                                            Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class; -- FIXME: Without_Finalize
+                                            Base_URI: URI_Type'Class) -- FIXME: Without_Finalize
                                             return String;
 
    not overriding procedure Turtle_Write (Stream: IOStream_Type_Without_Finalize'Class;
                                           Term: Term_Type_Without_Finalize;
-                                          Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class;
-                                          Base_URI: URI_Type'Class);
+                                          Stack: RDF.Raptor.Namespace_Stack.Namespace_Stack_Type'Class; -- FIXME: Without_Finalize
+                                          Base_URI: URI_Type'Class); -- FIXME: Without_Finalize
 
    package Handlers is new Term_Handled_Record.Common_Handlers(Term_Type_Without_Finalize);
 

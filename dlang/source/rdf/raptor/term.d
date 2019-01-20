@@ -7,6 +7,8 @@ import rdf.auxiliary.nullable_string;
 import rdf.raptor.memory;
 import rdf.raptor.world;
 import rdf.raptor.uri;
+import rdf.raptor.namespace_stack;
+import rdf.raptor.iostream;
 
 private extern extern(C) {
     void raptor_free_term(TermHandle* term);
@@ -30,6 +32,13 @@ private extern extern(C) {
     TermHandle* raptor_new_term_from_counted_string(RaptorWorldHandle* world,
                                                     const char *string,
                                                     size_t length);
+    char* raptor_term_to_turtle_string(TermHandle *term,
+                                       NamespaceStackHandle* nstack,
+                                       URIHandle* base_uri);
+    int raptor_term_turtle_write(IOStreamHandle *iostr,
+                                 TermHandle *term,
+                                 NamespaceStackHandle* nstack,
+                                 URIHandle* base_uri);
 }
 
 enum TermKind { unknown = 0,
@@ -110,7 +119,20 @@ struct TermWithoutFinalize {
         scope(exit) raptor_free_memory(str);
         return str.fromStringz.idup;
     }
-    // TODO: To_Turtle_String Turtle_Write
+    string toTurtleString(NamespaceStackWithoutFinalize stack, URIWithoutFinalize baseURI) {
+        char* str = raptor_term_to_turtle_string(handle, stack.handle, baseURI.handle);
+        // TODO: raptor_term_to_turtle_counted_string() instead (here and in Ada)
+        if(!str) throw new RDFException();
+        scope(exit) raptor_free_memory(str);
+        return str.fromStringz.idup;
+    }
+    void turtleWrite(IOStreamWithoutFinalize stream,
+                     NamespaceStackWithoutFinalize stack,
+                     URIWithoutFinalize baseURI)
+    {
+        if(raptor_term_turtle_write(stream.handle, handle, stack.handle,baseURI.handle) != 0)
+            throw new RDFException();
+    }
 }
 
 struct Term {
