@@ -12,29 +12,29 @@ import rdf.rasqal.world;
 
 struct LiteralHandle;
 
-enum LiteralType { Literal_Unknown, // internal
-                   Literal_Blank,
-                   Literal_URI,
-                   Literal_String,
-                   Literal_Xsd_String,
-                   Literal_Boolean,
-                   Literal_Integer,
-                   Literal_Float,
-                   Literal_Double,
-                   Literal_Decimal,
-                   Literal_Datetime,
-                   Literal_Udt,
-                   Literal_Pattern,
-                   Literal_Qname,
-                   Literal_Variable,
-                   Literal_Date }
+enum LiteralType { unknown, // internal
+                   blank,
+                   uri,
+                   string_,
+                   xsd_string,
+                   boolean,
+                   integer,
+                   float_,
+                   double_,
+                   decimal,
+                   datetime,
+                   udt,
+                   pattern,
+                   qname,
+                   variable,
+                   date }
 
-enum CompareFlags { Compare_None     = 0,
-                    Compare_Nocase   = 1,
-                    Compare_XQuery   = 2,
-                    Compare_RDF      = 4,
-                    Compare_URI      = 8,
-                    Compare_Sameterm = 16 }
+enum CompareFlags { none     = 0,
+                    nocase   = 1,
+                    xQuery   = 2,
+                    rdf      = 4,
+                    uri      = 8,
+                    sameterm = 16 }
 
 private extern extern(C) {
     void rasqal_free_literal(LiteralHandle* l);
@@ -83,7 +83,7 @@ struct LiteralWithoutFinalize {
     bool opEquals(LiteralWithoutFinalize other) {
         return rasqal_literal_same_term(handle, other.handle) != 0;
     }
-    string toString(CompareFlags flags = CompareFlags.Compare_None) {
+    string toString(CompareFlags flags = CompareFlags.none) {
         int error = 0;
         size_t length;
         const char* item = rasqal_literal_as_counted_string(handle,
@@ -168,18 +168,18 @@ struct Literal {
         return fromNonnullHandle(rasqal_new_float_literal(world.handle, value));
     }
     static Literal fromFloating(RasqalWorldWithoutFinalize world, LiteralType type, double value)
-        in(type == LiteralType.Literal_Float || type == LiteralType.Literal_Double)
+        in(type == LiteralType.float_ || type == LiteralType.double_)
     {
         return fromNonnullHandle(rasqal_new_floating_literal(world.handle, type, value));
     }
     /// Deliberately accept only long integers, don't implement "int value".
     static Literal fromInteger(RasqalWorldWithoutFinalize world, long value) {
         LiteralHandle* handle =
-            rasqal_new_numeric_literal_from_long(world.handle, LiteralType.Literal_Integer, value);
+            rasqal_new_numeric_literal_from_long(world.handle, LiteralType.integer, value);
         return fromNonnullHandle(handle);
     }
     static Literal newSimpleLiteral(RasqalWorldWithoutFinalize world, LiteralType type, string value)
-        in(type == LiteralType.Literal_Blank || type == LiteralType.Literal_Qname)
+        in(type == LiteralType.blank || type == LiteralType.qname)
     {
         char* value2 = rasqal_new_string(value); // freed by rasqal_new_simple_literal()
         return fromNonnullHandle(rasqal_new_simple_literal(world.handle, type, value2));
