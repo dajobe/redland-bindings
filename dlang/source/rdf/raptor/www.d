@@ -189,9 +189,9 @@ class UserWWW : UserObject {
             (cast(UserWWW)userData).writeBytesHandler(// fromHandle(www)), // ignored
                                                        (cast(immutable char*)ptr)[0..Size*Nmemb]);
         }
-        void contentTypeHandlerImpl(WWWHandle *www, void* userData, const char* Content_Type) {
+        void contentTypeHandlerImpl(WWWHandle *www, void* userData, const char* contentType) {
             (cast(UserWWW)userData).contentTypeHandler(// fromHandle(www)), // ignored
-                                                        (cast(immutable char*)Content_Type).fromStringz); // FIXME: is immutable right here?
+                                                        (cast(immutable char*)contentType).fromStringz); // FIXME: is immutable right here?
         }
         int uriFilterImpl(void* userData, URIHandle* URI) {
             // FIXME: Why negation? (also in Ada)
