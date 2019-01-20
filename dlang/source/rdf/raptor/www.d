@@ -171,7 +171,7 @@ class UserWWW : UserObject {
     }
 
     void writeBytesHandler(string value) { }
-    void contentTypeHandler(string Content_Type) { }
+    void contentTypeHandler(string contentType) { }
     void finalURIHandler(URIWithoutFinalize URI) { }
 
     /// Return False to disallow loading an URI
@@ -191,7 +191,7 @@ class UserWWW : UserObject {
         }
         void contentTypeHandlerImpl(WWWHandle *www, void* userData, const char* contentType) {
             (cast(UserWWW)userData).contentTypeHandler(// fromHandle(www)), // ignored
-                                                        (cast(immutable char*)contentType).fromStringz); // FIXME: is immutable right here?
+                                                        (cast(immutable char*)contentType).fromStringz);
         }
         int uriFilterImpl(void* userData, URIHandle* URI) {
             // FIXME: Why negation? (also in Ada)
