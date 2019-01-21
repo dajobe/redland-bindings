@@ -47,7 +47,7 @@ private extern extern(C) {
     IOStreamHandle* raptor_new_iostream_from_string(RaptorWorldHandle* world, void *string, size_t length);
 }
 
-class IOStreamException: Exception {
+class IOStreamException: RDFException {
     this(string msg, string file = __FILE__, size_t line = __LINE__) {
         super(msg, file, line);
     }
