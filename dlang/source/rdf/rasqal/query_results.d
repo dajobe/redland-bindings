@@ -62,6 +62,7 @@ private extern extern(C) {
     QueryResultsHandle* rasqal_new_query_results2(RasqalWorldHandle* world,
                                                   QueryHandle* query,
                                                   QueryResultsType type);
+    QueryHandle* rasqal_query_results_get_query(QueryResultsHandle* query_results);
 }
 
 struct QueryResultsWithoutFinalize {
@@ -128,8 +129,9 @@ struct QueryResultsWithoutFinalize {
         if(value < 0) throw new RDFException();
         return value;
     }
-    // TODO
-    //@property QueryWithoutFinalize query()
+    @property QueryWithoutFinalize query() {
+        return QueryWithoutFinalize.fromNonnullHandle(rasqal_query_results_get_query(handle));
+    }
     @property Statement triple() // TODO: In Ada it is Without_Finalize
         in(isGraph)
     {
