@@ -5,8 +5,6 @@ import rdf.redland.world;
 import rdf.redland.node;
 import rdf.redland.iterator;
 
-// TODO: Necessarily test that it works as expected
-
 //struct NodeIteratorHandle;
 alias NodeIteratorHandle = IteratorHandle;
 

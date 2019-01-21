@@ -3,3 +3,4 @@ Also scope?
 
 Correct identifiers case.
 
+More unittests (especially for streams and iterators) and code review.

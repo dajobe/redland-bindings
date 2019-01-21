@@ -5,8 +5,6 @@ import rdf.redland.world;
 
 // Usually you should use Base_With_Finalization types, such as defined in RDF.Redland.Iterator_Iterator
 
-// TODO: Necessarily test that it works as expected
-
 struct IteratorHandle;
 
 private extern extern(C) {
