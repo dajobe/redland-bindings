@@ -65,7 +65,6 @@ struct QueryWithoutFinalize {
 //    void addDataGraphsDetach(DataGraphWithoutFinalize[] graphs) {
 //        foreach(dg; graphs) addDataGraphDetach(dg);
 //    }
-    // FIXME: Check return type ("without finalize") (in Ada):
     QueryResults execute() {
         return QueryResults.fromNonnullHandle(rasqal_query_execute(handle));
     }
