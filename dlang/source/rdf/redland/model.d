@@ -230,7 +230,7 @@ struct ModelWithoutFinalize {
     @property bool supportsContext() {
         return librdf_model_supports_contexts(handle) != 0;
     }
-    QueryResults queryExecute(QueryWithoutFinalize query) { // TODO: Remove Without_Finalize in Ada
+    QueryResults queryExecute(QueryWithoutFinalize query) {
         return QueryResults.fromNonnullHandle(librdf_model_query_execute(handle, query.handle));
     }
     void sync() {

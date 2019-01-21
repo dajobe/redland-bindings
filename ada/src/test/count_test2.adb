@@ -23,7 +23,7 @@ package body Count_Test2 is
       SPARQL: constant String := "SELECT (count(*) as ?count) WHERE { ?s ?p ?o . }";
 --        Query: Query_Type := Copy(Create(World, "sparql", SPARQL)); -- FIXME: Copy causes an unhandled signal
       Query: Query_Type := Create(World, "sparql", SPARQL);
-      Results: Bindings_Query_Results_Type_Without_Finalize := Query_Execute(Model, Query);
+      Results: Bindings_Query_Results_Type := Query_Execute(Model, Query);
       package Rows_Holder is new Ada.Containers.Indefinite_Vectors(Positive, String);
       use Ada.Containers, Rows_Holder;
       Rows: Vector;

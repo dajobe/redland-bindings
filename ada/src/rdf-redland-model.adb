@@ -421,7 +421,7 @@ package body RDF.Redland.Model is
 
    function Query_Execute (Model: Model_Type_Without_Finalize;
                            Query: Query_Type_Without_Finalize'Class)
-                           return Query_Results_Type_Without_Finalize is
+                           return Query_Results_Type is
    begin
       return From_Non_Null_Handle(librdf_model_query_execute(Get_Handle(Model), Get_Handle(Query)));
    end;
