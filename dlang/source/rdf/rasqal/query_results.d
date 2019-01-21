@@ -132,10 +132,10 @@ struct QueryResultsWithoutFinalize {
     @property QueryWithoutFinalize query() {
         return QueryWithoutFinalize.fromNonnullHandle(rasqal_query_results_get_query(handle));
     }
-    @property Statement triple() // TODO: In Ada it is Without_Finalize
+    @property StatementWithoutFinalize triple()
         in(isGraph)
     {
-        return Statement.fromNonnullHandle(rasqal_query_results_get_triple(handle));
+        return StatementWithoutFinalize.fromNonnullHandle(rasqal_query_results_get_triple(handle));
     }
     // Deliberately not implemented:
     // getRowByOffset(uint offset)
@@ -249,9 +249,9 @@ public:
         this.obj = obj;
     }
     @property bool empty() { return obj.finished(); }
-    @property Statement front() { return triple(); }
+    @property StatementWithoutFinalize front() { return triple(); }
     void popFront() { obj.nextTriple(); }
-    Statement triple() { return obj.triple(); }
+    StatementWithoutFinalize triple() { return obj.triple(); }
     void rewind() { obj.rewind(); }
 }
 
