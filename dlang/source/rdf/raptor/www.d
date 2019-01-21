@@ -31,8 +31,8 @@ private extern extern(C) {
     void raptor_www_set_final_uri_handler(WWWHandle *www,
                                           raptor_www_final_uri_handler handler,
                                           void *userData);
-    // FIXME: raptor_www_set_user_agent() & raptor_www_set_proxy() & raptor_www_set_http_accept()
-    // don't return an error on out-of-memory (Raptor bug?)
+    // raptor_www_set_user_agent() & raptor_www_set_proxy() & raptor_www_set_http_accept()
+    // don't return an error on out-of-memory: http://bugs.librdf.org/mantis/view.php?id=649
     void raptor_www_set_user_agent(WWWHandle *www, const char *user_agent);
     void raptor_www_set_proxy(WWWHandle *www, const char *proxy);
     void raptor_www_set_http_accept(WWWHandle *www, const char *value);
