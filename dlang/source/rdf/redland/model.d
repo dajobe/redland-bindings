@@ -101,6 +101,7 @@ private extern extern(C) {
     ModelHandle* librdf_new_model(RedlandWorldHandle* world,
                                   StorageHandle* storage,
                                   const char *options_string);
+    StorageHandle* librdf_model_get_storage(ModelHandle* model);
 }
 
 string featureContexts = "http://feature.librdf.org/model-contexts";
@@ -236,7 +237,9 @@ struct ModelWithoutFinalize {
         if(librdf_model_sync(handle) != 0)
             throw new RDFException();
     }
-    //@property StorageWithoutFinalize storage() // TODO
+    @property StorageWithoutFinalize storage() {
+        return StorageWithoutFinalize.fromHandle(librdf_model_get_storage(handle));
+    }
     void load(URIWithoutFinalize uri,
               string name = "",
               string mimeType = "",
