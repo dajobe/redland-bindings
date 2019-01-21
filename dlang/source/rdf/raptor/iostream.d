@@ -248,7 +248,6 @@ struct DispatcherType {
     raptor_iostream_read_eof_func read_eof;
 }
 
-// TODO: Make it shared between threads
 private immutable DispatcherType Dispatch =
     { version_: 2,
       init: null,
