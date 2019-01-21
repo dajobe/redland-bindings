@@ -62,7 +62,7 @@ struct URI {
                         URI,
                         librdf_free_uri);
     mixin CompareHandles!(librdf_uri_equals, librdf_uri_compare);
-    static URI fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) { // FIXME: also dup() in Ada // FIXME: Move to other struct?
+    static URI fromRaptor(rdf.raptor.uri.URIWithoutFinalize uri) { // FIXME: also dup() in Ada
         return URIWithoutFinalize.fromHandle(cast(URIHandle*)uri.handle).dup;
     }
     static URI fromString(RedlandWorldWithoutFinalize world, string uri) {
