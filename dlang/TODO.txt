@@ -1,3 +1,5 @@
+WARNING: The API is not yet stable.
+
 const qualifier of function arguments where appropriate.
 Also scope?
 
