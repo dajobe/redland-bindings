@@ -33,7 +33,7 @@ struct BNode {
 }
 
 class BNodeIDHandler : UnmovableObject {
-    abstract string doHandle(Nullable!string userID);
+    abstract string doHandle(Nullable!string userID) const;
     private static extern(C) const(char)* handleImpl(char* data, char* userID) {
         scope(exit) {
             if(userID) raptor_free_memory(userID);
@@ -42,7 +42,7 @@ class BNodeIDHandler : UnmovableObject {
         if(userID) userID2 = cast(string)fromStringz(userID);
         return (cast(BNodeIDHandler)data).doHandle(userID2).toStringz;
     }
-    final void set(RaptorWorldWithoutFinalize world) {
+    final void set(RaptorWorldWithoutFinalize world) const {
         raptor_world_set_generate_bnodeid_handler(world.handle, cast(void*)this, &handleImpl);
     }
 }

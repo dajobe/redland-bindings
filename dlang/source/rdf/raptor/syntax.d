@@ -29,8 +29,8 @@ private:
     size_t _mimeTypeLen;
     char _Q;
 public:
-    @property string mimeType() { return _mimeType[0.._mimeTypeLen].idup; }
-    @property byte Q() { return _Q; }
+    @property string mimeType() const { return _mimeType[0.._mimeTypeLen].idup; }
+    @property byte Q() const { return _Q; }
 }
 
 struct SyntaxDescription {
@@ -45,26 +45,26 @@ private:
     SyntaxBitflags _flags;
 public:
     @disable this(this);
-    string name(uint index)
+    string name(uint index) const
         in(index < namesCount)
     {
         return _names[index].fromStringz.idup;
     }
-    @property uint namesCount() { return _namesCount; }
-    @property string label() { return _label.fromStringz.idup; }
-    ref const(MimeTypeQ) mimeTypeInfo(uint index)
+    @property uint namesCount() const { return _namesCount; }
+    @property string label() const { return _label.fromStringz.idup; }
+    ref const(MimeTypeQ) mimeTypeInfo(uint index) const
         in(index < _mimeTypesCount)
     {
         return _mimeTypes[index];
     }
-    @property uint mimeTypesCount() { return _mimeTypesCount; }
-    string uri(uint index)
+    @property uint mimeTypesCount() const { return _mimeTypesCount; }
+    string uri(uint index) const
         in(index < uriStringsCount)
     {
         return uriStrings[index].fromStringz.idup;
     }
-    @property uint urisCount() { return uriStringsCount; }
-    @property SyntaxBitflags flags() { return _flags; }
+    @property uint urisCount() const { return uriStringsCount; }
+    @property SyntaxBitflags flags() const { return _flags; }
 }
 
 struct ParserDescriptionIterator {
@@ -75,11 +75,11 @@ public:
     this(RaptorWorldWithoutFinalize world) {
         this._world = world;
     }
-    @property uint position() { return _pos; }
-    @property ref const(SyntaxDescription) front() {
+    @property uint position() const { return _pos; }
+    @property ref const(SyntaxDescription) front() const {
         return *raptor_world_get_parser_description(_world.handle, _pos);
     }
-    @property bool empty() {
+    @property bool empty() const {
         return !raptor_world_get_parser_description(_world.handle, _pos);
     }
     void popFront()
@@ -97,11 +97,11 @@ public:
     this(RaptorWorldWithoutFinalize world) {
         this._world = world;
     }
-    @property uint position() { return _pos; }
-    @property ref const(SyntaxDescription) front() {
+    @property uint position() const { return _pos; }
+    @property ref const(SyntaxDescription) front() const {
         return *raptor_world_get_serializer_description(_world.handle, _pos);
     }
-    @property bool empty() {
+    @property bool empty() const {
         return !raptor_world_get_serializer_description(_world.handle, _pos);
     }
     void popFront()

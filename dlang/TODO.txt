@@ -1,3 +1,5 @@
+Stopped adding const modifiers at raptor/uri.d
+
 const qualifier of member function where appropriate.
 Also scope?
 

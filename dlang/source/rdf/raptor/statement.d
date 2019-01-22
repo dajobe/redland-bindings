@@ -40,23 +40,23 @@ struct StatementWithoutFinalize {
                            Statement,
                            raptor_statement_copy);
     mixin CompareHandles!(raptor_statement_equals, raptor_statement_compare);
-    @property RaptorWorldWithoutFinalize world() {
+    @property RaptorWorldWithoutFinalize world() const {
         return RaptorWorldWithoutFinalize.fromNonnullHandle(handle._world);
     }
-    @property TermWithoutFinalize subject() { return TermWithoutFinalize.fromHandle(handle._subject); }
-    @property TermWithoutFinalize predicate() { return TermWithoutFinalize.fromHandle(handle._predicate); }
-    @property TermWithoutFinalize object() { return TermWithoutFinalize.fromHandle(handle._object); }
-    @property TermWithoutFinalize graph() { return TermWithoutFinalize.fromHandle(handle._graph); }
-    void print(File file) {
+    @property TermWithoutFinalize subject() const { return TermWithoutFinalize.fromHandle(handle._subject); }
+    @property TermWithoutFinalize predicate() const { return TermWithoutFinalize.fromHandle(handle._predicate); }
+    @property TermWithoutFinalize object() const { return TermWithoutFinalize.fromHandle(handle._object); }
+    @property TermWithoutFinalize graph() const { return TermWithoutFinalize.fromHandle(handle._graph); }
+    void print(File file) const {
         if(raptor_statement_print(handle, file.getFP))
             throw new IOStreamException();
     }
-    void printAsNtriples(File file) {
+    void printAsNtriples(File file) const {
         if(raptor_statement_print_as_ntriples(handle, file.getFP))
             throw new IOStreamException();
     }
     // raptor_statement_init(), raptor_statement_clear() are not boound, because they are probably internal
-    void ntriplesWrite(IOStreamWithoutFinalize stream, bool writeGraphTerm) {
+    void ntriplesWrite(IOStreamWithoutFinalize stream, bool writeGraphTerm) const {
         if(raptor_statement_ntriples_write(handle, stream.handle, writeGraphTerm))
             throw new IOStreamException();
     }

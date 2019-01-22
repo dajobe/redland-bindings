@@ -109,26 +109,26 @@ struct LocatorWithoutFinalize {
                            LocatorWithoutFinalize,
                            Locator,
                            locator_copy);
-    @property URIWithoutFinalize uri() {
+    @property URIWithoutFinalize uri() const {
         return URIWithoutFinalize.fromHandle(handle._uri);
     }
-    @property string file() {
+    @property string file() const {
         return handle._file.fromStringz.idup;
     }
-    @property uint line() {
+    @property uint line() const {
         return handle._line;
     }
-    @property uint column() {
+    @property uint column() const {
         return handle._column;
     }
-    @property uint byte_() {
+    @property uint byte_() const {
         return handle._byte;
     }
-    void print(File file) {
+    void print(File file) const {
         if(raptor_locator_print(handle, file.getFP) != 0)
             throw new RDFException();
     }
-    string format() {
+    string format() const {
         immutable int res = raptor_locator_format(null, 0, handle);
         if(res < 0) throw new RDFException();
         char[] buffer = new char[res];
@@ -149,19 +149,19 @@ struct LogMessageWithoutFinalize {
                            LogMessageWithoutFinalize,
                            LogMessage,
                            log_message_copy);
-    @property int errorCode() {
+    @property int errorCode() const {
         return handle._code;
     }
-    @property DomainType domain() {
+    @property DomainType domain() const {
         return handle._domain;
     }
-    @property LogLevel logLevel() {
+    @property LogLevel logLevel() const {
         return handle._logLevel;
     }
-    @property string text() {
+    @property string text() const {
         return handle._text.fromStringz.idup;
     }
-    @property LocatorWithoutFinalize locator() {
+    @property LocatorWithoutFinalize locator() const {
         return LocatorWithoutFinalize.fromNonnullHandle(handle._locator);
     }
 }
@@ -187,3 +187,4 @@ class LogHandler : UnmovableObject {
         rasqal_world_set_log_handler(world.handle, cast(void*)this, &handleImpl);
     }
 }
+

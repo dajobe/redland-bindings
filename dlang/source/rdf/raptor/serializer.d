@@ -96,13 +96,13 @@ struct SerializerWithoutFinalize {
         if(raptor_serializer_flush(handle) != 0)
             throw new RDFException();
     }
-    @property ref const(SyntaxDescription) description() {
+    @property ref const(SyntaxDescription) description() const {
         return *raptor_serializer_get_description(handle);
     }
-    @property IOStreamWithoutFinalize iostream() {
+    @property IOStreamWithoutFinalize iostream() const {
         return IOStreamWithoutFinalize.fromHandle(raptor_serializer_get_iostream(handle));
     }
-    @property LocatorWithoutFinalize locator() {
+    @property LocatorWithoutFinalize locator() const {
         return LocatorWithoutFinalize.fromHandle(raptor_serializer_get_locator(handle));
     }
     void setOption(RaptorOption option, string value) {
@@ -113,19 +113,19 @@ struct SerializerWithoutFinalize {
         if(raptor_serializer_set_option(handle, option, null, value) != 0)
             throw new RDFException();
     }
-    uint getNumericOption(RaptorOption option) {
+    uint getNumericOption(RaptorOption option) const {
         int V;
         if(raptor_serializer_get_option(handle, option, null, &V) < 0)
             throw new RDFException();
         return V;
     }
-    string getStringOption (RaptorOption option) {
+    string getStringOption(RaptorOption option) const {
         char *V;
         if(raptor_serializer_get_option(handle, option, &V, null) < 0)
             throw new RDFException();
         return V.fromStringz.idup; // do NOT free V
     }
-    @property RaptorWorldWithoutFinalize world() {
+    @property RaptorWorldWithoutFinalize world() const {
         return RaptorWorldWithoutFinalize.fromHandle(raptor_serializer_get_world(handle));
     }
 }
@@ -135,10 +135,10 @@ struct Serializer {
                         SerializerWithoutFinalize,
                         Serializer,
                         raptor_free_serializer);
-    Serializer create (RaptorWorldWithoutFinalize world) {
+    static Serializer create(RaptorWorldWithoutFinalize world) {
         return Serializer.fromNonnullHandle(raptor_new_serializer(world.handle, null));
     }
-    Serializer create (RaptorWorldWithoutFinalize world, string syntaxName) {
+    static Serializer create(RaptorWorldWithoutFinalize world, string syntaxName) {
         return Serializer.fromNonnullHandle(raptor_new_serializer(world.handle, syntaxName.toStringz));
     }
 }

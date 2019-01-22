@@ -97,10 +97,10 @@ struct IOStreamWithoutFinalize {
         if(result < 0) throw new IOStreamException();
         return result;
     }
-    @property bool eof() {
+    @property bool eof() const {
         return raptor_iostream_read_eof(handle) != 0;
     }
-    ulong tell() {
+    ulong tell() const {
         return raptor_iostream_tell(handle);
     }
     void write(string value) {
@@ -283,7 +283,7 @@ class StreamFromString : UserObject {
         IOStreamHandle* handle = raptor_new_iostream_from_string(world.handle, cast(void*)str.ptr, str.length);
         record = IOStream.fromNonnullHandle(handle);
     }
-    final string value() { return _str; }
+    final string value() const { return _str; }
     alias value this;
 }
 
@@ -293,7 +293,7 @@ class StreamToString : UserIOStream {
     this(RaptorWorldWithoutFinalize world) {
         super(world);
     }
-    final string value() { return _str; }
+    final string value() const { return _str; }
     alias value this;
     override int doWriteBytes(char* data, size_t size, size_t count) {
         _str ~= data[0..size*count];

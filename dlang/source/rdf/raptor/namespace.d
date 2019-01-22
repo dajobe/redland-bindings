@@ -37,18 +37,18 @@ struct NamespaceWithoutFinalize {
     mixin WithoutFinalize!(NamespaceHandle,
                            NamespaceWithoutFinalize,
                            Namespace);
-    @property URIWithoutFinalize uri() {
+    @property URIWithoutFinalize uri() const {
         // raptor_namespace_get_uri() may return NULL (for xmlns="")
         return URIWithoutFinalize.fromHandle(raptor_namespace_get_uri(handle));
     }
-    @property string prefix() {
+    @property string prefix() const {
         return raptor_namespace_get_prefix(handle).fromStringz.idup;
     }
-    void write(IOStreamWithoutFinalize stream) {
+    void write(IOStreamWithoutFinalize stream) const {
         if(raptor_namespace_write(handle, stream.handle) != 0)
           throw new IOStreamException();
     }
-    string formatAsXML() {
+    string formatAsXML() const {
       char* str = raptor_namespace_format_as_xml(handle, null);
       if(!str) throw new RDFException();
       scope(exit) raptor_free_memory(str);

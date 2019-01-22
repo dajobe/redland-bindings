@@ -93,12 +93,12 @@ struct OptionDescriptionWithoutFinalize {
     mixin WithoutFinalize!(OptionDescriptionHandle,
                            OptionDescriptionWithoutFinalize,
                            OptionDescription);
-    @property Domain domain() { return handle._domain; }
-    @property RaptorOption option() { return handle._option; }
-    @property ValueType option() { return handle._valueType; }
-    @property string name() { return handle._name[0..handle._len].idup; }
-    @property string label() { return handle._label.fromStringz.idup; }
-    @property URIWithoutFinalize uri() { return URIWithoutFinalize.fromHandle(handle._uri); }
+    @property Domain domain() const { return handle._domain; }
+    @property RaptorOption option() const { return handle._option; }
+    @property ValueType option() const { return handle._valueType; }
+    @property string name() const { return handle._name[0..handle._len].idup; }
+    @property string label() const { return handle._label.fromStringz.idup; }
+    @property URIWithoutFinalize uri() const { return URIWithoutFinalize.fromHandle(handle._uri); }
 }
 
 struct OptionDescription {

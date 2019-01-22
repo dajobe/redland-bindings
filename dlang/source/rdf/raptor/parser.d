@@ -85,7 +85,7 @@ struct ParserWithoutFinalize {
     mixin WithoutFinalize!(ParserHandle,
                            ParserWithoutFinalize,
                            Parser);
-    @property LocatorWithoutFinalize locator() {
+    @property LocatorWithoutFinalize locator() const {
         return LocatorWithoutFinalize.fromHandle(raptor_parser_get_locator(handle));
     }
     void parseAbort() {
@@ -128,13 +128,13 @@ struct ParserWithoutFinalize {
         if(raptor_parser_parse_uri_with_connection(handle, uri.handle, baseURI.handle, connection) != 0)
             throw new RDFException();
     }
-    @property URI graph() {
+    @property URI graph() const {
         return URI.fromHandle(raptor_parser_get_graph(handle));
     }
-    @property ref const(SyntaxDescription) description() {
+    @property ref const(SyntaxDescription) description() const {
         return *raptor_parser_get_description(handle);
     }
-    @property string name() {
+    @property string name() const {
         return raptor_parser_get_name(handle).fromStringz.idup;
     }
     void setOption(RaptorOption option, string value) {
@@ -145,25 +145,25 @@ struct ParserWithoutFinalize {
         if(raptor_parser_set_option(handle, option, null, value) != 0)
             throw new RDFException();
     }
-    uint getNumericOption(RaptorOption option) {
+    uint getNumericOption(RaptorOption option) const {
         int V;
         if(raptor_parser_get_option(handle, option, null, &V) < 0)
             throw new RDFException();
         return V;
     }
-    string getStringOption(RaptorOption option) {
+    string getStringOption(RaptorOption option) const {
         char* V;
         if(raptor_parser_get_option(handle, option, &V, null) < 0)
             throw new RDFException();
         return V.fromStringz.idup; // do NOT free V
     }
-    string acceptHeader() {
+    @property string acceptHeader() const {
       char* V = cast(char*)raptor_parser_get_accept_header(handle);
       if(!V) throw new RDFException();
       scope(exit) raptor_free_memory(V);
       return V.fromStringz.idup;
     }
-    @property RaptorWorldWithoutFinalize world() {
+    @property RaptorWorldWithoutFinalize world() const {
         return RaptorWorldWithoutFinalize.fromHandle(raptor_parser_get_world(handle));
     }
 }
@@ -224,7 +224,7 @@ class UserParser : UserObject {
     void statementHandler(StatementWithoutFinalize statement) { }
     void graphMarkHandler(URIWithoutFinalize uri, GraphMarkFlags flags) { }
     void namespaceHandler(NamespaceWithoutFinalize namespace) { }
-    bool uriFilter(URIWithoutFinalize uri) {
+    bool uriFilter(URIWithoutFinalize uri) const {
         return true;
     }
     private static extern(C) {

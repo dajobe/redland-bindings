@@ -33,7 +33,7 @@ private extern extern(C) {
     NamespaceStackHandle* raptor_new_namespaces(RaptorWorldHandle *world, int defaults);
 }
 
-enum NamespaceOptions { noneType = 0, xmlType = 1, rdfFType = 2, undefinedType = 3 };
+enum NamespaceOptions { noneType = 0, xmlType = 1, rdfType = 2, undefinedType = 3 }
 
 struct NamespaceStackWithoutFinalize {
     mixin WithoutFinalize!(NamespaceStackHandle,
@@ -67,19 +67,19 @@ struct NamespaceStackWithoutFinalize {
     @property NamespaceWithoutFinalize defaultNamespace() {
         return NamespaceWithoutFinalize.fromNonnullHandle(raptor_namespaces_get_default_namespace(handle));
     }
-    NamespaceWithoutFinalize findNamespace(string prefix) {
+    NamespaceWithoutFinalize findNamespace(string prefix) const {
         NamespaceHandle* handle =
             raptor_namespaces_find_namespace(handle, prefix.ptr, cast(int)prefix.length);
         return NamespaceWithoutFinalize.fromNonnullHandle(handle);
     }
-    NamespaceWithoutFinalize findDefaultNamespace(string prefix) {
+    NamespaceWithoutFinalize findDefaultNamespace(string prefix) const {
         return NamespaceWithoutFinalize.fromNonnullHandle(raptor_namespaces_find_namespace(handle, null, 0));
     }
-    NamespaceWithoutFinalize findNamespaceByURI(URIWithoutFinalize uri) {
+    NamespaceWithoutFinalize findNamespaceByURI(URIWithoutFinalize uri) const {
         NamespaceHandle* res = raptor_namespaces_find_namespace_by_uri(handle, uri.handle);
         return NamespaceWithoutFinalize.fromNonnullHandle(res) ;
     }
-    bool inScope(NamespaceWithoutFinalize ns) {
+    bool inScope(NamespaceWithoutFinalize ns) const {
         return raptor_namespaces_namespace_in_scope(handle, ns.handle) != 0;
     }
 }

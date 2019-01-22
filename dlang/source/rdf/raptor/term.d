@@ -55,14 +55,14 @@ private:
     char* _language;
     uint _languageLen;
 public:
-    @property string value() {
+    @property string value() const {
         return _str[0.._len].idup; // with idup it is more reliable
     }
-    @property URIWithoutFinalize datatype() {
+    @property URIWithoutFinalize datatype() const {
         return URIWithoutFinalize.fromHandle(_datatype);
     }
     /// Return the language tag or empty string if there are none
-    @property string language() {
+    @property string language() const {
         return _language ? _language[0.._languageLen].idup : "";
     }
 }
@@ -71,7 +71,8 @@ struct TermBlankValue {
 private:
     char* str;
     uint len;
-    @property string value() {
+public:
+    @property string value() const {
         return str[0..len].idup;
     }
 }
@@ -97,29 +98,29 @@ struct TermWithoutFinalize {
                            Term,
                            raptor_term_copy);
     mixin CompareHandles!(raptor_term_equals, raptor_term_compare);
-    @property RaptorWorldWithoutFinalize world() {
+    @property RaptorWorldWithoutFinalize world() const {
         return RaptorWorldWithoutFinalize.fromHandle(handle.world);
     }
-    @property kind() { return handle.kind; }
-    @property bool isURI() { return kind == TermKind.uri; }
-    @property bool isLiteral() { return kind == TermKind.literal; }
-    @property bool isBlank() { return kind == TermKind.blank; }
-    @property URIWithoutFinalize uri() {
+    @property kind() const { return handle.kind; }
+    @property bool isURI() const { return kind == TermKind.uri; }
+    @property bool isLiteral() const { return kind == TermKind.literal; }
+    @property bool isBlank() const { return kind == TermKind.blank; }
+    @property URIWithoutFinalize uri() const {
         return URIWithoutFinalize.fromHandle(handle.value.uri);
     }
-    @property ref const(TermLiteralValue) literal() {
+    @property ref const(TermLiteralValue) literal() const {
         return handle.value.literal;
     }
-    @property ref const(TermBlankValue) blank() {
+    @property ref const(TermBlankValue) blank() const {
         return handle.value.blank;
     }
-    string toString() {
+    string toString() const {
         char* str = raptor_term_to_string(handle);
         if(!str) throw new RDFException();
         scope(exit) raptor_free_memory(str);
         return str.fromStringz.idup;
     }
-    string toTurtleString(NamespaceStackWithoutFinalize stack, URIWithoutFinalize baseURI) {
+    string toTurtleString(NamespaceStackWithoutFinalize stack, URIWithoutFinalize baseURI) const {
         char* str = raptor_term_to_turtle_string(handle, stack.handle, baseURI.handle);
         // Better use raptor_term_to_turtle_counted_string() instead (here and in Ada)
         if(!str) throw new RDFException();
