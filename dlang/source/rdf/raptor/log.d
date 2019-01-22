@@ -72,12 +72,20 @@ private void free_log_message(LogMessageHandle* handle) {
     raptor_free_memory(cast(char*)handle);
 }
 
-// FIXME: check for allocation errors (in Ada, too)
 private LogMessageHandle* log_message_copy(LogMessageHandle* handle) {
     LogMessageHandle* result = cast(LogMessageHandle*)raptor_alloc_memory(LogMessageHandle.sizeof);
+    if(!result) return null;
     *result = *handle;
     result._text = raptor_copy_c_string(handle._text);
+    if(!result._text) {
+        raptor_free_memory(cast(char*)result);
+    }
     result._locator = locator_copy(handle._locator);
+    if(!result._locator) {
+        raptor_free_memory(cast(char*)result._text);
+        raptor_free_memory(cast(char*)result);
+        return null;
+    }
     return result;
 }
 

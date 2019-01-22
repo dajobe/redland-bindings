@@ -190,7 +190,15 @@ package body RDF.Raptor.Log is
    begin
       Result.all := Handle.all;
       Result.Text := RDF.Raptor.Memory.Copy_C_String(Handle.Text);
+      if Result.Text = Null_Ptr then
+         raptor_free_memory(Result);
+      end if;
       Result.Locator := Copy_Locator(Handle.Locator);
+      if Result.Locator = Null_Ptr then
+         raptor_free_memory(Result.Text);
+         raptor_free_memory(Result);
+         return null;
+      end if;
       return Result;
    end;
 
