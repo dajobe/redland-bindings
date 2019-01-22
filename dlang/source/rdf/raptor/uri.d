@@ -60,30 +60,30 @@ struct URIWithoutFinalize {
                            URI,
                            raptor_uri_copy);
     mixin CompareHandles!(raptor_uri_equals, raptor_uri_compare);
-    string toString() {
+    string toString() const {
         return raptor_uri_as_string(handle).fromStringz.idup;
     }
     alias toString this;
     /// Not supposed to be used, but included for completeness
-    void print(File file) {
+    void print(File file) const {
         if(raptor_uri_print(handle, file.getFP) != 0)
             throw new IOStreamException();
     }
-    @property RaptorWorldWithoutFinalize world() {
+    @property RaptorWorldWithoutFinalize world() const {
         return RaptorWorldWithoutFinalize.fromHandle(raptor_uri_get_world(handle));
     }
-    void write(IOStreamWithoutFinalize stream) {
+    void write(IOStreamWithoutFinalize stream) const {
         if(raptor_uri_write(handle, stream.handle) != 0)
             throw new IOStreamException();
     }
-    bool uriFileExists() {
+    bool uriFileExists() const {
         immutable int result = raptor_uri_file_exists(handle);
         if(result < 0) throw new RDFException();
         return result != 0;
     }
     string toTurtleString(RaptorWorldWithoutFinalize world,
                           NamespaceStackWithoutFinalize stack,
-                          URIWithoutFinalize baseURI)
+                          URIWithoutFinalize baseURI) const
     {
         // Better use raptor_uri_to_turtle_counted_string() instead (here and in Ada)
         char* str = raptor_uri_to_turtle_string(world.handle, handle, stack.handle, baseURI.handle);
@@ -94,7 +94,7 @@ struct URIWithoutFinalize {
     void turtleWrite(RaptorWorldWithoutFinalize world,
                      IOStreamWithoutFinalize stream,
                      NamespaceStackWithoutFinalize stack,
-                     URIWithoutFinalize baseURI)
+                     URIWithoutFinalize baseURI) const
     {
         int res = raptor_uri_turtle_write(world.handle,
                                           stream.handle,

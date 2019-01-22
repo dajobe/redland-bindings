@@ -106,7 +106,7 @@ struct WWWWithoutFinalize {
         scope(exit) raptor_free_memory(str);
         return str[0..len].idup;
     }
-    void* getConnection() {
+    @property void* connection() const {
         return raptor_www_get_connection(handle);
     }
     void setSSLCertOptions(string certFilename, string certType, string certPassphrase) {
