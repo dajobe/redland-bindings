@@ -33,14 +33,14 @@ mixin template WithoutFinalize(alias Dummy,
         this.ptr = ptr;
     }
     @property Dummy* handle() const {
-        return ptr;
+        return cast(Dummy*)ptr;
     }
-    static _WithoutFinalize fromHandle(Dummy* ptr) {
-        return _WithoutFinalize(ptr);
+    static _WithoutFinalize fromHandle(const Dummy* ptr) {
+        return _WithoutFinalize(cast(Dummy*)ptr);
     }
-    static _WithoutFinalize fromNonnullHandle(Dummy* ptr) {
+    static _WithoutFinalize fromNonnullHandle(const Dummy* ptr) {
         if(!ptr) throw new NullRDFException();
-        return _WithoutFinalize(ptr);
+        return _WithoutFinalize(cast(Dummy*)ptr);
     }
     @property bool is_null() {
         return ptr == null;
@@ -80,14 +80,14 @@ mixin template WithFinalize(alias Dummy,
     }
     alias base this;
     @property Dummy* handle() const {
-        return ptr;
+        return cast(Dummy*)ptr;
     }
-    static _WithFinalize fromHandle(Dummy* ptr) {
-        return _WithFinalize(ptr);
+    static _WithFinalize fromHandle(const Dummy* ptr) {
+        return _WithFinalize(cast(Dummy*)ptr);
     }
-    static _WithFinalize fromNonnullHandle(Dummy* ptr) {
+    static _WithFinalize fromNonnullHandle(const Dummy* ptr) {
         if(!ptr) throw new NullRDFException();
-        return _WithFinalize(ptr);
+        return _WithFinalize(cast(Dummy*)ptr);
     }
 }
 
