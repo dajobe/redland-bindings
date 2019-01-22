@@ -144,14 +144,27 @@ package body RDF.Raptor.Log is
 
    package Locator_Conv is new RDF.Auxiliary.Convert_Void(Locator_Type_Record);
 
+   -- FIXME: handle allocation errors (see D code for an example)
    function Copy_Locator (Handle: Locator_Handle) return Locator_Handle is
       Size: constant size_t := size_t((Locator_Type'Max_Size_In_Storage_Elements * Storage_Unit + (char'Size-1)) / char'Size);
       Result2: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Size);
       Result: constant Locator_Handle := Locator_Handle(Locator_Conv.To_Access(Result2));
    begin
+      if Result = Null_Ptr then
+         return Null_Ptr;
+      end if;
       Result.all := Handle.all;
       Result.URI := raptor_uri_copy(Handle.URI);
+      if Result.URI = Null_Ptr then
+         raptor_memory_free(Result);
+         return null;
+      end if;
       Result.File := RDF.Raptor.Memory.Copy_C_String(Handle.File);
+      if Result.File = Null_Ptr then
+         raptor_memory_free(result._uri);
+         raptor_memory_free(result);
+         return null;
+      end if;
       return Result;
    end;
 

@@ -48,12 +48,21 @@ private void free_locator(LocatorHandle* handle) {
     raptor_free_memory(cast(char*)handle);
 }
 
-// FIXME: check for allocation errors (in Ada, too)
 private LocatorHandle* locator_copy(LocatorHandle* handle) {
     LocatorHandle* result = cast(LocatorHandle*)raptor_alloc_memory(LocatorHandle.sizeof);
+    if(!result) return null;
     *result = *handle;
     result._uri = raptor_uri_copy(handle._uri);
+    if(!result._uri) {
+        raptor_free_memory(cast(char*)result);
+        return null;
+    }
     result._file = raptor_copy_c_string(handle._file);
+    if(!result._file) {
+        raptor_free_memory(cast(char*)result._uri);
+        raptor_free_memory(cast(char*)result);
+        return null;
+    }
     return result;
 }
 
