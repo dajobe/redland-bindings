@@ -113,7 +113,6 @@ struct ParserWithoutFinalize {
         if(raptor_parser_parse_iostream(handle, stream.handle, baseURI.handle) != 0)
             throw new RDFException();
     }
-    /// TODO: More detailed exit status handling (also in Ada)
     void parseStart(URIWithoutFinalize uri) {
         if(raptor_parser_parse_start(handle, uri.handle) != 0)
             throw new RDFException();
