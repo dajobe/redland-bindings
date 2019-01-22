@@ -191,18 +191,17 @@ unittest {
     Term term3 = Term.fromURI(world, URI.fromString(world, "http://example.org/cvb"));
     // .dup below is necessary due to http://bugs.librdf.org/mantis/view.php?id=648
     Term term4 = Term.fromString(world, "\"ZZZ\"".dup); // Turtle string
-    // TODO:
-//    assert(term1.literal.value == "QWE", "Term_1 value");
-//    assert(term2.uri.toString == "http://example.org/abc", "Term_2 URI");
-//    assert(term3.uri.toString == "http://example.org/cvb", "Term_3 URI");
-//    assert(term3.literal.value == "ZZZ", "Term_4 value");
-//    assert(term1.literal.datatype.toString == "http://example.org", "Term_1 datatype"); // infinite loop! why?
-//    assert(term1 != term2, "Non-equal terms");
-//    with(TermKind) {
-//        assert(term1.kind == literal, "Term_1 is literal");
-//        assert(term2.kind == uri, "Term_2 is URI");
-//        assert(term3.kind == uri, "Term_3 is URI");
-//        assert(term4.kind == literal, "Term_4 is literal");
-//    }
+    assert(term1.literal.value == "QWE", "term1 value");
+    assert(term2.uri.toString == "http://example.org/abc", "term2 URI");
+    assert(term3.uri.toString == "http://example.org/cvb", "term3 URI");
+    assert(term4.literal.value == "ZZZ", "term4 value");
+    assert(term1.literal.datatype.toString == "http://example.org", "term1 datatype"); // infinite loop! why?
+    assert(term1 != term2, "Non-equal terms");
+    with(TermKind) {
+        assert(term1.kind == literal, "term1 is literal");
+        assert(term2.kind == uri, "term2 is URI");
+        assert(term3.kind == uri, "term3 is URI");
+        assert(term4.kind == literal, "term4 is literal");
+    }
 }
 
