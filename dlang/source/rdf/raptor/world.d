@@ -70,7 +70,4 @@ unittest {
     RaptorWorld defaultWorld = RaptorWorld.createAndOpen();
     RaptorWorld worldWithSomeFlags =
         RaptorWorld.createAndOpen([FlagAndValue(RaptorFlagType.uriInterning, false)]);
-    // TODO:
-//     World2: Rasqal_World_Type := Open;
-//     World: Raptor_World_Type_Without_Finalize := Get_Raptor(World2) with Unreferenced;
 }
