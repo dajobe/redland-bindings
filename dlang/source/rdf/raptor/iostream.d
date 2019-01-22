@@ -115,7 +115,6 @@ struct IOStreamWithoutFinalize {
         if(raptor_iostream_decimal_write(value, handle) < 0)
             throw new IOStreamException();
     }
-    // FIXME: return size_t? (here and in Ada)
     int writeBytes(char *ptr, size_t size, size_t nmemb) {
         immutable int result = raptor_iostream_write_bytes (ptr, size, nmemb, handle);
         if(result < 0) throw new IOStreamException();
