@@ -72,7 +72,7 @@ struct QueryWithoutFinalize {
         if(rasqal_query_prepare(handle, queryString.toStringz, baseURI.handle) != 0)
             throw new RDFException();
     }
-    void setStoreresults(bool store) {
+    void setStoreResults(bool store) {
         if(rasqal_query_set_store_results(handle, store) != 0)
             throw new RDFException();
     }

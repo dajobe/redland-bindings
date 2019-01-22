@@ -154,9 +154,9 @@ struct Term {
         return fromNonnullHandle(raptor_new_term_from_counted_blank(world.handle, str, str ? id.get.length : 0));
     }
     static Term fromLiteral(RaptorWorldWithoutFinalize world,
-                     Nullable!string literal,
-                     URIWithoutFinalize datatype,
-                     Nullable!string language)
+                            Nullable!string literal,
+                            URIWithoutFinalize datatype,
+                            Nullable!string language)
     {
         TermHandle* handle =
             raptor_new_term_from_counted_literal(world.handle,

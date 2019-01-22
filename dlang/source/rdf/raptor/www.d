@@ -116,8 +116,8 @@ struct WWWWithoutFinalize {
                                                             certPassphrase.toStringz);
         if(res != 0) throw new RDFException();
     }
-    void setSSLVerifyOptions(bool Verify_Peer, bool Verify_Host) {
-        if(raptor_www_set_ssl_verify_options(handle, Verify_Peer ? 1 : 0, Verify_Peer ? 1 : 0) != 0)
+    void setSSLVerifyOptions(bool verifyPeer, bool verifyHost) {
+        if(raptor_www_set_ssl_verify_options(handle, verifyPeer ? 1 : 0, verifyHost ? 1 : 0) != 0)
             throw new RDFException();
     }
     void abortOperation(string reason) {

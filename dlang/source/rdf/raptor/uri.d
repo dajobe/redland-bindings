@@ -164,8 +164,7 @@ struct URI {
 }
 
 string toRelativeURIString(URIWithoutFinalize baseURI, URIWithoutFinalize referenceURI) {
-  char* str =
-        raptor_uri_to_relative_uri_string(baseURI.handle, referenceURI.handle);
+  char* str = raptor_uri_to_relative_uri_string(baseURI.handle, referenceURI.handle);
   if(!str) throw new NullRDFException();
   scope(exit) raptor_free_memory(str);
   return str.fromStringz.idup;
@@ -184,8 +183,7 @@ string resolveURIReference(string baseURI, string referenceURI) {
 }
 
 string filenameToURIString(string filename) {
-    char* result1 =
-        raptor_uri_counted_filename_to_uri_string(filename.ptr, filename.length);
+    char* result1 = raptor_uri_counted_filename_to_uri_string(filename.ptr, filename.length);
     if(!result1) throw new RDFException();
     scope(exit) raptor_free_memory(result1);
     return result1.fromStringz.idup;
@@ -202,10 +200,10 @@ bool uriStringIsFileURI(string uriString) {
 }
 
 string uriStringToFilename(string uriString) {
-    char* result1 = raptor_uri_uri_string_to_filename(uriString.toStringz);
-    if(!result1) throw new RDFException();
-    scope(exit) raptor_free_memory(result1);
-    return result1.fromStringz.idup;
+    char* result = raptor_uri_uri_string_to_filename(uriString.toStringz);
+    if(!result) throw new RDFException();
+    scope(exit) raptor_free_memory(result);
+    return result.fromStringz.idup;
 }
 
 struct FilenameAndFragment {

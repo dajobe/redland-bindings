@@ -53,7 +53,7 @@ private:
 public:
     @property int code() { return librdf_log_message_code(handle); }
     @property int level() { return librdf_log_message_level(handle); }
-    @property LogFacility level() { return librdf_log_message_facility(handle); }
+    @property LogFacility facility() { return librdf_log_message_facility(handle); }
     @property string message() {
         return librdf_log_message_message(handle).fromStringz.idup;
     }
@@ -64,10 +64,10 @@ public:
 
 class LogHandler : UnmovableObject {
     this(RedlandWorldWithoutFinalize world) {
-        librdf_world_set_logger(world.handle, cast(void*)this, &our_handler);
+        librdf_world_set_logger(world.handle, cast(void*)this, &ourHandler);
     }
     abstract void handle(LogMessage message);
-    private static extern(C) int our_handler(void *user_data, LogMessageHandle* message) {
+    private static extern(C) int ourHandler(void *user_data, LogMessageHandle* message) {
         (cast(LogHandler)user_data).handle(LogMessage(message));
         return 1;
     }

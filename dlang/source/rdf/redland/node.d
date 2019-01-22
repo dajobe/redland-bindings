@@ -67,6 +67,9 @@ struct NodeWithoutFinalize {
                            NodeWithoutFinalize,
                            Node,
                            librdf_new_node_from_node);
+    bool opEquals(NodeWithoutFinalize other) {
+        return librdf_node_equals(handle, other.handle) != 0;
+    }
     @property rdf.raptor.term.Term toRaptor() { // FIXME: also dup() in Ada
       return rdf.raptor.term.TermWithoutFinalize.fromHandle(cast(rdf.raptor.term.TermHandle*)handle).dup;
     }
@@ -75,9 +78,6 @@ struct NodeWithoutFinalize {
         char[] buffer = new char[length];
         cast(void)librdf_node_encode(handle, buffer.ptr, length);
         return cast(string)buffer;
-    }
-    bool opEquals(NodeWithoutFinalize other) {
-        return librdf_node_equals(handle, other.handle) != 0;
     }
     @property string blankIdentifier() {
         size_t length;
@@ -146,11 +146,11 @@ struct Node {
                         NodeWithoutFinalize,
                         Node,
                         librdf_free_node);
-    static Node fromRaptor(rdf.raptor.term.TermWithoutFinalize uri) { // FIXME: also dup() in Ada
-        return NodeWithoutFinalize.fromHandle(cast(NodeHandle*)uri.handle).dup;
-    }
     bool opEquals(Node other) {
         return librdf_node_equals(handle, other.handle) != 0;
+    }
+    static Node fromRaptor(rdf.raptor.term.TermWithoutFinalize uri) { // FIXME: also dup() in Ada
+        return NodeWithoutFinalize.fromHandle(cast(NodeHandle*)uri.handle).dup;
     }
     static Node create(RedlandWorldWithoutFinalize world) {
         return Node.fromNonnullHandle(librdf_new_node(world.handle));

@@ -92,14 +92,14 @@ struct DataGraph {
                         DataGraphWithoutFinalize,
                         DataGraph,
                         rasqal_free_data_graph);
-    static DataGraph fromIOStream (RasqalWorldWithoutFinalize world,
-                                   IOStreamWithoutFinalize iostream,
-                                   URIWithoutFinalize baseURI,
-                                   URIWithoutFinalize nameURI = URIWithoutFinalize.fromHandle(null),
-                                   DataGraphFlags flags = DataGraphFlags.background,
-                                   Nullable!string formatType = Nullable!string(),
-                                   Nullable!string formatName = Nullable!string(),
-                                   URIWithoutFinalize formatURI = URIWithoutFinalize.fromHandle(null))
+    static DataGraph fromIOStream(RasqalWorldWithoutFinalize world,
+                                  IOStreamWithoutFinalize iostream,
+                                  URIWithoutFinalize baseURI,
+                                  URIWithoutFinalize nameURI = URIWithoutFinalize.fromHandle(null),
+                                  DataGraphFlags flags = DataGraphFlags.background,
+                                  Nullable!string formatType = Nullable!string(),
+                                  Nullable!string formatName = Nullable!string(),
+                                  URIWithoutFinalize formatURI = URIWithoutFinalize.fromHandle(null))
     {
       DataGraphHandle* handle =
         rasqal_new_data_graph_from_iostream(world.handle,
@@ -112,13 +112,13 @@ struct DataGraph {
                                             formatURI.handle);
         return DataGraph.fromHandle(handle);
     }
-    static DataGraph fromURI (RasqalWorldWithoutFinalize world,
-                              URIWithoutFinalize uri,
-                              URIWithoutFinalize nameURI,
-                              DataGraphFlags flags,
-                              Nullable!string formatType,
-                              Nullable!string formatName,
-                              URIWithoutFinalize formatURI)
+    static DataGraph fromURI(RasqalWorldWithoutFinalize world,
+                             URIWithoutFinalize uri,
+                             URIWithoutFinalize nameURI,
+                             DataGraphFlags flags,
+                             Nullable!string formatType,
+                             Nullable!string formatName,
+                             URIWithoutFinalize formatURI)
     {
         DataGraphHandle* handle =
                 rasqal_new_data_graph_from_uri(world.handle,

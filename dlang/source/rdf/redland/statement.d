@@ -120,7 +120,7 @@ struct StatementWithoutFinalize {
         return cast(string)buffer;
     }
     // librdf_statement_decode2() not implemented (not so important and somehow hard to do)
-    void Write(IOStreamWithoutFinalize stream) {
+    void write(IOStreamWithoutFinalize stream) {
         if(librdf_statement_write(handle, stream.handle) != 0)
             throw new RDFException();
     }

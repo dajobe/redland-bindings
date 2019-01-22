@@ -212,7 +212,7 @@ private extern(C) {
 
     int raptor_iostream_write_end_impl(void* context) {
         try {
-            (cast(UserIOStream)context).doWrite_End();
+            (cast(UserIOStream)context).doWriteEnd();
             return 0;
         }
         catch(Exception) {
@@ -270,7 +270,7 @@ class UserIOStream : UserObject {
             throw new IOStreamException();
     }
     abstract int doWriteBytes(char* data, size_t size, size_t count);
-    abstract void doWrite_End();
+    abstract void doWriteEnd();
     abstract size_t doReadBytes(char* data, size_t size, size_t count);
     abstract bool doReadEof();
 }
@@ -299,7 +299,7 @@ class StreamToString : UserIOStream {
         _str ~= data[0..size*count];
         return cast(int)(size*count);
     }
-    override void doWrite_End() { }
+    override void doWriteEnd() { }
     override size_t doReadBytes(char* data, size_t size, size_t count) { assert(0); }
     override bool doReadEof() { assert(0); }
 }

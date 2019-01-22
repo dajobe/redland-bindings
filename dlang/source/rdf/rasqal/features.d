@@ -20,7 +20,7 @@ private extern extern(C) {
     uint rasqal_get_feature_count();
 }
 
-FeatureType Feature_From_URI(RasqalWorldWithoutFinalize world, URIWithoutFinalize uri) {
+FeatureType featureFromURI(RasqalWorldWithoutFinalize world, URIWithoutFinalize uri) {
     return rasqal_feature_from_uri(world.handle, uri.handle);
 }
 

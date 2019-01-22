@@ -113,7 +113,7 @@ struct LiteralWithoutFinalize {
             return rasqal_literal_get_type(handle);
         }
     }
-    bool isRdfLiteral () {
+    bool isRDFLiteral () {
         return rasqal_literal_is_rdf_literal(handle) != 0;
     }
     void print(File file) {
@@ -140,8 +140,8 @@ struct Literal {
         return rasqal_literal_same_term(handle, other.handle) != 0;
     }
     static Literal newTypedLiteral(RasqalWorldWithoutFinalize world,
-                            LiteralType typeOfLiteral,
-                            string value)
+                                   LiteralType typeOfLiteral,
+                                   string value)
     {
         LiteralHandle* handle =
             rasqal_new_typed_literal(world.handle, typeOfLiteral, value.toStringz);
@@ -153,7 +153,7 @@ struct Literal {
         return fromNonnullHandle(handle);
     }
     // Not implemented
-    // Literal fromDatetime(RasqalWorldWithoutFinalize world,  XSD_Datetime value)
+    // Literal fromDatetime(RasqalWorldWithoutFinalize world, XSD_Datetime value)
     static Literal fromDecimal(RasqalWorldWithoutFinalize world, string value) {
         LiteralHandle* handle =
             rasqal_new_decimal_literal(world.handle, value.toStringz);
@@ -178,7 +178,9 @@ struct Literal {
             rasqal_new_numeric_literal_from_long(world.handle, LiteralType.integer, value);
         return fromNonnullHandle(handle);
     }
-    static Literal newSimpleLiteral(RasqalWorldWithoutFinalize world, LiteralType type, string value)
+    static Literal newSimpleLiteral(RasqalWorldWithoutFinalize world,
+                                    LiteralType type,
+                                    string value)
         in(type == LiteralType.blank || type == LiteralType.qname)
     {
         char* value2 = rasqal_new_string(value); // freed by rasqal_new_simple_literal()

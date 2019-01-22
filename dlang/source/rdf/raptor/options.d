@@ -119,8 +119,8 @@ string valueTypeLabel(ValueType type) {
 }
 
 OptionDescription getOptionDescription(RaptorWorldWithoutFinalize world,
-                                Domain domain,
-                                RaptorOption option)
+                                       Domain domain,
+                                       RaptorOption option)
 {
     return OptionDescription.fromNonnullHandle(
         raptor_world_get_option_description(world.handle, domain, option));

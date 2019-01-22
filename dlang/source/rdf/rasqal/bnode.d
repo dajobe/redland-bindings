@@ -22,11 +22,11 @@ private extern extern(C) {
 
 class BNodeIDHandler : UnmovableObject {
     this(RasqalWorldWithoutFinalize world) {
-        rasqal_world_set_generate_bnodeid_handler(world.handle, cast(void*)this, &C_BNode_ID_Handle_Impl);
+        rasqal_world_set_generate_bnodeid_handler(world.handle, cast(void*)this, &bnodeIDHandleImpl);
     }
     abstract string doHandle(RasqalWorldWithoutFinalize world, Nullable!string userID);
     static extern(C) const(char*)
-    C_BNode_ID_Handle_Impl(RasqalWorldHandle* world, void* data, char* userID) {
+    bnodeIDHandleImpl(RasqalWorldHandle* world, void* data, char* userID) {
         scope(exit) rasqal_free_memory(userID);
         return (cast(BNodeIDHandler)data).doHandle(
             RasqalWorldWithoutFinalize.fromNonnullHandle(world),

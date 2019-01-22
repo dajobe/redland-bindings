@@ -45,7 +45,7 @@ struct NamespaceStackWithoutFinalize {
     void startNamespace(NamespaceWithoutFinalize ns) {
         raptor_namespaces_start_namespace(handle, ns.handle);
     }
-    void startNamespace (NamespaceWithoutFinalize ns, uint newDepth) {
+    void startNamespace(NamespaceWithoutFinalize ns, uint newDepth) {
         if(raptor_namespace_stack_start_namespace(handle, ns.handle, newDepth) != 0)
             throw new RDFException();
     }

@@ -97,7 +97,7 @@ struct SerializerWithoutFinalize {
         return ptr[0..length].idup;
     }
     /// Order of arguments not the same as in C
-    void SerializeToIOStream(ModelWithoutFinalize model,
+    void serializeToIOStream(ModelWithoutFinalize model,
                              IOStreamWithoutFinalize iostream,
                              URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
     {

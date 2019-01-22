@@ -120,7 +120,8 @@ struct QueryResultsWithoutFinalize {
     }
     @property bool boolean()
         in(isBoolean)
-    {        int value = rasqal_query_results_get_boolean(handle);
+    {
+        int value = rasqal_query_results_get_boolean(handle);
         if(value < 0) throw new RDFException();
         return value != 0;
     }

@@ -23,7 +23,7 @@ private extern extern(C) {
                                                     const char *identifier);
 }
 
-struct Mime_Type_Q {
+struct MimeTypeQ {
 private:
     char* _mimeType;
     size_t _mimeTypeLen;
@@ -38,7 +38,7 @@ private:
     char** _names;
     uint _namesCount;
     char* _label;
-    Mime_Type_Q* _mimeTypes;
+    MimeTypeQ* _mimeTypes;
     uint _mimeTypesCount;
     char** uriStrings;
     uint uriStringsCount;
@@ -46,23 +46,23 @@ private:
 public:
     @disable this(this);
     string name(uint index)
-        in { assert(index < namesCount); }
-        do {
-            return _names[index].fromStringz.idup;
-        }
+        in(index < namesCount)
+    {
+        return _names[index].fromStringz.idup;
+    }
     @property uint namesCount() { return _namesCount; }
     @property string label() { return _label.fromStringz.idup; }
-    ref const(Mime_Type_Q) mimeTypeInfo(uint index)
-        in { assert(index < _mimeTypesCount); }
-        do {
-            return _mimeTypes[index]; 
-        }
+    ref const(MimeTypeQ) mimeTypeInfo(uint index)
+        in(index < _mimeTypesCount)
+    {
+        return _mimeTypes[index];
+    }
     @property uint mimeTypesCount() { return _mimeTypesCount; }
     string uri(uint index)
-        in { assert(index < uriStringsCount); }
-        do {
-            return uriStrings[index].fromStringz.idup;
-        }
+        in(index < uriStringsCount)
+    {
+        return uriStrings[index].fromStringz.idup;
+    }
     @property uint urisCount() { return uriStringsCount; }
     @property SyntaxBitflags flags() { return _flags; }
 }

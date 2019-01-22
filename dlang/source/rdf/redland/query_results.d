@@ -109,11 +109,11 @@ struct QueryResultsWithoutFinalize {
         scope(exit) librdf_free_memory(ptr);
         return ptr[0..length].idup;
     }
-    void toFileHandle (File file,
-                       string name = "",
-                       string mimeType = "",
-                       URIWithoutFinalize formatURI = URIWithoutFinalize.fromHandle(null),
-                       URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+    void toFileHandle(File file,
+                      string name = "",
+                      string mimeType = "",
+                      URIWithoutFinalize formatURI = URIWithoutFinalize.fromHandle(null),
+                      URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
     {
         int result =
             librdf_query_results_to_file_handle2(handle,
