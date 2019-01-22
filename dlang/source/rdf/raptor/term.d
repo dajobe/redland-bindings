@@ -121,7 +121,7 @@ struct TermWithoutFinalize {
     }
     string toTurtleString(NamespaceStackWithoutFinalize stack, URIWithoutFinalize baseURI) {
         char* str = raptor_term_to_turtle_string(handle, stack.handle, baseURI.handle);
-        // TODO: raptor_term_to_turtle_counted_string() instead (here and in Ada)
+        // Better use raptor_term_to_turtle_counted_string() instead (here and in Ada)
         if(!str) throw new RDFException();
         scope(exit) raptor_free_memory(str);
         return str.fromStringz.idup;

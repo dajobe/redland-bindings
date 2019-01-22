@@ -85,7 +85,7 @@ struct URIWithoutFinalize {
                           NamespaceStackWithoutFinalize stack,
                           URIWithoutFinalize baseURI)
     {
-        // TODO: Use raptor_uri_to_turtle_counted_string() instead
+        // Better use raptor_uri_to_turtle_counted_string() instead (here and in Ada)
         char* str = raptor_uri_to_turtle_string(world.handle, handle, stack.handle, baseURI.handle);
         if(!str) throw new RDFException();
         scope(exit) raptor_free_memory(str);
