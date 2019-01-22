@@ -69,41 +69,41 @@ struct QueryResultsWithoutFinalize {
     mixin WithoutFinalize!(QueryResultsHandle,
                            QueryResultsWithoutFinalize,
                            QueryResults);
-    @property QueryResultsType type() {
+    @property QueryResultsType type() const {
         return rasqal_query_results_get_type(handle);
     }
-    @property bool isBindings() {
+    @property bool isBindings() const {
         return rasqal_query_results_is_bindings(handle) != 0;
     }
-    @property bool isBoolean() {
+    @property bool isBoolean() const {
         return rasqal_query_results_is_boolean(handle) != 0;
     }
-    @property bool isGraph() {
+    @property bool isGraph() const {
         return rasqal_query_results_is_graph(handle) != 0;
     }
-    @property bool isSyntax() {
+    @property bool isSyntax() const {
         return rasqal_query_results_is_syntax(handle) != 0;
     }
     // function addRow is deliberately not implemented
-    bool finished()
+    bool finished() const
         in(isBindings() || isGraph())
     {
         return rasqal_query_results_finished(handle) != 0;
     }
-    string getBindingName(uint offset)
+    string getBindingName(uint offset) const
         in(isBindings)
     {
         const char* ptr = rasqal_query_results_get_binding_name(handle, int(offset));
         if(!ptr) throw new RDFException();
         return ptr.fromStringz.idup;
     }
-    LiteralWithoutFinalize getBindingValue(uint offset)
+    LiteralWithoutFinalize getBindingValue(uint offset) const
         in(isBindings)
     {
         return LiteralWithoutFinalize.fromNonnullHandle(
             rasqal_query_results_get_binding_value(handle, int(offset)));
     }
-    LiteralWithoutFinalize getBindingValueByName(string name)
+    LiteralWithoutFinalize getBindingValueByName(string name) const
         in(isBindings)
     {
         return LiteralWithoutFinalize.fromNonnullHandle(
@@ -111,29 +111,29 @@ struct QueryResultsWithoutFinalize {
     }
     // rasqal_query_results_get_bindings() deliberately not implemented.
     // Use iterators instead.
-    @property uint bindingsCount()
+    @property uint bindingsCount() const
         in(isBindings)
     {
         int count = rasqal_query_results_get_bindings_count(handle);
         if(count < 0) throw new RDFException();
         return count;
     }
-    @property bool boolean()
+    @property bool boolean() const
         in(isBoolean)
     {
         int value = rasqal_query_results_get_boolean(handle);
         if(value < 0) throw new RDFException();
         return value != 0;
     }
-    @property uint currentCount() {
+    @property uint currentCount() const {
         int value = rasqal_query_results_get_count(handle);
         if(value < 0) throw new RDFException();
         return value;
     }
-    @property QueryWithoutFinalize query() {
+    @property QueryWithoutFinalize query() const {
         return QueryWithoutFinalize.fromNonnullHandle(rasqal_query_results_get_query(handle));
     }
-    @property StatementWithoutFinalize triple()
+    @property StatementWithoutFinalize triple() const
         in(isGraph)
     {
         return StatementWithoutFinalize.fromNonnullHandle(rasqal_query_results_get_triple(handle));
@@ -166,7 +166,7 @@ struct QueryResultsWithoutFinalize {
                string formatName,
                string mimeType,
                URIWithoutFinalize formatURI,
-               URIWithoutFinalize baseURI)
+               URIWithoutFinalize baseURI) const
     {
         int res = rasqal_query_results_write(stream.handle,
                                              handle,
@@ -227,16 +227,16 @@ public:
     this(QueryResultsWithoutFinalize obj) {
         this.obj = obj;
     }
-    @property bool empty() { return obj.finished(); }
-    @property QueryResultsRange front() { return this; } // return itself
+    @property bool empty() const { return obj.finished(); }
+    @property const(QueryResultsRange) front() const { return this; } // return itself
     void popFront() { obj.next(); }
-    string getBindingName(uint offset) {
+    string getBindingName(uint offset) const {
         return obj.getBindingName(offset);
     }
-    LiteralWithoutFinalize getBindingValue(uint offset) {
+    LiteralWithoutFinalize getBindingValue(uint offset) const {
         return obj.getBindingValue(offset);
     }
-    LiteralWithoutFinalize getBindingValueByName(string name) {
+    LiteralWithoutFinalize getBindingValueByName(string name) const {
         return obj.getBindingValueByName(name);
     }
     void rewind() { obj.rewind(); }
@@ -249,10 +249,10 @@ public:
     this(QueryResultsWithoutFinalize obj) {
         this.obj = obj;
     }
-    @property bool empty() { return obj.finished(); }
-    @property StatementWithoutFinalize front() { return triple(); }
+    @property bool empty() const { return obj.finished(); }
+    @property StatementWithoutFinalize front() const { return triple(); }
     void popFront() { obj.nextTriple(); }
-    StatementWithoutFinalize triple() { return obj.triple(); }
+    StatementWithoutFinalize triple() const { return obj.triple(); }
     void rewind() { obj.rewind(); }
 }
 
@@ -264,9 +264,9 @@ public:
     this(QueryResultsWithoutFinalize obj) {
         this.obj = obj;
     }
-    @property bool empty() { return count == obj.bindingsCount; }
-    @property string front() { return name; }
+    @property bool empty() const { return count == obj.bindingsCount; }
+    @property string front() const { return name; }
     void popFront() { ++count; }
-    @property string name() { return obj.getBindingName(count); }
+    @property string name() const { return obj.getBindingName(count); }
 }
 

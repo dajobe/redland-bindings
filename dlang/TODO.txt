@@ -7,5 +7,5 @@ Correct identifiers case.
 
 More unittests (especially for streams and iterators) and code review.
 
-Review usage of const and cast(Dummy*) in rasqal/bnode.d.
+Review usage of const and cast(Dummy*) in redland/constants.d.
 

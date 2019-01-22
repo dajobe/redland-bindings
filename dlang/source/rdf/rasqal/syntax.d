@@ -14,14 +14,14 @@ private extern extern(C) {
     int rasqal_language_name_check(RasqalWorldHandle* world, const char *name);
 }
 
-const(SyntaxDescription*) getQueryLanguageDescription(RasqalWorldWithoutFinalize world,
+const(SyntaxDescription*) getQueryLanguageDescription(const RasqalWorldWithoutFinalize world,
                                                       uint counter)
 {
     return rasqal_world_get_query_language_description(world.handle, counter);
 }
 
-const(SyntaxDescription*) getQueryResultsFormatDescription(RasqalWorldWithoutFinalize world,
-                                                             uint counter)
+const(SyntaxDescription*) getQueryResultsFormatDescription(const RasqalWorldWithoutFinalize world,
+                                                           uint counter)
 {
     return rasqal_world_get_query_results_format_description(world.handle, counter);
 }
@@ -34,10 +34,10 @@ public:
     this(RasqalWorldWithoutFinalize world) {
         _world = world;
     }
-    bool empty() {
+    bool empty() const {
         return !getQueryLanguageDescription(_world, _counter);
     }
-    ref const(SyntaxDescription) front() {
+    ref const(SyntaxDescription) front() const {
         return *getQueryLanguageDescription(_world, _counter);
     }
     void popFront() {
@@ -53,10 +53,10 @@ public:
     this(RasqalWorldWithoutFinalize world) {
         _world = world;
     }
-    bool empty() {
+    bool empty() const {
         return !getQueryResultsFormatDescription(_world, _counter);
     }
-    ref const(SyntaxDescription) front() {
+    ref const(SyntaxDescription) front() const {
         return *getQueryResultsFormatDescription(_world, _counter);
     }
     void popFront() {

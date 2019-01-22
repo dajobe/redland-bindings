@@ -80,10 +80,10 @@ struct LiteralWithoutFinalize {
     mixin WithoutFinalize!(LiteralHandle,
                            LiteralWithoutFinalize,
                            Literal);
-    bool opEquals(LiteralWithoutFinalize other) {
+    bool opEquals(LiteralWithoutFinalize other) const {
         return rasqal_literal_same_term(handle, other.handle) != 0;
     }
-    string toString(CompareFlags flags = CompareFlags.none) {
+    string toString(CompareFlags flags = CompareFlags.none) const {
         int error = 0;
         size_t length;
         const char* item = rasqal_literal_as_counted_string(handle,
@@ -93,40 +93,40 @@ struct LiteralWithoutFinalize {
         if(error != 0) throw new RDFException();
         return item[0..length].idup;
     }
-    int compare(LiteralWithoutFinalize other, CompareFlags flags) {
+    int compare(LiteralWithoutFinalize other, CompareFlags flags) const {
         int error = 0;
         return rasqal_literal_compare(handle, other.handle, int(flags), &error);
     }
-    @property URIWithoutFinalize datatype() {
+    @property URIWithoutFinalize datatype() const {
         return URIWithoutFinalize.fromHandle(rasqal_literal_datatype(handle));
     }
-    @property LiteralType rdfTermType() {
+    @property LiteralType rdfTermType() const {
         return rasqal_literal_get_rdf_term_type(handle);
     }
     static if(Version(rasqalVersionFeatures) >= Version("0.9.33")) {
         private extern extern(C) LiteralType rasqal_literal_get_type(LiteralHandle* l);
         private extern extern(C) char* rasqal_literal_get_language(LiteralHandle* l);
-        @property Nullable!string language() {
+        @property Nullable!string language() const {
             rasqal_literal_get_language(handle).myFromStringz;
         }
-        @property literalType type() {
+        @property literalType type() const {
             return rasqal_literal_get_type(handle);
         }
     }
-    bool isRDFLiteral () {
+    bool isRDFLiteral() const {
         return rasqal_literal_is_rdf_literal(handle) != 0;
     }
-    void print(File file) {
+    void print(File file) const {
         if(rasqal_literal_print(handle, file.getFP) != 0)
             throw new RDFException();
     }
-    void printType(File file) {
+    void printType(File file) const {
         rasqal_literal_print_type(handle, file.getFP);
     }
-    Literal value() {
+    Literal value() const {
         return Literal.fromHandle(rasqal_literal_value(handle));
     }
-    Literal asNode() {
+    Literal asNode() const {
         return Literal.fromHandle(rasqal_literal_as_node(handle));
     }
 }
@@ -136,7 +136,7 @@ struct Literal {
                         LiteralWithoutFinalize,
                         Literal,
                         rasqal_free_literal);
-    bool opEquals(LiteralWithoutFinalize other) {
+    bool opEquals(LiteralWithoutFinalize other) const {
         return rasqal_literal_same_term(handle, other.handle) != 0;
     }
     static Literal newTypedLiteral(RasqalWorldWithoutFinalize world,

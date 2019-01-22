@@ -30,7 +30,7 @@ struct RasqalWorldWithoutFinalize {
     void open() {
         rasqal_world_open(handle);
     }
-    @property RaptorWorldWithoutFinalize raptor() {
+    @property RaptorWorldWithoutFinalize raptor() const {
         return RaptorWorldWithoutFinalize.fromNonnullHandle(rasqal_world_get_raptor(this.handle));
     }
     @property void raptor(RaptorWorldWithoutFinalize world) {
@@ -43,7 +43,7 @@ struct RasqalWorldWithoutFinalize {
     Nullable!string guessQueryResultsFormatName(URIWithoutFinalize uri,
                                                 Nullable!string mimeType,
                                                 Nullable!string buffer,
-                                                Nullable!string identifier)
+                                                Nullable!string identifier) const
     {
         const char* result = rasqal_world_guess_query_results_format_name(handle,
                                                                           uri.handle,

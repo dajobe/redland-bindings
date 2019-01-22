@@ -45,7 +45,7 @@ class RDFUnknownFeature: RDFException {
 
 
 // For API simplicity, I don't support the C library feature to retrieve only a part of the data.
-const(FeatureDescription) getFeatureDescription(RasqalWorldWithoutFinalize world, FeatureType feature) {
+const(FeatureDescription) getFeatureDescription(const RasqalWorldWithoutFinalize world, FeatureType feature) {
     char* name, label;
     URIHandle* uri;
     int res = rasqal_features_enumerate(world.handle, feature, &name, &uri, &label);
@@ -66,15 +66,15 @@ public:
     this(RasqalWorldWithoutFinalize world) {
         _world = world;
     }
-    bool empty() {
+    bool empty() const {
         return _num == getFeatureCount();
     }
-    const(FeatureDescription) front() {
+    const(FeatureDescription) front() const {
         return getFeatureDescription(_world, cast(FeatureType)_num);
     }
     void popFront() {
         ++_num;
     }
-    @property size_t position() { return _num; }
+    @property size_t position() const { return _num; }
 }
 

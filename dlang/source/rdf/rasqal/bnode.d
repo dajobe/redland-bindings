@@ -24,7 +24,7 @@ class BNodeIDHandler : UnmovableObject {
     this(RasqalWorldWithoutFinalize world) {
         rasqal_world_set_generate_bnodeid_handler(world.handle, cast(void*)this, &bnodeIDHandleImpl);
     }
-    abstract string doHandle(RasqalWorldWithoutFinalize world, Nullable!string userID);
+    abstract string doHandle(RasqalWorldWithoutFinalize world, Nullable!string userID) const;
     static extern(C) const(char*)
     bnodeIDHandleImpl(RasqalWorldHandle* world, void* data, char* userID) {
         scope(exit) rasqal_free_memory(userID);

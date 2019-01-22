@@ -81,20 +81,20 @@ struct QueryWithoutFinalize {
     }
     void writeQuery(IOStreamWithoutFinalize stream,
                     URIWithoutFinalize formatURI,
-                    URIWithoutFinalize baseURI)
+                    URIWithoutFinalize baseURI) const
     {
         if(rasqal_query_write(stream.handle, handle, formatURI.handle, baseURI.handle) != 0)
             throw new RDFException();
     }
     // Is it really useful? Maybe remove from public API?
-    void writeEscapedString(IOStreamWithoutFinalize stream, string str) {
+    void writeEscapedString(IOStreamWithoutFinalize stream, string str) const {
         int res = rasqal_query_iostream_write_escaped_counted_string(handle,
                                                                      stream.handle,
                                                                      str.ptr,
                                                                      str.length);
         if(res != 0) throw new RDFException();
     }
-    string escapeString(string str) {
+    string escapeString(string str) const {
         size_t outLen;
         char* result = rasqal_query_escape_counted_string(handle, str.ptr, str.length, &outLen);
         if(!result) throw new RDFException();
@@ -109,18 +109,18 @@ struct QueryWithoutFinalize {
         if(rasqal_query_set_feature_string(handle, feature, value.toStringz) != 0)
             throw new RDFException();
     }
-    uint getFeatureInt(FeatureType feature) {
+    uint getFeatureInt(FeatureType feature) const {
         int result = rasqal_query_get_feature(handle, feature);
         if(result < 0) throw new RDFException();
         return result;
     }
-    string getFeatureString(FeatureType feature) {
+    string getFeatureString(FeatureType feature) const {
         const char* result = rasqal_query_get_feature_string(handle, feature);
         if(!result) throw new RDFException();
         scope(exit) rasqal_free_memory(cast(char*)result);
         return result.fromStringz.idup;
     }
-    QueryResultsType getResultType() {
+    QueryResultsType getResultType() const {
         QueryResultsType result = rasqal_query_get_result_type(handle);
         if(result == QueryResultsType.unknown) throw new RDFException();
         return result;

@@ -51,37 +51,37 @@ struct DataGraphWithoutFinalize {
                            DataGraphWithoutFinalize,
                            DataGraph,
                            rasqal_new_data_graph_from_data_graph);
-    @property RasqalWorldWithoutFinalize world() {
+    @property RasqalWorldWithoutFinalize world() const {
         return RasqalWorldWithoutFinalize.fromHandle(handle._world);
     }
-    @property URIWithoutFinalize uri() {
+    @property URIWithoutFinalize uri() const {
         return URIWithoutFinalize.fromHandle(handle._uri);
     }
-    @property URIWithoutFinalize nameURI() {
+    @property URIWithoutFinalize nameURI() const {
         return URIWithoutFinalize.fromHandle(handle._nameURI);
     }
-    @property DataGraphFlags flags() {
+    @property DataGraphFlags flags() const {
         return cast(DataGraphFlags)handle._flags;
     }
-    @property string formatType() {
+    @property string formatType() const {
         return handle._formatType.fromStringz.idup;
     }
-    @property string formatName() {
+    @property string formatName() const {
         return handle._formatName.fromStringz.idup;
     }
-    @property URIWithoutFinalize formatURI() {
+    @property URIWithoutFinalize formatURI() const {
         return URIWithoutFinalize.fromHandle(handle._formatURI);
     }
     @property IOStreamWithoutFinalize iostream() {
         return IOStreamWithoutFinalize.fromHandle(handle._ioStr);
     }
-    @property URIWithoutFinalize baseURI() {
+    @property URIWithoutFinalize baseURI() const {
         return URIWithoutFinalize.fromHandle(handle._baseURI);
     }
-    @property uint usageCount() {
+    @property uint usageCount() const {
         return handle._usage;
     }
-    void print(File file) {
+    void print(File file) const {
         if(rasqal_data_graph_print(handle, file.getFP) != 0)
             throw new RDFException();
     }
