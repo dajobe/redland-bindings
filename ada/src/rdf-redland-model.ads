@@ -150,7 +150,7 @@ package RDF.Redland.Model is
 
    not overriding function Query_Execute (Model: Model_Type_Without_Finalize;
                                           Query: Query_Type_Without_Finalize'Class)
-                                          return Query_Results_Type_Without_Finalize;
+                                          return Query_Results_Type;
 
    not overriding procedure Sync (Model: Model_Type_Without_Finalize);
 

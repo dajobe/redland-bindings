@@ -149,20 +149,22 @@ package body RDF.Raptor.Log is
       Size: constant size_t := size_t((Locator_Type'Max_Size_In_Storage_Elements * Storage_Unit + (char'Size-1)) / char'Size);
       Result2: constant chars_ptr := RDF.Raptor.Memory.raptor_alloc_memory(Size);
       Result: constant Locator_Handle := Locator_Handle(Locator_Conv.To_Access(Result2));
+      use RDF.Auxiliary;
+      function URI_To_Access is new Ada.Unchecked_Conversion(URI_Handle, chars_ptr);
    begin
-      if Result = Null_Ptr then
-         return Null_Ptr;
+      if Result = null then
+         return null;
       end if;
       Result.all := Handle.all;
       Result.URI := raptor_uri_copy(Handle.URI);
-      if Result.URI = Null_Ptr then
-         raptor_memory_free(Result);
+      if Result.URI = null then
+         RDF.Raptor.Memory.raptor_free_memory(Result2);
          return null;
       end if;
       Result.File := RDF.Raptor.Memory.Copy_C_String(Handle.File);
       if Result.File = Null_Ptr then
-         raptor_memory_free(result._uri);
-         raptor_memory_free(result);
+         RDF.Raptor.Memory.raptor_free_memory(URI_To_Access(Result.URI));
+         RDF.Raptor.Memory.raptor_free_memory(Result2);
          return null;
       end if;
       return Result;
@@ -191,12 +193,12 @@ package body RDF.Raptor.Log is
       Result.all := Handle.all;
       Result.Text := RDF.Raptor.Memory.Copy_C_String(Handle.Text);
       if Result.Text = Null_Ptr then
-         raptor_free_memory(Result);
+         RDF.Raptor.Memory.raptor_free_memory(Result2);
       end if;
       Result.Locator := Copy_Locator(Handle.Locator);
-      if Result.Locator = Null_Ptr then
-         raptor_free_memory(Result.Text);
-         raptor_free_memory(Result);
+      if Result.Locator = null then
+         RDF.Raptor.Memory.raptor_free_memory(Result.Text);
+         RDF.Raptor.Memory.raptor_free_memory(Result2);
          return null;
       end if;
       return Result;

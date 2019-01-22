@@ -41,7 +41,7 @@ package RDF.Rasqal.Query is
 
    not overriding procedure Set_Store_Results (Query: in out Query_Type_Without_Finalize; Store: Boolean);
 
-   not overriding procedure Set_Wildcard (Query: in out Query_Type_Without_Finalize; Store: Boolean);
+   not overriding procedure Set_Wildcard (Query: in out Query_Type_Without_Finalize; Wilcard: Boolean);
 
    not overriding procedure Write_Query (Stream: IOStream_Type_Without_Finalize'Class;
                                          Query: Query_Type_Without_Finalize;
