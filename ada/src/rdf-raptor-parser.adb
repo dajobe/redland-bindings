@@ -243,10 +243,16 @@ package body RDF.Raptor.Parser is
 
    function Get_Accept_Header (Parser: Parser_Type_Without_Finalize) return String is
       V: constant chars_ptr := raptor_parser_get_accept_header(Get_Handle(Parser));
-      S: constant String := Value(V);
    begin
-      RDF.Raptor.Memory.raptor_free_memory(V);
-      return S;
+      if V = Null_Ptr then
+         raise RDF.Auxiliary.RDF_Exception;
+      end if;
+      declare
+         S: constant String := Value(V);
+      begin
+         RDF.Raptor.Memory.raptor_free_memory(V);
+         return S;
+      end;
    end;
 
    function raptor_parser_get_world (Parser: Parser_Handle) return Raptor_World_Handle

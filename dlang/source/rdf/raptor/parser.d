@@ -159,7 +159,7 @@ struct ParserWithoutFinalize {
     }
     string acceptHeader() {
       char* V = cast(char*)raptor_parser_get_accept_header(handle);
-      if(!V) throw new RDFException(); // FIXME: This check is missing in Ada code
+      if(!V) throw new RDFException();
       scope(exit) raptor_free_memory(V);
       return V.fromStringz.idup;
     }
