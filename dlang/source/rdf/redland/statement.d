@@ -53,23 +53,23 @@ struct StatementWithoutFinalize {
                            StatementWithoutFinalize,
                            Statement,
                            librdf_new_statement_from_statement);
-    bool opEquals(StatementWithoutFinalize other) {
+    bool opEquals(StatementWithoutFinalize other) const {
         return librdf_statement_equals(handle, other.handle) != 0;
     }
-    @property rdf.raptor.statement.Statement toRaptor() { // FIXME: also dup() in Ada
+    @property rdf.raptor.statement.Statement toRaptor() const { // FIXME: also dup() in Ada
       return rdf.raptor.statement.StatementWithoutFinalize.fromHandle(
         cast(rdf.raptor.statement.StatementHandle*)handle).dup;
     }
     void clear() {
         librdf_statement_clear(handle);
     }
-    @property NodeWithoutFinalize subject() {
+    @property NodeWithoutFinalize subject() const {
         return NodeWithoutFinalize.fromHandle(librdf_statement_get_subject(handle));
     }
-    @property NodeWithoutFinalize predicate() {
+    @property NodeWithoutFinalize predicate() const {
         return NodeWithoutFinalize.fromHandle(librdf_statement_get_predicate(handle));
     }
-    @property NodeWithoutFinalize object() {
+    @property NodeWithoutFinalize object() const {
         return NodeWithoutFinalize.fromHandle(librdf_statement_get_object(handle));
     }
     @property void subject(NodeWithoutFinalize node) {
@@ -81,19 +81,19 @@ struct StatementWithoutFinalize {
     @property void object(NodeWithoutFinalize node) {
         librdf_statement_set_object(handle, librdf_new_node_from_node(node.handle));
     }
-    @property bool isComplete() {
+    @property bool isComplete() const {
         return librdf_statement_is_complete(handle) != 0;
     }
-    void print(File file) {
+    void print(File file) const {
         librdf_statement_print(handle, file.getFP);
     }
-    bool matchedBy(StatementWithoutFinalize partial) {
+    bool matchedBy(const StatementWithoutFinalize partial) const {
         return librdf_statement_match(handle, partial.handle) != 0;
     }
-    bool matches(StatementWithoutFinalize full) {
+    bool matches(const StatementWithoutFinalize full) const {
         return full.matchedBy(this);
     }
-    string encode(RedlandWorldWithoutFinalize world) {
+    string encode(RedlandWorldWithoutFinalize world) const {
         size_t length = librdf_statement_encode2(world.handle, handle, null, 0);
         char[] buffer = new char[length];
         cast(void)librdf_statement_encode2(world.handle, handle, buffer.ptr, length);
@@ -103,6 +103,7 @@ struct StatementWithoutFinalize {
                        StatementWithoutFinalize statement,
                        NodeWithoutFinalize contextNode,
                        StatementPartFlags fields)
+                       const
     {
         size_t length = librdf_statement_encode_parts2(world.handle,
                                                        handle,
@@ -120,7 +121,7 @@ struct StatementWithoutFinalize {
         return cast(string)buffer;
     }
     // librdf_statement_decode2() not implemented (not so important and somehow hard to do)
-    void write(IOStreamWithoutFinalize stream) {
+    void write(IOStreamWithoutFinalize stream) const {
         if(librdf_statement_write(handle, stream.handle) != 0)
             throw new RDFException();
     }
@@ -133,7 +134,7 @@ struct Statement {
                         StatementWithoutFinalize,
                         Statement,
                         librdf_free_statement);
-    bool opEquals(Statement other) {
+    bool opEquals(Statement other) const {
         return librdf_statement_equals(handle, other.handle) != 0;
     }
     static Statement fromRaptor(rdf.raptor.statement.StatementWithoutFinalize uri) { // FIXME: also dup() in Ada

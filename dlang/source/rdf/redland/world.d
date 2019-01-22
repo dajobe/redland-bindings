@@ -37,19 +37,19 @@ struct RedlandWorldWithoutFinalize {
     @property void rasqal(RasqalWorldWithoutFinalize rasqalWorld) {
         librdf_world_set_rasqal(handle, rasqalWorld.handle);
     }
-    @property RasqalWorldWithoutFinalize rasqal() {
+    @property RasqalWorldWithoutFinalize rasqal() const {
          return RasqalWorldWithoutFinalize.fromNonnullHandle(librdf_world_get_rasqal(handle));
     }
     @property void raptor(RaptorWorldWithoutFinalize raptorWorld) {
         librdf_world_set_raptor(handle, raptorWorld.handle);
     }
-    @property RaptorWorldWithoutFinalize raptor() {
+    @property RaptorWorldWithoutFinalize raptor() const {
          return RaptorWorldWithoutFinalize.fromNonnullHandle(librdf_world_get_raptor(handle));
     }
-    @property void digest(string name) {
+    @property void digest(string name) const {
         librdf_world_set_digest(handle, name.toStringz);
     }
-    @property Node feature(URIWithoutFinalize feature) {
+    @property Node feature(URIWithoutFinalize feature) const {
         return Node.fromHandle(librdf_world_get_feature(handle, feature.handle));
     }
     @property void feature(URIWithoutFinalize feature, NodeWithoutFinalize value) {

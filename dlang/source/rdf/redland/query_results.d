@@ -61,31 +61,31 @@ struct QueryResultsWithoutFinalize {
         // Check is done by Finished procedure, not here
         //if(handle != 0) throw new RDFException();
     }
-    bool finished()
+    bool finished() const
          in(isBindings || isGraph)
     {
         return librdf_query_results_finished(handle) != 0;
     }
-    @property uint bindingsCount()
+    @property uint bindingsCount() const
         in(isBindings)
     {
         int result = librdf_query_results_get_bindings_count(handle);
         if(result < 0) throw new RDFException();
         return result;
     }
-    Node getBindingValue(uint index)
+    Node getBindingValue(uint index) const
         in(isBindings)
     {
         return Node.fromNonnullHandle(librdf_query_results_get_binding_value(handle, index));
     }
-    string getBindingName(uint index)
+    string getBindingName(uint index) const
         in(isBindings)
     {
         const char* ptr = librdf_query_results_get_binding_name(handle, index);
         if(!ptr) throw new RDFException();
         return ptr.fromStringz.idup;
     }
-    Node getBindingValueByName(string name)
+    Node getBindingValueByName(string name) const
         in(isBindings)
     {
         NodeHandle* handle =
@@ -96,6 +96,7 @@ struct QueryResultsWithoutFinalize {
                     string mimeType = "",
                     URIWithoutFinalize formatURI = URIWithoutFinalize.fromHandle(null),
                     URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+                    const
     {
         size_t length;
         char* ptr =
@@ -114,6 +115,7 @@ struct QueryResultsWithoutFinalize {
                       string mimeType = "",
                       URIWithoutFinalize formatURI = URIWithoutFinalize.fromHandle(null),
                       URIWithoutFinalize baseURI = URIWithoutFinalize.fromHandle(null))
+                      const
     {
         int result =
             librdf_query_results_to_file_handle2(handle,
@@ -125,11 +127,11 @@ struct QueryResultsWithoutFinalize {
         if(result != 0) throw new RDFException();
     }
     // librdf_query_results_to_file2() is wrong: http://bugs.librdf.org/mantis/view.php?id=639
-    @property bool isBindings() { return librdf_query_results_is_bindings(handle) != 0; }
-    @property bool isBoolean() { return librdf_query_results_is_boolean(handle) != 0; }
-    @property bool isGraph() { return librdf_query_results_is_graph(handle) != 0; }
-    @property bool isSyntax() { return librdf_query_results_is_syntax(handle) != 0; }
-    @property bool boolean() {
+    @property bool isBindings() const { return librdf_query_results_is_bindings(handle) != 0; }
+    @property bool isBoolean() const { return librdf_query_results_is_boolean(handle) != 0; }
+    @property bool isGraph() const { return librdf_query_results_is_graph(handle) != 0; }
+    @property bool isSyntax() const { return librdf_query_results_is_syntax(handle) != 0; }
+    @property bool boolean() const {
         int result = librdf_query_results_get_boolean(handle);
         if(result < 0) throw new RDFException();
         return result != 0;
@@ -151,17 +153,17 @@ public:
     this(QueryResultsWithoutFinalize results) {
         _results = results;
     }
-    @property ref QueryResultsRange front() { return this; }
-    @property bool empty() {
+    @property ref inout(QueryResultsRange) front() inout { return this; }
+    @property bool empty() const {
         return _results.finished;
     }
     void popFront()
         in { assert(!empty); }
         do { _results.next(); }
-    string getBindingName(uint index) {
+    string getBindingName(uint index) const {
         return _results.getBindingName(index);
     }
-    Node getBindingValueByName(string name) {
+    Node getBindingValueByName(string name) const {
         return _results.getBindingValueByName(name);
     }
 }
@@ -176,8 +178,8 @@ public:
     {
         _results = results;
     }
-    @property string front() { return _results.getBindingName(index); }
-    @property bool empty() {
+    @property string front() const { return _results.getBindingName(index); }
+    @property bool empty() const {
         return index < _results.bindingsCount;
     }
     void popFront()

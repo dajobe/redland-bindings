@@ -35,21 +35,21 @@ struct URIWithoutFinalize {
                            URI,
                            librdf_new_uri_from_uri);
     mixin CompareHandles!(librdf_uri_equals, librdf_uri_compare);
-    @property rdf.raptor.uri.URI toRaptor() { // FIXME: also dup() in Ada
+    @property rdf.raptor.uri.URI toRaptor() const { // FIXME: also dup() in Ada
       return rdf.raptor.uri.URIWithoutFinalize.fromHandle(cast(rdf.raptor.uri.URIHandle*)handle).dup;
     }
-    string toString() {
+    string toString() const {
       size_t length;
       char* str = librdf_uri_as_counted_string(handle, &length);
       return str[0..length].idup;
     }
-    void print(File file) {
+    void print(File file) const {
         librdf_uri_print(handle, file.getFP);
     }
-    bool isFileURI() {
+    bool isFileURI() const {
         return librdf_uri_is_file_uri(handle) != 0;
     }
-    string toFilename() {
+    string toFilename() const {
         const char* ptr = librdf_uri_to_filename(handle);
         scope(exit) librdf_free_memory(cast(char*)ptr);
         return ptr.fromStringz.idup;

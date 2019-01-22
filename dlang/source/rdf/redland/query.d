@@ -47,7 +47,7 @@ struct Query {
     }
 }
 
-ref const(SyntaxDescription) getQueryLanguageDescription(RedlandWorldWithoutFinalize world, uint counter) {
+ref const(SyntaxDescription) getQueryLanguageDescription(const RedlandWorldWithoutFinalize world, uint counter) {
     return *librdf_query_language_get_description(world.handle, counter);
 }
 
@@ -60,11 +60,11 @@ public:
     this(RedlandWorldWithoutFinalize world) {
         _world = world;
     }
-    @property uint position() { return _pos; }
-    @property ref const(SyntaxDescription) front() {
+    @property uint position() const { return _pos; }
+    @property ref const(SyntaxDescription) front() const {
         return getQueryLanguageDescription(_world, _pos);
     }
-    @property bool empty() {
+    @property bool empty() const {
         return !librdf_query_language_get_description(_world.handle, _pos);
     }
     void popFront()

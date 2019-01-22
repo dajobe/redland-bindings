@@ -73,7 +73,7 @@ struct ParserWithoutFinalize {
     mixin WithoutFinalize!(ParserHandle,
                            ParserWithoutFinalize,
                            Parser);
-    Stream asStream(URIWithoutFinalize uri, URIWithoutFinalize baseURI) {
+    Stream asStream(URIWithoutFinalize uri, URIWithoutFinalize baseURI) const {
         StreamHandle* h = librdf_parser_parse_as_stream(handle, uri.handle, baseURI.handle);
         return Stream.fromNonnullHandle(h);
     }
@@ -147,7 +147,7 @@ struct ParserWithoutFinalize {
                                                           model.handle);
         if(res != 0) throw new RDFException();
     }
-    Node getFeature(URIWithoutFinalize feature) {
+    Node getFeature(URIWithoutFinalize feature) const {
         return Node.fromHandle(librdf_parser_get_feature(handle, feature.handle));
     }
     void setFeature(URIWithoutFinalize feature, NodeWithoutFinalize value)
@@ -155,7 +155,7 @@ struct ParserWithoutFinalize {
         if(librdf_parser_set_feature(handle, feature.handle, value.handle) != 0)
             throw new RDFException();
     }
-    string getAcceptHeader() {
+    string getAcceptHeader() const {
         char* ptr = librdf_parser_get_accept_header(handle);
         if(!ptr) throw new RDFException();
         scope(exit) librdf_free_memory(ptr);
@@ -203,7 +203,7 @@ string parserGuessName(RedlandWorldWithoutFinalize world,
     return result ? result.fromStringz.idup : "";
 }
 
-ref const(SyntaxDescription) getParserDescription (RedlandWorldWithoutFinalize world, uint counter)
+ref const(SyntaxDescription) getParserDescription (const RedlandWorldWithoutFinalize world, uint counter)
 {
     return *librdf_parser_get_description(world.handle, counter);
 }
@@ -216,11 +216,11 @@ public:
     this(RedlandWorldWithoutFinalize world) {
         _world = world;
     }
-    @property uint position() { return counter; }
-    @property bool empty() {
+    @property uint position() const { return counter; }
+    @property bool empty() const {
         return !librdf_parser_get_description(_world.handle, counter);
     }
-    @property ref const(SyntaxDescription) front()
+    @property ref const(SyntaxDescription) front() const
         in(!empty)
     {
         return getParserDescription(_world, counter);

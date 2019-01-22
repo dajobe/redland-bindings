@@ -23,16 +23,16 @@ struct NodeIteratorWithoutFinalize {
     mixin WithoutFinalize!(NodeIteratorHandle,
                            NodeIteratorWithoutFinalize,
                            NodeIterator);
-    @property bool empty() {
+    @property bool empty() const {
         return librdf_iterator_end(handle) != 0;
     }
-    @property NodeWithoutFinalize front() {
+    @property NodeWithoutFinalize front() const {
         return NodeWithoutFinalize.fromNonnullHandle(cast(NodeHandle*)objectInternal);
     }
     void popFront() {
         cast(void)librdf_iterator_next(handle);
     }
-    @property void* objectInternal() {
+    @property void* objectInternal() const {
         return librdf_iterator_get_object(handle);
     }
     // librdf_iterator_add_map() not implemented

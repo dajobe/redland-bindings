@@ -67,74 +67,74 @@ struct NodeWithoutFinalize {
                            NodeWithoutFinalize,
                            Node,
                            librdf_new_node_from_node);
-    bool opEquals(NodeWithoutFinalize other) {
+    bool opEquals(NodeWithoutFinalize other) const {
         return librdf_node_equals(handle, other.handle) != 0;
     }
-    @property rdf.raptor.term.Term toRaptor() { // FIXME: also dup() in Ada
+    @property rdf.raptor.term.Term toRaptor() const { // FIXME: also dup() in Ada
       return rdf.raptor.term.TermWithoutFinalize.fromHandle(cast(rdf.raptor.term.TermHandle*)handle).dup;
     }
-    string encode() {
+    string encode() const {
         size_t length = librdf_node_encode(handle, null, 0);
         char[] buffer = new char[length];
         cast(void)librdf_node_encode(handle, buffer.ptr, length);
         return cast(string)buffer;
     }
-    @property string blankIdentifier() {
+    @property string blankIdentifier() const {
         size_t length;
         char* buffer = librdf_node_get_counted_blank_identifier(handle, &length);
         return buffer[0..length].idup;
     }
-    @property uint liOrdinal() {
+    @property uint liOrdinal() const {
         int result = librdf_node_get_li_ordinal(handle);
         if(result <= 0) throw new RDFException();
         return result;
     }
-    string toString() {
+    string toString() const {
         size_t length;
         char* buffer = librdf_node_get_literal_value_as_counted_string(handle, &length);
         if(!buffer) throw new RDFException();
         return buffer[0..length].idup;
     }
-    string asLatin1() {
+    string asLatin1() const {
         char* result = librdf_node_get_literal_value_as_latin1(handle);
         if(!result) throw new RDFException();
         return result.fromStringz.idup;
     }
-    @property URIWithoutFinalize datatypeURI() {
+    @property URIWithoutFinalize datatypeURI() const {
         return URIWithoutFinalize.fromHandle(librdf_node_get_literal_value_datatype_uri(handle));
     }
-    @property isWFXML() {
+    @property isWFXML() const {
         return librdf_node_get_literal_value_is_wf_xml(handle) != 0;
     }
     /// Return "" if no language
-    @property string language() {
+    @property string language() const {
         char* ptr = librdf_node_get_literal_value_language(handle);
         return ptr ? ptr.fromStringz.idup : "";
     }
-    @property NodeKind type() {
+    @property NodeKind type() const {
         return librdf_node_get_type(handle);
     }
-    @property URIWithoutFinalize uri() {
+    @property URIWithoutFinalize uri() const {
         return URIWithoutFinalize.fromNonnullHandle(librdf_node_get_uri(handle));
     }
-    @property bool isBlank() {
+    @property bool isBlank() const {
         return librdf_node_is_blank(handle) != 0;
     }
-    @property bool isLiteral() {
+    @property bool isLiteral() const {
         return librdf_node_is_literal(handle) != 0;
     }
-    @property bool isResource() {
+    @property bool isResource() const {
         return librdf_node_is_resource(handle) != 0;
     }
     // librdf_node_write() deliberately not bound
-    void print(File file) {
+    void print(File file) const {
         librdf_node_print(handle, file.getFP);
     }
-    void write(IOStreamWithoutFinalize stream) {
+    void write(IOStreamWithoutFinalize stream) const {
         if(librdf_node_write(handle, stream.handle) != 0)
              throw new RDFException();
     }
-    string formatAsString() {
+    string formatAsString() const {
         StreamToString stream;
         write(stream.record);
         return stream.value();
@@ -146,7 +146,7 @@ struct Node {
                         NodeWithoutFinalize,
                         Node,
                         librdf_free_node);
-    bool opEquals(Node other) {
+    bool opEquals(Node other) const {
         return librdf_node_equals(handle, other.handle) != 0;
     }
     static Node fromRaptor(rdf.raptor.term.TermWithoutFinalize uri) { // FIXME: also dup() in Ada

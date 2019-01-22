@@ -165,10 +165,10 @@ struct Serializer {
                         SerializerWithoutFinalize,
                         Serializer,
                         librdf_free_serializer);
-    Serializer create(RedlandWorldWithoutFinalize world,
-                      string name = "",
-                      string mimeType = "",
-                      URIWithoutFinalize typeURI = URIWithoutFinalize.fromHandle(null))
+    static Serializer create(RedlandWorldWithoutFinalize world,
+                             string name = "",
+                             string mimeType = "",
+                             URIWithoutFinalize typeURI = URIWithoutFinalize.fromHandle(null))
     {
         SerializerHandle* h = librdf_new_serializer(world.handle,
                                                     name.empty ? null : name.ptr,
@@ -178,7 +178,7 @@ struct Serializer {
     }
 }
 
-ref const(SyntaxDescription) getSerializerDescription(RedlandWorldWithoutFinalize world,
+ref const(SyntaxDescription) getSerializerDescription(const RedlandWorldWithoutFinalize world,
                                                       uint index)
 {
     return *librdf_serializer_get_description(world.handle, index);
@@ -196,11 +196,11 @@ public:
     this(RedlandWorldWithoutFinalize world) {
         _world = world;
     }
-    @property uint position() { return counter; }
-    @property bool empty() {
+    @property uint position() const { return counter; }
+    @property bool empty() const {
         return !librdf_serializer_get_description(_world.handle, counter);
     }
-    @property ref const(SyntaxDescription) front()
+    @property ref const(SyntaxDescription) front() const
         in(!empty)
     {
         return getSerializerDescription(_world, counter);

@@ -115,10 +115,10 @@ struct ModelWithoutFinalize {
                            ModelWithoutFinalize,
                            Model,
                            librdf_new_model_from_model);
-    size_t sizeWithoutException() {
+    size_t sizeWithoutException() const {
         return librdf_model_size(handle);
     }
-    size_t size() {
+    size_t size() const {
         size_t res = sizeWithoutException();
         if(res < 0) throw new RDFException();
         return res;
@@ -162,54 +162,54 @@ struct ModelWithoutFinalize {
         if(librdf_model_remove_statement(handle, statement.handle) != 0)
             throw new RDFException();
     }
-    bool contains(StatementWithoutFinalize statement) {
+    bool contains(StatementWithoutFinalize statement) const {
         int result = librdf_model_contains_statement(handle, statement.handle);
         if(result > 0) throw new RDFException();
         return result != 0;
     }
-    bool hasArcIn(NodeWithoutFinalize node, NodeWithoutFinalize property) {
+    bool hasArcIn(NodeWithoutFinalize node, NodeWithoutFinalize property) const {
       return librdf_model_has_arc_in(handle, node.handle, property.handle) != 0;
     }
-    bool hasArcOut(NodeWithoutFinalize node, NodeWithoutFinalize property) {
+    bool hasArcOut(NodeWithoutFinalize node, NodeWithoutFinalize property) const {
       return librdf_model_has_arc_out(handle, node.handle, property.handle) != 0;
     }
-    Stream asStream() {
+    Stream asStream() const {
         return Stream.fromNonnullHandle(librdf_model_as_stream(handle));
     }
-    Stream find(StatementWithoutFinalize statement) {
+    Stream find(StatementWithoutFinalize statement) const {
         return Stream.fromNonnullHandle(librdf_model_find_statements(handle, statement.handle));
     }
     // LIBRDF_MODEL_FIND_OPTION_MATCH_SUBSTRING_LITERAL not implemented.
     // librdf_model_find_statements_with_options() not implemented as requires rdf_hash.
-    NodeIterator getSources(NodeWithoutFinalize arc, NodeWithoutFinalize target) {
+    NodeIterator getSources(NodeWithoutFinalize arc, NodeWithoutFinalize target) const {
         NodeIteratorHandle* h = librdf_model_get_sources(handle, arc.handle, target.handle);
         return NodeIterator.fromNonnullHandle(h);
     }
-    NodeIterator getArcs(NodeWithoutFinalize source, NodeWithoutFinalize target) {
+    NodeIterator getArcs(NodeWithoutFinalize source, NodeWithoutFinalize target) const {
         NodeIteratorHandle* h = librdf_model_get_arcs(handle, source.handle, target.handle);
         return NodeIterator.fromNonnullHandle(h);
     }
-    NodeIterator getTargets(NodeWithoutFinalize source, NodeWithoutFinalize arc) {
+    NodeIterator getTargets(NodeWithoutFinalize source, NodeWithoutFinalize arc) const {
         NodeIteratorHandle* h = librdf_model_get_targets(handle, source.handle, arc.handle);
         return NodeIterator.fromNonnullHandle(h);
     }
-    Node getSource(NodeWithoutFinalize arc, NodeWithoutFinalize target) {
+    Node getSource(NodeWithoutFinalize arc, NodeWithoutFinalize target) const {
         NodeHandle* h = librdf_model_get_source(handle, arc.handle, target.handle);
         return Node.fromNonnullHandle(h);
     }
-    Node getArc(NodeWithoutFinalize source, NodeWithoutFinalize target) {
+    Node getArc(NodeWithoutFinalize source, NodeWithoutFinalize target) const {
         NodeHandle* h = librdf_model_get_arc(handle, source.handle, target.handle);
         return Node.fromNonnullHandle(h);
     }
-    Node getTarget(NodeWithoutFinalize source, NodeWithoutFinalize arc) {
+    Node getTarget(NodeWithoutFinalize source, NodeWithoutFinalize arc) const {
         NodeHandle* h = librdf_model_get_target(handle, source.handle, arc.handle);
         return Node.fromNonnullHandle(h);
     }
-    NodeIterator getArcsIn(NodeWithoutFinalize node) {
+    NodeIterator getArcsIn(NodeWithoutFinalize node) const {
         NodeIteratorHandle* h = librdf_model_get_arcs_in(handle, node.handle);
         return NodeIterator.fromNonnullHandle(h);
     }
-    NodeIterator getArcOut(NodeWithoutFinalize node) {
+    NodeIterator getArcOut(NodeWithoutFinalize node) const {
         NodeIteratorHandle* h = librdf_model_get_arcs_out(handle, node.handle);
         return NodeIterator.fromNonnullHandle(h);
     }
@@ -221,13 +221,13 @@ struct ModelWithoutFinalize {
         if(librdf_model_remove_submodel(handle, submodel.handle) != 0)
             throw new RDFException();
     }
-    Stream contextAsStream(NodeWithoutFinalize context) {
+    Stream contextAsStream(NodeWithoutFinalize context) const {
         return Stream.fromNonnullHandle(librdf_model_context_as_stream(handle, context.handle));
     }
-    bool containsContext(NodeWithoutFinalize context) {
+    bool containsContext(NodeWithoutFinalize context) const {
         return librdf_model_contains_context(handle, context.handle) != 0;
     }
-    @property bool supportsContext() {
+    @property bool supportsContext() const {
         return librdf_model_supports_contexts(handle) != 0;
     }
     QueryResults queryExecute(QueryWithoutFinalize query) {
@@ -237,7 +237,7 @@ struct ModelWithoutFinalize {
         if(librdf_model_sync(handle) != 0)
             throw new RDFException();
     }
-    @property StorageWithoutFinalize storage() {
+    @property StorageWithoutFinalize storage() const {
         return StorageWithoutFinalize.fromHandle(librdf_model_get_storage(handle));
     }
     void load(URIWithoutFinalize uri,
@@ -256,6 +256,7 @@ struct ModelWithoutFinalize {
                     string name = "",
                     string mimeType = "",
                     URIWithoutFinalize typeURI = URIWithoutFinalize.fromHandle(null))
+                    const
     {
         size_t length;
         char* result = librdf_model_to_counted_string(handle,
@@ -266,15 +267,15 @@ struct ModelWithoutFinalize {
                                                       &length);
         return result[0..length].idup;
     }
-    Stream findInContext(StatementWithoutFinalize statement, NodeWithoutFinalize context) {
+    Stream findInContext(StatementWithoutFinalize statement, NodeWithoutFinalize context) const {
         StreamHandle* h =
             librdf_model_find_statements_in_context(handle, statement.handle, context.handle);
         return Stream.fromNonnullHandle(h);
     }
-    NodeIterator getContexts() {
+    NodeIterator getContexts() const {
         return NodeIterator.fromNonnullHandle(librdf_model_get_contexts(handle));
     }
-    Node getFeature(URIWithoutFinalize feature) {
+    Node getFeature(URIWithoutFinalize feature) const {
         return Node.fromHandle(librdf_model_get_feature(handle, feature.handle));
     }
     void setFeature(URIWithoutFinalize feature, NodeWithoutFinalize value) {
@@ -309,7 +310,7 @@ struct ModelWithoutFinalize {
                                                            datatype.handle);
         if(res != 0) throw new RDFException();
     }
-    void write(IOStreamWithoutFinalize stream) {
+    void write(IOStreamWithoutFinalize stream) const {
         if(librdf_model_write(handle, stream.handle) != 0)
             throw new RDFException();
     }
@@ -330,7 +331,7 @@ struct Model {
     // librdf_new_model_with_options() not implemented, because librdf_hash is not implemented
 }
 
-Nullable!ModelInfo enumerateModels(RedlandWorldWithoutFinalize world, uint counter) {
+Nullable!ModelInfo enumerateModels(const RedlandWorldWithoutFinalize world, uint counter) {
     char* name, label;
     int result = librdf_model_enumerate(world.handle, counter, &name, &label);
     if(result != 0) return Nullable!ModelInfo();
@@ -342,10 +343,10 @@ private:
     RedlandWorldWithoutFinalize _world;
     uint counter = 0;
 public:
-    @property bool empty() {
+    @property bool empty() const {
         return librdf_model_enumerate(_world.handle, counter, null, null) != 0;
     }
-    @property ModelInfo front()
+    @property ModelInfo front() const
         in(!empty)
     {
         return enumerateModels(_world, counter);

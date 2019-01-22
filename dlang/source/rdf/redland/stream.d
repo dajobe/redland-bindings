@@ -28,17 +28,17 @@ struct StreamWithoutFinalize {
     mixin WithoutFinalize!(StreamHandle,
                            StreamWithoutFinalize,
                            Stream);
-    @property bool empty() {
+    @property bool empty() const {
         return librdf_stream_end(handle) != 0;
     }
-    @property StreamWithoutFinalize front() { return this; }
+    @property inout(StreamWithoutFinalize) front() inout { return this; }
     void popFront() {
         cast(void)librdf_stream_next(handle);
     }
-    @property StatementWithoutFinalize object() {
+    @property StatementWithoutFinalize object() const {
         return StatementWithoutFinalize.fromHandle(librdf_stream_get_object(handle));
     }
-    @property NodeWithoutFinalize context() {
+    @property NodeWithoutFinalize context() const {
         return NodeWithoutFinalize.fromHandle(librdf_stream_get_context2(handle));
     }
     // librdf_stream_add_map() not implemented

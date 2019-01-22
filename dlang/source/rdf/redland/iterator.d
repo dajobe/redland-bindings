@@ -22,23 +22,23 @@ struct IteratorWithoutFinalize {
     mixin WithoutFinalize!(IteratorHandle,
                            IteratorWithoutFinalize,
                            Iterator);
-    @property bool empty() {
+    @property bool empty() const {
         return librdf_iterator_end(handle) != 0;
     }
-    @property IteratorWithoutFinalize front() { return this; }
+    @property const(IteratorWithoutFinalize) front() const { return this; }
     void popFront() {
         cast(void)librdf_iterator_next(handle);
     }
-    @property void* _object() {
+    @property void* _object() const {
         return librdf_iterator_get_object(handle);
     }
-    @property void* _context() {
+    @property void* _context() const {
         return librdf_iterator_get_context(handle);
     }
-    @property void* _key() {
+    @property void* _key() const {
         return librdf_iterator_get_key(handle);
     }
-    @property void* _value() {
+    @property void* _value() const {
         return librdf_iterator_get_value(handle);
     }
     // librdf_iterator_add_map() not implemented

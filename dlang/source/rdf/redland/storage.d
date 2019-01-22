@@ -42,7 +42,7 @@ struct StorageWithoutFinalize {
 //     not overriding procedure Set_Feature (Storage: Storage_Type_Without_Finalize;
 //                                           Feature: URI_Type_Without_Finalize'Class;
 //                                           Value: Node_Type_Without_Finalize'Class);
-    @property RedlandWorldWithoutFinalize world() {
+    @property RedlandWorldWithoutFinalize world() const {
         // Or just fromHandle?
         return RedlandWorldWithoutFinalize.fromNonnullHandle(librdf_storage_get_world(handle));
     }
@@ -66,7 +66,7 @@ struct Storage {
     }
 }
 
-Nullable!StorageInfo enumerateStorages(RedlandWorldWithoutFinalize world, uint counter) {
+Nullable!StorageInfo enumerateStorages(const RedlandWorldWithoutFinalize world, uint counter) {
     char* name, label;
     int result = librdf_storage_enumerate(world.handle, counter, &name, &label);
     if(result != 0) return Nullable!StorageInfo();
@@ -81,10 +81,10 @@ public:
     this(RedlandWorldWithoutFinalize world) {
         _world = world;
     }
-    @property bool empty() {
+    @property bool empty() const {
         return librdf_storage_enumerate(_world.handle, counter, null, null) != 0;
     }
-    @property StorageInfo front()
+    @property StorageInfo front() const
         in(!empty)
     {
         return enumerateStorages(_world, counter);
