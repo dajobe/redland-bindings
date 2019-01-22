@@ -6,3 +6,6 @@ Also scope?
 Correct identifiers case.
 
 More unittests (especially for streams and iterators) and code review.
+
+Review usage of const and cast(Dummy*) in handled_record.d.
+
