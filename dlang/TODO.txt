@@ -1,9 +1,5 @@
-Stopped adding const modifiers at raptor/uri.d
-
-const qualifier of member function where appropriate.
+const qualifier of function arguments where appropriate.
 Also scope?
-
-Correct identifiers case.
 
 More unittests (especially for streams and iterators) and code review.
 
