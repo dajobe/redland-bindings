@@ -4,6 +4,8 @@ import std.string;
 import rdf.auxiliary.handled_record;
 import rdf.raptor.world;
 import rdf.rasqal.world;
+import rdf.redland.uri;
+import rdf.redland.node;
 
 struct RedlandWorldHandle;
 
@@ -16,6 +18,8 @@ private extern extern(C) {
     void librdf_world_set_raptor(RedlandWorldHandle* world, RaptorWorldHandle* raptor_world_ptr);
     void librdf_world_set_rasqal(RedlandWorldHandle* world, RasqalWorldHandle* rasqal_world_ptr);
     void librdf_world_set_digest(RedlandWorldHandle* world, const char *name);
+    NodeHandle* librdf_world_get_feature(RedlandWorldHandle* world, URIHandle* feature);
+    int librdf_world_set_feature(RedlandWorldHandle* world, URIHandle* feature, NodeHandle* value);
 }
 
 enum {
@@ -45,19 +49,18 @@ struct RedlandWorldWithoutFinalize {
     @property void digest(string name) {
         librdf_world_set_digest(handle, name.toStringz);
     }
-    // TODO:
-    // Get_Feature (World: Redland_World_Type_Without_Finalize;
-    //              Feature: RDF.Redland.URI.URI_Type_Without_Finalize'Class)
-    //              return RDF.Redland.Node.Node_Type is
-    //procedure Set_Feature (World: Redland_World_Type_Without_Finalize;
-    //                       Feature: RDF.Redland.URI.URI_Type_Without_Finalize'Class;
-    //                       Value: RDF.Redland.Node.Node_Type_Without_Finalize'Class) is
+    @property Node feature(URIWithoutFinalize feature) {
+        return Node.fromHandle(librdf_world_get_feature(handle, feature.handle));
+    }
+    @property void feature(URIWithoutFinalize feature, NodeWithoutFinalize value) {
+        if(librdf_world_set_feature(handle, feature.handle, value.handle) != 0)
+            throw new RDFException();
+    }
+    // librdf_world_set_error() and librdf_world_set_warning() deliberately not implemented.
 
-   // librdf_world_set_error() and librdf_world_set_warning() deliberately not implemented.
-
-   // I deliberately not implement librdf_world_set_raptor_init_handler() and
-   // librdf_world_set_rasqal_init_handler().
-   // I recommend to use properties `raptor` and `rasqal` instead.
+    // I deliberately not implement librdf_world_set_raptor_init_handler() and
+    // librdf_world_set_rasqal_init_handler().
+    // I recommend to use properties `raptor` and `rasqal` instead.
 }
 
 struct RedlandWorld {
