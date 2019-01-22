@@ -75,7 +75,7 @@ mixin template WithFinalize(alias Dummy,
     ~this() {
         destructor(ptr);
     }
-    /*private*/ @property _WithoutFinalize base() { // TODO
+    /*private*/ @property _WithoutFinalize base() { // private does not work in v2.081.2
         return _WithoutFinalize(ptr);
     }
     alias base this;

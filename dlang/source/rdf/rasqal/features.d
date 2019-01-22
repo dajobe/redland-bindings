@@ -34,13 +34,23 @@ struct FeatureDescription {
     URI uri; // with finalize
 }
 
+class RDFUnknownFeature: RDFException {
+    this(string msg, string file = __FILE__, size_t line = __LINE__) {
+        super(msg, file, line);
+    }
+    this(string file = __FILE__, size_t line = __LINE__) {
+        this("IOStream error", file, line);
+    }
+}
+
+
 // For API simplicity, I don't support the C library feature to retrieve only a part of the data.
-// For API simplicity, we do not differentiate between failure and unknown feature. (TODO: Differentiate)
 const(FeatureDescription) getFeatureDescription(RasqalWorldWithoutFinalize world, FeatureType feature) {
     char* name, label;
     URIHandle* uri;
-    if(rasqal_features_enumerate(world.handle, feature, &name, &uri, &label) != 0)
-        throw new RDFException();
+    int res = rasqal_features_enumerate(world.handle, feature, &name, &uri, &label);
+    if(res > 0) throw new RDFUnknownFeature();
+    if(res != 0) throw new RDFException();
     return FeatureDescription(name.fromStringz.idup, label.fromStringz.idup, URI.fromNonnullHandle(uri));
 }
 

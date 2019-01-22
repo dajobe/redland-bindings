@@ -16,7 +16,7 @@ void streamTest(string dir) {
     string rdfFile = dir ~ "../data/dc.nt";
     model.load(URI.fromFilename(world, rdfFile));
     Stream stream = model.asStream;
-//    auto counter = stream.walkLength; // TODO: https://issues.dlang.org/show_bug.cgi?id=19596
+//    auto counter = stream.walkLength; // https://issues.dlang.org/show_bug.cgi?id=19596
     size_t counter = 0;
     foreach(i; stream) {
         ++counter;
@@ -73,7 +73,7 @@ void countTest2(string dir) {
     Model model = Model.create(world, storage);
     string rdfFile = dir ~ "../data/dc.nt";
     string sparql = "SELECT (count(*) as ?count) WHERE { ?s ?p ?o . }";
-//        Query: Query_Type := Copy(Create(World, "sparql", SPARQL)); -- FIXME: Copy causes an unhandled signal?
+//        Query: Query_Type := Copy(Create(World, "sparql", SPARQL)); // Copy causes an unhandled signal?
     Query query = Query.create(world, "sparql", sparql);
     QueryResults results = model.queryExecute(query);
     model.load(URI.fromFilename(world, rdfFile));
