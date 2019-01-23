@@ -42,7 +42,7 @@ mixin template WithoutFinalize(alias Dummy,
         if(!ptr) throw new NullRDFException();
         return _WithoutFinalize(cast(Dummy*)ptr);
     }
-    @property bool is_null() {
+    @property bool isNull() {
         return ptr == null;
     }
     static if(isCallable!copier) {
