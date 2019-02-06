@@ -95,7 +95,7 @@ mixin template CompareHandles(alias equal, alias compare) {
     import std.traits;
 
     bool opEquals(const ref typeof(this) s) const {
-        if(isCallable!equal) {
+        static if(isCallable!equal) {
           return equal(handle, s.handle) != 0;
         } else {
           return compare(handle, s.handle) == 0;
