@@ -38,3 +38,4 @@ install-data-local:
 	install librdf_dlang.a librdf_dlang.so $(libdir)
 	mkdir -p $(includedir)/d/librdf
 	cd $(srcdir)/source && cp --parents `find -name "*.d" \! -name main.d` $(includedir)/d/librdf/
+	cat dub-install.json | sed 's%INLCUDEDIR%$(includedir)%g; s|$${prefix}|@prefix@|g' > $(includedir)/d/librdf/dub.json

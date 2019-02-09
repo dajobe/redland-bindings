@@ -73,6 +73,9 @@ AC_CHECK_PROGS(SWIG, swig)
 # Gnome
 AC_CHECK_PROGS(PKG_CONFIG, pkg-config)
 
+AC_SUBST(prefix)
+AC_SUBST(includedir)
+
 if test "X$PERL" != "X"; then
   PERLINSTALLSITEARCH=`$PERL -MConfig -e 'print $Config{installsitearch};'`
   PERLMAN3DIR=`$PERL -MConfig -e 'print $Config{man3dir};'`
