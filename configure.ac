@@ -161,7 +161,9 @@ if test "X$PHP_CONFIG" != X ; then
   PHP_INCLUDES=`$PHP_CONFIG --includes`
   PHP_EXTENSION_DIR=`$PHP_CONFIG --extension-dir`
 
-  if test $PHP_VERSION '>' 5.0.0; then
+  if test $PHP_VERSION '>' 7; then
+    PHP_SWIG="-php7"
+  elif test $PHP_VERSION '>' 5.0.0; then
     PHP_SWIG="-php5"
   else
     PHP_SWIG="-php4"

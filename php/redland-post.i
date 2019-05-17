@@ -132,8 +132,11 @@ librdf_php_world_init(void)
     exception_ce = zend_exception_get_default();
     INIT_CLASS_ENTRY(ee_ce, "RedlandException", NULL);
     redland_exception_ptr = zend_register_internal_class_ex(&ee_ce, 
-                                                            exception_ce, 
-                                                            NULL TSRMLS_CC);
+                                                            exception_ce
+#if PHP_MAJOR_VERSION < 7
+                                                            ,NULL TSRMLS_CC
+#endif
+                                                            );
 #endif
 
     memset(&librdf_php_locator, '\0', sizeof(raptor_locator));

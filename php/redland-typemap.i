@@ -1,17 +1,17 @@
-%typemap(in) librdf_uri* %{
-  if(SWIG_ConvertPtr(*$input, (void **) &$1, SWIGTYPE_p_librdf_uri_s, 0) < 0) {
+%typemap(in) librdf_uri %{
+  if(SWIG_ConvertPtr($input, (void **) &$1, SWIGTYPE_p_librdf_uri_s, 0) < 0) {
     /* Allow NULL from php for librdf_uri* */
-    if ((*$input)->type==IS_NULL)
+    if ($input->type==IS_NULL)
       $1=NULL;
    else
       SWIG_PHP_Error(E_ERROR, "Type error in argument $argnum of $symname. Expected $1_descriptor");
   }
 %}
 
-%typemap(in) librdf_node* %{
-  if(SWIG_ConvertPtr(*$input, (void **) &$1, SWIGTYPE_p_librdf_node_s, 0) < 0) {
+%typemap(in) librdf_node %{
+  if(SWIG_ConvertPtr($input, (void **) &$1, SWIGTYPE_p_librdf_node_s, 0) < 0) {
     /* Allow NULL from php for librdf_node* */
-    if ((*$input)->type==IS_NULL)
+    if ($input->type==IS_NULL)
       $1=NULL;
    else
       SWIG_PHP_Error(E_ERROR, "Type error in argument $argnum of $symname. Expected $1_descriptor");
