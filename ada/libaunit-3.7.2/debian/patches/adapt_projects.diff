@@ -1,0 +1,64 @@
+Description: allow build flags and dynamic linking.
+ Remove LIBDIR and OBJDIR, noone ever sets these variables.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: no
+
+--- a/lib/gnat/aunit.gpr
++++ b/lib/gnat/aunit.gpr
+@@ -14,14 +14,26 @@
+       "../../include/aunit/framework/" & AUnit_Shared.Calend,
+       "../../include/aunit/framework/" & AUnit_Shared.Memory);
+ 
+-   for Library_Dir use AUnit_Shared.Library_Dir;
+-
+-   Obj_Dir := external ("OBJDIR", "../aunit-obj/"
+-                        & AUnit_Shared.Target & "-" & AUnit_Shared.Runtime);
+-   for Object_Dir use Obj_Dir;
++   for Library_Dir use "../aunit/" &
++     Aunit_Shared.Target & "-"
++     & Aunit_Shared.Runtime & "-"
++     & Aunit_Shared.Library_Kind;
++
++   for Object_Dir use "../aunit-obj/"
++     & AUnit_Shared.Target & "-"
++     & AUnit_Shared.Runtime & "-"
++     & Aunit_Shared.Library_Kind;
+ 
+    for Library_Name use "aunit";
+-   for Library_Kind use "static";
++   for Library_Kind use AUnit_Shared.Library_Kind;
++   case AUnit_Shared.Library_Kind is
++      when "dynamic" =>
++         for Library_Version use "lib" & Project'Library_Name & ".so."
++           & Aunit_Shared.Soversion;
++         for Leading_Library_Options use Aunit_Shared.Ldflags;
++      when "static" =>
++         null;
++   end case;
+ 
+    --------------
+    -- Compiler --
+@@ -38,6 +50,8 @@
+             for Default_Switches ("ada") use
+               ("-O2", "-gnatp", "-gnatn", "-gnatwa.X");
+       end case;
++      for Default_Switches ("ada") use Compiler'Default_Switches ("ada")
++        & Aunit_Shared.Adaflags;
+ 
+       for Switches ("aunit.adb") use
+         Compiler'Default_Switches ("ada") & ("-fno-strict-aliasing");
+--- a/lib/gnat/aunit_shared.gpr
++++ b/lib/gnat/aunit_shared.gpr
+@@ -10,7 +10,11 @@
+       "rtp-smp", "soft-float", "xenomai", "zcx", "zfp", "minimal");
+    Runtime : Runtime_Type := external ("RUNTIME", "full");
+ 
+-   Library_Dir := external ("LIBDIR", "../aunit/" & Target & "-" & Runtime);
++   type A_Library_Kind is ("dynamic", "static");
++   Library_Kind : A_Library_Kind := External ("LIBRARY_KIND");
++   Soversion := External ("SOVERSION");
++   Adaflags  := External_As_List ("ADAFLAGS", " ");
++   Ldflags   := External_As_List ("LDFLAGS",  " ");
+ 
+    for Source_Dirs use ();
+ 

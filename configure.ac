@@ -5,22 +5,22 @@ dnl (Process this file with autoconf to produce a configure script.)
 dnl
 dnl Copyright (C) 2000-2011, David Beckett http://www.dajobe.org/
 dnl Copyright (C) 2000-2005 Copyright (C) 2000-2005, University of Bristol, UK http://www.bristol.ac.uk/
-dnl 
+dnl
 dnl This package is Free Software and part of Redland http://librdf.org/
-dnl 
+dnl
 dnl It is licensed under the following three licenses as alternatives:
 dnl   1. GNU Lesser General Public License (LGPL) V2.1 or any newer version
 dnl   2. GNU General Public License (GPL) V2 or any newer version
 dnl   3. Apache License, V2.0 or any newer version
-dnl 
+dnl
 dnl You may not use this file except in compliance with at least one of
 dnl the above three licenses.
-dnl 
+dnl
 dnl See LICENSE.html or LICENSE.txt at the top of this package for the
 dnl complete terms and further detail along with the license texts for
 dnl the licenses in COPYING.LIB, COPYING and LICENSE-2.0.txt respectively.
-dnl 
-dnl 
+dnl
+dnl
 
 
 AC_INIT([Redland librdf Language bindings],[1.0.17.2],[http://bugs.librdf.org/],[redland-bindings])
@@ -46,6 +46,15 @@ AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
 
+AC_ARG_ENABLE([debug],
+[  --enable-debug    Turn on debugging],
+[case "${enableval}" in
+  yes) debug=true ;;
+  no)  debug=false ;;
+  *) AC_MSG_ERROR([bad value ${enableval} for --enable-debug]) ;;
+esac],[debug=false])
+AM_CONDITIONAL([DEBUG], [test x$debug = xtrue])
+
 m4_undefine([AC_PROG_CXX])
 m4_defun([AC_PROG_CXX],[])
 m4_undefine([AC_PROG_F77])
@@ -63,6 +72,9 @@ AC_CHECK_PROGS(RUBY, ruby)
 AC_CHECK_PROGS(SWIG, swig)
 # Gnome
 AC_CHECK_PROGS(PKG_CONFIG, pkg-config)
+
+AC_SUBST(prefix)
+AC_SUBST(includedir)
 
 if test "X$PERL" != "X"; then
   PERLINSTALLSITEARCH=`$PERL -MConfig -e 'print $Config{installsitearch};'`
@@ -168,7 +180,7 @@ if test "X$PHP_CONFIG" != X ; then
   fi
 
   # Configure these if PHP_SO_SUFFIX is missing
-  if test "X$PHP_SO_SUFFIX" = "X"; then 
+  if test "X$PHP_SO_SUFFIX" = "X"; then
     # OSX/Darwin default is bundle
     if test `uname` = Darwin; then
       # FIXME - how to decide between bundle and dylib?
@@ -482,6 +494,45 @@ AC_MSG_RESULT($with_ruby)
 AC_SUBST(RUBY_VERSION)
 
 
+AC_ARG_WITH(ada, [  --with-ada              Enable the Ada interface], with_ada="$withval", with_ada="no")
+AC_MSG_CHECKING(Enable Ada API)
+
+if test "X$with_ada" != Xno; then
+  languages="$languages ada"
+fi
+AC_MSG_RESULT($with_ada)
+
+if test "X$with_ada" != Xno; then
+  AC_ARG_WITH(gprbuild,   [  --with-gprbuild(=gprbuild)   Ada builder], GPRBUILD="$withval")
+  AC_ARG_WITH(gprclean,   [  --with-gprclean(=gprclean)   Ada cleaner], GPRCLEAN="$withval")
+  AC_ARG_WITH(gprinstall, [  --with-gprbuild(=gprinstall) Ada installer], GPRINSTALL="$withval")
+
+  AC_CHECK_PROGS(GPRBUILD, gprbuild)
+  AC_CHECK_PROGS(GPRCLEAN, gprclean)
+  AC_CHECK_PROGS(GPRINSTALL, gprinstall)
+fi
+
+AC_SUBST(GPRBUILD)
+AC_SUBST(GPRCLEAN)
+AC_SUBST(GPRINSTALL)
+
+AC_ARG_WITH(dlang, [  --with-dlang            Enable the D interface], with_dlang="$withval", with_dlang="no")
+AC_MSG_CHECKING(Enable D API)
+
+if test "X$with_dlang" != Xno; then
+  languages="$languages dlang"
+  AC_ARG_VAR(DUB, [D DUB package manager])
+  AC_CHECK_PROGS(DUB, dub, [no-dub])
+  if test "X$DUB" = "Xno-dub"; then
+    AC_MSG_ERROR([DUB package manager for D not found])
+  fi
+  AC_ARG_VAR(DC, [D compiler])
+  AC_CHECK_PROGS(DC, ldc2 ldc gdc dmd)
+  AC_ARG_VAR(DFLAGS, [D flags])
+  AC_ARG_VAR(D_LDFLAGS, [Linker flags for D])
+fi
+AC_MSG_RESULT($with_dlang)
+
 
 AM_MISSING_PROG(ACLOCAL, aclocal, $missing_dir)
 AM_MISSING_PROG(AUTOCONF, autoconf, $missing_dir)
@@ -493,9 +544,9 @@ release_version=no
 AC_ARG_ENABLE(release, [  --enable-release        Turn on optimizations (for maintainer).  ], \
  if test "$enableval" = "yes"; then \
 	  release_version=yes
-fi;)	
+fi;)
 
-if test "$USE_MAINTAINER_MODE" = yes -a $release_version = no; then 
+if test "$USE_MAINTAINER_MODE" = yes -a $release_version = no; then
   CFLAGS=`echo $CFLAGS | sed s/-O2//`
   CXXFLAGS=`echo $CXXFLAGS | sed s/-O2//`
   CPPFLAGS=`echo $CPPFLAGS | sed s/-O2//`
@@ -568,7 +619,7 @@ dnl needed for some bindings such as python to link raptor locator functions
 RAPTOR_LDFLAGS=`$PKG_CONFIG raptor2 --libs`
 RASQAL_LDFLAGS=`$PKG_CONFIG rasqal --libs`
 
-
+RASQAL_VERSION=`$PKG_CONFIG rasqal --modversion`
 
 dnl Checks for building sub-packages in sub directories
 SD="$languages"
@@ -588,6 +639,8 @@ fi
 LIBS=
 CPPFLAGS=
 LDFLAGS=
+
+AC_SUBST(RASQAL_VERSION)
 
 AC_SUBST(LIBRDF_CPPFLAGS)
 AC_SUBST(LIBRDF_LDFLAGS)
@@ -625,7 +678,11 @@ ruby/lib/Makefile
 ruby/lib/rdf/Makefile
 ruby/lib/rdf/redland/Makefile
 ruby/lib/rdf/redland/schemas/Makefile
+ada/Makefile
+dlang/Makefile
+dlang/source/rdf/config.d
 data/Makefile
+docs/ada/Makefile
 ])
 AC_CONFIG_FILES([redland-bindings.spec])
 AC_CONFIG_FILES([perl/lib/RDF/Redland.pm])

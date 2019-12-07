@@ -1,0 +1,71 @@
+Source: libaunit
+Section: libdevel
+Priority: extra
+Maintainer: Nicolas Boulenguez <nicolas@debian.org>
+Build-Depends: dpkg-dev (>= 1.16.1), debhelper (>= 9),
+ gnat, gnat-6,
+# gprbuild compatible with gnat-6
+ gprbuild (>= 2015-2),
+# dh-ada-library knowing that -dbg packages are obsolete.
+ dh-ada-library (>= 6.7)
+Build-Depends-Indep:
+# To deduplicate examples in rules.
+ rdfind, symlinks,
+# Called in rules for deterministic PDF timestamps.
+ faketime,
+ texinfo, texlive-latex-base
+Standards-Version: 3.9.8
+Homepage: http://libre.adacore.com/libre/
+Vcs-Mtn: www.ada-france.org org.debian.libaunit
+Vcs-Browser: http://www.ada-france.org:8081/branch/changes/org.debian.libaunit
+
+Package: libaunit3.7.2-dev
+Architecture: any
+Depends: ${misc:Depends}, ${ada:Depends}
+Recommends: libaunit-doc (= ${source:Version})
+Description: AUnit, a unit testing framework for Ada: development
+ AUnit is a set of Ada packages based on the xUnit family of unit test
+ frameworks. It's intended as a developer's tool to facilitate
+ confident writing and evolution of Ada software. It is purposely
+ lightweight, as one of its main goals is to make it easy to develop
+ and run unit tests, rather than to generate artifacts for process
+ management. The framework supports easy composition of sets of unit
+ tests to provide flexibility in determining what tests to run for a
+ given purpose.
+ .
+ Install this package if you want to write programs that use AUnit.
+
+Package: libaunit3.7.2
+Section: libs
+Architecture: any
+Multi-Arch: same
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: AUnit, a unit testing framework for Ada: shared library
+ AUnit is a set of Ada packages based on the xUnit family of unit test
+ frameworks. It's intended as a developer's tool to facilitate
+ confident writing and evolution of Ada software. It is purposely
+ lightweight, as one of its main goals is to make it easy to develop
+ and run unit tests, rather than to generate artifacts for process
+ management. The framework supports easy composition of sets of unit
+ tests to provide flexibility in determining what tests to run for a
+ given purpose.
+ .
+ This package contains the runtime shared library.
+
+Package: libaunit-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Suggests: gnat
+Description: AUnit, a unit testing framework for Ada: documentation
+ AUnit is a set of Ada packages based on the xUnit family of unit test
+ frameworks. It's intended as a developer's tool to facilitate
+ confident writing and evolution of Ada software. It is purposely
+ lightweight, as one of its main goals is to make it easy to develop
+ and run unit tests, rather than to generate artifacts for process
+ management. The framework supports easy composition of sets of unit
+ tests to provide flexibility in determining what tests to run for a
+ given purpose.
+ .
+ This package contains documentation.

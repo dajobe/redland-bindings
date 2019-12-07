@@ -1,0 +1,9 @@
+WARNING: The API is not yet stable.
+
+const qualifier of function arguments where appropriate.
+Also scope?
+
+More unittests (especially for streams and iterators) and code review.
+
+Review usage of const and cast(Dummy*) in redland/constants.d.
+
