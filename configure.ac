@@ -23,7 +23,7 @@ dnl
 dnl
 
 
-AC_INIT([Redland librdf Language bindings],[1.0.17.2],[http://bugs.librdf.org/],[redland-bindings])
+AC_INIT([Redland librdf Language bindings],[1.0.14],[http://bugs.librdf.org/],[redland-bindings])
 AC_PREREQ([2.62])
 AC_CONFIG_SRCDIR(perl/example.pl)
 AC_REVISION($Revision$)dnl
@@ -34,7 +34,7 @@ AM_INIT_AUTOMAKE([1.11 check-news std-options -Wobsolete -Wportability -Wsyntax 
 AM_MAINTAINER_MODE
 
 dnl 1.0.14 probably also works (Raptor and Rasqal dependencies the same)
-MIN_REDLAND_VERSION=1.0.15
+MIN_REDLAND_VERSION=1.0.14
 
 AC_CANONICAL_HOST
 
@@ -69,6 +69,7 @@ AC_CHECK_PROGS(PYTHON, python)
 AC_CHECK_PROGS(PERL, perl)
 AC_CHECK_PROGS(PHP, php)
 AC_CHECK_PROGS(RUBY, ruby)
+AC_CHECK_PROGS(R, R)
 AC_CHECK_PROGS(SWIG, swig)
 # Gnome
 AC_CHECK_PROGS(PKG_CONFIG, pkg-config)
@@ -346,6 +347,39 @@ else
   # python isn't available
   PYTHON=:
 fi
+
+
+AC_ARG_WITH(R, [  --with-R(=R)      Enable the R interface], with_R="$withval", with_R="no")
+AC_MSG_CHECKING(Enable R API)
+if test "X$with_R" != Xno ; then
+  if test "X$with_R" != Xyes; then
+    R=$with_R
+  fi
+  with_R=yes
+fi
+AC_MSG_RESULT($with_R)
+
+R_VERSION=
+R_CFLAGS=
+R_LDFLAGS=
+if test "X$with_R" = Xyes -a -n "$PKG_CONFIG"; then
+  AC_MSG_CHECKING(R Version)
+  R_PKGCONFIG=lib$R
+  R_VERSION=`$PKG_CONFIG $R_PKGCONFIG --modversion`
+  R_CFLAGS=`$PKG_CONFIG $R_PKGCONFIG --cflags`
+  R_LDFLAGS=`$PKG_CONFIG $R_PKGCONFIG --libs`
+  AC_MSG_RESULT($R_VERSION)
+fi
+AC_SUBST(R_CFLAGS)
+AC_SUBST(R_LDFLAGS)
+
+if test "X$R_VERSION" != X; then
+  languages_available="$languages_available R($R_VERSION)"
+  if test $with_R = yes; then
+    languages="$languages R"
+  fi
+fi
+
 
 
 AC_ARG_WITH(ruby-arch-install-dir-variable, [  --with-ruby-arch-install-dir-variable=NAME Set Ruby arch install directory config variable (default 'archdir')], ruby_arch_install_dir_variable="$withval", ruby_arch_install_dir_variable="archdir")
@@ -672,6 +706,7 @@ lua/Makefile
 php/Makefile
 python/Makefile
 python/test/Makefile
+R/Makefile
 ruby/Makefile
 ruby/test/Makefile
 ruby/lib/Makefile

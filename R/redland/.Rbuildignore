@@ -1,0 +1,13 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.Rhistory$
+^README\.Rmd$
+^README-*\.png$
+^packrat/
+^\.Rprofile$
+^src/Makevars$
+^src/*.o
+^src/*.so
+^cran-comments.md
+^windows$
+^docker$

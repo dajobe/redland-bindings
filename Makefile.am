@@ -25,7 +25,7 @@
 SUBDIRS=@SD@ data
 # Subdirectories to use for distribution
 DIST_SUBDIRS=data docs \
-lua perl php python ruby ada dlang
+lua perl php python R ruby ada dlang
 
 EXTRA_DIST=\
 ChangeLog.1 ChangeLog.2 ChangeLog.3 ChangeLog.4 ChangeLog.5 \

@@ -1,0 +1,55 @@
+Package: redland
+Version: 1.0.17-11
+Title: RDF Library Bindings in R
+Authors@R: c(
+  person("Matthew B.", "Jones", role = c("aut", "cre"), email="jones@nceas.ucsb.edu"),
+  person("Peter", "Slaughter", role = c("aut"), email = "slaughter@nceas.ucsb.edu"),
+  person("Jeroen", "Ooms", role = c("aut"), email="jeroen@berkeley.edu"),
+  person("Carl", "Boettiger", role = c("aut"), email = "cboettig@gmail.com"),
+  person("Scott", "Chamberlain", role = c("aut"), email = "myrmecocystus@gmail.com"),
+  person("David", "Beckett", role = c("cph")),
+  person("University of Bristol", role = c("cph")),
+  person("Regents of the University of California", role = c("cph"))
+  )
+Date: 2019-10-06
+VignetteBuilder: knitr
+Description: Provides methods to parse, query and serialize information
+    stored in the Resource Description Framework (RDF). RDF is described at <http://www.w3.org/TR/rdf-primer>.
+    This package supports RDF by implementing an R interface to the Redland RDF C library,
+    described at <http://librdf.org/docs/api/index.html>. In brief, RDF provides a structured graph
+    consisting of Statements composed of Subject, Predicate, and Object Nodes.
+Depends:
+    R (>= 3.1.1),
+    methods
+Imports:
+    roxygen2
+Suggests:
+    spelling,
+    knitr,
+    testthat,
+    rmarkdown,
+    stringi
+SystemRequirements: Mac OSX: redland (>= 1.0.14) ; Linux: librdf0 (>= 1.0.14),
+    librdf0-dev (>= 1.0.14)
+Collate:
+    'redland.R'
+    'World.R'
+    'Node.R'
+    'Statement.R'
+    'Storage.R'
+    'Model.R'
+    'Parser.R'
+    'Query.R'
+    'QueryResults.R'
+    'Serializer.R'
+    'mergeNamespace_roclet.R'
+    'redland-package.R'
+    'util.R'
+License: Apache License 2.0
+Copyright: See file (inst/)COPYRIGHTS.
+BugReports: https://github.com/ropensci/redland-bindings/issues
+RoxygenNote: 6.1.1
+URL: https://github.com/ropensci/redland-bindings/tree/master/R/redland https://github.com/ropensci/redland-bindings/tree/master/R
+Encoding: UTF-8
+Language: en-US
+Roxygen: list(roclets = c("collate", "rd", "namespace", "mergeNamespace_roclet"), markdown=TRUE)

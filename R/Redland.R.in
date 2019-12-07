@@ -1,0 +1,3 @@
+setClass('_p_librdf_query', contains = 'ExternalReference')
+setClass('_p_librdf_query_results', contains = 'ExternalReference')
+
