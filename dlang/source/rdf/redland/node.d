@@ -134,11 +134,12 @@ struct NodeWithoutFinalize {
         if(librdf_node_write(handle, stream.handle) != 0)
              throw new RDFException();
     }
-    string formatAsString() const {
-        StreamToString stream;
-        write(stream.record);
-        return stream.value();
-    }
+    // TODO
+    //string formatAsString() const {
+    //    StreamToString stream;
+    //    write(stream.record);
+    //    return stream.value();
+    //}
 }
 
 struct Node {
