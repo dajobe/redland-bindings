@@ -141,7 +141,6 @@ struct Term {
                         TermWithoutFinalize,
                         Term,
                         raptor_free_term);
-    mixin CompareHandles!(raptor_term_equals, raptor_term_compare);
     static Term fromBlank(RaptorWorldWithoutFinalize world) {
         return Term.fromNonnullHandle(raptor_new_term_from_counted_blank(world.handle, null, 0));
     }

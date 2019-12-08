@@ -67,7 +67,6 @@ struct Statement {
                         StatementWithoutFinalize,
                         Statement,
                         raptor_free_statement);
-    mixin CompareHandles!(raptor_statement_equals, raptor_statement_compare);
     static Statement create(RaptorWorldWithoutFinalize world) {
         return Statement.fromNonnullHandle(raptor_new_statement(world.handle));
     }

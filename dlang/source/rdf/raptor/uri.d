@@ -110,7 +110,6 @@ struct URI {
                         URIWithoutFinalize,
                         URI,
                         raptor_free_uri);
-    mixin CompareHandles!(raptor_uri_equals, raptor_uri_compare);
     static URI fromString(RaptorWorldWithoutFinalize world, string uriString) {
         URIHandle* handle =
             raptor_new_uri_from_counted_string(world.handle, uriString.ptr, uriString.length);

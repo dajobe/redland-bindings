@@ -32,6 +32,9 @@ mixin template WithoutFinalize(alias Dummy,
     private this(Dummy* ptr) {
         this.ptr = ptr;
     }
+    private this(const(Dummy*) ptr) const {
+        this.ptr = ptr;
+    }
     @property Dummy* handle() const {
         return cast(Dummy*)ptr;
     }
@@ -72,11 +75,17 @@ mixin template WithFinalize(alias Dummy,
     private this(Dummy* ptr) {
         this.ptr = ptr;
     }
+    private this(const Dummy* ptr) const {
+        this.ptr = ptr;
+    }
     ~this() {
         destructor(ptr);
     }
     /*private*/ @property _WithoutFinalize base() { // private does not work in v2.081.2
         return _WithoutFinalize(ptr);
+    }
+    /*private*/ @property const(_WithoutFinalize) base() const { // private does not work in v2.081.2
+        return const _WithoutFinalize(ptr);
     }
     alias base this;
     @property Dummy* handle() const {
@@ -89,19 +98,35 @@ mixin template WithFinalize(alias Dummy,
         if(!ptr) throw new NullRDFException();
         return _WithFinalize(cast(Dummy*)ptr);
     }
+    static if (is(_WithoutFinalize.opEquals)) {
+        bool opEquals(const ref _WithFinalize s) const {
+            return this.base.opEquals(s.base);
+        }
+        bool opEquals(const _WithoutFinalize s) const {
+            return this.base.opEquals(s);
+        }
+    }
+    static if (is(_WithoutFinalize.opCmp)) {
+        int opCmp(const ref _WithFinalize s) const {
+            return this.base.opEquals( s.base);
+        }
+        int opCmp(const _WithoutFinalize s) const {
+            return this.base.opEquals( s);
+        }
+    }
 }
 
 mixin template CompareHandles(alias equal, alias compare) {
     import std.traits;
 
-    bool opEquals(const ref typeof(this) s) const {
+    bool opEquals(const typeof(this) s) const {
         static if(isCallable!equal) {
           return equal(handle, s.handle) != 0;
         } else {
           return compare(handle, s.handle) == 0;
         }
     }
-    int opCmp(const ref typeof(this) s) const {
+    int opCmp(const typeof(this) s) const {
       return compare(handle, s.handle);
     }
 }
