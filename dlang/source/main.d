@@ -86,10 +86,33 @@ void countTest2(string dir) {
     assert(rows[0] == "3", "count() == 3");
 }
 
+void listTest(string dir) {
+    import rdf.redland.world;
+    import rdf.redland.uri;
+    import rdf.redland.node;
+    import rdf.redland.model;
+    import rdf.redland.storage;
+    import rdf.redland.containers;
+
+    RedlandWorld world = RedlandWorld.createAndOpen();
+    Storage storage = Storage.create(world, "memory", "test");
+    Model model = Model.create(world, storage);
+    string rdfFile = dir ~ "../data/list.ttl";
+    model.load(URI.fromFilename(world, rdfFile));
+
+    auto start = model.getTarget(Node.fromURI(world, URI.fromString(world, "http://example.com")),
+                                 Node.fromURI(world, URI.fromString(world, "http://example.com")));
+    auto list = rdfList(world, model, start);
+    assert(list == [Node.fromLiteral(world, "a", null),
+                    Node.fromLiteral(world, "b", null),
+                    Node.fromLiteral(world, "c", null)]);
+}
+
 void main(string[] args) {
     string dir = args.length > 1 ? args[1] ~ '/' : "";
     streamTest(dir);
     countTest(dir);
     countTest2(dir);
+    listTest(dir);
     writeln("Tests passed.");
 }
