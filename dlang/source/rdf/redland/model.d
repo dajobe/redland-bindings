@@ -349,7 +349,7 @@ public:
     @property ModelInfo front() const
         in(!empty)
     {
-        return enumerateModels(_world, counter);
+        return enumerateModels(_world, counter).get;
     }
     void popFront()
         in(!empty)

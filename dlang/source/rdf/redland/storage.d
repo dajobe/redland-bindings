@@ -87,7 +87,7 @@ public:
     @property StorageInfo front() const
         in(!empty)
     {
-        return enumerateStorages(_world, counter);
+        return enumerateStorages(_world, counter).get;
     }
     void popFront()
         in(!empty)

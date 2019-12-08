@@ -55,8 +55,8 @@ struct NamespaceStackWithoutFinalize {
                         uint newDepth)
     {
         immutable int res = raptor_namespaces_start_namespace_full(handle,
-                                                                   prefix.toStringz,
-                                                                   nsURI.toStringz,
+                                                                   prefix.get.toStringz,
+                                                                   nsURI.get.toStringz,
                                                                    newDepth);
         if(res != 0)
             throw new RDFException();
