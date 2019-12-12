@@ -98,7 +98,7 @@ mixin template WithFinalize(alias Dummy,
         if(!ptr) throw new NullRDFException();
         return _WithFinalize(cast(Dummy*)ptr);
     }
-    static if (is(_WithoutFinalize.opEquals)) {
+    static if (__traits(compiles, _WithoutFinalize.opEquals)) {
         bool opEquals(const ref _WithFinalize s) const {
             return this.base.opEquals(s.base);
         }
@@ -106,7 +106,7 @@ mixin template WithFinalize(alias Dummy,
             return this.base.opEquals(s);
         }
     }
-    static if (is(_WithoutFinalize.opCmp)) {
+    static if (__traits(compiles, _WithoutFinalize.opCmp)) {
         int opCmp(const ref _WithFinalize s) const {
             return this.base.opEquals( s.base);
         }

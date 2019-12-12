@@ -80,7 +80,7 @@ struct LiteralWithoutFinalize {
     mixin WithoutFinalize!(LiteralHandle,
                            LiteralWithoutFinalize,
                            Literal);
-    bool opEquals(LiteralWithoutFinalize other) const {
+    bool opEquals(const LiteralWithoutFinalize other) const {
         return rasqal_literal_same_term(handle, other.handle) != 0;
     }
     string toString(CompareFlags flags = CompareFlags.none) const {
@@ -136,7 +136,7 @@ struct Literal {
                         LiteralWithoutFinalize,
                         Literal,
                         rasqal_free_literal);
-    bool opEquals(LiteralWithoutFinalize other) const {
+    bool opEquals(const LiteralWithoutFinalize other) const {
         return rasqal_literal_same_term(handle, other.handle) != 0;
     }
     static Literal newTypedLiteral(RasqalWorldWithoutFinalize world,

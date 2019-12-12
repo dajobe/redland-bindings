@@ -53,7 +53,7 @@ struct StatementWithoutFinalize {
                            StatementWithoutFinalize,
                            Statement,
                            librdf_new_statement_from_statement);
-    bool opEquals(StatementWithoutFinalize other) const {
+    bool opEquals(const StatementWithoutFinalize other) const {
         return librdf_statement_equals(handle, other.handle) != 0;
     }
     @property rdf.raptor.statement.Statement toRaptor() const { // FIXME: also dup() in Ada
@@ -134,7 +134,7 @@ struct Statement {
                         StatementWithoutFinalize,
                         Statement,
                         librdf_free_statement);
-    bool opEquals(Statement other) const {
+    bool opEquals(const Statement other) const {
         return librdf_statement_equals(handle, other.handle) != 0;
     }
     static Statement fromRaptor(rdf.raptor.statement.StatementWithoutFinalize uri) { // FIXME: also dup() in Ada
