@@ -29,10 +29,10 @@ mixin template WithoutFinalize(alias Dummy,
 
     private Dummy* ptr;
     // Use fromHandle() instead
-    private this(Dummy* ptr) {
+    private this(Dummy* ptr) nothrow @safe {
         this.ptr = ptr;
     }
-    private this(const(Dummy*) ptr) const {
+    private this(const(Dummy*) ptr) const nothrow @safe {
         this.ptr = ptr;
     }
     @property Dummy* handle() const nothrow @trusted {
@@ -53,6 +53,9 @@ mixin template WithoutFinalize(alias Dummy,
             return _WithFinalize(copier(ptr));
         }
     }
+    size_t toHash() const nothrow @safe {
+        return cast(size_t) handle;
+    }
 }
 
 mixin template WithFinalize(alias Dummy,
@@ -72,19 +75,19 @@ mixin template WithFinalize(alias Dummy,
     }
     @disable this(this);
     // Use fromHandle() instead
-    private this(Dummy* ptr) {
+    private this(Dummy* ptr) nothrow @safe {
         this.ptr = ptr;
     }
-    private this(const Dummy* ptr) const {
+    private this(const Dummy* ptr) const nothrow @safe {
         this.ptr = ptr;
     }
     ~this() {
         destructor(ptr);
     }
-    /*private*/ @property _WithoutFinalize base() { // private does not work in v2.081.2
+    /*private*/ @property _WithoutFinalize base() nothrow @trusted { // private does not work in v2.081.2
         return _WithoutFinalize(ptr);
     }
-    /*private*/ @property const(_WithoutFinalize) base() const { // private does not work in v2.081.2
+    /*private*/ @property const(_WithoutFinalize) base() const nothrow @trusted { // private does not work in v2.081.2
         return const _WithoutFinalize(ptr);
     }
     alias base this;
@@ -114,6 +117,9 @@ mixin template WithFinalize(alias Dummy,
             return this.base.opEquals( s);
         }
     }
+    size_t toHash() const nothrow @safe {
+        return base.toHash;
+    }
 }
 
 mixin template CompareHandles(alias equal, alias compare) {
@@ -130,8 +136,5 @@ mixin template CompareHandles(alias equal, alias compare) {
         int opCmp(const typeof(this) s) const {
             return compare( handle, s.handle);
         }
-    }
-    size_t toHash() const nothrow @safe {
-        return cast(size_t) handle;
     }
 }
