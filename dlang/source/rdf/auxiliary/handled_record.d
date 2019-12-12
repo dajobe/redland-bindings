@@ -35,7 +35,7 @@ mixin template WithoutFinalize(alias Dummy,
     private this(const(Dummy*) ptr) const {
         this.ptr = ptr;
     }
-    @property Dummy* handle() const {
+    @property Dummy* handle() const nothrow @trusted {
         return cast(Dummy*)ptr;
     }
     static _WithoutFinalize fromHandle(const Dummy* ptr) {
@@ -130,5 +130,8 @@ mixin template CompareHandles(alias equal, alias compare) {
         int opCmp(const typeof(this) s) const {
             return compare( handle, s.handle);
         }
+    }
+    size_t toHash() const nothrow @safe {
+        return cast(size_t) handle;
     }
 }
