@@ -121,12 +121,14 @@ mixin template CompareHandles(alias equal, alias compare) {
 
     bool opEquals(const typeof(this) s) const {
         static if(isCallable!equal) {
-          return equal(handle, s.handle) != 0;
+            return equal(handle, s.handle) != 0;
         } else {
-          return compare(handle, s.handle) == 0;
+            return compare(handle, s.handle) == 0;
         }
     }
-    int opCmp(const typeof(this) s) const {
-      return compare(handle, s.handle);
+    static if(isCallable!compare) {
+        int opCmp(const typeof(this) s) const {
+            return compare( handle, s.handle);
+        }
     }
 }

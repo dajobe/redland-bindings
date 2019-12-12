@@ -67,9 +67,7 @@ struct NodeWithoutFinalize {
                            NodeWithoutFinalize,
                            Node,
                            librdf_new_node_from_node);
-    bool opEquals(const NodeWithoutFinalize other) const {
-        return librdf_node_equals(handle, other.handle) != 0;
-    }
+    mixin CompareHandles!(librdf_node_equals, null);
     @property rdf.raptor.term.Term toRaptor() const { // FIXME: also dup() in Ada
       return rdf.raptor.term.TermWithoutFinalize.fromHandle(cast(rdf.raptor.term.TermHandle*)handle).dup;
     }
@@ -147,9 +145,6 @@ struct Node {
                         NodeWithoutFinalize,
                         Node,
                         librdf_free_node);
-    bool opEquals(const Node other) const {
-        return librdf_node_equals(handle, other.handle) != 0;
-    }
     static Node fromRaptor(rdf.raptor.term.TermWithoutFinalize uri) { // FIXME: also dup() in Ada
         return NodeWithoutFinalize.fromHandle(cast(NodeHandle*)uri.handle).dup;
     }
