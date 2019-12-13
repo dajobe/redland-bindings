@@ -1,0 +1,67 @@
+library project Librdf is
+   type Library_Kind_Type is ("static", "dynamic");
+   Library_Kind : Library_Kind_Type := external ("LIBRARY_KIND", "static");
+
+   type Debug_Mode_Type is ("debug", "release", "check");
+   Debug_Mode : Debug_Mode_Type := external ("DEBUG_MODE", "debug");
+
+   type Compilation_Mode_Type is
+      ("Devel", "Install");
+   type Runtime_Type is
+      ("cert", "default", "full", "hi", "kernel", "kernel-sjlj", "kernel-smp", "pthread", "sjlj", "ravenscar", "ravenscar-apex", "ravenscar-full", "ravenscar-cert", "ravenscar-cert-rci", "ravenscar-cert-rtp", "ravenscar-sfp", "rtp", "rtp-smp",
+      "soft-float", "xenomai", "zcx", "zfp", "minimal");
+   for Library_Name use "rdf-ada";
+   for Library_Dir use "lib";
+   for Library_Kind use Library_Kind;
+   for Library_Version use external ("soversion", "default");
+   for Source_Dirs use ("src");
+   case LIBRARY_KIND is
+      when "dynamic" =>
+          for Object_Dir use "obj-dynamic";
+          for Library_Ali_Dir use "ali-dynamic";
+      when others =>
+          for Object_Dir use "obj-static";
+          for Library_Ali_Dir use "ali-static";
+   end case;
+   RUNTIME : Runtime_Type := external ("RUNTIME", "default");
+   MODE : Compilation_Mode_Type := external ("MODE");
+
+
+   package Compiler is
+      Common_Ada_Flags := ("-gnat2012",
+                           "-gnaty3", "-gnatya", "-gnatyA", "-gnatyb", "-gnatyd", "-gnatyf", "-gnatyh", "-gnatyi", "-gnatyl", "-gnatyp", "-gnatyx",
+                           "-gnatwe", "-gnatwa", "-gnatwF");
+
+      Debug_Flags := ();
+      case Debug_Mode is
+          when "debug" =>
+             Debug_Flags := ("-g", "-gnata");
+          when "release" =>
+             Debug_Flags := ("-O2");
+          when "check" =>
+             Debug_Flags := ("-gnatc");
+      end case;
+
+      case LIBRARY_KIND is
+         when "dynamic" =>
+            for Default_Switches ("ada") use Common_Ada_Flags & Debug_Flags & ("-fpic");
+         when "static" =>
+            for Default_Switches ("ada") use Common_Ada_Flags & Debug_Flags & ();
+      end case;
+   end Compiler;
+
+   package Linker is
+      for Linker_Options use ("-lraptor2", "-lrasqal", "-lrdf");
+   end Linker;
+
+   package Builder is
+      case Debug_Mode is
+          when "check" =>
+             for Default_Switches ("Ada") use ("-gnatc");
+          when others =>
+             null;
+      end case;
+   end Builder;
+
+end Librdf;
+

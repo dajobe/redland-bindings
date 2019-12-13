@@ -1,0 +1,38 @@
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: AUnit
+Upstream-Contact: http://libre.adacore.com/contact
+Source: http://libre.adacore.com/download
+Files-Excluded:
+ docs/aunit.info
+ docs/aunit.pdf
+ docs/aunit.txt
+ docs/aunit.html
+ docs/version.texi
+ share
+Comment: Without the generated docs, the archive is six times smaller.
+ Examples have moved from share/examples/aunit to examples, the old
+ directory only contains some unused duplicates.
+
+Files: *
+Copyright: 2006-2015 AdaCore
+         : 2004-2008 Free Software Foundation
+License: GPL-3+
+
+Files: debian/*
+Copyright: 2006-2012 Stephen Leake <stephen_leake@stephe-leake.org>
+         : 2013-2016 Nicolas Boulenguez <nicolas@debian.org>
+License: GPL-3+
+
+License: GPL-3+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ On Debian systems, the complete text of the GNU General Public
+ License can be found in /usr/share/common-licenses/GPL-3 file.

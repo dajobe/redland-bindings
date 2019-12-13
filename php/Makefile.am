@@ -4,17 +4,17 @@
 #
 # Copyright (C) 2002-2012 David Beckett - http://www.dajobe.org/
 # Copyright (C) 2002-2005 University of Bristol - http://www.bristol.ac.uk/
-# 
+#
 # This package is Free Software and part of Redland http://librdf.org/
-# 
+#
 # It is licensed under the following three licenses as alternatives:
 #   1. GNU Lesser General Public License (LGPL) V2.1 or any newer version
 #   2. GNU General Public License (GPL) V2 or any newer version
 #   3. Apache License, V2.0 or any newer version
-# 
+#
 # You may not use this file except in compliance with at least one of
 # the above three licenses.
-# 
+#
 # See LICENSE.html or LICENSE.txt at the top of this package for the
 # full license terms.
 #
@@ -56,7 +56,7 @@ RUN=@REDLAND_RUN@
 SWIG_OPTS=-I$(srcdir) -DREDLAND_POST_I -DREDLAND_INIT_I -DREDLAND_DECL_I -DREDLAND_TYPEMAP_I
 
 $(PHP_PACKAGE)_wrap.c: @REDLAND_SWIG@ redland-decl.i redland-init.i redland-post.i redland-typemap.i
-	swig -v $(PHP_SWIG) $(SWIG_OPTS) -noproxy -module $(PHP_PACKAGE) -o $@ @REDLAND_SWIG@
+	swig -v $(PHP_SWIG) $(SWIG_OPTS) -php -noproxy -module $(PHP_PACKAGE) -o $@ @REDLAND_SWIG@
 	rm -f $(PHP_PACKAGE).php
 
 # -UHAVE_CONFIG_H to stop PHP trying to include config.h which

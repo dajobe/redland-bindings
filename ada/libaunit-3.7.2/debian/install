@@ -1,0 +1,4 @@
+# The name of this file does not mention the aliversion.
+# Instead we use that -dev is the first package in debian/control.
+
+support/aunit.xml usr/share/gps/plug-ins

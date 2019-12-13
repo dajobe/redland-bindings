@@ -1,0 +1,4 @@
+module rdf.config;
+
+enum rasqalVersionFeatures = "@RASQAL_VERSION@";
+

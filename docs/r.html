@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <title>Redland RDF Application Framework - R Interface</title>
+</head>
+<body>
+
+<h1>Redland RDF Application Framework - R Interface</h1>
+
+<h2>Building the Redland R interface</h2>
+
+<p>This is built if <tt>--with-R</tt> is given to the configure
+line.  The standard 'make' at the top level will build it. Building
+the R package is generally not needed for a standard R install because
+the <i>redland</i> R package ships with the SWIG-generated bindings and code
+already built.  So, most users can install the <i>redland</i> package
+in R without running the SWIG build.  See the README.md in the R/redland directory
+for instructions on installing the package into R.</p>
+
+<p>The python interface for Redland is mature and requires R 3.1.1 or later.
+It has been most intensively tested on R 3.2.0.</p>
+
+
+<h2>Testing the Redland R interface</h2>
+
+<p>If you did the install described in the redland/README.md, run the R testing
+code with:</p>
+<pre>
+  R --no-save -e 'library(testthat); library(redland); test_package("redland")'
+</pre>
+
+<p>and the result should be something like:</p>
+<pre>
+> test_package("redland")
+librdf free memory tests :
+Model tests : ................
+Node tests : ................
+Parser tests : ..................
+Query tests : ....................
+librdf base API tests : ...............................
+Serializer tests : .......................
+Statement tests : ..........................
+Storage tests : .....
+World tests : ...
+
+Keep up the good work.
+>
+</pre>
+
+<h2>Using the Redland R API</h2>
+
+<p>Read the R documentation using '?redland' within the R environment
+for full details of the classes and methods provided along with
+examples of use.  In addition, the 'redland_overview' vignette in R provides
+a simple overview of usage and can be accessed with
+<code>vignette("redland_overview", package="redland")</code>.</p>
+
+<p>The R API maps the underlying librdf functions to a set of S4 classes in R
+that represent the main concepts in librdf:</p>
+
+<table>
+<tr><th>Concept</th><th>Redland C type</th><th>redland R class</th><th>Purpose</th></tr>
+<tr><td>Resource / Literal</td><td> librdf_node</td><td> redland::Node</td><td> RDF Model & Syntax nodes</td></tr>
+<tr><td>Statement / Triple</td><td> librdf_statement</td><td> redland::Statement</td><td> RDF Model & Syntax arcs (statements, triples) [isa Resource]</td></tr>
+<tr><td>Model</td><td> librdf_model</td><td> redland::Model</td><td> Set of Statements usually held in one Storage.</td></tr>
+<tr><td>Node</td><td> librdf_node</td><td> redland::Node</td><td> The subject, predicate or object of a Statement</td></tr>
+<tr><td>Storage</td><td> librdf_storage</td><td> redland::Storage</td><td> Storage for Models either persistant or in-memory.</td></tr>
+<tr><td>Parser</td><td> librdf_parser</td><td> redland::Parser</td><td> Syntaxes parsers delivering Stream of Statements or writing to a Model</td></tr>
+<tr><td>Query</td><td> librdf_query</td><td> redland::Query</td><td> Querying of an Model delivering a QueryResults</td></tr>
+<tr><td>QueryResults</td><td> librdf_query_results</td><td> redland::QueryResults</td><td> Results of applying an Query to a Model giving either variable bindings with Node values or Stream of Statements</td></tr>
+<tr><td>Serializer</td><td> librdf_serializer</td><td> redland::Serializer</td><td> Serializes a Model into a syntax such as RDF/XML</td></tr>
+<tr><td>World</td><td> librdf_world</td><td> redland::World</td><td> RDF wrapper class handling Redland startup/shutdown</td></tr>
+</table>
+
+<hr />
+
+<p>Copyright (C) 2015 Regents of the University of California</p>
+
+</body>
+</html>
