@@ -1,0 +1,19 @@
+===========================
+AUnit 3.2 NEW FEATURES LIST
+===========================
+
+Copyright (C) 2008-2009, AdaCore
+
+This file contains a complete list of new features in version 3.2 of AUnit. A
+full description of all AUnit features can be found in the AUnit Cookbook.
+
+An ISO date (YYYY-MM-DD) appears in parentheses after the description line.
+This date shows the implementation date of the feature. Any 3.2.0w wavefront
+subsequent to this date will contain the indicated feature, as will any
+subsequent 3.2 or later releases.
+
+NF-32-I302-012 Add support for expected exceptions (2009-03-02)
+
+   A new procedure Assert_Exception has been added to the AUnit.Assertions
+   package to handle expected exceptions.
+

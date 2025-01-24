@@ -1,0 +1,22 @@
+Document: ada-unit-tests
+Title: Ada Unit test framework - User Guide
+Author: AdaCore
+Abstract: This manual documents the AUnit library,
+ The Ada unit test framework AUnit is derived from the JUnit/CPPUnit
+ frameworks for Java/C++.
+Section: Programming
+
+Format: HTML
+Index: /usr/share/doc/libaunit-doc/aunit.html
+Files: /usr/share/doc/libaunit-doc/aunit.html
+
+Format: text
+Index: /usr/share/doc/libaunit-doc/aunit.txt.gz
+Files: /usr/share/doc/libaunit-doc/aunit.txt.gz
+
+Format: pdf
+Files: /usr/share/doc/libaunit-doc/aunit.pdf.gz
+
+Format: info
+Index : /usr/share/info/aunit.info.gz
+Files: /usr/share/info/aunit.info.gz

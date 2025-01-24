@@ -1,0 +1,58 @@
+
+with "aunit_shared";
+
+project AUnit is
+
+   type Compilation_Mode_Type is ("Devel", "Install");
+   Mode : Compilation_Mode_Type := external ("MODE", "Install");
+
+   for Source_Dirs use
+     ("../../include/aunit/framework",
+      "../../include/aunit/containers",
+      "../../include/aunit/reporters",
+      "../../include/aunit/framework/" & AUnit_Shared.Except,
+      "../../include/aunit/framework/" & AUnit_Shared.Calend,
+      "../../include/aunit/framework/" & AUnit_Shared.Memory);
+
+   for Library_Dir use AUnit_Shared.Library_Dir;
+
+   Obj_Dir := external ("OBJDIR", "../aunit-obj/"
+                        & AUnit_Shared.Target & "-" & AUnit_Shared.Runtime);
+   for Object_Dir use Obj_Dir;
+
+   for Library_Name use "aunit";
+   for Library_Kind use "static";
+
+   --------------
+   -- Compiler --
+   --------------
+
+   package Compiler is
+      case Mode is
+         when "Devel" =>
+            for Default_Switches ("ada") use
+              ("-g", "-gnatQ", "-O1", "-gnatf", "-gnato",
+               "-gnatwa.Xe", "-gnaty");
+
+         when "Install" =>
+            for Default_Switches ("ada") use
+              ("-O2", "-gnatp", "-gnatn", "-gnatwa.X");
+      end case;
+
+      for Switches ("aunit.adb") use
+        Compiler'Default_Switches ("ada") & ("-fno-strict-aliasing");
+   end Compiler;
+
+   -------------
+   -- Install --
+   -------------
+
+   package Install is
+      for Artifacts ("share/doc/aunit") use
+        ("../../docs/*.html", "../../docs/*.info",
+         "../../docs/*.pdf", "../../docs/*.txt");
+      for Artifacts ("share/gps/plug-ins") use ("../../support/aunit.xml");
+      for Artifacts ("share/examples/aunit") use ("../../examples/*");
+   end Install;
+
+end AUnit;

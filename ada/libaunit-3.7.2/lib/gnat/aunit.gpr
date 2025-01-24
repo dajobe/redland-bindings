@@ -1,0 +1,72 @@
+
+with "aunit_shared";
+
+project AUnit is
+
+   type Compilation_Mode_Type is ("Devel", "Install");
+   Mode : Compilation_Mode_Type := external ("MODE", "Install");
+
+   for Source_Dirs use
+     ("../../include/aunit/framework",
+      "../../include/aunit/containers",
+      "../../include/aunit/reporters",
+      "../../include/aunit/framework/" & AUnit_Shared.Except,
+      "../../include/aunit/framework/" & AUnit_Shared.Calend,
+      "../../include/aunit/framework/" & AUnit_Shared.Memory);
+
+   for Library_Dir use "../aunit/" &
+     Aunit_Shared.Target & "-"
+     & Aunit_Shared.Runtime & "-"
+     & Aunit_Shared.Library_Kind;
+
+   for Object_Dir use "../aunit-obj/"
+     & AUnit_Shared.Target & "-"
+     & AUnit_Shared.Runtime & "-"
+     & Aunit_Shared.Library_Kind;
+
+   for Library_Name use "aunit";
+   for Library_Kind use AUnit_Shared.Library_Kind;
+   case AUnit_Shared.Library_Kind is
+      when "dynamic" =>
+         for Library_Version use "lib" & Project'Library_Name & ".so."
+           & Aunit_Shared.Soversion;
+         for Leading_Library_Options use Aunit_Shared.Ldflags;
+      when "static" =>
+         null;
+   end case;
+
+   --------------
+   -- Compiler --
+   --------------
+
+   package Compiler is
+      case Mode is
+         when "Devel" =>
+            for Default_Switches ("ada") use
+              ("-g", "-gnatQ", "-O1", "-gnatf", "-gnato",
+               "-gnatwa.Xe", "-gnaty");
+
+         when "Install" =>
+            for Default_Switches ("ada") use
+              ("-O2", "-gnatp", "-gnatn", "-gnatwa.X");
+      end case;
+      for Default_Switches ("ada") use Compiler'Default_Switches ("ada")
+        & Aunit_Shared.Adaflags;
+
+      for Switches ("aunit.adb") use
+        Compiler'Default_Switches ("ada") & ("-fno-strict-aliasing");
+   end Compiler;
+
+   -------------
+   -- Install --
+   -------------
+
+   package Install is
+      for Artifacts ("share/doc/aunit") use
+        ("../../docs/*.html", "../../docs/*.info",
+         "../../docs/*.pdf", "../../docs/*.txt");
+      for Artifacts ("share/gps/plug-ins") use ("../../support/aunit.xml");
+      for Artifacts ("share/examples/aunit") use ("../../examples/*");
+   end Install;
+
+end AUnit;

@@ -1,0 +1,31 @@
+===================================
+Known problems in AUnit version 3.4
+===================================
+
+Copyright (C) 2001-2012, AdaCore
+
+The following is a listing of known problems in release 3.4.1. Except where
+specifically noted, all these problems have been corrected in the development
+tree of the 3.5 technology. This means they are corrected in any 3.5.0w
+wavefront issued subsequent to the date specified (in ISO format YYYY-MM-DD)
+in the status line. This can be used to determine if a given wavefront has
+the fix identified in the entry.
+
+KP-34-L306-042 Installer issues on Windows
+
+  Problem:    It happens on rare occasions that the Windows installer cannot
+              find any compiler on your system, even if the PATH environment
+              variable is correctly set and gprbuild is present.
+
+  Status:     This was fixed in 3.5 on 2012-03-12
+
+  Workaround: Use the source package and install AUnit using the Makefile.
+
+KP-34-L326-023 Incorrect XML generated
+
+  Problem:    The XML output is incorrect
+
+  Status:     This was fixed in 3.5 on 2012-03-27
+
+  Workaround: Use the text output, or rebuild AUnit with aunit-reporter-xml.adb
+              from a more recent release.

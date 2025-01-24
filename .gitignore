@@ -26,3 +26,16 @@ old
 redland-bindings.spec
 releases
 stamp*
+dlang/source/rdf/config.d
+**/.Rproj.user
+**/.Rhistory
+**/*.RData
+**/*.Rproj
+**/*.o
+**/*.so
+**/.Rproj.user
+**/redland-stamp
+**/test-out.rdf
+.Rproj.user
+Makevars
+ltmain.sh

@@ -1,0 +1,15 @@
+Description: Fix noisy style warnings.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: no
+
+--- a/include/aunit/containers/ada_containers-aunit_lists.adb
++++ b/include/aunit/containers/ada_containers-aunit_lists.adb
+@@ -66,7 +66,7 @@
+       Next    : Node_Access;
+       Prev    : Node_Access) return Node_Access
+    is
+-      Res : Node_Access := New_Node_Type;
++      Res : constant Node_Access := New_Node_Type;
+    begin
+       Res.Element := Element;
+       Res.Next    := Next;

@@ -1,0 +1,2 @@
+Tests: link-with-shared examples
+Depends: @, gprbuild

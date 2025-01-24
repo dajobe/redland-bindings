@@ -1,0 +1,168 @@
+libaunit (3.7.2-1) unstable; urgency=medium
+
+  * New upstream release (GPL-2015, betwwen 3.7.1 and 3.8.0).
+    Rename lib (SO=3.7.2) and -dev (ALI=3.7.2) packages due to Ada policy.
+    Build with gnat-6, gprbuild and all hardening options.
+  * watch, README.source: use Adacore redirector.
+  * Switch from manual -dbg packages to automatic -dbgsym packages.
+  * Standards-Version: 3.9.8 (no changes), drop generated XS-Testsuite.
+  * rules: avoid timezone dependency when possible.
+  * patches/path_doc_gps_plugin.diff: typo in package name.
+
+ -- Nicolas Boulenguez <nicolas@debian.org>  Tue, 26 Apr 2016 08:32:42 +0200
+
+libaunit (3.7.1-2) unstable; urgency=medium
+
+  * For reproducible PDF timestamps, set clock to the date of this entry.
+    Touch generated sources for deterministic ALI files and tar headers.
+  * Standards-Version: 3.9.6 (no changes).
+
+ -- Nicolas Boulenguez <nicolas@debian.org>  Sun, 03 May 2015 16:49:18 +0200
+
+libaunit (3.7.1-1) unstable; urgency=medium
+
+  * New upstream release, built with gnat-4.9 (closes:  #748998, #755078).
+    Per Ada policy, rename lib (ABI) and -dev (sources) packages.
+  * Because the generated doc is big, use Files-Excluded.
+    Because it and examples are -indep, add a -doc package.
+  * copyright: update to GPL-3+, repackage without generated files.
+  * rules: run-tests target is obsoleted by sadt from devscripts.
+    Now using upstream build system with a few patches.
+  * doc-base registration. Install all formats and examples.
+  * examples: deduplicate, link from doc, run as tests.
+    Some of them and upstream-tests freeze, commented.
+  * Fix dh_compress override.
+
+ -- Nicolas Boulenguez <nicolas@debian.org>  Mon, 18 Aug 2014 16:39:25 +0200
+
+libaunit (1.03-8) unstable; urgency=low
+
+  * Adopting the package. Closes: #673752.
+  * Switch to debhelper 9, dpkg-dev and dh-ada-library helpers.
+  * Build-Depends: gnat in addition to gnat-4.6 to ensure default compiler.
+  * Standards-Version: 3.9.5. Vcs-*: correct field names.
+  * Stop depending on inexistant ada-compiler virtual package.
+  * Mark lib and -dev packages as Multiarch: same.
+  * copyright: update, machine-readable format 1.0.
+  * Move runtime tests to debian/tests. XS-Testsuite field accordingly.
+  * rules: inherit hardening flags. Do not compress examples. Implement clean.
+  * source.lintian overrides: -lib does Depend on -dbg.
+  * Empty but informative watch file.
+
+ -- Nicolas Boulenguez <nicolas@debian.org>  Sat, 30 Nov 2013 22:30:03 +0100
+
+libaunit (1.03-7) unstable; urgency=low
+
+  * upgrade to build with gnat-4.6; bump aliversion
+
+ -- Stephen Leake <stephen_leake@stephe-leake.org>  Tue, 12 Jul 2011 18:34:15 -0400
+
+libaunit (1.03-6) unstable; urgency=low
+
+  * debian/compat: bump to 7
+
+  * debian/control: add gnat, ada-compiler per Debian Ada Policy.
+
+  * debian/source/format: switch to 3.0 (quilt)
+
+  * debian/rules: don't install GPS plug-in aunit.xml; it's wrong.
+
+ -- Stephen Leake <stephen_leake@stephe-leake.org>  Tue, 15 Jun 2010 03:31:31 -0400
+
+libaunit (1.03-5) unstable; urgency=low
+
+  [Stephen Leake]
+  * debian/control (Standards-Version): update to 3.8.4
+    (Architecture): change to 'any', to match gnat-4.4. Closes: #568438
+
+  [Ludovic Brenta]
+  * debian/control (DM-Upload-Allowed): new.   (Uploaders): remove myself.
+
+ -- Stephen Leake <stephen_leake@stephe-leake.org>  Sun, 14 Feb 2010 08:23:32 -0500
+
+libaunit (1.03-4) unstable; urgency=low
+
+  [Stephen Leake]
+  * Change -dev package name to reflect the change in .ali files (see
+    extensive discussion at
+    http://people.debian.org/~lbrenta/debian-ada-policy.html):
+    - libaunit-dev -> libaunit1-dev
+  * NEW package libaunit-dbg
+  * Migrate to gnat-4.4 and change the soname to libaunit3.
+  * Update Standards-Version to 3.8.3 with no changes.
+  * debian/control (Architecture): add kfreebsd-amd64.  Closes: #542414.
+    (Vcs-Mtn, Vcs-Browse): new.
+    (Maintainer): new maintainer Stephen Leake.
+    (Uploaders): add Ludovic Brenta as the sponsor.
+    (Suggests): new
+    (Conflicts, Replaces): new
+  * debian/test_installed.sh: New, for running tests against installed
+    package.
+
+  [Ludovic Brenta]
+  * debian/control (Depends): add ${misc:Depends}, required by debhelper.
+    (Architectures): disable alpha due to http://gcc.gnu.org/PR42073.
+  * debian/aunit_ref.gpr: s/Object_Dir/Library_ALI_Dir/.
+  * debian/aunit_build.gpr: build without -fstack-check.
+    Eric Botcazou says: "-fstack-check is broken with GCC 4.4 on x86/x86-64
+    Linux, it generates code that will easily segfault"
+    (http://gcc.gnu.org/PR20548).
+
+ -- Ludovic Brenta <lbrenta@debian.org>  Thu, 19 Nov 2009 23:46:01 +0100
+
+libaunit (1.03-3) unstable; urgency=low
+
+  * Migrate to gnat-4.3 and change the soname to libaunit2.
+  * Update Standards-Version to 3.8.0 with no changes.
+  * Add support for mips, mipsel and ppc64.
+  * Transform aunit.gpr into a library project file.
+
+ -- Ludovic Brenta <lbrenta@debian.org>  Thu, 24 Jul 2008 20:56:02 +0200
+
+libaunit (1.03-2) unstable; urgency=low
+
+  * debian/control (Maintainer): use my Debian email address.
+
+ -- Ludovic Brenta <lbrenta@debian.org>  Mon, 18 Sep 2006 23:09:04 +0200
+
+libaunit (1.03-1) unstable; urgency=low
+
+  * New upstream release.
+  * Compile with GCC 4.1; new ABI.
+  * debian/control (Maintainer): new email address, I'm now a full DD.
+    (Upoloaders): remove.
+    (Build-Depends): gnat (>= 4.1).
+    (Standards-Version): bump to 3.7.2 with no changes required.
+    (libaunit1): rename to libaunit1.03.
+    (Architecture): add alpha, amd64, hppa, ia64 and s390.
+  * debian/rules: bump the soname to libaunit.so.1.03.
+
+ -- Ludovic Brenta <lbrenta@debian.org>  Mon, 18 Sep 2006 00:15:11 +0200
+
+libaunit (1.01-3) unstable; urgency=low
+
+  * debian/rules (regexp): accept any character in the Debian upload
+    number.  Closes: #359880.
+
+ -- Ludovic Brenta <ludovic@ludovic-brenta.org>  Fri, 31 Mar 2006 08:08:36 +0200
+
+libaunit (1.01-2) unstable; urgency=low
+
+  * debian/control: enable support for GNU/kFreeBSD.  Update
+    standards-version from 3.6.1 to 3.6.2 with no changes.  Change
+    maintainer's email address.  Add Alexander Wirt to the list of
+    uploaders.
+    (libaunit-dev): Depend on gnat, suggest gnat-gps.
+  * debian/libaunit-dev.postinst: remove, no longer needed.
+
+ -- Ludovic Brenta <ludovic@ludovic-brenta.org>  Wed,  1 Mar 2006 20:23:20 +0100
+
+libaunit (1.01-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Ludovic Brenta <ludovic.brenta@insalien.org>  Tue, 24 Feb 2004 02:33:37 +0100
+
+Local variables:
+left-margin: 2
+End:

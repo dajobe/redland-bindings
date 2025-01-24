@@ -1,0 +1,67 @@
+Version 1.0.17-11
+
+BUG FIXES
+
+* Removed deprecated function warnings during package build. (#79)
+* Fix memory protection problems reported by 'rchk'. (#78)
+* Deprecate the function getNextResult(), which is superceded by getResults(). (#79)
+
+Version 1.0.17-10
+
+BUG FIXES
+
+* The function 'statement()' now accepts an RDF language tag for literal nodes (#64)
+
+NEW FEATURES
+
+* Ability to retrieve all query results at once. (#58)
+* New function getNodeValue() (#65)
+* New function getResults() (#58)
+* New function writeResults() (#58)
+
+Version 1.0.17-9
+
+BUG FIXES
+  
+* Vignettes now build with R 3.4.0 and are now updated to the ./doc directory by package installation.
+
+* Added an installation cleanup script
+
+Version 1.0.17-8
+
+NEW FEATURES
+
+* For Mac OS X, binary installations no longer require Redland system libraries to be installed,
+  as these libraries are now statically linked into the redland package shared library 'redland.so'.
+  
+BUG FIXES
+  
+* Fixed an unresolved symbol problem with Windows 32 bit builds under R 3.3.0 (and gcc 4.9.3 tool chain) 
+
+Version 1.0.17-7
+
+BUG FIXES
+
+* Unit tests have been updated to be compatible with the changes in the
+  'testthat' package that were made in development version testthat_0.11.0.9000,
+  and will be released to CRAN on 4/4/2016. The updated unit tests pass with both
+  the current version of testthat (0.11.0) and the new version (0.11.0.9000).
+
+Version 1.0.17
+--------------
+
+NEW FEATURES
+
+* Initial version (see help topic for 'redland', e.g. "?redland")
+
+* Includes API wrappers for corresponding Redland 1.0.17 C library
+
+NEW S4 CLASSES
+
+* Classes Node, Statement, and Model for representing RDF
+
+* Classes Storage and World for managing collections of statements
+
+* Classes Parser and Serializer for for loading and saving models
+
+* classes Query and QueryResults for searching models using SPARQL

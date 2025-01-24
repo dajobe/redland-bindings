@@ -1,0 +1,18 @@
+Description: add dircategory and direntry in Info manual per Debian policy.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: no
+
+--- a/docs/aunit.texi
++++ b/docs/aunit.texi
+@@ -13,6 +13,11 @@
+ @afourpaper
+ @end iftex
+ 
++@dircategory Software development
++@direntry
++* AUnit: (aunit).            Ada unit test framework, similar to the Java JUnit
++@end direntry
++
+ @c ----------------------------------------- MACRO
+ 
+ @c Macro used for all AUnit examples

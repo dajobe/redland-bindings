@@ -21,6 +21,8 @@
 # 
 # 
 
+SUBDIRS=ada
+
 EXTRA_DIST=\
 README.html README \
 perl.html python.html ruby.html php.html \

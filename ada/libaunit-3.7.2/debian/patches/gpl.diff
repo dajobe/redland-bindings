@@ -1,0 +1,45 @@
+Description: remove ambiguity about GPL
+ All the content available on libre.adacore.com is licensed
+ under the terms of the pure GPL, despite the fact that AdaCore have
+ not yet adjusted the licensing boilerplate in documentation.
+ .
+ This is stated for example at
+ http://lists.adacore.com/pipermail/gtkada/2009-June/003789.html. The
+ actual license is a decision of AdaCore. Please contact them at
+ libre@adacore.com for any clarification. .
+ .
+ This is confirmed by the fact that COPYING3 exists in the top
+ directory.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: not-needed
+
+--- a/docs/aunit.texi
++++ b/docs/aunit.texi
+@@ -58,13 +58,6 @@
+ 
+ Copyright @copyright{} 2000-2014, AdaCore
+ 
+-@*
+-
+-This document may be copied, in whole or in part, in any form or by any
+-means, as is or with alterations, provided that (1) alterations are clearly
+-marked as alterations and (2) this copyright notice is included
+-unmodified in any copy.
+-
+ @end titlepage
+ 
+ @ifhtml
+@@ -86,10 +79,9 @@
+ 
+ <p>Copyright @copyright{} 2000-2014, AdaCore
+ 
+-<p>This document may be copied, in whole or in part, in any form or by any
+-means, as is or with alterations, provided that (1) alterations are clearly
+-marked as alterations and (2) this copyright notice is included
+-unmodified in any copy.
++<p>This document is licensed under the GNU General Public License,
++either version 3 of the License, or (at your option) any later version.
++
+ @end html
+ @end ifhtml
+ 

@@ -1,0 +1,18 @@
+===================================
+Known problems in AUnit version 3.5
+===================================
+
+Copyright (C) 2014, AdaCore
+
+The following is a listing of known problems in release 3.5.1.
+Each entry contains a status line stating when the problem was fixed, and on
+which release(s). In addition, any wavefront issued subsequent to the date
+specified (in ISO format YYYY-MM-DD) also contains the fix. This can be used
+to determine if a given release or wavefront has the fix identified in the
+entry.
+
+Note that older releases might or might not be affected by the problems listed
+in this document.
+
+Known problems fixed in 3.5.1 and above
+---------------------------------------

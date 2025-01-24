@@ -1,0 +1,10 @@
+aunit for Debian
+----------------
+
+See the Debian Ada policy at
+http://people.debian.org/~lbrenta/debian-ada-policy.html
+
+The template files mentioned in the documentation are in
+/usr/share/doc/aunit-dev/examples.
+
+ -- Nicolas Boulenguez <nicolas@debian.org>, Sat, 30 Nov 2013 22:08:45 +0100

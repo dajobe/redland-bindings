@@ -1,0 +1,56 @@
+This are thick object orienteed Ada2012 bindings for Redland
+Raptor library.
+
+Backward incompatible API changes are possible at this stage.
+
+Some parts of RDF Syntax Library are not supported (I mean, not bound to
+Ada):
+
+* AVL Trees (internals)
+* SAX2 (use XMLAda instead)
+* Sequence (internals)
+* String buffer (use Ada code instead)
+* Unicode (use an Ada library)
+* XML QName (internals)
+* XML (use XMLAda instead)
+* Rasqal expressions (internals)
+* Rasqal graph patterns (internals)
+* Rasqal literals (internals)
+* Rasqal prefixes (internals)
+* Rasqal triples (internals)
+* Rasqal triple sources (internals)
+* Rasqal variables (internals)
+* Rasqal variable tables (internals)
+* Rasqal updates (internals)
+* Rasqal utilities (internals)
+* XSD related objects (not a priority to implement)
+* Query Results Formatter
+* Query Result Row (C API is too rudimentary)
+* Service (requires Sequences which are not yet implemented)
+* Redland Digests (internals)
+* Redland Files (internals)
+* Redland Hashes (internals)
+* Redland Heuristics (internals)
+* Redland List (internals)
+* Redland Parser factories, Serializer factories, and query factories (internals)
+* Redland Query limit and offset (not clear what should be Ada API)
+* Redland Concepts
+
+The following APIs are implemented partially:
+
+* Rasqal Query
+* Literals (not implemented things related to patterns)
+* Redland iterators (we only use iterators, not construct them)
+* Redland streams (we only use streams, not construct them)
+* Triple stores (considered internals)
+
+It may be downgraded to Ada2005 but this isn't a priority for me.
+
+Documentation of the Ada bindings are not written yet.
+Should we use GNATdoc or AdaBrowse?
+
+There are some unit tests (using AUnit library), but they do not cover
+all code. I would not recommend to use this library for software which
+should be highly reliable.
+
+-- Victor Porton <porton@narod.ru>

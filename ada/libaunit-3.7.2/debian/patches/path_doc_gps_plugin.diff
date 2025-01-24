@@ -1,0 +1,14 @@
+Description: Adapt doc path in gnat-gps plugin.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: not-needed
+
+--- a/support/aunit.xml
++++ b/support/aunit.xml
+@@ -1,6 +1,6 @@
+ <?xml version="1.0"?>
+ <index>
+-   <doc_path>share/doc/aunit</doc_path>
++   <doc_path>share/doc/libaunit-doc</doc_path>
+ 
+    <submenu before="About" action = "">
+       <title>/Help/AUnit</title>

@@ -1,0 +1,23 @@
+#!/bin/sh
+set -C -e -f -u
+cd "$ADTTMP"
+
+MAIN=test
+
+cat > "$MAIN.adb" <<EOF
+with AUnit.Options; use AUnit.Options;
+procedure Test is
+   O : constant AUnit_Options := Default_Options;
+begin
+   null;
+end Test;
+EOF
+cat > p.gpr <<EOF
+with "aunit";
+project P is
+   for Source_Dirs use (".");
+   for Main use ("$MAIN.adb");
+end P;
+EOF
+gprbuild p.gpr
+./$MAIN

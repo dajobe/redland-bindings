@@ -1,0 +1,51 @@
+Description: Adapt path to examples in documentation.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: not-needed
+
+--- a/docs/aunit.texi
++++ b/docs/aunit.texi
+@@ -157,7 +157,7 @@
+ With this version, we have provided new examples illustrating the enhanced
+ features of the framework. These examples are in the AUnit
+ installation directory:
+-<aunit-root>/share/examples/aunit, and are also available in the source
++/usr/share/doc/libaunit-doc/examples, and are also available in the source
+ distribution aunit-@value{VERSION}-src/examples.
+ 
+ The following examples are provided:
+@@ -414,7 +414,7 @@
+ 
+ You can find a compilable example of
+ @code{AUnit.Simple_Test_Cases.Test_Case} usage in your AUnit installation
+-directory: <aunit-root>/share/examples/aunit/simple_test/ or from the
++directory: /usr/share/doc/libaunit-doc/examples/simple_test/ or from the
+ source distribution aunit-@value{VERSION}-src/examples/simple_test/
+ 
+ @c ----------------------
+@@ -580,7 +580,7 @@
+ 
+ You can find a compilable example of
+ @code{AUnit.Test_Caller} use in the AUnit installation
+-directory: <aunit-root>/share/examples/aunit/test_caller/ or from the
++directory: /usr/share/doc/libaunit-doc/examples/test_caller/ or from the
+ source distribution aunit-@value{VERSION}-src/examples/test_caller/
+ 
+ @c ======================================================================
+@@ -705,7 +705,7 @@
+ 
+ You can find a compilable example of fixture set up using
+ @code{AUnit.Test_Fixture} in your AUnit installation
+-directory: <aunit-root>/share/examples/aunit/test_fixture/ or from the
++directory: /usr/share/doc/libaunit-doc/examples/test_fixture/ or from the
+ AUnit source distribution aunit-@value{VERSION}-src/examples/test_fixture/.
+ 
+ @c ======================================================================
+@@ -993,7 +993,7 @@
+ the testing of tagged type hierarchies and to the testing of generic units.
+ 
+ A full example of this kind of test organization is available in the AUnit
+-installation directory: <AUnit-root>/share/examples/aunit/calculator, or
++installation directory: /usr/share/doc/libaunit-doc/examples/calculator, or
+ from the AUnit source distribution
+ aunit-@value{VERSION}-src/examples/calculator.
+ 

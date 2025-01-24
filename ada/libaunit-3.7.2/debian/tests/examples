@@ -1,0 +1,74 @@
+#!/bin/sh
+set -C -e -f -u
+cd "$ADTTMP"
+
+cp -r /usr/share/doc/libaunit-doc/examples .
+cd examples
+######################################################################
+cat > st <<EOF
+
+OK Test Math package
+
+Total Tests Run:   1
+Successful Tests:  1
+Failed Assertions: 0
+Unexpected Errors: 0
+EOF
+make -C simple_test
+simple_test/test_math | diff st -
+######################################################################
+cat > tc <<EOF
+
+OK Test addition
+OK Test subtraction
+
+Total Tests Run:   2
+Successful Tests:  2
+Failed Assertions: 0
+Unexpected Errors: 0
+EOF
+make -C test_caller
+test_caller/test_math | diff tc -
+######################################################################
+cat > tf <<EOF
+
+OK Test addition
+OK Test subtraction
+
+Total Tests Run:   2
+Successful Tests:  2
+Failed Assertions: 0
+Unexpected Errors: 0
+EOF
+make -C test_fixture
+test_fixture/test_math | diff tf -
+######################################################################
+cat > c <<EOF
+
+OK Test Stack.Push
+OK Test Stack.Pop
+OK Test Stack.Length
+OK Test Stack.Top
+OK Test Stack.Next_To_Top
+OK Test Operations.Addition.Pop
+OK Test Operations.Addition.Push
+OK Test Operations.Addition.Execute
+OK Test Operations.Subtraction.Pop
+OK Test Operations.Subtraction.Push
+OK Test Operations.Subtraction.Execute
+OK Test Operands.Ints.Image
+
+FAIL Test Operands.Ints.Value
+    test not implemented
+    at operands-ints-test.adb:23
+FAIL Test Operands.Ints.Set
+    test not implemented
+    at operands-ints-test.adb:29
+
+Total Tests Run:   14
+Successful Tests:  12
+Failed Assertions: 2
+Unexpected Errors: 0
+EOF
+make -C calculator
+calculator/test_calculator | diff c -
